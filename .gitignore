@@ -48,6 +48,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-
 .vscode
 /bower_components
