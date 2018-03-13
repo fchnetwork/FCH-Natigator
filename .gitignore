@@ -30,7 +30,7 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-bower_components
+
 # misc
 /.sass-cache
 /connect.lock
@@ -47,3 +47,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+
+.vscode
+/bower_components
