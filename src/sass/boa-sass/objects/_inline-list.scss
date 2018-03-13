@@ -1,0 +1,10 @@
+.o-inline-list {
+  @include reptilehaus-bare-list;
+}
+
+.o-inline-list__item {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@include reptilehaus-list-spacing('inline-list', 'left');

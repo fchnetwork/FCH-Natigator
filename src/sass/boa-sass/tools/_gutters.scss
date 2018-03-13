@@ -1,0 +1,41 @@
+@mixin build-gutters($size-key, $size-value, $matrix: null) {
+  $side: 'left';
+  $matrix-class: '';
+  $matrix-class-child: '';
+  $matrix-class-modifier: '';
+  $size-key: '-' + $size-key;
+
+  @if $matrix {
+    $side: 'bottom';
+    $matrix-class-modifier: '--matrix';
+    $matrix-class: '.o-grid' + $matrix-class-modifier;
+    $matrix-class-child: $matrix-class + ' > ';
+  }
+
+  #{$matrix-class}.o-grid--gutter#{$size-key} {
+    margin-#{$side}: -$size-value;
+  }
+
+  #{$matrix-class}.o-grid--gutter#{$size-key} > .o-grid__item {
+    padding-#{$side}: $size-value;
+  }
+
+  @each $bp-key, $bp-value in $reptilehaus-breakpoints {
+    @include boa-respond($bp-key) {
+      #{$matrix-class}.o-grid--gutter#{$size-key}\@#{$bp-key} {
+        margin-#{$side}: -$size-value;
+      }
+
+      #{$matrix-class}.o-grid--gutter#{$size-key}\@#{$bp-key} > .o-grid__item {
+        padding-#{$side}: $size-value;
+      }
+    }
+  }
+}
+
+@mixin reptilehaus-gutters {
+  @each $key, $value in $reptilehaus-grid-gutter-sizes {
+    @include build-gutters($key, $value);
+    @include build-gutters($key, $value, 'matrix');
+  }
+}

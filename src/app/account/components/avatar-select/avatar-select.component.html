@@ -1,0 +1,5 @@
+<ul class="c-avatar__wrap" [attr.title]="label">
+    <li *ngFor="let a of avatars" class="c-avatar__item" (click)="switch(a)" [value]="a" [ngClass]="{ activeAvtr : a.id == activeAvatar }">
+      <div class="c-avatar__img" [style.background-image]="'url(' + a.avatar + ')'"></div>
+    </li>
+</ul>  

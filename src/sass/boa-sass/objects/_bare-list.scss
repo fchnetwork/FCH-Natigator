@@ -1,0 +1,5 @@
+.o-bare-list {
+  @include reptilehaus-bare-list;
+}
+
+@include reptilehaus-list-spacing('bare-list', 'bottom');

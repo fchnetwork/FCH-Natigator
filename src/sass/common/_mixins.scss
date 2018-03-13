@@ -1,0 +1,234 @@
+/*VENDOR PREFIX MIXIN */
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+
+
+@mixin angleBefore( $degA, $degB, $bottom, $height, $bgColor, $zindex ) {
+    content: " ";
+    position: absolute;
+    left: 0;
+    bottom:  #{$bottom};
+    height:  #{$height};
+    width: 100%;
+    background: #{$bgColor};
+    @include vendor-prefix('transform', 'skew(#{$degA}, #{$degB} )');
+    @include vendor-prefix('backface-visibility', 'hidden');
+    z-index: #{$zindex};
+    outline: 1px solid transparent;
+}
+
+
+
+@mixin headerLine( $width, $bottom, $height, $bgColor, $zindex ) {
+    position: absolute;
+    content: ' ';
+    bottom:  #{$bottom};
+    left: 0;
+    background: #{$bgColor};
+    height:  #{$height};
+    width: #{$width};
+    z-index: #{$zindex};
+}
+
+
+
+
+
+@mixin loader( $size, $top) {
+    height: #{$size};
+    width: #{$size};
+    margin: 0px auto;
+    position: relative;
+    top: #{$top};
+    opacity: 1;
+    -webkit-animation: rotation .6s infinite linear, showLoading 0.3s linear 1s 1 normal forwards;
+    -moz-animation: rotation .6s infinite linear, showLoading 0.3s linear 1s 1 normal forwards;
+    -ms-animation: rotation .6s infinite linear, showLoading 0.3s linear 1s 1 normal forwards;
+    animation: rotation .6s infinite linear, showLoading 0.3s linear 1s 1 normal forwards;
+    border-left: 6px solid rgba(235,73,36,.15);
+    border-right: 6px solid rgba(235,73,36,.15);
+    border-bottom: 6px solid rgba(235,73,36,.15);
+    border-top: 6px solid rgba(235,73,36,.8);
+    border-radius: 100%;
+}
+
+
+
+
+
+
+@mixin optional-at-root($sel) {
+  @at-root #{if(not &, $sel, selector-append(&, $sel))} {
+    @content;
+  }
+}
+
+@mixin placeholder {
+  @include optional-at-root('::-webkit-input-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root('::-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-ms-input-placeholder') {
+    @content;
+  }
+}
+
+
+
+
+
+
+
+/* LINEAR GRADIENTS */
+@mixin linear-gradient($angle, $percentMin, $percentMax , $fromColor, $toColor) {
+  background-color: $toColor; /* Fallback Color */
+  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient($angle, $fromColor $percentMin , $toColor $percentMax); /* Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient($angle, $fromColor, $toColor); /* FF3.6 */
+  background-image:     -ms-linear-gradient($angle, $fromColor, $toColor); /* IE10 */
+  background-image:      -o-linear-gradient($angle, $fromColor, $toColor); /* Opera 11.10+ */
+  background-image:         linear-gradient($angle, $fromColor, $toColor);
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}');
+}
+
+
+
+
+
+@mixin sticky-footer($footer-height, $wrapper-selector: unquote("#u-site-wrapper"), $container-selector: unquote("#u-page-container"), $footer-selector: unquote("#u-footer")) {
+  html, body {
+    height: 100%;
+  }
+  body {
+    margin: 0px;
+    padding: 0px;
+  }
+  #{$wrapper-selector} {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin-bottom: -$footer-height;
+    #{$container-selector} {
+      padding: 0 0 $footer-height 0;
+    } 
+  }
+  #{$footer-selector} {
+    height: $footer-height; 
+  }
+}
+
+/* 
+Usage:
+<section id="page-wrapper">
+  <div id="containment">
+  </div>
+</div>
+<footer id="footer">
+
+</footer>
+@include sticky-footer(300px);
+*/
+
+
+
+
+
+
+
+/* LINEAR GRADIENTS */
+@mixin beforeLine($bgcolor, $width, $height) {
+max-width: $width;
+background: $bgcolor;
+content: ' ';
+position: absolute;
+top: 0;
+left: 0;
+height: $height;
+width: 100%;
+}
+
+@mixin beforeLineright($bgcolor, $width, $height) {
+max-width: $width;
+background: $bgcolor;
+content: ' ';
+position: absolute;
+top: 0;
+right: 0;
+height: $height;
+width: 100%;
+}
+
+
+
+
+
+
+/**
+ * Ultimate px/rem Sass mixin
+ *
+ * [1] - The mixin relies on a baseline of 10px
+ * [2] - The mixin relies on a function to parse the integer from a value with a unit
+ * [3] - We define a list of values for both units
+ * [4] - We iterate through each value in the given parameter $values
+ * [5] - If the value is either auto or 0, we append it to the list as-is
+ * [6] - If the value as a unit, we split it to get the unit and the raw value
+ * [7] - We append according values to the lists depending on the unit of the given value
+ * [8] - We output the result
+ */
+
+//  read this for more info
+// https://stackoverflow.com/questions/11352783/how-to-calculate-rem-for-type
+@function parseInt($n) { /* 2 */
+  @return $n / ($n * 0 + 1);
+}
+
+@mixin rem($property, $values) {
+  $px : (); /* 3 */
+  $rem: (); /* 3 */
+
+  @each $value in $values { /* 4 */
+
+    @if $value == 0 or $value == auto { /* 5 */
+      $px : append($px , $value);
+      $rem: append($rem, $value);
+    }
+
+    @else {
+      $unit: unit($value);    /* 6 */
+      $val: parseInt($value); /* 6 */
+
+      @if $unit == "px" {  /* 7 */
+        $px : append($px,  $value);
+        $rem: append($rem, ($val / 16 + rem));        
+//        $rem: append($rem, ($val / 16 + rem));
+      }
+
+      @if $unit == "rem" { /* 7 */
+      //  $px : append($px,  ($val * 10 + px));
+        $px : append($px,  ($val * 16 + px)); 
+        $rem: append($rem, $value);
+      }
+    }
+  }
+
+  @if $px == $rem {     /* 8 */
+    #{$property}: $px;  /* 9 */
+  } @else {
+    #{$property}: $px;  /* 9 */
+    #{$property}: $rem; /* 9 */
+  }
+}

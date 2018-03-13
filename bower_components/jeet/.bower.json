@@ -1,0 +1,14 @@
+{
+  "name": "jeet",
+  "homepage": "https://github.com/mojotech/jeet",
+  "version": "7.2.0",
+  "_release": "7.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "7.2.0",
+    "commit": "8baa4d35013f26261fdbaa78a931e97bab26056b"
+  },
+  "_source": "https://github.com/mojotech/jeet.git",
+  "_target": "^7.2.0",
+  "_originalSource": "jeet"
+}

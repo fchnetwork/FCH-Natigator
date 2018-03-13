@@ -1,0 +1,171 @@
+
+
+
+
+.c-seedContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 15px 10px;
+  
+    box-sizing: border-box;
+    padding: 25px 30px;
+  
+    margin: 28px 0;
+    
+    &.u-locked {
+      user-select: none;
+      pointer-events: none;       
+    }
+    
+    &.c-seedContainer__dynamic {
+      span {
+        font-family: 'Roboto-Regular',sans-serif;
+        font-size: 34px;
+        letter-spacing: 0;
+        line-height: 40px;
+        margin: 10px 0;
+        border-radius: 4px;
+        padding: 8px 15px;
+        margin: 3px;
+        box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2);
+        background-color: #fff;
+        cursor: pointer;
+        font-size: 15px;
+        line-height: 15px;
+        font-weight: 500;
+        max-height: 30px;      
+      }
+    }
+    
+    &.u-displayOnly {
+   
+      border: 1px solid #e2e2e2;
+      border-radius: 4px;
+      background-color: #fafafa;    
+    }
+    
+    &.u-selectionSeed {
+      background-color: #ffff;    
+      span {
+        font-family: 'Roboto-Regular',sans-serif;
+        font-size: 34px;
+        letter-spacing: 0;
+        line-height: 40px;
+        margin: 10px 0;
+        border-radius: 4px;
+        background-color: #F62459;
+        color: white;
+        font-weight: 500;
+        margin: 3px;
+        border: solid 1px #F62459;
+        cursor: pointer;
+        font-size: 15px;
+        line-height: 15px;
+        color: #fff;
+        padding: 8px 15px; 
+        &.u-removeSeed {
+          border: dashed 1px #9ba6b2;
+          background-color: transparent;
+          color: transparent;
+          user-select: none;
+          cursor: default;        
+        }     
+      }
+    }
+    span {
+      font-family: 'Roboto-Regular',sans-serif;
+      font-size: 34px;
+      letter-spacing: 0;
+      line-height: 40px;
+      margin: 10px 0;
+      font-size: 17px;
+      line-height: 17px;
+      margin: 0;
+      color: #263241;
+      padding: 5px 8px;
+      font-weight: 500;    
+      
+    }
+  }
+  
+  .o-createAccountPage {
+      .o-createAccountWrapper {
+          max-width: 460px;
+          margin: 0 auto;
+      }
+      
+      
+      
+      
+      button[type=submit] {
+      background-color: #F62459;
+      border: 0;
+      color: #ffffff;
+      }
+        
+        input, button[type=submit] {
+          height: 54px;
+          padding: 0 16px;
+          font-size: 17px;   
+          width: 100%;    
+          border-radius: 4px;                   
+        }
+        
+        button[type=submit]:disabled {
+          opacity: .5;
+        }
+        
+  
+         input[type="text"], 
+         input[type="password"],
+         input[type="number"],
+         textarea {
+          margin-bottom: 10px;
+          background-color: #fff;
+          border: 1px solid #dae1e9;
+          text-align: left;
+         }    
+      
+      
+      
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  // toast styles
+  
+  

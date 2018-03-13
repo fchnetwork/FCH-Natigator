@@ -1,0 +1,10 @@
+.o-matrix-list {
+  @include reptilehaus-bare-list;
+}
+
+.o-matrix-list__item {
+  display: inline-block;
+}
+
+@include reptilehaus-list-spacing('matrix-list', 'left');
+@include reptilehaus-list-spacing('matrix-list', 'bottom');

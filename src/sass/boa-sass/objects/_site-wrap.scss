@@ -1,0 +1,10 @@
+.o-site-wrap {
+  max-width: $reptilehaus-site-wrap-width;
+  margin: 0 auto;
+}
+
+.o-site-wrap--padding {
+  max-width: ($reptilehaus-site-wrap-width + ($reptilehaus-spacing-unit * 2));
+  padding-left: $reptilehaus-spacing-unit;
+  padding-right: $reptilehaus-spacing-unit;
+}

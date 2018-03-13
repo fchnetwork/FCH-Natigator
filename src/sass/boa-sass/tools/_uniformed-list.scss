@@ -1,0 +1,29 @@
+@mixin uniformed-list-properties($bp: null) {
+  $bp-class: '';
+  @if $bp {
+    $bp-class: '\\@#{$bp}';
+  }
+
+  .o-uniformed-list#{$bp-class} {
+    @include reptilehaus-bare-list;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+  }
+
+  .o-uniformed-list#{$bp-class} > .o-uniformed-list__item {
+    display: table-cell;
+    padding: 0 ($reptilehaus-spacing-unit * 0.5);
+  }
+}
+
+@mixin reptilehaus-uniformed-list {
+  @include uniformed-list-properties;
+
+  @each $bp-key, $bp-val in $reptilehaus-breakpoints {
+    @include boa-respond($bp-key) {
+      @include uniformed-list-properties($bp-key);
+    }
+  }
+}
