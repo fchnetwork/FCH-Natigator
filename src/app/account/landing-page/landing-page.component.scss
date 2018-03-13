@@ -1,0 +1,15 @@
+.o-landingPage {
+    width: 100%;
+    
+    .o-landingPageWrapper {
+        margin: 0 auto;
+        max-width: 400px;
+        .o-Onboarding {
+            text-align: center;
+       
+            button {
+                margin: 30px auto;
+            }
+        }
+    }
+}

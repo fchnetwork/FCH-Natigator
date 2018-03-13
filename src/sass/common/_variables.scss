@@ -1,0 +1,101 @@
+/**
+ * Typography
+ */
+
+$input-height:                10px !default;
+$input-height-lg:             10px !default;
+$input-height-sm:             10px !default;
+$sprite:                      'assets/images/sprite.png';
+
+$paragraph:                   Helvetica, Arial, sans-serif;
+$heading:                     Helvetica, Arial, sans-serif;
+$standard:                    Helvetica, Arial, sans-serif;
+
+
+
+/*
+ Colors
+*/
+
+$plugin-overlay:              rgba(43, 46, 56, 0.9);
+
+$brand-primary:               #0a7562;
+$brand-primary-darker:        darken($brand-primary, 10);
+$brand-primary-lighter:       lighten($brand-primary, 40);
+$brand-primary-rgba:          rgba(10, 117, 98, 0.9);
+
+$brand-secondary:             #f50506; 
+$brand-secondary-darker:      darken($brand-secondary, 10);
+$brand-secondary-lighter:     lighten($brand-secondary, 40);
+$brand-secondary-rgba:        rgba(245, 5, 6, 0.9);
+
+$brand-tertiary:              #363636; 
+$brand-tertiary-darker:       darken($brand-tertiary, 10);
+$brand-tertiary-lighter:      lighten($brand-tertiary, 40);
+
+$brand-black:                 #000000; 
+$brand-black-20:              lighten($brand-black, 20);
+$brand-black-40:              lighten($brand-black, 40);
+$brand-black-60:              lighten($brand-black, 60);
+$brand-black-80:              lighten($brand-black, 80);
+
+$brand-white:                 #FFFFFF;
+$brand-white-darker:          darken($brand-white, 10);
+$brand-white-lighter:         lighten($brand-white, 40);
+
+
+$default_font_color:          $brand-tertiary;
+$default_font_weight:         normal;
+
+$font-size-base:              15px;
+$font-size-h1:                floor(($font-size-base * 2.6)); // ~36px
+$font-size-h2:                floor(($font-size-base * 2.15)); // ~30px
+$font-size-h3:                ceil(($font-size-base * 1.7)); // ~24px
+$font-size-h4:                ceil(($font-size-base * 1.25)); // ~18px
+$font-size-h5:                $font-size-base;
+$font-size-h6:                ceil(($font-size-base * 0.85)); // ~12px
+
+//** Unit-less `line-height` for use in components like buttons.
+$line-height-base:            1.428571429; // 20/14
+//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
+$line-height-computed:        floor(($font-size-base * $line-height-base)); // ~20px
+//** By default, this inherits from the `<body>`.
+
+$headings-font-family:        inherit !default;
+$headings-font-weight:        500 !default;
+$headings-line-height:        1.1 !default;
+$headings-color:              inherit !default;
+
+/* Cubic Bezier Easing Functions */
+$easeIn:                      cubic-bezier(.42, 0, 1, 1);
+$easeOut:                     cubic-bezier(0, 0, .58, 1);
+$ease:                        cubic-bezier(.25, .1, .25, 1);
+$easeInOut:                   cubic-bezier(.42, 0, .58, 1);
+$easeLinear:                  cubic-bezier(0, 0, 1, 1);
+
+/* Plugin Overrides */
+$slick-font-family:           $paragraph;
+$reptilehausloader:           "../images/loading-spinners/loading-spin.svg";
+$fontawesome_path:            "/fonts/font-awesome";
+$fontawesome_version:         "4.7.0";
+
+/* Grid Variables */
+$reptilehaus-namespace:       '';
+$reptilehaus-site-wrap-width: 1280px;
+$reptilehaus-spacing-unit:    20px;
+$reptilehaus-base-font-size:  16px;
+$reptilehaus-breakpoints:     ( xs: 320px, galaxyS5: 360px, nexus5X:412px, iphone6:375px,  iphone6P: 414px, sm: 767px, md: 970px, lg: 1280px, custom: 1225px);
+
+/*
+ Placeholders
+*/
+
+// %transition {
+//     @include vendor-prefix(transition, all 350ms ease);
+// }
+
+// %button_one {
+//     @include vendor-prefix(border-radius, 7px);
+//     @extend %transition;
+//     @include vendor-prefix(background-clip, padding);
+// }

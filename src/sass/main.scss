@@ -1,0 +1,128 @@
+/*
+    REPTILEHAUS HELPERS, MIXINS und VARIABLES
+*/
+
+
+
+@import "../../bower_components/jeet/scss/index";
+//@import 'common/fonts';
+@import 'common/mixins';
+@import 'common/variables';
+@import 'common/spritesheets';
+@import 'common/helpers';
+// JEET Framework
+
+
+@import 'boa-sass/main';
+
+/*
+    Plugins und Libraries
+*/
+
+// @import 'custom/slick/plugin.slick'; //slick 
+// @import 'custom/remodal/plugin.remodal'; // remodal
+// @import 'custom/lity/plugin.lity'; // lity
+// @import 'custom/fancybox/plugin.fancybox'; // fancybox
+// @import 'custom/animate-sass/plugin.animate-sass'; // Animate CSS
+ @import 'custom/font-awesome-sass/plugin.font-awesome'; // Font Awesome SASS
+
+/*
+    Components
+*/
+
+@import 'components/components.blocks';
+@import 'components/components.navigation';
+@import 'components/components.footer';
+@import 'components/components.slider';
+@import 'components/components.search';
+
+
+
+
+
+
+.o-site-wrap {
+    @include boa-respond('sm') {
+        width: 750px;
+    }
+    @include boa-respond('md') {
+        width: 970px;
+    }   
+    @include boa-respond('lg') {
+       //  width: 1365px;
+       width: 1225px
+    }           
+}
+
+a.u-click {
+    color: blueviolet;
+}
+
+
+
+body {
+    background: #f4f4f4;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* BEGIN iMac Custom Breakpoint for projects (portrait and landscape)  */
+
+@media only screen and (max-width: 3600px) and (min-width: 2100px) {}
+
+
+/* BEGIN iPads (portrait and landscape)  */
+
+@media only screen and (max-width: 1024px) and (min-width: 768px) {}
+
+
+/* END iPads (portrait and landscape)  */
+
+
+/* BEGIN iPads (portrait and landscape)  */
+
+@media only screen and (max-width: 1024px) {}
+
+
+/* BEGIN  iPads (landscape)  */
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {}
+
+
+/* END  iPads (landscape)  */
+
+
+/* BEGIN iPads (portrait) */
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {}
+
+
+/* END iPads (portrait)  */
+
+
+/* BEGIN iPhone 4  */
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {}
+
+
+/* END iPhone 4  */
+
+
+/* BEGIN GENERAL MOBILE DEVICES  */
+
+@media only screen and (max-width: 767px) {}
+
+
+/* END GENERAL MOBILE DEVICES  */

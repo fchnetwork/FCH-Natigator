@@ -1,0 +1,3 @@
+@if $reptilehaus-use-width-offsets {
+  @include reptilehaus-offsets('width', $reptilehaus-offset-fractions);
+}

@@ -1,0 +1,25 @@
+<div class="o-lang" aria-invalid="false" 
+     (click)="openLangOptions()" 
+     [class.o-lang--active]="isOptionsActive">
+     
+    <div class="o-lang__select o-lang--expanded">
+      
+      <ul class="o-lang__select--list u-selected">
+          <li class="o-lang__item o-lang__{{activeLanguage}}">
+              {{ activeLanguage }}
+          </li>
+      </ul>
+      
+      <ul class="o-lang__select--list u-options">
+          <li *ngFor="let l of languages" class="o-lang__item o-lang__{{ l.lang }}" 
+              (click)="changeLang($event.target.innerText)" 
+              [ngClass]="{ activelang : l.lang == activeLanguage }">
+                {{ l.lang }}
+          </li>
+      </ul>
+      
+    </div>
+    
+</div>
+
+

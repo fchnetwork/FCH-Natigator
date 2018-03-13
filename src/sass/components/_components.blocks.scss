@@ -1,0 +1,170 @@
+.spin-loader {
+    @include loader( 100px, 40%);
+}
+
+.brand-primary {
+    background-color: $brand-primary;
+} //orange
+.brand-secondary {
+    background-color: $brand-secondary;
+} //yellow
+.brand-tertiary {
+    background-color: $brand-tertiary;
+} //grey
+.brand-black {
+    background-color: $brand-black;
+} //grey
+.brand-white {
+    background-color: $brand-white;
+} //grey
+.brand-primary-color {
+    color: $brand-primary;
+} //orange
+.brand-secondary-color {
+    color: $brand-secondary;
+} //yellow
+.brand-tertiary-color {
+    color: $brand-tertiary;
+} //grey
+.brand-black-color {
+    color: $brand-black;
+} //grey
+.brand-white-color {
+    color: $brand-white;
+} //grey
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: $heading;
+}
+
+h1 {
+    font-size: $font-size-h1;
+    line-height: floor(($font-size-h1 * $line-height-base));
+}
+
+h2 {
+    font-size: $font-size-h2;
+    line-height: floor(($font-size-h2 * $line-height-base));
+}
+
+h3 {
+    font-size: $font-size-h3;
+    line-height: floor(($font-size-h3 * $line-height-base));
+}
+
+h4 {
+    font-size: $font-size-h4;
+    line-height: floor(($font-size-h4 * $line-height-base));
+}
+
+h5 {
+    font-size: $font-size-h5;
+    line-height: floor(($font-size-h5 * $line-height-base));
+}
+
+h6 {
+    font-size: $font-size-h6;
+    line-height: floor(($font-size-h6 * $line-height-base));
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    @include placeholder {
+        color: $brand-tertiary;
+        font-size: $font-size-base;
+        line-height: 24px;
+    }
+}
+
+.patternlab-animate {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #eeeeee;
+    color: #000000;
+    &:hover {
+        background-color: #777777;
+        color: #fefefe;
+    }
+    &.easeIn {
+        &:hover {
+            @include vendor-prefix('transition', all .50s $easeIn);
+        }
+        @include vendor-prefix('transition', all .50s $easeIn);
+    }
+    &.easeOut {
+        &:hover {
+            @include vendor-prefix('transition', all .50s $easeOut);
+        }
+        @include vendor-prefix('transition', all .50s $easeOut);
+    }
+    &.ease {
+        &:hover {
+            @include vendor-prefix('transition', all .50s $ease);
+        }
+        @include vendor-prefix('transition', all .50s $ease);
+    }
+    &.easeInOut {
+        &:hover {
+            @include vendor-prefix('transition', all .50s $easeInOut);
+        }
+        @include vendor-prefix('transition', all .50s $easeInOut);
+    }
+    &.easeLinear {
+        &:hover {
+            @include vendor-prefix('transition', all .50s $easeLinear);
+        }
+        @include vendor-prefix('transition', all .50s $easeLinear);
+    }
+}
+
+/// loader 
+// .c-loading {
+//     background: url($slick-loader-path) no-repeat;
+//     height: 100px;
+//     width: 100px;
+//     background-size: cover;
+//     background-position: center center;
+// }
+
+.font-awesome-glass {
+    @include icon-before($icon-glass, 0);
+}
+
+.font-awesome-headphones {
+    @include icon-before($icon-headphones, 0);
+}
+
+.font-awesome-plane {
+    @include icon-before($icon-plane, 0);
+}
+
+ul.c-masonry {
+    li.c-masonry__grid-item {
+        float: left;
+        width: 300px;
+        height: 300px;
+        overflow: hidden;
+        &:nth-of-type(odd) {
+            background-color: $brand-primary;
+        }
+        &:nth-of-type(even) {
+            background-color: $brand-secondary;
+        }
+    }
+}
+
+.mix {
+    &:nth-of-type(even) {
+        background-color: $brand-primary;
+    }
+    &:nth-of-type(odd) {
+        background-color: $brand-secondary;
+    }
+}

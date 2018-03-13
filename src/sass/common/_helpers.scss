@@ -1,0 +1,251 @@
+
+
+// * {
+//     -webkit-backface-visibility: hidden;
+//     backface-visibility: hidden;
+//     -webkit-font-smoothing: antialiased;
+//     -moz-osx-font-smoothing: grayscale;
+//     -webkit-text-size-adjust: 100%;
+//     -ms-text-size-adjust: 100%;
+//     image-rendering: optimizeQuality;
+//     -webkit-font-smoothing: antialiased;
+//     -ms-interpolation-mode: nearest-neighbor;
+// }
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    image-rendering: optimizeQuality;
+    -ms-interpolation-mode: nearest-neighbor;    
+    -webkit-overflow-scrolling: touch;
+    -webkit-font-feature-settings: 'kern'; 
+    font-feature-settings: 'kern'; 
+    -webkit-font-kerning: normal;
+    font-kerning: normal; 
+    -webkit-font-variant-ligatures: common-ligatures;
+    font-variant-ligatures: common-ligatures; 
+    overflow-x: hidden; 
+    overflow-y: scroll; 
+    text-rendering: optimizeLegibility;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: transparent;    
+}
+
+
+
+
+img {
+    -ms-interpolation-mode: bicubic;
+}
+
+#wpadminbar #wp-admin-bar-wp-logo>.ab-item {
+    display: none;
+}
+
+#page_template {
+    background: #2c3e50;
+    color: #f4f4f4;
+    text-align: center;
+    font: normal 15px/36px sans-serif;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    letter-spacing: 2px;
+    z-index: 999999999999999999999;
+}
+
+#wpadminbar #wp-admin-bar-my-account.with-avatar #wp-admin-bar-user-actions>li {
+    margin: 0!important;
+    padding: 0 !important;
+}
+
+#wpadminbar ul li#wp-admin-bar-pattern-lab.pattern-lab,
+#wpadminbar ul li#wp-admin-bar-pattern-lab.pattern-lab>* {
+    $ptlred: #e74c3c;
+    background: $ptlred!important;
+    border: 0;
+    padding: 0 15px;
+    color: #FFFFFF!important;
+}
+
+
+/* Hide GOOGLE Maps logos */
+
+a[href^="http://maps.google.com/maps"] {
+    display: none !important
+}
+
+a[href^="https://maps.google.com/maps"] {
+    display: none !important
+}
+
+a[title="Report problems with Street View imagery to Google"] {
+    display: none !important
+}
+
+.gmnoprint a,
+.gmnoprint span,
+.gm-style-cc {
+    display: none;
+}
+
+.gmnoprint div {
+    background: none !important;
+}
+
+.upper {
+    text-transform: uppercase;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.center {
+    margin: 0 auto;
+}
+
+.left {
+    margin: 0 auto 0 0;
+}
+
+.right {
+    margin: 0 0 0 auto;
+}
+
+.list-reset {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.nopadding {
+    padding: 0;
+}
+
+.nopadding-top {
+    padding-top: 0;
+}
+
+.nopadding-bottom {
+    padding-bottom: 0;
+}
+
+.relative {
+    position: relative;
+}
+
+.c-table {
+    display: table;
+    width: 100%;
+    height: 100%;
+    
+    &--fixie {
+        table-layout: fixed;
+    }
+    
+    &--row {
+        display: table-row;
+    }
+    &--cell {
+        vertical-align: middle;
+        display: table-cell;
+    }
+    &.u-align-top {
+        .c-table--cell {
+            vertical-align: top;
+        }
+    }
+}
+
+
+
+.c-demo {
+    padding: 1rem;
+    background: #222;
+    color: #fff;
+}
+
+
+.u-cfix {
+    @include clearfix();
+}
+
+a[href^="tel"],
+a[href^="fax"],
+a[href^="mailto"] {
+    color:inherit!important;
+    text-decoration:none!important;
+}
+
+iframe[name="google_conversion_frame"] {
+  height: 0;
+  clip: rect(0, 0, 0, 0);
+  visibility: hidden;
+  position: absolute;
+}
+
+.u-dont-let-hyphens-go-to-newline {
+  word-break: break-all;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  hyphens: none;   
+}
+
+
+.c-ratio {
+    padding-top: 45%;
+    position: absolute;
+    left: -20000px;
+    top: 0;
+    width: 100%;
+}
+
+
+
+.lity,
+.remodal-overlay,
+.fancybox-overlay {
+    // background: #0b0b0b;
+    background: $plugin-overlay!important;
+}
+
+
+.o-section {
+    padding: 50px 0;
+}
+
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.u-bw {
+    word-wrap: break-word;
+}

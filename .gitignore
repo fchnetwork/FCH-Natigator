@@ -30,7 +30,7 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
+bower_components
 # misc
 /.sass-cache
 /connect.lock

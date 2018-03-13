@@ -1,0 +1,14 @@
+@mixin reptilehaus-hidden() {
+  @each $bp-key, $bp-value in $reptilehaus-breakpoints {
+    @include boa-respond($bp-key) {
+      .u-hidden\@#{$bp-key} {
+        display: none !important;
+      }
+    }
+    @include boa-respond('max-#{$bp-key}') {
+      .u-hidden\@max-#{$bp-key} {
+        display: none !important;
+      }
+    }
+  }
+}
