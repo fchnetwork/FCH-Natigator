@@ -7,8 +7,15 @@
 
 pipelines:
   default:
+    # - step: 
+    #       - npm install
+    #       -  
     - step:
         script:
           # - npm install
           # - ng build --prod
-          - tar -czvf ./dist.tar.gz ./src/
+          - tar -czvf ./dist.tar.gz ./src/ 
+          - ls -la
+          - cat ~/.ssh/config
+          - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/ 
+          - ssh -p 22 root@dev.aerum.net "tar -xzvf /root/dist.tar.gz && ls -la" 
