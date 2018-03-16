@@ -6,16 +6,26 @@
 # image: atlassian/default-image:latest
 
 pipelines:
-  default:
-    # - step: 
-    #       - npm install
-    #       -  
+  default: 
     - step:
+        name: Install Deps and Build
         script:
-          # - npm install
-          # - ng build --prod
-          - tar -czvf ./dist.tar.gz ./src/ 
-          - ls -la
-          - cat ~/.ssh/config
+          - bower install --allow-root
+          - npm run-script build --prod
+        artifacts:
+          - dist/**          
+    - step:
+        name: Tarball the project
+        script:
+          - tar -czvf ./dist.tar.gz ./dist
+        artifacts:
+          - ./dist.tar.gz  
+    - step:
+        name: Transfer to the server
+        script:
           - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/ 
+    - step:
+        name: Unzip folder on remote dev server
+        script:
           - ssh -p 22 root@dev.aerum.net "tar -xzvf /root/dist.tar.gz && ls -la" 
+                                              
