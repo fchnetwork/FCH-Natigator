@@ -17,6 +17,7 @@ pipelines:
           - tar -czvf ./dist.tar.gz ./src/ 
     - step:
         script: 
+          - ls -la
           - cat ~/.ssh/config
           - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/ 
     - step:
