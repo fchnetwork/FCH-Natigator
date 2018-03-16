@@ -10,6 +10,7 @@ pipelines:
     - step:
         name: Install Deps and Build
         script:
+          - npm install
           - bower install --allow-root
           - npm run-script build --prod
         artifacts:
