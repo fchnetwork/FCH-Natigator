@@ -17,9 +17,7 @@ pipelines:
           - tar -czvf ./dist.tar.gz ./src/ 
     - step:
         script: 
-          - eval `ssh-agent -s`
-          - ssh-add ~/.ssh/id_rsa
-          - ssh-add -l
+          - cat ~/.ssh/config
           - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/ 
     - step:
           script: 
