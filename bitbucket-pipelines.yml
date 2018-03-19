@@ -23,12 +23,12 @@ pipelines:
         script: 
           - tar -czvf ./dist.tar.gz ./build/dist
         artifacts:
-          - build/**  
+          - dist.tar.gz  
     - step:
         name: Transfer to the server
         script:
           - apt-get update && apt-get install -y rsync
-          - rsync -rvz -e 'ssh' --progress ./build/dist.tar.gz root@dev.aerum.net:~/ 
+          - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/ 
     - step:
         name: Unzip folder on remote dev server
         script:
