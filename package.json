@@ -11,7 +11,8 @@
     "e2e": "protractor ./protractor.conf.js",
     "build": "webpack",
     "test": "karma start ./karma.conf.js",
-    "pree2e": "webdriver-manager update --standalone false --gecko false --quiet"
+    "pree2e": "webdriver-manager update --standalone false --gecko false --quiet",
+    "bower": "bower install --allow-root"
   },
   "private": true,
   "dependencies": {
@@ -86,6 +87,7 @@
     "url-loader": "^0.6.2",
     "circular-dependency-plugin": "^4.2.1",
     "copy-webpack-plugin": "^4.1.1",
-    "uglifyjs-webpack-plugin": "^1.1.5"
+    "uglifyjs-webpack-plugin": "^1.1.5",
+    "bower": "^1.8.2"
   }
 }

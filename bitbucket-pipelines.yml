@@ -5,17 +5,32 @@
 # You can specify a custom docker image from Docker Hub as your build environment.
 # image: atlassian/default-image:latest
 
+image: node:8.10.0
 pipelines:
-  default:
-    # - step: 
-    #       - npm install
-    #       -  
+  default: 
     - step:
+        name: Install Deps and Build
+        caches:
+          - node
         script:
-          # - npm install
-          # - ng build --prod
-          - tar -czvf ./dist.tar.gz ./src/ 
-          - ls -la
-          - cat ~/.ssh/config
+          - npm install
+          - npm run-script bower
+          - npm run-script build --prod 
+        artifacts:
+          - build/**          
+    - step:
+        name: Tarball the project
+        script: 
+          - tar -czvf ./dist.tar.gz ./build/dist
+        artifacts:
+          - dist.tar.gz  
+    - step:
+        name: Transfer to the server
+        script:
+          - apt-get update && apt-get install -y rsync
           - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/ 
+    - step:
+        name: Unzip folder on remote dev server
+        script:
           - ssh -p 22 root@dev.aerum.net "tar -xzvf /root/dist.tar.gz && ls -la" 
+                                              
