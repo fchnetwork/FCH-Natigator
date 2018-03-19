@@ -17,7 +17,7 @@ pipelines:
           - npm run-script bower
           - npm run-script build --prod
         artifacts:
-          - dist/**          
+          - ./dist/**          
     - step:
         name: Tarball the project
         script:
