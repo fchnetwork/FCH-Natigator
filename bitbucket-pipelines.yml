@@ -18,7 +18,7 @@ pipelines:
           - npm run-script build --prod
           - ls -la
         artifacts:
-          - ./build/dist/**          
+          - build/**          
     - step:
         name: Tarball the project
         script:
