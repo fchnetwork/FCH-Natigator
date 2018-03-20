@@ -15,18 +15,19 @@ pipelines:
         script:
           - npm install
           - npm run-script bower
-          - npm run-script build --prod
+          - npm run-script build --prod 
         artifacts:
-          - ./build/dist/**          
+          - build/**          
     - step:
         name: Tarball the project
-        script:
+        script: 
           - tar -czvf ./dist.tar.gz ./build/dist
         artifacts:
-          - ./dist.tar.gz  
+          - dist.tar.gz  
     - step:
         name: Transfer to the server
         script:
+          - apt-get update && apt-get install -y rsync
           - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/ 
     - step:
         name: Unzip folder on remote dev server
