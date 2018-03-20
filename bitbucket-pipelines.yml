@@ -31,5 +31,5 @@ pipelines:
     - step:
         name: Unzip folder on remote dev server
         script:
-          - ssh -p 22 root@dev.aerum.net "tar -xzvf /root/dist.tar.gz && ls -la" 
+          - ssh -p 22 root@dev.aerum.net "bash builder.sh" 
                                               
