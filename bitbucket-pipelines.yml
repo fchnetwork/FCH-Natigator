@@ -21,15 +21,15 @@ pipelines:
   branches: 
     development:    
       - step:
-        name: Install Deps and Build
-        caches:
-          - node
-        script:
-          - npm install
-          - npm run-script bower
-          - npm run-script build --prod 
-        artifacts:
-          - build/**     
+          name: Install Deps and Build
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run-script bower
+            - npm run-script build --prod 
+          artifacts:
+            - build/**     
       - step:
           name: Tarball the project
           script: 
