@@ -6,10 +6,9 @@
 # image: atlassian/default-image:latest
 
 image: node:8
-pipelines: 
-  branches:
-    feature/*:
-      - step:
+pipelines:
+  default: 
+    - step:
         name: Install Deps and Build
         caches:
           - node
@@ -19,6 +18,7 @@ pipelines:
           - npm run-script build --prod 
         artifacts:
           - build/**  
+  branches: 
     development:    
       - step:
         name: Install Deps and Build
