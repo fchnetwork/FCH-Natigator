@@ -1,27 +1,38 @@
-# AerumWeb
+# aerumWALLET
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.5.
+This project contains the WALLET (WebApp) implementation of the AERUM solution. 
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This projects contains direct dependency to the `aerumUI` framework. Since `aerumUI` is constantly updating through CI processes 
+Make syre you have the latest version. To do so, this is how you should run the dev. server: 
+
+`npm run update:ui`
+`npm run start`
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+For code scaffolding purposes you can use `ng generate`. There is, however, a more neat solution. If you install `Angular files` extension for VSCode
+you will be able to generate necessary files just by right clicking the folder and selecting desired component/module/pipe/service option. 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+As with development server, always ensure you have the latest version of `aerumUI` installed. To execute build run following commands: 
 
-## Running unit tests
+`npm run update:ui`
+`npm run build`
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## CI & Cloud Builds
 
-## Running end-to-end tests
+`aerumWALLET` has CI processes implemented through bitbucket pipelines (see `bitbucket-pipelines.yml`). General overview of how it works is:
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+* Pushing the code to server branch triggers a cloud build
+* PR from your branch to `development` branch triggers a cloud build. If the build is successfull, the build artifacts get deployed to [dev.aerum.net](http://dev.aerum.net) 
+
+## Running tests
+
+Run `npm run test` to execute `Karma` tests.To execute the end-to-end tests via [Protractor](http://www.protractortest.org/), run `npm run e2e`.
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+In case of any questions contact me @ b.ballay@asrcrypto.io or in the slack channel.
