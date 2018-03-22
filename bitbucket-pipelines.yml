@@ -25,6 +25,7 @@ pipelines:
           caches:
             - node
           script:
+            - npm run update:ui
             - npm install
             - npm run-script bower
             - npm run-script build --prod 
