@@ -90,19 +90,7 @@
         <button *ngIf="selectedItems.length === seed.length && !isEqual" (click)="newSeedConfirm()" class="c-btn">Try Again</button>
       </div>            
     </li>         
-    <button type="submit" (click)="generateAerAddress()" mat-button mat-raised-button [disabled]="!isEqual" >Continue</button>
+    <button type="submit" (click)="authenticateUser()" mat-button mat-raised-button [disabled]="!isEqual" >Continue</button>
   </ul>      
-  <ul class="o-createAccountWrapper" *ngIf="page == 'userAuthenticated'">    
-    <li>
-      <h1>User is now Authenticated</h1>                
-      <h3>AerAddresss:{{ payload.address }}</h3>   <br>
-      <h3>AerAvatar: {{  payload.avatar }}</h3>   <br>     
-      <h3>Extended Private Key: {{  payload.extendedPrivateKey  }}</h3>   <br>      
-      <h3>Extended Public Key: {{  payload.extendedPublicKey  }}</h3>   <br>                                     
-      <h3>Mneumonic Seed Phrase Used: <br> {{ payload.mnemonic  }}</h3>   <br>                               
-      <p>Address is checksummed according to <a target="_blank" href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md">EIP55 specifications</a>  and can be validated using <a target="_blank" href="https://tokenmarket.net/ethereum-address-validator">Ethereum Address Validator</a></p>                   
-      <p>Ive checked and tested some values using <a href="https://iancoleman.io/bip39/#english" target="_blank">iancoleman.io BIP39</a> test too, if testing be sure to copy the seed phrase from the console and remove all commas and dont forget to add the password "prettyGoodPa55w0rd" to the password phrase field and select Ethere as the coin... or it wont work </p>
-    </li>               
-  </ul>
 </div>
 

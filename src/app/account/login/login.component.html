@@ -1,20 +1,31 @@
-<div class="o-loginPage">
-  <div class="login o-authForm" >
-    <mat-card class="" fxFlex="500px" class="mat-elevation-z6">
-      <mat-toolbar color="primary">AerWallet</mat-toolbar>
-      <mat-card-content>
-          <h1>
-              {{ 'WELCOME' | translate }}
-          </h1>
-          <h2>{{ 'BACK_BUTTON_TEXT' | translate }}h</h2>
-          <p>
-              Become part of a fast-growing area of the crypto world. You are the only person who can access your crypto assets.
-          </p>
-          <div>
-              <button mat-button type="button" color="primary" [routerLink]="['/signup']">Sign up</button>
-          </div>          
-      </mat-card-content>
-    </mat-card>
-  </div>  
-</div>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="o-login o-loginForm" >
+    <div class="o-loginForm__seedBlock">
+        <div class="" minlength="25" required="" aria-invalid="true" aria-required="true">
+            <div class="div-wrap">
+                <textarea formControlName="seed" name="seed" placeholder="Your seed is the 15 words you saved when creating your account" minlength="25" required="" aria-invalid="true"></textarea>
+            </div>
+        </div>
+        <div class="o-loginForm__addressBlock">
+            
+            <div *ngIf="address && loginForm.valid; then showAvatar else showAvatarPlaceholder"></div>
+            <ng-template #showAvatarPlaceholder>
+                    <div  class="c-avatarPlaceholder"></div>
+            </ng-template>
+
+            <ng-template #showAvatar>
+                <div class="o-avatarWrap" style="width: 40px; height: 40px;">
+                    <img [src]="avatar" width="40" height="40">
+                </div>
+            </ng-template>
+
+            <div class="c-hdAddress">
+                <div class="c-hdAddress__header">Address</div>
+                <div [ngClass]="{ 'u-filled' : address && loginForm.valid }" class="c-hdAddress__address"><span *ngIf="address && loginForm.valid">{{ address }}</span></div>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" mat-button mat-raised-button [disabled]="!loginForm.valid" >Continue</button>
+
+</form>
 

@@ -3,6 +3,7 @@ import { LoginComponent } from './account/login/login.component'
 import { RegistrationComponent } from './account/registration/registration.component'
 import { Error404Component } from './shared/components/error404/error404.component'
 import { LandingPageComponent } from './account/landing-page/landing-page.component'
+import { CreateTransactionComponent } from './account/createTransaction/createTransaction.component'
 
 export const ROUTES = [
   {
@@ -18,6 +19,10 @@ export const ROUTES = [
       path: 'login',
       component: LoginComponent
   },
+  {
+    path: 'transaction',
+    component: CreateTransactionComponent
+},  
   {
       path: 'create',
       component: RegistrationComponent

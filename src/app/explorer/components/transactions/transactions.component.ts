@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { ExplorerService } from '../../services/explorer.service'
 import { iBlocks } from '../../../shared/app.interfaces'
 
+
+import { CookieStorage, LocalStorage, SessionStorage } from 'ngx-store';
+
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
@@ -24,6 +27,12 @@ export class TransactionsComponent implements OnInit {
                private router: Router ) { }
 
   ngOnInit() {
+    
+    
+    
+    this.exploreSrv.createAccounts()
+    
+    
       this._ngZone.run(() => { 
         this.exploreSrv.getBlock().subscribe( async res => {
           this.currentBlock = res;

@@ -4,12 +4,23 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { environment } from '../../../environments/environment';
 import {BehaviorSubject}    from 'rxjs/BehaviorSubject';
 import {Subject}    from 'rxjs/Subject';
+
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+
 //     "types": [ "node" ],
 // "typeRoots": [ "../node_modules/@types" ]
+
+// An extra module is required for this, use npm to install before running
+const Tx = require('ethereumjs-tx');
+const ethJsUtil = require('ethereumjs-util');
+
 const Web3 = require('web3');
 
 declare var window: any;
 
+
+
+  
 
 @Injectable()
 export class ExplorerService {
@@ -20,12 +31,12 @@ export class ExplorerService {
   private pongSource = new Subject<any>();
   pong$ = this.pongSource.asObservable();
   
-  
+  account: any
 
   constructor() { 
     // console.log("Web3" + Web3)
     this.checkAndInstantiateWeb3();
-  
+    this.account  = JSON.parse( Cookie.get('account') )
   }
 
   
@@ -84,6 +95,65 @@ export class ExplorerService {
   	    observer.complete()
   	  });
   	})
+  }
+
+  
+  createAccounts(): any {
+  // console.log ( JSON.parse( Cookie.get('account') ) ); 
+  // console.log ( JSON.parse( Cookie.get('encrypted') ) );   
+
+  // const accounts = JSON.parse( Cookie.get('account') )
+  
+  const privateKey =  ethJsUtil.toBuffer(this.account.privateKey)
+  const to = ethJsUtil.toChecksumAddress( "0xb0573f6b040fddf1250cdd38983f4eac06fbf3ca" ) ;
+  const from = ethJsUtil.toChecksumAddress( this.account.address);
+  const txValue = this.web3.utils.numberToHex(this.web3.utils.toWei('0.01', 'ether'));
+  const txData = this.web3.utils.asciiToHex('oh hai mark'); 
+  
+  this.web3.eth.getTransactionCount( from ).then( res => {
+
+        
+    const rawTx = {
+      nonce: '0x'+res, 
+      gasPrice: '0x14f46b0400',
+      gasLimit: '0x47b760', 
+      to: to,
+      value: txValue,
+      data: txData
+    }
+      
+    console.log(rawTx)
+    
+const tx = new Tx(rawTx);
+      tx.sign(privateKey);
+
+
+const serializedTx = tx.serialize(); // Clean things up a bit
+
+console.log(serializedTx.toString('hex')); // Log the resulting raw transaction hex for debugging if it fails to send
+
+this.web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex')) // Broadcast the transaction to the network
+.on('transactionHash',  (hash) => {
+  console.log("hash " + hash)
+})
+// .on('receipt', (receipt) => {
+// console.log("receipt " + receipt)
+// })
+// .on('confirmation', (confirmationNumber, receipt) => { 
+//   console.log("confirmation " + confirmationNumber + receipt)
+//  })
+.on('error', console.error); // If a out of gas error, the second parameter is the receipt.
+    
+    
+  })
+
+  
+
+  // const receipt = this.web3.eth.getTransactionReceipt('0x9fc76417374aa880d4449a1f7f31ec597f00b1f6f3dd2d66f4c9c6c445836d8b')
+  // .then(console.log);
+
+
+  
   }
 
 }
