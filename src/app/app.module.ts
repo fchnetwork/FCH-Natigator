@@ -43,6 +43,8 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }
 
+import { CanActivateViaAuthGuard } from './app.guard';
+
 
 @NgModule({
   declarations: [
@@ -87,7 +89,8 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     AuthenticationService,
     ClipboardService,
-    TransactionServiceService
+    TransactionServiceService,
+    CanActivateViaAuthGuard
   ],
   bootstrap: [AppComponent]
 })

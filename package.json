@@ -44,11 +44,11 @@
     "moment": "^2.21.0",
     "ng2-cookies": "^1.0.12",
     "ng2-toastr": "^4.1.2",
-    "ngx-store": "^1.4.1",
     "rxjs": "^5.5.6",
     "soltsice": "^0.10.3",
     "truffle": "^4.0.6",
     "web3": "^1.0.0-beta.30",
+    "webpack-dev-server": "^2.11.2",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
@@ -92,7 +92,6 @@
     "typescript": "~2.5.3",
     "uglifyjs-webpack-plugin": "^1.1.5",
     "url-loader": "^0.6.2",
-    "webpack": "~3.10.0",
-    "webpack-dev-server": "^2.11.2"
+    "webpack": "~3.10.0"
   }
 }

@@ -1,31 +1,51 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="o-login o-loginForm" >
-    <div class="o-loginForm__seedBlock">
-        <div class="" minlength="25" required="" aria-invalid="true" aria-required="true">
-            <div class="div-wrap">
-                <textarea formControlName="seed" name="seed" placeholder="Your seed is the 15 words you saved when creating your account" minlength="25" required="" aria-invalid="true"></textarea>
-            </div>
-        </div>
-        <div class="o-loginForm__addressBlock">
-            
-            <div *ngIf="address && loginForm.valid; then showAvatar else showAvatarPlaceholder"></div>
-            <ng-template #showAvatarPlaceholder>
-                    <div  class="c-avatarPlaceholder"></div>
-            </ng-template>
 
-            <ng-template #showAvatar>
-                <div class="o-avatarWrap" style="width: 40px; height: 40px;">
-                    <img [src]="avatar" width="40" height="40">
+
+<div class="o-wrapper" *ngIf="step == 'step_1'">
+
+    <form [formGroup]="loginFormFindAddress" (ngSubmit)="onSubmitAddress()" class="o-login o-loginForm" >
+        <div class="o-loginForm__seedBlock">
+            <div class="" minlength="25" required="" aria-invalid="true" aria-required="true">
+                <div class="div-wrap">
+                    <textarea formControlName="seed" name="seed" placeholder="Your seed is the 15 words you saved when creating your account" minlength="25" required="" aria-invalid="true"></textarea>
                 </div>
-            </ng-template>
-
-            <div class="c-hdAddress">
-                <div class="c-hdAddress__header">Address</div>
-                <div [ngClass]="{ 'u-filled' : address && loginForm.valid }" class="c-hdAddress__address"><span *ngIf="address && loginForm.valid">{{ address }}</span></div>
+            </div>
+            <div class="o-loginForm__addressBlock">
+                
+                <div *ngIf="address && loginFormFindAddress.valid; then showAvatar else showAvatarPlaceholder"></div>
+                <ng-template #showAvatarPlaceholder>
+                        <div  class="c-avatarPlaceholder"></div>
+                </ng-template>
+    
+                <ng-template #showAvatar>
+                    <div class="o-avatarWrap" style="width: 40px; height: 40px;">
+                        <img [src]="avatar" width="40" height="40">
+                    </div>
+                </ng-template>
+    
+                <div class="c-hdAddress">
+                    <div class="c-hdAddress__header">Address</div>
+                    <div [ngClass]="{ 'u-filled' : address && loginFormFindAddress.valid }" class="c-hdAddress__address"><span *ngIf="address && loginFormFindAddress.valid">{{ address }}</span></div>
+                </div>
             </div>
         </div>
-    </div>
+        <button type="submit" mat-button mat-raised-button [disabled]="!loginFormFindAddress.valid" >Continue</button>
+    </form>
 
-    <button type="submit" mat-button mat-raised-button [disabled]="!loginForm.valid" >Continue</button>
+</div>
 
-</form>
 
+
+<div class="o-wrapper" *ngIf="step == 'step_2'">
+{{ address }}
+ <form [formGroup]="loginFormGetKey" (ngSubmit)="onSubmitPassword()">
+    <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
+    <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">
+    <span *ngIf="loginFormGetKey.controls['password'].hasError('required') && loginFormGetKey.controls['password'].touched" class="login-error">You must include a password.</span>
+    <span *ngIf="loginFormGetKey.controls['password'].hasError('minlength') && loginFormGetKey.controls['password'].touched" class="login-error">Your password must be at least 10 characters long.</span>   
+    <span *ngIf="loginFormGetKey.controls['password'].hasError('upper') && loginFormGetKey.controls['password'].touched" class="login-error">upper error</span>          
+    <span *ngIf="loginFormGetKey.controls['password'].hasError('lower') && loginFormGetKey.controls['password'].touched" class="login-error">lower error</span> 
+    <span *ngIf="loginFormGetKey.controls['password'].hasError('number') && loginFormGetKey.controls['password'].touched" class="login-error">number error</span>                                                 
+    <span *ngIf="loginFormGetKey.controls['confirmpassword'].hasError('notEquivalent') && loginFormGetKey.controls['confirmpassword'].touched && !loginFormGetKey.controls['confirmpassword'].pristine" class="login-error">Confirm Password Does not match</span>        
+    <button type="submit" mat-button mat-raised-button [disabled]="!loginFormGetKey.valid" >Continue</button>
+  </form>
+</div>

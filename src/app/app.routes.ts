@@ -4,6 +4,7 @@ import { RegistrationComponent } from './account/registration/registration.compo
 import { Error404Component } from './shared/components/error404/error404.component'
 import { LandingPageComponent } from './account/landing-page/landing-page.component'
 import { CreateTransactionComponent } from './account/createTransaction/createTransaction.component'
+import { CanActivateViaAuthGuard } from './app.guard';
 
 export const ROUTES = [
   {
@@ -21,7 +22,8 @@ export const ROUTES = [
   },
   {
     path: 'transaction',
-    component: CreateTransactionComponent
+    component: CreateTransactionComponent,
+    canActivate: [CanActivateViaAuthGuard]
 },  
   {
       path: 'create',

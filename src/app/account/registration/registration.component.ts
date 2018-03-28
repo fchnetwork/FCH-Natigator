@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, Inject, ChangeDetectorRef, ElementRef, OnChanges, ViewChild, ChangeDetectionStrategy, ViewContainerRef  } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, Inject, ChangeDetectorRef, ElementRef, OnChanges, ViewChild, ChangeDetectionStrategy, ViewContainerRef  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 import { testAccount } from '../../shared/helpers/data.mock';
@@ -8,10 +8,10 @@ import { MatDialog } from '@angular/material';
 import { RegistrationDialog } from './registration.dialog'
 import { AuthenticationService } from '../services/authentication-service/authentication.service';
 import { selectedSeedPhrase } from '../../shared/app.interfaces'
-/// import * as bip39  from 'bip39'
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Router } from '@angular/router';  
-
+import { Subject } from 'rxjs/Subject'
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
 // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,11 +21,13 @@ styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent implements OnInit, OnChanges {
 
+  componentDestroyed$: Subject<boolean> = new Subject()
+
 	activeAvatar: number = 1; // default activeAvatar selected
 
 	form: FormGroup; 
 
-	page: string = 'create';  // default page to show
+	step: string = 'step_1';  // default page to show
 
 	testAccount: any = testAccount;
 
@@ -68,9 +70,6 @@ export class RegistrationComponent implements OnInit, OnChanges {
 				 private router: Router,
 				 public dialog: MatDialog ) {
 				 this.toastr.setRootViewContainerRef(vcr);
-				// this.authServ.unencrypt()
-
-
 				}
 
   // Opens a modal with information about the users seed - when closed it executes openBackupSeed() which forwards to the next step
@@ -80,7 +79,7 @@ export class RegistrationComponent implements OnInit, OnChanges {
 			panelClass:"o-modal-panel",
 			backdropClass: "backdrop",
 		});
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().takeUntil( this.componentDestroyed$ ).subscribe(result => {
 			if( result ){
 				this.openBackupSeed()
 			}
@@ -89,7 +88,7 @@ export class RegistrationComponent implements OnInit, OnChanges {
 
   //  When executed forwards to the next step 
 	openBackupSeed(){
-		this.page = "backupSeed"
+		this.step = "step_3"
 	}
 
   //  If the Password form has a valid password it sets the payload with the selected password,  user avatar and Mneumonic seed generated ready to post to the auth API    
@@ -112,24 +111,24 @@ export class RegistrationComponent implements OnInit, OnChanges {
 		console.log( this.payload.mnemonic )
 		
 	this.newSeedConfirm();
-			this.page = "backupLanding"
+			this.step = "step_2"
 		}
 	}
 
   //  Opens the Seed Information Dialog above    
-	backupSeedPhrase(){
+	proceedStep3(){
 		this.openDialog()
 	}
 
   //  When executed forwards to the next step    
-	confirmSeedPhrase() {
-		this.page= "ConfirmSeed"
+	proceedStep4() {
+		this.step = "step_4"
 	}    
 
 	
 	// user has ccreated an account, now encrypt the private key and save to a cookie for use on the transactions page
 	authenticateUser() { 
-		this.backupKeystore = this.authServ.saveKeyStore( this.payload.private, this.payload.password )		
+		this.authServ.saveKeyStore( this.payload.private, this.payload.password )		
   	this.router.navigate(['/transaction']);
 	}
 
@@ -243,6 +242,12 @@ export class RegistrationComponent implements OnInit, OnChanges {
 	showError() {
 		this.toastr.error('There was a problem copying seed phrase', 'Oops!');
 	}
+
+	ngOnDestroy() {
+		this.componentDestroyed$.next(true);
+		this.componentDestroyed$.complete();
+	}
+
 
 }
 

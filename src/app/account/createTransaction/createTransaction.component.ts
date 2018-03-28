@@ -29,7 +29,9 @@ export class CreateTransactionComponent implements OnInit {
   ngOnInit() { }
 
   showKeyStore() {
-    this.backupKeystore =	this.authServ.showKeystore()
+    this.authServ.showKeystore().then( v => {
+      this.backupKeystore =	v
+    })
   }
   
   showDecryptedKeyStore() {

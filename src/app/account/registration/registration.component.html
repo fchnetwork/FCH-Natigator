@@ -1,5 +1,5 @@
 <div class="o-createAccountPage">
-  <ul class="o-createAccountWrapper" *ngIf="page == 'create'">       
+  <ul class="o-createAccountWrapper" *ngIf="step == 'step_1'">       
     <li>
     <h1>Create New Account</h1>
       <p>Sign up for a free account below or restore an account from a backup</p>              
@@ -26,7 +26,7 @@
     <a>Sign in to a saved account</a> 
     </li>
   </ul>
-  <ul class="o-createAccountWrapper" *ngIf="page == 'backupLanding'">      
+  <ul class="o-createAccountWrapper" *ngIf="step == 'step_2'">      
     <li>
       <h1>No Backup, No Money</h1>
     </li>
@@ -34,14 +34,14 @@
       <p>must save the secret phrase. It is crucial for accessing your account.</p>
     </li>
     <li>
-      <button mat-button mat-raised-button (click)="backupSeedPhrase()" type="submit">Backup Now</button>
+      <button mat-button mat-raised-button (click)="proceedStep3()" type="submit">Backup Now</button>
     </li>    
     <li>Or</li>            
     <li>
       <a>Do it later</a>
     </li>       
   </ul>
-  <ul class="o-createAccountWrapper" *ngIf="page == 'backupSeed'">
+  <ul class="o-createAccountWrapper" *ngIf="step == 'step_3'">
     <li>
       <h1>Save backup phrase</h1>
     </li>
@@ -66,14 +66,14 @@
       </div>  
     </li>      
     <li>
-      <button mat-button mat-raised-button type="submit" (click)="confirmSeedPhrase()">I've written it down</button>
+      <button mat-button mat-raised-button type="submit" (click)="proceedStep4()">I've written it down</button>
     </li>    
     <li>Or</li>            
     <li>
       <a >Do it later</a>
     </li>       
   </ul>  
-  <ul class="o-createAccountWrapper" *ngIf="page == 'ConfirmSeed'">    
+  <ul class="o-createAccountWrapper" *ngIf="step == 'step_4'">    
     <li>SEED CONFIRM GOES HERE</li>
     <li>
       <div class="c-seedContainer u-displayOnly c-seedContainer__dynamic">

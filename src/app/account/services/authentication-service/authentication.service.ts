@@ -103,13 +103,44 @@ avatarsGenerator() {
 saveKeyStore(privateKey, Password){
     const encryptAccount = this.web3.eth.accounts.encrypt( privateKey, Password);
     Cookie.set('aerum_keyStore', JSON.stringify(encryptAccount) );
-    console.log(JSON.stringify( encryptAccount ))
+    // console.log(JSON.stringify( encryptAccount ))
     return encryptAccount
 }         
 
-showKeystore(){
-    return JSON.parse( Cookie.get('aerum_keyStore') );
+
+
+
+
+public showKeystore() : Promise<any> {
+    return new Promise( (resolve, reject) => {
+        const Auth = Cookie.get('aerum_keyStore')
+          if(Auth) {
+            resolve( JSON.parse( Auth ) )
+        } else {
+            reject("no keystore found");
+        }
+    });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // retrieve Private key using keystore auth cookie
 // will need to allow uploading this json also
 unencryptKeystore(password){
@@ -131,18 +162,31 @@ public generateAddressLogin( seed: any ) : Promise<any> {
 
         avatars.config({ rows: 8, cells: 8 });
 
-        const mnemonicToSeed     = bip39.mnemonicToSeed( seed )
+        // const mnemonicToSeed     = bip39.mnemonicToSeed( seed )
+        // const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
+        // const privExtend         = hdwallet.privateExtendedKey();
+        // const pubExtend          = hdwallet.publicExtendedKey();      
+        // const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet();
+        // const getAddress         = wallet.getAddress().toString("hex")
+        // const getChecksumAddress = ethUtil.toChecksumAddress( getAddress )
+        // const address            = ethUtil.addHexPrefix( getChecksumAddress )
+
+    
+        const newSeed            = bip39.generateMnemonic()
+        const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed )
         const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
         const privExtend         = hdwallet.privateExtendedKey();
         const pubExtend          = hdwallet.publicExtendedKey();      
-        const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet();
+        const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet(); // use the ethereumjs lib now
         const getAddress         = wallet.getAddress().toString("hex")
+        const getPriv            = wallet.getPrivateKeyString().toString("hex")
+        const getPublic          = wallet.getPublicKeyString().toString("hex")        
         const getChecksumAddress = ethUtil.toChecksumAddress( getAddress )
         const address            = ethUtil.addHexPrefix( getChecksumAddress )
         const avatar = avatars.create( address, { size: 67 * 3, bgColor: "#ffffff" }) 
-        
+
         if(address) {
-            resolve({ address: address, avatar: avatar })
+            resolve({ address: address, avatar: avatar, private:getPriv })
         } else {
             reject({ error: "issue with address generation" });
         }
