@@ -123,31 +123,22 @@ public showKeystore() : Promise<any> {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // retrieve Private key using keystore auth cookie
 // will need to allow uploading this json also
-unencryptKeystore(password){
-   const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
-    console.log("keystore ", encryptAccount)
-    return encryptAccount
+public unencryptKeystore( password ) : Promise<any> {
+    return new Promise( (resolve, reject) => {
+        const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
+          if(encryptAccount) {
+            resolve( encryptAccount  )
+        } else {
+            reject("no keystore found or password incorrect");
+        }
+    });
 }
+
+
+
+
 
 
 
@@ -161,17 +152,7 @@ public generateAddressLogin( seed: any ) : Promise<any> {
     return new Promise( (resolve, reject) => {
 
         avatars.config({ rows: 8, cells: 8 });
-
-        // const mnemonicToSeed     = bip39.mnemonicToSeed( seed )
-        // const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
-        // const privExtend         = hdwallet.privateExtendedKey();
-        // const pubExtend          = hdwallet.publicExtendedKey();      
-        // const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet();
-        // const getAddress         = wallet.getAddress().toString("hex")
-        // const getChecksumAddress = ethUtil.toChecksumAddress( getAddress )
-        // const address            = ethUtil.addHexPrefix( getChecksumAddress )
-
-    
+   
         const newSeed            = bip39.generateMnemonic()
         const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed )
         const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
