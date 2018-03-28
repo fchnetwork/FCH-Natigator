@@ -49,8 +49,8 @@ export class AvatarSelectComponent implements ControlValueAccessor, OnInit {
 
     this._value = this.avatars[0]
 
-console.log("values "+  this.avatars[0])
-    console.log( JSON.stringify( this.avatars) )
+  // console.log("values "+  this.avatars[0])
+    // console.log( JSON.stringify( this.avatars) )
   }
 
   registerOnChange(fn) {

@@ -17,6 +17,7 @@ import { AvatarSelectComponent } from './account/components/avatar-select/avatar
 // Services 
 import { AuthenticationService } from './account/services/authentication-service/authentication.service'
 import { ClipboardService } from './account/services/clipboard-service/clipboard.service';
+import { TransactionServiceService } from './account/services/transaction-service/transaction-service.service';
 
 // Directives
 import { ClipboardDirective } from './account/directives/clipboard-directive/clipboard.directive';
@@ -35,6 +36,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { CreateTransactionComponent } from './account/createTransaction/createTransaction.component'
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -50,7 +52,8 @@ export function createTranslateLoader(http: HttpClient) {
     LandingPageComponent,
     AvatarSelectComponent,
     ClipboardDirective,
-    RegistrationDialog
+    RegistrationDialog,
+    CreateTransactionComponent
   ], 
   entryComponents: [
     RegistrationDialog
@@ -83,7 +86,8 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   providers: [
     AuthenticationService,
-    ClipboardService
+    ClipboardService,
+    TransactionServiceService
   ],
   bootstrap: [AppComponent]
 })

@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  HttpProvider: "http://52.174.153.145:8545"
+  HttpProvider: "http://52.51.85.249:8545"
 };

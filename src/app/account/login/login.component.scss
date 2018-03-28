@@ -1,14 +1,87 @@
-.o-loginPage{
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
-    align-items: center;    
-}
-.o-authForm {
-    margin: 0 auto;
-    
-}
 
-.o-form--full-width {
-    width: 100%;
+
+
+.o-loginForm {
+    width: 460px;
+    margin: 10% auto;
+
+
+    &__seedBlock {
+        border-radius: 4px;
+        border: 1px solid #dae1e9;
+        margin-bottom: 30px;
+        textarea {
+            border-radius: 4px;
+            border: 0;
+            padding: 16px;
+            min-height: 86px;
+            max-height: 150px;
+            resize: vertical;
+            height: 54px;
+            padding: 17px 16px;
+            font-size: 17px;
+            width: 100%;
+        }
+    }
+    &__addressBlock {
+        background-color: #fafafa;
+        border-top: 1px solid #dae1e9;
+        height: 76px;
+        display: flex;
+        flex-direction: row;
+        padding: 18px 14px;
+        font-size: 13px;
+        line-height: 18px;
+
+
+        img, 
+        .c-avatarPlaceholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+            background-color: #edf0f4;
+            margin-right: 10px;
+        }
+
+        .o-avatarWrap {
+            margin-right: 10px;
+        }
+
+
+
+        .c-hdAddress {
+            height: 30px;
+            position: relative;
+            top: -5px;
+           &__header {
+            font-family: 'Roboto-Regular',sans-serif;
+            font-size: 15px;
+            line-height: 20px;
+            margin: 4px 0;
+           }
+           &__address {
+            position: relative;
+            top: 3px;
+            width: 338px;
+            height: 12px;
+            color: #9ba6b2;
+            font-size: 14px;
+            line-height: 1.1;
+            border-radius: 100px;
+            background-color: #edf0f4;
+            text-transform: lowercase;
+            &.u-filled {
+                border-radius: 0px;
+                background-color: transparent;
+            }
+
+           }
+        }
+    }
+
+    button {
+        width: 100%;
+        height: 55px;
+    }
+
 }

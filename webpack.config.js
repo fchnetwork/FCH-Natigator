@@ -418,11 +418,8 @@ module.exports = {
     new CopyWebpackPlugin([
       {
         "context": "src",
-        "to": "",
-        "from": {
-          "glob": "/root/Development/aerumwallet/src/assets/**/*",
-          "dot": true
-        }
+        "from": './assets',
+        "to": "assets"
       },
       {
         "context": "src",
