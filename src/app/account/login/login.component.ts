@@ -4,7 +4,10 @@ import { AuthenticationService } from '../services/authentication-service/authen
 import { Router } from '@angular/router'
 import {TranslateService} from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject'
+<<<<<<< Updated upstream
 import { PasswordValidator } from '../../shared/helpers/validator.password';
+=======
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-login',
@@ -15,6 +18,7 @@ export class LoginComponent implements OnInit {
 
   address: string;
   avatar: string;
+<<<<<<< Updated upstream
   private: string;
   loginFormFindAddress: FormGroup; 
   loginFormGetKey: FormGroup; 
@@ -23,6 +27,11 @@ export class LoginComponent implements OnInit {
   accountPayload = { address: "", password: "" }
 
 
+=======
+  loginForm: FormGroup; 
+  componentDestroyed$: Subject<boolean> = new Subject()
+  
+>>>>>>> Stashed changes
     constructor(
           public authServ: AuthenticationService,
           private _router: Router,
@@ -35,6 +44,7 @@ export class LoginComponent implements OnInit {
       s = s.replace(/\n /,"\n"); // exclude newline with a start spacing
       return s.split(' ').length; 
     }
+<<<<<<< Updated upstream
 
     ngOnInit() {
 
@@ -94,6 +104,25 @@ export class LoginComponent implements OnInit {
        this.authServ.saveKeyStore( this.private, this.loginFormGetKey.value.password )
       }
     }
+=======
+
+    ngOnInit() {
+      this.loginForm = this.formBuilder.group({
+        seed: ["", [Validators.required ] ],
+      });
+      this.loginForm.valueChanges.takeUntil( this.componentDestroyed$ ).subscribe( v => {
+        const countSeed = this.countWords( v.seed )
+        if ( countSeed == 12 ) {
+          this.authServ.generateAddressLogin( v.seed  ).then( async res => {
+              this.address = res.address
+              this.avatar = res.avatar
+          });
+        }
+      });
+    }
+
+    onSubmit() {}
+>>>>>>> Stashed changes
 
     ngOnDestroy() {
       this.componentDestroyed$.next(true);
