@@ -2,7 +2,13 @@
     "BACK_BUTTON_TEXT": "Backhjhj",
     "NAME": "Name",
     "WELCOME": "Get Started with Blockchain en",
-    "CREATE_NEW_ACCOUNT": "Create New Account"
+
+    
+    "CREATE_NEW_ACCOUNT": "Create New Account",
+
+    "SIGNED_UP_PREFIX": "Sign up for a free account below or",
+    "SIGNED_UP_LINK": "restore an account",
+    "SIGNED_UP_SUFFIX": "from a previous backup"
 
 
 

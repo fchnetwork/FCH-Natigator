@@ -1,0 +1,113 @@
+<div class="o-createAccountPage">
+
+
+<div class="c-table">
+  <div class="c-table--row">
+    <div class="c-table--cell">
+
+        <ul class="o-createAccountWrapper" *ngIf="step == 'step_1'">       
+            <li>
+            <h1>Create New Account</h1>
+              <p>Sign up for a free account below or restore an account from a backup</p>              
+            </li>
+            <li>    
+              <h4>Choose your address avatar</h4>
+              <span>This avatar is unique. You cannot change it later.</span> 
+              <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <app-avatar-select formControlName="avatar"></app-avatar-select>
+                <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
+                <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">
+                <span *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="login-error">You must include a password.</span>
+                <span *ngIf="form.controls['password'].hasError('minlength') && form.controls['password'].touched" class="login-error">Your password must be at least 10 characters long.</span>   
+                <span *ngIf="form.controls['password'].hasError('upper') && form.controls['password'].touched" class="login-error">upper error</span>          
+                <span *ngIf="form.controls['password'].hasError('lower') && form.controls['password'].touched" class="login-error">lower error</span> 
+                <span *ngIf="form.controls['password'].hasError('number') && form.controls['password'].touched" class="login-error">number error</span>                                                 
+                <span *ngIf="form.controls['confirmpassword'].hasError('notEquivalent') && form.controls['confirmpassword'].touched && !form.controls['confirmpassword'].pristine" class="login-error">Confirm Password Does not match</span>        
+                <button type="submit" mat-button mat-raised-button [disabled]="!form.valid" >Continue</button>
+                {{ form.value | json }} 
+              </form>
+            </li>
+            <li>OR</li>
+            <li>
+            <a>Sign in to a saved account</a> 
+            </li>
+          </ul>
+          <ul class="o-createAccountWrapper" *ngIf="step == 'step_2'">      
+            <li>
+              <h1>No Backup, No Money</h1>
+            </li>
+            <li>
+              <p>must save the secret phrase. It is crucial for accessing your account.</p>
+            </li>
+            <li>
+              <button mat-button mat-raised-button (click)="proceedStep3()" type="submit">Backup Now</button>
+            </li>    
+            <li>Or</li>            
+            <li>
+              <a>Do it later</a>
+            </li>       
+          </ul>
+          <ul class="o-createAccountWrapper" *ngIf="step == 'step_3'">
+            <li>
+              <h1>Save backup phrase</h1>
+            </li>
+            <li>
+              <p>Since only you control your money, you’ll need to save your backup phrase in case this app is deleted or go back</p>
+            </li>
+            <li>
+              <p>      
+                Please carefully write down these 15 words or copy them
+                <button mat-button mat-raised-button type="submit"
+                [disabled]="!seed"
+                [clipboard]="copyToClipboard.innerHTML.trim()"
+                (clipboardCopy)="logSuccess( $event )"
+                (clipboardError)="logError( $event )">
+                Click here to copy
+                </button>
+              </p>
+            </li>      
+            <li>
+              <div class="c-seedContainer u-displayOnly u-locked" #copyToClipboard>
+                <span *ngFor="let s of seed">{{ s }} </span> 
+              </div>  
+            </li>      
+            <li>
+              <button mat-button mat-raised-button type="submit" (click)="proceedStep4()">I've written it down</button>
+            </li>    
+            <li>Or</li>            
+            <li>
+              <a >Do it later</a>
+            </li>       
+          </ul>  
+          <ul class="o-createAccountWrapper" *ngIf="step == 'step_4'">    
+            <li>SEED CONFIRM GOES HERE</li>
+            <li>
+              <div class="c-seedContainer u-displayOnly c-seedContainer__dynamic">
+                <span *ngFor="let item of selectedItems; let i = index" (click)="unSelect(item, i)">{{ item.name }}</span> 
+              </div>  
+            </li>         
+            <li>
+              <div class="c-seedContainer u-selectionSeed">
+                <span  [class.u-removeSeed]="item.selected" (click)="select(item)" *ngFor="let item of items">{{ item.name }}</span> 
+              </div>  
+            </li>     
+            <li>
+              <div class="c-actions">
+                <button *ngIf="selectedItems.length === seed.length && !isEqual" (click)="newSeedConfirm()" class="c-btn">Try Again</button>
+              </div>            
+            </li>         
+            <button type="submit" (click)="authenticateUser()" mat-button mat-raised-button [disabled]="!isEqual" >Continue</button>
+          </ul>  
+
+    </div>
+  </div>
+</div>
+
+
+  
+  
+
+
+
+</div>
+

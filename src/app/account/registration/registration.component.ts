@@ -250,5 +250,10 @@ export class RegistrationComponent implements OnInit, OnChanges {
 	}
 
 
+	goToLogin() {
+    this.router.navigate(['/login']);
+  }
+
+
 }
 

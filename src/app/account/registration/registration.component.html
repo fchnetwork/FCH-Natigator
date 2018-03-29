@@ -9,7 +9,35 @@
         <div class="c-registration">
           <span class="c-registration__icon"></span>
           <div class="c-registration__wrap">
+
+
               <h1>{{ 'CREATE_NEW_ACCOUNT' | translate }}</h1>
+
+              <div class="c-registration__cta">
+                  <p>
+                      {{ 'SIGNED_UP_PREFIX' | translate }} <a routerLink="/login">{{ 'SIGNED_UP_LINK' | translate }}</a> {{ 'SIGNED_UP_SUFFIX' | translate }}
+                  </p>
+              </div>
+
+              <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                <span class="c-info">Choose your address avatar:</span>
+                <app-avatar-select formControlName="avatar"></app-avatar-select>
+                <span class="c-info">This avatar is unique. You cannot change it later.</span> 
+                <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
+                <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">
+                <span *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="login-error">You must include a password.</span>
+                <span *ngIf="form.controls['password'].hasError('minlength') && form.controls['password'].touched" class="login-error">Your password must be at least 10 characters long.</span>   
+                <span *ngIf="form.controls['password'].hasError('upper') && form.controls['password'].touched" class="login-error">upper error</span>          
+                <span *ngIf="form.controls['password'].hasError('lower') && form.controls['password'].touched" class="login-error">lower error</span> 
+                <span *ngIf="form.controls['password'].hasError('number') && form.controls['password'].touched" class="login-error">number error</span>                                                 
+                <span *ngIf="form.controls['confirmpassword'].hasError('notEquivalent') && form.controls['confirmpassword'].touched && !form.controls['confirmpassword'].pristine" class="login-error">Confirm Password Does not match</span>        
+                <button type="submit" mat-button mat-raised-button [disabled]="!form.valid" >Continue</button>
+                {{ form.value | json }} 
+              </form>
+
+
+
+
           </div>
 
         </div>

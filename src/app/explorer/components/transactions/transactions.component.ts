@@ -66,7 +66,7 @@ export class TransactionsComponent implements OnInit {
     }
 
   }
-
+ 
 
 
   exploreBlock(id: number) {
