@@ -6,6 +6,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 // Entry Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './account/login/login.component';
@@ -31,8 +32,8 @@ import { MaterialModule } from './shared/app.material.module';
 import { SharedModule } from './shared/shared.module'
 import { ExplorerModule } from './explorer/explorer.module'
 
-// other libraries
-import { FlexLayoutModule } from '@angular/flex-layout';
+
+
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -64,10 +65,8 @@ import { CanActivateViaAuthGuard } from './app.guard';
     BrowserModule,
     HttpClientModule,
     HttpModule,
-    FormsModule,
     ReactiveFormsModule,
     FormsModule,
-    ReactiveFormsModule, 
     MaterialModule,       
     BrowserAnimationsModule,
     TranslateModule.forRoot({
