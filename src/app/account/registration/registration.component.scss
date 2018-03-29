@@ -1,5 +1,78 @@
 
 
+@import '~sass/common/variables';
+
+
+.o-createAccountPage {
+  background: #efb199;
+  background: -moz-linear-gradient(45deg, #efb199 1%, #6d5a82 100%); 
+  background: -webkit-linear-gradient(45deg, #efb199 1%,#6d5a82 100%); 
+  background: linear-gradient(45deg, #efb199 1%,#6d5a82 100%); 
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#efb199', endColorstr='#6d5a82',GradientType=1 ); 
+  height: 100vh;
+}
+
+
+
+.c-registration {
+  position: relative;
+  display: block;
+  background-color: #FFFFFF;
+  width: 500px;
+  margin: 0 auto;
+  height: 700px;
+  border-radius: 10px;
+  box-shadow: 3px 6px 10px -2px rgba(0,0,0,0.1);
+
+  h1 {
+    font-family:  $paragraph;
+    font-size: 36px;
+    line-height: 1.1;
+    color: #27282A;
+    font-weight: normal;
+  }
+
+
+  &__icon {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 100%;
+    top:-70px;
+    left: 0;
+    right: 0;
+    margin:0 auto;
+    background: #dedede; 
+    background: -moz-radial-gradient(center, ellipse cover, #dedede 1%, #ffffff 100%); 
+    background: -webkit-radial-gradient(center, ellipse cover, #dedede 1%,#ffffff 100%);
+    background: radial-gradient(ellipse at center, #dedede 1%,#ffffff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dedede', endColorstr='#ffffff',GradientType=1 ); 
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .c-seedContainer {

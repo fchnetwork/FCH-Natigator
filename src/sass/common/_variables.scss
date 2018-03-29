@@ -2,14 +2,17 @@
  * Typography
  */
 
+ @import '~sass/common/fonts';
+
+
 $input-height:                10px !default;
 $input-height-lg:             10px !default;
 $input-height-sm:             10px !default;
 $sprite:                      'assets/images/sprite.png';
 
-$paragraph:                   Helvetica, Arial, sans-serif;
-$heading:                     Helvetica, Arial, sans-serif;
-$standard:                    Helvetica, Arial, sans-serif;
+$paragraph:                   'open_sansregular', Helvetica, Arial, sans-serif;
+$heading:                     'open_sansbold', Helvetica, Arial, sans-serif;
+$standard:                    'open_sanssemibold', Helvetica, Arial, sans-serif;
 
 
 

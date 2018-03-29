@@ -11,7 +11,7 @@ import { selectedSeedPhrase } from '../../shared/app.interfaces'
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Router } from '@angular/router';  
 import { Subject } from 'rxjs/Subject'
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -63,6 +63,7 @@ export class RegistrationComponent implements OnInit, OnChanges {
 	
 	constructor( public toastr: ToastsManager, 
 				 public vcr: ViewContainerRef,
+				 public translate: TranslateService, 
 				 public authServ: AuthenticationService,
 				 public formBuilder: FormBuilder,
 				 private cd: ChangeDetectorRef,
