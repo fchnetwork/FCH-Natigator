@@ -28,6 +28,7 @@ import { ROUTES } from './app.routes'
 import './app.global.scss'
 
 // Module imports
+import { AppUIModule } from './appUIModule.module';
 import { MaterialModule } from './shared/app.material.module';
 import { SharedModule } from './shared/shared.module'
 import { ExplorerModule } from './explorer/explorer.module'
@@ -83,7 +84,8 @@ import { CanActivateViaAuthGuard } from './app.guard';
       { 
         useHash: true,
         preloadingStrategy: PreloadAllModules
-      }),    
+      }),
+      AppUIModule,    
   ],
   providers: [
     AuthenticationService,
