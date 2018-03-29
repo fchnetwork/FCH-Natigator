@@ -1,4 +1,4 @@
-import { Component, NgZone, OnDestroy, OnInit, Inject, ChangeDetectorRef, ElementRef, OnChanges, ViewChild, ChangeDetectionStrategy, ViewContainerRef  } from '@angular/core';
+import { Component, OnDestroy, OnInit, OnChanges, ChangeDetectionStrategy, ViewContainerRef  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 import { testAccount } from '../../shared/helpers/data.mock';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject'
 import { TranslateService } from '@ngx-translate/core';
 
-@Component({
+@Component({ 
 // changeDetection: ChangeDetectionStrategy.OnPush,
 selector: 'app-registration',
 templateUrl: './registration.component.html',
@@ -22,30 +22,17 @@ styleUrls: ['./registration.component.scss']
 export class RegistrationComponent implements OnInit, OnChanges {
 
   componentDestroyed$: Subject<boolean> = new Subject()
-
 	activeAvatar: number = 1; // default activeAvatar selected
-
 	form: FormGroup; 
-
 	step: string = 'step_1';  // default page to show
-
 	testAccount: any = testAccount;
-
 	seed: Array<any> = [];
-
 	cloneSeedArray: Array<any> = [];
-
 	items: selectedSeedPhrase[];
-
 	selectedItems: selectedSeedPhrase[];
-
 	AerAddressData: any; // data returned from the API
-
 	seedsMatchNotification: string;
-
 	isEqual: boolean = false; // checks the seed array and the randomised one to see if the user clicked the right order
-
-	// AerumAPIcreateAddress: string = "http://localhost:3030/create-aer-address" // api address
 
 	payload: any = { // payload to send to the api - this is just a skeleton 
 		avatar: 1,
@@ -59,15 +46,11 @@ export class RegistrationComponent implements OnInit, OnChanges {
 	}         
 	
 	
-	backupKeystore: any
-	
 	constructor( public toastr: ToastsManager, 
 				 public vcr: ViewContainerRef,
 				 public translate: TranslateService, 
 				 public authServ: AuthenticationService,
 				 public formBuilder: FormBuilder,
-				 private cd: ChangeDetectorRef,
-				 public zone: NgZone,
 				 private router: Router,
 				 public dialog: MatDialog ) {
 				 this.toastr.setRootViewContainerRef(vcr);

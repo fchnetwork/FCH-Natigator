@@ -1,16 +1,11 @@
 {
-    "BACK_BUTTON_TEXT": "Backhjhj",
-    "NAME": "Name",
-    "WELCOME": "Get Started with Blockchain ru",
-
+"BACK_BUTTON_TEXT": "Backhjhj",
+"NAME": "Name",
+"WELCOME": "Get Started with Blockchain ru",
 "CREATE_NEW_ACCOUNT": "Создать новый аккаунт",
-
 "SIGNED_UP_PREFIX": "Подпишитесь на бесплатную учетную запись ниже или",
 "SIGNED_UP_LINK": "восстановите учетную запись",
 "SIGNED_UP_SUFFIX": "из предыдущей резервной копии",
-
 "CHOOSE_AVATAR": "Выберите свой аватар:",
 "UNIQUE_AVATAR": "Этот аватар уникален. Вы не можете изменить его позже."
-
-
 }
