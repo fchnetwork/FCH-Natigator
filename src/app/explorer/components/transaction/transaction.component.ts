@@ -26,8 +26,6 @@ export class TransactionComponent implements OnInit {
           this.findTransaction()
         });
     }
-  
-  // valid transaction 0x43ec9ea8bab56af24ec6a3616e939a037d83a5e841e39a6afefcd0a821cb1ef3
 
   findTransaction(){
     this.exploreSrv.web3.eth.getTransaction( this.txn, (error, result) => {
