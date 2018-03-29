@@ -9,7 +9,8 @@ import {
    ButtonModule,
    InputModule,
    ModalContainerModule,
-   ModalDialogModule
+   ModalDialogModule,
+   SlideToggleModule,
 } from "@aerum/ui";
 
 
@@ -25,7 +26,8 @@ import {
        ButtonModule,
        InputModule,
        ModalContainerModule,
-       ModalDialogModule
+       ModalDialogModule,
+       SlideToggleModule
    ],
    exports: [
        // UI Framework Modules
@@ -36,7 +38,8 @@ import {
        ButtonModule,
        InputModule,
        ModalContainerModule,
-       ModalDialogModule
+       ModalDialogModule,
+       SlideToggleModule
    ],
    providers: []
 })
