@@ -6,8 +6,6 @@ import { ExplorerService } from '../../services/explorer.service'
 import { iBlocks } from '../../../shared/app.interfaces'
 
 
-import { CookieStorage, LocalStorage, SessionStorage } from 'ngx-store';
-
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',

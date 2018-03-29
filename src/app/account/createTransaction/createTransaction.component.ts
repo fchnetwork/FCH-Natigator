@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication-service/authentication.service';
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
+
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
-
 const Web3 = require('web3');
 
 declare var window: any;
@@ -22,26 +22,37 @@ export class CreateTransactionComponent implements OnInit {
   
   constructor(
     public authServ: AuthenticationService, 
-    public txnServ: TransactionServiceService ) {
-      
-     }
+    public txnServ: TransactionServiceService ) {}
 
   ngOnInit() { }
 
   showKeyStore() {
-    this.backupKeystore =	this.authServ.showKeystore()
+    this.authServ.showKeystore().then( v => {
+      this.backupKeystore =	v
+    })
   }
   
   showDecryptedKeyStore() {
-    this.decryptKeystore =	this.authServ.unencryptKeystore( "prettyGoodPa55w0rd")
+    // set up as a promise to let user know about wrong password
+    this.authServ.unencryptKeystore( "prettyGoodPa55w0rd").then( (v) => {
+      this.decryptKeystore = v
+    }, (err) => {
+      this.decryptKeystore = err
+    })
   }
   
   
   checkYourBalance() {
-    this.txnServ.checkBalance(this.decryptKeystore.address).then( res => {
-      console.log("res " +  res)
-      this.myBalance = 	res
-    } )
+    if(this.decryptKeystore) {
+        this.txnServ.checkBalance(this.decryptKeystore.address).then( res => {
+          console.log("res " +  res)
+          this.myBalance = 	res
+        }, (err) => {
+          this.myBalance = err
+        })
+    } else {
+      alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
+    }
   }
   
   checkReceiverBalance( address ) {
@@ -52,33 +63,13 @@ export class CreateTransactionComponent implements OnInit {
   } )   
   }
   
-  
 
-  
   createTransaction(){
-  // console.log ( JSON.parse( Cookie.get('account') ) ); 
-  // console.log ( JSON.parse( Cookie.get('encrypted') ) );   
-
-  // const accounts = JSON.parse( Cookie.get('account') )
-  
-  // console.log(this.decryptKeystore.address)
-  this.txnServ.transaction(  this.decryptKeystore.privateKey, this.decryptKeystore.address, "0xb0573f6b040fddf1250cdd38983f4eac06fbf3ca", '0.01', "hi its paddy" )
-  
-  // remoteFunc(privkey, from, to, amount, data,  )
-  
-  
-
-  
-  
+  if(  this.decryptKeystore ) {
+      this.txnServ.transaction(  this.decryptKeystore.privateKey, this.decryptKeystore.address, "0xb0573f6b040fddf1250cdd38983f4eac06fbf3ca", '0.01', "hi its paddy" )
+  } else {
+    alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  }
   
 }
