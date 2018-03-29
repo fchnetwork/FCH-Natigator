@@ -1,7 +1,7 @@
 {
   "name": "@aerum/wallet",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "MIT", 
   "scripts": {
     "ng": "ng",
     "start": "webpack-dev-server --port=4200",
