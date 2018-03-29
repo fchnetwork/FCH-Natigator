@@ -3,8 +3,6 @@ import { HttpModule} from '@angular/http';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
-import { WebStorageModule } from 'ngx-store';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { TransactionsComponent } from './components/transactions/transactions.component';
@@ -36,7 +34,6 @@ export function createTranslateLoader(http: HttpClient) {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,  
-    WebStorageModule,  
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
