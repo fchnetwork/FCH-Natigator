@@ -1,6 +1,16 @@
 {
     "BACK_BUTTON_TEXT": "Backhjhj",
     "NAME": "Name",
-    "WELCOME": "Get Started with Blockchain ru"
-   
+    "WELCOME": "Get Started with Blockchain ru",
+
+    
+    "CREATE_NEW_ACCOUNT": "Vytvořit nový účet",
+
+"SIGNED_UP_PREFIX": "Přihlaste se k bezplatnému účtu níže nebo",
+"SIGNED_UP_LINK": "obnovte účet",
+"SIGNED_UP_SUFFIX": "z předchozí zálohy",
+
+"CHOOSE_AVATAR": "Vyberte svůj avatar:",
+"UNIQUE_AVATAR": "Tento avatar je jedinečný. Nemůžete to později změnit."
+    
 }

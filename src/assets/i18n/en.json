@@ -8,8 +8,11 @@
 
     "SIGNED_UP_PREFIX": "Sign up for a free account below or",
     "SIGNED_UP_LINK": "restore an account",
-    "SIGNED_UP_SUFFIX": "from a previous backup"
+    "SIGNED_UP_SUFFIX": "from a previous backup",
 
+    "CHOOSE_AVATAR": "Choose your address avatar:",
+    "UNIQUE_AVATAR": "This avatar is unique. You cannot change it later."
+        
 
 
 

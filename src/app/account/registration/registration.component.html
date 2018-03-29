@@ -20,9 +20,9 @@
               </div>
 
               <form [formGroup]="form" (ngSubmit)="onSubmit()">
-                <span class="c-info">Choose your address avatar:</span>
+                <span class="c-info">{{ 'CHOOSE_AVATAR' | translate }}</span>
                 <app-avatar-select formControlName="avatar"></app-avatar-select>
-                <span class="c-info">This avatar is unique. You cannot change it later.</span> 
+                <span class="c-info">{{ 'UNIQUE_AVATAR' | translate }}</span> 
                 <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
                 <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">
                 <span *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="login-error">You must include a password.</span>

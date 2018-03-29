@@ -1,6 +1,14 @@
 {
     "BACK_BUTTON_TEXT": "Backhjhj",
     "NAME": "Name",
-    "WELCOME": "Get Started with Blockchain ru"
-   
+    "WELCOME": "Get Started with Blockchain ru",
+
+    "CREATE_NEW_ACCOUNT": "Neuen Account erstellen",
+    
+    "SIGNED_UP_PREFIX": "Melden Sie sich unten für ein kostenloses Konto an oder",
+    "SIGNED_UP_LINK": "stellen Sie ein Konto",
+    "SIGNED_UP_SUFFIX": "aus einer früheren Sicherung wieder her",
+
+    "CHOOSE_AVATAR": "Wähle deinen Adressavatar:",
+    "UNIQUE_AVATAR": "Dieser Avatar ist einzigartig. Sie können es später nicht ändern."
 }
