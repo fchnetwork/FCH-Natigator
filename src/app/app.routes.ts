@@ -23,7 +23,7 @@ export const ROUTES = [
   {
     path: 'transaction',
     component: CreateTransactionComponent,
-    //canActivate: [CanActivateViaAuthGuard]
+    canActivate: [CanActivateViaAuthGuard]
 },  
   {
       path: 'create',
