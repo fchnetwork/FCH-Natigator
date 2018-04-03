@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication-service/authentication.service';
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
+import { ModalService } from '../../shared/services/modal.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -22,7 +23,9 @@ export class CreateTransactionComponent implements OnInit {
   
   constructor(
     public authServ: AuthenticationService, 
-    public txnServ: TransactionServiceService ) {}
+    public txnServ: TransactionServiceService,
+    public modal: ModalService
+   ) {}
 
   ngOnInit() { }
 
@@ -72,4 +75,11 @@ export class CreateTransactionComponent implements OnInit {
   }
   }
   
+  public openDemoModal(dataModel) {
+    this.modal.openBasicModal(dataModel).then((result)=>{
+      console.log("Modal window was closed with SuccessButton.");
+    })
+    .catch(()=>{
+    });
+  }
 }

@@ -6,7 +6,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
 // Entry Components
 import { AppComponent } from './app.component';
 import { LoginComponent } from './account/login/login.component';
@@ -15,6 +14,8 @@ import { RegistrationComponent } from './account/registration/registration.compo
 import { LandingPageComponent } from './account/landing-page/landing-page.component';
 import { AvatarSelectComponent } from './account/components/avatar-select/avatar-select.component'
 import { BasicModalComponent } from './account/components/basic-modal/basic-modal.component';
+
+import { BasicModalComponent } from './shared/components/modals/basic-modal/basic-modal.component';
 
 // Services 
 import { AuthenticationService } from './account/services/authentication-service/authentication.service'
@@ -50,12 +51,11 @@ export function createTranslateLoader(http: HttpClient) {
 
 import { CanActivateViaAuthGuard } from './app.guard';
 
-
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
+import { ModalService } from './shared/services/modal.service';
 
 const modalComponents = [BasicModalComponent]
-
 
 @NgModule({
   declarations: [
@@ -98,7 +98,9 @@ const modalComponents = [BasicModalComponent]
         useHash: true,
         preloadingStrategy: PreloadAllModules
       }),
-      AppUIModule,    
+      AppUIModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule   
   ],
   providers: [
     AuthenticationService,
@@ -106,6 +108,7 @@ const modalComponents = [BasicModalComponent]
     ModalService,
     TransactionServiceService,
     CanActivateViaAuthGuard,
+    ModalService
   ],
   bootstrap: [AppComponent]
 })

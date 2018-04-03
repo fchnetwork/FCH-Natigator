@@ -11,6 +11,7 @@ import {
    ModalContainerModule,
    ModalDialogModule,
    SlideToggleModule,
+   TextareaModule,
 } from "@aerum/ui";
 
 
@@ -27,7 +28,8 @@ import {
        InputModule,
        ModalContainerModule,
        ModalDialogModule,
-       SlideToggleModule
+       SlideToggleModule,
+       TextareaModule,
    ],
    exports: [
        // UI Framework Modules
@@ -39,7 +41,8 @@ import {
        InputModule,
        ModalContainerModule,
        ModalDialogModule,
-       SlideToggleModule
+       SlideToggleModule,
+       TextareaModule,
    ],
    providers: []
 })
