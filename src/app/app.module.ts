@@ -13,15 +13,13 @@ import { RegistrationComponent } from './account/registration/registration.compo
 // import { RegistrationDialog } from './account/registration/registration.dialog';
 import { LandingPageComponent } from './account/landing-page/landing-page.component';
 import { AvatarSelectComponent } from './account/components/avatar-select/avatar-select.component'
-import { BasicModalComponent } from './account/components/basic-modal/basic-modal.component';
-
 import { BasicModalComponent } from './shared/components/modals/basic-modal/basic-modal.component';
 
 // Services 
 import { AuthenticationService } from './account/services/authentication-service/authentication.service'
 import { ClipboardService } from './account/services/clipboard-service/clipboard.service';
 import { TransactionServiceService } from './account/services/transaction-service/transaction-service.service';
-import { ModalService } from './account/services/modal/modal.service';
+import { ModalService } from './shared/services/modal.service';
 
 
 // Directives
@@ -53,7 +51,6 @@ import { CanActivateViaAuthGuard } from './app.guard';
 
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
-import { ModalService } from './shared/services/modal.service';
 
 const modalComponents = [BasicModalComponent]
 
