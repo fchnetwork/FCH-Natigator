@@ -30,18 +30,7 @@ export class AuthenticationService {
 
     constructor(private _http: Http) {
         this.initWeb3();
-        avatars.config({ size: 67 * 3,bgColor: '#fff',
-            nanColor: '#EFB66C',
-            mainColor: '#1C3D29',
-            rows: 9,
-            cells: 9,
-            randomColor: true,
-            mainStep: 2,
-            nanStep: 5,
-            mainLen: 0,
-            nanLen: 3,
-            bgStep: 2,
-            bgLen: 25 });
+        avatars.config({ size: 67 * 3, bgColor: '#fff' });
         // this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
         // this.headers.append('X-Requested-With', 'XMLHttpRequest');
         // this.aerum$ = new Observable<any[]>( observer => this._aerumMainObservable = observer).share();  // not in use yet
