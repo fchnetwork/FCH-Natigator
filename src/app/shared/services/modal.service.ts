@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Overlay } from 'ngx-modialog';
-import { BasicModalComponent } from '../../components/basic-modal/basic-modal.component';
+import { BasicModalComponent } from '../components/modals/basic-modal/basic-modal.component';
 import { Modal, DialogRef, overlayConfigFactory, OverlayConfig, ModalComponent, ContainerContent } from "ngx-modialog";
-import { BSModalContext } from 'ngx-modialog/plugins/bootstrap';
+import { BSModalContext } from "ngx-modialog/plugins/bootstrap";
 
 @Injectable()
 export class ModalService {

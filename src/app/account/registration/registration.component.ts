@@ -14,7 +14,7 @@ import { Subject } from 'rxjs/Subject'
 import { TranslateService } from '@ngx-translate/core';
 
 // import { BasicModalComponent } from '../components/basic-modal/basic-modal.component';
-import { ModalService } from '../services/modal/modal.service';
+import { ModalService } from '../../shared/services/modal.service';
 
 @Component({ 
 // changeDetection: ChangeDetectionStrategy.OnPush,
