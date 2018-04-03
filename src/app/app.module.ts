@@ -11,14 +11,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './account/login/login.component';
 import { RegistrationComponent } from './account/registration/registration.component';
-import { RegistrationDialog } from './account/registration/registration.dialog';
+// import { RegistrationDialog } from './account/registration/registration.dialog';
 import { LandingPageComponent } from './account/landing-page/landing-page.component';
 import { AvatarSelectComponent } from './account/components/avatar-select/avatar-select.component'
+import { BasicModalComponent } from './account/components/basic-modal/basic-modal.component';
 
 // Services 
 import { AuthenticationService } from './account/services/authentication-service/authentication.service'
 import { ClipboardService } from './account/services/clipboard-service/clipboard.service';
 import { TransactionServiceService } from './account/services/transaction-service/transaction-service.service';
+import { ModalService } from './account/services/modal/modal.service';
+
 
 // Directives
 import { ClipboardDirective } from './account/directives/clipboard-directive/clipboard.directive';
@@ -29,7 +32,7 @@ import './app.global.scss'
 
 // Module imports
 import { AppUIModule } from './appUIModule.module';
-import { MaterialModule } from './shared/app.material.module';
+// import { MaterialModule } from './shared/app.material.module';
 import { SharedModule } from './shared/shared.module'
 import { ExplorerModule } from './explorer/explorer.module'
 
@@ -48,6 +51,12 @@ export function createTranslateLoader(http: HttpClient) {
 import { CanActivateViaAuthGuard } from './app.guard';
 
 
+import { ModalModule } from 'ngx-modialog';
+import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
+
+const modalComponents = [BasicModalComponent]
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,20 +65,24 @@ import { CanActivateViaAuthGuard } from './app.guard';
     LandingPageComponent,
     AvatarSelectComponent,
     ClipboardDirective,
-    RegistrationDialog,
-    CreateTransactionComponent
+    // RegistrationDialog,
+    CreateTransactionComponent,
+    modalComponents
   ], 
   entryComponents: [
-    RegistrationDialog
+    modalComponents
+   // RegistrationDialog
   ],   
   imports: [
     BrowserModule,
     HttpClientModule,
     HttpModule,
+    ModalModule.forRoot(),
     ReactiveFormsModule,
     FormsModule,
-    MaterialModule,       
+   // MaterialModule,       
     BrowserAnimationsModule,
+    BootstrapModalModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -90,8 +103,9 @@ import { CanActivateViaAuthGuard } from './app.guard';
   providers: [
     AuthenticationService,
     ClipboardService,
+    ModalService,
     TransactionServiceService,
-    CanActivateViaAuthGuard
+    CanActivateViaAuthGuard,
   ],
   bootstrap: [AppComponent]
 })

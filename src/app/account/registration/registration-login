@@ -56,14 +56,14 @@
             </li>
             <li>
               <p>      
-                Please carefully write down these 15 words or copy them
-                <button mat-button mat-raised-button type="submit"
+                Please carefully write down these 15 words or 
+                <a
                 [disabled]="!seed"
                 [clipboard]="copyToClipboard.innerHTML.trim()"
                 (clipboardCopy)="logSuccess( $event )"
                 (clipboardError)="logError( $event )">
-                Click here to copy
-                </button>
+                 copy them
+                </a>
               </p>
             </li>      
             <li>

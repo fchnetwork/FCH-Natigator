@@ -1,7 +1,7 @@
 {
   "name": "@aerum/wallet",
   "version": "0.0.0",
-  "license": "MIT", 
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "webpack-dev-server --port=4200",
@@ -42,6 +42,7 @@
     "moment": "^2.21.0",
     "ng2-cookies": "^1.0.12",
     "ng2-toastr": "^4.1.2",
+    "ngx-modialog": "^5.0.0",
     "rxjs": "^5.5.6",
     "soltsice": "^0.10.3",
     "truffle": "^4.0.6",
@@ -87,7 +88,7 @@
     "stylus-loader": "^3.0.1",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3",
+    "typescript": "2.5.2",
     "uglifyjs-webpack-plugin": "^1.1.5",
     "url-loader": "^0.6.2",
     "webpack": "~3.10.0"

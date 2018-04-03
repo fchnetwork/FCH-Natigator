@@ -4,14 +4,17 @@ import { PasswordValidator } from '../../shared/helpers/validator.password';
 import { testAccount } from '../../shared/helpers/data.mock';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { AvatarSelectComponent } from '../components/avatar-select/avatar-select.component';
-import { MatDialog } from '@angular/material';
-import { RegistrationDialog } from './registration.dialog'
+// import { MatDialog } from '@angular/material';
+// import { RegistrationDialog } from './registration.dialog'
 import { AuthenticationService } from '../services/authentication-service/authentication.service';
 import { selectedSeedPhrase } from '../../shared/app.interfaces'
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Router } from '@angular/router';  
 import { Subject } from 'rxjs/Subject'
 import { TranslateService } from '@ngx-translate/core';
+
+// import { BasicModalComponent } from '../components/basic-modal/basic-modal.component';
+import { ModalService } from '../services/modal/modal.service';
 
 @Component({ 
 // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,7 +25,7 @@ styleUrls: ['./registration.component.scss']
 export class RegistrationComponent implements OnInit, OnChanges {
 
   componentDestroyed$: Subject<boolean> = new Subject()
-	activeAvatar: number = 1; // default activeAvatar selected
+	activeAvatar: number = 0; // default activeAvatar selected
 	form: FormGroup; 
 	step: string = 'step_1';  // default page to show
 	testAccount: any = testAccount;
@@ -33,7 +36,9 @@ export class RegistrationComponent implements OnInit, OnChanges {
 	AerAddressData: any; // data returned from the API
 	seedsMatchNotification: string;
 	isEqual: boolean = false; // checks the seed array and the randomised one to see if the user clicked the right order
-
+  public specToggle: boolean;
+	public inputText: string;
+	
 	payload: any = { // payload to send to the api - this is just a skeleton 
 		avatar: 1,
 		password: "",
@@ -46,29 +51,46 @@ export class RegistrationComponent implements OnInit, OnChanges {
 	}         
 	
 	
+
+
+
 	constructor( public toastr: ToastsManager, 
 				 public vcr: ViewContainerRef,
+				 public modalSrv: ModalService,
 				 public translate: TranslateService, 
 				 public authServ: AuthenticationService,
 				 public formBuilder: FormBuilder,
-				 private router: Router,
-				 public dialog: MatDialog ) {
-				 this.toastr.setRootViewContainerRef(vcr);
+				 private router: Router, ) {
+
+					this.specToggle = false;
+					this.toastr.setRootViewContainerRef(vcr);
+					
 				}
 
+
+				public openDemoModal(dataModel) {
+					this.modalSrv.openBasicModal(dataModel).then((result)=>{
+						console.log("Modal window was closed with SuccessButton.");
+					})
+					.catch(()=>{
+					});
+				}
+			
+
+
   // Opens a modal with information about the users seed - when closed it executes openBackupSeed() which forwards to the next step
-	openDialog(): void {
-		let dialogRef = this.dialog.open( RegistrationDialog, {
-			width: '540px',
-			panelClass:"o-modal-panel",
-			backdropClass: "backdrop",
-		});
-		dialogRef.afterClosed().takeUntil( this.componentDestroyed$ ).subscribe(result => {
-			if( result ){
-				this.openBackupSeed()
-			}
-		});
-	}
+	// openDialog(): void {
+	// 	let dialogRef = this.dialog.open( RegistrationDialog, {
+	// 		width: '540px',
+	// 		panelClass:"o-modal-panel",
+	// 		backdropClass: "backdrop",
+	// 	});
+	// 	dialogRef.afterClosed().takeUntil( this.componentDestroyed$ ).subscribe(result => {
+	// 		if( result ){
+	// 			this.openBackupSeed()
+	// 		}
+	// 	});
+	// }
 
   //  When executed forwards to the next step 
 	openBackupSeed(){
@@ -92,7 +114,7 @@ export class RegistrationComponent implements OnInit, OnChanges {
 
 		this.seed = this.payload.mnemonic.split(" ")
 
-		console.log( this.payload.mnemonic )
+	//	console.log( this.payload.mnemonic )
 		
 	this.newSeedConfirm();
 			this.step = "step_2"
@@ -100,8 +122,8 @@ export class RegistrationComponent implements OnInit, OnChanges {
 	}
 
   //  Opens the Seed Information Dialog above    
-	proceedStep3(){
-		this.openDialog()
+	proceedStep3(dataModel){
+		this.openDemoModal(dataModel)
 	}
 
   //  When executed forwards to the next step    

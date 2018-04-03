@@ -7,5 +7,21 @@
 "SIGNED_UP_LINK": "restore an account",
 "SIGNED_UP_SUFFIX": "from a previous backup",
 "CHOOSE_AVATAR": "Choose your address avatar:",
-"UNIQUE_AVATAR": "This avatar is unique. You cannot change it later."
+"UNIQUE_AVATAR": "This avatar is unique. You cannot change it later.",
+
+"CREATE_BACKUP": "Backup",
+"BACKUP_PHRASE":"You must save the secret phrase. It is the only one way to recover access",
+"OR": "or",
+"SKIP_STEP": "Skip this step",
+"SAVE_PHRASE": "Save Backup Phrase",
+"SAVE_PHRASE_TEXT": "Your money depend only on you, so you'll need to save this phrase.",
+"SAVE_FILE": "save file",
+"WRITE_SEED":"Please carefully write down these 15 words or copy them",
+"SAVED_IT":"Ive saved it",
+"CONFIRM_BACKUP": "Confirm Backup",
+"CONFIRM_BACKUP_TEXT":"Please, tap each word in the correct order or go back",
+"CONFIRM":"Confirm",
+"CLEAR":"Clear"
+
 }
+
