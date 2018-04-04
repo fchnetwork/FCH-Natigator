@@ -11,8 +11,8 @@ app-i18n {
     border: 0 none;
     position: absolute;
     right: 40px;
-    top: 34px;
-    
+    top: 84px;
+    z-index: 5555;
     
     
     &.o-lang--active .o-lang__select {
