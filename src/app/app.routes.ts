@@ -1,44 +1,32 @@
 
 import { LoginComponent } from './account/login/login.component'
 import { RegistrationComponent } from './account/registration/registration.component'
-import { Error404Component } from './shared/components/error404/error404.component'
-import { LandingPageComponent } from './account/landing-page/landing-page.component'
-import { CreateTransactionComponent } from './account/createTransaction/createTransaction.component'
+import { Error404Component } from './shared/components/error404/error404.component' 
 import { CanActivateViaAuthGuard } from './app.guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RegisterComponent } from './account/register/register.component';
 
 export const ROUTES = [
   {
     path: '',
-    redirectTo: '/landing',
+    redirectTo: 'account',
+    canActivate: [CanActivateViaAuthGuard],
     pathMatch: 'full'
   },
   {
-      path: 'landing',
-      component: LandingPageComponent
-  },    
-  {
-      path: 'login',
-      component: LoginComponent
+    path: 'account',
+    component: RegisterComponent
   },
   {
-    path: 'transaction',
-    component: CreateTransactionComponent,
-    canActivate: [CanActivateViaAuthGuard]
-},  
-  {
-      path: 'create',
-      component: RegistrationComponent
-  },
-  {
-    path: 'explorer',
-    loadChildren: './explorer/explorer.module#ExplorerModule'
-  },
-  {
-    path: 'not-found',
-    component: Error404Component,
-  },
-  { 
-    path: '**',
-    redirectTo: '/not-found'
+    path: 'dashboard',
+    component: DashboardComponent
   }
-]
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(ROUTES)], 
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

@@ -1,0 +1,17 @@
+.divider {
+    padding: 15px; 
+    display: flex;
+    align-items: center;
+   justify-content: center;
+
+    &__line {
+        height: 1px;
+        width: 90px;
+        background-color: transparent;
+        line-height: 1px; 
+    }
+
+    &__line--visible {
+        background-color: #C6CCD2 !important;
+    }
+}

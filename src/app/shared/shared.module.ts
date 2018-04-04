@@ -9,6 +9,11 @@ import { I18nComponent } from './components/i18n/i18n.component'
 
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ModalService } from './services/modal.service';
+import { ModalModule } from 'ngx-modialog';
+import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
+import { BasicModalComponent } from './components/modals/basic-modal/basic-modal.component';
+import { DividerComponent } from './components/divider/divider.component';
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -17,8 +22,13 @@ export function createTranslateLoader(http: HttpClient) {
 
 
 @NgModule({
+  entryComponents: [
+    BasicModalComponent
+  ],
   imports: [
     CommonModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -29,19 +39,16 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   declarations: [
     I18nComponent,
-    Error404Component
+    Error404Component,
+    DividerComponent
+  ],
+  providers: [
+    ModalService
   ],
   exports:[
-    I18nComponent
+    I18nComponent,
+    DividerComponent
   ]
 })
 
-export class SharedModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: SharedModule,
-      providers: [
-      ]
-    };
-  }
-}
+export class SharedModule { }

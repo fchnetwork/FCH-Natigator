@@ -15,9 +15,7 @@ import {
 } from "@aerum/ui";
 
 
-@NgModule({
-   declarations: [
-   ],
+@NgModule({ 
    imports: [
        // UI Framework Modules
        ContentModule,
@@ -43,7 +41,6 @@ import {
        ModalDialogModule,
        SlideToggleModule,
        TextareaModule,
-   ],
-   providers: []
+   ]
 })
 export class AppUIModule { }
