@@ -7,6 +7,7 @@ import { CreateTransactionComponent } from './account/createTransaction/createTr
 import { CanActivateViaAuthGuard } from './app.guard';
 import { BackupConfirmationComponent } from './account/backup-confirmation/backup-confirmation.component';
 import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
+import { BackupCreateComponent } from './account/backup-create/backup-create.component';
 
 export const ROUTES = [
   {
@@ -46,6 +47,10 @@ export const ROUTES = [
   {
     path: 'backup-disclamer',
     component: BackupDisclamerComponent
+  },
+  {
+    path: 'backup-create'
+    component: BackupCreateComponent
   },
   { 
     path: '**',

@@ -16,6 +16,7 @@ import { AvatarSelectComponent } from './account/components/avatar-select/avatar
 import { BasicModalComponent } from './shared/components/modals/basic-modal/basic-modal.component';
 import { BackupConfirmationComponent } from './account/backup-confirmation/backup-confirmation.component';
 import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
+import { BackupCreateComponent } from './account/backup-create/backup-create.component';
 
 // Services 
 import { AuthenticationService } from './account/services/authentication-service/authentication.service'
@@ -68,7 +69,8 @@ const modalComponents = [BasicModalComponent]
     CreateTransactionComponent,
     modalComponents,
     BackupConfirmationComponent,
-    BackupDisclamerComponent
+    BackupDisclamerComponent,
+    BackupCreateComponent
   ], 
   entryComponents: [
     modalComponents
