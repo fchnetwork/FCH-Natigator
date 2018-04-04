@@ -120,6 +120,14 @@ export class RegistrationComponent implements OnInit, OnChanges {
 		this.step = "step_4"
 	}    
 
+
+	skipStep(step){
+		this.step = step;
+	}
+
+	backStep(step){
+		this.step = step;
+	}
 	
 	// user has ccreated an account, now encrypt the private key and save to a cookie for use on the transactions page
 	authenticateUser() { 
