@@ -6,6 +6,7 @@ import { LandingPageComponent } from './account/landing-page/landing-page.compon
 import { CreateTransactionComponent } from './account/createTransaction/createTransaction.component'
 import { CanActivateViaAuthGuard } from './app.guard';
 import { BackupConfirmationComponent } from './account/backup-confirmation/backup-confirmation.component';
+import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
 
 export const ROUTES = [
   {
@@ -41,6 +42,10 @@ export const ROUTES = [
   {
     path: 'backup-confirmation',
     component: BackupConfirmationComponent
+  },
+  {
+    path: 'backup-disclamer',
+    component: BackupDisclamerComponent
   },
   { 
     path: '**',

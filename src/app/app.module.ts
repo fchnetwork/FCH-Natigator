@@ -15,6 +15,7 @@ import { LandingPageComponent } from './account/landing-page/landing-page.compon
 import { AvatarSelectComponent } from './account/components/avatar-select/avatar-select.component'
 import { BasicModalComponent } from './shared/components/modals/basic-modal/basic-modal.component';
 import { BackupConfirmationComponent } from './account/backup-confirmation/backup-confirmation.component';
+import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
 
 // Services 
 import { AuthenticationService } from './account/services/authentication-service/authentication.service'
@@ -66,7 +67,8 @@ const modalComponents = [BasicModalComponent]
     // RegistrationDialog,
     CreateTransactionComponent,
     modalComponents,
-    BackupConfirmationComponent
+    BackupConfirmationComponent,
+    BackupDisclamerComponent
   ], 
   entryComponents: [
     modalComponents

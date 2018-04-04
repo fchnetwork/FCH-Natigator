@@ -4,7 +4,7 @@
     <hr class="line">
     <div class="b-text">{{'BACKUP_PHRASE'|translate}}</div>
     <div class="button">
-        <aer-button>{{'CREATE_BACKUP'|translate}}</aer-button>
+        <aer-button (buttonFn)="createBackup()">{{'CREATE_BACKUP'|translate}}</aer-button>
     </div>
     <div class="b-backup">
       <p>
