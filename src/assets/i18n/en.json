@@ -21,7 +21,23 @@
 "CONFIRM_BACKUP": "Confirm Backup",
 "CONFIRM_BACKUP_TEXT":"Please, tap each word in the correct order or go back",
 "CONFIRM":"Confirm",
-"CLEAR":"Clear"
-
+"CLEAR":"Clear",
+"SEND_TRANSACTION":"Send transaction",
+"FROM":"From",
+"TO":"To",
+"AMOUNT":"Amount",
+"SEND_EVERYTHING":"Send everything",
+"AERUM":"Aerum",
+"AERO":"AERO",
+"SHOW_MORE_OPTIONS":"Show more options",
+"MAX_TRANSACTION_FEE":"Max transaction fee",
+"MAX_TRANS_FEE_WARNING":"This is the most amount of money that might be used to process this transaction.",
+"TOTAL":"Total",
+"DATA_INCLUDED":"Data included",
+"BYTES":"bytes",
+"SEND":"Send",
+"LATEST_TRANSACTION":"Latest transaction",
+"SHOW_MORE":"Show more",
+"TRANSACTION":"Transaction"
 }
 
