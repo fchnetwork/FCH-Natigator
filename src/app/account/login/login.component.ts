@@ -6,6 +6,9 @@ import {TranslateService} from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject'
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 
+import { Cookie } from 'ng2-cookies/ng2-cookies';
+  
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -25,9 +28,12 @@ export class LoginComponent implements OnInit {
 
     constructor(
           public authServ: AuthenticationService,
-          private _router: Router,
+          private router: Router,
           public formBuilder: FormBuilder
         ) {}
+
+
+
 
     countWords(s){
       s = s.replace(/(^\s*)|(\s*$)/gi,"");//exclude  start and end white-space
@@ -38,28 +44,36 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
 
+
       this.loginFormFindAddress = this.formBuilder.group({
         seed: ["", [Validators.required ] ],
-      });
-
-      this.loginFormGetKey = this.formBuilder.group({
         password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
         confirmpassword: ["", [Validators.required ] ]
-		},{ 
-			validator: this.matchingPasswords('password', 'confirmpassword')
-		});
+      },{ 
+        validator: this.matchingPasswords('password', 'confirmpassword')
+      });
 
 
 
-      this.loginFormFindAddress.valueChanges.takeUntil( this.componentDestroyed$ ).subscribe( v => {
-        const countSeed = this.countWords( v.seed )
+
+      this.loginFormFindAddress.controls['seed'].valueChanges.takeUntil( this.componentDestroyed$ ).subscribe( v => {
+       console.log( v.length );
+
+        if ( v.length > 2 ) {
+        // const countSeed = this.countWords( v )
         // if ( countSeed == 12 ) {
-          this.authServ.generateAddressLogin( v.seed  ).then( async res => {
-              this.address = res.address
+          this.authServ.generateAddressLogin( v  ).then( async res => {
+           // console.log(res);  
+            this.address = res.address
               this.avatar = res.avatar
               this.private = res.private
           });
-        // }
+        } else {
+          this.address = "";
+        }
+
+
+
       });
     }
 
@@ -80,20 +94,21 @@ export class LoginComponent implements OnInit {
 
   onSubmitAddress() {
       if( this.loginFormFindAddress.valid ) {
-        this.step = "step_2"
-        console.log(this.step)
-        console.log( JSON.stringify(this.address) )
+        console.log( this.private )
+        console.log( this.loginFormFindAddress.value.password )
+        this.authServ.saveKeyStore( this.private, this.loginFormFindAddress.value.password )
+
+       // this.authServ.showKeystore2();
+
+
+        this.router.navigate(['/transaction']); // improvements need to be made here but for now the auth guard should work just fine
       }
     }
 
 
 
 
-  onSubmitPassword() {
-      if( this.loginFormGetKey.valid ) {
-       this.authServ.saveKeyStore( this.private, this.loginFormGetKey.value.password )
-      }
-    }
+
 
     ngOnDestroy() {
       this.componentDestroyed$.next(true);

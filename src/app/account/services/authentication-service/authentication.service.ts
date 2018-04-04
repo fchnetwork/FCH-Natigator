@@ -100,6 +100,24 @@ avatarsGenerator() {
 
 
 
+
+
+
+
+
+
+authState() : Observable<any> {
+    return Observable.fromPromise( this.showKeystore() );
+}
+
+
+
+
+
+
+
+
+
 // creates an auth cookie
 saveKeyStore(privateKey, Password){
     const encryptAccount = this.web3.eth.accounts.encrypt( privateKey, Password);
@@ -122,6 +140,34 @@ public showKeystore() : Promise<any> {
         }
     });
 }
+
+
+
+public showKeystore2() : Promise<any> {
+    return new Promise( (resolve, reject) => {
+        const Auth = Cookie.get('aerum_keyStore')
+          if(Auth) {
+
+
+
+            let fileURL = URL.createObjectURL(Auth);
+            window.open(fileURL);
+
+            resolve( JSON.parse( Auth ) )
+
+        } else {
+            reject("no keystore found");
+        }
+    });
+}
+
+
+
+
+
+
+
+
 
 
 // retrieve Private key using keystore auth cookie

@@ -15,6 +15,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 // import { BasicModalComponent } from '../components/basic-modal/basic-modal.component';
 import { ModalService } from '../../shared/services/modal.service';
+import { AerumBackupFile } from  '../../shared/components/file-download/file-download';
+
 
 @Component({ 
 // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,9 +52,6 @@ export class RegistrationComponent implements OnInit, OnChanges {
 		public: "",			
 	}         
 	
-	
-
-
 
 	constructor( public toastr: ToastsManager, 
 				 public vcr: ViewContainerRef,
@@ -64,33 +63,23 @@ export class RegistrationComponent implements OnInit, OnChanges {
 
 					this.specToggle = false;
 					this.toastr.setRootViewContainerRef(vcr);
-					
-				}
 
+				}
 
 				public openDemoModal(dataModel) {
 					this.modalSrv.openBasicModal(dataModel).then((result)=>{
-						console.log("Modal window was closed with SuccessButton.");
+						
 					})
 					.catch(()=>{
+						this.openBackupSeed()
 					});
 				}
+
 			
-
-
-  // Opens a modal with information about the users seed - when closed it executes openBackupSeed() which forwards to the next step
-	// openDialog(): void {
-	// 	let dialogRef = this.dialog.open( RegistrationDialog, {
-	// 		width: '540px',
-	// 		panelClass:"o-modal-panel",
-	// 		backdropClass: "backdrop",
-	// 	});
-	// 	dialogRef.afterClosed().takeUntil( this.componentDestroyed$ ).subscribe(result => {
-	// 		if( result ){
-	// 			this.openBackupSeed()
-	// 		}
-	// 	});
-	// }
+	saveSeedToFile(){
+		const data = [{ seed: this.seed, }];
+		new AerumBackupFile( data, 'AerumBackupSeed');
+	}
 
   //  When executed forwards to the next step 
 	openBackupSeed(){
