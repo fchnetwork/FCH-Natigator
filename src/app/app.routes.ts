@@ -5,6 +5,10 @@ import { Error404Component } from './shared/components/error404/error404.compone
 import { LandingPageComponent } from './account/landing-page/landing-page.component'
 import { CreateTransactionComponent } from './account/createTransaction/createTransaction.component'
 import { CanActivateViaAuthGuard } from './app.guard';
+import { BackupConfirmationComponent } from './account/backup-confirmation/backup-confirmation.component';
+import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
+import { BackupCreateComponent } from './account/backup-create/backup-create.component';
+import { BackupConfirmComponent } from './account/backup-confirm/backup-confirm.component';
 
 export const ROUTES = [
   {
@@ -36,6 +40,22 @@ export const ROUTES = [
   {
     path: 'not-found',
     component: Error404Component,
+  },
+  {
+    path: 'backup-confirmation',
+    component: BackupConfirmationComponent
+  },
+  {
+    path: 'backup-disclamer',
+    component: BackupDisclamerComponent
+  },
+  {
+    path: 'backup-create',
+    component: BackupCreateComponent
+  },
+  {
+    path: 'backup-confirm',
+    component: BackupConfirmComponent
   },
   { 
     path: '**',
