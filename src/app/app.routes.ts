@@ -49,7 +49,7 @@ export const ROUTES = [
     component: BackupDisclamerComponent
   },
   {
-    path: 'backup-create'
+    path: 'backup-create',
     component: BackupCreateComponent
   },
   { 
