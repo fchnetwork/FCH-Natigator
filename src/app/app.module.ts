@@ -14,6 +14,7 @@ import { RegistrationComponent } from './account/registration/registration.compo
 import { LandingPageComponent } from './account/landing-page/landing-page.component';
 import { AvatarSelectComponent } from './account/components/avatar-select/avatar-select.component'
 import { BasicModalComponent } from './shared/components/modals/basic-modal/basic-modal.component';
+import { BackupConfirmationComponent } from './account/backup-confirmation/backup-confirmation.component';
 
 // Services 
 import { AuthenticationService } from './account/services/authentication-service/authentication.service'
@@ -64,7 +65,8 @@ const modalComponents = [BasicModalComponent]
     ClipboardDirective,
     // RegistrationDialog,
     CreateTransactionComponent,
-    modalComponents
+    modalComponents,
+    BackupConfirmationComponent
   ], 
   entryComponents: [
     modalComponents
