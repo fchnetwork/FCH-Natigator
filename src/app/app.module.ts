@@ -44,7 +44,7 @@ import { ExplorerModule } from './explorer/explorer.module'
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { CreateTransactionComponent } from './account/createTransaction/createTransaction.component'
+import { CreateTransactionComponent } from './account/create-transaction/create-transaction.component'
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -55,6 +55,8 @@ import { CanActivateViaAuthGuard } from './app.guard';
 
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
+
+import { TransactionSignModalComponent } from './account/components/transaction-sign-modal/transaction-sign-modal.component';
 
 const modalComponents = [BasicModalComponent]
 
@@ -69,13 +71,15 @@ const modalComponents = [BasicModalComponent]
     // RegistrationDialog,
     CreateTransactionComponent,
     modalComponents,
+    TransactionSignModalComponent,
     BackupConfirmationComponent,
     BackupDisclamerComponent,
     BackupCreateComponent,
     BackupConfirmComponent
   ], 
   entryComponents: [
-    modalComponents
+    modalComponents,
+    TransactionSignModalComponent
    // RegistrationDialog
   ],   
   imports: [
