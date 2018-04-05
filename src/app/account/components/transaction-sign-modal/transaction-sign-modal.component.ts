@@ -28,33 +28,17 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
   }
 
   ngOnInit() {
-
     this.unlockAccountForm = this.formBuilder.group({
-			password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
-			confirmpassword: [ null, [Validators.required ] ]
-		},{ 
-			validator: this.matchingPasswords('password', 'confirmpassword')
+			password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ]
 		});
-
   }  	
-
-  // Custom validator to make sure the password and confirm password match /    
-	matchingPasswords( passwordKey: string, passwordConfirmationKey: string ) {
-		return (group: FormGroup ) => {
-			let passwordInput = group.controls[passwordKey];
-			let passwordConfirmationInput = group.controls[passwordConfirmationKey];
-			if (passwordInput.value !== passwordConfirmationInput.value ) {
-				return passwordConfirmationInput.setErrors({notEquivalent: true})
-			}
-		}
-	}
 
   onSubmit(){
    // console.log( this.unlockAccountForm.controls['password'].value )
     this.authServ.unencryptKeystore( this.unlockAccountForm.controls['password'].value ).then( (v) => {
       if(v) {
         alert(" successfull decrypt "+ JSON.stringify(v) );
-        this.dialog.close("test " + v );
+        this.dialog.close( v );
       }
     }, (err) => {
       alert("error - is this password correct?" + err);

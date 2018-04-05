@@ -3,6 +3,8 @@ import { AuthenticationService } from '../services/authentication-service/authen
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
 // import { ModalService } from '../../shared/services/modal.service';
 import { FormsModule } from '@angular/forms';
+import { ModalService } from '../../shared/services/modal.service';
+
 
 
 
@@ -24,8 +26,7 @@ export class CreateTransactionComponent implements OnInit {
   myBalance: any;
   theirBalance: any;
 
-
-
+  privateKey: string;
 
   /* new fields */
   senderAddress: string;
@@ -37,37 +38,15 @@ export class CreateTransactionComponent implements OnInit {
   sendEverything: boolean;
 
 
-
-
   constructor(
     public authServ: AuthenticationService,
+    private modalSrv: ModalService,
     public txnServ: TransactionServiceService ) {
-
     this.userData();
-
-
    }
 
 
-    userData() {
-    return this.authServ.showKeystore().then( (resultA) => {
-      console.log( "0x" + resultA.address );
-        return Promise.all([resultA, this.txnServ.checkBalance(resultA.address)]); // resultA will implicitly be wrapped
-    }).then( ([resultA, resultB]) => {
-      this.senderAddress = "0x" + resultA.address ;
-      this.walletBalance = resultB;
-      console.log( "ouput ", JSON.stringify(resultB) );
-      console.log( "ouput ", JSON.stringify(resultA ) );
-    });
-}
-
-
-
-
-
-
   ngOnInit() {
-  //  this.senderAddress = '35a1sd6f8ew13f5a1f5sd1f6a854e65f1'; // fake address
     this.transactions = [
       {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 10.00},
       {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 155.10},
@@ -82,6 +61,17 @@ export class CreateTransactionComponent implements OnInit {
     this.walletBalance = this.myBalance;
     this.includedDataLength = 0;
   }
+
+
+  userData() {
+      return this.authServ.showKeystore().then( (resultA) => {
+          return Promise.all([resultA, this.txnServ.checkBalance(resultA.address)]); // resultA will implicitly be wrapped
+      }).then( ([resultA, resultB]) => {
+        this.senderAddress = "0x" + resultA.address ;
+        this.walletBalance = resultB;
+      });
+  }
+
 
   public getMaxTransactionFee() {
     // TODO: calculation logic here
@@ -104,75 +94,67 @@ export class CreateTransactionComponent implements OnInit {
     }
   }
 
-  showKeyStore() {
-    this.authServ.showKeystore().then( v => {
-      this.backupKeystore =	v
-    })
-  }
+  // showKeyStore() {
+  //   this.authServ.showKeystore().then( v => {
+  //     this.backupKeystore =	v
+  //   })
+  // }
 
 
+ 
 
-
-  
-
-  unlockAccount(password) {
-    // set up as a promise to let user know about wrong password
-    this.authServ.unencryptKeystore( password ).then( (v) => {
-      this.decryptKeystore = v
-    }, (err) => {
-      this.decryptKeystore = err
-    })
-  }
-
-
+  // unlockAccount(password) {
+  //   // set up as a promise to let user know about wrong password
+  //   this.authServ.unencryptKeystore( password ).then( (v) => {
+  //     this.decryptKeystore = v
+  //   }, (err) => {
+  //     this.decryptKeystore = err
+  //   })
+  // }
 
 
 
   // mark for removal
-  showDecryptedKeyStore() {
-    // set up as a promise to let user know about wrong password
-    this.authServ.unencryptKeystore( "prettyGoodPa55w0rd").then( (v) => {
-      this.decryptKeystore = v
-    }, (err) => {
-      this.decryptKeystore = err
-    })
-  }
+  // showDecryptedKeyStore() {
+  //   // set up as a promise to let user know about wrong password
+  //   this.authServ.unencryptKeystore( "prettyGoodPa55w0rd").then( (v) => {
+  //     this.decryptKeystore = v
+  //   }, (err) => {
+  //     this.decryptKeystore = err
+  //   })
+  // }
 
 
 
+  // checkYourBalance() {
+  //   if(this.decryptKeystore) {
+  //       this.txnServ.checkBalance(this.decryptKeystore.address).then( res => {
+  //         console.log("res " +  res)
+  //         this.myBalance = 	res
+  //       }, (err) => {
+  //         this.myBalance = err
+  //       })
+  //   } else {
+  //     alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
+  //   }
+  // }
+
+  // checkReceiverBalance( address ) {
+  //  // this.theirBalance = this.txnServ.checkBalance()
+  //  this.txnServ.checkBalance( address ).then( res => {
+  //   console.log("res " +  res)
+  //   this.theirBalance = 	res
+  // } )
+  // }
 
 
-
-  checkYourBalance() {
-    if(this.decryptKeystore) {
-        this.txnServ.checkBalance(this.decryptKeystore.address).then( res => {
-          console.log("res " +  res)
-          this.myBalance = 	res
-        }, (err) => {
-          this.myBalance = err
-        })
-    } else {
-      alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
-    }
-  }
-
-  checkReceiverBalance( address ) {
-   // this.theirBalance = this.txnServ.checkBalance()
-   this.txnServ.checkBalance( address ).then( res => {
-    console.log("res " +  res)
-    this.theirBalance = 	res
-  } )
-  }
-
-
-  createTransaction(){
-  if(  this.decryptKeystore ) {
-      this.txnServ.transaction(  this.decryptKeystore.privateKey, this.decryptKeystore.address, "0xb0573f6b040fddf1250cdd38983f4eac06fbf3ca", '0.01', "hi its paddy" )
-  } else {
-    alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
-  }
-  }
-
+  // createTransaction(){
+  // if(  this.decryptKeystore ) {
+  //     this.txnServ.transaction(  this.decryptKeystore.privateKey, this.decryptKeystore.address, "0xb0573f6b040fddf1250cdd38983f4eac06fbf3ca", '0.01', "hi its paddy" )
+  // } else {
+  //   alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
+  // }
+  // }
 
 
   public showMore() {}
@@ -185,9 +167,13 @@ export class CreateTransactionComponent implements OnInit {
 
 
   public send() {
-    this.txnServ.openTransactionConfirm().then( 
-      (result)=>{
-       console.log("open modal"+ result );
+    this.modalSrv.openTransactionConfirm().then( 
+      (result)=>{ 
+        if( this.privateKey ){
+          console.log("this.privateKey use has made a recent transaction, add feature to remove pw confirm"+ this.privateKey)
+        }
+        this.privateKey = result.privateKey; 
+        this.txnServ.transaction(  this.privateKey, result.address, this.receiverAddress, this.amount, "aerum test transaction" )
     }, ()=>{
        console.log("catch");
     });
