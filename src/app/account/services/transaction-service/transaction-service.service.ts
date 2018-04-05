@@ -24,7 +24,7 @@ export class TransactionServiceService {
     private openModal(modal: ContainerContent, config: any = {}) : Promise<DialogRef<any>> {
         let overlayConfig = overlayConfigFactory(config, BSModalContext);
         return this.modal.open(modal, overlayConfig).result.then((modal) => {
-          return modal.result;
+          return modal;
         }, (err) => {
           return new Promise((resolve, reject) => {return reject(err)});
         });
