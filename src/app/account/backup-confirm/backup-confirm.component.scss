@@ -1,0 +1,70 @@
+.backup-confirm {
+    font-family: 'OpenSans';
+    max-width: 376px;
+    .header {
+        font-size: 36px;
+        text-align: center;
+        color: #27282A;
+    }
+    .line {
+        width: 87px;
+        border: 0;
+        border-top: 1px solid #C6CCD2;
+        margin: 14px auto;
+    }
+    .b-text {
+        color: #83868A;
+        font-size: 18px;
+        text-align: center;
+    }
+    .button {
+        padding: 28px 0px 17px 0px;
+        text-align: center;
+    }
+    .button-clear {
+        text-align: center;
+    }
+    .b-backup {
+        color: #83868A;
+        margin: 3px;
+        font-size: 18px;
+        line-height: 24px;
+        padding: 0 10px;
+        text-align: center;
+
+        p:before,
+        p:after {
+            background-color: #C6CCD2;
+            content: "";
+            display: inline-block;
+            height: 1px;
+            position: relative;
+            vertical-align: middle;
+            width: 61px;
+        }
+
+        p:before {
+            right: 0.5em;
+            margin-left: -50%;
+        }
+
+        p:after {
+            left: 0.5em;
+            margin-right: -50%;
+        }
+    }
+    .drag-and-drop-magic-div {
+        width: 370px;
+        height: 114px;
+        border: 1px solid #D1D1D1;
+        border-radius: 10px;
+        margin-top: 28px;
+    }
+    .go-back-text {
+        text-align: center;
+        a {
+            text-decoration: unset;
+            color: #2A669A;
+        }
+    }
+}

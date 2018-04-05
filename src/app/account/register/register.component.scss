@@ -1,1 +1,20 @@
- 
+.register {
+    font-family: 'OpenSans';
+    max-width: 356px;
+
+    &__header {
+        font-size: 36px;
+        text-align: center;
+        color: #27282A;
+    }
+
+    &__paragraph {
+        text-align: center;
+        color: #83868A;
+
+        &--small {
+            font-size: 13px;
+            color: #83868A;
+        }
+    }
+}

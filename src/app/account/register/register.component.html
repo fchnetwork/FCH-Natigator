@@ -1,7 +1,20 @@
 <aer-modal-container>
-    <h2>{{ 'CREATE_NEW_ACCOUNT' | translate }}</h2>
-    <app-divider></app-divider>
-    <aer-input type="text"></aer-input>
-    <app-divider [showLine]="false"></app-divider>
-    <aer-button>CONTINUE</aer-button>    
-</aer-modal-container>>
+    <div class="register">
+        <div class="register__header">{{ 'CREATE_NEW_ACCOUNT' | translate }}</div>
+        <app-divider></app-divider>
+        <p class="aer-small register__paragraph">
+            {{ 'SIGNED_UP_PREFIX' | translate }}
+            <a routerLink="/login">{{ 'SIGNED_UP_LINK' | translate }}</a> {{ 'SIGNED_UP_SUFFIX' | translate }}
+        </p>
+        <app-divider></app-divider>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <p class="register__paragraph--small">{{ 'CHOOSE_AVATAR' | translate }}</p>
+            <app-avatar-select formControlName="avatar"></app-avatar-select>
+            <p class="register__paragraph--small">{{ 'UNIQUE_AVATAR' | translate }}</p>
+            <aer-input placeholder="Choose your password" type="password" formControlName="password"></aer-input>
+            <aer-input placeholder="Repeat password" type="password" formControlName="confirmPassword"></aer-input>
+            <aer-button [disabled]="true">CONTINUE</aer-button>
+            {{registerForm.password}}
+        </form>
+    </div>
+</aer-modal-container>

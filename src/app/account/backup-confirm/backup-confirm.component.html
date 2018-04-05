@@ -1,0 +1,23 @@
+<aer-modal-container>
+    <div class="backup-confirm">
+      <div class="header">{{'CONFIRM_BACKUP'|translate}}</div>
+      <hr class="line">
+      <div class="b-text">{{'CONFIRM_BACKUP_TEXT'|translate}}</div>
+      <div class="go-back-text">
+          <a routerLink="/landing">{{'CONFIRM_BACKUP_GO_BACK'|translate}}</a>
+      </div>
+      <div class="drag-and-drop-magic-div"></div>
+    
+      <div class="button">
+        <aer-button (buttonFn)="confirm()">{{'CONFIRM'|translate}}</aer-button>
+      </div>
+      <div class="b-backup">
+          <p>
+            <span class="surrounded"> {{'OR'|translate}} </span>
+          </p>
+      </div>
+      <div class="button-clear">
+          <aer-button size="medium" color="blue" (buttonFn)="clear()">{{'CLEAR'|translate}}</aer-button>
+      </div>
+    </div>
+  </aer-modal-container>

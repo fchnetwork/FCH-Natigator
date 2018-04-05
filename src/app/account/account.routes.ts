@@ -1,16 +1,15 @@
 import { RouterModule } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { RegistrationComponent } from "./registration/registration.component";
-import { LoginComponent } from "./login/login.component";
-import { BackupComponent } from "./backup/backup.component";
-import { BackupCreateComponent } from "./backup-create/backup-create.component";
-import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component";
+import { LoginComponent } from "./login/login.component"; 
 import { RegisterComponent } from "./register/register.component";
+import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
+import { BackupCreateComponent } from "./backup-create/backup-create.component";
+import { BackupConfirmationComponent } from "./backup-confirmation/backup-confirmation.component";
 
 export const ACCOUNT_ROUTES = [
     {
-        path: 'account',
-        compoonent: RegisterComponent,
+        path: '',
         children: [
             {
                 path: '', 
@@ -27,7 +26,7 @@ export const ACCOUNT_ROUTES = [
             },
             {
                 path: 'backup',
-                component: BackupComponent
+                component: BackupDisclamerComponent
             },
             {
                 path: 'backup/create',
@@ -35,7 +34,7 @@ export const ACCOUNT_ROUTES = [
             },
             {
                 path: 'backup/confirm',
-                component: BackupConfirmComponent
+                component: BackupConfirmationComponent
             },
             {
                 path: 'login',

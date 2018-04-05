@@ -23,12 +23,13 @@ import { CanActivateViaAuthGuard } from "../app.guard";
 import { ModalService } from "../shared/services/modal.service";
 import { TransactionServiceService } from "./services/transaction-service/transaction-service.service";
 import { RegisterComponent } from './register/register.component';
-import { BackupComponent } from './backup/backup.component';
 import { BackupCreateComponent } from './backup-create/backup-create.component';
-import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component'; 
+import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component';
 import { RestoreComponent } from './restore/restore.component';
+import { BackupConfirmationComponent } from "./backup-confirmation/backup-confirmation.component";
+import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
 
-const modalComponents = [BasicModalComponent]; 
+const modalComponents = [BasicModalComponent];
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -37,42 +38,33 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
     imports: [
         AccountRoutingModule,
-        CommonModule,
         AppUIModule,
         FormsModule,
-        BrowserAnimationsModule,
+        CommonModule,
         ToastModule.forRoot(),
         ExplorerModule.forRoot(),
         SharedModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: (createTranslateLoader),
-                deps: [HttpClient]
-            }
-        }),
+        ReactiveFormsModule
     ],
     declarations: [
+        modalComponents,
         LoginComponent,
         RegistrationComponent,
         AvatarSelectComponent,
         ClipboardDirective,
-        modalComponents
-,
-    RegisterComponent,
-    BackupComponent,
-    BackupCreateComponent,
-    BackupConfirmComponent,
-    LoginComponent
-],
+        RegisterComponent,
+        BackupCreateComponent,
+        BackupConfirmComponent,
+        BackupConfirmationComponent,
+        BackupDisclamerComponent,
+        LoginComponent
+    ],
     providers: [
         AuthenticationService,
         ClipboardService,
         ModalService,
         TransactionServiceService,
-        CanActivateViaAuthGuard,
-        ModalService
+        CanActivateViaAuthGuard
     ]
 })
 export class AccountModule { } 

@@ -1,3 +1,6 @@
-<div class="divider">
-  <div class="divider__line" [ngClass]="{'divider__line--visible' : showLine}"></div>
+<hr class="divider--line" *ngIf="label == null">
+<div class="divider--label" *ngIf="label != null">
+  <p>
+    <span class="surrounded"> {{label}} </span>
+  </p>
 </div>
