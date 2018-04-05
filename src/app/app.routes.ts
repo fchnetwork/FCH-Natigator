@@ -3,7 +3,7 @@ import { LoginComponent } from './account/login/login.component'
 import { RegistrationComponent } from './account/registration/registration.component'
 import { Error404Component } from './shared/components/error404/error404.component'
 import { LandingPageComponent } from './account/landing-page/landing-page.component'
-import { CreateTransactionComponent } from './account/createTransaction/createTransaction.component'
+import { CreateTransactionComponent } from './account/create-transaction/create-transaction.component'
 import { CanActivateViaAuthGuard } from './app.guard';
 import { BackupConfirmationComponent } from './account/backup-confirmation/backup-confirmation.component';
 import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';

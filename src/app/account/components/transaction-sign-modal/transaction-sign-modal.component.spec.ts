@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { CreateTransactionComponent } from './createTransaction.component';
+import { TransactionSignModalComponent } from './transaction-sign-modal.component';
 
-describe('CreateTransactionComponent', () => {
-  let component: CreateTransactionComponent;
-  let fixture: ComponentFixture<CreateTransactionComponent>;
+describe('TransactionSignModalComponent', () => {
+  let component: TransactionSignModalComponent;
+  let fixture: ComponentFixture<TransactionSignModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateTransactionComponent ]
+      declarations: [ TransactionSignModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateTransactionComponent);
+    fixture = TestBed.createComponent(TransactionSignModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

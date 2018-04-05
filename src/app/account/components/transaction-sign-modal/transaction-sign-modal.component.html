@@ -1,0 +1,21 @@
+<aer-modal-dialog >
+  <div class="c-transaction c-transaction__unlock">
+    <h1>Unlock Account</h1>
+    <p>
+      As a security precaution it is necessary to unlock your account before any transactions on the Aerum Network 
+      prettyGoodPa55w0rd
+    </p>
+    <form [formGroup]="unlockAccountForm" (ngSubmit)="onSubmit()">
+      <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
+      <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">
+      <button type="submit" [disabled]="!unlockAccountForm.valid" >Continue</button>
+      <span *ngIf="unlockAccountForm.controls['password'].hasError('required') && unlockAccountForm.controls['password'].touched" class="login-error">You must include a password.</span>
+      <span *ngIf="unlockAccountForm.controls['password'].hasError('minlength') && unlockAccountForm.controls['password'].touched" class="login-error">Your password must be at least 10 characters long.</span>   
+      <span *ngIf="unlockAccountForm.controls['password'].hasError('upper') && unlockAccountForm.controls['password'].touched" class="login-error">upper error</span>          
+      <span *ngIf="unlockAccountForm.controls['password'].hasError('lower') && unlockAccountForm.controls['password'].touched" class="login-error">lower error</span> 
+      <span *ngIf="unlockAccountForm.controls['password'].hasError('number') && unlockAccountForm.controls['password'].touched" class="login-error">number error</span>                                                 
+      <span *ngIf="unlockAccountForm.controls['confirmpassword'].hasError('notEquivalent') && unlockAccountForm.controls['confirmpassword'].touched && !unlockAccountForm.controls['confirmpassword'].pristine" class="login-error">Confirm Password Does not match</span>        
+    </form>
+
+  </div>
+</aer-modal-dialog>
