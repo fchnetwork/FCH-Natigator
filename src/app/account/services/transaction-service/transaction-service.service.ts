@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Overlay } from 'ngx-modialog';
-import { TransactionSignModalComponent } from '../../components/transaction-sign-modal/transaction-sign-modal.component';
-import { Modal, DialogRef, overlayConfigFactory, OverlayConfig, ModalComponent, ContainerContent } from "ngx-modialog";
-import { BSModalContext } from "ngx-modialog/plugins/bootstrap";
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -17,24 +14,11 @@ export class TransactionServiceService {
 
     public web3: any;
     
-    constructor(private modal: Modal) {
+    constructor() {
         this.initWeb3();
     }
 
-    private openModal(modal: ContainerContent, config: any = {}) : Promise<DialogRef<any>> {
-        let overlayConfig = overlayConfigFactory(config, BSModalContext);
-        return this.modal.open(modal, overlayConfig).result.then((modal) => {
-          return modal;
-        }, (err) => {
-          return new Promise((resolve, reject) => {return reject(err)});
-        });
-      }
 
-      openTransactionConfirm(data?: any): Promise<any> { 
-        return this.openModal(TransactionSignModalComponent, {isBlocking: false, dialogClass: 'adaptive-dialog', param: data});
-    }
-
- 
     initWeb3 = () => {
         // Checking if Web3 has been injected by the browser (Mist/MetaMask)
         if (typeof window.web3 !== 'undefined') {
@@ -106,6 +90,23 @@ transaction( privkey, activeUser, to, amount, data ) {
     // const receipt = this.web3.eth.getTransactionReceipt('0x9fc76417374aa880d4449a1f7f31ec597f00b1f6f3dd2d66f4c9c6c445836d8b')
     // .then(console.log);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
