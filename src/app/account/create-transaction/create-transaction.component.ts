@@ -3,6 +3,8 @@ import { AuthenticationService } from '../services/authentication-service/authen
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
 // import { ModalService } from '../../shared/services/modal.service';
 import { FormsModule } from '@angular/forms';
+import { ModalService } from '../../shared/services/modal.service';
+
 
 
 
@@ -25,7 +27,7 @@ export class CreateTransactionComponent implements OnInit {
   theirBalance: any;
 
 
-
+  privateKey: string;
 
   /* new fields */
   senderAddress: string;
@@ -41,9 +43,15 @@ export class CreateTransactionComponent implements OnInit {
 
   constructor(
     public authServ: AuthenticationService,
+    private modalSrv: ModalService,
     public txnServ: TransactionServiceService ) {
 
     this.userData();
+
+
+
+   /// this.txnServ.getTransactionsByAccount("0x9e7a9986f45b74a7e099673e29794e0e70082739", 0, 100000000);
+
 
 
    }
@@ -51,13 +59,10 @@ export class CreateTransactionComponent implements OnInit {
 
     userData() {
     return this.authServ.showKeystore().then( (resultA) => {
-      console.log( "0x" + resultA.address );
         return Promise.all([resultA, this.txnServ.checkBalance(resultA.address)]); // resultA will implicitly be wrapped
     }).then( ([resultA, resultB]) => {
       this.senderAddress = "0x" + resultA.address ;
       this.walletBalance = resultB;
-      console.log( "ouput ", JSON.stringify(resultB) );
-      console.log( "ouput ", JSON.stringify(resultA ) );
     });
 }
 
@@ -174,7 +179,6 @@ export class CreateTransactionComponent implements OnInit {
   }
 
 
-
   public showMore() {}
 
   public showTransactions() {}
@@ -184,10 +188,19 @@ export class CreateTransactionComponent implements OnInit {
   }
 
 
+
+
+
+
   public send() {
-    this.txnServ.openTransactionConfirm().then( 
+    this.modalSrv.openTransactionConfirm().then( 
       (result)=>{
-       console.log("open modal"+ result );
+        console.log("receiverAddress "+ this.receiverAddress )
+        console.log("receiverAddress "+ this.receiverAddress )
+        console.log("receiverAddress "+ this.receiverAddress )   
+        this.privateKey = result.privateKey; 
+        this.txnServ.transaction(  this.privateKey, result.address, this.receiverAddress, this.amount, "aerum test transaction" )
+       // console.log( JSON.stringify(result)  );
     }, ()=>{
        console.log("catch");
     });

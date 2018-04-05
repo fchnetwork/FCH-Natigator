@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Overlay } from 'ngx-modialog';
-import { TransactionSignModalComponent } from '../../components/transaction-sign-modal/transaction-sign-modal.component';
-import { Modal, DialogRef, overlayConfigFactory, OverlayConfig, ModalComponent, ContainerContent } from "ngx-modialog";
-import { BSModalContext } from "ngx-modialog/plugins/bootstrap";
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -17,21 +14,8 @@ export class TransactionServiceService {
 
     public web3: any;
     
-    constructor(private modal: Modal) {
+    constructor() {
         this.initWeb3();
-    }
-
-    private openModal(modal: ContainerContent, config: any = {}) : Promise<DialogRef<any>> {
-        let overlayConfig = overlayConfigFactory(config, BSModalContext);
-        return this.modal.open(modal, overlayConfig).result.then((modal) => {
-          return modal.result;
-        }, (err) => {
-          return new Promise((resolve, reject) => {return reject(err)});
-        });
-      }
-
-      openTransactionConfirm(data?: any): Promise<any> { 
-        return this.openModal(TransactionSignModalComponent, {isBlocking: false, dialogClass: 'adaptive-dialog', param: data});
     }
 
  
@@ -106,6 +90,59 @@ transaction( privkey, activeUser, to, amount, data ) {
     // const receipt = this.web3.eth.getTransactionReceipt('0x9fc76417374aa880d4449a1f7f31ec597f00b1f6f3dd2d66f4c9c6c445836d8b')
     // .then(console.log);
 }
+
+
+
+
+
+
+// getTransactionsByAccount(myaccount, startBlockNumber, endBlockNumber) {
+//   if (endBlockNumber == null) {
+//     endBlockNumber = this.web3.blockNumber;
+//     console.log("Using endBlockNumber: " + endBlockNumber);
+//   }
+//   if (startBlockNumber == null) {
+//     startBlockNumber = endBlockNumber - 1000;
+//     console.log("Using startBlockNumber: " + startBlockNumber);
+//   }
+//   console.log("Searching for transactions to/from account \"" + myaccount + "\" within blocks "  + startBlockNumber + " and " + endBlockNumber);
+
+//   for (var i = startBlockNumber; i <= endBlockNumber; i++) {
+//     if (i % 1000 == 0) {
+//       console.log("Searching block " + i);
+//     }
+//     var block = this.web3.getBlock(i, true);
+//     if (block != null && block.transactions != null) {
+//       block.transactions.forEach( function(e) {
+//         if (myaccount == "*" || myaccount == e.from || myaccount == e.to) {
+//           console.log("  tx hash          : " + e.hash + "\n"
+//             + "   nonce           : " + e.nonce + "\n"
+//             + "   blockHash       : " + e.blockHash + "\n"
+//             + "   blockNumber     : " + e.blockNumber + "\n"
+//             + "   transactionIndex: " + e.transactionIndex + "\n"
+//             + "   from            : " + e.from + "\n" 
+//             + "   to              : " + e.to + "\n"
+//             + "   value           : " + e.value + "\n"
+//             + "   time            : " + block.timestamp + " " + new Date(block.timestamp * 1000).toUTCString() + "\n"
+//             + "   gasPrice        : " + e.gasPrice + "\n"
+//             + "   gas             : " + e.gas + "\n"
+//             + "   input           : " + e.input);
+//         }
+//       })
+//     }
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
