@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication-service/authentication.service';
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
-import { ModalService } from '../../shared/services/modal.service';
+// import { ModalService } from '../../shared/services/modal.service';
 import { FormsModule } from '@angular/forms';
+
 
 
 const Tx = require('ethereumjs-tx');
@@ -12,9 +13,9 @@ const Web3 = require('web3');
 declare var window: any;
 
 @Component({
-  selector: 'app-createTransaction',
-  templateUrl: './createTransaction.component.html',
-  styleUrls: ['./createTransaction.component.scss']
+  selector: 'app-create-transaction',
+  templateUrl: './create-transaction.component.html',
+  styleUrls: ['./create-transaction.component.scss']
 })
 export class CreateTransactionComponent implements OnInit {
 
@@ -22,6 +23,9 @@ export class CreateTransactionComponent implements OnInit {
   decryptKeystore: any;
   myBalance: any;
   theirBalance: any;
+
+
+
 
   /* new fields */
   senderAddress: string;
@@ -31,15 +35,39 @@ export class CreateTransactionComponent implements OnInit {
   includedDataLength: number;
   walletBalance: number;
   sendEverything: boolean;
-  
-  constructor(
-    public authServ: AuthenticationService, 
-    public txnServ: TransactionServiceService,
-    public modal: ModalService
-   ) {}
 
-  ngOnInit() { 
-    this.senderAddress = '35a1sd6f8ew13f5a1f5sd1f6a854e65f1'; // fake address
+
+
+
+  constructor(
+    public authServ: AuthenticationService,
+    public txnServ: TransactionServiceService ) {
+
+    this.userData();
+
+
+   }
+
+
+    userData() {
+    return this.authServ.showKeystore().then( (resultA) => {
+      console.log( "0x" + resultA.address );
+        return Promise.all([resultA, this.txnServ.checkBalance(resultA.address)]); // resultA will implicitly be wrapped
+    }).then( ([resultA, resultB]) => {
+      this.senderAddress = "0x" + resultA.address ;
+      this.walletBalance = resultB;
+      console.log( "ouput ", JSON.stringify(resultB) );
+      console.log( "ouput ", JSON.stringify(resultA ) );
+    });
+}
+
+
+
+
+
+
+  ngOnInit() {
+  //  this.senderAddress = '35a1sd6f8ew13f5a1f5sd1f6a854e65f1'; // fake address
     this.transactions = [
       {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 10.00},
       {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 155.10},
@@ -51,7 +79,7 @@ export class CreateTransactionComponent implements OnInit {
       {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 1.00},
       {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 1.00}
     ];
-    this.walletBalance = 10.6654345;
+    this.walletBalance = this.myBalance;
     this.includedDataLength = 0;
   }
 
@@ -70,7 +98,7 @@ export class CreateTransactionComponent implements OnInit {
   public getTotalAmount() {
     if(this.amount) {
       return Number(this.amount) + Number(this.getMaxTransactionFee());
-    } 
+    }
     else {
       return 0;
     }
@@ -81,7 +109,26 @@ export class CreateTransactionComponent implements OnInit {
       this.backupKeystore =	v
     })
   }
+
+
+
+
   
+
+  unlockAccount(password) {
+    // set up as a promise to let user know about wrong password
+    this.authServ.unencryptKeystore( password ).then( (v) => {
+      this.decryptKeystore = v
+    }, (err) => {
+      this.decryptKeystore = err
+    })
+  }
+
+
+
+
+
+  // mark for removal
   showDecryptedKeyStore() {
     // set up as a promise to let user know about wrong password
     this.authServ.unencryptKeystore( "prettyGoodPa55w0rd").then( (v) => {
@@ -90,8 +137,12 @@ export class CreateTransactionComponent implements OnInit {
       this.decryptKeystore = err
     })
   }
-  
-  
+
+
+
+
+
+
   checkYourBalance() {
     if(this.decryptKeystore) {
         this.txnServ.checkBalance(this.decryptKeystore.address).then( res => {
@@ -104,15 +155,15 @@ export class CreateTransactionComponent implements OnInit {
       alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
     }
   }
-  
+
   checkReceiverBalance( address ) {
    // this.theirBalance = this.txnServ.checkBalance()
    this.txnServ.checkBalance( address ).then( res => {
     console.log("res " +  res)
     this.theirBalance = 	res
-  } )   
+  } )
   }
-  
+
 
   createTransaction(){
   if(  this.decryptKeystore ) {
@@ -121,28 +172,29 @@ export class CreateTransactionComponent implements OnInit {
     alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
   }
   }
-  
-  public openDemoModal(dataModel) {
-    this.modal.openBasicModal(dataModel).then((result)=>{
-      console.log("Modal window was closed with SuccessButton.");
-    })
-    .catch(()=>{
-    });
-  }
 
-  public showMore() {
 
-  }
 
-  public send() {
+  public showMore() {}
 
-  }
-
-  public showTransactions() {
-
-  }
+  public showTransactions() {}
 
   public getICoin(amount) {
     return amount > 0;
   }
+
+
+  public send() {
+    this.txnServ.openTransactionConfirm().then( 
+      (result)=>{
+       console.log("open modal"+ result );
+    }, ()=>{
+       console.log("catch");
+    });
+
+  }
+
+
+
+
 }

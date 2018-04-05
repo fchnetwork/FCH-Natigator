@@ -28,7 +28,7 @@ export class RegistrationComponent implements OnInit, OnChanges {
 
   componentDestroyed$: Subject<boolean> = new Subject()
 	activeAvatar: number = 0; // default activeAvatar selected
-	form: FormGroup; 
+	form: FormGroup;  
 	step: string = 'step_1';  // default page to show
 	testAccount: any = testAccount;
 	seed: Array<any> = [];
