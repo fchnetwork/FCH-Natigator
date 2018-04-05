@@ -1,19 +1,24 @@
-import { Component, NgZone, OnDestroy, OnInit, Inject, ChangeDetectorRef, ElementRef, OnChanges, ViewChild, ChangeDetectionStrategy, ViewContainerRef  } from '@angular/core';
+import { Component, OnDestroy, OnInit, OnChanges, ChangeDetectionStrategy, ViewContainerRef  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 import { testAccount } from '../../shared/helpers/data.mock';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { AvatarSelectComponent } from '../components/avatar-select/avatar-select.component';
-import { MatDialog } from '@angular/material';
-import { RegistrationDialog } from './registration.dialog'
+// import { MatDialog } from '@angular/material';
+// import { RegistrationDialog } from './registration.dialog'
 import { AuthenticationService } from '../services/authentication-service/authentication.service';
 import { selectedSeedPhrase } from '../../shared/app.interfaces'
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Router } from '@angular/router';  
 import { Subject } from 'rxjs/Subject'
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
-@Component({
+// import { BasicModalComponent } from '../components/basic-modal/basic-modal.component';
+import { ModalService } from '../../shared/services/modal.service';
+import { AerumBackupFile } from  '../../shared/components/file-download/file-download';
+
+
+@Component({ 
 // changeDetection: ChangeDetectionStrategy.OnPush,
 selector: 'app-registration',
 templateUrl: './registration.component.html',
@@ -22,31 +27,20 @@ styleUrls: ['./registration.component.scss']
 export class RegistrationComponent implements OnInit, OnChanges {
 
   componentDestroyed$: Subject<boolean> = new Subject()
-
-	activeAvatar: number = 1; // default activeAvatar selected
-
+	activeAvatar: number = 0; // default activeAvatar selected
 	form: FormGroup; 
-
 	step: string = 'step_1';  // default page to show
-
 	testAccount: any = testAccount;
-
 	seed: Array<any> = [];
-
 	cloneSeedArray: Array<any> = [];
-
 	items: selectedSeedPhrase[];
-
 	selectedItems: selectedSeedPhrase[];
-
 	AerAddressData: any; // data returned from the API
-
 	seedsMatchNotification: string;
-
 	isEqual: boolean = false; // checks the seed array and the randomised one to see if the user clicked the right order
-
-	// AerumAPIcreateAddress: string = "http://localhost:3030/create-aer-address" // api address
-
+  public specToggle: boolean;
+	public inputText: string;
+	
 	payload: any = { // payload to send to the api - this is just a skeleton 
 		avatar: 1,
 		password: "",
@@ -58,32 +52,33 @@ export class RegistrationComponent implements OnInit, OnChanges {
 		public: "",			
 	}         
 	
-	
-	backupKeystore: any
-	
+
 	constructor( public toastr: ToastsManager, 
 				 public vcr: ViewContainerRef,
+				 public modalSrv: ModalService,
+				 public translate: TranslateService, 
 				 public authServ: AuthenticationService,
 				 public formBuilder: FormBuilder,
-				 private cd: ChangeDetectorRef,
-				 public zone: NgZone,
-				 private router: Router,
-				 public dialog: MatDialog ) {
-				 this.toastr.setRootViewContainerRef(vcr);
+				 private router: Router, ) {
+
+					this.specToggle = false;
+					this.toastr.setRootViewContainerRef(vcr);
+
 				}
 
-  // Opens a modal with information about the users seed - when closed it executes openBackupSeed() which forwards to the next step
-	openDialog(): void {
-		let dialogRef = this.dialog.open( RegistrationDialog, {
-			width: '540px',
-			panelClass:"o-modal-panel",
-			backdropClass: "backdrop",
-		});
-		dialogRef.afterClosed().takeUntil( this.componentDestroyed$ ).subscribe(result => {
-			if( result ){
-				this.openBackupSeed()
-			}
-		});
+				public openDemoModal(dataModel) {
+					this.modalSrv.openBasicModal(dataModel).then((result)=>{
+						
+					})
+					.catch(()=>{
+						this.openBackupSeed()
+					});
+				}
+
+			
+	saveSeedToFile(){
+		const data = [{ seed: this.seed, }];
+		new AerumBackupFile( data, 'AerumBackupSeed');
 	}
 
   //  When executed forwards to the next step 
@@ -108,7 +103,7 @@ export class RegistrationComponent implements OnInit, OnChanges {
 
 		this.seed = this.payload.mnemonic.split(" ")
 
-		console.log( this.payload.mnemonic )
+	//	console.log( this.payload.mnemonic )
 		
 	this.newSeedConfirm();
 			this.step = "step_2"
@@ -116,8 +111,8 @@ export class RegistrationComponent implements OnInit, OnChanges {
 	}
 
   //  Opens the Seed Information Dialog above    
-	proceedStep3(){
-		this.openDialog()
+	proceedStep3(dataModel){
+		this.openDemoModal(dataModel)
 	}
 
   //  When executed forwards to the next step    
@@ -125,6 +120,14 @@ export class RegistrationComponent implements OnInit, OnChanges {
 		this.step = "step_4"
 	}    
 
+
+	skipStep(step){
+		this.step = step;
+	}
+
+	backStep(step){
+		this.step = step;
+	}
 	
 	// user has ccreated an account, now encrypt the private key and save to a cookie for use on the transactions page
 	authenticateUser() { 
@@ -247,6 +250,11 @@ export class RegistrationComponent implements OnInit, OnChanges {
 		this.componentDestroyed$.next(true);
 		this.componentDestroyed$.complete();
 	}
+
+
+	goToLogin() {
+    this.router.navigate(['/login']);
+  }
 
 
 }

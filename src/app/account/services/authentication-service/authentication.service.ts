@@ -30,6 +30,7 @@ export class AuthenticationService {
 
     constructor(private _http: Http) {
         this.initWeb3();
+        avatars.config({ size: 67 * 3, bgColor: '#fff' });
         // this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
         // this.headers.append('X-Requested-With', 'XMLHttpRequest');
         // this.aerum$ = new Observable<any[]>( observer => this._aerumMainObservable = observer).share();  // not in use yet
@@ -66,7 +67,7 @@ export class AuthenticationService {
 
 avatarsGenerator() {
     const seeds = []
-    avatars.config({ rows: 8, cells: 8 });
+
 
     for( let i =0; i <=4; i++ ) {
 
@@ -85,7 +86,7 @@ avatarsGenerator() {
         seeds.push({
             id: i,
             seed: newSeed,
-            avatar: avatars.create( address, { size: 67 * 3, bgColor: "#ffffff" }),
+            avatar: avatars.create( address ),
             address: address,
             private: getPriv,
             public: getPublic,            
@@ -96,6 +97,24 @@ avatarsGenerator() {
 
     return seeds;
 }
+
+
+
+
+
+
+
+
+
+authState() : Observable<any> {
+    return Observable.fromPromise( this.showKeystore() );
+}
+
+
+
+
+
+
 
 
 
@@ -121,6 +140,34 @@ public showKeystore() : Promise<any> {
         }
     });
 }
+
+
+
+public showKeystore2() : Promise<any> {
+    return new Promise( (resolve, reject) => {
+        const Auth = Cookie.get('aerum_keyStore')
+          if(Auth) {
+
+
+
+            let fileURL = URL.createObjectURL(Auth);
+            window.open(fileURL);
+
+            resolve( JSON.parse( Auth ) )
+
+        } else {
+            reject("no keystore found");
+        }
+    });
+}
+
+
+
+
+
+
+
+
 
 
 // retrieve Private key using keystore auth cookie
@@ -164,7 +211,7 @@ public generateAddressLogin( seed: any ) : Promise<any> {
         const getPublic          = wallet.getPublicKeyString().toString("hex")        
         const getChecksumAddress = ethUtil.toChecksumAddress( getAddress )
         const address            = ethUtil.addHexPrefix( getChecksumAddress )
-        const avatar = avatars.create( address, { size: 67 * 3, bgColor: "#ffffff" }) 
+        const avatar = avatars.create( address ) 
 
         if(address) {
             resolve({ address: address, avatar: avatar, private:getPriv })

@@ -2,14 +2,17 @@
  * Typography
  */
 
+ @import '~sass/common/fonts';
+
+
 $input-height:                10px !default;
 $input-height-lg:             10px !default;
 $input-height-sm:             10px !default;
 $sprite:                      'assets/images/sprite.png';
 
-$paragraph:                   Helvetica, Arial, sans-serif;
-$heading:                     Helvetica, Arial, sans-serif;
-$standard:                    Helvetica, Arial, sans-serif;
+$paragraph:                   'open_sansregular', Helvetica, Arial, sans-serif;
+$heading:                     'open_sansbold', Helvetica, Arial, sans-serif;
+$standard:                    'open_sanssemibold', Helvetica, Arial, sans-serif;
 
 
 
@@ -19,15 +22,15 @@ $standard:                    Helvetica, Arial, sans-serif;
 
 $plugin-overlay:              rgba(43, 46, 56, 0.9);
 
-$brand-primary:               #0a7562;
+$brand-primary:               #458CC9;
 $brand-primary-darker:        darken($brand-primary, 10);
 $brand-primary-lighter:       lighten($brand-primary, 40);
-$brand-primary-rgba:          rgba(10, 117, 98, 0.9);
+$brand-primary-rgba:          rgba(69, 140, 201, 0.2);
 
-$brand-secondary:             #f50506; 
-$brand-secondary-darker:      darken($brand-secondary, 10);
-$brand-secondary-lighter:     lighten($brand-secondary, 40);
-$brand-secondary-rgba:        rgba(245, 5, 6, 0.9);
+// $brand-secondary:             #f50506; 
+// $brand-secondary-darker:      darken($brand-secondary, 10);
+// $brand-secondary-lighter:     lighten($brand-secondary, 40);
+// $brand-secondary-rgba:        rgba(245, 5, 6, 0.9);
 
 $brand-tertiary:              #363636; 
 $brand-tertiary-darker:       darken($brand-tertiary, 10);

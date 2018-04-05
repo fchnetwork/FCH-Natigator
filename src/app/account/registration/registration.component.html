@@ -1,96 +1,136 @@
 <div class="o-createAccountPage">
-  <ul class="o-createAccountWrapper" *ngIf="step == 'step_1'">       
-    <li>
-    <h1>Create New Account</h1>
-      <p>Sign up for a free account below or restore an account from a backup</p>              
-    </li>
-    <li>    
-      <h4>Choose your address avatar</h4>
-      <span>This avatar is unique. You cannot change it later.</span> 
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <app-avatar-select formControlName="avatar"></app-avatar-select>
-        <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
-        <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">
-        <span *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="login-error">You must include a password.</span>
-        <span *ngIf="form.controls['password'].hasError('minlength') && form.controls['password'].touched" class="login-error">Your password must be at least 10 characters long.</span>   
-        <span *ngIf="form.controls['password'].hasError('upper') && form.controls['password'].touched" class="login-error">upper error</span>          
-        <span *ngIf="form.controls['password'].hasError('lower') && form.controls['password'].touched" class="login-error">lower error</span> 
-        <span *ngIf="form.controls['password'].hasError('number') && form.controls['password'].touched" class="login-error">number error</span>                                                 
-        <span *ngIf="form.controls['confirmpassword'].hasError('notEquivalent') && form.controls['confirmpassword'].touched && !form.controls['confirmpassword'].pristine" class="login-error">Confirm Password Does not match</span>        
-        <button type="submit" mat-button mat-raised-button [disabled]="!form.valid" >Continue</button>
-        {{ form.value | json }} 
-      </form>
-    </li>
-    <li>OR</li>
-    <li>
-    <a>Sign in to a saved account</a> 
-    </li>
-  </ul>
-  <ul class="o-createAccountWrapper" *ngIf="step == 'step_2'">      
-    <li>
-      <h1>No Backup, No Money</h1>
-    </li>
-    <li>
-      <p>must save the secret phrase. It is crucial for accessing your account.</p>
-    </li>
-    <li>
-      <button mat-button mat-raised-button (click)="proceedStep3()" type="submit">Backup Now</button>
-    </li>    
-    <li>Or</li>            
-    <li>
-      <a>Do it later</a>
-    </li>       
-  </ul>
-  <ul class="o-createAccountWrapper" *ngIf="step == 'step_3'">
-    <li>
-      <h1>Save backup phrase</h1>
-    </li>
-    <li>
-      <p>Since only you control your money, you’ll need to save your backup phrase in case this app is deleted or go back</p>
-    </li>
-    <li>
-      <p>      
-        Please carefully write down these 15 words or copy them
-        <button mat-button mat-raised-button type="submit"
-        [disabled]="!seed"
-        [clipboard]="copyToClipboard.innerHTML.trim()"
-        (clipboardCopy)="logSuccess( $event )"
-        (clipboardError)="logError( $event )">
-        Click here to copy
-        </button>
-      </p>
-    </li>      
-    <li>
-      <div class="c-seedContainer u-displayOnly u-locked" #copyToClipboard>
-        <span *ngFor="let s of seed">{{ s }} </span> 
-      </div>  
-    </li>      
-    <li>
-      <button mat-button mat-raised-button type="submit" (click)="proceedStep4()">I've written it down</button>
-    </li>    
-    <li>Or</li>            
-    <li>
-      <a >Do it later</a>
-    </li>       
-  </ul>  
-  <ul class="o-createAccountWrapper" *ngIf="step == 'step_4'">    
-    <li>SEED CONFIRM GOES HERE</li>
-    <li>
-      <div class="c-seedContainer u-displayOnly c-seedContainer__dynamic">
-        <span *ngFor="let item of selectedItems; let i = index" (click)="unSelect(item, i)">{{ item.name }}</span> 
-      </div>  
-    </li>         
-    <li>
-      <div class="c-seedContainer u-selectionSeed">
-        <span  [class.u-removeSeed]="item.selected" (click)="select(item)" *ngFor="let item of items">{{ item.name }}</span> 
-      </div>  
-    </li>     
-    <li>
-      <div class="c-actions">
-        <button *ngIf="selectedItems.length === seed.length && !isEqual" (click)="newSeedConfirm()" class="c-btn">Try Again</button>
-      </div>            
-    </li>         
-    <button type="submit" (click)="authenticateUser()" mat-button mat-raised-button [disabled]="!isEqual" >Continue</button>
-  </ul>      
-</div>
-
+    <div class="c-table">
+      <div class="c-table--row">
+        <div class="c-table--cell">
+            <div class="c-registration">
+              <span class="c-registration__icon"></span>
+              <!-- <div class="logo circle">
+                  <aer-icon>aerum</aer-icon>
+              </div> -->
+              <div class="c-registration__wrap">
+  
+                  <!-- Step 1 begin -->
+                  <div class="c-registration__step1" *ngIf="step == 'step_1'">
+                    <h1>{{ 'CREATE_NEW_ACCOUNT' | translate }}</h1>
+                    <div class="c-registration__cta">
+                        <p>
+                            {{ 'SIGNED_UP_PREFIX' | translate }} <a routerLink="/login">{{ 'SIGNED_UP_LINK' | translate }}</a> {{ 'SIGNED_UP_SUFFIX' | translate }}
+                        </p>
+                    </div>
+                    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                      <span class="c-info">{{ 'CHOOSE_AVATAR' | translate }}</span>
+                      <app-avatar-select formControlName="avatar"></app-avatar-select>
+                      <span class="c-info">{{ 'UNIQUE_AVATAR' | translate }}</span> 
+                      <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
+                      <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">
+                      <span *ngIf="form.controls['password'].hasError('required') && form.controls['password'].touched" class="login-error">You must include a password.</span>
+                      <span *ngIf="form.controls['password'].hasError('minlength') && form.controls['password'].touched" class="login-error">Your password must be at least 10 characters long.</span>   
+                      <span *ngIf="form.controls['password'].hasError('upper') && form.controls['password'].touched" class="login-error">upper error</span>          
+                      <span *ngIf="form.controls['password'].hasError('lower') && form.controls['password'].touched" class="login-error">lower error</span> 
+                      <span *ngIf="form.controls['password'].hasError('number') && form.controls['password'].touched" class="login-error">number error</span>                                                 
+                      <span *ngIf="form.controls['confirmpassword'].hasError('notEquivalent') && form.controls['confirmpassword'].touched && !form.controls['confirmpassword'].pristine" class="login-error">Confirm Password Does not match</span>        
+                      <button type="submit" [disabled]="!form.valid" >Continue</button> 
+                    </form>
+                  </div>
+                  <!-- Step 1 end -->
+  
+                  <!-- Step 2 begin -->
+                  <div class="c-registration__step2 u-center" *ngIf="step == 'step_2'">
+                      <h1>{{ 'CREATE_BACKUP' | translate }}</h1>
+                      <div class="c-registration__cta">
+                          <p>
+                              {{ 'BACKUP_PHRASE' | translate }}
+                          </p>
+                      </div>
+                      <p>
+                          <button type="submit" (click)="proceedStep3('datamodel')">
+                            {{ 'CREATE_BACKUP' | translate }}
+                          </button>
+                      </p>
+                      <p>
+                        <span class="u-horizLine">
+                            {{ 'OR' | translate }}
+                        </span>
+                      </p>
+                      <p>
+                        
+                        <a class="c-link" (click)="skipStep('step_3')">
+                            {{ 'SKIP_STEP' | translate }}
+                        </a>
+                      </p>
+                  </div>                
+                  <!-- Step 2 end -->
+  
+                  <!-- Step 3 begin -->
+                  <div class="c-registration__step3 u-center" *ngIf="step == 'step_3'">
+                      <h1>{{ 'SAVE_PHRASE' | translate }}</h1>
+                      <div class="c-registration__cta">
+                          <p>
+                              {{ 'SAVE_PHRASE_Text' | translate }}
+                          </p>
+                      </div>
+                      <p>
+                          <aer-button class="o-downloadFile" (click)="saveSeedToFile()" color="blue" size="small">{{ 'SAVE_FILE' | translate }}</aer-button>
+                      </p>
+                      <p>
+                        <span class="u-horizLine">
+                            {{ 'OR' | translate }}
+                        </span>
+                      </p>
+                      <div class="c-info">
+                          Please carefully write down these 15 words or 
+                          <button class="c-link" type="button"
+                                  [disabled]="!seed"
+                                  [clipboard]="copyToClipboard.innerHTML.trim()"
+                                  (clipboardCopy)="logSuccess( $event )"
+                                  (clipboardError)="logError( $event )">
+                                  copy them
+                          </button>
+                      </div> 
+                      <div class="c-seedContainer u-displayOnly u-locked" #copyToClipboard>
+                          <span class="c-seed__word u-plain" *ngFor="let s of seed">{{ s }} </span> 
+                      </div>  
+                      <button type="submit" (click)="proceedStep4()">
+                          {{ 'SAVED_IT' | translate }}
+                      </button>                      
+                  </div>                
+                  <!-- Step 3 end -->
+  
+                  <!-- Step 4 begin -->
+                  <div class="c-registration__step4 u-center" *ngIf="step == 'step_4'">
+                      <h1>{{ 'CONFIRM_BACKUP' | translate }}</h1>
+                      <div class="c-registration__cta">
+                          <p>
+                              {{ 'CONFIRM_BACKUP_TEXT' | translate }}
+                          </p>
+                      </div>                  
+                      <div class="c-seedContainer u-selectionSeed">
+                          <span class="c-seed__word u-full" [class.u-removeSeed]="item.selected" (click)="select(item)" *ngFor="let item of items">{{ item.name }}</span> 
+                      </div>  
+                      <div class="c-seedContainer u-displayOnly c-seedContainer__dynamic">
+                        <span class="c-seed__word u-full" *ngFor="let item of selectedItems; let i = index" (click)="unSelect(item, i)">{{ item.name }}</span> 
+                      </div>  
+                      <p>
+                          <button type="submit" (click)="authenticateUser()" mat-button mat-raised-button [disabled]="!isEqual" > {{ 'CONFIRM' | translate }}</button>
+                      </p>
+                      <p>
+                          <span class="u-horizLine">
+                              {{ 'OR' | translate }}
+                          </span>
+                      </p>                    
+                      <p>
+                          <button type="button" class="aer-button--clear" (click)="newSeedConfirm()">
+                              {{ 'CLEAR' | translate }}
+                          </button>                         
+                      </p>
+                  </div>                
+                  <!-- Step 4 end -->                
+  
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

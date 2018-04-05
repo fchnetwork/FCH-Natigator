@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR,  } from '@angular/forms';
 
-import { avatars } from '../../../shared/helpers/data.mock' 
+//import { avatars } from '../../../shared/helpers/data.mock' 
 
 import { AuthenticationService } from '../../services/authentication-service/authentication.service';
 
@@ -28,8 +28,8 @@ export class AvatarSelectComponent implements ControlValueAccessor, OnInit {
   
   onChange: any = () => { };
   onTouched: any = () => { };
-  avatars: any = avatars;
-  
+//   avatars: any = avatars;
+  avatars: any;
 
   get value(): any {
     return this._value;
@@ -49,8 +49,10 @@ export class AvatarSelectComponent implements ControlValueAccessor, OnInit {
 
     this._value = this.avatars[0]
 
-  // console.log("values "+  this.avatars[0])
-    // console.log( JSON.stringify( this.avatars) )
+    setTimeout(() => {
+      this.switch(  this.avatars[0] );
+    }, 100);
+
   }
 
   registerOnChange(fn) {
