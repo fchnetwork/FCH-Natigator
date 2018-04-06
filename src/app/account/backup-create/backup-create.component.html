@@ -4,7 +4,7 @@
       <hr class="line">
       <div class="b-text">{{'SAVE_PHRASE_TEXT'|translate}}</div>
       <div class="button">
-          <aer-button size="medium" color="blue" (buttonFn)="createBackup()">{{'SAVE_FILE'|translate}}</aer-button>
+          <aer-button size="medium" color="blue" (buttonFn)="savePhrase()">{{'SAVE_FILE'|translate}}</aer-button>
       </div>
       <div class="b-backup">
         <p>
@@ -12,14 +12,14 @@
         </p>
       </div>
       <div class="warning-text">
-        {{'WRITE_SEED'|translate}}
+        {{'WRITE_SEED'|translate}} <a style="cursor: pointer" (click)="copyToClipboard()">{{'WRITE_SEED_COPY' | translate}}</a>
           <!-- <a routerLink="/bck">{{'SKIP_STEP'|translate}}</a> -->
       </div>
       <div class="phrase">
-        {{phrase}}
+        {{seed}}
       </div>
       <div class="">
-        <aer-button (buttonFn)="save()">{{'SAVED_IT'|translate}}</aer-button>
+        <aer-button (buttonFn)="confirmBackup()">{{'SAVED_IT'|translate}}</aer-button>
       </div>
     </div>
   </aer-modal-container>

@@ -1,8 +1,0 @@
-footer.c-footer {
-	height: 300px;
-    @include boa-respond("max-sm") {
-        height: 400px;
-    }
-}
-
-@include sticky-footer(500px);

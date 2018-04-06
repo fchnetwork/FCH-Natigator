@@ -13,8 +13,7 @@ pipelines:
         caches:
           - node
         script:
-          - npm install
-          - npm run-script bower
+          - npm install 
           - npm run-script build --prod 
         artifacts:
           - build/**  

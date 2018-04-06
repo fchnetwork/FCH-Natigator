@@ -1,8 +1,0 @@
-.u-hidden {
-  display: none !important;
-}
-@include reptilehaus-hidden;
-
-.u-visually-hidden {
-  @include reptilehaus-visually-hidden(true);
-}
