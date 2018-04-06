@@ -21,7 +21,7 @@ export const ROUTES = [
       component: LandingPageComponent
   },    
   {
-      path: 'login',
+      path: 'account/login',
       component: LoginComponent
   },
   {

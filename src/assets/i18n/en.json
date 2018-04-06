@@ -1,5 +1,5 @@
 {
-"BACK_BUTTON_TEXT": "Backhjhj",
+"BACK_BUTTON_TEXT": "Back",
 "NAME": "Name",
 "WELCOME": "Get Started with Blockchain en",
 "CREATE_NEW_ACCOUNT": "Create New Account",
@@ -17,7 +17,7 @@
 "SAVE_PHRASE_TEXT": "Your money depend only on you, so you'll need to save this phrase.",
 "SAVE_FILE": "Save file",
 "WRITE_SEED":"Please carefully write down these 15 words or copy them",
-"SAVED_IT":"Ive saved it",
+"SAVED_IT":"I've saved it",
 "CONFIRM_BACKUP": "Confirm Backup",
 "CONFIRM_BACKUP_TEXT":"Please, tap each word in the correct order or",
 "CONFIRM_BACKUP_GO_BACK":"go back",
@@ -44,6 +44,14 @@
 "WARNING":"Warning!",
 "REGISTRATION_WARNING_TXT1":"You should ONLY use the official Aerum client.",
 "REGISTRATION_WARNING_TXT2":"Seed Words is the only one way to recover access to your account, treat it with care.",
-"REGISTRATION_WARNING_TXT3":"Please be careful and never input your SEED into fake 'clients'. Otherwise your account will be compromised and you will lose all of your funds."
+"REGISTRATION_WARNING_TXT3":"Please be careful and never input your SEED into fake 'clients'. Otherwise your account will be compromised and you will lose all of your funds.",
+"LOGIN":"Log in",
+"LOGIN_TEXT1":"The session was automatically terminated.",
+"LOGIN_TEXT2":"Sign in again or",
+"LOGIN_TEXT3":"create a new account",
+"CREATE_ACCOUNT":"Create Account",
+"RESTORE_ACCOUNT":"Restore account",
+"FROM_BACKUP":"from backup",
+"PASSWORD":"Password"
 }
 
