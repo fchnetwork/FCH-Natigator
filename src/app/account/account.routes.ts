@@ -1,6 +1,5 @@
 import { RouterModule } from "@angular/router";
-import { NgModule } from "@angular/core";
-import { RegistrationComponent } from "./registration/registration.component";
+import { NgModule } from "@angular/core"; 
 import { LoginComponent } from "./login/login.component"; 
 import { RegisterComponent } from "./register/register.component";
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
@@ -22,10 +21,6 @@ export const ACCOUNT_ROUTES = [
                 path: 'register',
                 component: RegisterComponent
             },
-            {
-                path: 'registration',
-                component: RegistrationComponent
-            }, 
             {
                 path: 'backup',
                 component: BackupPromptComponent

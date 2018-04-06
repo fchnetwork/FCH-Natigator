@@ -130,7 +130,7 @@ saveKeyStore(privateKey, Password){
 
 
 
-public showKeystore() : Promise<any> {
+showKeystore() : Promise<any> {
     return new Promise( (resolve, reject) => {
         const Auth = Cookie.get('aerum_keyStore')
           if(Auth) {
@@ -140,28 +140,6 @@ public showKeystore() : Promise<any> {
         }
     });
 }
-
-
-
-public showKeystore2() : Promise<any> {
-    return new Promise( (resolve, reject) => {
-        const Auth = Cookie.get('aerum_keyStore')
-          if(Auth) {
-
-
-
-            let fileURL = URL.createObjectURL(Auth);
-            window.open(fileURL);
-
-            resolve( JSON.parse( Auth ) )
-
-        } else {
-            reject("no keystore found");
-        }
-    });
-}
-
-
 
 
 
@@ -172,7 +150,7 @@ public showKeystore2() : Promise<any> {
 
 // retrieve Private key using keystore auth cookie
 // will need to allow uploading this json also
-public unencryptKeystore( password ) : Promise<any> {
+unencryptKeystore( password ) : Promise<any> {
     return new Promise( (resolve, reject) => {
         const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
           if(encryptAccount) {

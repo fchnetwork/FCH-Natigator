@@ -2,7 +2,6 @@ import { AccountRoutingModule } from "./account.routes";
 import { CommonModule } from "@angular/common";
 import { NgModule, ModuleWithProviders } from "@angular/core";
 import { AppUIModule } from "../app.ui.module";
-import { RegistrationComponent } from "./registration/registration.component";
 import { LoginComponent } from "./login/login.component";
 import { AvatarSelectComponent } from "./components/avatar-select/avatar-select.component";
 import { BasicModalComponent } from "../shared/components/modals/basic-modal/basic-modal.component";
@@ -26,6 +25,7 @@ import { BackupConfirmComponent } from './backup-confirm/backup-confirm.componen
 import { RestoreComponent } from './restore/restore.component'; 
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
+import { CreateTransactionComponent } from "./create-transaction/create-transaction.component";
 
 const modalComponents = [BasicModalComponent];
 
@@ -47,14 +47,14 @@ export function createTranslateLoader(http: HttpClient) {
     declarations: [
         modalComponents,
         LoginComponent,
-        RegistrationComponent,
         AvatarSelectComponent, 
         RegisterComponent,
         BackupCreateComponent,
         BackupConfirmComponent,
         BackupPromptComponent,
         BackupDisclamerComponent,
-        LoginComponent
+        LoginComponent,
+        CreateTransactionComponent
     ],
     providers: [
         AuthenticationService,

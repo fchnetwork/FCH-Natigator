@@ -4,6 +4,7 @@ import { BasicModalComponent } from '../components/modals/basic-modal/basic-moda
 import { Modal, DialogRef, overlayConfigFactory, OverlayConfig, ModalComponent, ContainerContent } from "ngx-modialog";
 import { BSModalContext } from "ngx-modialog/plugins/bootstrap";
 import { BackupDisclamerComponent } from '../../account/backup-disclamer/backup-disclamer.component';
+import { TransactionSignModalComponent } from '../../account/components/transaction-sign-modal/transaction-sign-modal.component';
 
 @Injectable()
 export class ModalService {
@@ -26,6 +27,10 @@ export class ModalService {
 
   public openBackupDisclaimerModal(data?: any) {
     return this.openModal(BackupDisclamerComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
+  }
+
+  public openTransactionConfirm(data?: any): Promise<any> {
+    return this.openModal(TransactionSignModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 
 }
