@@ -1,14 +1,9 @@
-
-  
-  
-  @import '~sass/common/variables';
-  
-  
-  
+ 
   .c-avatar__wrap {
     display: flex;
     justify-content: space-between;
     margin: 0;
+    padding-left: 0;
     .c-avatar__item {
         width: 84px;
         height: 84px;
@@ -21,9 +16,9 @@
         cursor: pointer;    
         
         &.activeAvtr {
-          border: solid 1px $brand-primary;
+          border: solid 1px #2A669A;
           cursor: default;
-          background-color: $brand-primary-rgba;         
+          background-color: rgba(42, 102, 154, 0.1);         
         }
       
         

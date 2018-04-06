@@ -1,25 +1,20 @@
 <aer-modal-container>
-        <div class="login">
-          <div class="header">{{'LOGIN'|translate}}</div>
-          <hr class="line">
-          <div class="b-text">{{'LOGIN_TEXT1'|translate}}</div>
-          <div class="b-text">
-            <span>{{'LOGIN_TEXT2'|translate}}</span>
-            <a routerLink="/create">{{'LOGIN_TEXT3'|translate}}</a>
-          </div>
-          <aer-input type="text" [(ngModel)]="address" ngDefaultControl></aer-input>
-          <aer-input type="password" icon="key" placeholder="{{'PASSWORD'|translate}}" isPassword=true [(ngModel)]="password" ngDefaultControl></aer-input>
-          <div class="button">
-              <aer-button (buttonFn)="createBackup()">{{'LOGIN'|translate}}</aer-button>
-          </div>
-          <div class="window-state">
-            <div class="windows-state-switch-inline">
-                <aer-slide-toggle [(ngModel)]="windowState" checkedMsg="{{'LOGIN'|translate}}" uncheckedMsg="{{'CREATE_ACCOUNT'|translate}}" ngDefaultControl></aer-slide-toggle>
-            </div>
-          </div>
-          <div class="link-text">
-              <a routerLink="/account/restore">{{'RESTORE_ACCOUNT'|translate}}</a>
-              <div>{{'FROM_BACKUP'|translate}}</div>
-          </div>
-        </div>
+  <div class="login">
+    <div class="header">{{'LOGIN'|translate}}</div>
+    <hr class="line">
+    <div class="b-text">{{'LOGIN_TEXT1'|translate}}</div>
+    <div class="b-text">
+      <span>{{'LOGIN_TEXT2'|translate}}</span>
+      <a routerLink="/account/register">{{'LOGIN_TEXT3'|translate}}</a>
+    </div>
+    <aer-input type="text" [(ngModel)]="address" ngDefaultControl></aer-input>
+    <aer-input type="password" icon="key" placeholder="{{'PASSWORD'|translate}}" isPassword=true [(ngModel)]="password" ngDefaultControl></aer-input>
+    <div class="button">
+      <aer-button (buttonFn)="createBackup()">{{'LOGIN'|translate}}</aer-button>
+    </div>
+    <div class="link-text">
+      <a routerLink="/account/restore">{{'RESTORE_ACCOUNT'|translate}}</a>
+      <div>{{'FROM_BACKUP'|translate}}</div>
+    </div>
+  </div>
 </aer-modal-container>

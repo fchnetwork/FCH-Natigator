@@ -1,40 +1,34 @@
 
-import { LoginComponent } from './account/login/login.component'
-import { RegistrationComponent } from './account/registration/registration.component'
-import { Error404Component } from './shared/components/error404/error404.component'
-import { LandingPageComponent } from './account/landing-page/landing-page.component'
+import { LoginComponent } from './account/login/login.component' 
+import { Error404Component } from './shared/components/error404/error404.component'  
 import { CreateTransactionComponent } from './account/create-transaction/create-transaction.component'
 import { CanActivateViaAuthGuard } from './app.guard';
-import { BackupConfirmationComponent } from './account/backup-confirmation/backup-confirmation.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RegisterComponent } from './account/register/register.component'; 
 import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
 import { BackupCreateComponent } from './account/backup-create/backup-create.component';
 import { BackupConfirmComponent } from './account/backup-confirm/backup-confirm.component';
-import { AccessRecoveryComponent } from './account/access-recovery/access-recovery.component';
+import { AccountModule } from './account/account.module';
+import { BackupPromptComponent } from './account/backup-prompt/backup-prompt.component';
+import { ACCOUNT_ROUTES } from './account/account.routes';
 
 export const ROUTES = [
   {
     path: '',
-    redirectTo: '/landing',
+    redirectTo: 'account',
+    canActivate: [CanActivateViaAuthGuard],
     pathMatch: 'full'
   },
+  // TO PREVENT LAZY LOADING OF COMPONENTS ACCESSIBLE IMMEDIATELY AFTER LOAD 
   {
-      path: 'landing',
-      component: LandingPageComponent
-  },    
-  {
-      path: 'account/login',
-      component: LoginComponent
+    path: 'account',
+    children: ACCOUNT_ROUTES
   },
   {
-    path: 'transaction',
-    component: CreateTransactionComponent,
-    canActivate: [CanActivateViaAuthGuard]
-},  
-  {
-      path: 'create',
-      component: RegistrationComponent
-  },
-  {
+    // path: 'dashboard',
+    // component: DashboardComponent
     path: 'explorer',
     loadChildren: './explorer/explorer.module#ExplorerModule'
   },
@@ -44,7 +38,7 @@ export const ROUTES = [
   },
   {
     path: 'backup-confirmation',
-    component: BackupConfirmationComponent
+    component: BackupPromptComponent
   },
   {
     path: 'backup-disclamer',
@@ -59,11 +53,17 @@ export const ROUTES = [
     component: BackupConfirmComponent
   },
   {
-    path: 'recovery',
-    component: AccessRecoveryComponent
+    path: 'transaction',
+    component: CreateTransactionComponent,
   },
   { 
     path: '**',
     redirectTo: '/not-found'
   }
-]
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(ROUTES)], 
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
