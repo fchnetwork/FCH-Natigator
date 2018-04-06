@@ -7,6 +7,7 @@ import { BackupCreateComponent } from "./backup-create/backup-create.component";
 import { RegistrationRouteData } from "./models/RegistrationRouteData";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
 import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component";
+import { RestoreComponent } from "./restore/restore.component";
 
 export const ACCOUNT_ROUTES = [
     {
@@ -36,6 +37,10 @@ export const ACCOUNT_ROUTES = [
             {
                 path: 'login',
                 component: LoginComponent
+            },
+            {
+                path: 'restore',
+                component: RestoreComponent
             }
         ] 
     }

@@ -1,81 +1,25 @@
-
-
-
-<div class="o-createAccountPage">
-    <div class="c-table">
-      <div class="c-table--row">
-        <div class="c-table--cell">
-            <div class="c-registration">
-              <span class="c-registration__icon"></span>
-
-              <div class="c-registration__wrap ">
-  
-
-
-                  <!-- Step 1 begin -->
-                  <div class="c-registration__step1 o-loginForm" *ngIf="step == 'step_1'">
-                    <h1>Access Recovery</h1>
-                    <div class="c-registration__cta">
-                        <p>
-                            Please provide your previously exported Seed Words or create new account.
-                        </p>
-                    </div>
-                    <form [formGroup]="loginFormFindAddress" (ngSubmit)="onSubmitAddress()" class="o-login o-loginForm" >
-                        <div class="o-loginForm__seedBlock">
-                            <div class="" minlength="25" required="" aria-invalid="true" aria-required="true">
-                                <div class="div-wrap">
-                                    <textarea formControlName="seed" name="seed" placeholder="Your seed is the 15 words you saved when creating your account" minlength="25" required="" aria-invalid="true"></textarea>
-                                </div>
-                            </div>
-                            <div class="o-loginForm__addressBlock">
-                                <div *ngIf="address; then showAvatar else showAvatarPlaceholder"></div>
-                                <ng-template #showAvatarPlaceholder>
-                                        <div  class="c-avatarPlaceholder"></div>
-                                </ng-template>
-
-                                <ng-template #showAvatar>
-                                    <div class="o-avatarWrap" style="width: 40px; height: 40px;">
-                                        <img [src]="avatar" width="40" height="40">
-                                    </div>
-                                </ng-template>
-
-                                <div class="c-hdAddress">
-                                    <div class="c-hdAddress__header">Address</div>
-                                    <div [ngClass]="{ 'u-filled' : address }" class="c-hdAddress__address"><span *ngIf="address">{{ address }}</span></div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
-                        <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">
-                        
-                        <span *ngIf="loginFormFindAddress.controls['password'].hasError('required') && loginFormFindAddress.controls['password'].touched" class="login-error">You must include a password.</span>
-                        <span *ngIf="loginFormFindAddress.controls['password'].hasError('minlength') && loginFormFindAddress.controls['password'].touched" class="login-error">Your password must be at least 10 characters long.</span>   
-                        <span *ngIf="loginFormFindAddress.controls['password'].hasError('upper') && loginFormFindAddress.controls['password'].touched" class="login-error">upper error</span>          
-                        <span *ngIf="loginFormFindAddress.controls['password'].hasError('lower') && loginFormFindAddress.controls['password'].touched" class="login-error">lower error</span> 
-                        <span *ngIf="loginFormFindAddress.controls['password'].hasError('number') && loginFormFindAddress.controls['password'].touched" class="login-error">number error</span>                                                 
-                        <span *ngIf="loginFormFindAddress.controls['confirmpassword'].hasError('notEquivalent') && loginFormFindAddress.controls['confirmpassword'].touched && !loginFormFindAddress.controls['confirmpassword'].pristine" class="login-error">Confirm Password Does not match</span>       
-
-
-
-                        <button type="submit" mat-button mat-raised-button [disabled]="!loginFormFindAddress.valid" >Continue</button>
-                    </form>
-                    
-                  </div>
-
-              </div>
+<aer-modal-container>
+        <div class="login">
+          <div class="header">{{'LOGIN'|translate}}</div>
+          <hr class="line">
+          <div class="b-text">{{'LOGIN_TEXT1'|translate}}</div>
+          <div class="b-text">
+            <span>{{'LOGIN_TEXT2'|translate}}</span>
+            <a routerLink="/create">{{'LOGIN_TEXT3'|translate}}</a>
+          </div>
+          <aer-input type="text" [(ngModel)]="address" ngDefaultControl></aer-input>
+          <aer-input type="password" icon="key" placeholder="{{'PASSWORD'|translate}}" isPassword=true [(ngModel)]="password" ngDefaultControl></aer-input>
+          <div class="button">
+              <aer-button (buttonFn)="createBackup()">{{'LOGIN'|translate}}</aer-button>
+          </div>
+          <div class="window-state">
+            <div class="windows-state-switch-inline">
+                <aer-slide-toggle [(ngModel)]="windowState" checkedMsg="{{'LOGIN'|translate}}" uncheckedMsg="{{'CREATE_ACCOUNT'|translate}}" ngDefaultControl></aer-slide-toggle>
             </div>
+          </div>
+          <div class="link-text">
+              <a routerLink="/account/restore">{{'RESTORE_ACCOUNT'|translate}}</a>
+              <div>{{'FROM_BACKUP'|translate}}</div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-  
-  
-
-
-
-
-
-
-
+</aer-modal-container>

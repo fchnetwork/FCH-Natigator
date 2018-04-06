@@ -47,7 +47,8 @@ export function createTranslateLoader(http: HttpClient) {
         BackupDisclamerComponent,
         LoginComponent,
         CreateTransactionComponent,
-        TransactionSignModalComponent        
+        TransactionSignModalComponent ,
+        RestoreComponent       
     ],
     imports: [
         AccountRoutingModule,
@@ -70,7 +71,8 @@ export function createTranslateLoader(http: HttpClient) {
         BackupDisclamerComponent,
         LoginComponent,
         CreateTransactionComponent,
-        TransactionSignModalComponent
+        TransactionSignModalComponent,
+        RestoreComponent
     ],
     providers: [
         AuthenticationService,
