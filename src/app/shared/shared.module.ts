@@ -13,6 +13,10 @@ import { BasicModalComponent } from './components/modals/basic-modal/basic-modal
 import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { EqualValidator } from './directives/equal-validator.directive';
+import { RouteDataService } from './services/route-data.service'; 
+import { NotificationService } from './services/notification.service';
+import { ClipboardService } from './services/clipboard.service';
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -38,15 +42,20 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     I18nComponent,
     Error404Component,
-    DividerComponent
+    DividerComponent,
+    EqualValidator
   ],
   providers: [
-    ModalService 
+    ModalService,
+    RouteDataService,
+    ClipboardService,
+    NotificationService
   ],
   exports:[
     I18nComponent,
     DividerComponent,
-    TranslateModule
+    TranslateModule,
+    EqualValidator
   ]
 })
 

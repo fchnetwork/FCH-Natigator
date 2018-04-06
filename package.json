@@ -17,7 +17,7 @@
   },
   "private": true,
   "dependencies": {
-    "@aerum/ui": "^0.0.20",
+    "@aerum/ui": "^0.0.21",
     "@angular/animations": "^5.2.8",
     "@angular/cdk": "^5.2.4",
     "@angular/common": "^5.2.0",
@@ -43,6 +43,7 @@
     "moment": "^2.21.0",
     "ng2-cookies": "^1.0.12",
     "ng2-toastr": "^4.1.2",
+    "ngx-modialog": "^5.0.0",
     "node-sass": "^4.8.3",
     "rxjs": "^5.5.6",
     "soltsice": "^0.10.3",

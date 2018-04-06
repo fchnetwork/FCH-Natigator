@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import { ClipboardDirective } from './clipboard.directive';
+import { EqualValidatorDirective } from './equal-validator.directive';
 
-describe('Directive: Clipboard', () => {
+describe('Directive: EqualValidator', () => {
   it('should create an instance', () => {
-    const directive = new ClipboardDirective();
+    const directive = new EqualValidatorDirective();
     expect(directive).toBeTruthy();
   });
 });

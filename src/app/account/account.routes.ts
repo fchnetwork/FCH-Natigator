@@ -4,8 +4,10 @@ import { RegistrationComponent } from "./registration/registration.component";
 import { LoginComponent } from "./login/login.component"; 
 import { RegisterComponent } from "./register/register.component";
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
-import { BackupCreateComponent } from "./backup-create/backup-create.component";
-import { BackupConfirmationComponent } from "./backup-confirmation/backup-confirmation.component";
+import { BackupCreateComponent } from "./backup-create/backup-create.component"; 
+import { RegistrationRouteData } from "./models/RegistrationRouteData";
+import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
+import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component";
 
 export const ACCOUNT_ROUTES = [
     {
@@ -23,18 +25,18 @@ export const ACCOUNT_ROUTES = [
             {
                 path: 'registration',
                 component: RegistrationComponent
-            },
+            }, 
             {
                 path: 'backup',
-                component: BackupDisclamerComponent
+                component: BackupPromptComponent
             },
             {
                 path: 'backup/create',
                 component: BackupCreateComponent
-            },
+            }, 
             {
                 path: 'backup/confirm',
-                component: BackupConfirmationComponent
+                component: BackupConfirmComponent
             },
             {
                 path: 'login',

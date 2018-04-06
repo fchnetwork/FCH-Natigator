@@ -5,7 +5,6 @@ import { AppUIModule } from "../app.ui.module";
 import { RegistrationComponent } from "./registration/registration.component";
 import { LoginComponent } from "./login/login.component";
 import { AvatarSelectComponent } from "./components/avatar-select/avatar-select.component";
-import { ClipboardDirective } from "./directives/clipboard-directive/clipboard.directive";
 import { BasicModalComponent } from "../shared/components/modals/basic-modal/basic-modal.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -17,17 +16,16 @@ import { TranslateLoader } from "@ngx-translate/core";
 import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { AppRoutingModule } from "../app.routes";
-import { AuthenticationService } from "./services/authentication-service/authentication.service";
-import { ClipboardService } from "./services/clipboard-service/clipboard.service";
+import { AuthenticationService } from "./services/authentication-service/authentication.service"; 
 import { CanActivateViaAuthGuard } from "../app.guard";
 import { ModalService } from "../shared/services/modal.service";
 import { TransactionServiceService } from "./services/transaction-service/transaction-service.service";
 import { RegisterComponent } from './register/register.component';
 import { BackupCreateComponent } from './backup-create/backup-create.component';
 import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component';
-import { RestoreComponent } from './restore/restore.component';
-import { BackupConfirmationComponent } from "./backup-confirmation/backup-confirmation.component";
+import { RestoreComponent } from './restore/restore.component'; 
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
+import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
 
 const modalComponents = [BasicModalComponent];
 
@@ -50,18 +48,16 @@ export function createTranslateLoader(http: HttpClient) {
         modalComponents,
         LoginComponent,
         RegistrationComponent,
-        AvatarSelectComponent,
-        ClipboardDirective,
+        AvatarSelectComponent, 
         RegisterComponent,
         BackupCreateComponent,
         BackupConfirmComponent,
-        BackupConfirmationComponent,
+        BackupPromptComponent,
         BackupDisclamerComponent,
         LoginComponent
     ],
     providers: [
         AuthenticationService,
-        ClipboardService,
         ModalService,
         TransactionServiceService,
         CanActivateViaAuthGuard

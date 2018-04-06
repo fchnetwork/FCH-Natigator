@@ -79,13 +79,13 @@
                       </p>
                       <div class="c-info">
                           Please carefully write down these 15 words or 
-                          <button class="c-link" type="button"
+                          <!-- <button class="c-link" type="button"
                                   [disabled]="!seed"
                                   [clipboard]="copyToClipboard.innerHTML.trim()"
                                   (clipboardCopy)="logSuccess( $event )"
                                   (clipboardError)="logError( $event )">
                                   copy them
-                          </button>
+                          </button> -->
                       </div> 
                       <div class="c-seedContainer u-displayOnly u-locked" #copyToClipboard>
                           <span class="c-seed__word u-plain" *ngFor="let s of seed">{{ s }} </span> 

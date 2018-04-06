@@ -6,12 +6,12 @@ import { CanActivateViaAuthGuard } from './app.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { RegisterComponent } from './account/register/register.component';
-import { BackupConfirmationComponent } from './account/backup-confirmation/backup-confirmation.component';
+import { RegisterComponent } from './account/register/register.component'; 
 import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
 import { BackupCreateComponent } from './account/backup-create/backup-create.component';
 import { BackupConfirmComponent } from './account/backup-confirm/backup-confirm.component';
 import { AccountModule } from './account/account.module';
+import { BackupPromptComponent } from './account/backup-prompt/backup-prompt.component';
 
 export const ROUTES = [
   {
@@ -36,7 +36,7 @@ export const ROUTES = [
   },
   {
     path: 'backup-confirmation',
-    component: BackupConfirmationComponent
+    component: BackupPromptComponent
   },
   {
     path: 'backup-disclamer',
