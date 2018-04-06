@@ -12,12 +12,6 @@
     <div class="button">
       <aer-button (buttonFn)="createBackup()">{{'LOGIN'|translate}}</aer-button>
     </div>
-    <div class="window-state">
-      <div class="windows-state-switch-inline">
-        <aer-slide-toggle [(ngModel)]="windowState" checkedMsg="{{'LOGIN'|translate}}" uncheckedMsg="{{'CREATE_ACCOUNT'|translate}}"
-          ngDefaultControl></aer-slide-toggle>
-      </div>
-    </div>
     <div class="link-text">
       <a routerLink="/account/restore">{{'RESTORE_ACCOUNT'|translate}}</a>
       <div>{{'FROM_BACKUP'|translate}}</div>

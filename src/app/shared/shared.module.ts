@@ -17,6 +17,7 @@ import { EqualValidator } from './directives/equal-validator.directive';
 import { RouteDataService } from './services/route-data.service'; 
 import { NotificationService } from './services/notification.service';
 import { ClipboardService } from './services/clipboard.service';
+import { AccountIdleService } from './services/account-idle.service'
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -49,7 +50,8 @@ export function createTranslateLoader(http: HttpClient) {
     ModalService,
     RouteDataService,
     ClipboardService,
-    NotificationService
+    NotificationService,
+    AccountIdleService
   ],
   exports:[
     I18nComponent,
