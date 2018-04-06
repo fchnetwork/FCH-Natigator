@@ -12,6 +12,7 @@ import { BackupCreateComponent } from './account/backup-create/backup-create.com
 import { BackupConfirmComponent } from './account/backup-confirm/backup-confirm.component';
 import { AccountModule } from './account/account.module';
 import { BackupPromptComponent } from './account/backup-prompt/backup-prompt.component';
+import { ACCOUNT_ROUTES } from './account/account.routes';
 
 export const ROUTES = [
   {
@@ -20,9 +21,10 @@ export const ROUTES = [
     canActivate: [CanActivateViaAuthGuard],
     pathMatch: 'full'
   },
+  // TO PREVENT LAZY LOADING OF COMPONENTS ACCESSIBLE IMMEDIATELY AFTER LOAD 
   {
     path: 'account',
-    loadChildren: () => AccountModule
+    children: ACCOUNT_ROUTES
   },
   {
     // path: 'dashboard',

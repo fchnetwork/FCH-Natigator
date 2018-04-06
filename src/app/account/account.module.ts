@@ -15,17 +15,18 @@ import { TranslateLoader } from "@ngx-translate/core";
 import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { AppRoutingModule } from "../app.routes";
-import { AuthenticationService } from "./services/authentication-service/authentication.service"; 
+import { AuthenticationService } from "./services/authentication-service/authentication.service";
 import { CanActivateViaAuthGuard } from "../app.guard";
 import { ModalService } from "../shared/services/modal.service";
 import { TransactionServiceService } from "./services/transaction-service/transaction-service.service";
 import { RegisterComponent } from './register/register.component';
 import { BackupCreateComponent } from './backup-create/backup-create.component';
 import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component';
-import { RestoreComponent } from './restore/restore.component'; 
+import { RestoreComponent } from './restore/restore.component';
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
 import { CreateTransactionComponent } from "./create-transaction/create-transaction.component";
+import { TransactionSignModalComponent } from "./components/transaction-sign-modal/transaction-sign-modal.component";
 
 const modalComponents = [BasicModalComponent];
 
@@ -34,6 +35,20 @@ export function createTranslateLoader(http: HttpClient) {
 }
 
 @NgModule({
+    entryComponents: [
+        BasicModalComponent,
+        TransactionSignModalComponent,
+        LoginComponent,
+        AvatarSelectComponent,
+        RegisterComponent,
+        BackupCreateComponent,
+        BackupConfirmComponent,
+        BackupPromptComponent,
+        BackupDisclamerComponent,
+        LoginComponent,
+        CreateTransactionComponent,
+        TransactionSignModalComponent        
+    ],
     imports: [
         AccountRoutingModule,
         AppUIModule,
@@ -47,14 +62,15 @@ export function createTranslateLoader(http: HttpClient) {
     declarations: [
         modalComponents,
         LoginComponent,
-        AvatarSelectComponent, 
+        AvatarSelectComponent,
         RegisterComponent,
         BackupCreateComponent,
         BackupConfirmComponent,
         BackupPromptComponent,
         BackupDisclamerComponent,
         LoginComponent,
-        CreateTransactionComponent
+        CreateTransactionComponent,
+        TransactionSignModalComponent
     ],
     providers: [
         AuthenticationService,
