@@ -18,6 +18,7 @@ import { BackupConfirmationComponent } from './account/backup-confirmation/backu
 import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
 import { BackupCreateComponent } from './account/backup-create/backup-create.component';
 import { BackupConfirmComponent } from './account/backup-confirm/backup-confirm.component';
+import { AccessRecoveryComponent } from './account/access-recovery/access-recovery.component';
 
 // Services 
 import { AuthenticationService } from './account/services/authentication-service/authentication.service'
@@ -75,7 +76,8 @@ const modalComponents = [BasicModalComponent]
     BackupConfirmationComponent,
     BackupDisclamerComponent,
     BackupCreateComponent,
-    BackupConfirmComponent
+    BackupConfirmComponent,
+    AccessRecoveryComponent
   ], 
   entryComponents: [
     modalComponents,
