@@ -15,7 +15,7 @@ export const ACCOUNT_ROUTES = [
         children: [
             {
                 path: '', 
-                redirectTo: 'register',
+                redirectTo: 'login',
                 pathMatch: 'full'
             },
             {
