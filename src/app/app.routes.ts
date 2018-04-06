@@ -9,6 +9,7 @@ import { BackupConfirmationComponent } from './account/backup-confirmation/backu
 import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
 import { BackupCreateComponent } from './account/backup-create/backup-create.component';
 import { BackupConfirmComponent } from './account/backup-confirm/backup-confirm.component';
+import { AccessRecoveryComponent } from './account/access-recovery/access-recovery.component';
 
 export const ROUTES = [
   {
@@ -56,6 +57,10 @@ export const ROUTES = [
   {
     path: 'backup-confirm',
     component: BackupConfirmComponent
+  },
+  {
+    path: 'recovery',
+    component: AccessRecoveryComponent
   },
   { 
     path: '**',
