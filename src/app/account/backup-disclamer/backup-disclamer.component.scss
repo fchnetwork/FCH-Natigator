@@ -1,0 +1,30 @@
+.o-confirm--seed  {
+    max-width: 374px;
+    text-align: center;
+    color: #83868A;
+
+    h1 {
+        font-size: 36px;
+        line-height: 1.1;
+        color: #27282A;
+        font-weight: normal;
+        text-align: center;
+        position: relative;
+    
+        &:after {
+          position: absolute;
+          background-color: #DEDEDE;
+          content: ' ';
+          height: 1px;
+          width: 80px;
+          left: 0;
+          right: 0;
+          margin: 0 auto;
+        }
+    
+        &:after {
+          bottom:-12px;
+        }
+    
+      }
+}

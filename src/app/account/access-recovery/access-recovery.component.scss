@@ -1,0 +1,20 @@
+.access-recovery { 
+  max-width: 486px;
+  text-align: center;
+
+  &__header {
+      font-size: 36px;
+      text-align: center;
+      color: #27282A;
+  }
+
+  &__paragraph {
+    text-align: center;
+    color: #83868A;
+
+    &--small {
+        font-size: 13px;
+        color: #83868A;
+    }
+  }
+}

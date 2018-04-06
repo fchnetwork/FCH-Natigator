@@ -1,0 +1,47 @@
+# This is a sample build configuration for Other.
+# Check our guides at https://confluence.atlassian.com/x/5Q4SMw for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+# image: atlassian/default-image:latest
+
+image: node:8
+pipelines:
+  default: 
+    - step:
+        name: Install Deps and Build
+        caches:
+          - node
+        script:
+          - npm install 
+          - npm run-script build --prod 
+        artifacts:
+          - build/**  
+  branches: 
+    development:    
+      - step:
+          name: Install Deps and Build
+          caches:
+            - node
+          script:
+            - npm run update:ui
+            - npm install
+            - npm run-script bower
+            - npm run-script build --prod 
+          artifacts:
+            - build/**     
+      - step:
+          name: Tarball the project
+          script: 
+            - tar -czvf ./dist.tar.gz ./build/dist
+          artifacts:
+            - dist.tar.gz  
+      - step:
+          name: Transfer to the server
+          script:
+            - apt-get update && apt-get install -y rsync
+            - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/ 
+      - step:
+          name: Unzip folder on remote dev server
+          script:
+            - ssh -p 22 root@dev.aerum.net "bash builder.sh"            

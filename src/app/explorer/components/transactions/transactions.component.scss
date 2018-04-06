@@ -1,0 +1,10 @@
+.c-table--evenOdd {
+    .c-table--row {
+        &:nth-of-type(odd) {
+            background-color: #e3e7e7;
+        }
+        .c-table--cell {
+            padding: 10px;
+        }
+    }
+}

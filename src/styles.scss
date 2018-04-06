@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~@aerum/ui/core/styles/_theming.scss';
+ 
+
+html, body{
+  height: 100%;
+  width: 100%;
+  margin: 0; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; 
+} 
+
+/* DEFAULT FONT USED IN APP */
+@font-face {
+  font-family: OpenSans;
+  src: url('fonts/open-sans/OpenSans-Regular.ttf');
+}
+
+a {
+  text-decoration: unset;
+  color: #2A669A;
+}

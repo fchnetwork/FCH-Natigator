@@ -1,0 +1,169 @@
+<aer-sidebar #sidebar>
+    <aer-sidebar-group title="{{'TRANSACTION'|translate}}" iconName="transaction">
+        <aer-sidebar-item iconName="swap">Item 1</aer-sidebar-item>
+        <aer-sidebar-item iconName="exchange">Item 1</aer-sidebar-item>
+    </aer-sidebar-group>
+</aer-sidebar>
+<aer-toolbar>
+
+<div class="content">
+  <div class="title">{{'SEND_TRANSACTION'|translate}}</div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel">
+        <div class="panel-header">
+          {{'SEND'|translate}}
+        </div>
+        <div class="panel-content">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="input-name">{{'FROM'|translate}}</div>
+              <aer-input icon="aerum" [(ngModel)]="senderAddress" ngDefaultControl></aer-input>
+            </div>
+            <div class="col-sm-6">
+              <div class="input-name">{{'TO'|translate}}</div>
+              <aer-input  [(ngModel)]="receiverAddress" ngDefaultControl></aer-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="input-name">{{'AMOUNT'|translate}}</div>
+              <aer-input [(ngModel)]="amount" ngDefaultControl></aer-input>
+              <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event)"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}}</label>
+            </div>
+            <div class="col-sm-6">
+                  <div class="account-status-line">
+                      <aer-icon class="float-left">aerum</aer-icon>
+                      <div class="float-left">{{'AERO'|translate}}</div>
+                      <div class="float-right">{{walletBalance}} {{'AERO'|translate}}</div>
+                  </div>
+            </div>
+          </div>
+          <div class="show-more-button">
+              <div class="row">
+                  <div class="col-sm-12">
+                    <aer-button color="blue" size="medium" (buttonFn)="showMore()">{{'SHOW_MORE_OPTIONS'|translate}}</aer-button>
+                  </div>
+                </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="note">{{'MAX_TRANSACTION_FEE'|translate}}</div>
+            </div>
+            <div class="col-sm-4">
+              <div class="note">{{getMaxTransactionFee()}} {{'AERO'|translate}}</div>
+            </div>
+            <div class="col-sm-4">
+              <div class="note">{{'MAX_TRANS_FEE_WARNING'|translate}}</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="input-name">{{'TOTAL'|translate}}</div>
+              <div class="amount-total">
+                {{getTotalAmount()}} {{'AERO'|translate}}
+              </div>
+              <div class="note">
+                  {{'DATA_INCLUDED'|translate}}: {{includedDataLength}} {{'BYTES'|translate}}
+              </div>
+              <hr>
+              <div class="footer-buttons">
+                  <aer-button color="blue" (buttonFn)="send()" size="normal">{{'SEND'|translate}}</aer-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel min-width-470">
+        <div class="panel-header">
+            {{'LATEST_TRANSACTION'|translate}}
+        </div>
+        <div class="panel-content">
+          <div class="latest-transaction-list-container">
+            <div class="transaction-event" *ngFor="let transaction of transactions">
+              <div class="date">
+                <div class="month">{{transaction.month}}</div>
+                <div class="day">{{transaction.day}}</div>
+              </div>
+              <div class="trans-detail">
+                  <div class="eventType">{{transaction.eventType}}</div>
+                  <div class="addresses">
+                      <div class="sender">{{transaction.senderAddress}}</div>
+                      <div class="pd-5">></div>
+                      <div class="receiver">{{transaction.receiverAddress}}</div>
+                  </div>
+              </div>
+              <div class="amount-detail" [ngClass]="{'red': getICoin(transaction.amount)}">
+                  <aer-icon *ngIf="getICoin(transaction.amount)">right-circled</aer-icon>
+                  <aer-icon *ngIf="!getICoin(transaction.amount)">left-circled</aer-icon>
+                  <div class="amount">{{transaction.amount}} {{'AERO'|translate}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="show-more-label-div">
+            <div class="show-more-label" (click)="showTransactions()">{{'SHOW_MORE'|translate}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+<div *ngIf="backupKeystore" class="c-seedContainer u-displayOnly u-locked">
+  <p>
+    copy and paste your keystore
+  </p>
+  <p>
+    {{backupKeystore | json }}
+  </p>
+</div>
+
+<div *ngIf="decryptKeystore">
+  <p>
+    Your keystore has been decrypted using the password from the registration form, this is the output
+  </p>
+  <p>
+    {{decryptKeystore | json }}
+  </p>
+</div>
+
+
+<div *ngIf="theirBalance">
+  <p>
+    their blanace
+  </p>
+  <p>
+    {{theirBalance | json }}
+  </p>
+</div>
+
+
+<div *ngIf="myBalance">
+  <p>
+    Your blanace
+  </p>
+  <p>
+    {{myBalance | json }}
+  </p>
+</div>
+
+
+
+
+
+<button mat-button mat-raised-button (click)="showKeyStore()">save your keystore file</button>
+<br>
+<br>
+<button mat-button mat-raised-button (click)="showDecryptedKeyStore()">click to display the decrypt the keystore cookie using password prettyGoodPa55w0rd</button>
+<br>
+<br>
+<button mat-button mat-raised-button (click)="createTransaction()">click to create a transaction using decrypted keystore</button>
+<br>
+<br>
+<button mat-button mat-raised-button (click)="checkReceiverBalance('0xb0573f6b040fddf1250cdd38983f4eac06fbf3ca')">click to check the receivers balance</button>
+<br>
+<br>
+<button mat-button mat-raised-button (click)="checkYourBalance()">click to check the your balance</button> -->
