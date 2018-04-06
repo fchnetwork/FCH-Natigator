@@ -21,12 +21,12 @@ import { ModalService } from "../shared/services/modal.service";
 import { TransactionServiceService } from "./services/transaction-service/transaction-service.service";
 import { RegisterComponent } from './register/register.component';
 import { BackupCreateComponent } from './backup-create/backup-create.component';
-import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component';
-import { RestoreComponent } from './restore/restore.component';
+import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component'; 
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
 import { CreateTransactionComponent } from "./create-transaction/create-transaction.component";
 import { TransactionSignModalComponent } from "./components/transaction-sign-modal/transaction-sign-modal.component";
+import { AccessRecoveryComponent } from "./access-recovery/access-recovery.component";
 
 const modalComponents = [BasicModalComponent];
 
@@ -48,7 +48,7 @@ export function createTranslateLoader(http: HttpClient) {
         LoginComponent,
         CreateTransactionComponent,
         TransactionSignModalComponent ,
-        RestoreComponent       
+        AccessRecoveryComponent    
     ],
     imports: [
         AccountRoutingModule,
@@ -72,7 +72,7 @@ export function createTranslateLoader(http: HttpClient) {
         LoginComponent,
         CreateTransactionComponent,
         TransactionSignModalComponent,
-        RestoreComponent
+        AccessRecoveryComponent
     ],
     providers: [
         AuthenticationService,

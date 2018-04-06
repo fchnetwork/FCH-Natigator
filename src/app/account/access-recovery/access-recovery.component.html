@@ -1,26 +1,34 @@
 <aer-modal-container>
     <div class="access-recovery">
         <div class="c-registration__step1 o-loginForm" *ngIf="step == 'step_1'">
-            <div class="header">{{'ACCESS_RECOVERY'|translate}}</div>
-                <div class="c-registration__cta">
-                    <p>
-                        {{'ACCESS_REC_HINT'|translate}}{{'ACCESS_REC_HINT_SUFF'|translate}}
-                    </p>
-                </div>
+            <div class="access-recovery__header">{{'ACCESS_RECOVERY'|translate}}</div>
+            <app-divider></app-divider>
+            <p class="access-recovery__paragraph">
+                {{'ACCESS_REC_HINT'|translate}}
+                <a [routerLink]="['/account/register']"> {{'ACCESS_REC_HINT_SUFF'|translate}}</a>
+            </p>
+            <app-divider [showLine]="false"></app-divider>
+            <aer-button color="blue" inline="true" size="medium" (buttonFn)="confirm()">{{'SEL_KEY'|translate}}</aer-button>
+            <app-divider label="OR"></app-divider>
+            <form [formGroup]="accessrecFormFindAddress">
+                <aer-textarea formControlName="seed" 
+                              placeholder="Your seed is 15 words you saved when creating your account" 
+                              [addition]="address"
+                              ngDefaultControl></aer-textarea>
+                <aer-input formControlName="password" type="password" placeholder="Create new password" ngDefaultControl></aer-input>
+                <aer-input formControlName="confirmpassword" type="password" placeholder="Confirm password" ngDefaultControl></aer-input>
+                <aer-button [disabled]="!accessrecFormFindAddress.valid" (click)="onSubmitAddress()">Continue</aer-button>
+            </form>
 
-                <div class="button">
-                    <aer-button (buttonFn)="confirm()">{{'SEL_KEY'|translate}}</aer-button>
-                </div>
-
-            <form [formGroup]="accessrecFormFindAddress" (ngSubmit)="onSubmitAddress()" class="o-login o-loginForm" >
+            <!-- <form [formGroup]="accessrecFormFindAddress" (ngSubmit)="onSubmitAddress()" class="o-login o-loginForm">
                 <div class="o-loginForm__seedBlock">
-                <div class="" minlength="25" required="" aria-invalid="true" aria-required="true">
-                    <div class="div-wrap">
-                        <textarea formControlName="seed" name="seed" placeholder="{{'KEY_PLACEHOLDER'|translate}}" minlength="25" required="" aria-invalid="true"></textarea>
-                    </div>
-                </div>
+                    <div class="" minlength="25" required="" aria-invalid="true" aria-required="true">
+                        <div class="div-wrap">
+                            <textarea formControlName="seed" name="seed" placeholder="{{'KEY_PLACEHOLDER'|translate}}" minlength="25" required="" aria-invalid="true"></textarea>
+                        </div>
+                    </div> -->
 
-                            <!-- for future use <adresse> not specified in TYPE 
+            <!-- for future use <adresse> not specified in TYPE 
                             <div class="o-loginForm__addressBlock">
                                 <div *ngIf="address; then showAvatar else showAvatarPlaceholder"></div>
                                 <ng-template #showAvatarPlaceholder>
@@ -39,29 +47,28 @@
                                 </div>
                             </div>
                             -->
-                </div>
+            <!-- </div>
 
                 <!-- Passwords-->
-                <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
+            <!-- <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
                 <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">
-                        
-                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('required') && accessrecFormFindAddress.controls['password'].touched" class="login-error">You must include a password.</span>
-                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('minlength') && accessrecFormFindAddress.controls['password'].touched" class="login-error">Your password must be at least 10 characters long.</span>   
-                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('upper') && accessrecFormFindAddress.controls['password'].touched" class="login-error">upper error</span>          
-                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('lower') && accessrecFormFindAddress.controls['password'].touched" class="login-error">lower error</span> 
-                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('number') && accessrecFormFindAddress.controls['password'].touched" class="login-error">number error</span>                                                 
-                <span *ngIf="accessrecFormFindAddress.controls['confirmpassword'].hasError('notEquivalent') && accessrecFormFindAddress.controls['confirmpassword'].touched && !accessrecFormFindAddress.controls['confirmpassword'].pristine" class="login-error">Confirm Password Does not match</span>       
 
-                <button type="submit" mat-button mat-raised-button [disabled]="!accessrecFormFindAddress.valid" >Continue</button>
-            </form>
-                    
+                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('required') && accessrecFormFindAddress.controls['password'].touched"
+                    class="login-error">You must include a password.</span>
+                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('minlength') && accessrecFormFindAddress.controls['password'].touched"
+                    class="login-error">Your password must be at least 10 characters long.</span>
+                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('upper') && accessrecFormFindAddress.controls['password'].touched"
+                    class="login-error">upper error</span>
+                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('lower') && accessrecFormFindAddress.controls['password'].touched"
+                    class="login-error">lower error</span>
+                <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('number') && accessrecFormFindAddress.controls['password'].touched"
+                    class="login-error">number error</span>
+                <span *ngIf="accessrecFormFindAddress.controls['confirmpassword'].hasError('notEquivalent') && accessrecFormFindAddress.controls['confirmpassword'].touched && !accessrecFormFindAddress.controls['confirmpassword'].pristine"
+                    class="login-error">Confirm Password Does not match</span>
+
+                <button type="submit" mat-button mat-raised-button [disabled]="!accessrecFormFindAddress.valid">Continue</button>
+            </form> -->
+
         </div>
     </div>
 </aer-modal-container>
-
-
-
-
-
-
-

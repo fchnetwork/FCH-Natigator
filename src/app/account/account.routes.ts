@@ -6,8 +6,8 @@ import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.co
 import { BackupCreateComponent } from "./backup-create/backup-create.component"; 
 import { RegistrationRouteData } from "./models/RegistrationRouteData";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
-import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component";
-import { RestoreComponent } from "./restore/restore.component";
+import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component"; 
+import { AccessRecoveryComponent } from "./access-recovery/access-recovery.component";
 
 export const ACCOUNT_ROUTES = [
     {
@@ -40,7 +40,7 @@ export const ACCOUNT_ROUTES = [
             },
             {
                 path: 'restore',
-                component: RestoreComponent
+                component: AccessRecoveryComponent
             }
         ] 
     }

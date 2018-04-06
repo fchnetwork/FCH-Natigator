@@ -5,6 +5,11 @@
     margin: 14px auto;
 }
 
+.divider--noline {
+    @extend .divider--line;
+    border-top: 1px solid transparent !important;
+}
+
 .divider--label {
     color: #83868A;
         margin: 3px;
