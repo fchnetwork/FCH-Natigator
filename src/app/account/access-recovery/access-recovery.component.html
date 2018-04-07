@@ -1,23 +1,36 @@
 <aer-modal-container>
     <div class="access-recovery">
         <div class="c-registration__step1 o-loginForm" *ngIf="step == 'step_1'">
-            <div class="access-recovery__header">{{'ACCESS_RECOVERY'|translate}}</div>
-            <app-divider></app-divider>
+            <div class="access-recovery"><span class="__header">{{'ACCESS_RECOVERY'|translate}}</span></div>
+            <app-divider></app-divider>     <!--Neposúva sa s textom-->
             <p class="access-recovery__paragraph">
                 {{'ACCESS_REC_HINT'|translate}}
                 <a [routerLink]="['/account/register']"> {{'ACCESS_REC_HINT_SUFF'|translate}}</a>
             </p>
             <app-divider [showLine]="false"></app-divider>
             <aer-button color="blue" inline="true" size="medium" (buttonFn)="confirm()">{{'SEL_KEY'|translate}}</aer-button>
-            <app-divider label="OR"></app-divider>
+            <app-divider label="{{'OR'|translate}}"></app-divider>
             <form [formGroup]="accessrecFormFindAddress">
                 <aer-textarea formControlName="seed" 
-                              placeholder="Your seed is 15 words you saved when creating your account" 
+                              placeholder="{{'KEY_PLACEHOLDER'|translate}}"
                               [addition]="address"
                               ngDefaultControl></aer-textarea>
-                <aer-input formControlName="password" type="password" placeholder="Create new password" ngDefaultControl></aer-input>
-                <aer-input formControlName="confirmpassword" type="password" placeholder="Confirm password" ngDefaultControl></aer-input>
-                <aer-button [disabled]="!accessrecFormFindAddress.valid" (click)="onSubmitAddress()">Continue</aer-button>
+                <aer-input formControlName="password" type="password" placeholder="{{'CRT_PASS'|translate}}" ngDefaultControl></aer-input>
+                    <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('required') && accessrecFormFindAddress.controls['password'].dirty "
+                    class="login-error">{{'ERR_LOGIN_EXIST'|translate}}</span>
+                    <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('minlength') && accessrecFormFindAddress.controls['password'].dirty "
+                    class="login-error">{{'ERR_LOGIN_LENGHT'|translate}}</span>
+                    <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('upper') && accessrecFormFindAddress.controls['password'].dirty "
+                    class="login-error">{{'ERR_LOGIN_UPP'|translate}}</span>
+                    <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('lower') && accessrecFormFindAddress.controls['password'].dirty "
+                    class="login-error">{{'ERR_LOGIN_LOW'|translate}}</span>
+                    <span *ngIf="accessrecFormFindAddress.controls['password'].hasError('number') && accessrecFormFindAddress.controls['password'].dirty"
+                    class="login-error">{{'ERR_LOGIN_NUM'|translate}}</span>
+                <aer-input formControlName="confirmpassword" type="password" placeholder="{{'CONF_PASS'|translate}}" ngDefaultControl></aer-input>
+                    <div><span *ngIf="accessrecFormFindAddress.controls['confirmpassword'].hasError('notEquivalent') && accessrecFormFindAddress.controls['confirmpassword'].dirty && !accessrecFormFindAddress.controls['confirmpassword'].pristine"
+                    class="login-error">{{'ERR_LOGIN_NOTEQ'|translate}}</span></div>
+
+                <aer-button [disabled]="!accessrecFormFindAddress.valid" (click)="onSubmitAddress()">{{'CONTINUE'|translate}}</aer-button>
             </form>
 
             <!-- <form [formGroup]="accessrecFormFindAddress" (ngSubmit)="onSubmitAddress()" class="o-login o-loginForm">

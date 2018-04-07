@@ -90,7 +90,11 @@ app-i18n {
                 margin-top: 1px;                   
             }  
             
-            
+            &.o-lang__fr:before {
+                background: url(/assets/images/fr.svg);
+                margin-top: 1px;                   
+            } 
+
             &.o-lang__cz:before {
                 background: url(/assets/images/cz.svg);
                 margin-top: 1px;                   
