@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms'; 
 import { AuthenticationService } from '../services/authentication-service/authentication.service';
 import { Router } from '@angular/router'
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject'
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 
@@ -51,6 +51,7 @@ export class AccessRecoveryComponent implements OnInit {
       },{ 
         validator: this.matchingPasswords('password', 'confirmpassword')
       });
+
       this.accessrecFormFindAddress.controls['seed'].valueChanges.takeUntil( this.componentDestroyed$ ).subscribe( v => {
        console.log( v.length );
 
@@ -58,7 +59,7 @@ export class AccessRecoveryComponent implements OnInit {
         // const countSeed = this.countWords( v )
         // if ( countSeed == 12 ) {
           this.authServ.generateAddressLogin( v  ).then( async res => {
-           // console.log(res);  
+            //console.log(res);  
             this.address = res.address
               this.avatar = res.avatar
               this.private = res.private
@@ -74,13 +75,13 @@ export class AccessRecoveryComponent implements OnInit {
 	matchingPasswords( passwordKey: string, passwordConfirmationKey: string ) {
 		return (group: FormGroup ) => {
 			let passwordInput = group.controls[passwordKey];
-			let passwordConfirmationInput = group.controls[passwordConfirmationKey];
+      let passwordConfirmationInput = group.controls[passwordConfirmationKey];
+      console.log( "Som v pass validatore a passwordInput value je :" + passwordInput.value )
 			if (passwordInput.value !== passwordConfirmationInput.value ) {
 				return passwordConfirmationInput.setErrors({notEquivalent: true})
 			}
 		}
 	}
-
 
   onSubmitAddress() {
       if( this.accessrecFormFindAddress.valid ) {
@@ -89,7 +90,6 @@ export class AccessRecoveryComponent implements OnInit {
         this.authServ.saveKeyStore( this.private, this.accessrecFormFindAddress.value.password )
 
        // this.authServ.showKeystore2();
-
 
         this.router.navigate(['/transaction']); // improvements need to be made here but for now the auth guard should work just fine
       }
