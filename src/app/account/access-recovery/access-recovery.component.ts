@@ -52,7 +52,8 @@ export class AccessRecoveryComponent implements OnInit {
 
       this.accessrecFormFindAddress = this.formBuilder.group({
         seed: ["", [Validators.required ] ],
-        password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
+        // password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
+        password: [ "", [Validators.required ] ],
         confirmpassword: ["", [Validators.required ] ]
       },{ 
         validator: this.matchingPasswords('password', 'confirmpassword')
@@ -76,6 +77,7 @@ export class AccessRecoveryComponent implements OnInit {
                     this.avatar = res.avatar
                     this.private = res.private
                 });
+                
               } 
           this.address = "";
           this.cd.detectChanges()

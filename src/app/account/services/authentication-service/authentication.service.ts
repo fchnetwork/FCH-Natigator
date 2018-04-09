@@ -73,7 +73,7 @@ export class AuthenticationService {
         return Observable.fromPromise( this.showKeystore() );
     }
 
-
+ 
     // creates an auth cookie
     saveKeyStore(privateKey, Password){
         const encryptAccount = this.web3.eth.accounts.encrypt( privateKey, Password);
@@ -83,6 +83,7 @@ export class AuthenticationService {
 
 
     showKeystore() : Promise<any> {
+        console.log("keystore"+Cookie.get('aerum_keyStore'))
         return new Promise( (resolve, reject) => {
             const Auth = Cookie.get('aerum_keyStore')
             if(Auth) {
