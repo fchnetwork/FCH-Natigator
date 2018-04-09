@@ -169,15 +169,16 @@ export class CreateTransactionComponent implements OnInit {
   public send() {
     this.modalSrv.openTransactionConfirm().then( 
       (result)=>{ 
-        if( this.privateKey ){
-          console.log("this.privateKey use has made a recent transaction, add feature to remove pw confirm"+ this.privateKey)
+        if(!result.dismiss) {
+          if( this.privateKey ){
+            console.log("this.privateKey use has made a recent transaction, add feature to remove pw confirm"+ this.privateKey);
+          }
+          this.privateKey = result.privateKey; 
+          this.txnServ.transaction(  this.privateKey, result.address, this.receiverAddress, this.amount, "aerum test transaction" );
         }
-        this.privateKey = result.privateKey; 
-        this.txnServ.transaction(  this.privateKey, result.address, this.receiverAddress, this.amount, "aerum test transaction" )
     }, ()=>{
        console.log("catch");
     });
-
   }
 
 

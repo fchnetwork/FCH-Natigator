@@ -15,9 +15,12 @@ export class ModalService {
   private openModal(modal: ContainerContent, config: any = {}): Promise<DialogRef<any>> {
     let overlayConfig = overlayConfigFactory(config, BSModalContext);
     return this.modal.open(modal, overlayConfig).result.then((modal) => {
+      if(!modal) {
+        return {dismiss: false};
+      }
       return modal;
-    }, (err) => {
-      return new Promise((resolve, reject) => { return reject(err) });
+    }, () => {
+      return new Promise((resolve, reject) => {return resolve({dismiss: true})});
     });
   }
 
