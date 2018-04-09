@@ -1,7 +1,7 @@
 <aer-modal-container>
-  <div class="login">
+  <div class="account login">
     <div class="header">{{'LOGIN'|translate}}</div>
-    <hr class="line">
+    <app-divider></app-divider>
     <div class="b-text">{{'LOGIN_TEXT1'|translate}}</div>
     <div class="b-text">
       <span>{{'LOGIN_TEXT2'|translate}}</span>
@@ -10,7 +10,7 @@
     <aer-input type="text" [(ngModel)]="address" ngDefaultControl></aer-input>
     <aer-input type="password" icon="key" placeholder="{{'PASSWORD'|translate}}" isPassword=true [(ngModel)]="password" ngDefaultControl></aer-input>
     <div class="button">
-      <aer-button (buttonFn)="createBackup()">{{'LOGIN'|translate}}</aer-button>
+      <aer-button (buttonFn)="onSubmitAddress()">{{'LOGIN'|translate}}</aer-button>
     </div>
     <div class="link-text">
       <a routerLink="/account/restore">{{'RESTORE_ACCOUNT'|translate}}</a>
