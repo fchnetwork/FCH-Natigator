@@ -1,28 +1,19 @@
 <aer-modal-container>
-    <div class="backup-confirm">
+    <div class="account backup-confirm">
       <div class="header">{{'CONFIRM_BACKUP'|translate}}</div>
-      <hr class="line">
+      <app-divider></app-divider>
       <div class="b-text">{{'CONFIRM_BACKUP_TEXT'|translate}}</div>
-      <div class="go-back-text">
-          <a routerLink="/account/backup/create">{{'CONFIRM_BACKUP_GO_BACK'|translate}}</a>
-      </div>
+      <a routerLink="/account/backup/create">{{'CONFIRM_BACKUP_GO_BACK'|translate}}</a>
       <div class="mnemonic-original-box">
         <div *ngFor="let item of shuffledSeed" class="mnemonic-tag u-full" [class.u-removeSeed]="item.selected" (click)="selectSeed(item)">{{item.name}}</div> 
       </div>
       <div class="mnemonic-box">
           <div *ngFor="let item of selectedSeeds; let i = index" class="mnemonic-tag u-full" (click)="deselectSeed(item, i)">{{item.name}}</div>
       </div>
-
       <div class="button">
         <aer-button [disabled]="!isEqual" (buttonFn)="confirm()">{{'CONFIRM'|translate}}</aer-button>
       </div>
-      <div class="b-backup">
-          <p>
-            <span class="surrounded"> {{'OR'|translate}} </span>
-          </p>
-      </div>
-      <div class="button-clear">
-          <aer-button size="medium" color="blue" (buttonFn)="clear()" >{{'CLEAR'|translate}}</aer-button>
-      </div>
+      <app-divider label="{{'OR'|translate}}"></app-divider>
+      <aer-button size="medium" color="blue" (buttonFn)="clear()" >{{'CLEAR'|translate}}</aer-button>
     </div>
   </aer-modal-container>

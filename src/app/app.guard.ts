@@ -2,7 +2,6 @@ import { Component,Input, Injectable  } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { AuthenticationService } from './account/services/authentication-service/authentication.service';
 
-
 @Injectable()
 export class CanActivateViaAuthGuard implements CanActivate {
 
@@ -10,16 +9,16 @@ export class CanActivateViaAuthGuard implements CanActivate {
     }
 
     canActivate() {
-
       return  this.authServ.showKeystore().then( v => {
             if (v) {
-                console.log("authenticated", v)
-                return true
-            } else {
+                // Successfully authenticated
+                return true;
+            } 
+            else {
                 this.router.navigate(['/account/login']);
-                return false
+                return false;
             }
-          })
+          });
    }
 }
 
