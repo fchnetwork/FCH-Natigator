@@ -8,7 +8,7 @@
     }
 
     .b-text {
-        color: #83868A;
+        color: $text-color;
         font-size: 18px;
         text-align: center;
         a {
@@ -26,7 +26,7 @@
     .link-text {
         margin-top: 26px;
         text-align: center;
-        color: #83868A;
+        color: $text-color;
         font-size: 12px;
         a {
             text-decoration: unset;
@@ -46,11 +46,11 @@
 
     .paragraph {
         text-align: center;
-        color: #83868A;
+        color: $text-color;
 
         &--small {
             font-size: 13px;
-            color: #83868A;
+            color: $text-color;
         }
     }
 
@@ -63,7 +63,7 @@
     }
 
     &.access-recovery {
-        max-width: 486px;
+        max-width: 436px;
         text-align: center;
     }
 
@@ -144,7 +144,7 @@
         .warning-text {
             margin-top: 26px;
             font-size: 14px;
-            color: #83868A;
+            color: $text-color;
         }
     }
 

@@ -29,6 +29,8 @@ export const languages: {lang: string}[]  = [{
   }, {
     lang: "de", 
   }, {
+    lang: "fr", 
+  }, {
     lang: "cz", 
   }, {        
     lang: "en",   
