@@ -1,16 +1,34 @@
 .access-recovery { 
-  max-width: 486px;
+  max-width: 436px;
   text-align: center;
+  font-family: 'OpenSans';
+  //max-width: 376px;
+  margin-bottom: 0.5em;
+    .__header {
+        font-size: 36px;
+        text-align: center;
+        color: #27282A;
+    }
 
-  &__header {
-      font-size: 36px;
-      text-align: center;
-      color: #27282A;
-  }
+      button[type=submit] { 
+          margin-top: 2em;
+          //padding-top: 50;
+        }
+
+  .c-info, .login-error {
+      color: rgb(218, 14, 14);
+      font-size: 13px;
+      &::after{
+          content:"\000A";
+          white-space: pre;
+      }
+    }
 
   &__paragraph {
-    text-align: center;
+    //text-align: center;
+    //color: #83868A;
     color: #83868A;
+    font-size: 18px;
 
     &--small {
         font-size: 13px;
@@ -18,3 +36,4 @@
     }
   }
 }
+

@@ -11,7 +11,7 @@
 "ACCESS_RECOVERY": "Récupération du compte",
 "CREATE_BACKUP": "Backup",
 "BACKUP_PHRASE":"You must save the secret phrase. It is the only one way to recover access",
-"OR": "or",
+"OR": "ou",
 "SKIP_STEP": "Skip this step",
 "SAVE_PHRASE": "Save Backup Phrase",
 "SAVE_PHRASE_TEXT": "Your money depend only on you, so you'll need to save this phrase.",
@@ -48,6 +48,15 @@
 "ACCESS_REC_HINT":"Veuillez entrer les mots-clés ou",
 "ACCESS_REC_HINT_SUFF":" veuillez créer un nouveau compte.",
 "SEL_KEY":"Choisir un fichier avec les clés",
-"KEY_PLACEHOLDER":"Vos 15 motes clés enregistrées à la création du compte."
+"KEY_PLACEHOLDER":"Vos 15 motes clés enregistrées à la création du compte.",
+"CONTINUE":"Continuer",
+"ERR_LOGIN_LOW":"Votre MDP devrait contenir au moins avec une lettre majuscule.",
+"ERR_LOGIN_UPP":"Votre MDP devrait contenir au moins avec une lettre minuscule.",
+"ERR_LOGIN_NUM":"Votre MDP devrait contenir au moins avec un numero.",
+"ERR_LOGIN_EXIST":"Vous devrais indiquer un MDP.",
+"ERR_LOGIN_LENGHT":"Votre MDP devrait contenir au moins du dix caractères.",
+"ERR_LOGIN_NOTEQ":"Votre MDP et sa confirmation ne correspondent pas.",
+"CRT_PASS":"Créez votre nouveau mot de passe.",
+"CONF_PASS":"Confirmez votre mot de passe"
 }
 
