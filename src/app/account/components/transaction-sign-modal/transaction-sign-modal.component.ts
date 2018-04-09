@@ -29,7 +29,8 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
 
   ngOnInit() {
     this.unlockAccountForm = this.formBuilder.group({
-			password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ]
+    //	password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ]
+    password: [ null, [Validators.required, Validators.minLength(5) ] ]
 		});
   }  	
 

@@ -47,7 +47,7 @@
     "rxjs": "^5.5.6",
     "soltsice": "^0.10.3",
     "truffle": "^4.0.6",
-    "web3": "^1.0.0-beta.30",
+    "web3": "^1.0.0-beta.33",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
