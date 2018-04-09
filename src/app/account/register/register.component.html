@@ -4,7 +4,7 @@
         <app-divider></app-divider>
         <p class="aer-small register__paragraph">
             {{ 'SIGNED_UP_PREFIX' | translate }}
-            <a routerLink="/login">{{ 'SIGNED_UP_LINK' | translate }}</a> {{ 'SIGNED_UP_SUFFIX' | translate }}
+            <a routerLink="/account/restore">{{ 'SIGNED_UP_LINK' | translate }}</a> {{ 'SIGNED_UP_SUFFIX' | translate }}
         </p>
         <app-divider></app-divider>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
