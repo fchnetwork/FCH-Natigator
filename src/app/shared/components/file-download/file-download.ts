@@ -133,27 +133,25 @@ export class AerumBackupFile {
 	 */
 	formartData(data: any) {
 
-		if (this._options.decimalseparator === 'locale' && this.isFloat(data)) {
-			return data.toLocaleString();
-		}
+		// if (this._options.decimalseparator === 'locale' && this.isFloat(data)) {
+		// 	return data.toLocaleString();
+		// }
 
-		if (this._options.decimalseparator !== '.' && this.isFloat(data)) {
-			return data.toString().replace('.', this._options.decimalseparator);
-		}
+		// if (this._options.decimalseparator !== '.' && this.isFloat(data)) {
+		// 	return data.toString().replace('.', this._options.decimalseparator);
+		// }
 
-		if (typeof data === 'string') {
-			data = data.replace(/"/g, '""');
-			// if (this._options.quoteStrings || data.indexOf(',') > -1 || data.indexOf('\n') > -1 || data.indexOf('\r') > -1) {
-			// 	// data = this._options.quoteStrings + data + this._options.quoteStrings;
-			// 	data = this._options.quoteStrings + data + this._options.quoteStrings;
-			// }
-			return data;
-		}
+		// if (typeof data === 'string') {
+		// 	if (this._options.quoteStrings || data.indexOf(',') > -1 || data.indexOf('\n') > -1 || data.indexOf('\r') > -1) {
+		// 		data = this._options.quoteStrings + data + this._options.quoteStrings;
+		// 	}
+		// 	return data;
+		// }
 
-		if (typeof data === 'boolean') {
-			return data ? 'TRUE' : 'FALSE';
-		}
-		return data;
+		// if (typeof data === 'boolean') {
+		// 	return data ? 'TRUE' : 'FALSE';
+		// }
+		return data.replace(/"/g, '""');
 	}
 	/**
 	 * Check if is Float
