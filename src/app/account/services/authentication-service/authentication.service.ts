@@ -117,8 +117,7 @@ export class AuthenticationService {
      */
     generateAddressLogin( seed: any ) : Promise<any> {
         return new Promise( (resolve, reject) => {
-            const newSeed            = bip39.generateMnemonic()
-            const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed )
+            const mnemonicToSeed     = bip39.mnemonicToSeed( seed )
             const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
             const privExtend         = hdwallet.privateExtendedKey();
             const pubExtend          = hdwallet.publicExtendedKey();      

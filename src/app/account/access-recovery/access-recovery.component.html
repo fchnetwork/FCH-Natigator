@@ -9,12 +9,14 @@
             </p>
             <app-divider [showLine]="false"></app-divider>
             <aer-button color="blue" inline="true" size="medium" (buttonFn)="confirm()">{{'SEL_KEY'|translate}}</aer-button>
+            <input type='file' accept='text/plain' multiple (change)='openSeedFile($event)'>
             <app-divider label="OR"></app-divider>
             <form [formGroup]="accessrecFormFindAddress">
-                <aer-textarea formControlName="seed" 
-                              placeholder="Your seed is 15 words you saved when creating your account" 
+                <aer-textarea formControlName="seed"
+                              placeholder="Your seed is 15 words you saved when creating your account"
                               [addition]="address"
-                              ngDefaultControl></aer-textarea>
+                              [(ngModel)]="seedFileText"
+                              ngDefaultControl>{{ seedFileText }}</aer-textarea>
                 <aer-input formControlName="password" type="password" placeholder="Create new password" ngDefaultControl></aer-input>
                 <aer-input formControlName="confirmpassword" type="password" placeholder="Confirm password" ngDefaultControl></aer-input>
                 <aer-button [disabled]="!accessrecFormFindAddress.valid" (click)="onSubmitAddress()">Continue</aer-button>
@@ -28,13 +30,13 @@
                         </div>
                     </div> -->
 
-            <!-- for future use <adresse> not specified in TYPE 
+            <!-- for future use <adresse> not specified in TYPE
                             <div class="o-loginForm__addressBlock">
                                 <div *ngIf="address; then showAvatar else showAvatarPlaceholder"></div>
                                 <ng-template #showAvatarPlaceholder>
                                         <div  class="c-avatarPlaceholder"></div>
                                 </ng-template>
-                            
+
                                 <ng-template #showAvatar>
                                     <div class="o-avatarWrap" style="width: 40px; height: 40px;">
                                         <img [src]="avatar" width="40" height="40">

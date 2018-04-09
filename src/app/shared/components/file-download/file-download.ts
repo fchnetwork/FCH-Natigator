@@ -143,9 +143,10 @@ export class AerumBackupFile {
 
 		if (typeof data === 'string') {
 			data = data.replace(/"/g, '""');
-			if (this._options.quoteStrings || data.indexOf(',') > -1 || data.indexOf('\n') > -1 || data.indexOf('\r') > -1) {
-				data = this._options.quoteStrings + data + this._options.quoteStrings;
-			}
+			// if (this._options.quoteStrings || data.indexOf(',') > -1 || data.indexOf('\n') > -1 || data.indexOf('\r') > -1) {
+			// 	// data = this._options.quoteStrings + data + this._options.quoteStrings;
+			// 	data = this._options.quoteStrings + data + this._options.quoteStrings;
+			// }
 			return data;
 		}
 
