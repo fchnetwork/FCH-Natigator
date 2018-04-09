@@ -1,25 +1,18 @@
 <aer-modal-container>
-    <div class="backup-create">
+    <div class="account backup-create">
       <div class="header">{{'SAVE_PHRASE'|translate}}</div>
-      <hr class="line">
+      <app-divider></app-divider>
       <div class="b-text">{{'SAVE_PHRASE_TEXT'|translate}}</div>
       <div class="button">
           <aer-button size="medium" color="blue" (buttonFn)="savePhrase()">{{'SAVE_FILE'|translate}}</aer-button>
       </div>
-      <div class="b-backup">
-        <p>
-          <span class="surrounded"> {{'OR'|translate}} </span>
-        </p>
-      </div>
+      <app-divider></app-divider>
       <div class="warning-text">
         {{'WRITE_SEED'|translate}} <a style="cursor: pointer" (click)="copyToClipboard()">{{'WRITE_SEED_COPY' | translate}}</a>
-          <!-- <a routerLink="/bck">{{'SKIP_STEP'|translate}}</a> -->
       </div>
       <div class="phrase">
         {{seed}}
       </div>
-      <div class="">
-        <aer-button (buttonFn)="confirmBackup()">{{'SAVED_IT'|translate}}</aer-button>
-      </div>
+      <aer-button (buttonFn)="confirmBackup()">{{'SAVED_IT'|translate}}</aer-button>
     </div>
   </aer-modal-container>

@@ -66,12 +66,12 @@ export class AccountIdleService {
      * If any of user events is not active for idle-seconds when start timer.
      */
     this.idleSubscription = this.idle$
-      .bufferTime(100)  // Starting point of detecting of user's inactivity
+      .bufferTime(15000)  // Starting point of detecting of user's inactivity
       .filter(arr => !arr.length && !this.isInactivityTimer)
       .switchMap(() => {
           console.log("isInactivityTimer "+this.isInactivityTimer);
         this.isInactivityTimer = true;
-        return Observable.interval(1000)
+        return Observable.interval(15000)
           .takeUntil(Observable.merge(
             this.activityEvents$,
             Observable.timer(this.idle * 1000)

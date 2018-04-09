@@ -1,9 +1,9 @@
 <aer-modal-container>
-    <div class="access-recovery">
+    <div class="account access-recovery">
         <div class="c-registration__step1 o-loginForm" *ngIf="step == 'step_1'">
-            <div class="access-recovery__header">{{'ACCESS_RECOVERY'|translate}}</div>
+            <div class="header">{{'ACCESS_RECOVERY'|translate}}</div>
             <app-divider></app-divider>
-            <p class="access-recovery__paragraph">
+            <p class="paragraph">
                 {{'ACCESS_REC_HINT'|translate}}
                 <a [routerLink]="['/account/register']"> {{'ACCESS_REC_HINT_SUFF'|translate}}</a>
             </p>

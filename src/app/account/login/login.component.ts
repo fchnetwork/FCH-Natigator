@@ -42,11 +42,8 @@ export class LoginComponent implements OnInit {
       });
   }
 
-
-
-
-
   onSubmitAddress() {
+    this.router.navigate(['/transaction']);
     if (this.loginForm.valid) {
       //this.authServ.authorize(this.login, this.password).then( result => {
       // something
