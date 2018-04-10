@@ -8,7 +8,7 @@
                 <a [routerLink]="['/account/register']"> {{'ACCESS_REC_HINT_SUFF'|translate}}</a>
             </p>
             <app-divider [showLine]="false"></app-divider>
-            <aer-button color="blue" inline="true" size="medium" (buttonFn)="confirm()">{{'SEL_KEY'|translate}}</aer-button>
+            <aer-button class="medium blue" (buttonFn)="confirm()">{{'SEL_KEY'|translate}}</aer-button>
             <input type='file' accept='text/plain' multiple (change)='openSeedFile($event)'>
             <app-divider label="OR"></app-divider>
             <form [formGroup]="accessrecFormFindAddress">
@@ -19,7 +19,7 @@
                               ngDefaultControl>{{ seedFileText }}</aer-textarea>
                 <aer-input formControlName="password" type="password" placeholder="Create new password" ngDefaultControl></aer-input>
                 <aer-input formControlName="confirmpassword" type="password" placeholder="Confirm password" ngDefaultControl></aer-input>
-                <aer-button [disabled]="!accessrecFormFindAddress.valid" (click)="onSubmitAddress()">Continue</aer-button>
+                <aer-button [ngClass]="{'disabled': !accessrecFormFindAddress.valid}" [disabled]="!accessrecFormFindAddress.valid" (click)="onSubmitAddress()">Continue</aer-button>
             </form>
 
             <!-- <form [formGroup]="accessrecFormFindAddress" (ngSubmit)="onSubmitAddress()" class="o-login o-loginForm">
