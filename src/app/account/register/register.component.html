@@ -13,7 +13,7 @@
             <p class="paragraph--small">{{ 'UNIQUE_AVATAR' | translate }}</p>
             <aer-input placeholder="Choose your password" type="password" formControlName="password" [(ngModel)]="password" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
             <aer-input placeholder="Repeat password" type="password" formControlName="confirmPassword" [(ngModel)]="confirmPassword" ngDefaultControl equalValidator="password"></aer-input>
-            <aer-button [disabled]="!registerForm.valid" (click)="onSubmit()">CONTINUE</aer-button> 
+            <aer-button [ngClass]="{'disabled': !registerForm.valid}" [disabled]="!registerForm.valid" (click)="onSubmit()">CONTINUE</aer-button> 
         </form>
     </div>
 </aer-modal-container>
