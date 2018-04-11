@@ -36,7 +36,7 @@ export class CreateTransactionComponent implements OnInit {
   includedDataLength: number;
   walletBalance: number;
   sendEverything: boolean;
-
+  transactionMessage:any;
 
   constructor(
     public authServ: AuthenticationService,
@@ -75,7 +75,7 @@ export class CreateTransactionComponent implements OnInit {
 
   public getMaxTransactionFee() {
     // TODO: calculation logic here
-    return 0.000420;
+    return 0.000000;
   }
 
   public setSendEverything(event) {
@@ -94,68 +94,6 @@ export class CreateTransactionComponent implements OnInit {
     }
   }
 
-  // showKeyStore() {
-  //   this.authServ.showKeystore().then( v => {
-  //     this.backupKeystore =	v
-  //   })
-  // }
-
-
- 
-
-  // unlockAccount(password) {
-  //   // set up as a promise to let user know about wrong password
-  //   this.authServ.unencryptKeystore( password ).then( (v) => {
-  //     this.decryptKeystore = v
-  //   }, (err) => {
-  //     this.decryptKeystore = err
-  //   })
-  // }
-
-
-
-  // mark for removal
-  // showDecryptedKeyStore() {
-  //   // set up as a promise to let user know about wrong password
-  //   this.authServ.unencryptKeystore( "prettyGoodPa55w0rd").then( (v) => {
-  //     this.decryptKeystore = v
-  //   }, (err) => {
-  //     this.decryptKeystore = err
-  //   })
-  // }
-
-
-
-  // checkYourBalance() {
-  //   if(this.decryptKeystore) {
-  //       this.txnServ.checkBalance(this.decryptKeystore.address).then( res => {
-  //         console.log("res " +  res)
-  //         this.myBalance = 	res
-  //       }, (err) => {
-  //         this.myBalance = err
-  //       })
-  //   } else {
-  //     alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
-  //   }
-  // }
-
-  // checkReceiverBalance( address ) {
-  //  // this.theirBalance = this.txnServ.checkBalance()
-  //  this.txnServ.checkBalance( address ).then( res => {
-  //   console.log("res " +  res)
-  //   this.theirBalance = 	res
-  // } )
-  // }
-
-
-  // createTransaction(){
-  // if(  this.decryptKeystore ) {
-  //     this.txnServ.transaction(  this.decryptKeystore.privateKey, this.decryptKeystore.address, "0xb0573f6b040fddf1250cdd38983f4eac06fbf3ca", '0.01', "hi its paddy" )
-  // } else {
-  //   alert("Error: Either your keystore does not exist or you have not unlocked it, is your password correct ?")
-  // }
-  // }
-
 
   public showMore() {}
 
@@ -167,18 +105,18 @@ export class CreateTransactionComponent implements OnInit {
 
 
   public send() {
-    this.modalSrv.openTransactionConfirm().then( 
-      (result)=>{ 
-        if(!result.dismiss) {
-          if( this.privateKey ){
-            console.log("this.privateKey use has made a recent transaction, add feature to remove pw confirm"+ this.privateKey);
-          }
-          this.privateKey = result.privateKey; 
-          this.txnServ.transaction(  this.privateKey, result.address, this.receiverAddress, this.amount, "aerum test transaction" );
-        }
-    }, ()=>{
-       console.log("catch");
+    this.transactionMessage = ""
+    this.modalSrv.openTransactionConfirm().then( result =>{ 
+       if( this.receiverAddress == undefined || this.receiverAddress == null) {
+          alert("You need to add a receiver address")  
+          return false      
+       }
+       this.txnServ.transaction(  result.privateKey, result.address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
+        this.transactionMessage = res
+      }).catch( error =>  console.log(error) );
+
     });
+
   }
 
 
