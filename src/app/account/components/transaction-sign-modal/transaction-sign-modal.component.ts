@@ -35,10 +35,8 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
   }  	
 
   onSubmit(){
-   // console.log( this.unlockAccountForm.controls['password'].value )
     this.authServ.unencryptKeystore( this.unlockAccountForm.controls['password'].value ).then( (v) => {
       if(v) {
-        alert(" successfull decrypt "+ JSON.stringify(v) );
         this.dialog.close( v );
       }
     }, (err) => {
