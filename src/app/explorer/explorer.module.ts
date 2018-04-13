@@ -10,6 +10,7 @@ import { TransactionComponent } from './components/transaction/transaction.compo
 import { BlockComponent } from './components/block/block.component';
 import { AddressComponent } from './components/address/address.component';
 import { SearchComponent } from './components/search/search.component';
+import { BlocksComponent } from './components/blocks/blocks.component';
 
 import { BlockModalComponent } from './components/block/block-modal/block-modal.component';
 import { TransactionModalComponent } from './components/transaction/transaction-modal/transaction-modal.component';
@@ -27,6 +28,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { explorerRoutes } from './explorer.routes'
 import { AppUIModule } from '../app.ui.module';
+import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -59,7 +61,9 @@ const modals = [BlockModalComponent, TransactionModalComponent];
     TransactionTimeAgoPipe,
     TransactionTimeStampPipe,
     HexToTextPipe,
-    modals
+    modals,
+    BlocksComponent,
+    PendingTxnsComponent,
   ],
   entryComponents: [
     modals

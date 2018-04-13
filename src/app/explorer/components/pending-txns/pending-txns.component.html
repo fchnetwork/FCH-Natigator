@@ -1,0 +1,32 @@
+<aer-content class="explorer">
+    <h1>{{'PENDING_TXNS'|translate}}</h1>
+    <aer-card>
+        <div class="dataTable-info-label">
+            <label>A total of {{getTransactionsCount()}}</label>
+        </div>
+        <table>
+            <thead>
+                <th class="">{{'TX_HASH'|translate}}</th>
+                <th class="">{{'LAST_SEEN'|translate}}</th>
+                <th class="">{{'GAS_LIMIT'|translate}}</th>
+                <th class="">{{'GAS_PRICE'|translate}}</th>
+                <th class="">{{'FROM'|translate}}</th>
+                <th class="arrow"></th>
+                <th class="">{{'TO'|translate}}</th>
+                <th class="">{{'VALUE'|translate}}</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let transaction of transactions">
+                    <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash}}</td>
+                    <td>{{transaction.lastSeen}}</td>
+                    <td>{{transaction.gasLimit}} 2 minutes ago</td>
+                    <td>{{transaction.gasPrise}} Gwei</td>
+                    <td class="link hash">{{transaction.from}}</td>
+                    <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>
+                    <td class="link hash">{{transaction.to}}</td>
+                    <td class="value">{{transaction.value}} {{'AETH'|translate}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </aer-card>
+</aer-content>
