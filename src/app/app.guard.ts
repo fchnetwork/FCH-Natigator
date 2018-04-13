@@ -5,21 +5,24 @@ import { AuthenticationService } from './account/services/authentication-service
 @Injectable()
 export class CanActivateViaAuthGuard implements CanActivate {
 
-    constructor( public authServ: AuthenticationService, private router: Router) {
-    }
+    constructor( 
+        public authServ: AuthenticationService,
+        private router: Router
+    ) {}
 
-    canActivate() {
-      return  this.authServ.showKeystore().then( v => {
-            if (v) {
-                // Successfully authenticated
-                return true;
-            } 
-            else {
-                this.router.navigate(['/account/login']);
-                return false;
-            }
-          });
-   }
+        canActivate(): Promise<boolean> {
+            return new Promise((resolve) => {
+                this.authServ.showKeystore()
+                .then(  ( keystore: any) => {
+                    resolve(true);
+                })
+                .catch( () => {
+                   this.router.navigate(['/account/login']);
+                    resolve(false);
+                });
+            });
+        }
+
 }
 
 

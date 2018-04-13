@@ -19,7 +19,7 @@ export class AccessRecoveryComponent implements OnInit {
   address: string = "";
   avatar: string;
   private: string;
-  accessrecFormFindAddress: FormGroup; 
+  recoverForm: FormGroup; 
   loginFormGetKey: FormGroup; 
   componentDestroyed$: Subject<boolean> = new Subject()
 	step: string = 'step_1';
@@ -41,7 +41,7 @@ export class AccessRecoveryComponent implements OnInit {
             reader.onload = () => {
                 this.seedFileText = reader.result;
                 console.log(this.seedFileText)
-                this.accessrecFormFindAddress.controls['seed'].setValue( this.seedFileText );
+                this.recoverForm.controls['seed'].setValue( this.seedFileText );
             }
             reader.readAsText(input.files[index]);
         };
@@ -50,7 +50,7 @@ export class AccessRecoveryComponent implements OnInit {
 
     ngOnInit() {
 
-      this.accessrecFormFindAddress = this.formBuilder.group({
+      this.recoverForm = this.formBuilder.group({
         seed: ["", [Validators.required ] ],
         // password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
         password: [ "", [Validators.required ] ],
@@ -64,7 +64,7 @@ export class AccessRecoveryComponent implements OnInit {
     }
 
     private _processFormData() {
-      const seedControl = this.accessrecFormFindAddress.controls['seed'];
+      const seedControl = this.recoverForm.controls['seed'];
             seedControl.valueChanges.takeUntil( this.componentDestroyed$ ).subscribe( async v => {
               if ( v && v.length > 2 ) {
 
@@ -96,10 +96,10 @@ export class AccessRecoveryComponent implements OnInit {
     }
 
     onSubmitAddress() {
-      if( this.accessrecFormFindAddress.valid ) {
+      if( this.recoverForm.valid ) {
         console.log( this.private )
-        console.log( this.accessrecFormFindAddress.value.password )
-        this.authServ.saveKeyStore( this.private, this.accessrecFormFindAddress.value.password )
+        console.log( this.recoverForm.value.password )
+        this.authServ.saveKeyStore( this.private, this.recoverForm.value.password, this.recoverForm.value.seed )
         this.router.navigate(['/transaction']); // improvements need to be made here but for now the auth guard should work just fine
       }
     }
