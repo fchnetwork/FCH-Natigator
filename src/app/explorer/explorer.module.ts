@@ -23,6 +23,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { explorerRoutes } from './explorer.routes'
+import { AppUIModule } from '../app.ui.module';
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -42,6 +43,7 @@ export function createTranslateLoader(http: HttpClient) {
       }
     }),      
     RouterModule.forChild(explorerRoutes),
+    AppUIModule,
   ],
   declarations: [
     TransactionsComponent,

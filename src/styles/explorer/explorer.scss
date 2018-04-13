@@ -1,0 +1,50 @@
+$dataTableHeaderBackground: #39424A;
+
+.explorer {
+    table {
+        border-collapse: collapse;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        thead {
+            background: $dataTableHeaderBackground;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            text-align: left;
+            th {
+                height: 45px;
+                padding: 0px 20px;
+            }
+        }
+        tbody {
+            tr {
+                height: 50px;
+                td {
+                    padding: 0px 20px;
+                }
+            }
+            .link {
+                color: #458CC9;
+            }
+
+            .hash {
+                min-width: 312px;
+            }
+            .block {
+
+            }
+            .age {
+
+            }
+            .arrow {
+                font-size: 18px;
+            }
+            .value {
+
+            }
+            .txfee {
+
+            }
+        }
+    }
+}

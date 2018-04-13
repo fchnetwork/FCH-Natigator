@@ -1,41 +1,78 @@
 <app-search></app-search>
+<aer-content class="explorer">
+    <h1>{{'TRANSACTIONS_SHORT'|translate}}</h1>
+    <aer-card>
+            
+                    <label>More than > {{transactionsCount}} transactions found</label><label *ngIf="lazy">(showing the last 500k records)</label>
+                    <table>
+                        <thead>
+                            <th class="">{{'TX_HASH'|translate}}</th>
+                            <th class="">{{'BLOCK'|translate}}</th>
+                            <th class="">{{'AGE'|translate}}</th>
+                            <th class="">{{'FROM'|translate}}</th>
+                            <th class=""></th>
+                            <th class="">{{'TO'|translate}}</th>
+                            <th class="">{{'VALUE'|translate}}</th>
+                            <th class="">{{'TX_FEE'|translate}}</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let transaction of transactions">
+                                <td class="link hash">{{transaction.hash}}</td>
+                                <td class="link block">{{transaction.blockNumber}}</td>
+                                <td class="age">{{transaction.age}} 2 minutes ago</td>
+                                <td class="link hash">{{transaction.from}}</td>
+                                <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>
+                                <td class="link hash">{{transaction.to}}</td>
+                                <td class="value">{{transaction.value}}{{'AETH'|translate}}</td>
+                                <td class="txfee"><!--{{transaction.txFee}}-->{{transaction.gasPrice}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                
+    </aer-card>
+    
+</aer-content>
+
+<!-- OLD CODE 
+<app-search></app-search>
 <section class="o-section o-section__blockInfo">
-  <div class="o-site-wrap o-site-wrap--padding">
-      <div class="o-grid o-grid--gutter-sm">
-          <div class="o-grid__item u-1/1@lg u-1/1@md u-1/1@sm u-1/1">
-              <h1>Transactions</h1>
-              <h3>Current Block #{{ currentBlock }} </h3>
-              <div class="c-table c-table--fixed c-table--evenOdd">
-                  <div class="c-table--row">
-                      <div class="c-table--cell">
-                         Block #
-                      </div>
-                      <div class="c-table--cell">
-                          Size
-                      </div>  
-                      <div class="c-table--cell">
-                          Tx #
-                      </div>
-                      <div class="c-table--cell">
-                          Time 
-                      </div>                
-                  </div>
-                  <div class="c-table--row" *ngFor="let m of blocks;">
-                      <div class="c-table--cell u-bw">
-                          <a class="u-click" (click)="exploreBlock(m.number)">{{ m.number}}</a>
-                      </div>
-                      <div class="c-table--cell u-bw">
-                          {{ m.size }}
-                      </div>  
-                      <div class="c-table--cell u-bw">
-                          {{ m.transactions.length }}
-                      </div>
-                      <div class="c-table--cell u-bw">
-                          {{ m.timestamp | transactionTimeAgo }}
-                      </div>       
-                  </div>
-              </div>
-          </div>            
-      </div>
-  </div>
-</section>
+        <div class="o-site-wrap o-site-wrap--padding">
+            <div class="o-grid o-grid--gutter-sm">
+                <div class="o-grid__item u-1/1@lg u-1/1@md u-1/1@sm u-1/1">
+                    <h1>Transactions</h1>
+                    <h3>Current Block #{{ currentBlock }} </h3>
+                    <div class="c-table c-table--fixed c-table--evenOdd">
+                        <div class="c-table--row">
+                            <div class="c-table--cell">
+                                Block #
+                            </div>
+                            <div class="c-table--cell">
+                                Size
+                            </div>
+                            <div class="c-table--cell">
+                                Tx #
+                            </div>
+                            <div class="c-table--cell">
+                                Time
+                            </div>
+                        </div>
+                        <div class="c-table--row" *ngFor="let m of blocks;">
+                            <div class="c-table--cell u-bw">
+                                <a class="u-click" (click)="exploreBlock(m.number)">{{ m.number}}</a>
+                            </div>
+                            <div class="c-table--cell u-bw">
+                                {{ m.size }}
+                            </div>
+                            <div class="c-table--cell u-bw">
+                                {{ m.transactions.length }}
+                            </div>
+                            <div class="c-table--cell u-bw">
+                                {{ m.timestamp | transactionTimeAgo }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+ -->
