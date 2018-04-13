@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { ExplorerService } from '../../services/explorer.service';
 import { iBlocks, iTransaction } from '../../../shared/app.interfaces';
+import { ModalService } from '../../../shared/services/modal.service';
 
 @Component({
   selector: 'app-transactions',
@@ -24,7 +25,9 @@ export class TransactionsComponent implements OnInit {
                public exploreSrv: ExplorerService,
                private cd: ChangeDetectorRef,
                private route: ActivatedRoute,
-               private router: Router ) { }
+               private router: Router,
+               private modal: ModalService
+               ) { }
 
   ngOnInit() {
     this.blocks = [];
@@ -73,7 +76,20 @@ export class TransactionsComponent implements OnInit {
     //   });
   }
 
+  public getTransactionsCount() {
+    return this.transactions.length;
+  }
 
+  public openBlock(blockNumber) {
+    this.modal.openBlock(blockNumber).then( result =>{ 
+     })
+     .catch( () => {});
+  }
+
+  public openTransaction(transaction) {
+    this.modal.openTransaction(transaction.hash, transaction).then((result) => {
+    }).catch( () => {});
+  }
 
   search(item: any) {
     if( /[a-z]/i.test(item)  ) {

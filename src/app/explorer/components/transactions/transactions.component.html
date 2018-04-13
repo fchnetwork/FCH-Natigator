@@ -1,36 +1,36 @@
-<app-search></app-search>
+<!-- <app-search></app-search> -->
 <aer-content class="explorer">
     <h1>{{'TRANSACTIONS_SHORT'|translate}}</h1>
     <aer-card>
-            
-                    <label>More than > {{transactionsCount}} transactions found</label><label *ngIf="lazy">(showing the last 500k records)</label>
-                    <table>
-                        <thead>
-                            <th class="">{{'TX_HASH'|translate}}</th>
-                            <th class="">{{'BLOCK'|translate}}</th>
-                            <th class="">{{'AGE'|translate}}</th>
-                            <th class="">{{'FROM'|translate}}</th>
-                            <th class=""></th>
-                            <th class="">{{'TO'|translate}}</th>
-                            <th class="">{{'VALUE'|translate}}</th>
-                            <th class="">{{'TX_FEE'|translate}}</th>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let transaction of transactions">
-                                <td class="link hash">{{transaction.hash}}</td>
-                                <td class="link block">{{transaction.blockNumber}}</td>
-                                <td class="age">{{transaction.age}} 2 minutes ago</td>
-                                <td class="link hash">{{transaction.from}}</td>
-                                <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>
-                                <td class="link hash">{{transaction.to}}</td>
-                                <td class="value">{{transaction.value}}{{'AETH'|translate}}</td>
-                                <td class="txfee"><!--{{transaction.txFee}}-->{{transaction.gasPrice}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                
+        <div class="dataTable-info-label">
+            <label>{{getTransactionsCount()}} transactions found</label><label *ngIf="lazy">(showing the last 500k records)</label>
+        </div>
+        <table>
+            <thead>
+                <th class="">{{'TX_HASH'|translate}}</th>
+                <th class="">{{'BLOCK'|translate}}</th>
+                <th class="">{{'AGE'|translate}}</th>
+                <th class="">{{'FROM'|translate}}</th>
+                <th class="arrow"></th>
+                <th class="">{{'TO'|translate}}</th>
+                <th class="">{{'VALUE'|translate}}</th>
+                <th class="">{{'TX_FEE'|translate}}</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let transaction of transactions">
+                    <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash}}</td>
+                    <!-- <td class="link block"><a [routerLink]="['/explorer/block', transaction.blockNumber]">{{transaction.blockNumber}}</a></td> -->
+                    <td class="link block" (click)="openBlock(transaction.blockNumber)">{{transaction.blockNumber}}</td>
+                    <td class="age">{{transaction.age}} 2 minutes ago</td>
+                    <td class="link hash">{{transaction.from}}</td>
+                    <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>
+                    <td class="link hash">{{transaction.to}}</td>
+                    <td class="value">{{transaction.value}}{{'AETH'|translate}}</td>
+                    <td class="txfee"><!--{{transaction.txFee}}-->{{transaction.gasPrice}}</td>
+                </tr>
+            </tbody>
+        </table>
     </aer-card>
-    
 </aer-content>
 
 <!-- OLD CODE 

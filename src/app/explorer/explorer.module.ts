@@ -11,6 +11,9 @@ import { BlockComponent } from './components/block/block.component';
 import { AddressComponent } from './components/address/address.component';
 import { SearchComponent } from './components/search/search.component';
 
+import { BlockModalComponent } from './components/block/block-modal/block-modal.component';
+import { TransactionModalComponent } from './components/transaction/transaction-modal/transaction-modal.component';
+
 import { ExplorerService } from './services/explorer.service'
 
 import { RouterModule } from '@angular/router'
@@ -29,6 +32,8 @@ import { AppUIModule } from '../app.ui.module';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }    
+
+const modals = [BlockModalComponent, TransactionModalComponent];
 
 @NgModule({
   imports: [
@@ -53,8 +58,12 @@ export function createTranslateLoader(http: HttpClient) {
     SearchComponent,
     TransactionTimeAgoPipe,
     TransactionTimeStampPipe,
-    HexToTextPipe,  
+    HexToTextPipe,
+    modals
   ],
+  entryComponents: [
+    modals
+  ]
   // providers: [
   //   ExplorerService
   // ],  
