@@ -38,8 +38,8 @@ export class ModalService {
     return this.openModal(TransactionSignModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
   
-  public openBlock(blockNumber: any): Promise<any> {
-    return this.openModal(BlockModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', blockNumber: blockNumber });
+  public openBlock(blockNumber: any = null, block: any = null): Promise<any> {
+    return this.openModal(BlockModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', blockNumber: blockNumber, block: block });
   }
 
   public openTransaction(hash: any = null, transaction: any = null): Promise<any> {

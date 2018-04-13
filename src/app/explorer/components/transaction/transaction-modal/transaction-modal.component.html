@@ -1,6 +1,76 @@
 <aer-modal-dialog>
-Transaction hash
-    <p>
-        {{hash}}
-      </p>
-</aer-modal-dialog>
+    <div class="explorer detail-modal" *ngIf="transaction">
+      <div class="title">Transaction</div>
+      <!-- <app-divider></app-divider> -->
+      <div class="link">{{transaction.hash}}</div>
+      <div><p class="aer-small">{{transaction.created}} Wednesday, February 22, 2018 3:42 PM</p></div>
+      <div class="age">({{transaction.age}}2 months ago)</div>
+  
+      <div class="transaction-table">
+        <div class="tr">
+          <div class="name">
+            {{'AMOUNT'|translate}}
+          </div>
+          <div class="value">
+            {{transaction.value}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'FROM'|translate}}
+          </div>
+          <div class="value">
+            {{transaction.from}}
+          </div>
+        </div>
+        <div class="tr">
+            <div class="name">
+              {{'TO'|translate}}
+            </div>
+            <div class="value">
+                {{transaction.to}}
+            </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'FEE'|translate}}
+          </div>
+          <div class="value">
+              {{transaction.fee}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'GAS _ USED'|translate}}
+          </div>
+          <div class="value">
+              {{transaction.gas}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'GAS_PRICE'|translate}}
+          </div>
+          <div class="value">
+              {{transaction.gasPrice}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'BLOCK'|translate}}
+          </div>
+          <div class="value">
+              {{transaction.blockHash}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'SEND_DATA'|translate}}
+          </div>
+          <div class="value">
+              {{transaction.data}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </aer-modal-dialog>

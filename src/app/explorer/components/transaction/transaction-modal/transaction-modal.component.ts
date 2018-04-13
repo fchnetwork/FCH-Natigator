@@ -9,8 +9,7 @@ export interface TransactionModalContext {
 
 @Component({
   selector: 'app-transaction-modal',
-  templateUrl: './transaction-modal.component.html',
-  styleUrls: ['./transaction-modal.component.scss']
+  templateUrl: './transaction-modal.component.html'
 })
 export class TransactionModalComponent implements OnInit, ModalComponent<TransactionModalContext> {
 

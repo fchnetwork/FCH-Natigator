@@ -1,6 +1,96 @@
 <aer-modal-dialog>
-  Block Number  
-  <p>
-        {{blockNumber}}
-      </p>
-</aer-modal-dialog>
+    <div class="explorer detail-modal" *ngIf="block">
+      <div class="title">{{'BLOCK'|translate}}</div>
+      <!-- <app-divider></app-divider> -->
+      <div class="link">{{block.number}}</div>
+      <div><p class="aer-small">{{block.timestamp}} Wednesday, February 22, 2018 3:42 PM</p></div>
+      <div class="age">({{block.timestamp}}34 sec ago)</div>
+  
+      <div class="transaction-table">
+        <div class="tr">
+          <div class="name">
+            {{'TXNS'|translate}}
+          </div>
+          <div class="value">
+            {{block.transactions}} {{'TXNS'|translate}} {{'AND'|translate}} {{block.contracts}} {{'CONTRACT_INTERNAL_TXNS'|translate}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'HASH'|translate}}
+          </div>
+          <div class="value">
+            {{block.hash}}
+          </div>
+        </div>
+        <div class="tr">
+            <div class="name">
+              {{'PARENT_HASH'|translate}}
+            </div>
+            <div class="value">
+                {{block.parentHash}}
+            </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'SIGNED_BY'|translate}}
+          </div>
+          <div class="value">
+              {{block.signedBy}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'SIZE'|translate}}
+          </div>
+          <div class="value">
+              {{block.size}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'GAS_USED'|translate}}
+          </div>
+          <div class="value">
+              {{block.gasUsed}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'GAS_LIMIT'|translate}}
+          </div>
+          <div class="value">
+              {{block.gasLimit}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'NONCE'|translate}}
+          </div>
+          <div class="value">
+              {{block.nonce}}
+          </div>
+        </div>
+        <div class="tr">
+            <div class="name">
+              {{'BLOCK_REWARD'|translate}}
+            </div>
+            <div class="value">
+                {{block.blockReward}}
+            </div>
+        </div>
+        <div class="tr">
+            <div class="name">
+              {{'EXTRA_DATA'|translate}}
+            </div>
+            <div class="value">
+                {{block.extraData}}
+            </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!block">
+      <div class="title">{{'BLOCK'|translate}}</div>
+      <p>{{blockNumber}}</p>
+    </div>
+  </aer-modal-dialog>
