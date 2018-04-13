@@ -18,7 +18,6 @@ export const ROUTES = [
   {
     path: '',
     redirectTo: 'account',
-    canActivate: [CanActivateViaAuthGuard],
     pathMatch: 'full'
   },
   // TO PREVENT LAZY LOADING OF COMPONENTS ACCESSIBLE IMMEDIATELY AFTER LOAD 
@@ -54,6 +53,7 @@ export const ROUTES = [
   },
   {
     path: 'transaction',
+    canActivate: [CanActivateViaAuthGuard], // leave this here!!!
     component: CreateTransactionComponent,
   },
   { 
