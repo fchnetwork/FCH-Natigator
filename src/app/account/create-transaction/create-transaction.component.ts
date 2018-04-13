@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication-service/authentication.service';
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
-// import { ModalService } from '../../shared/services/modal.service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../../shared/services/modal.service';
-
-
 
 
 const Tx = require('ethereumjs-tx');
@@ -37,6 +34,7 @@ export class CreateTransactionComponent implements OnInit {
   walletBalance: number;
   sendEverything: boolean;
   transactionMessage:any;
+  addressQR: string;
 
   constructor(
     public authServ: AuthenticationService,
@@ -64,14 +62,24 @@ export class CreateTransactionComponent implements OnInit {
 
 
   userData() {
-      return this.authServ.showKeystore().then( (resultA) => {
-          return Promise.all([resultA, this.txnServ.checkBalance(resultA.address)]); // resultA will implicitly be wrapped
-      }).then( ([resultA, resultB]) => {
-        this.senderAddress = "0x" + resultA.address ;
-        this.walletBalance = resultB;
-      });
-  }
+      return this.authServ.showKeystore().then( 
+        (keystore) => {
 
+          const getBalance = this.txnServ.checkBalance(keystore.address)
+          const getQR = this.authServ.createQRcode( "0x" + keystore.address )  
+
+          return Promise.all([ keystore, getBalance, getQR ]); 
+
+      }
+    )
+      .then(
+        ([ keystore, accBalance, qrCode ]) => {
+        this.senderAddress = "0x" + keystore.address ;
+        this.walletBalance = accBalance;
+        this.addressQR = qrCode
+      }
+    );
+  }
 
   public getMaxTransactionFee() {
     // TODO: calculation logic here

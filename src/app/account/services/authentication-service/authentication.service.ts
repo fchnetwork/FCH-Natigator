@@ -7,13 +7,15 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { environment } from '../../../../environments/environment';
 import * as avatars from 'identity-img'
+import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import QRCode from 'qrcode'
 
 const ethUtil = require('ethereumjs-util');
-const hdkey = require("ethereumjs-wallet/hdkey")
-const wall = require("ethereumjs-wallet")
-const bip39 = require("bip39");
-const Web3 = require('web3');
+const hdkey   = require("ethereumjs-wallet/hdkey")
+const wall    = require("ethereumjs-wallet")
+const bip39   = require("bip39");
+const Web3    = require('web3');
 
 declare var window: any;
 
@@ -22,21 +24,17 @@ export class AuthenticationService {
 
     public web3: any;
 
-    constructor(private _http: Http) {
+    constructor( private _http: Http ) {
+
         this.initWeb3();
+
         avatars.config({ size: 67 * 3, bgColor: '#fff' });
+
     }
     
     
-    
     initWeb3 = () => {
-        if (typeof window.web3 !== 'undefined') {
-          console.warn('Using web3 detected from external source. If you find that your accounts don\'t appear or you have 0 MetaCoin, ensure you\'ve configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-metamask');
-          this.web3 = new Web3(window.web3.currentProvider);
-        } else {
-          console.warn('No web3 detected. Falling back to ${environment.HttpProvider}. You should remove this fallback when you deploy live, as it\'s inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask');
-          this.web3 = new Web3( new Web3.providers.HttpProvider(environment.HttpProvider)); 
-        }
+        return new Web3( new Web3.providers.HttpProvider(environment.HttpProvider)); 
     };
       
 
@@ -45,10 +43,8 @@ export class AuthenticationService {
         for( let i =0; i <=4; i++ ) {
             const newSeed            = bip39.generateMnemonic()
             const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed )
-            const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
-            const privExtend         = hdwallet.privateExtendedKey();
-            const pubExtend          = hdwallet.publicExtendedKey();      
-            const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet(); // use the ethereumjs lib now
+            const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed ); 
+            const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet();
             const getAddress         = wallet.getAddress().toString("hex")
             const getPriv            = wallet.getPrivateKeyString().toString("hex")
             const getPublic          = wallet.getPublicKeyString().toString("hex")        
@@ -61,12 +57,11 @@ export class AuthenticationService {
                 address: address,
                 private: getPriv,
                 public: getPublic,            
-                extendedPrivateKey: privExtend,
-                extendedPublicKey:pubExtend,
             })
         }
         return seeds;
     }
+
 
 
     authState() : Observable<any> {
@@ -74,21 +69,32 @@ export class AuthenticationService {
     }
 
  
+
     // creates an auth cookie
-    saveKeyStore(privateKey, Password){
+    saveKeyStore( privateKey: string, Password: string, Seed: any ){
+      
+        const encryptSeed = CryptoJS.AES.encrypt( Seed, Password );
+
         const encryptAccount = this.web3.eth.accounts.encrypt( privateKey, Password);
+
         Cookie.set('aerum_keyStore', JSON.stringify(encryptAccount) );
+        Cookie.set('aerum_base', encryptSeed );
+
         return encryptAccount
+        
     }         
 
 
     showKeystore() : Promise<any> {
-        console.log("keystore"+Cookie.get('aerum_keyStore'))
+
+       // this.generateAdditionalAccounts( "12345", 5 )
+
         return new Promise( (resolve, reject) => {
             const Auth = Cookie.get('aerum_keyStore')
             if(Auth) {
                 resolve( JSON.parse( Auth ) )
-            } else {
+            } 
+            else{
                 reject("no keystore found");
             }
         });
@@ -98,15 +104,90 @@ export class AuthenticationService {
 
     // retrieve Private key using keystore auth cookie
     // will need to allow uploading this json also
-    unencryptKeystore( password ) : Promise<any> {
+    unencryptKeystore( password: string ) : Promise<any> {
+
         return new Promise( (resolve, reject) => {
+
+            const decryptSeed = CryptoJS.AES.decrypt( Cookie.get('aerum_base'), password );
+
             const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
-            if(encryptAccount) {
-                resolve( encryptAccount  )
-            } else {
+
+            if( encryptAccount ) {
+                resolve( { web3: encryptAccount, s:decryptSeed  } )
+            } 
+            else {
                 reject("no keystore found or password incorrect");
             }
+
         });
+
+    }
+
+
+
+    /**
+     * @description trip start/end whitespace, special chars and any double spaces which can affect address generation
+     * @param seed string containing bip32 specification seed phrase
+     */
+    seedCleaner(seed: any) {
+
+        let cleanSeed = seed.trim()
+            cleanSeed = cleanSeed.replace(/[^\w\s]/gi, ' ') 
+            cleanSeed.replace(/\s\s+/g, ' ')
+
+        return cleanSeed;
+
+    }
+
+
+
+    generateAdditionalAccounts( password: string, amount: number ){
+
+        const authCookie = Cookie.get('aerum_base')
+
+        if( authCookie ){
+            const accounts        = []
+            const cookieStringify = authCookie.toString()
+            const bytes           = CryptoJS.AES.decrypt( cookieStringify, password );
+            const plaintext       = bytes.toString(CryptoJS.enc.Utf8);
+            const seed            = this.seedCleaner(plaintext)
+            const mnemonicToSeed  = bip39.mnemonicToSeed( seed )
+            const hdwallet        = hdkey.fromMasterSeed( mnemonicToSeed ); 
+            const privExtend      = hdwallet.privateExtendedKey();
+            const pubExtend       = hdwallet.publicExtendedKey();      
+             for( let i = 0; i <= amount; i++) {
+                const derivationPath  = hdwallet.derivePath( "m/44'/60'/0'/0/" + i )
+                const initWallet      = derivationPath.getWallet()
+                const address         = initWallet.getAddress().toString("hex")
+                const checkSumAddress = ethUtil.toChecksumAddress( address )
+                const finalAddress    = ethUtil.addHexPrefix( checkSumAddress )
+                accounts.push( finalAddress )
+             }
+             return accounts
+        }
+    }
+
+
+    isHexAddress(str) {
+        if (typeof str !== 'string') {
+          throw new Error("Not a valid string");
+        }
+       return str.slice(0, 2) === '0x';
+    }
+
+
+    createQRcode(address:string) : Promise<any> {
+
+        const formatAddress = this.isHexAddress(address) ? address : '0x' + address
+
+        return new Promise( (resolve) => {
+
+            if( formatAddress ){
+                resolve( QRCode.toDataURL( formatAddress  ) )
+            }
+
+        });
+        
     }
 
 
@@ -114,11 +195,11 @@ export class AuthenticationService {
     /**
      * 
      * @param seed user types their seed in on the login page and it is used here
-     * @returns an ethereum address and a blocky image associated with that address
+     * @returns an ethereum address and avatar image associated with that address
      */
     generateAddressLogin( seed: any ) : Promise<any> {
         return new Promise( (resolve, reject) => {
-            const mnemonicToSeed     = bip39.mnemonicToSeed( seed )
+            const mnemonicToSeed     = bip39.mnemonicToSeed( this.seedCleaner( seed ) )
             const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
             const privExtend         = hdwallet.privateExtendedKey();
             const pubExtend          = hdwallet.publicExtendedKey();      
