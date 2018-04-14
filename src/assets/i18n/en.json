@@ -76,7 +76,26 @@
 "AGE":"Age",
 "BLOCKCHAIN_EXPLORER":"Blockchain Explorer",
 "PENDING_TXNS":"Pending Txns",
-"AETH":"Aeth"
+"AETH":"Aeth",
+"FEE":"Fee",
+"GAS_USED":"Gas used",
+"GAS_PRICE":"Gas price",
+"SEND_DATA":"Send data",
+"HEIGHT":"Height",
+"TXN":"Txn",
+"SIGNER":"Signer",
+"GAS_LIMIT":"Gas limit",
+"REWARD":"Reward",
+"TXNS":"Txns",
+"HASH":"Hash",
+"PARENT_HASH":"Parent hash",
+"SIGNED_BY":"Signed by",
+"SIZE":"Size",
+"NONCE":"Nonce",
+"BLOCK_REWARD":"Block reward",
+"EXTRA_DATA":"Extra data",
+"TX_HASH":"Tx hash",
+"LAST_SEEN":"Last seen"
 }
 
 
