@@ -13,6 +13,7 @@ import { BackupConfirmComponent } from './account/backup-confirm/backup-confirm.
 import { AccountModule } from './account/account.module';
 import { BackupPromptComponent } from './account/backup-prompt/backup-prompt.component';
 import { ACCOUNT_ROUTES } from './account/account.routes';
+import { DASHBOARD_ROUTES } from './dashboard/dashboard.routes';
 
 export const ROUTES = [
   {
@@ -30,6 +31,10 @@ export const ROUTES = [
     // component: DashboardComponent
     path: 'explorer',
     loadChildren: './explorer/explorer.module#ExplorerModule'
+  },
+  {
+    path: 'dashboard',
+    children: DASHBOARD_ROUTES
   },
   {
     path: 'not-found',
