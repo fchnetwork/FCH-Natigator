@@ -26,7 +26,7 @@ export class AuthenticationService {
 
     constructor( private _http: Http ) {
 
-        this.initWeb3();
+        this.web3 = this.initWeb3();
 
         avatars.config({ size: 67 * 3, bgColor: '#fff' });
 
@@ -71,24 +71,21 @@ export class AuthenticationService {
  
 
     // creates an auth cookie
-    saveKeyStore( privateKey: string, Password: string, Seed: any ){
-      
-        const encryptSeed = CryptoJS.AES.encrypt( Seed, Password );
+    saveKeyStore( privateKey: string, password: string, seed: any ){
+    
+        const formatSeed     = this.seedCleaner( seed.toString() )
+        const encryptSeed    = CryptoJS.AES.encrypt( formatSeed, password );
+        const encryptAccount = this.web3.eth.accounts.encrypt( privateKey, password);
 
-        const encryptAccount = this.web3.eth.accounts.encrypt( privateKey, Password);
-
-        Cookie.set('aerum_keyStore', JSON.stringify(encryptAccount) );
+        Cookie.set('aerum_keyStore', JSON.stringify( encryptAccount) );
         Cookie.set('aerum_base', encryptSeed );
 
-        return encryptAccount
+        return encryptAccount 
         
     }         
 
 
     showKeystore() : Promise<any> {
-
-       // this.generateAdditionalAccounts( "12345", 5 )
-
         return new Promise( (resolve, reject) => {
             const Auth = Cookie.get('aerum_keyStore')
             if(Auth) {
