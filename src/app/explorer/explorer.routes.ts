@@ -16,6 +16,10 @@ children: [
         component: TransactionsComponent
       },
       {
+        path: 'transactions',
+        component: TransactionsComponent
+      },
+      {
         path: 'transaction/:id',
         component: TransactionComponent
       },

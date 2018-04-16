@@ -110,7 +110,13 @@
 "TOTAL_OF_PENDING_TXNS":"A total of {{transactionsCount}} Pending txns found",
 "GWEI":"Gwei",
 "TRANSACTIONS_FOUND_COUNT":"{{transactionsCount}} transactions found",
-"SHOWING_THE_LAST":"showing the last {{value}}k records"
+"SHOWING_THE_LAST":"showing the last {{value}}k records",
+"STAKING":"STAKING",
+"CONTRACTS":"Contracts",
+"EXCHANGE":"Exchange",
+"ENS":"ENS",
+"SWAP":"Swap",
+"KYC":"KYC"
 }
 
 
