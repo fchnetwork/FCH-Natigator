@@ -1,10 +1,10 @@
 <aer-modal-dialog>
     <div class="explorer detail-modal" *ngIf="block">
       <div class="title">{{'BLOCK'|translate}}</div>
-      <!-- <app-divider></app-divider> -->
+      <app-divider></app-divider>
       <div class="link">{{block.number}}</div>
       <div><p class="aer-small">{{block.timestamp}} Wednesday, February 22, 2018 3:42 PM</p></div>
-      <div class="age">({{block.timestamp}}34 sec ago)</div>
+      <div class="age">({{block.timestamp}}34 {{'SECONDS_AGO'|translate}})</div>
   
       <div class="transaction-table">
         <div class="tr">

@@ -2,7 +2,7 @@
     <h1>{{'BLOCKS'|translate}}</h1>
     <aer-card>
         <div class="dataTable-info-label">
-                <label>Showing Block (#{{getLowestBlockNumber()}} to #{{getHighestBlockNumber()}}) out of {{getBlocksCount()}} total blocks</label>
+            <label>{{'SHOWING_BLOCK'|translate: {lowestBlockNumber: getLowestBlockNumber(), highestBlockNumber: getHighestBlockNumber(), blocksCount: getBlocksCount()} }}</label>
         </div>
         <table>
             <thead>
@@ -17,7 +17,7 @@
             <tbody>
                 <tr *ngFor="let block of blocks">
                     <td class="link" (click)="openBlock(block)">{{block.number}}</td>
-                    <td class="age">{{getBlockAge(block.timestamp)}} minutes ago</td>
+                    <td class="age">{{getBlockAge(block.timestamp)}} {{'MINUTES_AGO'|translate}}</td>
                     <td>{{block.transactions.length}}</td>
                     <td class="link">{{block.signer}}</td>
                     <td>{{block.gasUsed}} (94.65%)</td>

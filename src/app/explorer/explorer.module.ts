@@ -29,6 +29,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { explorerRoutes } from './explorer.routes'
 import { AppUIModule } from '../app.ui.module';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
+import { SharedModule } from '../shared/shared.module';
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -51,6 +52,7 @@ const modals = [BlockModalComponent, TransactionModalComponent];
     }),      
     RouterModule.forChild(explorerRoutes),
     AppUIModule,
+    SharedModule,
   ],
   declarations: [
     TransactionsComponent,

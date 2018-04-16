@@ -95,7 +95,22 @@
 "BLOCK_REWARD":"Block reward",
 "EXTRA_DATA":"Extra data",
 "TX_HASH":"Tx hash",
-"LAST_SEEN":"Last seen"
+"LAST_SEEN":"Last seen",
+"SHOWING_BLOCK": "Showing Block (#{{lowestBlockNumber}} to #{{highestBlockNumber}}) out of {{blocksCount}} total blocks",
+"MINUTE_AGO":"minute ago",
+"MINUTES_AGO":"minutes ago",
+"SECOND_AGO":"second ago",
+"SECONDS_AGO":"seconds ago",
+"HOUR_AGO":"hour ago",
+"HOURS_AGO":"hours ago",
+"DAY_AGO":"day ago",
+"DAYS_AGO":"days ago",
+"MONTH_AGO":"month ago",
+"MONTHS_AGO":"months ago",
+"TOTAL_OF_PENDING_TXNS":"A total of {{transactionsCount}} Pending txns found",
+"GWEI":"Gwei",
+"TRANSACTIONS_FOUND_COUNT":"{{transactionsCount}} transactions found",
+"SHOWING_THE_LAST":"showing the last {{value}}k records"
 }
 
 

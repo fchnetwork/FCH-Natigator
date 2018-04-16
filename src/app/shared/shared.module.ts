@@ -26,7 +26,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
   entryComponents: [
-    BasicModalComponent
+    //BasicModalComponent
   ],
   imports: [
     CommonModule,

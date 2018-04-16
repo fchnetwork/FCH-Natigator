@@ -2,7 +2,7 @@
     <h1>{{'PENDING_TXNS'|translate}}</h1>
     <aer-card>
         <div class="dataTable-info-label">
-            <label>A total of {{getTransactionsCount()}}</label>
+            <label>{{'TOTAL_OF_PENDING_TXNS'|translate: {transactionsCount: getTransactionsCount()} }}</label>
         </div>
         <table>
             <thead>
@@ -18,9 +18,9 @@
             <tbody>
                 <tr *ngFor="let transaction of transactions">
                     <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash}}</td>
-                    <td>{{transaction.lastSeen}}</td>
-                    <td>{{transaction.gasLimit}} 2 minutes ago</td>
-                    <td>{{transaction.gasPrise}} Gwei</td>
+                    <td>{{transaction.lastSeen}} 2 {{'MINUTES_AGO'|translate}}</td>
+                    <td>{{transaction.gasLimit}}</td>
+                    <td>{{transaction.gasPrice}} {{'GWEI'|translate}}</td>
                     <td class="link hash">{{transaction.from}}</td>
                     <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>
                     <td class="link hash">{{transaction.to}}</td>

@@ -1,10 +1,10 @@
 <aer-modal-dialog>
     <div class="explorer detail-modal" *ngIf="transaction">
-      <div class="title">Transaction</div>
-      <!-- <app-divider></app-divider> -->
+      <div class="title">{{'TRANSACTION'|translate}}</div>
+      <app-divider></app-divider>
       <div class="link">{{transaction.hash}}</div>
       <div><p class="aer-small">{{transaction.created}} Wednesday, February 22, 2018 3:42 PM</p></div>
-      <div class="age">({{transaction.age}}2 months ago)</div>
+      <div class="age">({{transaction.age}}2 {{'MONTHS_AGO|translate'}})</div>
   
       <div class="transaction-table">
         <div class="tr">
