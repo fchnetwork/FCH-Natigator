@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { PasswordValidator } from '../../../shared/helpers/validator.password';
-import { AuthenticationService } from '../../services/authentication-service/authentication.service';
+import { AuthenticationService } from '../../../account/services/authentication-service/authentication.service';
 
 export interface BasicModalContext {
   param?: any;

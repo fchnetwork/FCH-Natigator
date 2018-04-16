@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Overlay } from 'ngx-modialog';
 import { Observable } from 'rxjs/Observable';
-import { AuthenticationService } from '../authentication-service/authentication.service'
+import { AuthenticationService } from '../../../account/services/authentication-service/authentication.service'
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');

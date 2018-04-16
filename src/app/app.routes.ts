@@ -1,7 +1,7 @@
 
-import { LoginComponent } from './account/login/login.component' 
-import { Error404Component } from './shared/components/error404/error404.component'  
-import { CreateTransactionComponent } from './account/create-transaction/create-transaction.component'
+import { LoginComponent } from './account/login/login.component';
+import { Error404Component } from './shared/components/error404/error404.component';
+import { CreateTransactionComponent } from './transaction/create-transaction/create-transaction.component';
 import { CanActivateViaAuthGuard } from './app.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
@@ -20,7 +20,7 @@ export const ROUTES = [
     redirectTo: 'account',
     pathMatch: 'full'
   },
-  // TO PREVENT LAZY LOADING OF COMPONENTS ACCESSIBLE IMMEDIATELY AFTER LOAD 
+  // TO PREVENT LAZY LOADING OF COMPONENTS ACCESSIBLE IMMEDIATELY AFTER LOAD
   {
     path: 'account',
     children: ACCOUNT_ROUTES
