@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./divider.component.scss']
 })
 export class DividerComponent implements OnInit {
-  @Input() showLine: boolean = true;
+  @Input() showLine = true;
   @Input() label : string;
 
   constructor() { }

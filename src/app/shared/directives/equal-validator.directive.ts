@@ -19,15 +19,15 @@ export class EqualValidator implements Validator {
 
   validate(c: AbstractControl): { [key: string]: any } {
     // self value
-    let v = c.value;
+    const v = c.value;
 
     // control vlaue
-    let e = c.root.get(this.equalValidator);
+    const e = c.root.get(this.equalValidator);
     // value not equal
     if (e && v !== e.value && !this.isReverse) {
       return {
         misMatched: true
-      }
+      };
     }
 
     // value equal and reverse
@@ -42,7 +42,7 @@ export class EqualValidator implements Validator {
     if (e && v !== e.value && this.isReverse) {
       e.setErrors({
         misMatched: true
-      })
+      });
     }
     return null;
   }

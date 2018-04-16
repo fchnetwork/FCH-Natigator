@@ -9,11 +9,11 @@ import { languages } from '../../helpers/data.mock';
 })
 export class I18nComponent {
   
-  activeLanguage: string = "en";
+  activeLanguage = "en";
   
-  isOptionsActive: boolean = false;
+  isOptionsActive = false;
   
-  languages: Array<any> = languages;
+  languages: any[] = languages;
     
   constructor( public translate: TranslateService ) { }
 

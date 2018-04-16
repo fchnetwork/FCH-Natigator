@@ -1,11 +1,11 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
-import { Error404Component } from './components/error404/error404.component'
+import { Error404Component } from './components/error404/error404.component';
 
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 
-import { I18nComponent } from './components/i18n/i18n.component' 
+import { I18nComponent } from './components/i18n/i18n.component'; 
 import { ModalService } from './services/modal.service';
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
@@ -17,7 +17,7 @@ import { EqualValidator } from './directives/equal-validator.directive';
 import { RouteDataService } from './services/route-data.service'; 
 import { NotificationService } from './services/notification.service';
 import { ClipboardService } from './services/clipboard.service';
-import { AccountIdleService } from './services/account-idle.service'
+import { AccountIdleService } from './services/account-idle.service';
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {

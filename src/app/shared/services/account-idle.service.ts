@@ -21,16 +21,16 @@ export class AccountIdleService {
    * Idle value in seconds.
    * Default equals to 10 minutes.
    */
-  private idle: number = 600;
+  private idle = 600;
   /**
    * Timeout value in seconds.
    * Default equals to 5 minutes.
    */
-  private timeout: number = 300;
+  private timeout = 300;
   /**
    * Ping value in seconds.
    */
-  private ping: number = 120;
+  private ping = 120;
   /**
    * Timeout status.
    */

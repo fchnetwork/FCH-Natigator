@@ -4,7 +4,7 @@ import { TransactionsComponent } from './components/transactions/transactions.co
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { BlockComponent } from './components/block/block.component';
 import { AddressComponent } from './components/address/address.component';
-import { Error404Component } from '../shared/components/error404/error404.component'
+import { Error404Component } from '../shared/components/error404/error404.component';
 import { BlocksComponent } from './components/blocks/blocks.component';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 

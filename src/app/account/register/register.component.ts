@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      var data = new RegistrationRouteData();
+      const data = new RegistrationRouteData();
 
       data.avatar = this.registerForm.value.avatar.avatar;
       data.password = this.registerForm.value.password;
@@ -51,11 +51,11 @@ export class RegisterComponent implements OnInit {
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
     return (group: FormGroup) => {
-      let passwordInput = group.controls[passwordKey];
-      let passwordConfirmationInput = group.controls[passwordConfirmationKey];
+      const passwordInput = group.controls[passwordKey];
+      const passwordConfirmationInput = group.controls[passwordConfirmationKey];
       if (passwordInput.value !== passwordConfirmationInput.value) {
-        return passwordConfirmationInput.setErrors({ notEquivalent: true })
+        return passwordConfirmationInput.setErrors({ notEquivalent: true });
       }
-    }
+    };
   }
 }

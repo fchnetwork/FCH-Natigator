@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { ExplorerService } from '../../services/explorer.service'
-import { iTransaction, iBlocks } from '../../../shared/app.interfaces'
+import { ExplorerService } from '../../services/explorer.service';
+import { iTransaction, iBlocks } from '../../../shared/app.interfaces';
 import { ModalService } from '../../../shared/services/modal.service';
 
 
@@ -13,7 +13,7 @@ import { ModalService } from '../../../shared/services/modal.service';
 })
 export class BlocksComponent implements OnInit {
 
-  blocks: Array<iBlocks>;
+  blocks: iBlocks[];
   maxBlocks: number;
 
   constructor(
@@ -32,7 +32,7 @@ export class BlocksComponent implements OnInit {
 
   private loadBlocks() {
     // demoBlocks
-    let demoBlocks: iBlocks = {
+    const demoBlocks: iBlocks = {
       "difficulty": '13546847',
       "extraData": '0x0110101010100010101',
       "gasLimit": 8000000,
@@ -62,24 +62,24 @@ export class BlocksComponent implements OnInit {
     //TODO: this must call exploreService
   }
 
-  public getLowestBlockNumber() {
+  getLowestBlockNumber() {
     return this.blocks[0].number;
   }
 
-  public getHighestBlockNumber() {
+  getHighestBlockNumber() {
     return this.blocks[this.blocks.length-1].number;
   }
 
-  public getBlocksCount() {
+  getBlocksCount() {
     return this.blocks.length;
   }
 
-  public openBlock(block: iBlocks) {
+  openBlock(block: iBlocks) {
     this.modal.openBlock(block.number ,block).then(result => {
     }).catch(()=>{});
   }
 
-  public getBlockAge(block: iBlocks) {
+  getBlockAge(block: iBlocks) {
     //return Date.now - Number(block.timestamp);
     return 1;
   }

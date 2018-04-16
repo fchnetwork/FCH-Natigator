@@ -12,18 +12,18 @@ export interface Options {
 
 export class TxtConfigConsts {
 
-	public static EOL = "\r\n";
-	public static BOM = "\ufeff";
+	static EOL = "\r\n";
+	static BOM = "\ufeff";
 
-	public static DEFAULT_FIELD_SEPARATOR = ',';
-	public static DEFAULT_DECIMAL_SEPARATOR = '.';
-	public static DEFAULT_QUOTE = '"';
-	public static DEFAULT_SHOW_TITLE = false;
-	public static DEFAULT_TITLE = 'My Report';
-	public static DEFAULT_FILENAME = 'mytest.txt';
-	public static DEFAULT_SHOW_LABELS = false;
-	public static DEFAULT_USE_BOM = true;
-	public static DEFAULT_HEADER = [];
+	static DEFAULT_FIELD_SEPARATOR = ',';
+	static DEFAULT_DECIMAL_SEPARATOR = '.';
+	static DEFAULT_QUOTE = '"';
+	static DEFAULT_SHOW_TITLE = false;
+	static DEFAULT_TITLE = 'My Report';
+	static DEFAULT_FILENAME = 'mytest.txt';
+	static DEFAULT_SHOW_LABELS = false;
+	static DEFAULT_USE_BOM = true;
+	static DEFAULT_HEADER = [];
 
 }
 
@@ -40,15 +40,15 @@ export const ConfigDefaults: Options = {
 };
 export class AerumBackupFile {
 
-	public fileName: string;
-	public labels: Array<String>;
-	public data: any[];
+	fileName: string;
+	labels: String[];
+	data: any[];
 
 	private _options: Options;
 	private txt = "";
 
 	constructor(DataJSON: any, filename: string, options?: any) {
-		let config = options || {};
+		const config = options || {};
 
 		this.data = typeof DataJSON != 'object' ? JSON.parse(DataJSON) : DataJSON;
 
@@ -80,14 +80,14 @@ export class AerumBackupFile {
 			return;
 		}
 
-		let blob = new Blob([this.txt], { "type": "text/plain;charset=utf8;" });
+		const blob = new Blob([this.txt], { "type": "text/plain;charset=utf8;" });
 
 		if (navigator.msSaveBlob) {
-			let filename = this._options.filename.replace(/ /g, "_") + ".txt";
+			const filename = this._options.filename.replace(/ /g, "_") + ".txt";
 			navigator.msSaveBlob(blob, filename);
 		} else {
-			let uri = 'data:attachment/txt;charset=utf-8,' + encodeURI(this.txt);
-			let link = document.createElement("a");
+			const uri = 'data:attachment/txt;charset=utf-8,' + encodeURI(this.txt);
+			const link = document.createElement("a");
 
 			link.href = URL.createObjectURL(blob);
 
@@ -105,7 +105,7 @@ export class AerumBackupFile {
 	getHeaders(): void {
 		if (this._options.headers.length > 0) {
 			let row = "";
-			for (var column of this._options.headers) {
+			for (const column of this._options.headers) {
 				row += column + this._options.fieldSeparator;
 			}
 
@@ -117,10 +117,10 @@ export class AerumBackupFile {
 	 * Create Body
 	 */
 	getBody() {
-		for (var i = 0; i < this.data.length; i++) {
+		for (let i = 0; i < this.data.length; i++) {
 			let row = "";
-			for (var index in this.data[i]) {
-				row += this.formartData(this.data[i][index]) + this._options.fieldSeparator;;
+			for (const index in this.data[i]) {
+				row += this.formartData(this.data[i][index]) + this._options.fieldSeparator;
 			}
 
 			row = row.slice(0, -1);
@@ -162,8 +162,8 @@ export class AerumBackupFile {
 	}
 }
 
-let hasOwnProperty = Object.prototype.hasOwnProperty;
-let propIsEnumerable = Object.prototype.propertyIsEnumerable;
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+const propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
 /**
  * Convet to Object
@@ -182,21 +182,21 @@ function toObject(val: any) {
  */
 function objectAssign(target: any, ...source: any[]) {
 	let from: any;
-	let to = toObject(target);
+	const to = toObject(target);
 	let symbols: any;
 
-	for (var s = 1; s < arguments.length; s++) {
+	for (let s = 1; s < arguments.length; s++) {
 		from = Object(arguments[s]);
 
-		for (var key in from) {
+		for (const key in from) {
 			if (hasOwnProperty.call(from, key)) {
 				to[key] = from[key];
 			}
 		}
 
-		if ((<any>Object).getOwnPropertySymbols) {
-			symbols = (<any>Object).getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
+		if ((Object as any).getOwnPropertySymbols) {
+			symbols = (Object as any).getOwnPropertySymbols(from);
+			for (let i = 0; i < symbols.length; i++) {
 				if (propIsEnumerable.call(from, symbols[i])) {
 					to[symbols[i]] = from[symbols[i]];
 				}

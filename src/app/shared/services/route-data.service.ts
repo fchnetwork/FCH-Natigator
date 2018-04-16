@@ -4,11 +4,11 @@ import { Injectable } from '@angular/core';
 export class RouteDataService<T> {
     routeData: T; 
 
-    public clear() {
+    clear() {
         this.routeData = null;
     }
 
-    public hasData() : boolean {
+    hasData() : boolean {
         return this.routeData != null && this.routeData != undefined;
     }
 

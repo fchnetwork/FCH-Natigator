@@ -6,14 +6,14 @@ import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { environment } from '../../../../environments/environment';
-import * as avatars from 'identity-img'
+import * as avatars from 'identity-img';
 import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import QRCode from 'qrcode'
+import QRCode from 'qrcode';
 
 const ethUtil = require('ethereumjs-util');
-const hdkey   = require("ethereumjs-wallet/hdkey")
-const wall    = require("ethereumjs-wallet")
+const hdkey   = require("ethereumjs-wallet/hdkey");
+const wall    = require("ethereumjs-wallet");
 const bip39   = require("bip39");
 const Web3    = require('web3');
 
@@ -22,7 +22,7 @@ declare var window: any;
 @Injectable()
 export class AuthenticationService {
 
-    public web3: any;
+    web3: any;
 
     constructor( private _http: Http ) {
 
@@ -39,25 +39,25 @@ export class AuthenticationService {
       
 
     avatarsGenerator() {
-        const seeds = []
+        const seeds = [];
         for( let i =0; i <=4; i++ ) {
-            const newSeed            = bip39.generateMnemonic()
-            const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed )
+            const newSeed            = bip39.generateMnemonic();
+            const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed );
             const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed ); 
             const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet();
-            const getAddress         = wallet.getAddress().toString("hex")
-            const getPriv            = wallet.getPrivateKeyString().toString("hex")
-            const getPublic          = wallet.getPublicKeyString().toString("hex")        
-            const getChecksumAddress = ethUtil.toChecksumAddress( getAddress )
-            const address            = ethUtil.addHexPrefix( getChecksumAddress )
+            const getAddress         = wallet.getAddress().toString("hex");
+            const getPriv            = wallet.getPrivateKeyString().toString("hex");
+            const getPublic          = wallet.getPublicKeyString().toString("hex");        
+            const getChecksumAddress = ethUtil.toChecksumAddress( getAddress );
+            const address            = ethUtil.addHexPrefix( getChecksumAddress );
             seeds.push({
                 id: i,
                 seed: newSeed,
                 avatar: avatars.create( address ),
-                address: address,
+                address,
                 private: getPriv,
                 public: getPublic,            
-            })
+            });
         }
         return seeds;
     }
@@ -73,23 +73,23 @@ export class AuthenticationService {
     // creates an auth cookie
     saveKeyStore( privateKey: string, password: string, seed: any ){
     
-        const formatSeed     = this.seedCleaner( seed.toString() )
+        const formatSeed     = this.seedCleaner( seed.toString() );
         const encryptSeed    = CryptoJS.AES.encrypt( formatSeed, password );
         const encryptAccount = this.web3.eth.accounts.encrypt( privateKey, password);
 
         Cookie.set('aerum_keyStore', JSON.stringify( encryptAccount) );
         Cookie.set('aerum_base', encryptSeed );
 
-        return encryptAccount 
+        return encryptAccount; 
         
     }         
 
 
     showKeystore() : Promise<any> {
         return new Promise( (resolve, reject) => {
-            const Auth = Cookie.get('aerum_keyStore')
+            const Auth = Cookie.get('aerum_keyStore');
             if(Auth) {
-                resolve( JSON.parse( Auth ) )
+                resolve( JSON.parse( Auth ) );
             } 
             else{
                 reject("no keystore found");
@@ -110,7 +110,7 @@ export class AuthenticationService {
             const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
 
             if( encryptAccount ) {
-                resolve( { web3: encryptAccount, s:decryptSeed  } )
+                resolve( { web3: encryptAccount, s:decryptSeed  } );
             } 
             else {
                 reject("no keystore found or password incorrect");
@@ -128,9 +128,9 @@ export class AuthenticationService {
      */
     seedCleaner(seed: any) {
 
-        let cleanSeed = seed.trim()
-            cleanSeed = cleanSeed.replace(/[^\w\s]/gi, ' ') 
-            cleanSeed.replace(/\s\s+/g, ' ')
+        let cleanSeed = seed.trim();
+            cleanSeed = cleanSeed.replace(/[^\w\s]/gi, ' '); 
+            cleanSeed.replace(/\s\s+/g, ' ');
 
         return cleanSeed;
 
@@ -140,27 +140,27 @@ export class AuthenticationService {
 
     generateAdditionalAccounts( password: string, amount: number ){
 
-        const authCookie = Cookie.get('aerum_base')
+        const authCookie = Cookie.get('aerum_base');
 
         if( authCookie ){
-            const accounts        = []
-            const cookieStringify = authCookie.toString()
+            const accounts        = [];
+            const cookieStringify = authCookie.toString();
             const bytes           = CryptoJS.AES.decrypt( cookieStringify, password );
             const plaintext       = bytes.toString(CryptoJS.enc.Utf8);
-            const seed            = this.seedCleaner(plaintext)
-            const mnemonicToSeed  = bip39.mnemonicToSeed( seed )
+            const seed            = this.seedCleaner(plaintext);
+            const mnemonicToSeed  = bip39.mnemonicToSeed( seed );
             const hdwallet        = hdkey.fromMasterSeed( mnemonicToSeed ); 
             const privExtend      = hdwallet.privateExtendedKey();
             const pubExtend       = hdwallet.publicExtendedKey();      
              for( let i = 0; i <= amount; i++) {
-                const derivationPath  = hdwallet.derivePath( "m/44'/60'/0'/0/" + i )
-                const initWallet      = derivationPath.getWallet()
-                const address         = initWallet.getAddress().toString("hex")
-                const checkSumAddress = ethUtil.toChecksumAddress( address )
-                const finalAddress    = ethUtil.addHexPrefix( checkSumAddress )
-                accounts.push( finalAddress )
+                const derivationPath  = hdwallet.derivePath( "m/44'/60'/0'/0/" + i );
+                const initWallet      = derivationPath.getWallet();
+                const address         = initWallet.getAddress().toString("hex");
+                const checkSumAddress = ethUtil.toChecksumAddress( address );
+                const finalAddress    = ethUtil.addHexPrefix( checkSumAddress );
+                accounts.push( finalAddress );
              }
-             return accounts
+             return accounts;
         }
     }
 
@@ -175,12 +175,12 @@ export class AuthenticationService {
 
     createQRcode(address:string) : Promise<any> {
 
-        const formatAddress = this.isHexAddress(address) ? address : '0x' + address
+        const formatAddress = this.isHexAddress(address) ? address : '0x' + address;
 
         return new Promise( (resolve) => {
 
             if( formatAddress ){
-                resolve( QRCode.toDataURL( formatAddress  ) )
+                resolve( QRCode.toDataURL( formatAddress  ) );
             }
 
         });
@@ -196,19 +196,19 @@ export class AuthenticationService {
      */
     generateAddressLogin( seed: any ) : Promise<any> {
         return new Promise( (resolve, reject) => {
-            const mnemonicToSeed     = bip39.mnemonicToSeed( this.seedCleaner( seed ) )
+            const mnemonicToSeed     = bip39.mnemonicToSeed( this.seedCleaner( seed ) );
             const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
             const privExtend         = hdwallet.privateExtendedKey();
             const pubExtend          = hdwallet.publicExtendedKey();      
             const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet(); // use the ethereumjs lib now
-            const getAddress         = wallet.getAddress().toString("hex")
-            const getPriv            = wallet.getPrivateKeyString().toString("hex")
-            const getPublic          = wallet.getPublicKeyString().toString("hex")        
-            const getChecksumAddress = ethUtil.toChecksumAddress( getAddress )
-            const address            = ethUtil.addHexPrefix( getChecksumAddress )
-            const avatar = avatars.create( address ) 
+            const getAddress         = wallet.getAddress().toString("hex");
+            const getPriv            = wallet.getPrivateKeyString().toString("hex");
+            const getPublic          = wallet.getPublicKeyString().toString("hex");        
+            const getChecksumAddress = ethUtil.toChecksumAddress( getAddress );
+            const address            = ethUtil.addHexPrefix( getChecksumAddress );
+            const avatar = avatars.create( address ); 
             if(address) {
-                resolve({ address: address, avatar: avatar, private:getPriv })
+                resolve({ address, avatar, private:getPriv });
             } else {
                 reject({ error: "issue with address generation" });
             }

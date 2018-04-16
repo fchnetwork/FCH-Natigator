@@ -2,7 +2,7 @@
 
 
 // avatars used on the registration page
-export const avatars: {id: any, avatar:any}[] = [{
+export const avatars: Array<{id: any, avatar:any}> = [{
     id: 1,
     avatar: "/assets/images/avatar-1.png"
 },{
@@ -17,12 +17,12 @@ export const avatars: {id: any, avatar:any}[] = [{
 },{
     id: 5,
     avatar: "/assets/images/avatar-5.png"
-}] 
+}]; 
 
 
 
 
-export const languages: {lang: string}[]  = [{
+export const languages: Array<{lang: string}>  = [{
     lang: "ko", 
   }, {
     lang: "ru", 
@@ -38,7 +38,7 @@ export const languages: {lang: string}[]  = [{
   
   
   
- export const testAccount: { password: string, passwordConfirm: string }[] = [{
+ export const testAccount: Array<{ password: string, passwordConfirm: string }> = [{
     password: 'prettyGoodPa55w0rd',
     passwordConfirm: 'prettyGoodPa55w0rd',
   }];  
