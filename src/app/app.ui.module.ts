@@ -12,6 +12,7 @@ import {
    ModalDialogModule,
    SlideToggleModule,
    TextareaModule,
+   CardModule,
 } from "@aerum/ui";
 
 
@@ -28,6 +29,7 @@ import {
        ModalDialogModule,
        SlideToggleModule,
        TextareaModule,
+       CardModule,
    ],
    exports: [
        // UI Framework Modules
@@ -41,6 +43,7 @@ import {
        ModalDialogModule,
        SlideToggleModule,
        TextareaModule,
+       CardModule,
    ]
 })
 export class AppUIModule { }
