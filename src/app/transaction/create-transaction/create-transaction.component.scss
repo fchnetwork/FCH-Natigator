@@ -1,54 +1,64 @@
 .content {
   padding-top: 82px;
 }
+
 .title {
   font-size: 28px;
-  color: #2D353D;
+  color: #2d353d;
   padding-left: 38px;
   font-family: 'OpenSans';
 }
+
 .panel {
   padding: 20px 14px;
+
   .panel-header {
     font-size: 14px;
-    background: #E6E6E6;
-    color: #2D353D;
+    background: #e6e6e6;
+    color: #2d353d;
     height: 50px;
     display: flex;
     padding-left: 25px;
     align-items: center;
     text-transform: uppercase;
   }
+
   .panel-content {
-    background: #FFFFFF;
-    color: #83868A;
+    background: #fff;
+    color: #83868a;
     padding: 28px 18px 28px 18px;
 
     .amount-total {
       font-size: 28px;
-      padding: 15px 0px;
+      padding: 15px 0;
     }
+
     .input-name {
-      color: #2D353D;
+      color: #2d353d;
       font-size: 14px;
       font-weight: 600;
     }
+
     label {
       font-size: 14px;
     }
   }
+
   hr {
-    margin: 15px 0px;
-    color: #D1D1D1;
+    margin: 15px 0;
+    color: #d1d1d1;
   }
+
   .show-more-button {
-    padding: 25px 0px;
+    padding: 25px 0;
   }
+
   .show-more-label-div {
-    color: #2A669A;
+    color: #2a669a;
     font-size: 12px;
     text-align: center;
     padding-top: 28px;
+
     .show-more-label {
       display: inline;
       cursor: pointer;
@@ -59,41 +69,50 @@
     min-width: 470px;
   }
 }
+
 .row {
   margin-right: 15px;
   margin-left: 15px;
+
   .col-sm-4 {
     @media(min-width: 768px) {
       width: 33%;
       float: left;
     }
   }
+
   .col-sm-6 {
-    padding: 0px 10px;
+    padding: 0 10px;
+
     @media(min-width: 768px) {
       width: 50%;
       float: left;
     }
   }
+
   .col-sm-12 {
     width: 100%;
+
     @media(min-width: 768px) {
       float: left;
     }
   }
 }
+
 .note {
   font-size: 13px;
-  color: #83868A;
+  color: #83868a;
 }
 
 .account-status-line {
   font-size: 13px;
-  color: #83868A;
+  color: #83868a;
   padding: 45px 10px;
+
   @media(max-width: 768px) {
-    padding: 15px 0px;
+    padding: 15px 0;
   }
+
   aer-icon {
     padding-right: 10px
   }
@@ -104,61 +123,75 @@
     display: flex;
     height: 50px;
     font-size: 13px;
+
     &:nth-child(odd) {
-      background: #E6E6E6;
-      border-left: 1px solid #2D353D;
+      background: #e6e6e6;
+      border-left: 1px solid #2d353d;
     }
+
     &:nth-child(even) {
-      border-left: 1px solid #E6E6E6;
+      border-left: 1px solid #e6e6e6;
     }
+
     .date {
-      padding: 0px 15px;
+      padding: 0 15px;
+
       .month {
-        color: #83868A;
+        color: #83868a;
       }
+
       .day {
         font-size: 19px;
-        color: #2D353D;
+        color: #2d353d;
       }
     }
+
     .trans-detail {
-      padding: 5px 15px 0px 5px;
+      padding: 5px 15px 0 5px;
+
       .eventType {
-        color: #83868A;
+        color: #83868a;
       }
+
       .addresses {
         display: flex;
+
         .sender {
-          color: #2A669A;
+          color: #2a669a;
           display: inline-block;
           max-width: 160px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
+
         .receiver {
-          color: #2A669A;
+          color: #2a669a;
           display: inline-block;
           max-width: 160px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
+
         .pd-5 {
-          padding: 0px 5px;
+          padding: 0 5px;
         }
       }
     }
+
     .amount-detail {
-      color: #83868A;
+      color: #83868a;
       flex-grow: 1;
       padding-right: 10px;
       display: flex;
       flex-direction: row-reverse;
       align-items: center;
+
       &.red {
-        color: #C94545;
+        color: #c94545;
       }
+
       .amount {
         display: inline;
         padding-right: 10px;

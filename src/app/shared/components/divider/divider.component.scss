@@ -1,41 +1,42 @@
 .divider--line {
-    width: 87px;
-    border: 0;
-    border-top: 1px solid #C6CCD2;
-    margin: 14px auto;
+  width: 87px;
+  border: 0;
+  border-top: 1px solid #c6ccd2;
+  margin: 14px auto;
 }
 
 .divider--noline {
-    @extend .divider--line;
-    border-top: 1px solid transparent !important;
+  @extend .divider--line;
+
+  border-top: 1px solid transparent !important;
 }
 
 .divider--label {
-    color: #83868A;
-        margin: 3px;
-        font-size: 18px;
-        line-height: 24px;
-        padding: 0 10px;
-        text-align: center;
+  color: #83868a;
+  margin: 3px;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 0 10px;
+  text-align: center;
 
-        p:before,
-        p:after {
-            background-color: #C6CCD2;
-            content: "";
-            display: inline-block;
-            height: 1px;
-            position: relative;
-            vertical-align: middle;
-            width: 61px;
-        }
+  p:before,
+  p:after {
+    background-color: #c6ccd2;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 61px;
+  }
 
-        p:before {
-            right: 0.5em;
-            margin-left: -50%;
-        }
+  p:before {
+    right: 0.5em;
+    margin-left: -50%;
+  }
 
-        p:after {
-            left: 0.5em;
-            margin-right: -50%;
-        }
-    }
+  p:after {
+    left: 0.5em;
+    margin-right: -50%;
+  }
+}
