@@ -27,8 +27,8 @@ export class CreateTransactionComponent implements OnInit {
 
   /* new fields */
   senderAddress: string;
-  receiverAddress: any;
-  amount: number;
+  receiverAddress: string = "0xa20e9de99c67bb25b04af7893b4d0ca1ce3b6ef9";
+  amount: number = 0.1;
   transactions: any[];
   includedDataLength: number;
   walletBalance: number;
@@ -114,12 +114,14 @@ export class CreateTransactionComponent implements OnInit {
 
   send() {
     this.transactionMessage = "";
+
     this.modalSrv.openTransactionConfirm().then( result =>{ 
+
        if( this.receiverAddress == undefined || this.receiverAddress == null) {
           alert("You need to add a receiver address");  
           return false;      
        }
-       this.txnServ.transaction(  result.privateKey, result.address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
+       this.txnServ.transaction( result.web3.privateKey, result.web3.address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
         this.transactionMessage = res;
       }).catch( error =>  console.log(error) );
 

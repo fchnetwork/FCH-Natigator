@@ -50,10 +50,11 @@ export class AuthenticationService {
             const getPublic          = wallet.getPublicKeyString().toString("hex");        
             const getChecksumAddress = ethUtil.toChecksumAddress( getAddress );
             const address            = ethUtil.addHexPrefix( getChecksumAddress );
+
             seeds.push({
                 id: i,
                 seed: newSeed,
-                avatar: avatars.create( address ),
+                avatar: this.generateCryptedAvatar(address),
                 address,
                 private: getPriv,
                 public: getPublic,            
@@ -64,21 +65,43 @@ export class AuthenticationService {
 
 
 
+
+    generateCryptedAvatar( address: string ) {
+        const avatarCrypt = CryptoJS.SHA256(address);
+        const avatar      = avatars.create( address.toString() );
+        return avatar;
+    }
+
+
+
+
     authState() : Observable<any> {
         return Observable.fromPromise( this.showKeystore() );
     }
 
  
 
-    // creates an auth cookie
+     // creates an auth cookie
     saveKeyStore( privateKey: string, password: string, seed: any ){
     
         const formatSeed     = this.seedCleaner( seed.toString() );
         const encryptSeed    = CryptoJS.AES.encrypt( formatSeed, password );
         const encryptAccount = this.web3.eth.accounts.encrypt( privateKey, password);
 
+        // // ugly hack until refactoring is done
+        // const mnemonicToSeed     = bip39.mnemonicToSeed( formatSeed );
+        // const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed ); 
+        // const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet();
+        // const getAddress         = wallet.getAddress().toString("hex");
+        // const getPriv            = wallet.getPrivateKeyString().toString("hex");
+        // const getPublic          = wallet.getPublicKeyString().toString("hex");        
+        // const getChecksumAddress = ethUtil.toChecksumAddress( getAddress );
+        // const address            = ethUtil.addHexPrefix( getChecksumAddress );
+
+
         Cookie.set('aerum_keyStore', JSON.stringify( encryptAccount) );
         Cookie.set('aerum_base', encryptSeed );
+     //   Cookie.set('aerum_avatar', this.generateCryptedAvatar(address) );
 
         return encryptAccount; 
         
