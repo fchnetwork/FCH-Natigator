@@ -6,6 +6,7 @@ import { CurrentUserDisplayComponent } from './current-user-display/current-user
 import { RouterModule } from '@angular/router';
 import { DashboardRoutingModule } from './dashboard.routes';
 import { SharedModule } from '../shared/shared.module';
+import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 
 @NgModule({
   imports: [
@@ -16,8 +17,9 @@ import { SharedModule } from '../shared/shared.module';
   ],
   declarations: [
     DashboardComponent,
-    CurrentUserDisplayComponent
-  ],
+    CurrentUserDisplayComponent,
+    DashboardHomeComponent
+],
   exports: [
     DashboardComponent
   ]
