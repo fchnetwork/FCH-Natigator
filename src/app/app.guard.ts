@@ -12,14 +12,22 @@ export class CanActivateViaAuthGuard implements CanActivate {
 
         canActivate(): Promise<boolean> {
             return new Promise((resolve) => {
-                this.authServ.showKeystore()
-                .then(  ( keystore: any) => {
+                const loggedIn = sessionStorage.getItem('acc_address');
+                if(loggedIn) {
                     resolve(true);
-                })
-                .catch( () => {
-                   this.router.navigate(['/account/login']);
+                } else {
+                    this.router.navigate(['/account/login']);
                     resolve(false);
-                });
+                }
+                // DON'T DELETE
+                // this.authServ.showKeystore()
+                // .then(  ( keystore: any) => {
+                //     resolve(true);
+                // })
+                // .catch( () => {
+                //    this.router.navigate(['/account/login']);
+                //     resolve(false);
+                // });
             });
         }
 

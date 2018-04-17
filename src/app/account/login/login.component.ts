@@ -17,6 +17,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class LoginComponent implements OnInit {
 
   address: string;
+  password: string;
   avatar: string;
   private: string; // i dont know 
   loginForm: FormGroup;
@@ -43,24 +44,13 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmitAddress() {
-    this.router.navigate(['/transaction']);
-    if (this.loginForm.valid) {
-      //this.authServ.authorize(this.login, this.password).then( result => {
-      // something
-      //});
-      this.router.navigate(['/transaction']); // improvements need to be made here but for now the auth guard should work just fine
-    }
-
-    // if (this.loginFormFindAddress.valid) {
-    //   console.log(this.private)
-    //   console.log(this.loginFormFindAddress.value.password)
-    //   this.authServ.saveKeyStore(this.private, this.loginFormFindAddress.value.password)
-
-    //   // this.authServ.showKeystore2();
-
-
-    //   this.router.navigate(['/transaction']); // improvements need to be made here but for now the auth guard should work just fine
-    // }
+    this.authServ.unencryptKeystore(this.password).then( result => {
+      sessionStorage.setItem('acc_address', result.web3.address);
+      setTimeout(()=>{
+        this.router.navigate(['/transaction']);
+      }, 300);
+      
+    });
   }
 
   windowStateChange() {
