@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../services/authentication-service/authentication.service';
+import { AuthenticationService } from '../../account/services/authentication-service/authentication.service';
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../../shared/services/modal.service';

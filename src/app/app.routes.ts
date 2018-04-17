@@ -1,7 +1,7 @@
 
-import { LoginComponent } from './account/login/login.component'; 
-import { Error404Component } from './shared/components/error404/error404.component';  
-import { CreateTransactionComponent } from './account/create-transaction/create-transaction.component';
+import { LoginComponent } from './account/login/login.component';
+import { Error404Component } from './shared/components/error404/error404.component';
+import { CreateTransactionComponent } from './transaction/create-transaction/create-transaction.component';
 import { CanActivateViaAuthGuard } from './app.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
@@ -13,6 +13,7 @@ import { BackupConfirmComponent } from './account/backup-confirm/backup-confirm.
 import { AccountModule } from './account/account.module';
 import { BackupPromptComponent } from './account/backup-prompt/backup-prompt.component';
 import { ACCOUNT_ROUTES } from './account/account.routes';
+import { DASHBOARD_ROUTES } from './dashboard/dashboard.routes';
 
 export const ROUTES = [
   {
@@ -20,7 +21,7 @@ export const ROUTES = [
     redirectTo: 'account',
     pathMatch: 'full'
   },
-  // TO PREVENT LAZY LOADING OF COMPONENTS ACCESSIBLE IMMEDIATELY AFTER LOAD 
+  // TO PREVENT LAZY LOADING OF COMPONENTS ACCESSIBLE IMMEDIATELY AFTER LOAD
   {
     path: 'account',
     children: ACCOUNT_ROUTES
@@ -30,6 +31,10 @@ export const ROUTES = [
     // component: DashboardComponent
     path: 'explorer',
     loadChildren: './explorer/explorer.module#ExplorerModule'
+  },
+  {
+    path: 'dashboard',
+    children: DASHBOARD_ROUTES
   },
   {
     path: 'not-found',

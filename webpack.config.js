@@ -121,6 +121,14 @@ module.exports = {
     ],
     "symlinks": true,
     "alias": rxPaths(),
+    "alias": {
+      '@app': path.resolve('src/app/app'),
+      '@account': path.resolve('src/app/account'),
+      '@dashboard': path.resolve('src/app/dashboard'),
+      '@explorer': path.resolve('src/app/explorer'),
+      '@shared': path.resolve('src/app/shared'),
+      '@transaction': path.resolve('src/app/transaction')
+    },
     "mainFields": [
       "browser",
       "module",

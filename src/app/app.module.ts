@@ -17,8 +17,10 @@ import { ToastModule } from "ng2-toastr";
 import { ExplorerModule } from "./explorer/explorer.module"; 
 import { TranslateHttpLoader } from "@ngx-translate/http-loader"; 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { TransactionModule } from "./transaction/transaction.module";
+import { BasicModalComponent } from "./shared/components/modals/basic-modal/basic-modal.component";
  
-
+const modalComponents = [BasicModalComponent];
 @NgModule({
   imports: [
     CommonModule,
@@ -28,6 +30,7 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
     HttpModule,
     // aerumWALLET modules
     AccountModule,
+    TransactionModule,
     SharedModule,
     DashboardModule.forRoot(),
     // aerumUI modules
@@ -37,7 +40,8 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
     ExplorerModule.forRoot()
   ], 
   declarations: [
-    AppComponent
+    AppComponent,
+    modalComponents,
   ],
   providers: [],
   bootstrap: [AppComponent]

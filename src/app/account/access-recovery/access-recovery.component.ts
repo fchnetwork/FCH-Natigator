@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms'; 
-import { AuthenticationService } from '../services/authentication-service/authentication.service';
-import { Router } from '@angular/router';
+import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
+import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
