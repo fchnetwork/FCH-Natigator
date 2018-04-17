@@ -104,20 +104,21 @@ export class AuthenticationService {
     unencryptKeystore( password: string ) : Promise<any> {
 
         return new Promise( (resolve, reject) => {
+            if(password) {
+                const decryptSeed = CryptoJS.AES.decrypt( Cookie.get('aerum_base'), password );
 
-            const decryptSeed = CryptoJS.AES.decrypt( Cookie.get('aerum_base'), password );
-
-            const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
-
-            if( encryptAccount ) {
-                resolve( { web3: encryptAccount, s:decryptSeed  } );
-            } 
-            else {
+                const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
+    
+                if( encryptAccount ) {
+                    resolve( { web3: encryptAccount, s:decryptSeed  } );
+                } 
+                else {
+                    reject("no keystore found or password incorrect");
+                }
+            } else {
                 reject("no keystore found or password incorrect");
             }
-
         });
-
     }
 
 

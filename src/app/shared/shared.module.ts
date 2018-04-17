@@ -18,6 +18,7 @@ import { RouteDataService } from './services/route-data.service';
 import { NotificationService } from './services/notification.service';
 import { ClipboardService } from './services/clipboard.service';
 import { AccountIdleService } from './services/account-idle.service';
+import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -44,7 +45,8 @@ export function createTranslateLoader(http: HttpClient) {
     I18nComponent,
     Error404Component,
     DividerComponent,
-    EqualValidator
+    EqualValidator,
+    SidebarHeaderComponent
   ],
   providers: [
     ModalService,
@@ -57,7 +59,8 @@ export function createTranslateLoader(http: HttpClient) {
     I18nComponent,
     DividerComponent,
     TranslateModule,
-    EqualValidator
+    EqualValidator,
+    SidebarHeaderComponent,
   ]
 })
 
