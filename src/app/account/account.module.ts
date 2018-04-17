@@ -4,7 +4,6 @@ import { NgModule, ModuleWithProviders } from "@angular/core";
 import { AppUIModule } from "../app.ui.module";
 import { LoginComponent } from "./login/login.component";
 import { AvatarSelectComponent } from "./components/avatar-select/avatar-select.component";
-import { BasicModalComponent } from "../shared/components/modals/basic-modal/basic-modal.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastModule } from "ng2-toastr";
@@ -18,17 +17,12 @@ import { AppRoutingModule } from "../app.routes";
 import { AuthenticationService } from "./services/authentication-service/authentication.service";
 import { CanActivateViaAuthGuard } from "../app.guard";
 import { ModalService } from "../shared/services/modal.service";
-import { TransactionServiceService } from "./services/transaction-service/transaction-service.service";
 import { RegisterComponent } from './register/register.component';
 import { BackupCreateComponent } from './backup-create/backup-create.component';
 import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component'; 
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
-import { CreateTransactionComponent } from "./create-transaction/create-transaction.component";
-import { TransactionSignModalComponent } from "./components/transaction-sign-modal/transaction-sign-modal.component";
 import { AccessRecoveryComponent } from "./access-recovery/access-recovery.component";
-
-const modalComponents = [BasicModalComponent];
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -36,8 +30,6 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
     entryComponents: [
-        BasicModalComponent,
-        TransactionSignModalComponent,
         LoginComponent,
         AvatarSelectComponent,
         RegisterComponent,
@@ -46,9 +38,7 @@ export function createTranslateLoader(http: HttpClient) {
         BackupPromptComponent,
         BackupDisclamerComponent,
         LoginComponent,
-        CreateTransactionComponent,
-        TransactionSignModalComponent ,
-        AccessRecoveryComponent    
+        AccessRecoveryComponent,
     ],
     imports: [
         AccountRoutingModule,
@@ -61,7 +51,6 @@ export function createTranslateLoader(http: HttpClient) {
         ReactiveFormsModule
     ],
     declarations: [
-        modalComponents,
         LoginComponent,
         AvatarSelectComponent,
         RegisterComponent,
@@ -70,14 +59,11 @@ export function createTranslateLoader(http: HttpClient) {
         BackupPromptComponent,
         BackupDisclamerComponent,
         LoginComponent,
-        CreateTransactionComponent,
-        TransactionSignModalComponent,
         AccessRecoveryComponent
     ],
     providers: [
         AuthenticationService,
         ModalService,
-        TransactionServiceService,
         CanActivateViaAuthGuard
     ]
 })
