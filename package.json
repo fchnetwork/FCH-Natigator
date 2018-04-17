@@ -9,6 +9,7 @@
     "truffletest": "cd \"truffle\" && truffle test && ng test",
     "lint": "tslint -c ./tslint.json './src/**/*.ts*'",
     "lint:fix": "tslint -c ./tslint.json './src/**/*.ts*' --fix",
+    "lint:style": "stylelint './src/**/*.scss' --fix",
     "e2e": "protractor ./protractor.conf.js",
     "build": "webpack",
     "test": "karma start ./karma.conf.js",
@@ -49,6 +50,7 @@
     "qrcode": "^1.2.0",
     "rxjs": "^5.5.6",
     "soltsice": "^0.10.3",
+    "stylelint": "^9.2.0",
     "truffle": "^4.0.6",
     "web3": "^1.0.0-beta.33",
     "zone.js": "^0.8.19"
