@@ -1,0 +1,44 @@
+.sidebar_header {
+  padding: 20px 10px 10px 10px;
+
+  .avatar {
+    float: left;
+    width: 30%;
+
+    // WARNING: double code!
+    // TODO: refactor to global this class
+    .c-avatar__img {
+      width: 49px;
+      height: 49px;
+      overflow: hidden;
+      border-radius: 50%;
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      opacity: 0.8;
+    }
+  }
+
+  .user_data {
+    float: left;
+    width: 70%;
+    padding-top: 3%;
+
+    span {
+      color: #fff;
+    }
+
+    .address {
+      font-size: 16px;
+      white-space: nowrap;
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .clearfix {
+    clear: both;
+  }
+}
