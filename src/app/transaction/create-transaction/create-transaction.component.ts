@@ -27,8 +27,8 @@ export class CreateTransactionComponent implements OnInit {
 
   /* new fields */
   senderAddress: string;
-  receiverAddress: string = "0xa20e9de99c67bb25b04af7893b4d0ca1ce3b6ef9";
-  amount: number = 0.1;
+  receiverAddress: string;
+  amount: number;
   transactions: any[];
   includedDataLength: number;
   walletBalance: number;
