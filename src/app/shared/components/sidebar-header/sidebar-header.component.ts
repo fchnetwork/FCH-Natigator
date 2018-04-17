@@ -20,11 +20,6 @@ export class SidebarHeaderComponent implements OnInit {
   ngOnInit() {
     this.address = sessionStorage.getItem('acc_address');
     this.avatar = avatars.create(this.address);
-    // console.log(this.address);
-    // if(this.address) {
-    //   this.avatar = avatars.create(this.address);
-    // }
-    
   }
 
 }
