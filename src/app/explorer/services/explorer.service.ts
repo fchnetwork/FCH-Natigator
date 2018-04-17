@@ -25,18 +25,18 @@ declare var window: any;
 @Injectable()
 export class ExplorerService {
 
-  public web3: any;
+  web3: any;
   
-  public data$: BehaviorSubject<any> = new BehaviorSubject({});
+  data$: BehaviorSubject<any> = new BehaviorSubject({});
   private pongSource = new Subject<any>();
   pong$ = this.pongSource.asObservable();
   
-  account: any
+  account: any;
 
   constructor() { 
     // console.log("Web3" + Web3)
     this.checkAndInstantiateWeb3();
-    this.account  = JSON.parse( Cookie.get('account') )
+    this.account  = JSON.parse( Cookie.get('account') );
   }
 
   
@@ -67,34 +67,34 @@ export class ExplorerService {
     return Observable.create(observer => {
       this.web3.eth.getBlockNumber((err, block) => {
         if (err != null) {
-          observer.error('There was an error fetching your blocks.')
+          observer.error('There was an error fetching your blocks.');
         }
 
         if (block.length === 0) {
-          observer.error('no blocks')
+          observer.error('no blocks');
         }
         console.log( block );
-        return observer.next(block)
+        return observer.next(block);
         // observer.complete()
       });
-    })
+    });
   }
   
   getAccounts(): Observable<any>{
   	return Observable.create(observer => {
   	  this.web3.eth.getAccounts((err, accs) => {
   	    if (err != null) {
-  	      observer.error('There was an error fetching your accounts.')
+  	      observer.error('There was an error fetching your accounts.');
   	    }
 
   	    if (accs.length === 0) {
-  	      observer.error('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.')
+  	      observer.error('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
   	    }
 
-  	    observer.next(accs)
-  	    observer.complete()
+  	    observer.next(accs);
+  	    observer.complete();
   	  });
-  	})
+  	});
   }
 
   
@@ -104,7 +104,7 @@ export class ExplorerService {
 
   // const accounts = JSON.parse( Cookie.get('account') )
   
-  const privateKey =  ethJsUtil.toBuffer(this.account.privateKey)
+  const privateKey =  ethJsUtil.toBuffer(this.account.privateKey);
   const to = ethJsUtil.toChecksumAddress( "0xb0573f6b040fddf1250cdd38983f4eac06fbf3ca" ) ;
   const from = ethJsUtil.toChecksumAddress( this.account.address);
   const txValue = this.web3.utils.numberToHex(this.web3.utils.toWei('0.01', 'ether'));
@@ -117,12 +117,12 @@ export class ExplorerService {
       nonce: '0x'+res, 
       gasPrice: '0x14f46b0400',
       gasLimit: '0x47b760', 
-      to: to,
+      to,
       value: txValue,
       data: txData
-    }
+    };
       
-    console.log(rawTx)
+    console.log(rawTx);
     
 const tx = new Tx(rawTx);
       tx.sign(privateKey);
@@ -134,7 +134,7 @@ console.log(serializedTx.toString('hex')); // Log the resulting raw transaction 
 
 this.web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex')) // Broadcast the transaction to the network
 .on('transactionHash',  (hash) => {
-  console.log("hash " + hash)
+  console.log("hash " + hash);
 })
 // .on('receipt', (receipt) => {
 // console.log("receipt " + receipt)
@@ -145,7 +145,7 @@ this.web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex')) // Broa
 .on('error', console.error); // If a out of gas error, the second parameter is the receipt.
     
     
-  })
+  });
 
   
 

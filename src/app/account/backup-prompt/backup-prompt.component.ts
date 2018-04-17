@@ -26,7 +26,7 @@ export class BackupPromptComponent implements OnInit {
     console.log(this.routeDataService.routeData);
   }
 
-  public createBackup() {
+  createBackup() {
     this.modalService.openBackupDisclaimerModal().then((result) => {
       this.router.navigate(['account/backup/create']);
     });

@@ -41,7 +41,7 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
       }
     }, (err) => {
       alert("error - is this password correct?" + err);
-    })
+    });
   }
 
   dismiss(): void {

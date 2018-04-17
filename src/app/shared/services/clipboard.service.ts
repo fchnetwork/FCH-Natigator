@@ -13,12 +13,12 @@ export class ClipboardService {
 
     }
 
-    public copy(value: string): Promise<string> {
+    copy(value: string): Promise<string> {
 
-        var promise = new Promise<string>(
+        const promise = new Promise<string>(
             (resolve, reject): void => {
 
-                var textarea = null; 
+                let textarea = null; 
 
                 try {
                     textarea = this.dom.createElement("textarea");

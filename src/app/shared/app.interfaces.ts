@@ -17,10 +17,10 @@ export interface iBlocks {
     "parentHash": string;
     "receiptsRoot": string;
     "sha3Uncles": string;
-    "size": number,
+    "size": number;
     "stateRoot": string;
-    "timestamp": 1520373465,
-    "totalDifficulty": "102723",
+    "timestamp": 1520373465;
+    "totalDifficulty": "102723";
     "transactions": [any];
     "transactionsRoot": string;
     "uncles": [any];

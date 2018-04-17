@@ -26,7 +26,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     const nameRegex = /^([a-zA-Z0-9_-]+)$/;
-    const args = [ Validators.required, this.noWhiteSpace, Validators.pattern(nameRegex),Validators.minLength(1), Validators.maxLength(66)]
+    const args = [ Validators.required, this.noWhiteSpace, Validators.pattern(nameRegex),Validators.minLength(1), Validators.maxLength(66)];
       this.form = this.formBuilder.group({
         searchAerum: ["", Validators.compose( args )],
       });
@@ -45,7 +45,7 @@ export class SearchComponent implements OnInit {
 
   search() {
 
-    let item = this.form.value.searchAerum
+    let item = this.form.value.searchAerum;
 
     if( /[a-z]/i.test(item)  ) {
 

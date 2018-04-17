@@ -21,8 +21,8 @@ export class PasswordValidator {
     // }
     
     
-    public static number(control: FormControl): ValidationResult {
-        let hasNumber = /\d/.test(control.value);
+    static number(control: FormControl): ValidationResult {
+        const hasNumber = /\d/.test(control.value);
               
         if (!hasNumber) {
             // return what´s not valid
@@ -31,9 +31,9 @@ export class PasswordValidator {
         return null;
     }    
     
-    public static upper(control: FormControl): ValidationResult {
+    static upper(control: FormControl): ValidationResult {
 
-        let hasUpper = /[A-Z]/.test(control.value);
+        const hasUpper = /[A-Z]/.test(control.value);
               
         if (!hasUpper) {
             // return what´s not valid
@@ -42,9 +42,9 @@ export class PasswordValidator {
         return null;
     }    
     
-    public static lower(control: FormControl): ValidationResult {
+    static lower(control: FormControl): ValidationResult {
 
-        let hasLower = /[a-z]/.test(control.value);
+        const hasLower = /[a-z]/.test(control.value);
               
         if (!hasLower) {
             // return what´s not valid

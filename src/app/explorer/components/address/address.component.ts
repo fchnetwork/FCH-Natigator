@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router, Params } from '@angular/router';
 
-import { ExplorerService } from '../../services/explorer.service'
+import { ExplorerService } from '../../services/explorer.service';
 
 @Component({
   selector: 'app-address',
@@ -26,7 +26,7 @@ export class AddressComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
         this.address = params['id'];
-        this.inspectBalance()
+        this.inspectBalance();
       });
   } 
 

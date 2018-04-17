@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication-service/authentication.service';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs/Subject'
+import { Subject } from 'rxjs/Subject';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -19,9 +19,9 @@ export class LoginComponent implements OnInit {
   address: string;
   avatar: string;
   private: string; // i dont know 
-  loginForm: FormGroup
+  loginForm: FormGroup;
 
-  step: string = 'step_1';  // default page to show
+  step = 'step_1';  // default page to show
 
   windowState: boolean;
 

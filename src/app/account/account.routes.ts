@@ -44,7 +44,7 @@ export const ACCOUNT_ROUTES = [
             }
         ] 
     }
-]
+];
 
 @NgModule({
     imports: [RouterModule.forChild(ACCOUNT_ROUTES)], 

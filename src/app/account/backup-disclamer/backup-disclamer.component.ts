@@ -16,7 +16,7 @@ export class BackupDisclamerComponent implements ModalComponent<EmptyModalContex
   ngOnInit() {
   }
 
-  public dismiss() {
+  dismiss() {
     this.dialog.close();
   }
 }

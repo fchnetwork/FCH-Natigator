@@ -15,34 +15,34 @@ export class ModalService {
   }
 
   private openModal(modal: ContainerContent, config: any = {}): Promise<DialogRef<any>> {
-    let overlayConfig = overlayConfigFactory(config, BSModalContext);
+    const overlayConfig = overlayConfigFactory(config, BSModalContext);
     return this.modal.open(modal, overlayConfig).result.then((modal) => {
       if(!modal) {
         return {dismiss: false};
       }
       return modal;
     }, () => {
-      return new Promise((resolve, reject) => {return resolve({dismiss: true})});
+      return new Promise((resolve, reject) =>resolve({dismiss: true}));
     });
   }
 
-  public openBasicModal(data?: any): Promise<any> {
+  openBasicModal(data?: any): Promise<any> {
     return this.openModal(BasicModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 
-  public openBackupDisclaimerModal(data?: any) {
+  openBackupDisclaimerModal(data?: any) {
     return this.openModal(BackupDisclamerComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 
-  public openTransactionConfirm(data?: any): Promise<any> {
+  openTransactionConfirm(data?: any): Promise<any> {
     return this.openModal(TransactionSignModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
   
-  public openBlock(blockNumber: any = null, block: any = null): Promise<any> {
-    return this.openModal(BlockModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', blockNumber: blockNumber, block: block });
+  openBlock(blockNumber: any = null, block: any = null): Promise<any> {
+    return this.openModal(BlockModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', blockNumber, block });
   }
 
-  public openTransaction(hash: any = null, transaction: any = null): Promise<any> {
-    return this.openModal(TransactionModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', hash: hash, transaction: transaction });
+  openTransaction(hash: any = null, transaction: any = null): Promise<any> {
+    return this.openModal(TransactionModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', hash, transaction });
   }
 }

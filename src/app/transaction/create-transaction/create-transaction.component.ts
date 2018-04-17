@@ -65,8 +65,8 @@ export class CreateTransactionComponent implements OnInit {
       return this.authServ.showKeystore().then( 
         (keystore) => {
 
-          const getBalance = this.txnServ.checkBalance(keystore.address)
-          const getQR = this.authServ.createQRcode( "0x" + keystore.address )  
+          const getBalance = this.txnServ.checkBalance(keystore.address);
+          const getQR = this.authServ.createQRcode( "0x" + keystore.address );  
 
           return Promise.all([ keystore, getBalance, getQR ]); 
 
@@ -76,24 +76,24 @@ export class CreateTransactionComponent implements OnInit {
         ([ keystore, accBalance, qrCode ]) => {
         this.senderAddress = "0x" + keystore.address ;
         this.walletBalance = accBalance;
-        this.addressQR = qrCode
+        this.addressQR = qrCode;
       }
     );
   }
 
-  public getMaxTransactionFee() {
+  getMaxTransactionFee() {
     // TODO: calculation logic here
     return 0.000000;
   }
 
-  public setSendEverything(event) {
+  setSendEverything(event) {
     if(event) {
       this.amount = this.walletBalance;
     }
     this.sendEverything = event;
   }
 
-  public getTotalAmount() {
+  getTotalAmount() {
     if(this.amount) {
       return Number(this.amount) + Number(this.getMaxTransactionFee());
     }
@@ -103,24 +103,24 @@ export class CreateTransactionComponent implements OnInit {
   }
 
 
-  public showMore() {}
+  showMore() {}
 
-  public showTransactions() {}
+  showTransactions() {}
 
-  public getICoin(amount) {
+  getICoin(amount) {
     return amount > 0;
   }
 
 
-  public send() {
-    this.transactionMessage = ""
+  send() {
+    this.transactionMessage = "";
     this.modalSrv.openTransactionConfirm().then( result =>{ 
        if( this.receiverAddress == undefined || this.receiverAddress == null) {
-          alert("You need to add a receiver address")  
-          return false      
+          alert("You need to add a receiver address");  
+          return false;      
        }
        this.txnServ.transaction(  result.privateKey, result.address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
-        this.transactionMessage = res
+        this.transactionMessage = res;
       }).catch( error =>  console.log(error) );
 
     });

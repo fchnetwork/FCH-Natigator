@@ -15,9 +15,9 @@ import { BlocksComponent } from './components/blocks/blocks.component';
 import { BlockModalComponent } from './components/block/block-modal/block-modal.component';
 import { TransactionModalComponent } from './components/transaction/transaction-modal/transaction-modal.component';
 
-import { ExplorerService } from './services/explorer.service'
+import { ExplorerService } from './services/explorer.service';
 
-import { RouterModule } from '@angular/router'
+import { RouterModule } from '@angular/router';
 
 import { TransactionTimeAgoPipe } from './pipes/transaction-time-ago.pipe';
 import { TransactionTimeStampPipe } from './pipes/transaction-time-stamp.pipe';
@@ -26,7 +26,7 @@ import { HexToTextPipe } from './pipes/hex-to-text.pipe';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { explorerRoutes } from './explorer.routes'
+import { explorerRoutes } from './explorer.routes';
 import { AppUIModule } from '../app.ui.module';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 import { SharedModule } from '../shared/shared.module';
@@ -76,7 +76,7 @@ const modals = [BlockModalComponent, TransactionModalComponent];
 })
 
 export class ExplorerModule {
-  public static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: ExplorerModule,
       providers: [

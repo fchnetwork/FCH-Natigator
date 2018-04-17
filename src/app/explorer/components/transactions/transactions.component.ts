@@ -15,11 +15,11 @@ import { ModalService } from '../../../shared/services/modal.service';
 export class TransactionsComponent implements OnInit {
 
   currentBlock: number;
-  blocks: Array<iBlocks>;
+  blocks: iBlocks[];
   maxBlocks: number;
 
   // TRANSACTIONS SCREEN NEED THESE VARIABLE
-  transactions: Array<iTransaction>;
+  transactions: iTransaction[];
      
   constructor( private _ngZone: NgZone,
                public exploreSrv: ExplorerService,
@@ -34,7 +34,7 @@ export class TransactionsComponent implements OnInit {
     this.transactions = [];
     this.maxBlocks = 50;
     
-    let demoTransaction: iTransaction = {
+    const demoTransaction: iTransaction = {
       "blockHash": '0x7aaBfCB2d414f884a48b88015b9021080E3760A9',
       "blockNumber": 5260128,
       "from": '0x1234fCB2d414f884a48b88015b9021080E3760A9',
@@ -76,17 +76,17 @@ export class TransactionsComponent implements OnInit {
     //   });
   }
 
-  public getTransactionsCount() {
+  getTransactionsCount() {
     return this.transactions.length;
   }
 
-  public openBlock(blockNumber) {
+  openBlock(blockNumber) {
     this.modal.openBlock(blockNumber).then( result =>{ 
      })
      .catch( () => {});
   }
 
-  public openTransaction(transaction) {
+  openTransaction(transaction) {
     this.modal.openTransaction(transaction.hash, transaction).then((result) => {
     }).catch( () => {});
   }
@@ -97,13 +97,13 @@ export class TransactionsComponent implements OnInit {
        item = item.split('0x').join('');
 
        if ( item.length == 40 ) {
-          alert("address")
+          alert("address");
        } else if( item.length === 64 && /[0-9a-zA-Z]{64}?/.test(item) ) {
-        alert("txn")
+        alert("txn");
        }
 
     } else if ( /[0-9]{1,7}?/.test(item)) {
-      alert('block Found' + parseInt(item) )
+      alert('block Found' + parseInt(item) );
     } else {
       alert(`Error: ${item} is not a valid Block, Address or Transaction`);
     }

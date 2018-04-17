@@ -5,7 +5,7 @@ import { HexToTextPipe } from './hex-to-text.pipe';
 
 describe('Pipe: HexToTexte', () => {
   it('create an instance', () => {
-    let pipe = new HexToTextPipe();
+    const pipe = new HexToTextPipe();
     expect(pipe).toBeTruthy();
   });
 });
