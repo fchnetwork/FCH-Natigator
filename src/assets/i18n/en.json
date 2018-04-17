@@ -46,7 +46,7 @@
 "REGISTRATION_WARNING_TXT1":"You should ONLY use the official Aerum client.",
 "REGISTRATION_WARNING_TXT2":"Seed Words is the only one way to recover access to your account, treat it with care.",
 "REGISTRATION_WARNING_TXT3":"Please be careful and never input your SEED into fake 'clients'. Otherwise your account will be compromised and you will lose all of your funds.",
-"LOGIN":"Log in",
+"LOGIN":"Unlock",
 "LOGIN_TEXT1":"The session was automatically terminated.",
 "LOGIN_TEXT2":"Sign in again or",
 "LOGIN_TEXT3":"create a new account",

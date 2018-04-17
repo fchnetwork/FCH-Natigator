@@ -16,7 +16,7 @@ export class CanActivateViaAuthGuard implements CanActivate {
                 if(loggedIn) {
                     resolve(true);
                 } else {
-                    this.router.navigate(['/account/login']);
+                    this.router.navigate(['/account/unlock']);
                     resolve(false);
                 }
                 // DON'T DELETE
@@ -25,7 +25,7 @@ export class CanActivateViaAuthGuard implements CanActivate {
                 //     resolve(true);
                 // })
                 // .catch( () => {
-                //    this.router.navigate(['/account/login']);
+                //    this.router.navigate(['/account/unlock']);
                 //     resolve(false);
                 // });
             });

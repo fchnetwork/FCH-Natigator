@@ -15,7 +15,7 @@ export const ACCOUNT_ROUTES = [
         children: [
             {
                 path: '', 
-                redirectTo: 'login',
+                redirectTo: 'unlock',
                 pathMatch: 'full'
             },
             {
@@ -35,7 +35,7 @@ export const ACCOUNT_ROUTES = [
                 component: BackupConfirmComponent
             },
             {
-                path: 'login',
+                path: 'unlock',
                 component: LoginComponent
             },
             {
