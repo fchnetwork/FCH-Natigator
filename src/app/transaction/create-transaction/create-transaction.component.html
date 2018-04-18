@@ -6,7 +6,7 @@
     <div class="col-sm-6">
       <div class="panel">
         <div class="panel-header">
-          {{'SEND'|translate}}
+          {{'SEND_TO'|translate}}
         </div>
         <div class="panel-content">
           <div class="row">
@@ -28,7 +28,7 @@
             <div class="col-sm-6">
                   <div class="account-status-line">
                       <aer-icon>aerum</aer-icon>
-                      <div class="float-left">{{'AERO'|translate}}</div>
+                      <div class="float-left">{{walletBalance}} {{'AERO'|translate}}</div>
                   </div>
             </div>
           </div>
@@ -72,13 +72,13 @@
     <div class="col-sm-6">
       <div class="panel min-width-470">
         <div class="panel-header">
-            Your Account
+            {{ 'RECEIVE_TO'|translate }}
         </div>
         <div class="panel-content">
             {{ transactionMessage }}
             <img [src]="addressQR" alt="">
-            <div>
-              {{ senderAddress }}
+            <div class="c-copy__address" >
+              <a (click)="copyToClipboard()">{{ senderAddress }}</a>
             </div>
         </div>
       </div>

@@ -42,8 +42,7 @@ export class TransactionServiceService {
        return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
             let nonce = parseInt(values[1], 10)   
             let gas = parseInt(values[2], 10)   
-            console.log(nonce)
-            console.log(gas)
+
             const rawTransaction = {
               nonce: this.web3.utils.toHex( nonce ), 
               gas: this.web3.utils.toHex( gas ),
@@ -57,11 +56,11 @@ export class TransactionServiceService {
                 let transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) )
                     transaction.on('transactionHash', hash => { 
                       alert(hash) 
-                      setTimeout(() => {
-                        this.web3.eth.getTransactionReceipt( hash ).then( res =>  alert( "receipt "+JSON.stringify(res) ) );
-                      }, 6000);
+                      // setTimeout(() => {
+                      //   this.web3.eth.getTransactionReceipt( hash ).then( res =>  alert( "receipt "+JSON.stringify(res) ) );
+                      // }, 6000);
                     }).catch( error => {
-                        alert( error )
+                        // alert( error )
                     })
           });
       });
