@@ -218,6 +218,7 @@
     border: 1px dashed #2a669a;
     display: inline-block;
     position: relative;
+    border-radius: 5px;
     &::after {
       position: absolute;
       top: -18px;
