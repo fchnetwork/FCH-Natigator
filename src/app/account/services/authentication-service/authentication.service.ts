@@ -98,9 +98,8 @@ export class AuthenticationService {
         // const getChecksumAddress = ethUtil.toChecksumAddress( getAddress );
         // const address            = ethUtil.addHexPrefix( getChecksumAddress );
 
-
-        Cookie.set('aerum_keyStore', JSON.stringify( encryptAccount) );
-        Cookie.set('aerum_base', encryptSeed );
+        Cookie.set('aerum_keyStore', JSON.stringify( encryptAccount), 7, "/", environment.cookiesDomain);
+        Cookie.set('aerum_base', encryptSeed, 7, "/", environment.cookiesDomain);
      //   Cookie.set('aerum_avatar', this.generateCryptedAvatar(address) );
 
         return encryptAccount; 
