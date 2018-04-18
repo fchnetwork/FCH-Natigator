@@ -15,7 +15,7 @@ import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { AppRoutingModule } from "../app.routes";
 import { AuthenticationService } from "./services/authentication-service/authentication.service";
-import { CanActivateViaAuthGuard } from "../app.guard";
+import { CanActivateViaAuthGuard, CanActivateAccountAuthGuard } from "../app.guard";
 import { ModalService } from "../shared/services/modal.service";
 import { RegisterComponent } from './register/register.component';
 import { BackupCreateComponent } from './backup-create/backup-create.component';
@@ -64,7 +64,8 @@ export function createTranslateLoader(http: HttpClient) {
     providers: [
         AuthenticationService,
         ModalService,
-        CanActivateViaAuthGuard
+        CanActivateViaAuthGuard,
+        CanActivateAccountAuthGuard,
     ]
 })
 export class AccountModule { } 

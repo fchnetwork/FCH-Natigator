@@ -4,6 +4,7 @@ import { RouteDataService } from '../../shared/services/route-data.service';
 import { RegistrationRouteData } from '../models/RegistrationRouteData';
 import { ModalService } from '../../shared/services/modal.service';
 import { BackupDisclamerComponent } from '../backup-disclamer/backup-disclamer.component';
+import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-backup-prompt',
@@ -15,7 +16,9 @@ export class BackupPromptComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private routeDataService: RouteDataService<RegistrationRouteData>,
     private modalService: ModalService,
-    private router: Router) {
+    private router: Router,
+    private authService: AuthenticationService,
+  ) {
       
     if (!routeDataService.hasData()) {
       router.navigate(['account/register']);
@@ -30,5 +33,10 @@ export class BackupPromptComponent implements OnInit {
     this.modalService.openBackupDisclaimerModal().then((result) => {
       this.router.navigate(['account/backup/create']);
     });
+  }
+
+  skipStep() {
+    const data = this.routeDataService.routeData;
+    this.authService.saveKeyStore( data.privateKey, data.password, data.mnemonic );
   }
 }

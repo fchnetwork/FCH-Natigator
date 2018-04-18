@@ -3,14 +3,15 @@ import { AuthenticationService } from '../../account/services/authentication-ser
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../../shared/services/modal.service';
-
+import { ClipboardService } from '../../shared/services/clipboard.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
 const Web3 = require('web3');
 
 declare var window: any;
-
+ 
 @Component({
   selector: 'app-create-transaction',
   templateUrl: './create-transaction.component.html',
@@ -39,6 +40,8 @@ export class CreateTransactionComponent implements OnInit {
   constructor(
     public authServ: AuthenticationService,
     private modalSrv: ModalService,
+    private clipboardService: ClipboardService,
+    private notificationService: NotificationService,
     public txnServ: TransactionServiceService ) {
     this.userData();
    }
@@ -60,13 +63,17 @@ export class CreateTransactionComponent implements OnInit {
     this.includedDataLength = 0;
   }
 
+  private copyToClipboard() {
+    this.clipboardService.copy(this.senderAddress);
+    this.notificationService.showMessage('Copied to clipboard!');
+  }
 
   userData() {
       return this.authServ.showKeystore().then( 
         (keystore) => {
 
           const getBalance = this.txnServ.checkBalance(keystore.address);
-          const getQR = this.authServ.createQRcode( "0x" + keystore.address );  
+          const getQR      = this.authServ.createQRcode( "0x" + keystore.address );  
 
           return Promise.all([ keystore, getBalance, getQR ]); 
 
@@ -76,7 +83,7 @@ export class CreateTransactionComponent implements OnInit {
         ([ keystore, accBalance, qrCode ]) => {
         this.senderAddress = "0x" + keystore.address ;
         this.walletBalance = accBalance;
-        this.addressQR = qrCode;
+        this.addressQR     = qrCode;
       }
     );
   }

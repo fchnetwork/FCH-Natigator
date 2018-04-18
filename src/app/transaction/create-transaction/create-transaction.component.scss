@@ -75,6 +75,7 @@
   margin-left: 15px;
 
   .col-sm-4 {
+    padding: 0 10px;
     @media(min-width: 768px) {
       width: 33%;
       float: left;
@@ -91,6 +92,7 @@
   }
 
   .col-sm-12 {
+    padding: 0 10px;
     width: 100%;
 
     @media(min-width: 768px) {
@@ -208,6 +210,23 @@
   }
 }
 
+
+.c-copy__address {
+  display: block;
+  a {
+    padding: 5px 12px;
+    border: 1px dashed #2a669a;
+    display: inline-block;
+    position: relative;
+    &::after {
+      position: absolute;
+      top: -18px;
+      right: -31px;
+      content: "Click to copy";
+      font-size:10px;
+    }
+  }
+}
 
 
 // .c-seedContainer {

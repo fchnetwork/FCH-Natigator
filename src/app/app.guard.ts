@@ -42,5 +42,33 @@ export class CanActivateViaAuthGuard implements CanActivate {
         }
 
 }
+@Injectable()
+export class CanActivateAccountAuthGuard implements CanActivate {
+
+    constructor( 
+        private router: Router,
+        public sessionStorageService: SessionStorageService,
+    ) {}
+
+        canActivate(): Promise<boolean> {
+            return new Promise((resolve) => {
+                const registered = Cookie.get('aerum_keyStore');
+                const loggedIn = this.sessionStorageService.retrieve('acc_address');
+                
+                if(!registered) {
+                    this.router.navigate(['/account/register']);
+                    resolve(false);
+                }
+                else if(loggedIn) {
+                    this.router.navigate(['/dashboard']);
+                    resolve(false);
+                } 
+                else {
+                    resolve(true);
+                }
+            });
+        }
+
+}
 
 
