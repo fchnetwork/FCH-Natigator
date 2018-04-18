@@ -46,6 +46,8 @@ export class LoginComponent implements OnInit {
   onSubmitAddress() {
     this.authServ.unencryptKeystore(this.password).then( result => {
       sessionStorage.setItem('acc_address', result.web3.address);
+      sessionStorage.setItem('seed', result.s);
+      sessionStorage.setItem('private_key', result.web3.privateKey);
       setTimeout(()=>{
         this.router.navigate(['/transaction']);
       }, 300);
