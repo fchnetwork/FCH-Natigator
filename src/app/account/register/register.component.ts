@@ -15,16 +15,16 @@ import { RouteDataService } from '../../shared/services/route-data.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup = this.formBuilder.group({});
   testAccount = testAccount;
-  password: string = this.testAccount[0].password;
-  confirmPassword: string = this.testAccount[0]["passwordConfirm"];
+  password: string;
+  confirmPassword: string;
   avatar: string;
 
   constructor(public translate: TranslateService, public formBuilder: FormBuilder, public router: Router, private routeDataService: RouteDataService<RegistrationRouteData>) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      password: [this.testAccount[0]["password"], [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower]],
-      confirmPassword: [this.testAccount[0]["passwordConfirm"], [Validators.required]],
+      password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower]],
+      confirmPassword: [ null, [Validators.required]],
       avatar: [1]
     }, {
         validator: this.matchingPasswords('password', 'confirmPassword')
