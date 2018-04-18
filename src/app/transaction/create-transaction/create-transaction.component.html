@@ -1,9 +1,3 @@
-<aer-sidebar #sidebar>
-    <aer-sidebar-group title="{{'TRANSACTION'|translate}}" iconName="transaction">
-        <aer-sidebar-item iconName="swap">Item 1</aer-sidebar-item>
-        <aer-sidebar-item iconName="exchange">Item 1</aer-sidebar-item>
-    </aer-sidebar-group>
-</aer-sidebar>
 <aer-toolbar>
 
 <div class="content">
@@ -29,7 +23,7 @@
             <div class="col-sm-6">
               <div class="input-name">{{'AMOUNT'|translate}}</div>
               <aer-input [(ngModel)]="amount" ngDefaultControl></aer-input>
-              <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event)"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}}</label>
+              <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event)"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{'AERO'|translate}})</label>
             </div>
             <div class="col-sm-6">
                   <div class="account-status-line">
@@ -38,13 +32,6 @@
                       <div class="float-right">{{walletBalance}} {{'AERO'|translate}}</div>
                   </div>
             </div>
-          </div>
-          <div class="show-more-button">
-              <div class="row">
-                  <div class="col-sm-12">
-                    <aer-button class="medium blue" (buttonFn)="showMore()">{{'SHOW_MORE_OPTIONS'|translate}}</aer-button>
-                  </div>
-                </div>
           </div>
           <div class="row">
             <div class="col-sm-4">
@@ -84,14 +71,13 @@
         <div class="panel-content">
             {{ transactionMessage }}
             <img [src]="addressQR" alt="">
+            <div>
+              {{ senderAddress }}
+            </div>
         </div>
       </div>
     </div>
-
-
-
-
-   
+  
 
     <div class="col-sm-6" style="display:none;">
       <div class="panel min-width-470">
