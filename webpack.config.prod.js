@@ -7,13 +7,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const rxPaths = require('rxjs/_esm5/path-mapping');
-const autoprefixer = require('autoprefixer');
+const autoprefixer = require('autoprefixer'); 
 const postcssUrl = require('postcss-url');
 const postcssImports = require('postcss-import');
 
 const { NoEmitOnErrorsPlugin, EnvironmentPlugin, HashedModuleIdsPlugin } = require('webpack');
 const { BaseHrefWebpackPlugin, SuppressExtractedTextChunksWebpackPlugin, CleanCssWebpackPlugin, BundleBudgetPlugin, PostcssCliResources } = require('@angular/cli/plugins/webpack');
 const { CommonsChunkPlugin, ModuleConcatenationPlugin } = require('webpack').optimize;
+const { LicenseWebpackPlugin } = require('license-webpack-plugin');
 const { PurifyPlugin } = require('@angular-devkit/build-optimizer');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
@@ -134,6 +135,14 @@ module.exports = {
       "./node_modules"
     ],
     "alias": rxPaths(),
+    "alias": {
+      '@app': path.resolve('src/app/app'),
+      '@account': path.resolve('src/app/account'),
+      '@dashboard': path.resolve('src/app/dashboard'),
+      '@explorer': path.resolve('src/app/explorer'),
+      '@shared': path.resolve('src/app/shared'),
+      '@transaction': path.resolve('src/app/transaction')
+    },
     "mainFields": [
       "browser",
       "module",
@@ -143,23 +152,23 @@ module.exports = {
   "resolveLoader": {
     "modules": [
       "./node_modules",
-      "./node_modules\\@angular\\cli\\node_modules"
+      "./node_modules/@angular/cli/node_modules"
     ],
     "alias": rxPaths()
   },
   "entry": {
     "main": [
-      "./src\\main.ts"
+      "./src/main.ts"
     ],
     "polyfills": [
-      "./src\\polyfills.ts"
+      "./src/polyfills.ts"
     ],
     "styles": [
-      "./src\\styles.scss"
+      "./src/styles.scss"
     ]
   },
   "output": {
-    "path": path.join(process.cwd(), "build\\dist"),
+    "path": path.join(process.cwd(), "build/dist"),
     "filename": "[name].[chunkhash:20].bundle.js",
     "chunkFilename": "[id].[chunkhash:20].chunk.js",
     "crossOriginLoading": false
@@ -192,7 +201,7 @@ module.exports = {
           {
             "loader": "cache-loader",
             "options": {
-              "cacheDirectory": "C:\\Users\\bbalay\\Projects\\AERUM\\aerumWALLET\\node_modules\\@angular-devkit\\build-optimizer\\src\\.cache"
+              "cacheDirectory": "/root/Development/aerumwallet/node_modules/@angular-devkit/build-optimizer/src/.cache"
             }
           },
           {
@@ -205,7 +214,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.scss")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.css$/,
         "use": [
@@ -224,7 +233,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.scss")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "use": [
@@ -251,7 +260,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.scss")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.less$/,
         "use": [
@@ -276,7 +285,7 @@ module.exports = {
       },
       {
         "exclude": [
-          path.join(process.cwd(), "src\\styles.scss")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.styl$/,
         "use": [
@@ -302,7 +311,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.scss")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.css$/,
         "loaders": ExtractTextPlugin.extract({
@@ -324,7 +333,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.scss")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.scss$|\.sass$/,
         "loaders": ExtractTextPlugin.extract({
@@ -354,7 +363,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.scss")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.less$/,
         "loaders": ExtractTextPlugin.extract({
@@ -382,7 +391,7 @@ module.exports = {
       },
       {
         "include": [
-          path.join(process.cwd(), "src\\styles.scss")
+          path.join(process.cwd(), "src/styles.scss")
         ],
         "test": /\.styl$/,
         "loaders": ExtractTextPlugin.extract({
@@ -430,7 +439,7 @@ module.exports = {
         "context": "src",
         "to": "",
         "from": {
-          "glob": "assets\\**\\*",
+          "glob": "assets/**/*",
           "dot": true
         }
       },
@@ -458,7 +467,7 @@ module.exports = {
       "cwd": projectRoot
     }),
     new HtmlWebpackPlugin({
-      "template": "./src\\index.html",
+      "template": "./src/index.html",
       "filename": "./index.html",
       "hash": false,
       "inject": true,
@@ -518,6 +527,31 @@ module.exports = {
     }),
     new ModuleConcatenationPlugin({}),
     new BundleBudgetPlugin({}),
+    new LicenseWebpackPlugin({
+      "licenseFilenames": [
+        "LICENSE",
+        "LICENSE.md",
+        "LICENSE.txt",
+        "license",
+        "license.md",
+        "license.txt"
+      ],
+      "perChunkOutput": false,
+      "outputTemplate": path.join(process.cwd(), "node_modules/license-webpack-plugin/output.template.ejs"),
+      "outputFilename": "3rdpartylicenses.txt",
+      "suppressErrors": true,
+      "includePackagesWithoutLicense": false,
+      "abortOnUnacceptableLicense": false,
+      "addBanner": false,
+      "bannerTemplate": "/*! 3rd party license information is available at <%- filename %> */",
+      "includedChunks": [],
+      "excludedChunks": [],
+      "additionalPackages": [],
+      "modulesDirectories": [
+        "node_modules"
+      ],
+      "pattern": /^(MIT|ISC|BSD.*)$/
+    }),
     new PurifyPlugin(),
     new UglifyJsPlugin({
       "test": /\.js(\?.*)?$/i,
@@ -549,10 +583,10 @@ module.exports = {
       "mainPath": "main.ts",
       "platform": 0,
       "hostReplacementPaths": {
-        "environments\\environment.ts": "environments\\environment.prod.ts"
+        "environments/environment.ts": "environments/environment.prod.ts"
       },
       "sourceMap": false,
-      "tsConfigPath": "src\\tsconfig.app.json",
+      "tsConfigPath": "src/tsconfig.app.json",
       "compilerOptions": {}
     })
   ],
