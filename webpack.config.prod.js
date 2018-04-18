@@ -14,7 +14,6 @@ const postcssImports = require('postcss-import');
 const { NoEmitOnErrorsPlugin, EnvironmentPlugin, HashedModuleIdsPlugin } = require('webpack');
 const { BaseHrefWebpackPlugin, SuppressExtractedTextChunksWebpackPlugin, CleanCssWebpackPlugin, BundleBudgetPlugin, PostcssCliResources } = require('@angular/cli/plugins/webpack');
 const { CommonsChunkPlugin, ModuleConcatenationPlugin } = require('webpack').optimize;
-const { LicenseWebpackPlugin } = require('license-webpack-plugin');
 const { PurifyPlugin } = require('@angular-devkit/build-optimizer');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
@@ -519,31 +518,6 @@ module.exports = {
     }),
     new ModuleConcatenationPlugin({}),
     new BundleBudgetPlugin({}),
-    new LicenseWebpackPlugin({
-      "licenseFilenames": [
-        "LICENSE",
-        "LICENSE.md",
-        "LICENSE.txt",
-        "license",
-        "license.md",
-        "license.txt"
-      ],
-      "perChunkOutput": false,
-      "outputTemplate": path.join(process.cwd(), "node_modules\\license-webpack-plugin\\output.template.ejs"),
-      "outputFilename": "3rdpartylicenses.txt",
-      "suppressErrors": true,
-      "includePackagesWithoutLicense": false,
-      "abortOnUnacceptableLicense": false,
-      "addBanner": false,
-      "bannerTemplate": "/*! 3rd party license information is available at <%- filename %> */",
-      "includedChunks": [],
-      "excludedChunks": [],
-      "additionalPackages": [],
-      "modulesDirectories": [
-        "node_modules"
-      ],
-      "pattern": /^(MIT|ISC|BSD.*)$/
-    }),
     new PurifyPlugin(),
     new UglifyJsPlugin({
       "test": /\.js(\?.*)?$/i,
