@@ -17,8 +17,14 @@ export class TransactionServiceService {
       this.web3 = _auth.initWeb3();
     }
 
+    /**
+     * @desc outputs the users balance then converts to ether balance
+     * @param account 
+     */
     checkBalance(account?:string) {
-      return this.web3.eth.getBalance(account);
+      return   this.web3.eth.getBalance(account).then( balance => {
+        return this.web3.utils.fromWei( balance.toString(), 'ether')
+       });
     }  
       
 
@@ -53,7 +59,7 @@ export class TransactionServiceService {
                       alert(hash) 
                       setTimeout(() => {
                         this.web3.eth.getTransactionReceipt( hash ).then( res =>  alert( "receipt "+JSON.stringify(res) ) );
-                      }, 4000);
+                      }, 6000);
                     }).catch( error => {
                         alert( error )
                     })

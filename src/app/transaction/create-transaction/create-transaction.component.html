@@ -77,14 +77,13 @@
         <div class="panel-content">
             {{ transactionMessage }}
             <img [src]="addressQR" alt="">
+            <div>
+              {{ senderAddress }}
+            </div>
         </div>
       </div>
     </div>
-
-
-
-
-   
+  
 
     <div class="col-sm-6" style="display:none;">
       <div class="panel min-width-470">
@@ -121,60 +120,3 @@
     </div>
   </div>
 </div>
-
-<!-- 
-<div *ngIf="backupKeystore" class="c-seedContainer u-displayOnly u-locked">
-  <p>
-    copy and paste your keystore
-  </p>
-  <p>
-    {{backupKeystore | json }}
-  </p>
-</div>
-
-<div *ngIf="decryptKeystore">
-  <p>
-    Your keystore has been decrypted using the password from the registration form, this is the output
-  </p>
-  <p>
-    {{decryptKeystore | json }}
-  </p>
-</div>
-
-
-<div *ngIf="theirBalance">
-  <p>
-    their blanace
-  </p>
-  <p>
-    {{theirBalance | json }}
-  </p>
-</div>
-
-
-<div *ngIf="myBalance">
-  <p>
-    Your blanace
-  </p>
-  <p>
-    {{myBalance | json }}
-  </p>
-</div>
-
-
-
-
-
-<button mat-button mat-raised-button (click)="showKeyStore()">save your keystore file</button>
-<br>
-<br>
-<button mat-button mat-raised-button (click)="showDecryptedKeyStore()">click to display the decrypt the keystore cookie using password prettyGoodPa55w0rd</button>
-<br>
-<br>
-<button mat-button mat-raised-button (click)="createTransaction()">click to create a transaction using decrypted keystore</button>
-<br>
-<br>
-<button mat-button mat-raised-button (click)="checkReceiverBalance('0xb0573f6b040fddf1250cdd38983f4eac06fbf3ca')">click to check the receivers balance</button>
-<br>
-<br>
-<button mat-button mat-raised-button (click)="checkYourBalance()">click to check the your balance</button> -->
