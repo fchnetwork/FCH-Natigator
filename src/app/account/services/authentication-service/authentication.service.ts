@@ -133,7 +133,9 @@ export class AuthenticationService {
                 const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
     
                 if( encryptAccount ) {
-                    resolve( { web3: encryptAccount, s:decryptSeed  } );
+                    const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
+                    const seed = this.seedCleaner(plaintext);
+                    resolve( { web3: encryptAccount, s:seed  } );
                 } 
                 else {
                     reject("no keystore found or password incorrect");
