@@ -16,13 +16,19 @@ export class BlocksComponent implements OnInit {
   blocks: iBlocks[];
   maxBlocks: number;
 
+  currentBlock: number;
+
+
+
   constructor(
     private _ngZone: NgZone,
     public exploreSrv: ExplorerService,
     private router: Router,
     private cd: ChangeDetectorRef,
     private modal: ModalService
-  ) { }
+  ) {
+    this.getBlocks()
+   }
 
   ngOnInit() {
     this.blocks = [];
@@ -83,4 +89,33 @@ export class BlocksComponent implements OnInit {
     //return Date.now - Number(block.timestamp);
     return 1;
   }
+
+
+
+  getBlocks(){
+    this._ngZone.run(() => { 
+      this.exploreSrv.getBlock().subscribe( async res => {
+        console.log("res "+ res)
+          // for (var i = 0; i < this.maxBlocks; ++i) {
+          //     this.exploreSrv.web3.eth.getBlock( this.currentBlock - i, (error, result) => {
+          //       if(!error) {
+          //         this.blocks.push(result );  
+          //         console.log(JSON.stringify(result, null, 2));          
+          //       }
+          //     })
+          // }
+         // this.cd.markForCheck();
+      });
+    });
+  }
+
+
+
+
+
+
+
+
+
+
 }
