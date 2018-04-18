@@ -4,8 +4,8 @@ import { AuthenticationService } from '../services/authentication-service/authen
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
+import { SessionStorageService } from 'ngx-webstorage';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
-
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 
@@ -17,6 +17,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 export class LoginComponent implements OnInit {
 
   address: string;
+  password: string;
   avatar: string;
   private: string; // i dont know 
   loginForm: FormGroup;
@@ -28,7 +29,8 @@ export class LoginComponent implements OnInit {
   constructor(
     public authServ: AuthenticationService,
     private router: Router,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public sessionStorageService: SessionStorageService,
   ) { }
 
   ngOnInit() {
@@ -43,24 +45,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmitAddress() {
-    this.router.navigate(['/transaction']);
-    if (this.loginForm.valid) {
-      //this.authServ.authorize(this.login, this.password).then( result => {
-      // something
-      //});
-      this.router.navigate(['/transaction']); // improvements need to be made here but for now the auth guard should work just fine
-    }
-
-    // if (this.loginFormFindAddress.valid) {
-    //   console.log(this.private)
-    //   console.log(this.loginFormFindAddress.value.password)
-    //   this.authServ.saveKeyStore(this.private, this.loginFormFindAddress.value.password)
-
-    //   // this.authServ.showKeystore2();
-
-
-    //   this.router.navigate(['/transaction']); // improvements need to be made here but for now the auth guard should work just fine
-    // }
+    this.authServ.unencryptKeystore(this.password).then( result => {
+      this.sessionStorageService.store('acc_address', result.web3.address);
+      this.sessionStorageService.store('seed', result.s);
+      this.sessionStorageService.store('private_key', result.web3.privateKey);
+      this.router.navigate(['/transaction']);
+    });
   }
 
   windowStateChange() {
