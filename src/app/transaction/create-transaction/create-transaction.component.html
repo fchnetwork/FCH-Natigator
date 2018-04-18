@@ -33,9 +33,14 @@
             </div>
             <div class="col-sm-6">
                   <div class="account-status-line">
+<<<<<<< Updated upstream
                       <aer-icon class="float-left">aerum</aer-icon>
                       <div class="float-left">{{'AERO'|translate}}</div>
                       <div class="float-right">{{walletBalance}} {{'AERO'|translate}}</div>
+=======
+                      <aer-icon>aerum</aer-icon>
+                      <div class="float-left"> {{ walletBalance }} {{'AERO'|translate}}</div>
+>>>>>>> Stashed changes
                   </div>
             </div>
           </div>
@@ -84,6 +89,9 @@
         <div class="panel-content">
             {{ transactionMessage }}
             <img [src]="addressQR" alt="">
+            <div>
+              {{ senderAddress }}
+            </div>
         </div>
       </div>
     </div>
