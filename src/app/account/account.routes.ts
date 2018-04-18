@@ -8,6 +8,7 @@ import { RegistrationRouteData } from "./models/RegistrationRouteData";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
 import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component"; 
 import { AccessRecoveryComponent } from "./access-recovery/access-recovery.component";
+import {CanActivateAccountAuthGuard } from "@app/app.guard";
 
 export const ACCOUNT_ROUTES = [
     {
@@ -36,6 +37,7 @@ export const ACCOUNT_ROUTES = [
             },
             {
                 path: 'unlock',
+                canActivate: [CanActivateAccountAuthGuard],
                 component: LoginComponent
             },
             {
