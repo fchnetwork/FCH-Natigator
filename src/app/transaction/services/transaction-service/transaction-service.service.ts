@@ -55,7 +55,7 @@ export class TransactionServiceService {
                   tx.sign(privateKey);       
                 let transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) )
                     transaction.on('transactionHash', hash => { 
-                      alert(hash) 
+                      console.log(hash) 
                       // setTimeout(() => {
                       //   this.web3.eth.getTransactionReceipt( hash ).then( res =>  alert( "receipt "+JSON.stringify(res) ) );
                       // }, 6000);
