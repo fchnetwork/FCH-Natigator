@@ -4,8 +4,8 @@ import { AuthenticationService } from '../services/authentication-service/authen
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
+import { SessionStorageService } from 'ngx-webstorage';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
-
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 
@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
   constructor(
     public authServ: AuthenticationService,
     private router: Router,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public sessionStorageService: SessionStorageService,
   ) { }
 
   ngOnInit() {
@@ -45,13 +46,10 @@ export class LoginComponent implements OnInit {
 
   onSubmitAddress() {
     this.authServ.unencryptKeystore(this.password).then( result => {
-      sessionStorage.setItem('acc_address', result.web3.address);
-      sessionStorage.setItem('seed', result.s);
-      sessionStorage.setItem('private_key', result.web3.privateKey);
-      setTimeout(()=>{
-        this.router.navigate(['/transaction']);
-      }, 300);
-      
+      this.sessionStorageService.store('acc_address', result.web3.address);
+      this.sessionStorageService.store('seed', result.s);
+      this.sessionStorageService.store('private_key', result.web3.privateKey);
+      this.router.navigate(['/transaction']);
     });
   }
 

@@ -53,7 +53,7 @@ export function createTranslateLoader(http: HttpClient) {
     RouteDataService,
     ClipboardService,
     NotificationService,
-    AccountIdleService
+    AccountIdleService,
   ],
   exports:[
     I18nComponent,

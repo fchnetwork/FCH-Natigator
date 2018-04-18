@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { HttpModule } from "@angular/http"; 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { Ng2Webstorage } from 'ngx-webstorage';
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.routes";
@@ -26,6 +27,7 @@ const modalComponents = [BasicModalComponent];
     CommonModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    Ng2Webstorage,
     HttpClientModule,
     HttpModule,
     // aerumWALLET modules

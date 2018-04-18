@@ -18,7 +18,7 @@ import { DASHBOARD_ROUTES } from './dashboard/dashboard.routes';
 export const ROUTES = [
   {
     path: '',
-    redirectTo: 'account',
+    redirectTo: 'dashboard',
     pathMatch: 'full'
   },
   // TO PREVENT LAZY LOADING OF COMPONENTS ACCESSIBLE IMMEDIATELY AFTER LOAD
