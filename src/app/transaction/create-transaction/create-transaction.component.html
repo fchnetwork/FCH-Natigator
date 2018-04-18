@@ -23,13 +23,12 @@
             <div class="col-sm-6">
               <div class="input-name">{{'AMOUNT'|translate}}</div>
               <aer-input [(ngModel)]="amount" ngDefaultControl></aer-input>
-              <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event)"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}}</label>
+              <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event)"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{'AERO'|translate}})</label>
             </div>
             <div class="col-sm-6">
                   <div class="account-status-line">
-                      <aer-icon class="float-left">aerum</aer-icon>
+                      <aer-icon>aerum</aer-icon>
                       <div class="float-left">{{'AERO'|translate}}</div>
-                      <div class="float-right">{{walletBalance}} {{'AERO'|translate}}</div>
                   </div>
             </div>
           </div>
