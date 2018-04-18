@@ -66,7 +66,7 @@ export class CreateTransactionComponent implements OnInit {
         (keystore) => {
 
           const getBalance = this.txnServ.checkBalance(keystore.address);
-          const getQR = this.authServ.createQRcode( "0x" + keystore.address );  
+          const getQR      = this.authServ.createQRcode( "0x" + keystore.address );  
 
           return Promise.all([ keystore, getBalance, getQR ]); 
 
@@ -76,7 +76,7 @@ export class CreateTransactionComponent implements OnInit {
         ([ keystore, accBalance, qrCode ]) => {
         this.senderAddress = "0x" + keystore.address ;
         this.walletBalance = accBalance;
-        this.addressQR = qrCode;
+        this.addressQR     = qrCode;
       }
     );
   }
