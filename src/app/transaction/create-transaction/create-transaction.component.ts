@@ -63,7 +63,7 @@ export class CreateTransactionComponent implements OnInit {
     this.includedDataLength = 0;
   }
 
-  private copyToClipboard() {
+  public copyToClipboard() {
     this.clipboardService.copy(this.senderAddress);
     this.notificationService.showMessage('Copied to clipboard!');
   }

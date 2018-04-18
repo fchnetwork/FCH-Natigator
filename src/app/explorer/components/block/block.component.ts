@@ -10,7 +10,7 @@ import { iBlocks, iTransaction } from '../../../shared/app.interfaces';
 })
 export class BlockComponent implements OnInit {
 
-  block: iBlocks[] = [];
+  block: any;
   blockNumber: number;
   demo: string;
   transactions: iTransaction[];
