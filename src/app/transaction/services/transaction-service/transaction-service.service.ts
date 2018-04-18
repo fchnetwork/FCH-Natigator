@@ -26,7 +26,16 @@ export class TransactionServiceService {
         return this.web3.utils.fromWei( balance.toString(), 'ether')
        });
     }  
-      
+    
+    maxTransactionFee(to, data) {
+      // return 1;
+      const sendTo = ethJsUtil.toChecksumAddress( to ) ;
+      const txData = this.web3.utils.asciiToHex( data ); 
+      // console.log(txData);
+      console.log(this.web3.eth.getGasPrice());
+      // const result = this.web3.utils.fromWei(Number(this.web3.eth.getGasPrice()) * Number(this.web3.eth.estimateGas({to:sendTo, data:txData}) ), 'ether');
+      // return result;
+    }
 
     transaction( privkey, activeUser, to, amount, data ) : Promise<any> {
       return new Promise( (resolve, reject) => {

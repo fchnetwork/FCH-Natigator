@@ -82,8 +82,13 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   getMaxTransactionFee() {
-    // TODO: calculation logic here
-    return 0.000000;
+    this.receiverAddress = '0x5a71daa132d05d15bf5f6e26fc0afa9454b55bbd';
+    if(this.receiverAddress) {
+      return String(this.txnServ.maxTransactionFee(this.receiverAddress, "aerum test transaction"));
+   } else {
+     return String(0.000);
+   }
+
   }
 
   setSendEverything(event) {
@@ -102,7 +107,6 @@ export class CreateTransactionComponent implements OnInit {
     }
   }
 
-
   showMore() {}
 
   showTransactions() {}
@@ -110,7 +114,6 @@ export class CreateTransactionComponent implements OnInit {
   getICoin(amount) {
     return amount > 0;
   }
-
 
   send() {
     this.transactionMessage = "";
