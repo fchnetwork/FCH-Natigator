@@ -8,12 +8,11 @@
                 <a [routerLink]="['/account/register']"> {{'ACCESS_REC_HINT_SUFF'|translate}}</a>
             </p>
             <app-divider [showLine]="false"></app-divider>
-            <aer-button class="medium blue">{{'SEL_KEY'|translate}}</aer-button>
-            <input type='file' accept='text/plain' multiple (change)='openSeedFile($event)'>
+            <aer-file-upload class="medium blue" (filesChange)="openSeedFile($event)">{{'SEL_KEY'|translate}}</aer-file-upload>
             <app-divider label="OR"></app-divider>
             <form [formGroup]="recoverForm">
                 <aer-textarea formControlName="seed"
-                              placeholder="Your seed is 15 words you saved when creating your account"
+                              placeholder="Your seed is 12 words you saved when creating your account"
                               [addition]="address"
                               [(ngModel)]="seedFileText"
                               ngDefaultControl>{{ seedFileText }}</aer-textarea>
