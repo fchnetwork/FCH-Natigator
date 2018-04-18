@@ -27,19 +27,20 @@ export const ROUTES = [
     children: ACCOUNT_ROUTES
   },
   {
-    // path: 'dashboard',
-    // component: DashboardComponent
     path: 'explorer',
+    canActivate: [CanActivateViaAuthGuard],
     loadChildren: './explorer/explorer.module#ExplorerModule'
   },
   {
     path: 'dashboard',
+    canActivate: [CanActivateViaAuthGuard],
     children: DASHBOARD_ROUTES
   },
-  {
-    path: 'not-found',
-    component: Error404Component,
-  },
+  // TODO: handle 404 with correct routing and views
+  // {
+  //   path: 'not-found',
+  //   component: Error404Component,
+  // },
   {
     path: 'backup-confirmation',
     component: BackupPromptComponent
@@ -63,7 +64,7 @@ export const ROUTES = [
   },
   { 
     path: '**',
-    redirectTo: '/not-found'
+    redirectTo: '/dashboard'
   }
 ];
 
