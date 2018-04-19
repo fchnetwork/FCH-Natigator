@@ -211,6 +211,24 @@
 }
 
 
+.c-copy__address {
+  display: block;
+  a {
+    padding: 5px 12px;
+    border: 1px dashed #2a669a;
+    display: inline-block;
+    position: relative;
+    border-radius: 5px;
+    &::after {
+      position: absolute;
+      top: -18px;
+      right: -31px;
+      content: "Click to copy";
+      font-size:10px;
+    }
+  }
+}
+
 
 // .c-seedContainer {
 //     display: flex;

@@ -24,7 +24,7 @@
 "CONFIRM_BACKUP_GO_BACK":"go back",
 "CONFIRM":"Confirm",
 "CLEAR":"Clear",
-"SEND_TRANSACTION":"Send transaction",
+"SEND_TRANSACTION":"Send & Receive Crypto",
 "FROM":"From",
 "TO":"To",
 "AMOUNT":"Amount",
@@ -94,7 +94,6 @@
 "NONCE":"Nonce",
 "BLOCK_REWARD":"Block reward",
 "EXTRA_DATA":"Extra data",
-"TX_HASH":"Tx hash",
 "LAST_SEEN":"Last seen",
 "SHOWING_BLOCK": "Showing Block (#{{lowestBlockNumber}} to #{{highestBlockNumber}}) out of {{blocksCount}} total blocks",
 "MINUTE_AGO":"minute ago",
@@ -116,7 +115,12 @@
 "EXCHANGE":"Exchange",
 "ENS":"ENS",
 "SWAP":"Swap",
-"KYC":"KYC"
+"KYC":"KYC",
+"SEND_TO": "Send To",
+"RECEIVE_TO": "Receive To",
+"TRANSACTIONS": "Transactions",
+"BASIC_TRANSACTION":"Basic Transaction",
+"SEND_RECEIVE":"Send & Receive"
 }
 
 

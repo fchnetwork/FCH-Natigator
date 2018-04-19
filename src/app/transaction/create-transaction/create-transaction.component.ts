@@ -3,14 +3,15 @@ import { AuthenticationService } from '../../account/services/authentication-ser
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../../shared/services/modal.service';
-
+import { ClipboardService } from '../../shared/services/clipboard.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
 const Web3 = require('web3');
 
 declare var window: any;
-
+ 
 @Component({
   selector: 'app-create-transaction',
   templateUrl: './create-transaction.component.html',
@@ -39,27 +40,22 @@ export class CreateTransactionComponent implements OnInit {
   constructor(
     public authServ: AuthenticationService,
     private modalSrv: ModalService,
+    private clipboardService: ClipboardService,
+    private notificationService: NotificationService,
     public txnServ: TransactionServiceService ) {
     this.userData();
    }
 
 
   ngOnInit() {
-    this.transactions = [
-      {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 10.00},
-      {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 155.10},
-      {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 0.04165},
-      {month: 'Feb', day: '22', eventType: 'Sent', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: -1.00},
-      {month: 'Feb', day: '22', eventType: 'Sent', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: -51.00},
-      {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 1.00},
-      {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 1.00},
-      {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 1.00},
-      {month: 'Feb', day: '22', eventType: 'Contract execution', senderAddress: 'Partnership Execution', receiverAddress: '3Pasdfawe56f5wae4f68', amount: 1.00}
-    ];
     this.walletBalance = this.myBalance;
     this.includedDataLength = 0;
   }
 
+  public copyToClipboard() {
+    this.clipboardService.copy(this.senderAddress);
+    this.notificationService.showMessage('Copied to clipboard!');
+  }
 
   userData() {
       return this.authServ.showKeystore().then( 

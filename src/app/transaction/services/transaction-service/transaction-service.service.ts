@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Overlay } from 'ngx-modialog';
 import { Observable } from 'rxjs/Observable';
-import { AuthenticationService } from '@account/services/authentication-service/authentication.service'
+import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -51,8 +51,7 @@ export class TransactionServiceService {
        return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
             let nonce = parseInt(values[1], 10)   
             let gas = parseInt(values[2], 10)   
-            console.log(nonce)
-            console.log(gas)
+
             const rawTransaction = {
               nonce: this.web3.utils.toHex( nonce ), 
               gas: this.web3.utils.toHex( gas ),
@@ -65,12 +64,12 @@ export class TransactionServiceService {
                   tx.sign(privateKey);       
                 let transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) )
                     transaction.on('transactionHash', hash => { 
-                      alert(hash) 
-                      setTimeout(() => {
-                        this.web3.eth.getTransactionReceipt( hash ).then( res =>  alert( "receipt "+JSON.stringify(res) ) );
-                      }, 6000);
+                      console.log(hash) 
+                      // setTimeout(() => {
+                      //   this.web3.eth.getTransactionReceipt( hash ).then( res =>  alert( "receipt "+JSON.stringify(res) ) );
+                      // }, 6000);
                     }).catch( error => {
-                        alert( error )
+                        // alert( error )
                     })
           });
       });

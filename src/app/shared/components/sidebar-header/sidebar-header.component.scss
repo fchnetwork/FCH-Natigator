@@ -2,7 +2,7 @@
   padding: 20px 10px 10px 10px;
 
   .avatar {
-    float: left;
+  //  float: left;
     width: 30%;
 
     // WARNING: double code!
@@ -19,10 +19,23 @@
     }
   }
 
+  .user_data, .avatar {
+  display: inline-block;
+  vertical-align: middle;
+  }
+
   .user_data {
-    float: left;
-    width: 70%;
-    padding-top: 3%;
+    // float: left;
+    // width: 70%;
+    // padding-top: 3%;
+       //   float: left;
+     // width: 70%;
+     // padding-top: 3%;
+      color: white;
+     // padding: 12px 0 0 0px;
+      font-size: 19px;
+      text-align: center;
+      margin: 0 auto;
 
     span {
       color: #fff;
@@ -42,3 +55,5 @@
     clear: both;
   }
 }
+
+
