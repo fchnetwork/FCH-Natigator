@@ -27,20 +27,14 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
             }
   }
 
-  ngOnInit() {
-    this.unlockAccountForm = this.formBuilder.group({
-    password: [ null, [Validators.required, Validators.minLength(5) ] ]
-		});
-  }  	
+  ngOnInit() {}  	
 
-  onSubmit(){
-    this.authServ.unencryptKeystore( this.unlockAccountForm.controls['password'].value ).then( v => {
-        this.dialog.close( v );
-    }).catch( err=> alert("error - is this password correct?" + err) )
+  accept(){
+    this.dialog.close(true);
   }
 
-  dismiss(): void {
-    this.dialog.dismiss();
+  dismiss() {
+    this.dialog.close(false);
   }
 
 

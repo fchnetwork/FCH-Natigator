@@ -15,6 +15,7 @@ import { ModalService } from "../shared/services/modal.service";
 import { TransactionServiceService } from "./services/transaction-service/transaction-service.service";
 import { CreateTransactionComponent } from "./create-transaction/create-transaction.component";
 import { TransactionSignModalComponent } from "./components/transaction-sign-modal/transaction-sign-modal.component";
+import { LastTransactionsComponent } from "@app/transaction/components/last-transactions/last-transactions.component";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -24,7 +25,7 @@ export function createTranslateLoader(http: HttpClient) {
     entryComponents: [
         TransactionSignModalComponent,
         CreateTransactionComponent,
-        TransactionSignModalComponent,
+        LastTransactionsComponent,
     ],
     imports: [
         FormsModule,
@@ -35,7 +36,9 @@ export function createTranslateLoader(http: HttpClient) {
     ],
     declarations: [
         CreateTransactionComponent,
-        TransactionSignModalComponent,    ],
+        TransactionSignModalComponent,
+        LastTransactionsComponent,
+    ],
     providers: [
         AuthenticationService,
         ModalService,

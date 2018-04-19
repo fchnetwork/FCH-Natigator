@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Overlay } from 'ngx-modialog';
 import { Observable } from 'rxjs/Observable';
+
 import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -13,7 +15,9 @@ export class TransactionServiceService {
 
     web3: any;
     
-    constructor( _auth: AuthenticationService ) {
+    constructor( 
+      _auth: AuthenticationService,
+     ) {
       this.web3 = _auth.initWeb3();
     }
 
@@ -43,6 +47,14 @@ export class TransactionServiceService {
       });
     }
 
+    saveTransaction(from, to, amount, data) {
+      const date = new Date();
+      const transaction = { from, to, amount, data, date };
+      const transactions = JSON.parse(Cookie.get('transactions')) || [];
+      transactions.push(transaction);
+      Cookie.set('transactions', JSON.stringify( transactions), 7, "/", environment.cookiesDomain);
+    }
+
     transaction( privkey, activeUser, to, amount, data ) : Promise<any> {
       return new Promise( (resolve, reject) => {
           const privateKey          = ethJsUtil.toBuffer( privkey )
@@ -70,7 +82,8 @@ export class TransactionServiceService {
                   tx.sign(privateKey);       
                 let transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) )
                     transaction.on('transactionHash', hash => { 
-                      console.log(hash) 
+                      console.log(hash);
+                      this.saveTransaction(activeUser, to, amount, data);
                       // setTimeout(() => {
                       //   this.web3.eth.getTransactionReceipt( hash ).then( res =>  alert( "receipt "+JSON.stringify(res) ) );
                       // }, 6000);
