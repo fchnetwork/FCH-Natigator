@@ -19,10 +19,6 @@ import { ExplorerService } from './services/explorer.service';
 
 import { RouterModule } from '@angular/router';
 
-import { TransactionTimeAgoPipe } from './pipes/transaction-time-ago.pipe';
-import { TransactionTimeStampPipe } from './pipes/transaction-time-stamp.pipe';
-import { HexToTextPipe } from './pipes/hex-to-text.pipe';
-
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
@@ -60,9 +56,6 @@ const modals = [BlockModalComponent, TransactionModalComponent];
     BlockComponent,
     AddressComponent,
     SearchComponent,
-    TransactionTimeAgoPipe,
-    TransactionTimeStampPipe,
-    HexToTextPipe,
     modals,
     BlocksComponent,
     PendingTxnsComponent,

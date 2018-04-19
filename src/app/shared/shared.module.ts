@@ -19,6 +19,9 @@ import { NotificationService } from './services/notification.service';
 import { ClipboardService } from './services/clipboard.service';
 import { AccountIdleService } from './services/account-idle.service';
 import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
+import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
+import { TransactionTimeStampPipe } from '@shared/pipes/transaction-time-stamp.pipe';
+import { HexToTextPipe } from '@shared/pipes/hex-to-text.pipe';
 
 // The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
@@ -46,7 +49,10 @@ export function createTranslateLoader(http: HttpClient) {
     Error404Component,
     DividerComponent,
     EqualValidator,
-    SidebarHeaderComponent
+    SidebarHeaderComponent,
+    TransactionTimeAgoPipe,
+    TransactionTimeStampPipe,
+    HexToTextPipe,
   ],
   providers: [
     ModalService,
@@ -61,6 +67,9 @@ export function createTranslateLoader(http: HttpClient) {
     TranslateModule,
     EqualValidator,
     SidebarHeaderComponent,
+    TransactionTimeAgoPipe,
+    TransactionTimeStampPipe,
+    HexToTextPipe,
   ]
 })
 
