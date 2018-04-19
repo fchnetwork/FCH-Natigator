@@ -44,9 +44,6 @@ export class BlocksComponent implements OnInit {
 
   openBlock(block: iBlocks) {
     this.modal.openBlock(block.number,block).then( result => {
-
-      console.log("result"+ JSON.stringify( result ) )
-
     }).catch( err => console.log('block component ' + err ) );
   }
 
