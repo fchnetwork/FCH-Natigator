@@ -20,6 +20,7 @@ import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/si
 import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
 import { TransactionTimeStampPipe } from '@shared/pipes/transaction-time-stamp.pipe';
 import { HexToTextPipe } from '@shared/pipes/hex-to-text.pipe';
+import { GenerateAvatarPipe } from '@app/shared/pipes/generate-avatar.pipe';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -48,6 +49,7 @@ export function createTranslateLoader(http: HttpClient) {
     TransactionTimeAgoPipe,
     TransactionTimeStampPipe,
     HexToTextPipe,
+    GenerateAvatarPipe,
   ],
   providers: [
     ModalService,
@@ -65,6 +67,7 @@ export function createTranslateLoader(http: HttpClient) {
     TransactionTimeAgoPipe,
     TransactionTimeStampPipe,
     HexToTextPipe,
+    GenerateAvatarPipe,
   ]
 })
 
