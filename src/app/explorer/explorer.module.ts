@@ -26,7 +26,7 @@ import { HexToTextPipe } from './pipes/hex-to-text.pipe';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { explorerRoutes } from './explorer.routes';
+import { EXPLORER_ROUTES } from './explorer.routes';
 import { AppUIModule } from '../app.ui.module';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 import { SharedModule } from '../shared/shared.module';
@@ -50,7 +50,7 @@ const modals = [BlockModalComponent, TransactionModalComponent];
         deps: [HttpClient]
       }
     }),      
-    RouterModule.forChild(explorerRoutes),
+    RouterModule.forChild(EXPLORER_ROUTES),
     AppUIModule,
     SharedModule,
   ],

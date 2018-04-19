@@ -120,7 +120,9 @@
 "RECEIVE_TO": "Receive To",
 "TRANSACTIONS": "Transactions",
 "BASIC_TRANSACTION":"Basic Transaction",
-"SEND_RECEIVE":"Send & Receive"
+"SEND_RECEIVE":"Send & Receive",
+"CONTRACT_INTERNAL_TXNS":"Contract Txn's"
+
 }
 
 
