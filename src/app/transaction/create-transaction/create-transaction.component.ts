@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalService } from '../../shared/services/modal.service';
 import { ClipboardService } from '../../shared/services/clipboard.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { SessionStorageService } from 'ngx-webstorage';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -37,7 +38,7 @@ export class CreateTransactionComponent implements OnInit {
   transactionMessage:any;
   addressQR: string;
   maxTransactionFee = 0;
-  maxTransactionFeeEth: 0;
+  maxTransactionFeeEth = 0;
   totalAmount = 0;
 
   constructor(
@@ -45,7 +46,10 @@ export class CreateTransactionComponent implements OnInit {
     private modalSrv: ModalService,
     private clipboardService: ClipboardService,
     private notificationService: NotificationService,
-    public txnServ: TransactionServiceService ) {
+    public txnServ: TransactionServiceService,
+    public sessionStorageService: SessionStorageService,
+   ) {
+    this.userData();
     setInterval(()=>{
       this.userData();
     },3000);
@@ -89,6 +93,7 @@ export class CreateTransactionComponent implements OnInit {
       this.txnServ.maxTransactionFee(this.receiverAddress, "aerum test transaction").then(res=>{
         this.maxTransactionFee = res[0];
         this.maxTransactionFeeEth = res[1];
+        this.getTotalAmount();
       });
     } else {
       this.maxTransactionFee = 0.000;
@@ -103,7 +108,7 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   getTotalAmount() {
-    if(this.amount) {
+    if(this.receiverAddress) {
       this.totalAmount =  Number(this.amount) + Number(this.maxTransactionFeeEth);
     }
     else {
@@ -115,10 +120,6 @@ export class CreateTransactionComponent implements OnInit {
 
   showTransactions() {}
 
-  getICoin(amount) {
-    return amount > 0;
-  }
-
   handleInputsChange() {
     this.getMaxTransactionFee();
     this.getTotalAmount();
@@ -128,15 +129,17 @@ export class CreateTransactionComponent implements OnInit {
     this.transactionMessage = "";
 
     this.modalSrv.openTransactionConfirm().then( result =>{ 
-
-       if( this.receiverAddress == undefined || this.receiverAddress == null) {
-          alert("You need to add a receiver address");  
-          return false;      
-       }
-       this.txnServ.transaction( result.web3.privateKey, result.web3.address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
-        this.transactionMessage = res;
-      }).catch( error =>  console.log(error) );
-
+      if(result === true) {
+        if( this.receiverAddress == undefined || this.receiverAddress == null) {
+            alert("You need to add a receiver address");  
+            return false;      
+        }
+        const privateKey = this.sessionStorageService.retrieve('private_key');
+        const address = this.sessionStorageService.retrieve('acc_address');
+        this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
+          this.transactionMessage = res;
+        }).catch( error =>  console.log(error) );
+      }
     });
 
   }

@@ -68,8 +68,9 @@
         </div>
       </div>
     </div>
-    
-    <div class="col-sm-6">
+    <!-- DON'T DELETE! -->
+    <!-- TODO: refactor to any modal -->
+    <!-- <div class="col-sm-6">
       <div class="panel min-width-470">
         <div class="panel-header">
             {{ 'RECEIVE_TO'|translate }}
@@ -82,41 +83,11 @@
             </div>
         </div>
       </div>
-    </div>
+    </div> -->
   
 
-    <div class="col-sm-6" style="display:none;">
-      <div class="panel min-width-470">
-        <div class="panel-header">
-            {{'LATEST_TRANSACTION'|translate}}
-        </div>
-        <div class="panel-content">
-          <div class="latest-transaction-list-container">
-            <div class="transaction-event" *ngFor="let transaction of transactions">
-              <div class="date">
-                <div class="month">{{transaction.month}}</div>
-                <div class="day">{{transaction.day}}</div>
-              </div>
-              <div class="trans-detail">
-                  <div class="eventType">{{transaction.eventType}}</div>
-                  <div class="addresses">
-                      <div class="sender">{{transaction.senderAddress}}</div>
-                      <div class="pd-5">></div>
-                      <div class="receiver">{{transaction.receiverAddress}}</div>
-                  </div>
-              </div>
-              <div class="amount-detail" [ngClass]="{'red': getICoin(transaction.amount)}">
-                  <aer-icon *ngIf="getICoin(transaction.amount)">right-circled</aer-icon>
-                  <aer-icon *ngIf="!getICoin(transaction.amount)">left-circled</aer-icon>
-                  <div class="amount">{{transaction.amount}} {{'AERO'|translate}}</div>
-              </div>
-            </div>
-          </div>
-          <div class="show-more-label-div">
-            <div class="show-more-label" (click)="showTransactions()">{{'SHOW_MORE'|translate}}</div>
-          </div>
-        </div>
-      </div>
+    <div class="col-sm-6">
+      <app-last-transactions></app-last-transactions>
     </div>
   </div>
 </div>
