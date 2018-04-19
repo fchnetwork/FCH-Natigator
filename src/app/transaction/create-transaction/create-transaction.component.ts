@@ -82,7 +82,6 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   getMaxTransactionFee() {
-    this.receiverAddress = '0x5a71daa132d05d15bf5f6e26fc0afa9454b55bbd';
     if(this.receiverAddress) {
       this.txnServ.maxTransactionFee(this.receiverAddress, "aerum test transaction").then(res=>{
         this.maxTransactionFee = res[0];
