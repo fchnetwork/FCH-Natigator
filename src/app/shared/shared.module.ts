@@ -1,10 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { Error404Component } from './components/error404/error404.component';
-
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-
 import { I18nComponent } from './components/i18n/i18n.component'; 
 import { ModalService } from './services/modal.service';
 import { ModalModule } from 'ngx-modialog';
@@ -23,15 +21,12 @@ import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe'
 import { TransactionTimeStampPipe } from '@shared/pipes/transaction-time-stamp.pipe';
 import { HexToTextPipe } from '@shared/pipes/hex-to-text.pipe';
 
-// The translate loader needs to know where to load i18n files
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
 }
 
 @NgModule({
-  entryComponents: [
-    //BasicModalComponent
-  ],
+  entryComponents: [],
   imports: [
     CommonModule,
     ModalModule.forRoot(),
