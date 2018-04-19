@@ -46,7 +46,10 @@ export class CreateTransactionComponent implements OnInit {
     private clipboardService: ClipboardService,
     private notificationService: NotificationService,
     public txnServ: TransactionServiceService ) {
-    this.userData();
+    setInterval(()=>{
+      this.userData();
+    },3000);
+    
    }
 
 
