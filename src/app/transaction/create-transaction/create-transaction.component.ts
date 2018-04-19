@@ -29,13 +29,16 @@ export class CreateTransactionComponent implements OnInit {
   /* new fields */
   senderAddress: string;
   receiverAddress: string;
-  amount: number;
+  amount = 0;
   transactions: any[];
   includedDataLength: number;
   walletBalance: number;
   sendEverything: boolean;
   transactionMessage:any;
   addressQR: string;
+  maxTransactionFee = 0;
+  maxTransactionFeeEth: 0;
+  totalAmount = 0;
 
   constructor(
     public authServ: AuthenticationService,
@@ -50,6 +53,7 @@ export class CreateTransactionComponent implements OnInit {
   ngOnInit() {
     this.walletBalance = this.myBalance;
     this.includedDataLength = 0;
+    this.handleInputsChange();
   }
 
   public copyToClipboard() {
@@ -78,26 +82,31 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   getMaxTransactionFee() {
-    // TODO: calculation logic here
-    return 0.000000;
+    if(this.receiverAddress) {
+      this.txnServ.maxTransactionFee(this.receiverAddress, "aerum test transaction").then(res=>{
+        this.maxTransactionFee = res[0];
+        this.maxTransactionFeeEth = res[1];
+      });
+    } else {
+      this.maxTransactionFee = 0.000;
+    }
   }
 
   setSendEverything(event) {
     if(event) {
-      this.amount = this.walletBalance;
+      this.amount = Number(this.walletBalance) - Number(this.maxTransactionFeeEth);
     }
     this.sendEverything = event;
   }
 
   getTotalAmount() {
     if(this.amount) {
-      return Number(this.amount) + Number(this.getMaxTransactionFee());
+      this.totalAmount =  Number(this.amount) + Number(this.maxTransactionFeeEth);
     }
     else {
-      return 0;
+      this.totalAmount = 0;
     }
   }
-
 
   showMore() {}
 
@@ -107,6 +116,10 @@ export class CreateTransactionComponent implements OnInit {
     return amount > 0;
   }
 
+  handleInputsChange() {
+    this.getMaxTransactionFee();
+    this.getTotalAmount();
+  }
 
   send() {
     this.transactionMessage = "";

@@ -12,18 +12,18 @@
           <div class="row">
             <div class="col-sm-6">
               <div class="input-name">{{'FROM'|translate}}</div>
-              <aer-input icon="aerum" [(ngModel)]="senderAddress" ngDefaultControl></aer-input>
+              <aer-input icon="aerum" [(ngModel)]="senderAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
             </div>
             <div class="col-sm-6">
               <div class="input-name">{{'TO'|translate}}</div>
-              <aer-input  [(ngModel)]="receiverAddress" ngDefaultControl></aer-input>
+              <aer-input  [(ngModel)]="receiverAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-6">
               <div class="input-name">{{'AMOUNT'|translate}}</div>
-              <aer-input [(ngModel)]="amount" ngDefaultControl></aer-input>
-              <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event)"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{'AERO'|translate}})</label>
+              <aer-input [(ngModel)]="amount" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
+              <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{'AERO'|translate}})</label>
             </div>
             <div class="col-sm-6">
                   <div class="account-status-line">
@@ -44,7 +44,7 @@
               <div class="note">{{'MAX_TRANSACTION_FEE'|translate}}</div>
             </div>
             <div class="col-sm-4">
-              <div class="note">{{getMaxTransactionFee()}} {{'AERO'|translate}}</div>
+              <div class="note">{{maxTransactionFee}} aergwei</div>
             </div>
             <div class="col-sm-4">
               <div class="note">{{'MAX_TRANS_FEE_WARNING'|translate}}</div>
@@ -54,7 +54,7 @@
             <div class="col-sm-12">
               <div class="input-name">{{'TOTAL'|translate}}</div>
               <div class="amount-total">
-                {{getTotalAmount()}} {{'AERO'|translate}}
+                {{totalAmount}} {{'AERO'|translate}}
               </div>
               <div class="note">
                   {{'DATA_INCLUDED'|translate}}: {{includedDataLength}} {{'BYTES'|translate}}
