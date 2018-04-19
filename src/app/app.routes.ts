@@ -4,7 +4,7 @@ import { Error404Component } from './shared/components/error404/error404.compone
 import { CreateTransactionComponent } from './transaction/create-transaction/create-transaction.component';
 import { CanActivateViaAuthGuard } from './app.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { RouterModule, LoadChildren } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { RegisterComponent } from './account/register/register.component'; 
 import { BackupDisclamerComponent } from './account/backup-disclamer/backup-disclamer.component';
@@ -31,9 +31,6 @@ export const ROUTES = [
   {
     path: 'explorer',
     children: EXPLORER_ROUTES
-    //  canActivate: [CanActivateViaAuthGuard],
-    // loadChildren: ()=>ExplorerModule
-    // loadChildren: './explorer/explorer.module#ExplorerModule'
   },
   {
     path: 'dashboard',
