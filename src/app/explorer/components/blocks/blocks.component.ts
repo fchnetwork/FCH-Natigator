@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { ExplorerService } from '../../services/explorer.service';
-import { iTransaction, iBlocks } from '../../../shared/app.interfaces';
-import { ModalService } from '../../../shared/services/modal.service';
+import { ExplorerService } from '@explorer/services/explorer.service';
+import { iTransaction, iBlocks } from '@shared/app.interfaces';
+import { ModalService } from '@shared/services/modal.service';
 
 
 @Component({
@@ -14,108 +14,38 @@ import { ModalService } from '../../../shared/services/modal.service';
 export class BlocksComponent implements OnInit {
 
   blocks: iBlocks[];
-  maxBlocks: number;
+  maxBlocks: number = 150;
 
-  currentBlock: number;
-
-
+  lowBlock: number;
+  highBlock: number;
+  countblocks: number;
 
   constructor(
-    private _ngZone: NgZone,
     public exploreSrv: ExplorerService,
     private router: Router,
-    private cd: ChangeDetectorRef,
-    private modal: ModalService
-  ) {
-    this.getBlocks()
-   }
+    private modal: ModalService) {}
 
   ngOnInit() {
     this.blocks = [];
-    this.loadBlocks();
-    this.maxBlocks = this.blocks.length;
-  }
-
-  private loadBlocks() {
-    // demoBlocks
-    const demoBlocks: iBlocks = {
-      "difficulty": '13546847',
-      "extraData": '0x0110101010100010101',
-      "gasLimit": 8000000,
-      "gasUsed": 7564321,
-      "hash": '0xa6sfd54a6dsf54a6sdf',
-      "logsBloom": '...',
-      "miner": '0xsad6f54as6fd54saf6a5sfd4',
-      "mixHash": '0xa6sfd54a6dsf54a6sdf',
-      "nonce": '254',
-      "number": 5426093,
-      "parentHash": '0xa6sfd54a6dsf54a6sdf',
-      "receiptsRoot": '...',
-      "sha3Uncles": '...',
-      "size": 756,
-      "stateRoot": '...',
-      "timestamp": 1520373465,
-      "totalDifficulty": '102723',
-      "transactions": [''],
-      "transactionsRoot": '...',
-      "uncles": ['']
-    };
-
-    for(let i=0; i<7; i++) {
-      this.blocks.push(demoBlocks);
-    }
-
-    //TODO: this must call exploreService
-  }
-
-  getLowestBlockNumber() {
-    return this.blocks[0].number;
-  }
-
-  getHighestBlockNumber() {
-    return this.blocks[this.blocks.length-1].number;
-  }
-
-  getBlocksCount() {
-    return this.blocks.length;
-  }
-
-  openBlock(block: iBlocks) {
-    this.modal.openBlock(block.number ,block).then(result => {
-    }).catch(()=>{});
-  }
-
-  getBlockAge(block: iBlocks) {
-    //return Date.now - Number(block.timestamp);
-    return 1;
-  }
-
-
-
-  getBlocks(){
-    this._ngZone.run(() => { 
-      this.exploreSrv.getBlock().subscribe( async res => {
-        console.log("res "+ res)
-          // for (var i = 0; i < this.maxBlocks; ++i) {
-          //     this.exploreSrv.web3.eth.getBlock( this.currentBlock - i, (error, result) => {
-          //       if(!error) {
-          //         this.blocks.push(result );  
-          //         console.log(JSON.stringify(result, null, 2));          
-          //       }
-          //     })
-          // }
-         // this.cd.markForCheck();
-      });
+    this.exploreSrv.getBlock().subscribe( async currentBlock => {
+      for (var i = 0; i < this.maxBlocks; ++i) {
+          this.exploreSrv.web3.eth.getBlock( currentBlock - i, (error, result) => {
+            if(!error) {
+              this.blocks.push(result );  
+              this.lowBlock    = this.blocks[0].number;
+              this.highBlock   = this.blocks[this.blocks.length-1].number;
+              this.countblocks = this.blocks.length;
+            }
+          })
+      }
     });
   }
 
 
-
-
-
-
-
-
+  openBlock(block: iBlocks) {
+    this.modal.openBlock(block.number,block).then( result => {
+    }).catch( err => console.log('block component ' + err ) );
+  }
 
 
 }
