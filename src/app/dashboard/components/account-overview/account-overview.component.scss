@@ -1,0 +1,22 @@
+.account-overview {
+  .title {
+    font-size: 18px;
+    padding: 0;
+  }
+
+  .balance {
+    display: block;
+    color: #2D353D;
+    font-size: 25px;
+    font-weight: bold;
+    padding-top: 10%;
+  }
+
+  .qr {
+    padding: 0;
+
+    img {
+      width: 100%;
+    }
+  }
+}
