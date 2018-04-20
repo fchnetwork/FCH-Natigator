@@ -3,8 +3,14 @@
     <h1>{{'TRANSACTIONS_SHORT'|translate}}</h1>
     <aer-card>
         <div class="dataTable-info-label">
-            <label>{{'TRANSACTIONS_FOUND_COUNT'|translate: {transactionsCount: getTransactionsCount()} }}</label>
+            <label>{{'TRANSACTIONS_FOUND_COUNT'|translate: {transactionsCount: transactions.length} }}</label>
         </div>
+
+
+        <h1 *ngIf="!transactionStatus">
+           Searching for Transactions
+        </h1>
+
         <table>
             <thead>
                 <th class="">{{'TX_HASH'|translate}}</th>
@@ -20,58 +26,14 @@
                 <tr *ngFor="let transaction of transactions">
                     <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash}}</td>
                     <td class="link block" (click)="openBlock(transaction.blockNumber)">{{transaction.blockNumber}}</td>
-                    <td class="age">{{transaction.age}} 2 minutes ago</td>
+                    <td class="age">{{transaction.timestamp | transactionTimeAgo }}</td>
                     <td class="link hash">{{transaction.from}}</td>
                     <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>
                     <td class="link hash">{{transaction.to}}</td>
-                    <td class="value">{{transaction.value}}{{'AETH'|translate}}</td>
-                    <td class="txfee"><!--{{transaction.txFee}}-->{{transaction.gasPrice}}</td>
+                    <td class="value">{{transaction.value | convertToEther }} {{'AERO'|translate}}</td>
+                    <td class="txfee"><!--{{transaction.txFee}}-->{{transaction.gasPrice | convertToEther}} {{'AERO'|translate}}</td>
                 </tr>
             </tbody>
         </table>
     </aer-card>
 </div>
-
-<!-- OLD CODE 
-<app-search></app-search>
-<section class="o-section o-section__blockInfo">
-        <div class="o-site-wrap o-site-wrap--padding">
-            <div class="o-grid o-grid--gutter-sm">
-                <div class="o-grid__item u-1/1@lg u-1/1@md u-1/1@sm u-1/1">
-                    <h1>Transactions</h1>
-                    <h3>Current Block #{{ currentBlock }} </h3>
-                    <div class="c-table c-table--fixed c-table--evenOdd">
-                        <div class="c-table--row">
-                            <div class="c-table--cell">
-                                Block #
-                            </div>
-                            <div class="c-table--cell">
-                                Size
-                            </div>
-                            <div class="c-table--cell">
-                                Tx #
-                            </div>
-                            <div class="c-table--cell">
-                                Time
-                            </div>
-                        </div>
-                        <div class="c-table--row" *ngFor="let m of blocks;">
-                            <div class="c-table--cell u-bw">
-                                <a class="u-click" (click)="exploreBlock(m.number)">{{ m.number}}</a>
-                            </div>
-                            <div class="c-table--cell u-bw">
-                                {{ m.size }}
-                            </div>
-                            <div class="c-table--cell u-bw">
-                                {{ m.transactions.length }}
-                            </div>
-                            <div class="c-table--cell u-bw">
-                                {{ m.timestamp | transactionTimeAgo }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
- -->
