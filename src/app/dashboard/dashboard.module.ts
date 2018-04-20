@@ -8,6 +8,7 @@ import { DashboardRoutingModule } from './dashboard.routes';
 import { SharedModule } from '../shared/shared.module';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 import { AccountOverviewComponent } from '@app/dashboard/components/account-overview/account-overview.component';
+import { TokenListComponent } from '@app/dashboard/components/token-list/token-list.component';
 
 @NgModule({
   imports: [
@@ -21,10 +22,12 @@ import { AccountOverviewComponent } from '@app/dashboard/components/account-over
     CurrentUserDisplayComponent,
     DashboardHomeComponent,
     AccountOverviewComponent,
+    TokenListComponent,
 ],
   exports: [
     DashboardComponent,
     AccountOverviewComponent,
+    TokenListComponent,
   ]
 })
 export class DashboardModule {
