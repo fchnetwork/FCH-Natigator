@@ -36,20 +36,6 @@ export class LastTransactionsComponent implements OnInit {
     this.limit = 3;
     this.showedAll = false;
   }
-
-  checkTransactionsStatus(transactions){
-    this.transactions = [];
-    for(let i = 0; i < transactions.length; i++) {
-      this.transactionService.getTransactionsDetails(transactions[i].hash).then((res)=>{
-        if(status) {
-          transactions[i].data = 'Success';
-          this.transactions.push(transactions[i]);
-        }
-      }).catch((err) => {
-        this.transactions.push()
-      });
-    }
-  }
   
   ngOnInit() {}
 
