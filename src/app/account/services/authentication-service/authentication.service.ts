@@ -15,14 +15,15 @@ const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
 const wall    = require("ethereumjs-wallet");
 const bip39   = require("bip39");
-const Web3    = require('web3');
+
+import Web3 from 'web3';
 
 declare var window: any;
 
 @Injectable()
 export class AuthenticationService {
 
-    web3: any;
+    web3: Web3;
 
     constructor( private _http: Http ) {
 
