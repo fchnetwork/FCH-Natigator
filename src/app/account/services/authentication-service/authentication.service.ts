@@ -10,6 +10,8 @@ import * as avatars from 'identity-img';
 import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import QRCode from 'qrcode';
+import { SessionStorageService } from 'ngx-webstorage';
+import { Router } from '@angular/router';
 
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
@@ -24,12 +26,13 @@ export class AuthenticationService {
 
     web3: any;
 
-    constructor( private _http: Http ) {
-
+    constructor( 
+        private _http: Http,
+        private sessionStorage: SessionStorageService,
+        public router: Router,
+    ) {
         this.web3 = this.initWeb3();
-
         avatars.config({ size: 67 * 3, bgColor: '#fff' });
-
     }
     
     
@@ -145,7 +148,12 @@ export class AuthenticationService {
         });
     }
 
-
+    logout() {
+        this.router.navigate(['account/unlock']);
+        this.sessionStorage.clear('acc_address');
+        this.sessionStorage.clear('seed');
+        this.sessionStorage.clear('private_key');
+    }
 
     /**
      * @description trip start/end whitespace, special chars and any double spaces which can affect address generation
