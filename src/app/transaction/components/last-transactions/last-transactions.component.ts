@@ -10,6 +10,7 @@ import { SessionStorageService } from 'ngx-webstorage';
 export class LastTransactionsComponent implements OnInit {
   transactions: [{}];
   limit = 3;
+  showedAll = false;
   constructor(
     private sessionStorage: SessionStorageService,
   ) { 
@@ -24,6 +25,11 @@ export class LastTransactionsComponent implements OnInit {
 
   showTransactions() {
     this.limit = 1000;
+    this.showedAll = true;
+  }
+  hideTransactions() {
+    this.limit = 3;
+    this.showedAll = false;
   }
   
   ngOnInit() {}
