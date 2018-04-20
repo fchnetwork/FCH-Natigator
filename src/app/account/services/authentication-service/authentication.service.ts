@@ -161,7 +161,7 @@ export class AuthenticationService {
             this.sessionStorage.store('seed', result.s);
             this.sessionStorage.store('private_key', result.web3.privateKey);
             this.sessionStorage.store('password', password);
-            this.sessionStorage.store('transactions', result.transactions);
+            this.sessionStorage.store('transactions', JSON.parse(result.transactions));
             this.router.navigate(['/transaction']);
         });
     }

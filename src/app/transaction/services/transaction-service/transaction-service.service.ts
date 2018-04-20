@@ -50,10 +50,10 @@ export class TransactionServiceService {
       });
     }
 
-    saveTransaction(from, to, amount, data) {
+    saveTransaction(from, to, amount, data, hash) {
       const date = new Date();
       const password = this.sessionStorage.retrieve('password');
-      const transaction = { from, to, amount, data, date };
+      const transaction = { from, to, amount, data, date, hash };
       const transactions = this.sessionStorage.retrieve('transactions') || [];
       transactions.push(transaction);
       const stringTransaction = JSON.stringify(transactions);
@@ -61,6 +61,39 @@ export class TransactionServiceService {
 
       Cookie.set('transactions', encryptedTransactions, 7, "/", environment.cookiesDomain);
       this.sessionStorage.store('transactions', transactions);
+    }
+
+    updateStorage(transactions) {
+      const password = this.sessionStorage.retrieve('password');
+      const stringTransaction = JSON.stringify(transactions);
+      const encryptedTransactions = CryptoJS.AES.encrypt( stringTransaction, password );
+      Cookie.set('transactions', encryptedTransactions, 7, "/", environment.cookiesDomain);
+      this.sessionStorage.store('transactions', transactions);
+    }
+
+    updateTransactionsStatuses(transactions) {
+        const sortedTransactions = [];
+        for(let i = 0; i < transactions.length; i++) {
+          this.web3.eth.getTransactionReceipt( transactions[i].hash ).then( res =>  {
+            if(res.status) {
+              transactions[i].data = 'Successful transaction';
+              sortedTransactions.push(transactions[i]);
+            } else  {
+              transactions[i].data = 'Failed transaction';
+              sortedTransactions.push(transactions[i]);
+            }
+
+            if(i + 1 === transactions.length) {
+              this.updateStorage(sortedTransactions);
+            }
+          }).catch((err) =>{
+            sortedTransactions.push(transactions[i]);
+
+            if(i + 1 === transactions.length) {
+              this.updateStorage(sortedTransactions);
+            }
+          });
+        }
     }
 
     transaction( privkey, activeUser, to, amount, data ) : Promise<any> {
@@ -75,8 +108,8 @@ export class TransactionServiceService {
           const estimateGas         = this.web3.eth.estimateGas({to:sendTo, data:txData})            
 
        return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
-            let nonce = parseInt(values[1], 10)   
-            let gas = parseInt(values[2], 10)   
+            let nonce = parseInt(values[1], 10);
+            let gas = parseInt(values[2], 10);
 
             const rawTransaction = {
               nonce: this.web3.utils.toHex( nonce ), 
@@ -85,19 +118,16 @@ export class TransactionServiceService {
               to: to,
               value: txValue,
               // data: txData
-            }
+            };
             const tx = new Tx(rawTransaction);
                   tx.sign(privateKey);       
-                let transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) )
-                    transaction.on('transactionHash', hash => { 
-                      console.log(hash);
-                      this.saveTransaction(activeUser, to, amount, data);
-                      // setTimeout(() => {
-                      //   this.web3.eth.getTransactionReceipt( hash ).then( res =>  alert( "receipt "+JSON.stringify(res) ) );
-                      // }, 6000);
-                    }).catch( error => {
-                        // alert( error )
-                    })
+            const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
+                transaction.on('transactionHash', hash => { 
+                  console.log(hash);
+                  this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash);
+                }).catch( error => {
+                    // alert( error )
+                });
           });
       });
   }
