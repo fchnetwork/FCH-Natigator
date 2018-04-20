@@ -161,7 +161,7 @@ export class AuthenticationService {
             this.sessionStorage.store('seed', result.s);
             this.sessionStorage.store('private_key', result.web3.privateKey);
             this.sessionStorage.store('password', password);
-            this.sessionStorage.store('transactions', JSON.parse(result.transactions));
+            this.sessionStorage.store('transactions', result.transactions.length ? JSON.parse(result.transactions) : []);
             this.router.navigate(['/transaction']);
         });
     }
@@ -171,6 +171,8 @@ export class AuthenticationService {
         this.sessionStorage.clear('acc_address');
         this.sessionStorage.clear('seed');
         this.sessionStorage.clear('private_key');
+        this.sessionStorage.clear('password');
+        this.sessionStorage.clear('transactions');
     }
 
     /**
