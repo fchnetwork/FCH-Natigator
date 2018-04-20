@@ -131,13 +131,20 @@ export class AuthenticationService {
         return new Promise( (resolve, reject) => {
             if(password) {
                 const decryptSeed = CryptoJS.AES.decrypt( Cookie.get('aerum_base'), password );
+                const transactions = Cookie.get('transactions');
+                let plainTextTransactions = [];
 
+                if(transactions) {
+                    const decryptTransactions = CryptoJS.AES.decrypt( transactions, password );
+                    plainTextTransactions = decryptTransactions.toString(CryptoJS.enc.Utf8);
+                }
+                
                 const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
     
                 if( encryptAccount ) {
                     const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
                     const seed = this.seedCleaner(plaintext);
-                    resolve( { web3: encryptAccount, s:seed  } );
+                    resolve( { web3: encryptAccount, s:seed, transactions: plainTextTransactions } );
                 } 
                 else {
                     reject("no keystore found or password incorrect");
@@ -154,6 +161,7 @@ export class AuthenticationService {
             this.sessionStorage.store('seed', result.s);
             this.sessionStorage.store('private_key', result.web3.privateKey);
             this.sessionStorage.store('password', password);
+            this.sessionStorage.store('transactions', result.transactions);
             this.router.navigate(['/transaction']);
         });
     }
@@ -178,8 +186,6 @@ export class AuthenticationService {
         return cleanSeed;
 
     }
-
-
 
     generateAdditionalAccounts( password: string, amount: number ){
 
