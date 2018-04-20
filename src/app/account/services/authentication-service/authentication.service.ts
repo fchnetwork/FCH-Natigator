@@ -10,6 +10,8 @@ import * as avatars from 'identity-img';
 import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import QRCode from 'qrcode';
+import { SessionStorageService } from 'ngx-webstorage';
+import { Router } from '@angular/router';
 
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
@@ -24,12 +26,13 @@ export class AuthenticationService {
 
     web3: any;
 
-    constructor( private _http: Http ) {
-
+    constructor( 
+        private _http: Http,
+        private sessionStorage: SessionStorageService,
+        public router: Router,
+    ) {
         this.web3 = this.initWeb3();
-
         avatars.config({ size: 67 * 3, bgColor: '#fff' });
-
     }
     
     
@@ -128,13 +131,20 @@ export class AuthenticationService {
         return new Promise( (resolve, reject) => {
             if(password) {
                 const decryptSeed = CryptoJS.AES.decrypt( Cookie.get('aerum_base'), password );
+                const transactions = Cookie.get('transactions');
+                let plainTextTransactions = [];
 
+                if(transactions) {
+                    const decryptTransactions = CryptoJS.AES.decrypt( transactions, password );
+                    plainTextTransactions = decryptTransactions.toString(CryptoJS.enc.Utf8);
+                }
+                
                 const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
     
                 if( encryptAccount ) {
                     const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
                     const seed = this.seedCleaner(plaintext);
-                    resolve( { web3: encryptAccount, s:seed  } );
+                    resolve( { web3: encryptAccount, s:seed, transactions: plainTextTransactions } );
                 } 
                 else {
                     reject("no keystore found or password incorrect");
@@ -145,7 +155,23 @@ export class AuthenticationService {
         });
     }
 
+    login(password) {
+        this.unencryptKeystore(password).then( result => {
+            this.sessionStorage.store('acc_address', result.web3.address);
+            this.sessionStorage.store('seed', result.s);
+            this.sessionStorage.store('private_key', result.web3.privateKey);
+            this.sessionStorage.store('password', password);
+            this.sessionStorage.store('transactions', result.transactions);
+            this.router.navigate(['/transaction']);
+        });
+    }
 
+    logout() {
+        this.router.navigate(['account/unlock']);
+        this.sessionStorage.clear('acc_address');
+        this.sessionStorage.clear('seed');
+        this.sessionStorage.clear('private_key');
+    }
 
     /**
      * @description trip start/end whitespace, special chars and any double spaces which can affect address generation
@@ -160,8 +186,6 @@ export class AuthenticationService {
         return cleanSeed;
 
     }
-
-
 
     generateAdditionalAccounts( password: string, amount: number ){
 
