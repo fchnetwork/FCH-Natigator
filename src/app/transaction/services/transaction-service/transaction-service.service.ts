@@ -13,11 +13,12 @@ const Web3 = require('web3');
 @Injectable()
 export class TransactionServiceService {
 
+    // if moving or renaming be sure to update the convertToEther pipe in shared modules 
     web3: any;
     
     constructor( 
       _auth: AuthenticationService,
-     ) {
+     ) { 
       this.web3 = _auth.initWeb3();
     }
 
@@ -30,6 +31,11 @@ export class TransactionServiceService {
         return this.web3.utils.fromWei( balance.toString(), 'ether')
        });
     }  
+
+    // If moving this function be sure to update the convertToEther pipe in shared modules 
+    convertToEther(amount) : string {
+      return this.web3.utils.fromWei( amount.toString(), 'ether')
+    }
     
     maxTransactionFee(to, data) {
       return new Promise((resolve, reject) => {

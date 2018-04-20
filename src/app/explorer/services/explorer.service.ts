@@ -33,7 +33,15 @@ export class ExplorerService {
     return this.web3.utils.fromWei( amountInWei.toString(), currency );
   }
 
+
+
+  
   getBlock(): Observable<any>{
+
+
+
+
+
     return Observable.create(observer => {
       this.web3.eth.getBlockNumber((err, block) => {
         if (err != null) {
@@ -43,7 +51,11 @@ export class ExplorerService {
         if (block.length === 0) {
           observer.error('no blocks');
         }
-        console.log( block );
+        // setInterval(() => {
+
+        //   return observer.next(block);
+
+        // }, 1000);
         return observer.next(block);
         // observer.complete()
       });

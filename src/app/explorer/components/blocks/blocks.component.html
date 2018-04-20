@@ -13,7 +13,8 @@
                 <th class="">{{'GAS_LIMIT'|translate}}</th>
             </thead>
             <tbody>
-                <tr *ngFor="let block of blocks">
+                <!-- <tr *ngFor="let block of blocks |  orderby: {property: column, order: order} "> -->
+                    <tr *ngFor="let block of blocks">
                     <td class="link" (click)="openBlock(block)">{{block.number}}</td>
                     <td class="age">{{ block.timestamp | transactionTimeAgo }}</td>
                     <td>{{block.transactions.length}}</td>

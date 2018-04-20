@@ -44,7 +44,7 @@
             {{'GAS_USED'|translate}}
           </div>
           <div class="value">
-              {{block.gasUsed}}
+              {{block.gasUsed | convertToEther  }}
           </div>
         </div>
         <div class="tr">
@@ -52,7 +52,7 @@
             {{'GAS_LIMIT'|translate}}
           </div>
           <div class="value">
-              {{block.gasLimit}}
+              {{block.gasLimit | convertToEther  }}
           </div>
         </div>
         <div class="tr">

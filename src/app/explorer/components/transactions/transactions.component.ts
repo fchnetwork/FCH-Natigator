@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';  
 
@@ -14,71 +14,54 @@ import { ModalService } from '../../../shared/services/modal.service';
 
 export class TransactionsComponent implements OnInit {
 
-  currentBlock: number;
-  blocks: iBlocks[];
-  maxBlocks: number;
-
-  // TRANSACTIONS SCREEN NEED THESE VARIABLE
+  transactionsFound: number;
   transactions: iTransaction[];
      
-  constructor( private _ngZone: NgZone,
-               public exploreSrv: ExplorerService,
-               private cd: ChangeDetectorRef,
+  order: number;
+  column: string = 'timestamp';
+  descending: boolean = false;
+  transactionStatus: boolean = false;
+
+
+  constructor( public exploreSrv: ExplorerService,
                private route: ActivatedRoute,
                private router: Router,
                private modal: ModalService
                ) { }
 
   ngOnInit() {
-    this.blocks = [];
+    this.getAllTransactions();
+  }
+
+
+  sort(){
+    this.descending = !this.descending;
+    this.order = this.descending ? 1 : -1;
+  }
+
+  
+  getAllTransactions() {
     this.transactions = [];
-    this.maxBlocks = 50;
-    
-    const demoTransaction: iTransaction = {
-      "blockHash": '0x7aaBfCB2d414f884a48b88015b9021080E3760A9',
-      "blockNumber": 5260128,
-      "from": '0x1234fCB2d414f884a48b88015b9021080E3760A9',
-      "gas": 28,
-      "gasPrice": '0.000861',
-      "hash": '0x9876fCB2d414f884a48b88015b9021080E3760A9',
-      "input": '...',
-      "nonce": 3,
-      "to": '0x7543fCB2d414f884a48b88015b9021080E3760A9',
-      "transactionIndex": 123456,
-      "value": '0.001138',
-      "v": '...',
-      "r": '...',
-      "s": '...'
-    };
-    
-    for(let i=0; i<7; i++) {
-      this.transactions.push(demoTransaction);
-    }
-    
-    
-    /* THIS WAS COMMENTED TEMPORALY */
-
-    // this.exploreSrv.createAccounts()
-    
-    
-    //   this._ngZone.run(() => { 
-    //     this.exploreSrv.getBlock().subscribe( async res => {
-    //       this.currentBlock = res;
-    //         for (var i = 0; i < this.maxBlocks; ++i) {
-    //             this.exploreSrv.web3.eth.getBlock( this.currentBlock - i, (error, result) => {
-    //               if(!error) {
-    //                 this.blocks.push( result );        
-    //               }
-    //             })
-    //         }
-    //         this.cd.markForCheck();
-    //     });
-    //   });
+    this.exploreSrv.getBlock().subscribe( async currentBlock => {
+      for ( let i = currentBlock-400; i < currentBlock; ++i) {
+        this.exploreSrv.web3.eth.getBlock(i, (error, blockData) => {
+          if( !error && blockData !== null || blockData !== undefined ) {
+            this.exploreSrv.web3.eth.getBlockTransactionCount( blockData['number'], (error, txCount) => {
+                for ( let blockIdx = 0; blockIdx < txCount; blockIdx++) {
+                  this.transactionStatus = true;
+                  this.exploreSrv.web3.eth.getTransactionFromBlock( blockData['number'], blockIdx, (error, txn) => {
+                  const mergeBlockTransaction = Object.assign( txn, blockData ); // need to merge block info with transaction because we need the block timestamp
+                  this.transactions.push(mergeBlockTransaction);
+                })
+              }
+            })
+          }
+        });
+      }
+    });
   }
+  
 
-  getTransactionsCount() {
-    return this.transactions.length;
-  }
 
   openBlock(blockNumber) {
     this.modal.openBlock(blockNumber).then( result =>{ 

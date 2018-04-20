@@ -3,16 +3,16 @@
       <div class="title">{{'TRANSACTION'|translate}}</div>
       <app-divider></app-divider>
       <div class="link">{{transaction.hash}}</div>
-      <div><p class="aer-small">{{transaction.created}} Wednesday, February 22, 2018 3:42 PM</p></div>
-      <div class="age">({{transaction.age}}2 {{'MONTHS_AGO|translate'}})</div>
+      <div><p class="aer-small">{{transaction.timestamp | transactionTimeStamp }}</p></div>
+      <div class="age">({{transaction.timestamp | transactionTimeAgo  }})</div>
   
       <div class="transaction-table">
         <div class="tr">
           <div class="name">
-            {{'AMOUNT'|translate}}
+            {{'AMOUNT'|translate}} 
           </div>
           <div class="value">
-            {{transaction.value}}
+            {{transaction.value | convertToEther }} {{'AERO'|translate}}
           </div>
         </div>
         <div class="tr">
@@ -21,7 +21,7 @@
           </div>
           <div class="value">
             {{transaction.from}}
-          </div>
+          </div> 
         </div>
         <div class="tr">
             <div class="name">
@@ -33,18 +33,18 @@
         </div>
         <div class="tr">
           <div class="name">
-            {{'FEE'|translate}}
+            {{'GAS_USED'|translate}}
           </div>
           <div class="value">
-              {{transaction.fee}}
+              {{transaction.gasUsed | convertToEther }} {{'AERO'|translate}}
           </div>
         </div>
         <div class="tr">
           <div class="name">
-            {{'GAS_USED'|translate}}
+            {{'GAS'|translate}}
           </div>
           <div class="value">
-              {{transaction.gas}}
+              {{transaction.gas | convertToEther }} {{'AERO'|translate}}
           </div>
         </div>
         <div class="tr">
@@ -52,7 +52,7 @@
             {{'GAS_PRICE'|translate}}
           </div>
           <div class="value">
-              {{transaction.gasPrice}}
+              {{transaction.gasPrice | convertToEther  }} {{'AERO'|translate}}
           </div>
         </div>
         <div class="tr">
@@ -68,7 +68,7 @@
             {{'SEND_DATA'|translate}}
           </div>
           <div class="value">
-              {{transaction.data}}
+              {{transaction.data | hexToText  }}
           </div>
         </div>
       </div>

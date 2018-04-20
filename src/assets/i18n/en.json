@@ -80,6 +80,7 @@
 "FEE":"Fee",
 "GAS_USED":"Gas used",
 "GAS_PRICE":"Gas price",
+"GAS":"Gas",
 "SEND_DATA":"Send data",
 "HEIGHT":"Height",
 "TXN":"Txn",
