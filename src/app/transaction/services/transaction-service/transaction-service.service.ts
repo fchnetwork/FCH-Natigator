@@ -1,3 +1,4 @@
+import * as CryptoJS from 'crypto-js';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Overlay } from 'ngx-modialog';
@@ -5,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { SessionStorageService } from 'ngx-webstorage';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -17,6 +19,7 @@ export class TransactionServiceService {
     
     constructor( 
       _auth: AuthenticationService,
+      private sessionStorage: SessionStorageService,
      ) {
       this.web3 = _auth.initWeb3();
     }
@@ -49,10 +52,15 @@ export class TransactionServiceService {
 
     saveTransaction(from, to, amount, data) {
       const date = new Date();
+      const password = this.sessionStorage.retrieve('password');
       const transaction = { from, to, amount, data, date };
-      const transactions = JSON.parse(Cookie.get('transactions')) || [];
+      const transactions = this.sessionStorage.retrieve('transactions') || [];
       transactions.push(transaction);
-      Cookie.set('transactions', JSON.stringify( transactions), 7, "/", environment.cookiesDomain);
+      const stringTransaction = JSON.stringify(transactions);
+      const encryptedTransactions = CryptoJS.AES.encrypt( stringTransaction, password );
+
+      Cookie.set('transactions', encryptedTransactions, 7, "/", environment.cookiesDomain);
+      this.sessionStorage.store('transactions', transactions);
     }
 
     transaction( privkey, activeUser, to, amount, data ) : Promise<any> {

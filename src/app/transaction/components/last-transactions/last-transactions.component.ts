@@ -1,5 +1,6 @@
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Component, OnInit } from '@angular/core';
+import { SessionStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'app-last-transactions',
@@ -9,9 +10,11 @@ import { Component, OnInit } from '@angular/core';
 export class LastTransactionsComponent implements OnInit {
   transactions: [{}];
   limit = 3;
-  constructor() { 
+  constructor(
+    private sessionStorage: SessionStorageService,
+  ) { 
     setInterval(()=>{
-      this.transactions = JSON.parse(Cookie.get('transactions'));
+      this.transactions = this.sessionStorage.retrieve('transactions');
     },3000);
   }
 
