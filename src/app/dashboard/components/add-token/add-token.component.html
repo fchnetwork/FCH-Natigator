@@ -1,0 +1,15 @@
+<aer-modal-dialog >
+  <div class="add-token">
+    <h3 class="header">Add token</h3>
+    <app-divider></app-divider>
+    <form [formGroup]="addTokenForm" (ngSubmit)="onSubmit()">
+        <span>Token Contract Address</span>
+        <aer-input placeholder="0x000000000..." type="tokenAddress" formControlName="tokenAddress" [(ngModel)]="tokenAddress" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
+        <span>Token Symbol</span>
+        <aer-input placeholder="Token" type="tokenSymbol" formControlName="tokenSymbol" [(ngModel)]="tokenSymbol" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
+        <span>Token Decimals of Precision</span>
+        <aer-input placeholder="18" type="decimals" formControlName="decimals" [(ngModel)]="decimals" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
+        <aer-button [ngClass]="{'disabled': !addTokenForm.valid}" [disabled]="!addTokenForm.valid" (click)="onSubmit()">Add</aer-button> 
+    </form>
+  </div>
+</aer-modal-dialog>
