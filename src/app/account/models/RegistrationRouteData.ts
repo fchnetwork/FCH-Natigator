@@ -1,10 +1,10 @@
 export class RegistrationRouteData {  
-    public avatar: any;
-    public password: string;
-    public mnemonic: string;
-    public address: string;
-    public extendedPrivateKey: string;
-    public extendedPublicKey: string;
-    public privateKey: any;
-    public publicKey: any;
+    avatar: any;
+    password: string;
+    mnemonic: string;
+    address: string;
+    extendedPrivateKey: string;
+    extendedPublicKey: string;
+    privateKey: any;
+    publicKey: any;
 }

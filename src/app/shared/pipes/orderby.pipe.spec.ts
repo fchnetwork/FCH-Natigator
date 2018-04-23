@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import { TransactionTimeAgoPipe } from './transaction-time-ago.pipe';
+import { OrderbyPipe } from './orderby.pipe';
 
-describe('Pipe: TransactionTimeAgoe', () => {
+describe('Pipe: Orderbye', () => {
   it('create an instance', () => {
-    let pipe = new TransactionTimeAgoPipe();
+    let pipe = new OrderbyPipe();
     expect(pipe).toBeTruthy();
   });
 });

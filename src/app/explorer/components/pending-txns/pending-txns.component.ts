@@ -11,7 +11,7 @@ import { ModalService } from '../../../shared/services/modal.service';
 })
 export class PendingTxnsComponent implements OnInit {
 
-  transactions: Array<iTransaction>;
+  transactions: iTransaction[];
   
   constructor(
                private _ngZone: NgZone,
@@ -24,7 +24,7 @@ export class PendingTxnsComponent implements OnInit {
   ngOnInit() {
     this.transactions = [];
 
-    let demoTransaction: iTransaction = {
+    const demoTransaction: iTransaction = {
       "blockHash": '0x7aaBfCB2d414f884a48b88015b9021080E3760A9',
       "blockNumber": 5260128,
       "from": '0x1234fCB2d414f884a48b88015b9021080E3760A9',
@@ -47,12 +47,12 @@ export class PendingTxnsComponent implements OnInit {
     
   }
 
-  public openTransaction(transaction) {
+  openTransaction(transaction) {
     this.modal.openTransaction(transaction.hash, transaction).then((result) => {
     }).catch( () => {});
   }
 
-  public getTransactionsCount() {
+  getTransactionsCount() {
     return this.transactions.length;
   }
 

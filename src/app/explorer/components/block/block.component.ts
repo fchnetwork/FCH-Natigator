@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, Params, ActivatedRoute } from '@angular/router';
-import { ExplorerService } from '../../services/explorer.service'
-import { iBlocks, iTransaction } from '../../../shared/app.interfaces'
+import { ExplorerService } from '@explorer/services/explorer.service';
+import { iBlocks, iTransaction } from '@shared/app.interfaces';
 
 @Component({
   selector: 'app-block',
@@ -9,16 +9,13 @@ import { iBlocks, iTransaction } from '../../../shared/app.interfaces'
   styleUrls: ['./block.component.scss']
 })
 export class BlockComponent implements OnInit {
-
-  block: Array<iBlocks> = [];
+  block: any;
   blockNumber: number;
   demo: string;
-  transactions: Array<iTransaction>;
+  transactions: iTransaction[];
 
   constructor(
-    private _ngZone: NgZone,
     public exploreSrv: ExplorerService,
-    private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router ) {}
 
@@ -26,7 +23,7 @@ export class BlockComponent implements OnInit {
     this.route.params.subscribe(params => {
         this.blockNumber = params['id'];
         this.transactions = [];
-        this.getBlock()
+        this.getBlock();
       });
   } 
 
@@ -35,25 +32,23 @@ export class BlockComponent implements OnInit {
     this.exploreSrv.web3.eth.getBlock( this.blockNumber, (error, result) => {
       if( !error && result !== null) {
         this.block = result;
-        this.getBlockTransactions( this.block)
-        this.cd.markForCheck();
+        this.getBlockTransactions( this.block);
       } else {
-        alert(`${this.blockNumber} is not valid - ${error}`)
+        alert(`${this.blockNumber} is not valid - ${error}`);
       }
-    })
+    });
   }
 
 
 getBlockTransactions(blockData) {
   this.exploreSrv.web3.eth.getBlockTransactionCount( blockData['number'], (error, result) => {
-  let txCount = result
+  const txCount = result;
    for ( let blockIdx = 0; blockIdx < txCount; blockIdx++) {
      this.exploreSrv.web3.eth.getTransactionFromBlock( blockData['number'], blockIdx, (error, txn) => {
-     //  console.log( JSON.stringify(txn, null,2 ) )
        this.transactions.push(txn);
-     })
+     });
    }
-})
+});
 }
 
 

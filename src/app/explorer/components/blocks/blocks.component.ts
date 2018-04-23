@@ -1,10 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { ExplorerService } from '../../services/explorer.service'
-import { iTransaction, iBlocks } from '../../../shared/app.interfaces'
-import { ModalService } from '../../../shared/services/modal.service';
+import { ExplorerService } from '@explorer/services/explorer.service';
+import { iTransaction, iBlocks } from '@shared/app.interfaces';
+import { ModalService } from '@shared/services/modal.service';
+import { setInterval } from 'timers';
 
 
 @Component({
@@ -13,74 +14,55 @@ import { ModalService } from '../../../shared/services/modal.service';
 })
 export class BlocksComponent implements OnInit {
 
-  blocks: Array<iBlocks>;
-  maxBlocks: number;
+  blocks: iBlocks[];
+  maxBlocks: number = 50;
+
+  lowBlock: number;
+  highBlock: number;
+  countblocks: number;
+
+  order: number;
+  column: string = 'number';
+  descending: boolean = false;
+
 
   constructor(
-    private _ngZone: NgZone,
     public exploreSrv: ExplorerService,
     private router: Router,
-    private cd: ChangeDetectorRef,
-    private modal: ModalService
-  ) { }
+    private modal: ModalService) {}
 
   ngOnInit() {
+    this.getLatestBlocks();
+  }
+
+
+  sort(){
+    this.descending = !this.descending;
+    this.order = this.descending ? 1 : -1;
+  }
+
+
+  getLatestBlocks(){
     this.blocks = [];
-    this.loadBlocks();
-    this.maxBlocks = this.blocks.length;
+    this.exploreSrv.getBlock().subscribe( async currentBlock => {
+      for (var i = 0; i < this.maxBlocks; ++i) {
+          this.exploreSrv.web3.eth.getBlock( currentBlock - i, (error, result) => {
+            if(!error) {
+              this.blocks.push(result );
+              this.lowBlock    = this.blocks[0].number;
+              this.highBlock   = this.blocks[this.blocks.length-1].number;
+              this.countblocks = this.blocks.length;
+            }
+          })
+      }
+    });
   }
 
-  private loadBlocks() {
-    // demoBlocks
-    let demoBlocks: iBlocks = {
-      "difficulty": '13546847',
-      "extraData": '0x0110101010100010101',
-      "gasLimit": 8000000,
-      "gasUsed": 7564321,
-      "hash": '0xa6sfd54a6dsf54a6sdf',
-      "logsBloom": '...',
-      "miner": '0xsad6f54as6fd54saf6a5sfd4',
-      "mixHash": '0xa6sfd54a6dsf54a6sdf',
-      "nonce": '254',
-      "number": 5426093,
-      "parentHash": '0xa6sfd54a6dsf54a6sdf',
-      "receiptsRoot": '...',
-      "sha3Uncles": '...',
-      "size": 756,
-      "stateRoot": '...',
-      "timestamp": 1520373465,
-      "totalDifficulty": '102723',
-      "transactions": [''],
-      "transactionsRoot": '...',
-      "uncles": ['']
-    };
 
-    for(let i=0; i<7; i++) {
-      this.blocks.push(demoBlocks);
-    }
-
-    //TODO: this must call exploreService
+  openBlock(block: iBlocks) {
+    this.modal.openBlock(block.number,block).then( result => {
+    }).catch( err => console.log('block component ' + err ) );
   }
 
-  public getLowestBlockNumber() {
-    return this.blocks[0].number;
-  }
 
-  public getHighestBlockNumber() {
-    return this.blocks[this.blocks.length-1].number;
-  }
-
-  public getBlocksCount() {
-    return this.blocks.length;
-  }
-
-  public openBlock(block: iBlocks) {
-    this.modal.openBlock(block.number ,block).then(result => {
-    }).catch(()=>{});
-  }
-
-  public getBlockAge(block: iBlocks) {
-    //return Date.now - Number(block.timestamp);
-    return 1;
-  }
 }

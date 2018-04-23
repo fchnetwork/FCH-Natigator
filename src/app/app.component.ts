@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from './account/services/authentication-service/authentication.service';
-import { AccountIdleService } from './shared/services/account-idle.service'
+import { AccountIdleService } from './shared/services/account-idle.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +16,11 @@ export class AppComponent implements OnInit {
     public authServ: AuthenticationService,
     private idle: AccountIdleService,
     private translate: TranslateService) {
-    this.initTranslate()
 
+    this.initTranslate();
+    
+    console.log(environment.cookiesDomain);
+    
     this.authServ.authState().subscribe(res => {
       // this.router.navigate(['/transaction']); 
     },
@@ -24,14 +28,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-        //Start watching for user inactivity.
-        this.idle.startWatching();
-    
-        // Start watching when user idle is starting.
-        this.idle.onTimerStart().subscribe(count => console.log(count));
-        
-        // Start watch when time is up.
-        this.idle.onTimeout().subscribe(() => console.log('Time is up!'));
+    //Start watching for user inactivity.
+    this.idle.startWatching();
+
+    // Start watching when user idle is starting.
+    this.idle.onTimerStart().subscribe(count => console.log(count));
+
+    // Start watch when time is up.
+    this.idle.onTimeout().subscribe(() => console.log('Time is up!'));
   }
 
   initTranslate() {

@@ -15,16 +15,17 @@ import { RouteDataService } from '../../shared/services/route-data.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup = this.formBuilder.group({});
   testAccount = testAccount;
-  password: string = this.testAccount[0].password;
-  confirmPassword: string = this.testAccount[0]["passwordConfirm"];
+  password: string;
+  confirmPassword: string;
   avatar: string;
 
   constructor(public translate: TranslateService, public formBuilder: FormBuilder, public router: Router, private routeDataService: RouteDataService<RegistrationRouteData>) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      password: [this.testAccount[0]["password"], [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower]],
-      confirmPassword: [this.testAccount[0]["passwordConfirm"], [Validators.required]],
+      // password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower]],
+      password: [ null, [Validators.required, Validators.minLength(5)]],
+      confirmPassword: [ null, [Validators.required]],
       avatar: [1]
     }, {
         validator: this.matchingPasswords('password', 'confirmPassword')
@@ -33,7 +34,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      var data = new RegistrationRouteData();
+      const data = new RegistrationRouteData();
 
       data.avatar = this.registerForm.value.avatar.avatar;
       data.password = this.registerForm.value.password;
@@ -51,11 +52,11 @@ export class RegisterComponent implements OnInit {
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
     return (group: FormGroup) => {
-      let passwordInput = group.controls[passwordKey];
-      let passwordConfirmationInput = group.controls[passwordConfirmationKey];
+      const passwordInput = group.controls[passwordKey];
+      const passwordConfirmationInput = group.controls[passwordConfirmationKey];
       if (passwordInput.value !== passwordConfirmationInput.value) {
-        return passwordConfirmationInput.setErrors({ notEquivalent: true })
+        return passwordConfirmationInput.setErrors({ notEquivalent: true });
       }
-    }
+    };
   }
 }

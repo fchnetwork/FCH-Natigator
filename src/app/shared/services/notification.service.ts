@@ -5,7 +5,7 @@ export class NotificationService {
 
     constructor() { }
 
-    public showMessage(text: string) {
+    showMessage(text: string) {
         alert(text);
     }
 }

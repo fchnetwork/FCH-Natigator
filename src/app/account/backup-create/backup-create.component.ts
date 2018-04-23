@@ -29,19 +29,19 @@ export class BackupCreateComponent implements OnInit {
     this.seed = this.routeDataService.routeData.mnemonic;
   }
 
-  private copyToClipboard() {
+  public copyToClipboard() {
     this.clipboardService.copy(this.seed);
     this.notificationService.showMessage('Copied to clipboard!');
 
   }
 
-  private savePhrase() {
+  public savePhrase() {
     const data = [{ seed: this.seed, }];
-    console.log(data)
+    console.log(data);
     new AerumBackupFile(data, 'AerumBackupSeed');
   }
 
-  private confirmBackup() {
+  public confirmBackup() {
     this.router.navigate(['account/backup/confirm']);
   }
 }

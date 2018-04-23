@@ -1,6 +1,7 @@
 <aer-sidebar>
-  <aer-sidebar-group title="{{'TRANSACTION'|translate}}" iconName="transaction">
-    <aer-sidebar-item iconName="transaction" [routerLink]="['/transaction']">Basic transaction</aer-sidebar-item>
+  <aer-sidebar-header></aer-sidebar-header>
+  <aer-sidebar-group title="{{'TRANSACTIONS'|translate}}" iconName="transaction">
+    <aer-sidebar-item iconName="transaction" [routerLink]="['/transaction']">{{'SEND_RECEIVE'|translate}}</aer-sidebar-item>
   </aer-sidebar-group>
   <aer-sidebar-group title="{{'STAKING'|translate}}" iconName="staking">
 
@@ -25,6 +26,7 @@
     <aer-sidebar-item iconName="transaction" [routerLink]="['/explorer/transactions']">{{'TXNS'|translate}}</aer-sidebar-item>
     <aer-sidebar-item iconName="pending" [routerLink]="['/explorer/pending']">{{'PENDING_TXNS'|translate}}</aer-sidebar-item>
   </aer-sidebar-group>
+  <button (click)="logout()">Logout</button>
 </aer-sidebar>
 <aer-toolbar>
 

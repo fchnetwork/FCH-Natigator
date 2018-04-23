@@ -5,7 +5,7 @@ import { TransactionTimeStampPipe } from './transaction-time-stamp.pipe';
 
 describe('Pipe: TransactionTimeStampe', () => {
   it('create an instance', () => {
-    let pipe = new TransactionTimeStampPipe();
+    const pipe = new TransactionTimeStampPipe();
     expect(pipe).toBeTruthy();
   });
 });

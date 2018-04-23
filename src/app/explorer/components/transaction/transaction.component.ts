@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 
-import { ExplorerService } from '../../services/explorer.service'
-import { iTransaction } from '../../../shared/app.interfaces'
+import { ExplorerService } from '../../services/explorer.service';
+import { iTransaction } from '../../../shared/app.interfaces';
 
 @Component({
   selector: 'app-transaction',
@@ -23,7 +23,7 @@ export class TransactionComponent implements OnInit {
     ngOnInit() {
       this.route.params.subscribe(params => {
           this.txn = params['id'];
-          this.findTransaction()
+          this.findTransaction();
         });
     }
 
@@ -33,7 +33,7 @@ export class TransactionComponent implements OnInit {
         this.txn = result;
         this.cd.markForCheck();
       } else {
-        alert(`${this.txn} is not valid - ${error}`)
+        alert(`${this.txn} is not valid - ${error}`);
       }
     });
   }

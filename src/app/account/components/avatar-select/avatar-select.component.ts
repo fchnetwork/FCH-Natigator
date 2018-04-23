@@ -21,10 +21,10 @@ import { AuthenticationService } from '../../services/authentication-service/aut
 export class AvatarSelectComponent implements ControlValueAccessor, OnInit {
   
   @Input() label = 'switch';
-  @Input('value') _value: number = 0;
+  @Input('value') _value = 0;
   
   
-  activeAvatar: number = 0;
+  activeAvatar = 0;
   
   onChange: any = () => { };
   onTouched: any = () => { };
@@ -45,9 +45,9 @@ export class AvatarSelectComponent implements ControlValueAccessor, OnInit {
 
 
   ngOnInit() {
-    this.avatars = this.authServ.avatarsGenerator()
+    this.avatars = this.authServ.avatarsGenerator();
 
-    this._value = this.avatars[0]
+    this._value = this.avatars[0];
 
     setTimeout(() => {
       this.switch(  this.avatars[0] );

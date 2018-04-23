@@ -1,154 +1,165 @@
 .account {
-    font-family: 'OpenSans';
+  font-family: 'OpenSans';
 
-    .header {
-        font-size: 36px;
-        text-align: center;
-        color: #27282A;
-    }
+  .header {
+    font-size: 36px;
+    text-align: center;
+    color: #27282a;
+  }
 
-    .b-text {
-        color: $text-color;
-        font-size: 18px;
-        text-align: center;
-        a {
-            text-decoration: unset;
-            color: #2A669A;
-            &-webkit-any-link {
-              text-decoration: unset;
-            }
-        }
+  .b-text {
+    color: $text-color;
+    font-size: 18px;
+    text-align: center;
+
+    a {
+      text-decoration: unset;
+      color: #2a669a;
+
+      &-webkit-any-link {
+        text-decoration: unset;
+      }
     }
+  }
+
+  .button {
+    padding: 28px 0;
+  }
+
+  .link-text {
+    margin-top: 26px;
+    text-align: center;
+    color: $text-color;
+    font-size: 12px;
+
+    a {
+      text-decoration: unset;
+      color: #2a669a;
+
+      &-webkit-any-link {
+        text-decoration: unset;
+      }
+    }
+  }
+
+  .window-state {
+    text-align: center;
+
+    .windows-state-switch-inline {
+      width: 160px;
+      display: inline-block;
+    }
+  }
+
+  .paragraph {
+    text-align: center;
+    color: $text-color;
+
+    &--small {
+      font-size: 13px;
+      color: $text-color;
+    }
+  }
+
+  &.login {
+    max-width: 376px;
+  }
+
+  &.register {
+    max-width: 356px;
+  }
+
+  &.access-recovery {
+    max-width: 436px;
+    text-align: center;
+  }
+
+  &.backup-confirm {
+    max-width: 376px;
+    text-align: center;
 
     .button {
-        padding: 28px 0px;
-    }
-    .link-text {
-        margin-top: 26px;
-        text-align: center;
-        color: $text-color;
-        font-size: 12px;
-        a {
-            text-decoration: unset;
-            color: #2A669A;
-            &-webkit-any-link {
-              text-decoration: unset;
-            }
-        }
-    }
-    .window-state {
-        text-align: center;
-        .windows-state-switch-inline {
-            width: 160px;
-            display: inline-block;
-        }
+      padding: 28px 0 17px 0;
     }
 
-    .paragraph {
-        text-align: center;
-        color: $text-color;
-
-        &--small {
-            font-size: 13px;
-            color: $text-color;
-        }
+    .mnemonic-original-box { 
+      width: 370px;
+      height: 114px; 
+      border-radius: 10px;
+      margin-top: 28px;
+      display: flex;
+      align-items: center;
+      align-content: center;
+      justify-content: center; 
+      flex-direction: row;
+      flex-wrap: wrap; 
+      flex-flow: row wrap;  
     }
-
-    &.login {
-        max-width: 376px;
-    }
-
-    &.register {
-        max-width: 356px;
-    }
-
-    &.access-recovery {
-        max-width: 436px;
-        text-align: center;
-    }
-
-    &.backup-confirm {
-        max-width: 376px;
-        text-align: center;
-        .button {
-            padding: 28px 0px 17px 0px;
-        }
-
-        .mnemonic-original-box { 
-            width: 370px;
-            height: 114px; 
-            border-radius: 10px;
-            margin-top: 28px;
-            display: flex;
-            align-items: center;
-            align-content: center;
-            justify-content: center; 
-            flex-direction: row;
-            flex-wrap: wrap; 
-            flex-flow: row wrap;  
-        }
     
-        .mnemonic-box {
-            @extend .mnemonic-original-box;
-            border: 1px solid #D1D1D1;  
-        }
+    .mnemonic-box {
+      @extend .mnemonic-original-box;
+
+      border: 1px solid #d1d1d1;  
+    }
     
-        .mnemonic-tag {
-            margin: 3px;
+    .mnemonic-tag {
+      margin: 3px;
     
-            &.u-plain {
-                font-size: 18px;
-                background: transparent;
-                color: #27282A;
-                margin: 0px 10px;
-              }
+      &.u-plain {
+        font-size: 18px;
+        background: transparent;
+        color: #27282a;
+        margin: 0 10px;
+      }
             
-              &.u-full {
-                border-radius: 6px;
-                border: dashed 1px transparent;
-                margin: 3px;
-                cursor: pointer;
-                font-size: 12px;
-                height: 24px;
-                line-height: 23px;
-                padding: 0 10px;
-                color: #fff;
-                background: #2a669a;
-                background: -webkit-gradient(linear, left bottom, left top, from(#2a669a), to(#458cc9));
-                background: linear-gradient(to top, #2a669a, #458cc9);
+      &.u-full {
+        border-radius: 6px;
+        border: dashed 1px transparent;
+        margin: 3px;
+        cursor: pointer;
+        font-size: 12px;
+        height: 24px;
+        line-height: 23px;
+        padding: 0 10px;
+        color: #fff;
+        background: #2a669a;
+        background: -webkit-gradient(linear, left bottom, left top, from(#2a669a), to(#458cc9));
+        background: linear-gradient(to top, #2a669a, #458cc9);
     
-                &:hover, &:focus {
-                  background: -webkit-gradient(linear, left bottom, left top, from(#2a669a), to(#458cc9));
-                  background: linear-gradient(to top, #2a669a, #458cc9);
-                }
-    
-                &.u-removeSeed {
-                    border: dashed 1px #9ba6b2;
-                    background: transparent;
-                    color: transparent;
-                    user-select: none;
-                    cursor: default;        
-                }   
-            }
+        &:hover, &:focus {
+          background: -webkit-gradient(linear, left bottom, left top, from(#2a669a), to(#458cc9));
+          background: linear-gradient(to top, #2a669a, #458cc9);
         }
+    
+        &.u-removeSeed {
+          border: dashed 1px #9ba6b2;
+          background: transparent;
+          color: transparent;
+          user-select: none;
+          cursor: default;        
+        }   
+      }
+    }
+  }
+
+  &.backup-create {
+    max-width: 356px;
+    text-align: center;
+
+    .phrase {
+      font-size: 18px;
+      font-weight: 600;
+      padding: 28px 0;
     }
 
-    &.backup-create {
-        max-width: 356px;
-        text-align: center;
-        .phrase {
-            font-size: 18px;
-            font-weight: 600;
-            padding: 28px 0px;
-        }
-        .warning-text {
-            margin-top: 26px;
-            font-size: 14px;
-            color: $text-color;
-        }
+    .warning-text {
+      margin-top: 26px;
+      font-size: 14px;
+      color: $text-color;
     }
+  }
 
-    &.backup-confirmation {
-        max-width: 376px;
-    }
+  &.backup-confirmation {
+    max-width: 376px;
+  }
 }

@@ -3,8 +3,8 @@
       <div class="title">{{'BLOCK'|translate}}</div>
       <app-divider></app-divider>
       <div class="link">{{block.number}}</div>
-      <div><p class="aer-small">{{block.timestamp}} Wednesday, February 22, 2018 3:42 PM</p></div>
-      <div class="age">({{block.timestamp}}34 {{'SECONDS_AGO'|translate}})</div>
+      <div><p class="aer-small">{{block.timestamp | transactionTimeStamp  }} </p></div>
+      <div class="age">({{block.timestamp | transactionTimeAgo  }}</div>
   
       <div class="transaction-table">
         <div class="tr">
@@ -12,7 +12,7 @@
             {{'TXNS'|translate}}
           </div>
           <div class="value">
-            {{block.transactions.length}} {{'TXNS'|translate}} {{'AND'|translate}} {{block.contracts}} {{'CONTRACT_INTERNAL_TXNS'|translate}}
+            {{block.transactions.length}}
           </div>
         </div>
         <div class="tr">
@@ -33,14 +33,6 @@
         </div>
         <div class="tr">
           <div class="name">
-            {{'SIGNED_BY'|translate}}
-          </div>
-          <div class="value">
-              {{block.signedBy}}
-          </div>
-        </div>
-        <div class="tr">
-          <div class="name">
             {{'SIZE'|translate}}
           </div>
           <div class="value">
@@ -52,7 +44,7 @@
             {{'GAS_USED'|translate}}
           </div>
           <div class="value">
-              {{block.gasUsed}}
+              {{block.gasUsed | convertToEther  }}
           </div>
         </div>
         <div class="tr">
@@ -60,7 +52,7 @@
             {{'GAS_LIMIT'|translate}}
           </div>
           <div class="value">
-              {{block.gasLimit}}
+              {{block.gasLimit | convertToEther  }}
           </div>
         </div>
         <div class="tr">
@@ -73,18 +65,10 @@
         </div>
         <div class="tr">
             <div class="name">
-              {{'BLOCK_REWARD'|translate}}
-            </div>
-            <div class="value">
-                {{block.blockReward}}
-            </div>
-        </div>
-        <div class="tr">
-            <div class="name">
               {{'EXTRA_DATA'|translate}}
             </div>
             <div class="value">
-                {{block.extraData}}
+                {{block.extraData  | hexToText  }}
             </div>
         </div>
       </div>

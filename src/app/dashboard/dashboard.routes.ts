@@ -18,7 +18,7 @@ export const DASHBOARD_ROUTES = [
             }
         ]
     }
-]
+];
 
 @NgModule({
     imports: [RouterModule.forChild(DASHBOARD_ROUTES)],

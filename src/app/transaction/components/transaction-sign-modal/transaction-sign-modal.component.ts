@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { PasswordValidator } from '../../../shared/helpers/validator.password';
-import { AuthenticationService } from '../../services/authentication-service/authentication.service';
+import { AuthenticationService } from '../../../account/services/authentication-service/authentication.service';
 
 export interface BasicModalContext {
   param?: any;
@@ -27,25 +27,14 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
             }
   }
 
-  ngOnInit() {
-    this.unlockAccountForm = this.formBuilder.group({
-    //	password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ]
-    password: [ null, [Validators.required, Validators.minLength(5) ] ]
-		});
-  }  	
+  ngOnInit() {}  	
 
-  onSubmit(){
-    this.authServ.unencryptKeystore( this.unlockAccountForm.controls['password'].value ).then( (v) => {
-      if(v) {
-        this.dialog.close( v );
-      }
-    }, (err) => {
-      alert("error - is this password correct?" + err);
-    })
+  accept(){
+    this.dialog.close(true);
   }
 
-  dismiss(): void {
-    this.dialog.dismiss();
+  dismiss() {
+    this.dialog.close(false);
   }
 
 

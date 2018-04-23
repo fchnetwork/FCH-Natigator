@@ -29,14 +29,14 @@ export class BackupConfirmComponent implements OnInit {
     this.initializeSeedArrays();
   }
 
-  public confirm() {
-    let data = this.routeDataService.routeData;
+  confirm() {
+    const data = this.routeDataService.routeData;
     this.authService.saveKeyStore( data.privateKey, data.password, this.seed);
     this.routeDataService.clear();
     this.router.navigate(['/transaction']);
   }
 
-  public clear() {
+  clear() {
     this.initializeSeedArrays();
   }
 
@@ -75,8 +75,8 @@ export class BackupConfirmComponent implements OnInit {
 
   private shuffleArray(arr) {
 		for (let c = arr.length - 1; c > 0; c--) {
-			let b = Math.floor(Math.random() * (c + 1));
-			let a = arr[c];
+			const b = Math.floor(Math.random() * (c + 1));
+			const a = arr[c];
 			arr[c] = arr[b];
 			arr[b] = a;
 		}

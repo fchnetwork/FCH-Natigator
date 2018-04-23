@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import { HexToTextPipe } from './hex-to-text.pipe';
+import { GenerateAvatarPipe } from './generate-avatar.pipe';
 
-describe('Pipe: HexToTexte', () => {
+describe('Pipe: GenerateAvatare', () => {
   it('create an instance', () => {
-    let pipe = new HexToTextPipe();
+    let pipe = new GenerateAvatarPipe();
     expect(pipe).toBeTruthy();
   });
 });
