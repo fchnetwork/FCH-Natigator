@@ -19,8 +19,7 @@ export class AeroToErc20SwapServiceService {
     this.contract = new this.web3.eth.Contract(abi, environment.contracts.swap.address.AeroToErc20);
   }
 
-  async openSwap(swapId: string, aeroTrader: string, aeroValueInGwei: number, erc20Value: number, erc20Trader: string, erc20ContractAddress: string) {
-
+  async openSwap(caller: string, swapId: string, aeroValueInGwei: number, erc20Value: number, erc20Trader: string, erc20ContractAddress: string) {
     const openSwap = this.contract.methods.open(
       this.web3.utils.hexToAscii(swapId),
       // NOTE: we don't support decimals here as ERC20 doen't require decimals
@@ -28,27 +27,48 @@ export class AeroToErc20SwapServiceService {
       erc20Trader,
       erc20ContractAddress
     );
-
-    const tx = await this.calculateCallOptions(openSwap, aeroTrader, aeroValueInGwei);
-    const response = await openSwap.call(tx);
-
-    console.log(response);
+    const response = await this.execute(openSwap, caller);
   }
 
-  private async calculateCallOptions(callObject: TransactionObject<any>, from: string, aeroValueInGwei: number) : Promise<Tx> {
+  async closeSwap(caller: string, swapId: string) {
+    const closeSwap = this.contract.methods.close(this.web3.utils.hexToAscii(swapId));
+    const response = await this.execute(closeSwap, caller);
+  }
+
+  async expireSwap(caller: string, swapId: string) {
+    const expireSwap = this.contract.methods.expire(this.web3.utils.hexToAscii(swapId));
+    const response = await this.execute(expireSwap, caller);
+  }
+
+  async checkSwap(caller: string, swapId: string) {
+    const checkSwap = this.contract.methods.check(this.web3.utils.hexToAscii(swapId));
+    const response = await this.execute(checkSwap, caller);
+  }
+
+  private async execute(transaction: TransactionObject<any>, caller: string, aeroValueInGwei = 0) {
+    const tx = await this.calculateTransactionOptions(transaction, caller, aeroValueInGwei);
+    const response = await transaction.call(tx);
+
+    // TODO: Remove later
+    console.log(response);
+
+    return response;
+  }
+
+  private async calculateTransactionOptions(transaction: TransactionObject<any>, caller: string, aeroValueInGwei = 0) : Promise<Tx> {
     
     // NOTE: shannon is Gwei as per this link http://ethdocs.org/en/latest/ether.html
     const aeroValueInWei = this.web3.utils.toWei(aeroValueInGwei, 'shannon');
-    const maxContractGas = this.web3.utils.toWei(16, 'shannon');
-    const contractGasThresholdInWei = 1000;
+    const maxContractGasInWei = this.web3.utils.toWei(16, 'shannon');
+    const contractGasThresholdInWei = this.web3.utils.toWei(1, 'shannon');
 
     const getGasPrice = await this.web3.eth.getGasPrice();
-    const getEstimatedGas = callObject.estimateGas({ from, value: aeroValueInWei });
+    const getEstimatedGas = transaction.estimateGas({ from: caller, value: aeroValueInWei });
 
     const [gasPrice, estimatedGas] = await Promise.all([getGasPrice, getEstimatedGas]);
 
     return { 
-      from,
+      from: caller,
       value: aeroValueInWei,
       gasPrice,
       gas: estimatedGas + contractGasThresholdInWei
