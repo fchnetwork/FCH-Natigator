@@ -32,7 +32,8 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
     this.getTokenInfo();
 
     this.addTokenForm.controls['tokenAddress'].valueChanges.subscribe( (res) => {
-      this.getTokenInfo();
+      console.log(res);
+      this.getTokenInfo(res);
     });
 
   }
@@ -49,9 +50,9 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
     }
   }
 
-  getTokenInfo() {
+  getTokenInfo(address) {
     // const address = "0x8414d0b6205d82100f694be759e40a16e31e8d40";
-    const tokensInfo = this.tokenService.getTokensInfo(this.addTokenForm.value.tokenAddress).then(res=>{
+    const tokensInfo = this.tokenService.getTokensInfo(address).then(res=>{
       console.log(res);
       this.tokenSymbol = res.symbol;
       this.decimals = res.decimals;
