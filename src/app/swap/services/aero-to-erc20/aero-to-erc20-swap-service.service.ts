@@ -1,22 +1,30 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
 import { environment } from 'environments/environment';
 
 import Web3 from 'web3';
-import { Contract, Tx, TransactionObject } from 'web3/types';
+import { Contract, Tx, TransactionObject, EventLog } from 'web3/types';
 const abi = require('./abi/AtomicSwapEtherToERC20.json');
 
 @Injectable()
 export class AeroToErc20SwapServiceService {
 
-  web3: Web3;
-  contract: Contract;
+  private web3: Web3;
+  private contract: Contract;
+  private eventSubject = new Subject<EventLog | Error>();
+
+  events: Observable<EventLog | Error>;
 
   constructor(private authenticationService: AuthenticationService) { 
     this.web3 = this.authenticationService.initWeb3();
 
     this.contract = new this.web3.eth.Contract(abi, environment.contracts.swap.address.AeroToErc20);
+    this.contract.events.allEvents({ fromBlock: 'latest' }, (error, event) => this.eventSubject.next(error || event));
+
+    this.events = this.eventSubject.asObservable();
   }
 
   async openSwap(caller: string, swapId: string, aeroValueInGwei: number, erc20Value: number, erc20Trader: string, erc20ContractAddress: string) {
