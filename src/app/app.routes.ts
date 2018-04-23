@@ -14,7 +14,7 @@ import { AccountModule } from './account/account.module';
 import { BackupPromptComponent } from './account/backup-prompt/backup-prompt.component';
 import { ACCOUNT_ROUTES } from './account/account.routes';
 import { DASHBOARD_ROUTES } from './dashboard/dashboard.routes';
-import { ExplorerModule } from '@explorer/explorer.module'
+import { ExplorerModule } from '@explorer/explorer.module';
 import { EXPLORER_ROUTES } from './explorer/explorer.routes';
 
 export const ROUTES = [
