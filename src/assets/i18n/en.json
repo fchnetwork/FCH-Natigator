@@ -122,8 +122,10 @@
 "RECEIVE_TO": "Receive To",
 "TRANSACTIONS": "Transactions",
 "BASIC_TRANSACTION":"Basic Transaction",
-"SEND_RECEIVE":"Send & Receive"
-
+"SEND_RECEIVE":"Send & Receive",
+"AERO_TO_ERC20":"Aero to Token",
+"ERC20_TO_AERO":"Token to Aero",
+"ERC20_TO_ERC20":"Token to Token"
 }
 
 

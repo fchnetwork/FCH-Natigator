@@ -14,8 +14,11 @@ import { AccountModule } from './account/account.module';
 import { BackupPromptComponent } from './account/backup-prompt/backup-prompt.component';
 import { ACCOUNT_ROUTES } from './account/account.routes';
 import { DASHBOARD_ROUTES } from './dashboard/dashboard.routes';
-import { ExplorerModule } from '@explorer/explorer.module'
+import { ExplorerModule } from '@explorer/explorer.module';
 import { EXPLORER_ROUTES } from './explorer/explorer.routes';
+import { AeroToErc20Component } from '@app/swap/components/aero-to-erc20/aero-to-erc20.component';
+import { Erc20ToAeroComponent } from '@app/swap/components/erc20-to-aero/erc20-to-aero.component';
+import { Erc20ToErc20Component } from '@app/swap/components/erc20-to-erc20/erc20-to-erc20.component';
 
 export const ROUTES = [
   {
@@ -62,6 +65,21 @@ export const ROUTES = [
     path: 'transaction',
     canActivate: [CanActivateViaAuthGuard], // leave this here!!!
     component: CreateTransactionComponent,
+  },
+  {
+    path: 'swap/aero-to-erc20',
+    canActivate: [CanActivateViaAuthGuard], // NOTE: Use the same guard as transactions
+    component: AeroToErc20Component,
+  },
+  {
+    path: 'swap/erc20-to-aero',
+    canActivate: [CanActivateViaAuthGuard], // NOTE: Use the same guard as transactions
+    component: Erc20ToAeroComponent,
+  },
+  {
+    path: 'swap/erc20-to-erc20',
+    canActivate: [CanActivateViaAuthGuard], // NOTE: Use the same guard as transactions
+    component: Erc20ToErc20Component,
   },
   { 
     path: '**',
