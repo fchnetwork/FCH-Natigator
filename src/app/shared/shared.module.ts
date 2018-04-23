@@ -20,7 +20,11 @@ import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/si
 import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
 import { TransactionTimeStampPipe } from '@shared/pipes/transaction-time-stamp.pipe';
 import { HexToTextPipe } from '@shared/pipes/hex-to-text.pipe';
-import { SafeResourceUrlPipe } from '@shared/pipes/safeResourceUrl.pipe'
+
+import { SafeResourceUrlPipe } from '@shared/pipes/safeResourceUrl.pipe';
+import { SafeUrlPipe } from '@shared/pipes/safeUrl.pipe';
+import { SafeHTMLPipe } from '@shared/pipes/safeHTML.pipe';
+
 import { GenerateAvatarPipe } from '@app/shared/pipes/generate-avatar.pipe';
 import { OrderbyPipe } from '@shared/pipes/orderby.pipe'
 import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe'
@@ -53,6 +57,8 @@ export function createTranslateLoader(http: HttpClient) {
     TransactionTimeStampPipe,
     HexToTextPipe,
     SafeResourceUrlPipe,
+    SafeUrlPipe,
+    SafeHTMLPipe,
     GenerateAvatarPipe,
     OrderbyPipe,
     ConvertToEtherPipe,
@@ -74,6 +80,8 @@ export function createTranslateLoader(http: HttpClient) {
     TransactionTimeStampPipe,
     HexToTextPipe,
     SafeResourceUrlPipe,
+    SafeUrlPipe,
+    SafeHTMLPipe,
     GenerateAvatarPipe,
     OrderbyPipe,
     ConvertToEtherPipe,
