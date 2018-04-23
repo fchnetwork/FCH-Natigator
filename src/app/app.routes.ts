@@ -16,6 +16,7 @@ import { ACCOUNT_ROUTES } from './account/account.routes';
 import { DASHBOARD_ROUTES } from './dashboard/dashboard.routes';
 import { ExplorerModule } from '@explorer/explorer.module';
 import { EXPLORER_ROUTES } from './explorer/explorer.routes';
+import { DIAGNOSTICS_ROUTES } from './diagnostics/diagnostics.routes';
 
 export const ROUTES = [
   {
@@ -63,6 +64,10 @@ export const ROUTES = [
     canActivate: [CanActivateViaAuthGuard], // leave this here!!!
     component: CreateTransactionComponent,
   },
+  {
+    path: 'diagnostics',
+    children: DIAGNOSTICS_ROUTES
+  },  
   { 
     path: '**',
     redirectTo: '/dashboard'
