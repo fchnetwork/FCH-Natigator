@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ExplorerService } from '@explorer/services/explorer.service';
 import { iTransaction, iBlocks } from '@shared/app.interfaces';
 import { ModalService } from '@shared/services/modal.service';
+import { setInterval } from 'timers';
 
 
 @Component({
@@ -14,11 +15,16 @@ import { ModalService } from '@shared/services/modal.service';
 export class BlocksComponent implements OnInit {
 
   blocks: iBlocks[];
-  maxBlocks: number = 150;
+  maxBlocks: number = 50;
 
   lowBlock: number;
   highBlock: number;
   countblocks: number;
+
+  order: number;
+  column: string = 'number';
+  descending: boolean = false;
+
 
   constructor(
     public exploreSrv: ExplorerService,
@@ -26,12 +32,23 @@ export class BlocksComponent implements OnInit {
     private modal: ModalService) {}
 
   ngOnInit() {
+    this.getLatestBlocks();
+  }
+
+
+  sort(){
+    this.descending = !this.descending;
+    this.order = this.descending ? 1 : -1;
+  }
+
+
+  getLatestBlocks(){
     this.blocks = [];
     this.exploreSrv.getBlock().subscribe( async currentBlock => {
       for (var i = 0; i < this.maxBlocks; ++i) {
           this.exploreSrv.web3.eth.getBlock( currentBlock - i, (error, result) => {
             if(!error) {
-              this.blocks.push(result );  
+              this.blocks.push(result );
               this.lowBlock    = this.blocks[0].number;
               this.highBlock   = this.blocks[this.blocks.length-1].number;
               this.countblocks = this.blocks.length;

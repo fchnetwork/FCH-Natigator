@@ -26,8 +26,11 @@
           </div>
       </div>
     </div>
-    <div class="show-more-label-div">
+    <div *ngIf="!showedAll" class="show-more-label-div">
       <div class="show-more-label" (click)="showTransactions()">{{'SHOW_MORE'|translate}}</div>
+    </div>
+    <div *ngIf="showedAll" class="show-more-label-div">
+      <div class="show-more-label" (click)="hideTransactions()">{{'SHOW_LESS'|translate}}</div>
     </div>
   </div>
 </div>

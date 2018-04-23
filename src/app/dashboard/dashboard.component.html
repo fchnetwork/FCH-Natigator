@@ -26,6 +26,7 @@
     <aer-sidebar-item iconName="transaction" [routerLink]="['/explorer/transactions']">{{'TXNS'|translate}}</aer-sidebar-item>
     <aer-sidebar-item iconName="pending" [routerLink]="['/explorer/pending']">{{'PENDING_TXNS'|translate}}</aer-sidebar-item>
   </aer-sidebar-group>
+  <button (click)="logout()">Logout</button>
 </aer-sidebar>
 <aer-toolbar>
 
