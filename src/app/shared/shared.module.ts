@@ -29,6 +29,7 @@ import { GenerateAvatarPipe } from '@app/shared/pipes/generate-avatar.pipe';
 import { OrderbyPipe } from '@shared/pipes/orderby.pipe';
 import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
 import { DashboardRoutingModule } from '@app/dashboard/dashboard.routes';
+import { AppUIModule } from '@app/app.ui.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -39,6 +40,7 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     CommonModule,
     ModalModule.forRoot(),
+    AppUIModule,
     BootstrapModalModule,
     DashboardRoutingModule,
     TranslateModule.forChild({

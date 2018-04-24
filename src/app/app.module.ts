@@ -21,6 +21,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TransactionModule } from "./transaction/transaction.module";
 import { BasicModalComponent } from "./shared/components/modals/basic-modal/basic-modal.component";
+import { LoggedInComponent } from './logged-in/logged-in.component';
  
 const modalComponents = [BasicModalComponent];
 @NgModule({
@@ -46,7 +47,8 @@ const modalComponents = [BasicModalComponent];
   declarations: [
     AppComponent,
     modalComponents,
-  ],
+    LoggedInComponent
+],
   providers: [],
   bootstrap: [AppComponent]
 })

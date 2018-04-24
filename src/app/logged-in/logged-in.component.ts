@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: 'app-logged-in',
+  templateUrl: './logged-in.component.html',
+  styleUrls: ['./logged-in.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class LoggedInComponent implements OnInit {
 
   constructor(
     private authService: AuthenticationService
@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
   logout() {
     this.authService.logout();
   }
-  
+
   ngOnInit() {
   }
 
