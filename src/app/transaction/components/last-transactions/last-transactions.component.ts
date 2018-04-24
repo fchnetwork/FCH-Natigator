@@ -20,7 +20,7 @@ export class LastTransactionsComponent implements OnInit {
       this.transactions = this.sessionStorage.retrieve('transactions');
     },3000);
     setInterval(()=>{
-      if(this.transactions[Number(this.transactions.length - 1)].data === 'Pending transaction') {
+      if(this.transactions.length > 0 && this.transactions[Number(this.transactions.length - 1)].data === 'Pending transaction') {
         this.transactionService.updateTransactionsStatuses(this.transactions);
       }
     }, 5000);

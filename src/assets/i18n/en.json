@@ -141,6 +141,9 @@
 "LOAD_SWAP":"Load",
 "CANCEL_SWAP":"Cancel",
 "CLOSE_SWAP":"Close"
+"OVERVIEW":"Overview",
+"DASHBOARD": {
+  "TITLE": "Account Overview"}
 }
 
 

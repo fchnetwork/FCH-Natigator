@@ -14,7 +14,7 @@ pipelines:
           - node
         script:
           - npm install 
-          - npm run-script build:prod
+          - npm run-script build:dev
         artifacts:
           - build/**  
   branches: 
@@ -26,21 +26,8 @@ pipelines:
           script:
             - npm run update:ui
             - npm install
-            - npm run-script build:prod 
-          artifacts:
-            - build/**     
-      - step:
-          name: Tarball the project
-          script: 
+            - npm run-script build:dev 
             - tar -czvf ./dist.tar.gz ./build/dist
-          artifacts:
-            - dist.tar.gz  
-      - step:
-          name: Transfer to the server
-          script:
             - apt-get update && apt-get install -y rsync
-            - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/ 
-      - step:
-          name: Unzip folder on remote dev server
-          script:
-            - ssh -p 22 root@dev.aerum.net "bash builder.sh"            
+            - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/
+            - ssh -p 22 root@dev.aerum.net "bash builder.sh"

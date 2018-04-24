@@ -7,6 +7,7 @@ import { BackupDisclamerComponent } from '../../account/backup-disclamer/backup-
 import { TransactionSignModalComponent } from '../../transaction/components/transaction-sign-modal/transaction-sign-modal.component';
 import { BlockModalComponent } from '../../explorer/components/block/block-modal/block-modal.component';
 import { TransactionModalComponent } from '../../explorer/components/transaction/transaction-modal/transaction-modal.component';
+import { AddTokenComponent } from '@app/dashboard/components/add-token/add-token.component';
 
 @Injectable()
 export class ModalService {
@@ -36,6 +37,10 @@ export class ModalService {
 
   openTransactionConfirm(data?: any): Promise<any> {
     return this.openModal(TransactionSignModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
+  }
+
+  openAddToken(data?: any): Promise<any> {
+    return this.openModal(AddTokenComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
   
   openBlock(blockNumber: any = null, block: any = null): Promise<any> {

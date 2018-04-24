@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from './account/services/authentication-service/authentication.service';
 import { AccountIdleService } from './shared/services/account-idle.service';
 import { environment } from '../environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +16,12 @@ export class AppComponent implements OnInit {
   constructor(
     public authServ: AuthenticationService,
     private idle: AccountIdleService,
-    private translate: TranslateService) {
-
+    private translate: TranslateService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    console.log(this.router.routerState.snapshot.url);
     this.initTranslate();
-    
-    console.log(environment.cookiesDomain);
     
     this.authServ.authState().subscribe(res => {
       // this.router.navigate(['/transaction']); 

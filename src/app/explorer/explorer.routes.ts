@@ -8,9 +8,11 @@ import { Error404Component } from '../shared/components/error404/error404.compon
 import { BlocksComponent } from './components/blocks/blocks.component';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 import { NgModule } from "@angular/core";
+import { LoggedInComponent } from '@app/logged-in/logged-in.component';
 
 export const EXPLORER_ROUTES: Routes = [{
 path: '',
+component: LoggedInComponent,
 children: [
       {
         path: '',
@@ -37,7 +39,7 @@ children: [
         component: AddressComponent
       },
       {
-        path: 'pending',
+        path: 'transactions/pending',
         component: PendingTxnsComponent
       }
 ]

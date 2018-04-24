@@ -45,3 +45,17 @@ export interface iBlocks {
     "r": string;
     "s": string;
   }
+
+
+
+  export interface iPendingTxn {
+    "blockHash": string; 
+    "from": string; 
+    "to": string; 
+    "gas": string;
+    "gasPrice": string;
+    "hash": string;
+    "nonce": number; 
+    "transactionIndex": string;
+    "value": string; 
+  }
