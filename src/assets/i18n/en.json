@@ -124,7 +124,7 @@
 "BASIC_TRANSACTION":"Basic Transaction",
 "SEND_RECEIVE":"Send & Receive",
 "DIAGNOSTICS":"Diagnostics",
-"OVERVIEW":"Overview",
+"SWAP_CRYPTO":"Swap Crypto",
 "AERO_TO_ERC20":"Aero to Token",
 "ERC20_TO_AERO":"Token to Aero",
 "ERC20_TO_ERC20":"Token to Token",
@@ -140,7 +140,7 @@
 "MANAGE_SWAP":"Manage",
 "LOAD_SWAP":"Load",
 "CANCEL_SWAP":"Cancel",
-"CLOSE_SWAP":"Close"
+"CLOSE_SWAP":"Close",
 "OVERVIEW":"Overview",
 "DASHBOARD": {
   "TITLE": "Account Overview"}
