@@ -17,10 +17,7 @@ import { ExplorerModule } from '@explorer/explorer.module';
 import { EXPLORER_ROUTES } from './explorer/explorer.routes';
 import { DIAGNOSTICS_ROUTES } from './diagnostics/diagnostics.routes';
 import { TRANSACTION_ROUTES } from '@app/transaction/transaction.routes';
-
-import { AeroToErc20Component } from '@app/swap/components/aero-to-erc20/aero-to-erc20.component';
-import { Erc20ToAeroComponent } from '@app/swap/components/erc20-to-aero/erc20-to-aero.component';
-import { Erc20ToErc20Component } from '@app/swap/components/erc20-to-erc20/erc20-to-erc20.component';
+import { SWAP_ROUTES } from '@app/swap/swap.routes';
 
 export const ROUTES = [
   {
@@ -72,19 +69,9 @@ export const ROUTES = [
     children: DIAGNOSTICS_ROUTES
   },  
   {
-    path: 'swap/aero-to-erc20',
+    path: 'swap',
     canActivate: [CanActivateViaAuthGuard], // NOTE: Use the same guard as transactions
-    component: AeroToErc20Component,
-  },
-  {
-    path: 'swap/erc20-to-aero',
-    canActivate: [CanActivateViaAuthGuard], // NOTE: Use the same guard as transactions
-    component: Erc20ToAeroComponent,
-  },
-  {
-    path: 'swap/erc20-to-erc20',
-    canActivate: [CanActivateViaAuthGuard], // NOTE: Use the same guard as transactions
-    component: Erc20ToErc20Component,
+    children: SWAP_ROUTES
   },
   { 
     path: '**',
