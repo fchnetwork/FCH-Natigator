@@ -165,6 +165,7 @@ export class AuthenticationService {
     login(password) {
         this.unencryptKeystore(password).then( result => {
             this.sessionStorage.store('acc_address', result.web3.address);
+            this.sessionStorage.store('acc_avatar',  this.generateCryptedAvatar( result.web3.address ) );
             this.sessionStorage.store('seed', result.s);
             this.sessionStorage.store('private_key', result.web3.privateKey);
             this.sessionStorage.store('password', password);
