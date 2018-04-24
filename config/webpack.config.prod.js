@@ -583,7 +583,7 @@ module.exports = {
       "mainPath": "main.ts",
       "platform": 0,
       "hostReplacementPaths": {
-        "environments/environment.ts": "environments/environment.prod.ts"
+        "environments/environment.ts": "environments/environment.uat.ts"
       },
       "sourceMap": false,
       "tsConfigPath": "src/tsconfig.app.json",
