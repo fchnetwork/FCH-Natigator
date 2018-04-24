@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  HttpProvider: "http://52.51.85.249:8545",
-  // HttpProvider: "http://127.0.0.1:8545",
+  // HttpProvider: "http://52.51.85.249:8545",
+  HttpProvider: "http://127.0.0.1:8545",
   cookiesDomain: "localhost",
 };

@@ -26,8 +26,11 @@ import { SafeUrlPipe } from '@shared/pipes/safeUrl.pipe';
 import { SafeHTMLPipe } from '@shared/pipes/safeHTML.pipe';
 
 import { GenerateAvatarPipe } from '@app/shared/pipes/generate-avatar.pipe';
-import { OrderbyPipe } from '@shared/pipes/orderby.pipe'
-import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe'
+import { OrderbyPipe } from '@shared/pipes/orderby.pipe';
+import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
+import { HextoAsciiPipe } from '@shared/pipes/hextoAscii.pipe';
+import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
+
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -62,6 +65,8 @@ export function createTranslateLoader(http: HttpClient) {
     GenerateAvatarPipe,
     OrderbyPipe,
     ConvertToEtherPipe,
+    HextoAsciiPipe,
+    HextoDecimalPipe,
   ],
   providers: [
     ModalService,
@@ -85,6 +90,8 @@ export function createTranslateLoader(http: HttpClient) {
     GenerateAvatarPipe,
     OrderbyPipe,
     ConvertToEtherPipe,
+    HextoAsciiPipe,
+    HextoDecimalPipe,
   ]
 })
 
