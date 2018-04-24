@@ -21,7 +21,7 @@
             <div class="row">
               <div class="col-sm-8">
                 <div class="input-name">{{'SWAP_AERO_AMOUT'|translate}}</div>
-                <aer-input icon="aerum" [(ngModel)]="aeroAmount" ngDefaultControl></aer-input>
+                <aer-input icon="aerum" [(ngModel)]="aeroAmount" (keyup)="recalculateTokenAmount()" ngDefaultControl></aer-input>
               </div>
             </div>
             <div class="row">
@@ -39,19 +39,19 @@
             <div class="row">
               <div class="col-sm-8">
                 <div class="input-name">{{'SWAP_ERC20_TOKEN_VALUE'|translate}}</div>
-                <aer-input [(ngModel)]="tokenValue" ngDefaultControl></aer-input>
+                <aer-input [(ngModel)]="tokenAmount" (keyup)="recalculateTokenPrice()" ngDefaultControl></aer-input>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-8">
                 <div class="input-name">{{'SWAP_ERC20_TOKEN_PRICE'|translate}}</div>
-                <aer-input [(ngModel)]="tokenPrice" ngDefaultControl></aer-input>
+                <aer-input [(ngModel)]="tokenPrice" (keyup)="recalculateTokenAmount()" ngDefaultControl></aer-input>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-12">
                 <div class="footer-buttons">
-                  <aer-button class="normal blue" (buttonFn)="createSwap()">{{'CREATE_SWAP'|translate}}</aer-button>
+                  <aer-button class="normal blue" (buttonFn)="createSwap()">{{'CREATE_SWAP_BUTTON'|translate}}</aer-button>
                 </div>
               </div>
             </div>

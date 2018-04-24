@@ -8,8 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppUIModule } from '@app/app.ui.module';
 import { SharedModule } from '@app/shared/shared.module';
 
-import { AeroToErc20SwapServiceService } from '@app/swap/services/aero-to-erc20/aero-to-erc20-swap-service.service';
-import { Erc20ToErc20SwapServiceService } from '@app/swap/services/erc20-to-erc20/erc20-to-erc20-swap-service.service';
+import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20/aero-to-erc20-swap.service';
+import { Erc20ToErc20SwapService } from '@app/swap/services/erc20-to-erc20/erc20-to-erc20-swap.service';
 
 import { AeroToErc20Component } from './components/aero-to-erc20/aero-to-erc20.component';
 import { AeroToErc20SwapCreateComponent } from './components/aero-to-erc20/aero-to-erc20-swap-create/aero-to-erc20-swap-create.component';
@@ -47,8 +47,8 @@ export function createTranslateLoader(http: HttpClient) {
     Erc20ToErc20SwapManageComponent
   ],
   providers: [
-    AeroToErc20SwapServiceService,
-    Erc20ToErc20SwapServiceService
+    AeroToErc20SwapService,
+    Erc20ToErc20SwapService
   ]
 })
 export class SwapModule { }

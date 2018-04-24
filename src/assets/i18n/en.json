@@ -127,7 +127,20 @@
 "OVERVIEW":"Overview",
 "AERO_TO_ERC20":"Aero to Token",
 "ERC20_TO_AERO":"Token to Aero",
-"ERC20_TO_ERC20":"Token to Token"
+"ERC20_TO_ERC20":"Token to Token",
+"CREATE_SWAP":"Create Swap",
+"SWAP_ID":"Swap Id",
+"GENERATE_SWAP_ID":"Generate",
+"SWAP_AERO_AMOUT":"Aero amount",
+"SWAP_ERC20_TRADER":"Token owner",
+"SWAP_ERC20_TOKEN":"Token address",
+"SWAP_ERC20_TOKEN_VALUE":"Amount",
+"SWAP_ERC20_TOKEN_PRICE":"Price",
+"CREATE_SWAP_BUTTON":"Create",
+"MANAGE_SWAP":"Manage",
+"LOAD_SWAP":"Load",
+"CANCEL_SWAP":"Cancel",
+"CLOSE_SWAP":"Close"
 }
 
 
