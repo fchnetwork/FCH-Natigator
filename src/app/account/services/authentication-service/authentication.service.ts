@@ -133,10 +133,17 @@ export class AuthenticationService {
                 const decryptSeed = CryptoJS.AES.decrypt( Cookie.get('aerum_base'), password );
                 const transactions = Cookie.get('transactions');
                 let plainTextTransactions = [];
+                const tokens = Cookie.get('tokens');
+                let plainTextTokens = [];
 
                 if(transactions) {
                     const decryptTransactions = CryptoJS.AES.decrypt( transactions, password );
                     plainTextTransactions = decryptTransactions.toString(CryptoJS.enc.Utf8);
+                }
+
+                if(tokens) {
+                    const decryptTokens = CryptoJS.AES.decrypt( tokens, password );
+                    plainTextTokens = decryptTokens.toString(CryptoJS.enc.Utf8);
                 }
                 
                 const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
@@ -144,7 +151,7 @@ export class AuthenticationService {
                 if( encryptAccount ) {
                     const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
                     const seed = this.seedCleaner(plaintext);
-                    resolve( { web3: encryptAccount, s:seed, transactions: plainTextTransactions } );
+                    resolve( { web3: encryptAccount, s:seed, transactions: plainTextTransactions, tokens: plainTextTokens } );
                 } 
                 else {
                     reject("no keystore found or password incorrect");
@@ -162,6 +169,7 @@ export class AuthenticationService {
             this.sessionStorage.store('private_key', result.web3.privateKey);
             this.sessionStorage.store('password', password);
             this.sessionStorage.store('transactions', result.transactions.length ? JSON.parse(result.transactions) : []);
+            this.sessionStorage.store('tokens', result.tokens.length ? JSON.parse(result.tokens) : []);
             this.router.navigate(['/transaction']);
         });
     }

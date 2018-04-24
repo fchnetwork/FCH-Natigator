@@ -31,6 +31,7 @@ import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
 import { HextoAsciiPipe } from '@shared/pipes/hextoAscii.pipe';
 import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 
+import { DashboardRoutingModule } from '@app/dashboard/dashboard.routes';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -42,13 +43,14 @@ export function createTranslateLoader(http: HttpClient) {
     CommonModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
+    DashboardRoutingModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    })
+    }),
   ],
   declarations: [
     I18nComponent,

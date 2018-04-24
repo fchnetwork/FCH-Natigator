@@ -19,9 +19,11 @@ export class LastTransactionsComponent implements OnInit {
     setInterval(()=>{
       this.transactions = this.sessionStorage.retrieve('transactions');
     },3000);
-    setTimeout(()=>{
-      this.transactionService.updateTransactionsStatuses(this.transactions);
-    }, 4000);
+    setInterval(()=>{
+      if(this.transactions.length > 0 && this.transactions[Number(this.transactions.length - 1)].data === 'Pending transaction') {
+        this.transactionService.updateTransactionsStatuses(this.transactions);
+      }
+    }, 5000);
   }
 
   getICoin(amount) {
