@@ -37,7 +37,7 @@ children: [
         component: AddressComponent
       },
       {
-        path: 'pending',
+        path: 'transactions/pending',
         component: PendingTxnsComponent
       }
 ]
