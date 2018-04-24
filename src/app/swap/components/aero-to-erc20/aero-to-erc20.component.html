@@ -1,3 +1,86 @@
-<p>
-  aero-to-erc20 works!
-</p>
+<aer-toolbar>
+
+  <div class="content">
+    <div class="title">{{'SWAP_CRYPTO'|translate}}</div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="panel">
+          <div class="panel-header">
+            {{'CREATE_SWAP'|translate}}
+          </div>
+          <div class="panel-content">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-name">{{'SWAP_ID'|translate}}</div>
+                <aer-input [(ngModel)]="createSwapId" ngDefaultControl></aer-input>
+              </div>
+              <div class="col-sm-4">
+                <aer-button class="normal blue" (buttonFn)="generateSwapId()">{{'GENERATE_SWAP_ID'|translate}}</aer-button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-name">{{'SWAP_AERO_AMOUT'|translate}}</div>
+                <aer-input icon="aerum" [(ngModel)]="aeroAmount" ngDefaultControl></aer-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-name">{{'SWAP_ERC20_TRADER'|translate}}</div>
+                <aer-input [(ngModel)]="traderAddress" ngDefaultControl></aer-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-name">{{'SWAP_ERC20_TOKEN'|translate}}</div>
+                <aer-input [(ngModel)]="tokenAddress" ngDefaultControl></aer-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-name">{{'SWAP_ERC20_TOKEN_VALUE'|translate}}</div>
+                <aer-input [(ngModel)]="tokenValue" ngDefaultControl></aer-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-name">{{'SWAP_ERC20_TOKEN_PRICE'|translate}}</div>
+                <aer-input [(ngModel)]="tokenPrice" ngDefaultControl></aer-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="footer-buttons">
+                  <aer-button class="normal blue" (buttonFn)="createSwap()">{{'CREATE_SWAP'|translate}}</aer-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="panel min-width-470">
+          <div class="panel-header">
+            {{'MANAGE_SWAP'|translate }}
+          </div>
+          <div class="panel-content">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-name">{{'SWAP_ID'|translate}}</div>
+                <aer-input [(ngModel)]="loadSwapId" ngDefaultControl></aer-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="footer-buttons">
+                  <aer-button class="normal blue" (buttonFn)="loadSwap()">{{'LOAD_SWAP'|translate}}</aer-button>
+                  <aer-button class="normal" (buttonFn)="cancelSwap()">{{'CANCEL_SWAP'|translate}}</aer-button>
+                  <aer-button class="normal blue" (buttonFn)="closeSwap()">{{'CLOSE_SWAP'|translate}}</aer-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

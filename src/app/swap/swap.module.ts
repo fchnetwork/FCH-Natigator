@@ -1,6 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppUIModule } from '@app/app.ui.module';
+import { SharedModule } from '@app/shared/shared.module';
+
 import { AeroToErc20SwapServiceService } from '@app/swap/services/aero-to-erc20/aero-to-erc20-swap-service.service';
 import { Erc20ToErc20SwapServiceService } from '@app/swap/services/erc20-to-erc20/erc20-to-erc20-swap-service.service';
 
@@ -16,9 +23,17 @@ import { Erc20ToErc20Component } from './components/erc20-to-erc20/erc20-to-erc2
 import { Erc20ToErc20SwapCreateComponent } from './components/erc20-to-erc20/erc20-to-erc20-swap-create/erc20-to-erc20-swap-create.component';
 import { Erc20ToErc20SwapManageComponent } from './components/erc20-to-erc20/erc20-to-erc20-swap-manage/erc20-to-erc20-swap-manage.component';
 
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
+}
+
 @NgModule({
   imports: [
-    CommonModule
+    FormsModule,
+    AppUIModule,
+    CommonModule,
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [
     AeroToErc20Component,
