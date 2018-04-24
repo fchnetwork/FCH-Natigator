@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Guid } from "@shared/helpers/guid";
 import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20/aero-to-erc20-swap.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
+import { SessionStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'app-aero-to-erc20',
@@ -11,6 +12,7 @@ import { AuthenticationService } from '@app/account/services/authentication-serv
 export class AeroToErc20Component implements OnInit {
 
   currentAddress: string;
+  privateKey: string;
 
   createSwapId: string;
   aeroAmount: number;
@@ -23,7 +25,8 @@ export class AeroToErc20Component implements OnInit {
 
   constructor(
     private authService: AuthenticationService,
-    private contractService: AeroToErc20SwapService) 
+    private contractService: AeroToErc20SwapService,
+    private sessionService: SessionStorageService) 
     { }
 
   async ngOnInit() {
@@ -32,12 +35,14 @@ export class AeroToErc20Component implements OnInit {
     // TODO: Remove later
     console.log(`Current address: ${this.currentAddress}`);
 
+    this.privateKey = this.sessionService.retrieve('private_key');
+
     this.generateSwapId();
     this.aeroAmount = 0.1;
     this.traderAddress = this.currentAddress;
     this.tokenAddress = '0x8414d0b6205d82100f694be759e40a16e31e8d40';
-    this.tokenAmount = 0;
-    this.tokenPrice = 0;
+    this.tokenAmount = 1;
+    this.tokenPrice = 10;
   }
 
   generateSwapId() {
@@ -60,6 +65,7 @@ export class AeroToErc20Component implements OnInit {
 
   async createSwap() {
     await this.contractService.openSwap(
+      this.privateKey,
       this.currentAddress,
       this.createSwapId,
       this.aeroAmount.toString(10),
@@ -72,7 +78,25 @@ export class AeroToErc20Component implements OnInit {
     console.log('Swap Created');
   }
 
-  async loadSwap(){
-    const swap = await this.contractService.checkSwap(this.currentAddress, this.loadSwapId);
+  async loadSwap() {
+    const swap = await this.contractService.checkSwap(
+      this.privateKey,
+      this.currentAddress,
+      this.loadSwapId
+    );
+
+    // TODO: Remove later
+    console.log('Swap Loaded');
+  }
+
+  async cancelSwap() {
+    await this.contractService.expireSwap(
+      this.privateKey,
+      this.currentAddress,
+      this.loadSwapId
+    );
+
+    // TODO: Remove later
+    console.log('Swap Canceled');
   }
 }
