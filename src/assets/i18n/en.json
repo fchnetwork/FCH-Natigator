@@ -124,7 +124,10 @@
 "BASIC_TRANSACTION":"Basic Transaction",
 "SEND_RECEIVE":"Send & Receive",
 "DIAGNOSTICS":"Diagnostics",
-"OVERVIEW":"Overview"
+"OVERVIEW":"Overview",
+"DASHBOARD": {
+  "TITLE": "Account Overview"
+}
 }
 
 
