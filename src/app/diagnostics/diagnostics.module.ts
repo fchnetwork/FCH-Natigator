@@ -18,9 +18,7 @@ export function createTranslateLoader(http: HttpClient) {
 }
 
 @NgModule({
-    entryComponents: [
-
-    ],
+    entryComponents: [],
     imports: [
         FormsModule,
         AppUIModule,
@@ -42,8 +40,7 @@ export class DiagnosticsModule {
     static forRoot(): ModuleWithProviders {
       return {
         ngModule: DiagnosticsModule,
-        providers: [
-        ]
+        providers: []
       };
     }
   }

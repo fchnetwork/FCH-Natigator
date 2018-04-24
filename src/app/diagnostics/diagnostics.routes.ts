@@ -14,7 +14,6 @@ children: [
 ]
 }];
 
-
 @NgModule({
   imports: [RouterModule.forChild(DIAGNOSTICS_ROUTES)],
   exports: [RouterModule]

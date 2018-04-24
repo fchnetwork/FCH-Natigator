@@ -2,29 +2,27 @@
     <h1>{{'PENDING_TXNS'|translate}}</h1>
     <aer-card>
         <div class="dataTable-info-label">
-            <label>{{'TOTAL_OF_PENDING_TXNS'|translate: {transactionsCount: getTransactionsCount()} }}</label>
+            <label>{{'TOTAL_OF_PENDING_TXNS'|translate: {transactionsCount: transactions.length } }}</label>
         </div>
         <table>
             <thead>
                 <th class="">{{'TX_HASH'|translate}}</th>
-                <th class="">{{'LAST_SEEN'|translate}}</th>
-                <th class="">{{'GAS_LIMIT'|translate}}</th>
-                <th class="">{{'GAS_PRICE'|translate}}</th>
                 <th class="">{{'FROM'|translate}}</th>
                 <th class="arrow"></th>
                 <th class="">{{'TO'|translate}}</th>
+                <th class="">{{'GAS'|translate}}</th>
+                <th class="">{{'GAS_PRICE'|translate}}</th>                
                 <th class="">{{'VALUE'|translate}}</th>
             </thead>
             <tbody>
-                <tr *ngFor="let transaction of transactions">
-                    <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash}}</td>
-                    <td>{{transaction.lastSeen}} 2 {{'MINUTES_AGO'|translate}}</td>
-                    <td>{{transaction.gasLimit}}</td>
-                    <td>{{transaction.gasPrice}} {{'GWEI'|translate}}</td>
-                    <td class="link hash">{{transaction.from}}</td>
+                <tr *ngFor="let txn of transactions">
+                    <td class="link hash">{{txn.hash}}</td>
+                    <td class="link hash">{{txn.from}}</td>
                     <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>
-                    <td class="link hash">{{transaction.to}}</td>
-                    <td class="value">{{transaction.value}} {{'AETH'|translate}}</td>
+                    <td class="link hash">{{txn.to}}</td>
+                    <td>{{txn.gas | hextoDecimal }}</td>
+                    <td>{{txn.gasPrice | hextoDecimal}} {{'GWEI'|translate}}</td>                    
+                    <td class="value">{{txn.value | convertToEther}} {{'AETH'|translate}}</td>
                 </tr>
             </tbody>
         </table>
