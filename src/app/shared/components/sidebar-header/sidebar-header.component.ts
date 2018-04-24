@@ -25,7 +25,6 @@ export class SidebarHeaderComponent implements OnInit {
     //     this.address = this.sessionStorageService.retrieve('acc_address');
     //     this.avatar = avatars.create(this.address);
     //   });
-    }
   }
 
 }
