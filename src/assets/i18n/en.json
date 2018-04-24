@@ -122,8 +122,9 @@
 "RECEIVE_TO": "Receive To",
 "TRANSACTIONS": "Transactions",
 "BASIC_TRANSACTION":"Basic Transaction",
-"SEND_RECEIVE":"Send & Receive"
-
+"SEND_RECEIVE":"Send & Receive",
+"DIAGNOSTICS":"Diagnostics",
+"OVERVIEW":"Overview"
 }
 
 
