@@ -1,6 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardComponent } from './dashboard.component';
 import { AppUIModule } from '../app.ui.module';
 import { CurrentUserDisplayComponent } from './current-user-display/current-user-display.component';
 import { RouterModule } from '@angular/router';
@@ -26,7 +25,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule
   ],
   declarations: [
-    DashboardComponent,
     CurrentUserDisplayComponent,
     DashboardHomeComponent,
     AccountOverviewComponent,
@@ -34,7 +32,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AddTokenComponent,
   ],
   exports: [
-    DashboardComponent,
     AccountOverviewComponent,
     TokenListComponent,
     AddTokenComponent,

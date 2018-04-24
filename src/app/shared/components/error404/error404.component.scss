@@ -1,0 +1,38 @@
+.not-found {
+  background: linear-gradient(241deg, #6D5A82, #EFB199);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding-top: 25%;
+  color: #fff;
+
+  h1 {
+    margin-bottom: 0px;
+    font-size: 90px;
+    font-weight: bold;
+  }
+
+  p {
+    margin-top: 0;
+    font-size: 18px;
+  }
+
+  aer-icon {
+    font-size: 400px;
+  }
+
+  .left {
+    position: fixed;
+    top: -15%;
+    left: -15%;
+  }
+
+  .right {
+    position: fixed;
+    bottom: -25%;
+    right: -12%;
+  }
+}

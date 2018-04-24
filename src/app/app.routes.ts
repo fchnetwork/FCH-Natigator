@@ -3,7 +3,6 @@ import { LoginComponent } from './account/login/login.component';
 import { Error404Component } from './shared/components/error404/error404.component';
 import { CreateTransactionComponent } from './transaction/create-transaction/create-transaction.component';
 import { CanActivateViaAuthGuard } from './app.guard';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { RegisterComponent } from './account/register/register.component'; 
@@ -17,6 +16,7 @@ import { DASHBOARD_ROUTES } from './dashboard/dashboard.routes';
 import { ExplorerModule } from '@explorer/explorer.module';
 import { EXPLORER_ROUTES } from './explorer/explorer.routes';
 import { DIAGNOSTICS_ROUTES } from './diagnostics/diagnostics.routes';
+import { TRANSACTION_ROUTES } from '@app/transaction/transaction.routes';
 
 export const ROUTES = [
   {
@@ -38,11 +38,10 @@ export const ROUTES = [
     canActivate: [CanActivateViaAuthGuard],
     children: DASHBOARD_ROUTES
   },
-  // TODO: handle 404 with correct routing and views
-  // {
-  //   path: 'not-found',
-  //   component: Error404Component,
-  // },
+  {
+    path: 'not-found',
+    component: Error404Component,
+  },
   {
     path: 'backup-confirmation',
     component: BackupPromptComponent
@@ -62,7 +61,7 @@ export const ROUTES = [
   {
     path: 'transaction',
     canActivate: [CanActivateViaAuthGuard], // leave this here!!!
-    component: CreateTransactionComponent,
+    children: TRANSACTION_ROUTES,
   },
   {
     path: 'diagnostics',
@@ -70,7 +69,7 @@ export const ROUTES = [
   },  
   { 
     path: '**',
-    redirectTo: '/dashboard'
+    redirectTo: '/not-found'
   }
 ];
 

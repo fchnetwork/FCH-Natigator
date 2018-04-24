@@ -1,9 +1,11 @@
 import {Routes, RouterModule} from '@angular/router';
 import { NgModule } from "@angular/core";
 import { OverviewComponent } from './overview/overview.component';
+import { LoggedInComponent } from '@app/logged-in/logged-in.component';
 
 export const DIAGNOSTICS_ROUTES: Routes = [{
 path: '',
+component: LoggedInComponent,
 children: [
       {
         path: '',
