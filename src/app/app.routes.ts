@@ -16,6 +16,7 @@ import { ACCOUNT_ROUTES } from './account/account.routes';
 import { DASHBOARD_ROUTES } from './dashboard/dashboard.routes';
 import { ExplorerModule } from '@explorer/explorer.module';
 import { EXPLORER_ROUTES } from './explorer/explorer.routes';
+import { DIAGNOSTICS_ROUTES } from './diagnostics/diagnostics.routes';
 import { AeroToErc20Component } from '@app/swap/components/aero-to-erc20/aero-to-erc20.component';
 import { Erc20ToAeroComponent } from '@app/swap/components/erc20-to-aero/erc20-to-aero.component';
 import { Erc20ToErc20Component } from '@app/swap/components/erc20-to-erc20/erc20-to-erc20.component';
@@ -66,6 +67,10 @@ export const ROUTES = [
     canActivate: [CanActivateViaAuthGuard], // leave this here!!!
     component: CreateTransactionComponent,
   },
+  {
+    path: 'diagnostics',
+    children: DIAGNOSTICS_ROUTES
+  },  
   {
     path: 'swap/aero-to-erc20',
     canActivate: [CanActivateViaAuthGuard], // NOTE: Use the same guard as transactions

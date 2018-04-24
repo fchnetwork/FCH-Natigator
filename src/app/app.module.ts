@@ -11,6 +11,7 @@ import { AppRoutingModule } from "./app.routes";
 import { AccountModule } from "./account/account.module";
 import { SharedModule } from "./shared/shared.module";
 import { DashboardModule } from "./dashboard/dashboard.module";
+import { DiagnosticsModule } from "./diagnostics/diagnostics.module";
 
 import { AppUIModule } from "./app.ui.module";
 
@@ -35,6 +36,7 @@ const modalComponents = [BasicModalComponent];
     AccountModule,
     TransactionModule,
     SharedModule,
+    DiagnosticsModule,
     DashboardModule.forRoot(),
     SwapModule,
     // aerumUI modules
