@@ -9,13 +9,21 @@ import { SharedModule } from '../shared/shared.module';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 import { AccountOverviewComponent } from '@app/dashboard/components/account-overview/account-overview.component';
 import { TokenListComponent } from '@app/dashboard/components/token-list/token-list.component';
+import { AddTokenComponent } from '@app/dashboard/components/add-token/add-token.component';
+import { TokenService } from '@app/dashboard/services/token.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
+  entryComponents: [
+    AddTokenComponent,
+  ],
   imports: [
     DashboardRoutingModule,
     CommonModule,
     AppUIModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     DashboardComponent,
@@ -23,11 +31,13 @@ import { TokenListComponent } from '@app/dashboard/components/token-list/token-l
     DashboardHomeComponent,
     AccountOverviewComponent,
     TokenListComponent,
-],
+    AddTokenComponent,
+  ],
   exports: [
     DashboardComponent,
     AccountOverviewComponent,
     TokenListComponent,
+    AddTokenComponent,
   ]
 })
 export class DashboardModule {
@@ -35,6 +45,7 @@ export class DashboardModule {
     return {
       ngModule: DashboardModule,
       providers: [
+        TokenService,
       ]
     };
   }
