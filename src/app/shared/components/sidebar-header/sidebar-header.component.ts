@@ -15,20 +15,16 @@ export class SidebarHeaderComponent implements OnInit {
   
   constructor(
     public authServ: AuthenticationService,
-    public sessionStorageService: SessionStorageService,
-  ) {
-    avatars.config({ size: 67 * 3, bgColor: '#fff' });
-   }
+    public sessionStorageService: SessionStorageService ) {}
 
   ngOnInit() {
     this.address = this.sessionStorageService.retrieve('acc_address');
-    if(this.address) {
-      this.avatar = avatars.create(this.address);
-    } else {
-      this.sessionStorageService.observe('acc_address').subscribe((value)=>{
-        this.address = this.sessionStorageService.retrieve('acc_address');
-        this.avatar = avatars.create(this.address);
-      });
+    this.avatar = this.sessionStorageService.retrieve('acc_avatar');
+    // if(!this.address) {
+    //   this.sessionStorageService.observe('acc_address').subscribe((value)=>{
+    //     this.address = this.sessionStorageService.retrieve('acc_address');
+    //     this.avatar = avatars.create(this.address);
+    //   });
     }
   }
 
