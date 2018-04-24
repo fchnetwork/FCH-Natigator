@@ -16,6 +16,12 @@ export class TokenListComponent implements OnInit {
 
   ngOnInit() {
     this.tokens = this.tokenService.getTokens();
+    this.updateTokensBalance(this.tokens);
+  }
+
+  updateTokensBalance(tokens) {
+    this.tokenService.updateTokensBalance(tokens).then((res)=>{
+    });
   }
 
   addToken() {

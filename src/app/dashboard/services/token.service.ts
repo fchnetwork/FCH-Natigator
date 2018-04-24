@@ -27,10 +27,14 @@ export class TokenService {
   
   addToken(tokenData) {
     const date = new Date();
-    const password = this.sessionStorage.retrieve('password');
     const token = tokenData;
     const tokens = this.sessionStorage.retrieve('tokens') || [];
     tokens.push(token);
+    this.saveTokens(tokens);
+  }
+
+  saveTokens(tokens) {
+    const password = this.sessionStorage.retrieve('password');
     const stringtoken = JSON.stringify(tokens);
     const encryptedtokens = CryptoJS.AES.encrypt( stringtoken, password );
     Cookie.set('tokens', encryptedtokens, 7, "/", environment.cookiesDomain);
@@ -41,12 +45,31 @@ export class TokenService {
     return this.sessionStorage.retrieve('tokens');
   }
 
+  updateTokensBalance(tokens) {
+    const address = this.sessionStorage.retrieve('acc_address');
+    const updatedTokens = [];
+    return new Promise((resolve, reject)=> {
+      for (let i = 0; i < tokens.length; i++) {
+        this.tokensContract = new this.web3.eth.Contract(tokensABI, tokens[i].address);
+        this.tokensContract.methods.balanceOf(address).call({}, (error, result)=>{
+          tokens[i].balance = result;
+          updatedTokens.push(tokens[i]);
+          if(i === Number(tokens.length - 1)) {
+            this.saveTokens(updatedTokens);
+            resolve(updatedTokens);
+          }
+        });
+      }
+    });
+    
+
+  }
+
   getTokensInfo(contractAddress) {
     return new Promise((resolve, reject) => {
       const address = this.web3.utils.isAddress([contractAddress]);
       if(address) {
         this.tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress);
-        console.log(this.tokensContract);
         this.tokensContract.methods.symbol().call({}, (error, result)=>{
           const contract = {
             symbol: '',

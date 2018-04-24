@@ -29,7 +29,7 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
       tokenSymbol: [ null, [Validators.required, Validators.minLength(2)]],
       decimals: [ null, [Validators.required]]
     });
-    this.getTokenInfo();
+    this.getTokenInfo(this.addTokenForm.value.tokenAddress);
 
     this.addTokenForm.controls['tokenAddress'].valueChanges.subscribe( (res) => {
       console.log(res);
@@ -52,7 +52,7 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
 
   getTokenInfo(address) {
     // const address = "0x8414d0b6205d82100f694be759e40a16e31e8d40";
-    const tokensInfo = this.tokenService.getTokensInfo(address).then(res=>{
+    const tokensInfo = this.tokenService.getTokensInfo(address).then((res:any)=>{
       console.log(res);
       this.tokenSymbol = res.symbol;
       this.decimals = res.decimals;
