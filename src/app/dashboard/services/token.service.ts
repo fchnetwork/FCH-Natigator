@@ -30,10 +30,15 @@ export class TokenService {
     const token = tokenData;
     const tokens = this.sessionStorage.retrieve('tokens') || [];
     tokens.push(token);
+    console.log(tokens);
     this.saveTokens(tokens);
   }
 
   saveTokens(tokens) {
+    // DONT DELETE
+    console.log(tokens);
+    console.log('save tokens');
+
     const password = this.sessionStorage.retrieve('password');
     const stringtoken = JSON.stringify(tokens);
     const encryptedtokens = CryptoJS.AES.encrypt( stringtoken, password );
@@ -42,27 +47,49 @@ export class TokenService {
   }
 
   getTokens() {
-    return this.sessionStorage.retrieve('tokens');
+   return this.sessionStorage.retrieve('tokens');
   }
 
-  updateTokensBalance(tokens) {
+  updateTokensBalance() {
+    const tokens = this.sessionStorage.retrieve('tokens');
+    console.log(tokens);
     const address = this.sessionStorage.retrieve('acc_address');
     const updatedTokens = [];
     return new Promise((resolve, reject)=> {
       for (let i = 0; i < tokens.length; i++) {
+        console.log(i);
+        // console.log(tokens.length);
+        console.log(Number(tokens.length -1));
         this.tokensContract = new this.web3.eth.Contract(tokensABI, tokens[i].address);
-        this.tokensContract.methods.balanceOf(address).call({}, (error, result)=>{
-          tokens[i].balance = result;
+        // this.tokensContract.methods.balanceOf(address).call({}, (error, result)=>{
+        //   tokens[i].balance = result;
+        //   updatedTokens.push(tokens[i]);
+        //   if(i === Number(tokens.length - 1)) {
+        //     console.log(updatedTokens);
+        //     this.saveTokens(updatedTokens);
+        //     resolve(updatedTokens);
+        //   }
+        // });
+        this.tokensContract.methods.balanceOf(address).call({}).then((res)=>{
+          console.log(res);
+          tokens[i].balance = res;
           updatedTokens.push(tokens[i]);
           if(i === Number(tokens.length - 1)) {
+            console.log(updatedTokens);
+            this.saveTokens(updatedTokens);
+            resolve(updatedTokens);
+          }
+        }).catch((err)=>{
+          tokens[i].balance = 0;
+          updatedTokens.push(tokens[i]);
+          if(i === Number(tokens.length - 1)) {
+            console.log(updatedTokens);
             this.saveTokens(updatedTokens);
             resolve(updatedTokens);
           }
         });
       }
     });
-    
-
   }
 
   getTokensInfo(contractAddress) {

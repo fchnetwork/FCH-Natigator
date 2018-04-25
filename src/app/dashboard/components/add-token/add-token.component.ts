@@ -64,6 +64,7 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
 
   onSubmit() {
     const validate = this.validateTokens();
+    // const validate = true;
     if (this.addTokenForm.valid && validate) {
       const token = {
         address: this.addTokenForm.value.tokenAddress,
