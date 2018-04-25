@@ -28,7 +28,6 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
       this.transaction = dialog.context.transaction;
       this.transaction.timestamp = dialog.context.transaction.timestamp ? dialog.context.transaction.timestamp : Moment(new Date()).unix();
       this.transaction.data = dialog.context.transaction.data ? String(dialog.context.transaction.data) : '0x0000002';
-      console.log(this.transaction);
     }
     else {
       // GET TRANSACTION via HASH or id or define it
