@@ -5,6 +5,7 @@ import { AuthenticationService } from '@app/account/services/authentication-serv
 import { SessionStorageService } from 'ngx-webstorage';
 import { TokenService } from '@app/dashboard/services/token.service';
 import { SwapToken } from '@app/swap/components/create-swap/swap-tokens-list/swap-tokens-list.interfaces';
+import { ModalService } from '@app/shared/services/modal.service';
 
 @Component({
   selector: 'create-swap',
@@ -28,6 +29,7 @@ export class CreateSwapComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private sessionService: SessionStorageService,
+    private modalService: ModalService,
     private contractService: AeroToErc20SwapService
   ) { }
 
@@ -66,7 +68,11 @@ export class CreateSwapComponent implements OnInit {
   }
 
   async createSwap() {
-    await this.contractService.openSwap(
+
+    this.modalService.openSwapCreateConfirm();
+    return;
+
+    /*await this.contractService.openSwap(
       this.privateKey,
       this.currentAddress,
       this.createSwapId,
@@ -77,7 +83,7 @@ export class CreateSwapComponent implements OnInit {
     );
 
     // TODO: Remove later
-    console.log('Swap Created');
+    console.log('Swap Created');*/
   }
 
   async loadSwap() {

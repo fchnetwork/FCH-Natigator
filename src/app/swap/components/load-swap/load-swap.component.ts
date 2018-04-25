@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalService } from '@app/shared/services/modal.service';
 
 @Component({
   selector: 'app-load-swap',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoadSwapComponent implements OnInit {
 
-  constructor() { }
+  constructor(private modalService: ModalService) { }
 
   ngOnInit() {
+  }
+
+  loadSwap() {
+    this.modalService.openLoadCreateConfirm();
   }
 
 }

@@ -21,6 +21,10 @@ export function createTranslateLoader(http: HttpClient) {
 }
 
 @NgModule({
+  entryComponents: [
+    CreateSwapConfirmComponent,
+    LoadSwapConfirmComponent
+  ],
   imports: [
     FormsModule,
     AppUIModule,
@@ -38,6 +42,10 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     AeroToErc20SwapService,
     Erc20ToErc20SwapService
+  ],
+  exports: [
+    CreateSwapConfirmComponent,
+    LoadSwapConfirmComponent
   ]
 })
 export class SwapModule { }
