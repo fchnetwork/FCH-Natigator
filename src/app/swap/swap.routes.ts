@@ -2,25 +2,20 @@ import {Routes, RouterModule} from '@angular/router';
 import { NgModule } from "@angular/core";
 import { LoggedInComponent } from '@app/logged-in/logged-in.component';
 
-import { AeroToErc20Component } from '@app/swap/components/aero-to-erc20/aero-to-erc20.component';
-import { Erc20ToAeroComponent } from '@app/swap/components/erc20-to-aero/erc20-to-aero.component';
-import { Erc20ToErc20Component } from '@app/swap/components/erc20-to-erc20/erc20-to-erc20.component';
+import { CreateSwapComponent } from '@app/swap/components/create-swap/create-swap.component';
+import { LoadSwapComponent } from '@app/swap/components/load-swap/load-swap.component';
 
 export const SWAP_ROUTES: Routes = [{
 path: '',
 component: LoggedInComponent,
 children: [
     {
-      path: 'aero-to-erc20',
-      component: AeroToErc20Component,
+      path: 'create',
+      component: CreateSwapComponent,
     },
     {
-      path: 'erc20-to-aero',
-      component: Erc20ToAeroComponent,
-    },
-    {
-      path: 'erc20-to-erc20',
-      component: Erc20ToErc20Component,
+      path: 'load',
+      component: LoadSwapComponent,
     }
   ]
 }];

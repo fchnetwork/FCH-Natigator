@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Erc20ToErc20Component } from './erc20-to-erc20.component';
+import { LoadSwapComponent } from './load-swap.component';
 
-describe('Erc20ToErc20Component', () => {
-  let component: Erc20ToErc20Component;
-  let fixture: ComponentFixture<Erc20ToErc20Component>;
+describe('LoadSwapComponent', () => {
+  let component: LoadSwapComponent;
+  let fixture: ComponentFixture<LoadSwapComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ Erc20ToErc20Component ]
+      declarations: [ LoadSwapComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Erc20ToErc20Component);
+    fixture = TestBed.createComponent(LoadSwapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

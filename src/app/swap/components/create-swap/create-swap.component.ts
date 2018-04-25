@@ -5,11 +5,11 @@ import { AuthenticationService } from '@app/account/services/authentication-serv
 import { SessionStorageService } from 'ngx-webstorage';
 
 @Component({
-  selector: 'app-aero-to-erc20',
-  templateUrl: './aero-to-erc20.component.html',
-  styleUrls: ['./aero-to-erc20.component.scss']
+  selector: 'create-swap',
+  templateUrl: './create-swap.component.html',
+  styleUrls: ['./create-swap.component.scss']
 })
-export class AeroToErc20Component implements OnInit {
+export class CreateSwapComponent implements OnInit {
 
   currentAddress: string;
   privateKey: string;

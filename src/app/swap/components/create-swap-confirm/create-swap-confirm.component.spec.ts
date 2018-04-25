@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Erc20ToAeroComponent } from './erc20-to-aero.component';
+import { CreateSwapConfirmComponent } from './create-swap-confirm.component';
 
-describe('Erc20ToAeroComponent', () => {
-  let component: Erc20ToAeroComponent;
-  let fixture: ComponentFixture<Erc20ToAeroComponent>;
+describe('CreateSwapConfirmComponent', () => {
+  let component: CreateSwapConfirmComponent;
+  let fixture: ComponentFixture<CreateSwapConfirmComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ Erc20ToAeroComponent ]
+      declarations: [ CreateSwapConfirmComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Erc20ToAeroComponent);
+    fixture = TestBed.createComponent(CreateSwapConfirmComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

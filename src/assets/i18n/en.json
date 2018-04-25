@@ -116,7 +116,6 @@
 "CONTRACTS":"Contracts",
 "EXCHANGE":"Exchange",
 "ENS":"ENS",
-"SWAP":"Swap",
 "KYC":"KYC",
 "SEND_TO": "Send To",
 "RECEIVE_TO": "Receive To",
@@ -124,26 +123,35 @@
 "BASIC_TRANSACTION":"Basic Transaction",
 "SEND_RECEIVE":"Send & Receive",
 "DIAGNOSTICS":"Diagnostics",
-"SWAP_CRYPTO":"Swap Crypto",
-"AERO_TO_ERC20":"Aero to Token",
-"ERC20_TO_AERO":"Token to Aero",
-"ERC20_TO_ERC20":"Token to Token",
-"CREATE_SWAP":"Create Swap",
-"SWAP_ID":"Swap Id",
-"GENERATE_SWAP_ID":"Generate",
-"SWAP_AERO_AMOUT":"Aero amount",
-"SWAP_ERC20_TRADER":"Token owner",
-"SWAP_ERC20_TOKEN":"Token address",
-"SWAP_ERC20_TOKEN_VALUE":"Amount",
-"SWAP_ERC20_TOKEN_PRICE":"Price",
-"CREATE_SWAP_BUTTON":"Create",
-"MANAGE_SWAP":"Manage",
-"LOAD_SWAP":"Load",
-"CANCEL_SWAP":"Cancel",
-"CLOSE_SWAP":"Close",
 "OVERVIEW":"Overview",
 "DASHBOARD": {
-  "TITLE": "Account Overview"}
+  "TITLE": "Account Overview"
+  },
+"SWAP": {
+  "MAIN_MENU_ITEM_NAME":"Swap",
+  "SUB_MENU_CREATE_SWAP_ITEM_NAME":"Create Atomic Swap",
+  "SUB_MENU_LOAD_SWAP_ITEM_NAME":"Load Atomic Swap",
+  "AERO_TO_TOKEN":"Aero > Token",
+  "TOKEN_TO_AERO":"Token > Aero",
+  "TOKEN_TO_TOKEN":"Token > Token",
+  "CREATE": {
+    "TITLE":"Create Atomic Swap",
+    "FIELD_SWAP_ID":"Swap ID",
+    "FIELD_YOUR_TOKEN_OR_AERO":"Your Token / Aero",
+    "FIELD_COUNTERPARTY":"Counterparty",
+    "FIELD_COUNTERPARTY_TOKEN_OR_AERO":"Counterparty Token / Aero",
+    "FIELD_AMOUNT": "Amount",
+    "FIELD_RATE": "Rate",
+    "BTN_GENERATE_SWAP_ID":"Generate",
+    "BTN_CREATE":"Create"
+    },
+  "LOAD": {
+    "TITLE":"Load Atomic Swap",
+    "FIELD_SWAP_ID":"Swap ID",
+    "BTN_LOAD":"Load",
+    "BTN_CANCEL":"Cancel",
+    "BTN_CLOSE":"Close"
+    }
+  }
 }
-
 

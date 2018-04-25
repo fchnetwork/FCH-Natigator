@@ -15,10 +15,9 @@
   <aer-sidebar-group title="{{'ENS'|translate}}" iconName="ens">
 
   </aer-sidebar-group>
-  <aer-sidebar-group title="{{'SWAP'|translate}}" iconName="swap">
-    <aer-sidebar-item iconName="transaction" [routerLink]="['/swap/aero-to-erc20']">{{'AERO_TO_ERC20'|translate}}</aer-sidebar-item>
-    <aer-sidebar-item iconName="transaction" [routerLink]="['/swap/erc20-to-aero']">{{'ERC20_TO_AERO'|translate}}</aer-sidebar-item>
-    <aer-sidebar-item iconName="transaction" [routerLink]="['/swap/erc20-to-erc20']">{{'ERC20_TO_ERC20'|translate}}</aer-sidebar-item>
+  <aer-sidebar-group title="{{'SWAP.MAIN_MENU_ITEM_NAME'|translate}}" iconName="swap">
+    <aer-sidebar-item iconName="aerum" [routerLink]="['/swap/create']">{{'SWAP.SUB_MENU_CREATE_SWAP_ITEM_NAME'|translate}}</aer-sidebar-item>
+    <aer-sidebar-item iconName="check-square-o" [routerLink]="['/swap/load']">{{'SWAP.SUB_MENU_LOAD_SWAP_ITEM_NAME'|translate}}</aer-sidebar-item>
   </aer-sidebar-group>
   <aer-sidebar-group title="{{'KYC'|translate}}" iconName="kyc">
 

@@ -1,0 +1,31 @@
+<aer-toolbar>
+
+  <div class="content">
+    <div class="title">{{'SWAP.LOAD.TITLE'|translate}}</div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="panel min-width-470">
+          <div class="panel-header">
+            {{'SWAP.AERO_TO_TOKEN'|translate }}
+          </div>
+          <div class="panel-content">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-name">{{'SWAP.LOAD.FIELD_SWAP_ID'|translate}}</div>
+                <aer-input [(ngModel)]="loadSwapId" ngDefaultControl></aer-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="footer-buttons">
+                  <aer-button class="normal blue" (buttonFn)="loadSwap()">{{'SWAP.LOAD.BTN_LOAD'|translate}}</aer-button>
+                  <aer-button class="normal" (buttonFn)="cancelSwap()">{{'SWAP.LOAD.BTN_CANCEL'|translate}}</aer-button>
+                  <aer-button class="normal blue" (buttonFn)="closeSwap()">{{'SWAP.LOAD.BTN_CLOSE'|translate}}</aer-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
