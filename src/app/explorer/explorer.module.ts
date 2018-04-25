@@ -19,6 +19,7 @@ import { EXPLORER_ROUTES } from './explorer.routes';
 import { AppUIModule } from '../app.ui.module';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 import { SharedModule } from '../shared/shared.module';
+import { TransactionServiceService } from '@app/transaction/services/transaction-service/transaction-service.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -63,6 +64,7 @@ export class ExplorerModule {
       ngModule: ExplorerModule,
       providers: [
         ExplorerService,
+        TransactionServiceService,
       ]
     };
   }

@@ -131,9 +131,10 @@ export class TransactionServiceService {
                   tx.sign(privateKey);       
             const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
                 transaction.on('transactionHash', hash => { 
-                  console.log(hash);
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash);
-                  this.modalService.openTransaction(hash);
+                  this.web3.eth.getTransaction(hash).then((res)=>{
+                    this.modalService.openTransaction(hash, res);
+                  });
                 }).catch( error => {
                     // alert( error )
                 });

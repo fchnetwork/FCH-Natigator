@@ -49,7 +49,7 @@ getPendingTxPool() {
 
 
   openTransaction(transaction) {
-    this.modal.openTransaction(transaction.hash).then((result) => {
+    this.modal.openTransaction(transaction.hash, transaction).then((result) => {
     }).catch( () => {});
   }
 
