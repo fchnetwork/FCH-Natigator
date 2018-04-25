@@ -30,7 +30,7 @@ const modals = [BlockModalComponent, TransactionModalComponent];
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,  
+    ReactiveFormsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -62,7 +62,7 @@ export class ExplorerModule {
     return {
       ngModule: ExplorerModule,
       providers: [
-        ExplorerService
+        ExplorerService,
       ]
     };
   }

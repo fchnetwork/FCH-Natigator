@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage';
+import { ModalService } from '@app/shared/services/modal.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -21,6 +22,7 @@ export class TransactionServiceService {
     constructor( 
       _auth: AuthenticationService,
       private sessionStorage: SessionStorageService,
+      private modalService: ModalService,
      ) {
       this.web3 = _auth.initWeb3();
     }
@@ -131,6 +133,7 @@ export class TransactionServiceService {
                 transaction.on('transactionHash', hash => { 
                   console.log(hash);
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash);
+                  this.modalService.openTransaction(hash);
                 }).catch( error => {
                     // alert( error )
                 });
