@@ -74,11 +74,16 @@ export class TokenService {
           const contract = {
             symbol: '',
             decimals: 0,
+            totalSupply: 0,
           };
           contract.symbol = result;
           this.tokensContract.methods.decimals().call({}, (error, result)=>{
             contract.decimals = result;
-            resolve(contract);
+            this.tokensContract.methods.totalSupply().call({}, (error, result)=>{
+              contract.totalSupply = result;
+              resolve(contract);
+            });
+            
           });
         });
       } else {
