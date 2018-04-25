@@ -87,27 +87,12 @@ export class AuthenticationService {
 
      // creates an auth cookie
     saveKeyStore( privateKey: string, password: string, seed: any ){
-    
         const formatSeed     = this.seedCleaner( seed.toString() );
         const encryptSeed    = CryptoJS.AES.encrypt( formatSeed, password );
         const encryptAccount = this.web3.eth.accounts.encrypt( privateKey, password);
-
-        // // ugly hack until refactoring is done
-        // const mnemonicToSeed     = bip39.mnemonicToSeed( formatSeed );
-        // const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed ); 
-        // const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet();
-        // const getAddress         = wallet.getAddress().toString("hex");
-        // const getPriv            = wallet.getPrivateKeyString().toString("hex");
-        // const getPublic          = wallet.getPublicKeyString().toString("hex");        
-        // const getChecksumAddress = ethUtil.toChecksumAddress( getAddress );
-        // const address            = ethUtil.addHexPrefix( getChecksumAddress );
-
         Cookie.set('aerum_keyStore', JSON.stringify( encryptAccount), 7, "/", environment.cookiesDomain);
         Cookie.set('aerum_base', encryptSeed, 7, "/", environment.cookiesDomain);
-     //   Cookie.set('aerum_avatar', this.generateCryptedAvatar(address) );
-
-        return encryptAccount; 
-        
+        return encryptAccount;
     }         
 
 
@@ -166,6 +151,7 @@ export class AuthenticationService {
     login(password) {
         this.unencryptKeystore(password).then( result => {
             this.sessionStorage.store('acc_address', result.web3.address);
+            this.sessionStorage.store('acc_avatar',  this.generateCryptedAvatar( result.web3.address ) );
             this.sessionStorage.store('seed', result.s);
             this.sessionStorage.store('private_key', result.web3.privateKey);
             this.sessionStorage.store('password', password);
@@ -178,6 +164,7 @@ export class AuthenticationService {
     logout() {
         this.router.navigate(['account/unlock']);
         this.sessionStorage.clear('acc_address');
+        this.sessionStorage.clear('acc_avatar');
         this.sessionStorage.clear('seed');
         this.sessionStorage.clear('private_key');
         this.sessionStorage.clear('password');
@@ -189,19 +176,15 @@ export class AuthenticationService {
      * @param seed string containing bip32 specification seed phrase
      */
     seedCleaner(seed: any) {
-
         let cleanSeed = seed.trim();
             cleanSeed = cleanSeed.replace(/[^\w\s]/gi, ' '); 
             cleanSeed.replace(/\s\s+/g, ' ');
-
         return cleanSeed;
 
     }
 
     generateAdditionalAccounts( password: string, amount: number ){
-
         const authCookie = Cookie.get('aerum_base');
-
         if( authCookie ){
             const accounts        = [];
             const cookieStringify = authCookie.toString();
@@ -234,17 +217,12 @@ export class AuthenticationService {
 
 
     createQRcode(address:string) : Promise<any> {
-
         const formatAddress = this.isHexAddress(address) ? address : '0x' + address;
-
         return new Promise( (resolve) => {
-
             if( formatAddress ){
                 resolve( QRCode.toDataURL( formatAddress  ) );
             }
-
         });
-        
     }
 
 

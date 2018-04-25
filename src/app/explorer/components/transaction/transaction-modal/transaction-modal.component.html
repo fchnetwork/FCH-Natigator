@@ -68,9 +68,10 @@
             {{'SEND_DATA'|translate}}
           </div>
           <div class="value">
-              {{transaction.data | hexToText  }}
+              {{transaction.data}}
           </div>
         </div>
       </div>
+      <aer-button (click)="close()">Close</aer-button>
     </div>
   </aer-modal-dialog>
