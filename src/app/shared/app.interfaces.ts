@@ -31,6 +31,7 @@ export interface iBlocks {
 
   export interface iTransaction {
     "blockHash": string;
+    "timestamp": number;
     "blockNumber":number;
     "from": string;
     "gas":number;
@@ -44,6 +45,7 @@ export interface iBlocks {
     "v": string;
     "r": string;
     "s": string;
+    "data": string;
   }
 
 
