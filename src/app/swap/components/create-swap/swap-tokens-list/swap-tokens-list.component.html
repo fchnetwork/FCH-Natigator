@@ -1,0 +1,3 @@
+<aer-select [(ngModel)]="selected" dataKey="symbol" (ngModelChange)="onChange()" placeholder="{{'SWAP.CREATE.PLACEHOLDER_SELECT_TOKEN_OR_AERO'|translate}}">
+    <aer-select-option *ngFor="let token of tokens;" [value]="token">{{token.symbol}}</aer-select-option>
+</aer-select>

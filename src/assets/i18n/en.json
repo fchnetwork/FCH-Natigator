@@ -142,6 +142,7 @@
     "FIELD_COUNTERPARTY_TOKEN_OR_AERO":"Counterparty Token / Aero",
     "FIELD_AMOUNT": "Amount",
     "FIELD_RATE": "Rate",
+    "PLACEHOLDER_SELECT_TOKEN_OR_AERO": "Select Aero / Token",
     "BTN_GENERATE_SWAP_ID":"Generate",
     "BTN_CREATE":"Create"
     },

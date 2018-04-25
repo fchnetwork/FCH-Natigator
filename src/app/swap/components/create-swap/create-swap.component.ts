@@ -3,6 +3,8 @@ import { Guid } from "@shared/helpers/guid";
 import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20/aero-to-erc20-swap.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { SessionStorageService } from 'ngx-webstorage';
+import { TokenService } from '@app/dashboard/services/token.service';
+import { SwapToken } from '@app/swap/components/create-swap/swap-tokens-list/swap-tokens-list.interfaces';
 
 @Component({
   selector: 'create-swap',
@@ -25,9 +27,9 @@ export class CreateSwapComponent implements OnInit {
 
   constructor(
     private authService: AuthenticationService,
-    private contractService: AeroToErc20SwapService,
-    private sessionService: SessionStorageService) 
-    { }
+    private sessionService: SessionStorageService,
+    private contractService: AeroToErc20SwapService
+  ) { }
 
   async ngOnInit() {
     const keystore = await this.authService.showKeystore();
@@ -98,5 +100,13 @@ export class CreateSwapComponent implements OnInit {
 
     // TODO: Remove later
     console.log('Swap Canceled');
+  }
+
+  onTokenChanged(token: SwapToken) {
+    console.log(token);
+  }
+
+  onCounterpartyTokenChanged(token: SwapToken) {
+    console.log(token);
   }
 }
