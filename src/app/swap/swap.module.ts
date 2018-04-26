@@ -8,9 +8,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppUIModule } from '@app/app.ui.module';
 import { SharedModule } from '@app/shared/shared.module';
 
-import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.service';
-import { Erc20ToErc20SwapService } from '@app/swap/services/erc20-to-erc20-swap.service';
-import { CreateSwapComponent } from '@app/swap/components/create-swap/create-swap.component';
+import { AeroToErc20SwapService } from './services/aero-to-erc20-swap.service';
+import { Erc20ToErc20SwapService } from './services/erc20-to-erc20-swap.service';
+import { ERC20TokenService } from './services/erc20-token.service';
+import { ContractExecutorService } from './services/contract-executor.service';
+
+import { CreateSwapComponent } from './components/create-swap/create-swap.component';
 import { LoadSwapComponent } from './components/load-swap/load-swap.component';
 import { CreateSwapConfirmComponent } from './components/create-swap/create-swap-confirm/create-swap-confirm.component';
 import { LoadSwapConfirmComponent } from './components/load-swap/load-swap-confirm/load-swap-confirm.component';
@@ -41,7 +44,9 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   providers: [
     AeroToErc20SwapService,
-    Erc20ToErc20SwapService
+    Erc20ToErc20SwapService,
+    ERC20TokenService,
+    ContractExecutorService
   ],
   exports: [
     CreateSwapConfirmComponent,

@@ -33,22 +33,14 @@ export class LoadSwapComponent implements OnInit {
   async loadSwap() {
     // this.modalService.openLoadCreateConfirm();
 
-    const swap = await this.contractService.checkSwap(
-      this.privateKey,
-      this.currentAddress,
-      this.loadSwapId
-    );
+    const swap = await this.contractService.checkSwap(this.loadSwapId);
 
     // TODO: Remove later
     console.log('Swap Loaded');
   }
 
   async cancelSwap() {
-    await this.contractService.expireSwap(
-      this.privateKey,
-      this.currentAddress,
-      this.loadSwapId
-    );
+    await this.contractService.expireSwap(this.loadSwapId);
 
     // TODO: Remove later
     console.log('Swap Canceled');

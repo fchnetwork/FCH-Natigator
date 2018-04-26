@@ -17,7 +17,6 @@ import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.se
 export class CreateSwapComponent implements OnInit {
 
   currentAddress: string;
-  privateKey: string;
 
   createSwapId: string;
   token: SwapToken;
@@ -27,20 +26,16 @@ export class CreateSwapComponent implements OnInit {
   counterpartyTokenAmount: number;
   rate: number;
 
-  loadSwapId: string;
-
   constructor(
     private authService: AuthenticationService,
-    private sessionService: SessionStorageService,
     private modalService: ModalService,
     private notificationService: NotificationService,
     private contractService: AeroToErc20SwapService
   ) { }
 
   async ngOnInit() {
-    const keystore = await this.authService.showKeystore();
+    const keystore = this.authService.getKeystore();
     this.currentAddress = "0x" + keystore.address;
-    this.privateKey = this.sessionService.retrieve('private_key');
 
     this.generateSwapId();
     this.tokenAmount = 0.01;
@@ -70,7 +65,6 @@ export class CreateSwapComponent implements OnInit {
   }
 
   async createSwap() {
-
     const modalResult = await this.modalService.openSwapCreateConfirm({ swapId: this.createSwapId });
     if(!modalResult.confirmed) {
       console.log('Swap creation canceled');
@@ -82,8 +76,6 @@ export class CreateSwapComponent implements OnInit {
     console.log(counterpartyTokenAmount);
 
     await this.contractService.openSwap(
-      this.privateKey,
-      this.currentAddress,
       this.createSwapId,
       this.tokenAmount.toString(10),
       counterpartyTokenAmount.toString(10),

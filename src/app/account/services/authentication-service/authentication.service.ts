@@ -108,6 +108,13 @@ export class AuthenticationService {
         });
     }
 
+    getKeystore() {
+        const keystore = Cookie.get('aerum_keyStore');
+        if(!keystore) {
+            throw new Error("No keystore found");
+        }
+        return JSON.parse( keystore );
+    }
 
 
     // retrieve Private key using keystore auth cookie
