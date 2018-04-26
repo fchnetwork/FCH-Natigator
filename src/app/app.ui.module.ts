@@ -16,7 +16,7 @@ import {
    ToggleModule,
    FileUploadModule,
    NotificationModule,
-   SelectModule
+   SelectModule,
 } from "@aerum/ui";
 
 
@@ -35,9 +35,9 @@ import {
        TextareaModule,
        CardModule,
        ToggleModule,
+       SelectModule,
        FileUploadModule,
-       NotificationModule,
-       SelectModule
+       NotificationModule
    ],
    exports: [
        // UI Framework Modules
@@ -53,9 +53,9 @@ import {
        TextareaModule,
        CardModule,
        ToggleModule,
+       SelectModule,
        FileUploadModule,
-       NotificationModule,
-       SelectModule
+       NotificationModule
    ]
 })
 export class AppUIModule { }

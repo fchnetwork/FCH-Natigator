@@ -8,7 +8,7 @@ import { TokenService } from '@app/dashboard/services/token.service';
   styleUrls: ['./token-list.component.scss']
 })
 export class TokenListComponent implements OnInit {
-  tokens = [];
+  tokens: any;
   constructor(
     public modalService: ModalService,
     private tokenService: TokenService,
@@ -16,11 +16,12 @@ export class TokenListComponent implements OnInit {
 
   ngOnInit() {
     this.tokens = this.tokenService.getTokens();
-    this.updateTokensBalance(this.tokens);
+    this.updateTokensBalance();
   }
 
-  updateTokensBalance(tokens) {
-    this.tokenService.updateTokensBalance(tokens).then((res)=>{
+  updateTokensBalance() {
+    this.tokenService.updateTokensBalance().then((res)=>{
+      this.tokens = res;
     });
   }
 

@@ -59,19 +59,23 @@ export class TransactionServiceService {
     }
 
     saveTransaction(from, to, amount, data, hash) {
+      console.log('save transaction');
       const date = new Date();
-      const password = this.sessionStorage.retrieve('password');
+      // const password = this.sessionStorage.retrieve('password');
       const transaction = { from, to, amount, data, date, hash };
       const transactions = this.sessionStorage.retrieve('transactions') || [];
       transactions.push(transaction);
-      const stringTransaction = JSON.stringify(transactions);
-      const encryptedTransactions = CryptoJS.AES.encrypt( stringTransaction, password );
+      this.updateStorage(transactions);
+      // const stringTransaction = JSON.stringify(transactions);
+      // const encryptedTransactions = CryptoJS.AES.encrypt( stringTransaction, password );
 
-      Cookie.set('transactions', encryptedTransactions, 7, "/", environment.cookiesDomain);
-      this.sessionStorage.store('transactions', transactions);
+      // Cookie.set('transactions', encryptedTransactions, 7, "/", environment.cookiesDomain);
+      // this.sessionStorage.store('transactions', transactions);
     }
 
     updateStorage(transactions) {
+      console.log('updateStorage');
+      console.log(transactions);
       const password = this.sessionStorage.retrieve('password');
       const stringTransaction = JSON.stringify(transactions);
       const encryptedTransactions = CryptoJS.AES.encrypt( stringTransaction, password );
