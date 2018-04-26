@@ -1,8 +1,6 @@
 const artifacts = require('./abi/AtomicSwapEtherToERC20.json');
 
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 
 import { environment } from 'environments/environment';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
@@ -10,7 +8,6 @@ import { ContractExecutorService } from './contract-executor.service';
 
 import Web3 from 'web3';
 import { Contract } from 'web3/types';
-import { setTimeout } from 'timers';
 
 @Injectable()
 export class AeroToErc20SwapService {
