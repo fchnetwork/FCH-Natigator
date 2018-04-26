@@ -27,7 +27,7 @@
             </div>
             <div class="col-sm-6 tokensSelect">
                   <aer-select [(ngModel)]="selectedToken" dataKey="symbol" icon="aerum" placeholder="Select your token">
-                      <aer-select-option *ngFor="let item of tokens;" [value]="{symbol: 'AERO'}">AERO</aer-select-option>
+                      <aer-select-option [value]="{symbol: 'AERO'}">AERO</aer-select-option>
                       <aer-select-option *ngFor="let item of tokens;" [value]="item">{{item.symbol}}</aer-select-option>
                   </aer-select>
                   <div class="account-status-line">

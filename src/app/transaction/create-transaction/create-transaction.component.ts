@@ -44,6 +44,7 @@ export class CreateTransactionComponent implements OnInit {
   tokens: any;
   selectedToken = {
     symbol: 'AERO',
+    address: null,
   };
 
   constructor(
@@ -143,9 +144,15 @@ export class CreateTransactionComponent implements OnInit {
         }
         const privateKey = this.sessionStorageService.retrieve('private_key');
         const address = this.sessionStorageService.retrieve('acc_address');
-        this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
-          this.transactionMessage = res;
-        }).catch( error =>  console.log(error) );
+
+        if(this.selectedToken.symbol === 'AERO') {
+          this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
+            this.transactionMessage = res;
+          }).catch( error =>  console.log(error) );
+        } else if(this.selectedToken.address) {
+          this.tokenService.sendTokens(address, this.receiverAddress, this.amount, this.selectedToken.address);
+        }
+        
       }
     });
 
