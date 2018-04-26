@@ -9,9 +9,20 @@ import { BasicModalContext } from '@app/shared/components/modals/basic-modal/bas
 })
 export class CreateSwapConfirmComponent implements ModalComponent<BasicModalContext>, OnInit {
 
-  constructor(public dialog: DialogRef<BasicModalContext>) { }
+  param: any;
+
+  constructor(public dialog: DialogRef<BasicModalContext>) { 
+    this.param = dialog.context.param;
+  }
 
   ngOnInit() {
   }
 
+  onCreate() {
+    this.dialog.close({confirmed: true});
+  }
+
+  onCancel() {
+    this.dialog.close({confirmed: false});
+  }
 }

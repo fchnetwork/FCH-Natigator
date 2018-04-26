@@ -14,7 +14,6 @@ import {
    TextareaModule,
    CardModule,
    ToggleModule,
-   SelectboxModule,
    FileUploadModule,
    NotificationModule,
    SelectModule
@@ -36,7 +35,6 @@ import {
        TextareaModule,
        CardModule,
        ToggleModule,
-       SelectboxModule,
        FileUploadModule,
        NotificationModule,
        SelectModule
@@ -55,7 +53,6 @@ import {
        TextareaModule,
        CardModule,
        ToggleModule,
-       SelectboxModule,
        FileUploadModule,
        NotificationModule,
        SelectModule

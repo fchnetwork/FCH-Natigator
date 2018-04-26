@@ -144,7 +144,8 @@
     "FIELD_RATE": "Rate",
     "PLACEHOLDER_SELECT_TOKEN_OR_AERO": "Select Aero / Token",
     "BTN_GENERATE_SWAP_ID":"Generate",
-    "BTN_CREATE":"Create"
+    "BTN_CREATE":"Create",
+    "BTN_CANCEL":"Cancel"
     },
   "LOAD": {
     "TITLE":"Load Atomic Swap",

@@ -69,8 +69,11 @@ export class CreateSwapComponent implements OnInit {
 
   async createSwap() {
 
-    this.modalService.openSwapCreateConfirm();
-    return;
+    const modalResult = await this.modalService.openSwapCreateConfirm({ swapId: this.createSwapId });
+    if(!modalResult.confirmed) {
+      console.log('Swap creation canceled');
+      return;
+    }
 
     /*await this.contractService.openSwap(
       this.privateKey,

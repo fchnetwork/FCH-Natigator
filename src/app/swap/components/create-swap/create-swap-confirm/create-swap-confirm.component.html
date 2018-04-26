@@ -1,5 +1,6 @@
 <aer-modal-dialog>
-  <p>
-    create-swap-confirm works!
-  </p>
+  <h3>{{'SWAP.CREATE.TITLE'|translate}}</h3>
+  {{param.swapId}}
+  <aer-button class="btn-swap-create blue" (buttonFn)="onCreate()">{{'SWAP.CREATE.BTN_CREATE'|translate}}</aer-button>
+  <aer-button class="btn-swap-cancel grey" (buttonFn)="onCancel()">{{'SWAP.CREATE.BTN_CANCEL'|translate}}</aer-button>
 </aer-modal-dialog>
