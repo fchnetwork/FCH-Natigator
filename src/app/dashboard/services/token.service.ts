@@ -33,15 +33,10 @@ export class TokenService {
     const token = tokenData;
     const tokens = this.sessionStorage.retrieve('tokens') || [];
     tokens.push(token);
-    console.log(tokens);
     this.saveTokens(tokens);
   }
 
   saveTokens(tokens) {
-    // DONT DELETE
-    console.log(tokens);
-    console.log('save tokens');
-
     const password = this.sessionStorage.retrieve('password');
     const stringtoken = JSON.stringify(tokens);
     const encryptedtokens = CryptoJS.AES.encrypt( stringtoken, password );
@@ -55,30 +50,15 @@ export class TokenService {
 
   updateTokensBalance() {
     const tokens = this.sessionStorage.retrieve('tokens');
-    console.log(tokens);
     const address = this.sessionStorage.retrieve('acc_address');
     const updatedTokens = [];
     return new Promise((resolve, reject)=> {
       for (let i = 0; i < tokens.length; i++) {
-        console.log(i);
-        // console.log(tokens.length);
-        console.log(Number(tokens.length -1));
         this.tokensContract = new this.web3.eth.Contract(tokensABI, tokens[i].address);
-        // this.tokensContract.methods.balanceOf(address).call({}, (error, result)=>{
-        //   tokens[i].balance = result;
-        //   updatedTokens.push(tokens[i]);
-        //   if(i === Number(tokens.length - 1)) {
-        //     console.log(updatedTokens);
-        //     this.saveTokens(updatedTokens);
-        //     resolve(updatedTokens);
-        //   }
-        // });
         this.tokensContract.methods.balanceOf(address).call({}).then((res)=>{
-          console.log(res);
           tokens[i].balance = res;
           updatedTokens.push(tokens[i]);
           if(i === Number(tokens.length - 1)) {
-            console.log(updatedTokens);
             this.saveTokens(updatedTokens);
             resolve(updatedTokens);
           }
@@ -86,7 +66,6 @@ export class TokenService {
           tokens[i].balance = 0;
           updatedTokens.push(tokens[i]);
           if(i === Number(tokens.length - 1)) {
-            console.log(updatedTokens);
             this.saveTokens(updatedTokens);
             resolve(updatedTokens);
           }
@@ -127,7 +106,7 @@ export class TokenService {
     this.tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 100000});
     const rawTransaction = {
       "from": myAddress,
-      "nonce": "0x" + count.toString(16),
+      "nonce": this.web3.utils.toHex( count ), 
       "gasPrice": "0x003B9ACA00",
       "gasLimit": "0x250CA",
       "to": contractAddress,
