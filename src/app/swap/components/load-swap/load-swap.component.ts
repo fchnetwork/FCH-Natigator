@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from '@app/shared/services/modal.service';
-import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20/aero-to-erc20-swap.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { SessionStorageService } from 'ngx-webstorage';
+
+import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.service';
 
 @Component({
   selector: 'app-load-swap',

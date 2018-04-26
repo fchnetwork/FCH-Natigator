@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Guid } from "@shared/helpers/guid";
-import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20/aero-to-erc20-swap.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { SessionStorageService } from 'ngx-webstorage';
 import { TokenService } from '@app/dashboard/services/token.service';
-import { SwapToken } from '@app/swap/components/create-swap/swap-tokens-list/swap-tokens-list.interfaces';
 import { ModalService } from '@app/shared/services/modal.service';
 import { NotificationService } from '@app/shared/services/notification.service';
+
+import { SwapToken } from './swap-tokens-list/swap-tokens-list.interfaces';
+import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.service';
 
 @Component({
   selector: 'create-swap',

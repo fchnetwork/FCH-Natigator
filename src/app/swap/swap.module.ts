@@ -8,8 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppUIModule } from '@app/app.ui.module';
 import { SharedModule } from '@app/shared/shared.module';
 
-import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20/aero-to-erc20-swap.service';
-import { Erc20ToErc20SwapService } from '@app/swap/services/erc20-to-erc20/erc20-to-erc20-swap.service';
+import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.service';
+import { Erc20ToErc20SwapService } from '@app/swap/services/erc20-to-erc20-swap.service';
 import { CreateSwapComponent } from '@app/swap/components/create-swap/create-swap.component';
 import { LoadSwapComponent } from './components/load-swap/load-swap.component';
 import { CreateSwapConfirmComponent } from './components/create-swap/create-swap-confirm/create-swap-confirm.component';
