@@ -25,7 +25,11 @@
               <aer-input [(ngModel)]="amount" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
               <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{'AERO'|translate}})</label>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 tokensSelect">
+                  <aer-select [(ngModel)]="selectedToken" dataKey="symbol" icon="aerum" placeholder="Select your token">
+                      <aer-select-option *ngFor="let item of tokens;" [value]="{symbol: 'AERO'}">AERO</aer-select-option>
+                      <aer-select-option *ngFor="let item of tokens;" [value]="item">{{item.symbol}}</aer-select-option>
+                  </aer-select>
                   <div class="account-status-line">
                       <aer-icon>aerum</aer-icon>
                       <div class="float-left">{{walletBalance}} {{'AERO'|translate}}</div>

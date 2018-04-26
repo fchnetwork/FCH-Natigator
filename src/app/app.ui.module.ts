@@ -14,9 +14,9 @@ import {
    TextareaModule,
    CardModule,
    ToggleModule,
-   SelectboxModule,
    FileUploadModule,
    NotificationModule,
+   SelectModule,
 } from "@aerum/ui";
 
 
@@ -35,7 +35,8 @@ import {
        TextareaModule,
        CardModule,
        ToggleModule,
-       SelectboxModule,
+       SelectModule,
+
        FileUploadModule,
        NotificationModule
    ],
@@ -53,7 +54,8 @@ import {
        TextareaModule,
        CardModule,
        ToggleModule,
-       SelectboxModule,
+       SelectModule,
+
        FileUploadModule,
        NotificationModule
    ]
