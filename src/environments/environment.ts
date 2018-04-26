@@ -12,8 +12,10 @@ export const environment = {
     swap: {
       address: {
         AeroToErc20: "0x597c59b85b9d75abb040091e084ffdbe687ac2f0",
+        Erc20ToAero: "0x132042ea011f2b0f3b2910a3ac56f78c047b82c8",
         Erc20ToErc20: "0xb08d606c34e2b259512be2d06e9748af662ede71"
       }
     }
-  }
+  },
+  chainId: 8522
 };

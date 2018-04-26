@@ -15,30 +15,13 @@ export class AeroToErc20SwapService {
 
   private web3: Web3;
   private contract: Contract;
-  private eventSubject = new Subject<EventLog | Error>();
-
-  events: Observable<EventLog | Error>;
 
   constructor(private authenticationService: AuthenticationService) { 
     this.web3 = this.authenticationService.initWeb3();
-
     this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.address.AeroToErc20);
-    this.contract.events.allEvents({ fromBlock: 'latest' }, (error, event) => this.eventSubject.next(error || event));
-
-    this.events = this.eventSubject.asObservable();
   }
 
-  async openSwap(privateKey: string, caller: string, swapId: string, aeroValueInGwei: string, erc20Value: string, erc20Trader: string, erc20ContractAddress: string) {
-
-    // TODO: Remove later
-    console.log(privateKey);
-    console.log(caller);
-    console.log(this.web3.utils.fromAscii(swapId));
-    console.log(aeroValueInGwei);
-    console.log(erc20Value);
-    console.log(erc20Trader);
-    console.log(erc20ContractAddress);
-
+  async openSwap(privateKey: string, caller: string, swapId: string, aeroValue: string, erc20Value: string, erc20Trader: string, erc20ContractAddress: string) {
     const openSwap = this.contract.methods.open(
       this.web3.utils.fromAscii(swapId),
       // NOTE: we don't support decimals here as ERC20 doen't require decimals
@@ -46,41 +29,34 @@ export class AeroToErc20SwapService {
       erc20Trader,
       erc20ContractAddress
     );
-    const response = await this.send(privateKey, openSwap, caller, aeroValueInGwei);
+    const receipt = await this.send(privateKey, openSwap, caller, aeroValue);
+    return receipt;
   }
 
   async closeSwap(privateKey: string, caller: string, swapId: string) {
     const closeSwap = this.contract.methods.close(this.web3.utils.fromAscii(swapId));
-    const response = await this.send(privateKey, closeSwap, caller);
+    const receipt = await this.send(privateKey, closeSwap, caller);
+    return receipt;
   }
 
   async expireSwap(privateKey: string, caller: string, swapId: string) {
     const expireSwap = this.contract.methods.expire(this.web3.utils.fromAscii(swapId));
     const response = await this.send(privateKey, expireSwap, caller);
+    return response;
   }
 
   async checkSwap(privateKey: string, caller: string, swapId: string) {
-
-    // TODO: Remove later
-    console.log(privateKey);
-    console.log(caller);
-    console.log(this.web3.utils.fromAscii(swapId));
-
     const checkSwap = this.contract.methods.check(this.web3.utils.fromAscii(swapId));
-    const response = await this.call(privateKey, checkSwap, caller);
+    const receipt = await this.call(privateKey, checkSwap, caller);
+    return receipt;
   }
 
-  private async send(privateKey: string, transaction: TransactionObject<any>, caller: string, aeroValueInGwei = '0') {
-    const tx = await this.calculateTransactionOptions(transaction, caller, aeroValueInGwei);
-    console.log(tx);
+  private async send(privateKey: string, transaction: TransactionObject<any>, caller: string, aeroValue = '0') {
+    const tx = await this.createTx(transaction, caller, aeroValue);
     const txHex = this.web3.utils.toHex(tx);
-    // const signedTransaction = this.web3.eth.accounts.sign(txHex, privateKey) as Signature;
     const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, privateKey) as any;
-    console.log(signedTransaction);
-
+    console.log('Transaction being sent');
     const receipt = await this.sendSignedTransaction(signedTransaction.rawTransaction);
-    console.log(receipt);
-
     return receipt;
   }
   
@@ -104,7 +80,7 @@ export class AeroToErc20SwapService {
             const receipt = await this.web3.eth.getTransactionReceipt(transactionHash);
             console.log('Transaction receipt:', receipt);
             resolve(receipt);
-          }, 15 * 1000);
+          }, 10 * 1000);
         } else {
           console.log('Transaction error:', error);
           reject(error);
@@ -114,40 +90,30 @@ export class AeroToErc20SwapService {
   }
 
   private async call(privateKey: string, transaction: TransactionObject<any>, caller: string) {
-    const tx = await this.calculateTransactionOptions(transaction, caller);
-    console.log(tx);
+    const tx = await this.createTx(transaction, caller);
     const response = await transaction.call(tx);
-
-    // TODO: Remove later
-    console.log(response.valueOf());
-
-    return response;
+    return response.valueOf();
   }
 
-  private async calculateTransactionOptions(transaction: TransactionObject<any>, caller: string, aeroValueInGwei = '0') : Promise<Tx> {
-    
-    // NOTE: shannon is Gwei as per this link http://ethdocs.org/en/latest/ether.html
-    const aeroValueInWei = this.web3.utils.toWei(aeroValueInGwei, 'shannon');
+  private async createTx(transaction: TransactionObject<any>, caller: string, aeroValue = '0') : Promise<Tx> {
+    const aeroValueInWei = this.web3.utils.toWei(aeroValue, 'ether');
     const contractGasThreshold = 1000;
 
     const getGasPrice = this.web3.eth.getGasPrice();
+    const getTransactionsCount = this.web3.eth.getTransactionCount(caller);
     const getEstimatedGas = transaction.estimateGas({
-      chainId: 8522,
+      chainId: environment.chainId,
       to: environment.contracts.swap.address.AeroToErc20,
       from: caller,
       value: this.web3.utils.toHex(aeroValueInWei),
       data: transaction.encodeABI()
     });
 
-    const getTransactionsCount = this.web3.eth.getTransactionCount(caller);
-
     const [gasPrice, estimatedGas, transactionsCount] = await Promise.all([getGasPrice, getEstimatedGas, getTransactionsCount]);
 
-    console.log('estimated gas');
-    console.log(estimatedGas);
-    console.log(estimatedGas + contractGasThreshold);
+    console.log(`Transaction estimated gas: ${estimatedGas}`);
     return {
-      chainId: 8522,
+      chainId: environment.chainId,
       to: environment.contracts.swap.address.AeroToErc20,
       from: caller,
       value: this.web3.utils.toHex(aeroValueInWei),
