@@ -17,6 +17,7 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
   tokenSymbol: any;
   decimals: any;
   totalSupply: any;
+  balance: any;
 
   constructor(
     public dialog: DialogRef<BasicModalContext>,
@@ -69,7 +70,8 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
       const token = {
         address: this.addTokenForm.value.tokenAddress,
         symbol: this.addTokenForm.value.tokenSymbol,
-        decimals: this.addTokenForm.value.decimals
+        decimals: this.addTokenForm.value.decimals,
+        balance: this.balance,
       };
       this.tokenService.addToken(token);
       this.dialog.dismiss();
@@ -81,6 +83,7 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
     const tokensInfo = this.tokenService.getTokensInfo(address).then((res:any)=>{
       this.tokenSymbol = res.symbol;
       this.decimals = res.decimals;
+      this.balance = res.balance;
       this.totalSupply = Number(res.totalSupply) || 0;
     }).catch((err)=>{
       console.log(err);

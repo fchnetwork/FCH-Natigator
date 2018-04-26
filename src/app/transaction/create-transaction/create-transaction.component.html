@@ -23,16 +23,16 @@
             <div class="col-sm-6">
               <div class="input-name">{{'AMOUNT'|translate}}</div>
               <aer-input [(ngModel)]="amount" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
-              <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{'AERO'|translate}})</label>
+              <input id="sendEverything" type="checkbox" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{selectedToken.symbol}})</label>
             </div>
             <div class="col-sm-6 tokensSelect">
-                  <aer-select [(ngModel)]="selectedToken" dataKey="symbol" icon="aerum" placeholder="Select your token">
-                      <aer-select-option *ngFor="let item of tokens;" [value]="{symbol: 'AERO'}">AERO</aer-select-option>
+                  <aer-select [(ngModel)]="selectedToken" (ngModelChange)="handleSelectChange()" dataKey="symbol" icon="aerum" placeholder="Select your token">
+                      <aer-select-option [value]="{symbol: 'AERO'}">AERO</aer-select-option>
                       <aer-select-option *ngFor="let item of tokens;" [value]="item">{{item.symbol}}</aer-select-option>
                   </aer-select>
                   <div class="account-status-line">
                       <aer-icon>aerum</aer-icon>
-                      <div class="float-left">{{walletBalance}} {{'AERO'|translate}}</div>
+                      <div class="float-left">{{walletBalance}} {{selectedToken.symbol}}</div>
                   </div>
             </div>
           </div>
@@ -57,8 +57,12 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="input-name">{{'TOTAL'|translate}}</div>
+              <div *ngIf="selectedToken.symbol !== 'AERO'" class="amount-total">
+                  {{amount}} {{selectedToken.symbol}}
+              </div>
+              <div *ngIf="selectedToken.symbol !== 'AERO'" class="input-name">Gas cost</div>
               <div class="amount-total">
-                {{totalAmount}} {{'AERO'|translate}}
+                {{totalAmount}} AERO
               </div>
               <div class="note">
                   {{'DATA_INCLUDED'|translate}}: {{includedDataLength}} {{'BYTES'|translate}}

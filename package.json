@@ -52,7 +52,7 @@
     "soltsice": "^0.10.3",
     "stylelint": "^9.2.0",
     "truffle": "^4.0.6",
-    "web3": "^1.0.0-beta.33",
+    "web3": "^1.0.0-beta.34",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
