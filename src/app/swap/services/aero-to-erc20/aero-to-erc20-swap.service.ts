@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { environment } from 'environments/environment';
 
 import Web3 from 'web3';
-import { Contract, Tx, TransactionObject, EventLog, Signature } from 'web3/types';
+import { Contract, Tx, TransactionObject, EventLog, Signature, TransactionReceipt } from 'web3/types';
+import { setTimeout } from 'timers';
 const artifacts = require('./abi/AtomicSwapEtherToERC20.json');
 
 @Injectable()
@@ -76,12 +77,40 @@ export class AeroToErc20SwapService {
     // const signedTransaction = this.web3.eth.accounts.sign(txHex, privateKey) as Signature;
     const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, privateKey) as any;
     console.log(signedTransaction);
-    const response = await this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
 
-    // TODO: Remove later
-    console.log(response.valueOf());
+    const receipt = await this.sendSignedTransaction(signedTransaction.rawTransaction);
+    console.log(receipt);
 
-    return response;
+    return receipt;
+  }
+  
+  private sendSignedTransaction(data: string) : Promise<TransactionReceipt> {
+    let transactionHash: string;
+    return new Promise((resolve, reject) => {
+      this.web3.eth.sendSignedTransaction(data)
+      .on('transactionHash', (hash) => {
+        console.log(`Transaction hash: ${hash}`);
+        transactionHash = hash;
+      })
+      .on('receipt', (receipt) => {
+        console.log('Transaction receipt returned:', receipt);
+        resolve(receipt); 
+      })
+      .on('error', (error) => {
+        // TODO: We do this workarround due to this issue: https://github.com/ethereum/web3.js/issues/1534
+        // TODO: We probably need retry here / not rely on seconds
+        if(error && error.message && error.message.startsWith('Failed to check for transaction receipt:')) {
+          setTimeout(async () => {
+            const receipt = await this.web3.eth.getTransactionReceipt(transactionHash);
+            console.log('Transaction receipt:', receipt);
+            resolve(receipt);
+          }, 15 * 1000);
+        } else {
+          console.log('Transaction error:', error);
+          reject(error);
+        }
+      });
+    });
   }
 
   private async call(privateKey: string, transaction: TransactionObject<any>, caller: string) {

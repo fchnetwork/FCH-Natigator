@@ -22,13 +22,13 @@
           <div class="row">
             <div class="col-sm-12">
               {{'SWAP.CREATE.FIELD_AMOUNT'|translate}}
-              <aer-input icon="aerum" [(ngModel)]="aeroAmount" (keyup)="recalculateTokenAmount()" ngDefaultControl></aer-input>
+              <aer-input icon="aerum" [(ngModel)]="tokenAmount" (keyup)="recalculateTokenAmount()" ngDefaultControl></aer-input>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-12">
               {{'SWAP.CREATE.FIELD_COUNTERPARTY'|translate}}
-              <aer-input [(ngModel)]="traderAddress" ngDefaultControl></aer-input>
+              <aer-input [(ngModel)]="counterpartyAddress" ngDefaultControl></aer-input>
             </div>
           </div>
           <div class="row">
@@ -40,13 +40,13 @@
           <div class="row">
             <div class="col-sm-12">
               {{'SWAP.CREATE.FIELD_AMOUNT'|translate}}
-              <aer-input [(ngModel)]="tokenAmount" (keyup)="recalculateTokenPrice()" ngDefaultControl></aer-input>
+              <aer-input [(ngModel)]="counterpartyTokenAmount" (keyup)="recalculateTokenRate()" ngDefaultControl></aer-input>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-12">
               {{'SWAP.CREATE.FIELD_RATE'|translate}}
-              <aer-input [(ngModel)]="tokenPrice" (keyup)="recalculateTokenAmount()" ngDefaultControl></aer-input>
+              <aer-input [(ngModel)]="rate" (keyup)="recalculateCounterpartyTokenAmount()" ngDefaultControl></aer-input>
             </div>
           </div>
           <div class="row">

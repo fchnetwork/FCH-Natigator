@@ -6,6 +6,7 @@ import { SessionStorageService } from 'ngx-webstorage';
 import { TokenService } from '@app/dashboard/services/token.service';
 import { SwapToken } from '@app/swap/components/create-swap/swap-tokens-list/swap-tokens-list.interfaces';
 import { ModalService } from '@app/shared/services/modal.service';
+import { NotificationService } from '@app/shared/services/notification.service';
 
 @Component({
   selector: 'create-swap',
@@ -18,11 +19,12 @@ export class CreateSwapComponent implements OnInit {
   privateKey: string;
 
   createSwapId: string;
-  aeroAmount: number;
-  traderAddress: string;
-  tokenAddress: string;
+  token: SwapToken;
   tokenAmount: number;
-  tokenPrice: number;
+  counterpartyAddress: string;
+  counterpartyToken: SwapToken;
+  counterpartyTokenAmount: number;
+  rate: number;
 
   loadSwapId: string;
 
@@ -30,41 +32,40 @@ export class CreateSwapComponent implements OnInit {
     private authService: AuthenticationService,
     private sessionService: SessionStorageService,
     private modalService: ModalService,
+    private notificationService: NotificationService,
     private contractService: AeroToErc20SwapService
   ) { }
 
   async ngOnInit() {
     const keystore = await this.authService.showKeystore();
     this.currentAddress = "0x" + keystore.address;
-    // TODO: Remove later
-    console.log(`Current address: ${this.currentAddress}`);
-
     this.privateKey = this.sessionService.retrieve('private_key');
 
     this.generateSwapId();
-    this.aeroAmount = 0.1;
-    this.traderAddress = this.currentAddress;
-    this.tokenAddress = '0x8414d0b6205d82100f694be759e40a16e31e8d40';
-    this.tokenAmount = 1;
-    this.tokenPrice = 10;
+    this.tokenAmount = 0.01;
+
+    // TODO: Temporary values
+    this.counterpartyAddress = this.currentAddress;
+    this.counterpartyTokenAmount = 10;
+    this.recalculateTokenRate();
   }
 
   generateSwapId() {
     this.createSwapId = Guid.newGuid().replace(/-/g, '');
   }
 
-  recalculateTokenPrice() {
-    if(!this.aeroAmount) {
+  recalculateTokenRate() {
+    if(!this.counterpartyTokenAmount) {
       return;
     }
-    this.tokenPrice = this.tokenAmount / this.aeroAmount;
+    this.rate = this.tokenAmount / this.counterpartyTokenAmount;
   }
 
-  recalculateTokenAmount() {
-    if(!this.tokenPrice) {
+  recalculateCounterpartyTokenAmount() {
+    if(!this.rate) {
       return;
     }
-    this.tokenAmount = this.aeroAmount / this.tokenPrice;
+    this.counterpartyTokenAmount = this.tokenAmount / this.rate;
   }
 
   async createSwap() {
@@ -75,47 +76,33 @@ export class CreateSwapComponent implements OnInit {
       return;
     }
 
-    /*await this.contractService.openSwap(
+     // TODO: For now only to Aero -> Erc20 Swap
+    const counterpartyTokenAmount = this.counterpartyTokenAmount * Math.pow(10, Number(this.counterpartyToken.decimals));
+    console.log(counterpartyTokenAmount);
+
+    await this.contractService.openSwap(
       this.privateKey,
       this.currentAddress,
       this.createSwapId,
-      this.aeroAmount.toString(10),
       this.tokenAmount.toString(10),
-      this.traderAddress,
-      this.tokenAddress
+      counterpartyTokenAmount.toString(10),
+      this.counterpartyAddress,
+      this.counterpartyToken.address
     );
 
+    // TODO: We should use events here
+    this.notificationService.showMessage(`Swap created: ${this.createSwapId}`);
     // TODO: Remove later
-    console.log('Swap Created');*/
-  }
-
-  async loadSwap() {
-    const swap = await this.contractService.checkSwap(
-      this.privateKey,
-      this.currentAddress,
-      this.loadSwapId
-    );
-
-    // TODO: Remove later
-    console.log('Swap Loaded');
-  }
-
-  async cancelSwap() {
-    await this.contractService.expireSwap(
-      this.privateKey,
-      this.currentAddress,
-      this.loadSwapId
-    );
-
-    // TODO: Remove later
-    console.log('Swap Canceled');
+    console.log('Swap Created');
   }
 
   onTokenChanged(token: SwapToken) {
     console.log(token);
+    this.token = token;
   }
 
   onCounterpartyTokenChanged(token: SwapToken) {
     console.log(token);
+    this.counterpartyToken = token;
   }
 }
