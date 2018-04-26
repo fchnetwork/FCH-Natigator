@@ -26,8 +26,6 @@ export class TokenService {
     return new Web3( new Web3.providers.HttpProvider(environment.HttpProvider)); 
   };
 
-  
-  
   addToken(tokenData) {
     const date = new Date();
     const token = tokenData;
@@ -56,7 +54,7 @@ export class TokenService {
       for (let i = 0; i < tokens.length; i++) {
         this.tokensContract = new this.web3.eth.Contract(tokensABI, tokens[i].address);
         this.tokensContract.methods.balanceOf(address).call({}).then((res)=>{
-          tokens[i].balance = res;
+          tokens[i].balance = res / Math.pow(10, tokens[i].decimals);
           updatedTokens.push(tokens[i]);
           if(i === Number(tokens.length - 1)) {
             this.saveTokens(updatedTokens);
@@ -77,6 +75,7 @@ export class TokenService {
   getTokensInfo(contractAddress) {
     return new Promise((resolve, reject) => {
       const address = this.web3.utils.isAddress([contractAddress]);
+      const myAddress = this.sessionStorage.retrieve('acc_address');
       if(address) {
         this.tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress);
         this.tokensContract.methods.symbol().call({}, (error, result)=>{
@@ -84,13 +83,17 @@ export class TokenService {
             symbol: '',
             decimals: 0,
             totalSupply: 0,
+            balance: 0,
           };
           contract.symbol = result;
           this.tokensContract.methods.decimals().call({}, (error, result)=>{
             contract.decimals = result;
             this.tokensContract.methods.totalSupply().call({}, (error, result)=>{
               contract.totalSupply = result;
-              resolve(contract);
+              this.tokensContract.methods.balanceOf(myAddress).call({}).then((res)=>{
+                contract.balance = res / res / Math.pow(10, contract.decimals);
+                resolve(contract);
+              });
             });
             
           });
