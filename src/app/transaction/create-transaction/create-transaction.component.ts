@@ -6,6 +6,7 @@ import { ModalService } from '../../shared/services/modal.service';
 import { ClipboardService } from '../../shared/services/clipboard.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { SessionStorageService } from 'ngx-webstorage';
+import { TokenService } from '@app/dashboard/services/token.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -40,6 +41,10 @@ export class CreateTransactionComponent implements OnInit {
   maxTransactionFee = 0;
   maxTransactionFeeEth = 0;
   totalAmount = 0;
+  tokens: any;
+  selectedToken = {
+    symbol: 'AERO',
+  };
 
   constructor(
     public authServ: AuthenticationService,
@@ -48,6 +53,7 @@ export class CreateTransactionComponent implements OnInit {
     private notificationService: NotificationService,
     public txnServ: TransactionServiceService,
     public sessionStorageService: SessionStorageService,
+    private tokenService: TokenService,
    ) {
     this.userData();
     setInterval(()=>{
@@ -61,9 +67,10 @@ export class CreateTransactionComponent implements OnInit {
     this.walletBalance = this.myBalance;
     this.includedDataLength = 0;
     this.handleInputsChange();
+    this.tokens = this.tokenService.getTokens();
   }
 
-  public copyToClipboard() {
+  copyToClipboard() {
     this.clipboardService.copy(this.senderAddress);
     this.notificationService.showMessage('Copied to clipboard!');
   }
