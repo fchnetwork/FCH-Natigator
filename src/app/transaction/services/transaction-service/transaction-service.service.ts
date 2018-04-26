@@ -1,3 +1,4 @@
+import { tokensABI } from './../../../abi/tokens';
 import * as CryptoJS from 'crypto-js';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
@@ -43,6 +44,10 @@ export class TransactionServiceService {
     }
     
     maxTransactionFee(to, data) {
+      if(data.type === 'token') {
+        const tokensContract = new this.web3.eth.Contract(tokensABI, data.contractAddress);
+        data = tokensContract.methods.transfer(to, data.amount).encodeABI();
+      }
       return new Promise((resolve, reject) => {
         const sendTo = ethJsUtil.toChecksumAddress( to ) ;
         const txData = this.web3.utils.asciiToHex( data ); 
@@ -59,23 +64,14 @@ export class TransactionServiceService {
     }
 
     saveTransaction(from, to, amount, data, hash) {
-      console.log('save transaction');
       const date = new Date();
-      // const password = this.sessionStorage.retrieve('password');
       const transaction = { from, to, amount, data, date, hash };
       const transactions = this.sessionStorage.retrieve('transactions') || [];
       transactions.push(transaction);
       this.updateStorage(transactions);
-      // const stringTransaction = JSON.stringify(transactions);
-      // const encryptedTransactions = CryptoJS.AES.encrypt( stringTransaction, password );
-
-      // Cookie.set('transactions', encryptedTransactions, 7, "/", environment.cookiesDomain);
-      // this.sessionStorage.store('transactions', transactions);
     }
 
     updateStorage(transactions) {
-      console.log('updateStorage');
-      console.log(transactions);
       const password = this.sessionStorage.retrieve('password');
       const stringTransaction = JSON.stringify(transactions);
       const encryptedTransactions = CryptoJS.AES.encrypt( stringTransaction, password );

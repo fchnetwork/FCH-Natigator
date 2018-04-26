@@ -35,6 +35,7 @@ export class CreateTransactionComponent implements OnInit {
   transactions: any[];
   includedDataLength: number;
   walletBalance: number;
+  aeroBalance: number;
   sendEverything: boolean;
   transactionMessage:any;
   addressQR: string;
@@ -45,6 +46,7 @@ export class CreateTransactionComponent implements OnInit {
   selectedToken = {
     symbol: 'AERO',
     address: null,
+    balance: 0,
   };
 
   constructor(
@@ -90,7 +92,10 @@ export class CreateTransactionComponent implements OnInit {
       .then(
         ([ keystore, accBalance, qrCode ]) => {
         this.senderAddress = "0x" + keystore.address ;
-        this.walletBalance = accBalance;
+        if(this.selectedToken.symbol === 'AERO') {
+          this.walletBalance = accBalance;
+        }
+        this.aeroBalance = accBalance;
         this.addressQR     = qrCode;
       }
     );
@@ -98,7 +103,7 @@ export class CreateTransactionComponent implements OnInit {
 
   getMaxTransactionFee() {
     if(this.receiverAddress) {
-      this.txnServ.maxTransactionFee(this.receiverAddress, "aerum test transaction").then(res=>{
+      this.txnServ.maxTransactionFee(this.receiverAddress, this.selectedToken.symbol === 'AERO' ? "aerum test transaction" : {type: 'token', contractAddress: this.selectedToken.address, amount: this.amount}).then(res=>{
         this.maxTransactionFee = res[0];
         this.maxTransactionFeeEth = res[1];
         this.getTotalAmount();
@@ -117,7 +122,7 @@ export class CreateTransactionComponent implements OnInit {
 
   getTotalAmount() {
     if(this.receiverAddress) {
-      this.totalAmount =  Number(this.amount) + Number(this.maxTransactionFeeEth);
+      this.totalAmount = this.selectedToken.symbol === 'AERO' ?  Number(this.amount) + Number(this.maxTransactionFeeEth) : Number(this.maxTransactionFeeEth);
     }
     else {
       this.totalAmount = 0;
@@ -129,6 +134,17 @@ export class CreateTransactionComponent implements OnInit {
   showTransactions() {}
 
   handleInputsChange() {
+    this.getMaxTransactionFee();
+    this.getTotalAmount();
+  }
+
+  handleSelectChange() {
+    console.log(this.selectedToken);
+    if(this.selectedToken.symbol === 'AERO') {
+      this.walletBalance = this.aeroBalance;
+    } else {
+      this.walletBalance = this.selectedToken.balance;
+    }
     this.getMaxTransactionFee();
     this.getTotalAmount();
   }
