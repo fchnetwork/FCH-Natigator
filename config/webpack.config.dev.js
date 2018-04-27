@@ -137,7 +137,9 @@ module.exports = {
       '@dashboard': path.resolve('src/app/dashboard'),
       '@explorer': path.resolve('src/app/explorer'),
       '@shared': path.resolve('src/app/shared'),
-      '@transaction': path.resolve('src/app/transaction')
+      '@transaction': path.resolve('src/app/transaction'),
+      '@diagnostics': path.resolve('src/app/diagnostics'),
+      '@env': path.resolve('src/environments')
     },
     "mainFields": [
       "browser",
