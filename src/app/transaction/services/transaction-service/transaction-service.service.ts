@@ -59,6 +59,8 @@ export class TransactionServiceService {
            const resultInGwei = this.web3.utils.fromWei(String(transactionFee), 'gwei');
            const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
            resolve([resultInGwei, resultInEther]);
+        }).catch((err)=>{
+          reject(err);
         });
       });
     }
@@ -140,5 +142,15 @@ export class TransactionServiceService {
                 });
           });
       });
-  }
+    }
+
+    checkAddressCode(address){
+      return new Promise((resolve, reject)=>{
+        this.web3.eth.getCode(address).then((res)=>{
+          resolve(res);
+        }).catch((err)=>{
+          reject(err);
+        });
+      });
+    }
 }
