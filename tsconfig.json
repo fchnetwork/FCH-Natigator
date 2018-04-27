@@ -23,7 +23,9 @@
       "@dashboard/*": ["app/dashboard/*"],
       "@explorer/*": ["app/explorer/*"],
       "@shared/*": ["app/shared/*"],
-      "@transaction/*": ["app/transaction/*"]
+      "@transaction/*": ["app/transaction/*"],
+      "@diagnostics/*": ["app/diagnostics/*"],
+      "@env/*": ["environments/*"]
     },
   }
 }

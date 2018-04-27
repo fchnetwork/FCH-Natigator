@@ -1,0 +1,45 @@
+<!-- app.component.html -->
+<h1>
+  Aerum Statistics
+</h1>
+
+
+<h1>
+  AVG Block Propagation {{ blockPropagationAvg }}
+</h1>
+
+
+
+{{ blockPropagationChart }}
+
+<!-- <div *ngIf="blockPropagationChart" class="d3-blockpropagation"></div>
+ -->
+
+
+
+  <div class="d3-blockpropagation"></div>
+
+
+
+
+"number": {{ blockData?.number }} <br>
+"hash": {{ blockData?.hash }} <br>
+"parentHash": {{ blockData?.parentHash }} <br>
+"timestamp": {{ blockData?.timestamp }} <br>
+"miner": {{ blockData?.miner }} <br>
+"gasUsed": {{ blockData?.gasUsed }} <br>
+"gasLimit": {{ blockData?.gasLimit }} <br>
+"difficulty": {{ blockData?.difficulty }} <br>
+"totalDifficulty": {{ blockData?.totalDifficulty }} <br>
+"transactions": [], <br>
+"transactionsRoot": {{ blockData?.transactionsRoot }} <br> 
+"stateRoot": {{ blockData?.stateRoot }} <br>
+"uncles": [], <br>
+"trusted": {{ blockData?.trusted }}, <br>
+"arrived": {{ blockData?.arrived }} <br>
+"received": {{ blockData?.received }} <br>
+"propagation": {{ blockData?.propagation }} <br>
+"fork": {{ blockData?.fork }} <br>
+"time": {{ blockData?.time }} <br>
+
+
