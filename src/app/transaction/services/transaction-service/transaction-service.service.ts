@@ -89,7 +89,6 @@ export class TransactionServiceService {
         for(let i = 0; i < transactions.length; i++) {
           this.web3.eth.getTransactionReceipt( transactions[i].hash ).then( res =>  {
             if(res.status) {
-              console.log(transactions[i]);
               transactions[i].data = transactions[i].data === 'Contract execution(pending)' ? 'Contract execution' : 'Successful transaction';
               sortedTransactions.push(transactions[i]);
             } else  {
@@ -168,10 +167,8 @@ export class TransactionServiceService {
       const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
       transaction.on('transactionHash', hash => { 
         this.web3.eth.getTransaction(hash).then((res)=>{
-          console.log(res);
-          this.saveTransaction(myAddress, to, amount, 'Contract execution(pending)', hash);
+          this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash);
           this.web3.eth.getTransaction(hash).then((res)=>{
-            // this.transactionService.openTransactionModal(hash, res);
             this.modalService.openTransaction(hash, res);
           });
         });
