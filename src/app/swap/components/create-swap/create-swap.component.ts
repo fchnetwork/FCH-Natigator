@@ -4,7 +4,7 @@ import { AuthenticationService } from '@app/account/services/authentication-serv
 import { SessionStorageService } from 'ngx-webstorage';
 import { TokenService } from '@app/dashboard/services/token.service';
 import { ModalService } from '@app/shared/services/modal.service';
-import { NotificationService } from '@app/shared/services/notification.service';
+import { NotificationService } from "@aerum/ui";
 
 import { SwapToken } from './swap-tokens-list/swap-tokens-list.interfaces';
 import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.service';
@@ -84,7 +84,7 @@ export class CreateSwapComponent implements OnInit {
     );
 
     // TODO: We should use events here
-    this.notificationService.showMessage(`Swap created: ${this.swapId}`);
+    this.notificationService.notify('Swap created', `Swap Id: ${this.swapId}`, "aerum");
     // TODO: Remove later
     console.log('Swap Created');
   }

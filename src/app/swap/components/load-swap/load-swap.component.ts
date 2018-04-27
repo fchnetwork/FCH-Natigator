@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ModalService } from '@app/shared/services/modal.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { SessionStorageService } from 'ngx-webstorage';
+import { NotificationService } from "@aerum/ui";
 
 import { environment } from 'environments/environment';
 
 import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.service';
 import { ERC20TokenService } from '@app/swap/services/erc20-token.service';
-import { NotificationService } from '@app/shared/services/notification.service';
 
 @Component({
   selector: 'app-load-swap',
@@ -62,13 +62,13 @@ export class LoadSwapComponent implements OnInit {
     console.log(`Confirming swap: ${this.swapId}`);
     await this.contractService.closeSwap(this.swapId);
 
-    this.notificationService.showMessage(`Swap done: ${this.swapId}`);
+    this.notificationService.notify('Swap done', `Swap Id: ${this.swapId}`, "aerum");
     // TODO: if failed send allowance to 0
   }
 
   private async reject() {
     console.log(`Rejecting swap: ${this.swapId}`);
     await this.contractService.expireSwap(this.swapId);
-    this.notificationService.showMessage(`Swap rejected: ${this.swapId}`);
+    this.notificationService.notify('Swap rejected', `Swap Id: ${this.swapId}`, "aerum");
   }
 }
