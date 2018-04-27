@@ -160,7 +160,10 @@ export class CreateTransactionComponent implements OnInit {
       this.txnServ.checkAddressCode(this.receiverAddress).then((res:any)=>{
         let message = null;
         if(res.length > 3) {
-          message = "You are sending crypto to contract address";
+          message = {
+            title: 'WARNING!',
+            text: 'The address you are sending to appears to be a smart contract address. Unless this token contract follows ERC223 standard and receiving smart contract implements a call back function that allows it to handle incoming token transfers your tokens can be lost forever. Do you still want to continue?',
+          };
         }
         this.modalSrv.openTransactionConfirm(message).then( result =>{ 
           if(result === true) {

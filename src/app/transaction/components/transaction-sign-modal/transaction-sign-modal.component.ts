@@ -17,7 +17,7 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
 
   getVariable: any;
   unlockAccountForm: FormGroup;
-  message: any;
+  message = {};
 
   constructor( public dialog: DialogRef<BasicModalContext>,
                public authServ: AuthenticationService,
