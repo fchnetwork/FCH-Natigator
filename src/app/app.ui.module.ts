@@ -17,6 +17,7 @@ import {
    FileUploadModule,
    NotificationModule,
    SelectModule,
+   GridModule,
 } from "@aerum/ui";
 
 
@@ -36,7 +37,7 @@ import {
        CardModule,
        ToggleModule,
        SelectModule,
-
+        GridModule,
        FileUploadModule,
        NotificationModule
    ],
@@ -55,7 +56,7 @@ import {
        CardModule,
        ToggleModule,
        SelectModule,
-
+        GridModule,
        FileUploadModule,
        NotificationModule
    ]
