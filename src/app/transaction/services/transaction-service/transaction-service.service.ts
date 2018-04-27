@@ -147,6 +147,38 @@ export class TransactionServiceService {
       });
     }
 
+    async sendTokens(myAddress, to, amount, contractAddress) {
+      const count = await this.web3.eth.getTransactionCount(myAddress);
+      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 100000});
+      const rawTransaction = {
+        "from": myAddress,
+        "nonce": this.web3.utils.toHex( count ), 
+        "gasPrice": "0x003B9ACA00",
+        "gasLimit": "0x250CA",
+        "to": contractAddress,
+        "value": "0x0",
+        "data": tokensContract.methods.transfer(to, amount).encodeABI(),
+      };
+      const privKey = this.sessionStorage.retrieve('private_key');
+      const privateKey = ethJsUtil.toBuffer( privKey );
+      const tx = new Tx(rawTransaction);
+      tx.sign(privateKey);
+  
+      const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
+      transaction.on('transactionHash', hash => { 
+        this.web3.eth.getTransaction(hash).then((res)=>{
+          console.log(res);
+          this.saveTransaction(myAddress, to, amount, 'Pending transaction', hash);
+          this.web3.eth.getTransaction(hash).then((res)=>{
+            // this.transactionService.openTransactionModal(hash, res);
+            this.modalService.openTransaction(hash, res);
+          });
+        });
+      }).catch( error => {
+          // alert( error )
+      });
+    }
+
     checkAddressCode(address){
       return new Promise((resolve, reject)=>{
         this.web3.eth.getCode(address).then((res)=>{

@@ -62,9 +62,24 @@ export class CreateTransactionComponent implements OnInit {
     this.userData();
     setInterval(()=>{
       this.userData();
+      this.updateTokensBalance();
     },3000);
     
    }
+
+  updateTokensBalance() {
+    this.tokenService.updateTokensBalance().then((res)=>{
+      this.tokens = res;
+      for (let i = 0; i < this.tokens.length; i ++) {
+        if(this.selectedToken.symbol === this.tokens[i].symbol) {
+          this.walletBalance = this.tokens[i].balance;
+          return true;
+        } else {
+          this.walletBalance = this.aeroBalance;
+        }
+      }
+    });
+  }
 
 
   ngOnInit() {
@@ -175,7 +190,7 @@ export class CreateTransactionComponent implements OnInit {
                 this.transactionMessage = res;
               }).catch( error =>  console.log(error) );
             } else if(this.selectedToken.address) {
-              this.tokenService.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address);
+              this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address);
             }
           }
         });
