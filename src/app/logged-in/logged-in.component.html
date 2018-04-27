@@ -31,12 +31,13 @@
 
   <aer-sidebar-group title="{{'DIAGNOSTICS'|translate}}" iconName="bc-diagnosticview">
     <aer-sidebar-item iconName="diagnosticview" [routerLink]="['/diagnostics']">{{'OVERVIEW'|translate}}</aer-sidebar-item>
+    <aer-sidebar-item iconName="diagnosticview" [routerLink]="['/diagnostics/stats']">Test Page</aer-sidebar-item>
   </aer-sidebar-group>
 
   <button (click)="logout()">Logout</button>
 </aer-sidebar>
 <aer-toolbar>
-
+  <app-sidebar-account-select></app-sidebar-account-select>
 </aer-toolbar>
 <aer-content>
   <router-outlet></router-outlet>

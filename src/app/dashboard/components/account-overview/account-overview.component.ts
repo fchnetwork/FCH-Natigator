@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { TransactionServiceService } from '@app/transaction/services/transaction-service/transaction-service.service';
+import { SessionStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'app-account-overview',
@@ -10,6 +11,7 @@ import { TransactionServiceService } from '@app/transaction/services/transaction
 export class AccountOverviewComponent implements OnInit {
   walletBalance: string;
   addressQR: string;
+  address: string;
 
   constructor(
     private authServ: AuthenticationService,
@@ -21,6 +23,7 @@ export class AccountOverviewComponent implements OnInit {
       (keystore) => {
         const getBalance = this.txnServ.checkBalance(keystore.address);
         const getQR      = this.authServ.createQRcode( "0x" + keystore.address );  
+        this.address = keystore.address;
         return Promise.all([ keystore, getBalance, getQR ]); 
     }
   )

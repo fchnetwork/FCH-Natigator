@@ -1,0 +1,15 @@
+.o-avatarSelect {
+    display: flex;
+    align-items: center;
+    aer-select{
+        width: 400px;
+        display: block;
+    }  
+    &__selected {
+        display: none!important;
+    }
+    &__item {
+        // display: block;
+     float: left;
+    }
+}

@@ -47,6 +47,7 @@ export class CreateTransactionComponent implements OnInit {
     symbol: 'AERO',
     address: null,
     balance: 0,
+    decimals: null,
   };
 
   constructor(
@@ -61,9 +62,24 @@ export class CreateTransactionComponent implements OnInit {
     this.userData();
     setInterval(()=>{
       this.userData();
+      this.updateTokensBalance();
     },3000);
     
    }
+
+  updateTokensBalance() {
+    this.tokenService.updateTokensBalance().then((res)=>{
+      this.tokens = res;
+      for (let i = 0; i < this.tokens.length; i ++) {
+        if(this.selectedToken.symbol === this.tokens[i].symbol) {
+          this.walletBalance = this.tokens[i].balance;
+          return true;
+        } else {
+          this.walletBalance = this.aeroBalance;
+        }
+      }
+    });
+  }
 
 
   ngOnInit() {
@@ -103,10 +119,12 @@ export class CreateTransactionComponent implements OnInit {
 
   getMaxTransactionFee() {
     if(this.receiverAddress) {
-      this.txnServ.maxTransactionFee(this.receiverAddress, this.selectedToken.symbol === 'AERO' ? "aerum test transaction" : {type: 'token', contractAddress: this.selectedToken.address, amount: this.amount}).then(res=>{
+      this.txnServ.maxTransactionFee(this.receiverAddress, this.selectedToken.symbol === 'AERO' ? "aerum test transaction" : {type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10,this.selectedToken.decimals))}).then(res=>{
         this.maxTransactionFee = res[0];
         this.maxTransactionFeeEth = res[1];
         this.getTotalAmount();
+      }).catch((err)=>{
+        console.log(err);
       });
     } else {
       this.maxTransactionFee = 0.000;
@@ -139,7 +157,6 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   handleSelectChange() {
-    console.log(this.selectedToken);
     if(this.selectedToken.symbol === 'AERO') {
       this.walletBalance = this.aeroBalance;
     } else {
@@ -151,27 +168,34 @@ export class CreateTransactionComponent implements OnInit {
 
   send() {
     this.transactionMessage = "";
-
-    this.modalSrv.openTransactionConfirm().then( result =>{ 
-      if(result === true) {
-        if( this.receiverAddress == undefined || this.receiverAddress == null) {
-            alert("You need to add a receiver address");  
-            return false;      
+    if( this.receiverAddress === undefined || this.receiverAddress == null) {
+      alert("You need to add a receiver address");  
+      return false;      
+    } else {
+      this.txnServ.checkAddressCode(this.receiverAddress).then((res:any)=>{
+        let message = null;
+        if(res.length > 3) {
+          message = {
+            title: 'WARNING!',
+            text: 'The address you are sending to appears to be a smart contract address. Unless this token contract follows ERC223 standard and receiving smart contract implements a call back function that allows it to handle incoming token transfers your tokens can be lost forever. Do you still want to continue?',
+          };
         }
-        const privateKey = this.sessionStorageService.retrieve('private_key');
-        const address = this.sessionStorageService.retrieve('acc_address');
-
-        if(this.selectedToken.symbol === 'AERO') {
-          this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
-            this.transactionMessage = res;
-          }).catch( error =>  console.log(error) );
-        } else if(this.selectedToken.address) {
-          this.tokenService.sendTokens(address, this.receiverAddress, this.amount, this.selectedToken.address);
-        }
-        
-      }
-    });
-
+        this.modalSrv.openTransactionConfirm(message).then( result =>{ 
+          if(result === true) {
+            const privateKey = this.sessionStorageService.retrieve('private_key');
+            const address = this.sessionStorageService.retrieve('acc_address');
+    
+            if(this.selectedToken.symbol === 'AERO') {
+              this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
+                this.transactionMessage = res;
+              }).catch( error =>  console.log(error) );
+            } else if(this.selectedToken.address) {
+              this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address);
+            }
+          }
+        });
+      });
+    }
   }
 
 

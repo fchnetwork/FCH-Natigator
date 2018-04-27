@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment'; 
 import * as avatars from 'identity-img';
 import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -190,6 +190,7 @@ export class AuthenticationService {
 
     }
 
+    // now being used in sidebar select component
     generateAdditionalAccounts( password: string, amount: number ){
         const authCookie = Cookie.get('aerum_base');
         if( authCookie ){
