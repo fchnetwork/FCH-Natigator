@@ -142,7 +142,6 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   handleSelectChange() {
-    console.log(this.selectedToken);
     if(this.selectedToken.symbol === 'AERO') {
       this.walletBalance = this.aeroBalance;
     } else {
@@ -158,24 +157,25 @@ export class CreateTransactionComponent implements OnInit {
       alert("You need to add a receiver address");  
       return false;      
     } else {
-      this.txnServ.checkAddressCode(this.receiverAddress).then((res)=>{
-        console.log(res);
-      });
-      
-      this.modalSrv.openTransactionConfirm().then( result =>{ 
-        if(result === true) {
-          const privateKey = this.sessionStorageService.retrieve('private_key');
-          const address = this.sessionStorageService.retrieve('acc_address');
-  
-          if(this.selectedToken.symbol === 'AERO') {
-            this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
-              this.transactionMessage = res;
-            }).catch( error =>  console.log(error) );
-          } else if(this.selectedToken.address) {
-            this.tokenService.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address);
-          }
-          
+      this.txnServ.checkAddressCode(this.receiverAddress).then((res:any)=>{
+        let message = null;
+        if(res.length > 3) {
+          message = "You are sending crypto to contract address";
         }
+        this.modalSrv.openTransactionConfirm(message).then( result =>{ 
+          if(result === true) {
+            const privateKey = this.sessionStorageService.retrieve('private_key');
+            const address = this.sessionStorageService.retrieve('acc_address');
+    
+            if(this.selectedToken.symbol === 'AERO') {
+              this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
+                this.transactionMessage = res;
+              }).catch( error =>  console.log(error) );
+            } else if(this.selectedToken.address) {
+              this.tokenService.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address);
+            }
+          }
+        });
       });
     }
   }

@@ -45,11 +45,11 @@ export class TransactionServiceService {
     
     maxTransactionFee(to, data) {
       if(data.type === 'token') {
-        const tokensContract = new this.web3.eth.Contract(tokensABI, data.contractAddress);
+        const tokensContract = new this.web3.eth.Contract(tokensABI, data.contractAddress, {gas: 10000000});
         data = tokensContract.methods.transfer(to, data.amount).encodeABI();
       }
       return new Promise((resolve, reject) => {
-        const sendTo = ethJsUtil.toChecksumAddress( to ) ;
+        const sendTo = ethJsUtil.toChecksumAddress( to );
         const txData = this.web3.utils.asciiToHex( data ); 
         const estimateGas = this.web3.eth.estimateGas({to:sendTo, data:txData});
         const gasPrice = this.web3.eth.getGasPrice();
@@ -60,7 +60,10 @@ export class TransactionServiceService {
            const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
            resolve([resultInGwei, resultInEther]);
         }).catch((err)=>{
-          reject(err);
+          const transactionFee = Number(this.web3.utils.toWei(String(1), 'gwei')) * Number(1000000);
+           const resultInGwei = this.web3.utils.fromWei(String(transactionFee), 'gwei');
+           const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
+           resolve([resultInGwei, resultInEther]);
         });
       });
     }
