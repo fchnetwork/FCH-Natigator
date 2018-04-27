@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-
-
 import * as avatars from 'identity-img';
 import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -16,6 +14,7 @@ const hdkey   = require("ethereumjs-wallet/hdkey");
 const wall    = require("ethereumjs-wallet");
 const bip39   = require("bip39");
 const Web3    = require('web3');
+
 
 export interface iDerivedAccounts {
   id: number;

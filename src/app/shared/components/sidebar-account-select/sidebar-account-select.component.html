@@ -1,12 +1,8 @@
 
 <div class="o-avatarSelect">
-
-    <div *ngIf="selectResult">{{selectResult.title}}</div>
     <aer-select [(ngModel)]="selectResult" dataKey="title" icon="key" img="img" placeholder="Select your account">
         <aer-select-option *ngFor="let item of existingAccounts;" [value]="item"><img class="avatar" [src]="item.img">{{item.title}}</aer-select-option>
     </aer-select> 
-
-
-    <button class="o-avatarSelect__item" type="button" (click)="addAddress()">Add Address</button>
+    <aer-button class="o-avatarSelect__item medium blue" (buttonFn)="addAddress()" >Add Address</aer-button>
     <div style="clear:both;"></div>
 </div>
