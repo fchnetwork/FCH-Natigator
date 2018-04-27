@@ -151,8 +151,10 @@
     "TITLE":"Load Atomic Swap",
     "FIELD_SWAP_ID":"Swap ID",
     "BTN_LOAD":"Load",
+    "BTN_CONFIRM":"Confirm",
+    "BTN_REJECT":"Reject",
     "BTN_CANCEL":"Cancel",
-    "BTN_CLOSE":"Close"
+    "CONRIM_TITLE":"Confirm / Reject Atomic Swap"
     }
   }
 }

@@ -18,7 +18,7 @@ export class CreateSwapComponent implements OnInit {
 
   currentAddress: string;
 
-  createSwapId: string;
+  swapId: string;
   token: SwapToken;
   tokenAmount: number;
   counterpartyAddress: string;
@@ -47,7 +47,7 @@ export class CreateSwapComponent implements OnInit {
   }
 
   generateSwapId() {
-    this.createSwapId = Guid.newGuid().replace(/-/g, '');
+    this.swapId = Guid.newGuid().replace(/-/g, '');
   }
 
   recalculateTokenRate() {
@@ -65,7 +65,7 @@ export class CreateSwapComponent implements OnInit {
   }
 
   async createSwap() {
-    const modalResult = await this.modalService.openSwapCreateConfirm({ swapId: this.createSwapId });
+    const modalResult = await this.modalService.openSwapCreateConfirm({ swapId: this.swapId });
     if(!modalResult.confirmed) {
       console.log('Swap creation canceled');
       return;
@@ -76,7 +76,7 @@ export class CreateSwapComponent implements OnInit {
     console.log(counterpartyTokenAmount);
 
     await this.contractService.openSwap(
-      this.createSwapId,
+      this.swapId,
       this.tokenAmount.toString(10),
       counterpartyTokenAmount.toString(10),
       this.counterpartyAddress,
@@ -84,7 +84,7 @@ export class CreateSwapComponent implements OnInit {
     );
 
     // TODO: We should use events here
-    this.notificationService.showMessage(`Swap created: ${this.createSwapId}`);
+    this.notificationService.showMessage(`Swap created: ${this.swapId}`);
     // TODO: Remove later
     console.log('Swap Created');
   }

@@ -15,7 +15,7 @@ export class LoadSwapComponent implements OnInit {
   currentAddress: string;
   privateKey: string;
 
-  loadSwapId: string;
+  swapId: string;
 
   constructor(
     private authService: AuthenticationService,
@@ -31,18 +31,20 @@ export class LoadSwapComponent implements OnInit {
   }
 
   async loadSwap() {
-    // this.modalService.openLoadCreateConfirm();
+    const swap = await this.contractService.checkSwap(this.swapId);
+    console.log(swap);
 
-    const swap = await this.contractService.checkSwap(this.loadSwapId);
+    const modalResult = await this.modalService.openLoadCreateConfirm({ swapId: this.swapId });
+    if(modalResult.confirmed) {
+      console.log(`Confirming swap: ${this.swapId}`);
+      await this.contractService.closeSwap(this.swapId);
+      return;
+    }
 
-    // TODO: Remove later
-    console.log('Swap Loaded');
-  }
-
-  async cancelSwap() {
-    await this.contractService.expireSwap(this.loadSwapId);
-
-    // TODO: Remove later
-    console.log('Swap Canceled');
+    if(modalResult.rejected) {
+      console.log(`Rejecting swap: ${this.swapId}`);
+      await this.contractService.expireSwap(this.swapId);
+      return;
+    }
   }
 }

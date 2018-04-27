@@ -9,9 +9,24 @@ import { BasicModalContext } from '@app/shared/components/modals/basic-modal/bas
 })
 export class LoadSwapConfirmComponent implements ModalComponent<BasicModalContext>, OnInit {
 
-  constructor(public dialog: DialogRef<BasicModalContext>) { }
+  param: any;
+
+  constructor(public dialog: DialogRef<BasicModalContext>) { 
+    this.param = dialog.context.param;
+  }
 
   ngOnInit() {
   }
 
+  onConfirm() {
+    this.dialog.close({confirmed: true, rejected: false});
+  }
+
+  onReject() {
+    this.dialog.close({confirmed: false, rejected: true});
+  }
+
+  onCancel() {
+    this.dialog.close({confirmed: false, rejected: false});
+  }
 }

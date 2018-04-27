@@ -1,5 +1,7 @@
 <aer-modal-dialog>
-  <p>
-    load-swap-confirm works!
-  </p>
+  <h3>{{'SWAP.LOAD.CONRIM_TITLE'|translate}}</h3>
+  {{param.swapId}}
+  <aer-button class="btn-swap-create blue" (buttonFn)="onConfirm()">{{'SWAP.LOAD.BTN_CONFIRM'|translate}}</aer-button>
+  <aer-button class="btn-swap-create blue" (buttonFn)="onReject()">{{'SWAP.LOAD.BTN_REJECT'|translate}}</aer-button>
+  <aer-button class="btn-swap-cancel grey" (buttonFn)="onCancel()">{{'SWAP.LOAD.BTN_CANCEL'|translate}}</aer-button>
 </aer-modal-dialog>
