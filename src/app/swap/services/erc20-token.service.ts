@@ -25,4 +25,18 @@ export class ERC20TokenService {
     const receipt = await this.contractExecutorService.send(approve);
     return receipt;
   }
+
+  async allowance(erc20ContractAddress: string, owner: string, spender: string) {
+    const contract = new this.web3.eth.Contract(tokensABI, erc20ContractAddress);
+    const allowance = contract.methods.allowance(owner, spender);
+    const response = await this.contractExecutorService.call(allowance);
+    return response.valueOf();
+  }
+
+  async balanceOf(erc20ContractAddress: string, owner: string) {
+    const contract = new this.web3.eth.Contract(tokensABI, erc20ContractAddress);
+    const balanceOf = contract.methods.balanceOf(owner);
+    const response = await this.contractExecutorService.call(balanceOf);
+    return response.valueOf();
+  }
 }

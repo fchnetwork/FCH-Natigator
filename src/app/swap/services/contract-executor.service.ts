@@ -80,7 +80,8 @@ export class ContractExecutorService {
     const getTransactionsCount = this.web3.eth.getTransactionCount(this.currentWalletAddress);
     const getEstimatedGas = transaction.estimateGas({
       chainId: environment.chainId,
-      to: environment.contracts.swap.address.AeroToErc20,
+      // NOTE: Accessing private members is not the best way to do this but no need for another parameter
+      to: (transaction as any)._parent._address,
       from: this.currentWalletAddress,
       value: this.web3.utils.toHex(aeroValueInWei),
       data: transaction.encodeABI()
@@ -91,7 +92,8 @@ export class ContractExecutorService {
     console.log(`Transaction estimated gas: ${estimatedGas}`);
     return {
       chainId: environment.chainId,
-      to: environment.contracts.swap.address.AeroToErc20,
+      // NOTE: Accessing private members is not the best way to do this but no need for another parameter
+      to: (transaction as any)._parent._address,
       from: this.currentWalletAddress,
       value: this.web3.utils.toHex(aeroValueInWei),
       gasPrice: this.web3.utils.toHex(gasPrice),
