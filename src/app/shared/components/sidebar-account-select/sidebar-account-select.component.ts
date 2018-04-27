@@ -17,7 +17,6 @@ const wall    = require("ethereumjs-wallet");
 const bip39   = require("bip39");
 const Web3    = require('web3');
 
-
 export interface iDerivedAccounts {
   id: number;
   title: string;
@@ -34,13 +33,9 @@ export interface iDerivedAccounts {
 })
 export class SidebarAccountSelectComponent  {
 
-
   seed: string;
   existingAccounts: Array<iDerivedAccounts> = [];
-
-
-  selectResult = new FormControl();
-
+  selectResult:any;
 
 
   constructor( 
