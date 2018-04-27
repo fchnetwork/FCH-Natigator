@@ -182,6 +182,7 @@ export class AuthenticationService {
 
     }
 
+    // now being used in sidebar select component
     generateAdditionalAccounts( password: string, amount: number ){
         const authCookie = Cookie.get('aerum_base');
         if( authCookie ){

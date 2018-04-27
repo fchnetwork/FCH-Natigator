@@ -34,6 +34,9 @@ import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 import { DashboardRoutingModule } from '@app/dashboard/dashboard.routes';
 import { AppUIModule } from '@app/app.ui.module';
 
+import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component'
+
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
 }
@@ -71,6 +74,7 @@ export function createTranslateLoader(http: HttpClient) {
     ConvertToEtherPipe,
     HextoAsciiPipe,
     HextoDecimalPipe,
+    SidebarAccountSelectComponent,
   ],
   providers: [
     ModalService,
@@ -96,6 +100,7 @@ export function createTranslateLoader(http: HttpClient) {
     ConvertToEtherPipe,
     HextoAsciiPipe,
     HextoDecimalPipe,
+    SidebarAccountSelectComponent,
   ]
 })
 
