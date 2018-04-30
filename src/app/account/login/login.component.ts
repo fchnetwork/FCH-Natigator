@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   sub: any;
   step = 'step_1';
-  redirectUrl: string;
+  query: string;
 
   windowState: boolean;
 
@@ -47,18 +47,19 @@ export class LoginComponent implements OnInit {
     this.sub = this.route
       .queryParams
       .subscribe(params => {
-        // Defaults to 0 if no query param provided.
-        // this.page = +params['page'] || 0;
-        this.redirectUrl = params.redirectUrl || 'dashboard';
+        this.query = params.query;
       });
   }
 
   onSubmitAddress() {
     this.authServ.login(this.password).then((res)=>{
-      console.log(res);
       if(res === 'success') {
-        console.log(this.redirectUrl);
-        this.router.navigate([`/${this.redirectUrl}`]);
+        if(this.query) {
+          this.router.navigate([`/transaction`], {queryParams: {query: this.query}});
+        } else {
+          this.router.navigate([`/dashboard`]);
+        }
+        
       }
     });
   }
