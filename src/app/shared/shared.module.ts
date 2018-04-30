@@ -13,7 +13,7 @@ import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } fro
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { EqualValidator } from './directives/equal-validator.directive';
 import { RouteDataService } from './services/route-data.service'; 
-import { NotificationService } from './services/notification.service';
+import { InternalNotificationService } from './services/notification.service';
 import { ClipboardService } from './services/clipboard.service';
 import { AccountIdleService } from './services/account-idle.service';
 import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
@@ -80,7 +80,7 @@ export function createTranslateLoader(http: HttpClient) {
     ModalService,
     RouteDataService,
     ClipboardService,
-    NotificationService,
+    InternalNotificationService,
     AccountIdleService,
   ],
   exports:[

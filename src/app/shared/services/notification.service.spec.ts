@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { NotificationService } from './notification.service';
+import { InternalNotificationService } from './notification.service';
 
 describe('Service: Notification', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NotificationService]
+      providers: [InternalNotificationService]
     });
   });
 
-  it('should ...', inject([NotificationService], (service: NotificationService) => {
+  it('should ...', inject([InternalNotificationService], (service: InternalNotificationService) => {
     expect(service).toBeTruthy();
   }));
 });

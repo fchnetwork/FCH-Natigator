@@ -4,7 +4,7 @@ import { TransactionServiceService } from '../services/transaction-service/trans
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../../shared/services/modal.service';
 import { ClipboardService } from '../../shared/services/clipboard.service';
-import { NotificationService } from '../../shared/services/notification.service';
+import { InternalNotificationService } from '../../shared/services/notification.service';
 import { SessionStorageService } from 'ngx-webstorage';
 import { TokenService } from '@app/dashboard/services/token.service';
 
@@ -54,7 +54,7 @@ export class CreateTransactionComponent implements OnInit {
     public authServ: AuthenticationService,
     private modalSrv: ModalService,
     private clipboardService: ClipboardService,
-    private notificationService: NotificationService,
+    private notificationService: InternalNotificationService,
     public txnServ: TransactionServiceService,
     public sessionStorageService: SessionStorageService,
     private tokenService: TokenService,
