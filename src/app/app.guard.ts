@@ -1,5 +1,5 @@
 import { Component,Input, Injectable  } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { SessionStorageService } from 'ngx-webstorage';
 import { AuthenticationService } from './account/services/authentication-service/authentication.service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -13,7 +13,7 @@ export class CanActivateViaAuthGuard implements CanActivate {
         public sessionStorageService: SessionStorageService,
     ) {}
 
-        canActivate(): Promise<boolean> {
+        canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
             return new Promise((resolve) => {
                 const registered = Cookie.get('aerum_keyStore');
                 const loggedIn = this.sessionStorageService.retrieve('acc_address');
@@ -26,7 +26,11 @@ export class CanActivateViaAuthGuard implements CanActivate {
                     resolve(true);
                 } 
                 else {
-                    this.router.navigate(['/account/unlock']);
+                    if(route.queryParams.query) {
+                        this.router.navigate(['/account/unlock'], { queryParams: { query: route.queryParams.query } });
+                    } else {
+                        this.router.navigate(['/account/unlock']);
+                    }
                     resolve(false);
                 }
                 // DON'T DELETE
