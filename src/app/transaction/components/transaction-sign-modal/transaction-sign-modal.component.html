@@ -14,7 +14,6 @@
         <ul class="o-txnID__person o-txnID__arrow u-lreset">
             <li><aer-icon>angle-right</aer-icon></li>
         </ul>
-
         <ul class="o-txnID__person u-lreset">
             <li>
                 <div class="u-marginCntr c-avatar__img" [style.background-image]="'url(' + receiverAvatar + ')'"></div>
@@ -28,15 +27,15 @@
       <div class="o-table">
            <div class="o-table__row">
               <div class="o-table__cell o-data--left">
-                Amount
+                {{ 'AMOUNT' | translate }}
               </div>     
               <div class="o-table__cell o-data--right">
-                1 aero
+                {{ amount }}
               </div>                          
           </div>
           <div class="o-table__row">
               <div class="o-table__cell o-data--left">
-                Maximum transaction fee
+                {{ 'MAX_TRANSACTION_FEE' | translate }}
               </div>     
               <div class="o-table__cell o-data--right">
                 {{ maxFee }}
@@ -44,7 +43,7 @@
           </div>
           <div class="o-table__row">
               <div class="o-table__cell o-data--left">
-                fee
+                  {{ 'FEE' | translate }}
               </div>     
               <div class="o-table__cell o-data--right">
                   {{ fee }}

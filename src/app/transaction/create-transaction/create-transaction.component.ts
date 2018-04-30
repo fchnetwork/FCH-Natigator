@@ -30,7 +30,7 @@ export class CreateTransactionComponent implements OnInit {
 
   /* new fields */
   senderAddress: string;
-  receiverAddress: string = "0x76f98d0d811037b58aa496bb8a3583e86985c54f";
+  receiverAddress: string;
   amount = 0;
   transactions: any[];
   includedDataLength: number;
@@ -191,18 +191,15 @@ export class CreateTransactionComponent implements OnInit {
             text: 'The address you are sending to appears to be a smart contract address. Unless this token contract follows ERC223 standard and receiving smart contract implements a call back function that allows it to handle incoming token transfers your tokens can be lost forever. Do you still want to continue?',
           };
         } else {
+          // else standard transaction so prepare the txn details for the modal window
           message = {
             sender:  this.senderAddress,
             recipient: this.receiverAddress,
             amount:  this.amount,
             fee: this.totalAmount,
             maxFee: this.maxTransactionFee ,
-            // gas: 10,
           }          
         }
-
-
-
         this.modalSrv.openTransactionConfirm(message).then( result =>{ 
           if(result === true) {
             const privateKey = this.sessionStorageService.retrieve('private_key');

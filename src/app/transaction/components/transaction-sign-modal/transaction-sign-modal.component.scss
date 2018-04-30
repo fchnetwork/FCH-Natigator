@@ -2,7 +2,6 @@
   &__unlock {
     width: 400px;
   }
-
 }
 
 // utility class to reset ul elements defaults - maybe add to framework
@@ -25,29 +24,23 @@
     line-height: 2;
     margin: 0 20px;
   }
-
 }
-
-
 
 .c-transaction__table {
   color:#83868A;
   font-size: 13px;
   line-height: 1;
   text-align:center;
-
   h1 {
     font-size: 36px;
     font-weight: normal;
     color: #27282A;
     margin: 0 0 38px;
   }
-
   aer-button {
     margin-bottom: 20px;
     display: block;
   }
-
 }
 
 .o-table {
@@ -69,13 +62,6 @@
     }
   }  
 }
-
-
-// .o-txnModal__btn {
-//   margin-bottom: 15px;
-// }
-
-
 
 
 // add this class to the ui framework - it has been duplicated across 3 components now (side bar header, registration create screen, txn modal )
