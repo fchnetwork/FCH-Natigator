@@ -6,8 +6,9 @@
             <label>{{'TRANSACTIONS_FOUND_COUNT'|translate: {transactionsCount: transactions.length} }}</label>
         </div>
 
+        {{ finishedSearching  }} 
 
-        <h1 *ngIf="!transactionStatus">
+        <h1 *ngIf="!finishedSearching">
            Searching for Transactions
         </h1>
 
@@ -25,7 +26,7 @@
             <tbody>
                 <tr *ngFor="let transaction of transactions">
                     <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash}}</td>
-                    <td class="link block" (click)="openBlock(transaction.blockNumber)">{{transaction.blockNumber}}</td>
+                    <td class="link block" (click)="openBlock(transaction)">{{transaction.blockNumber}}</td>
                     <td class="age">{{transaction.timestamp | transactionTimeAgo }}</td>
                     <td class="link hash">{{transaction.from}}</td>
                     <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>

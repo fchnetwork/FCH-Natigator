@@ -9,6 +9,8 @@ import { BlockModalComponent } from '../../explorer/components/block/block-modal
 import { TransactionModalComponent } from '../../explorer/components/transaction/transaction-modal/transaction-modal.component';
 import { AddTokenComponent } from '@app/dashboard/components/add-token/add-token.component';
 
+import { GetBlockModalComponent } from '@explorer/components/block/get-block-modal/get-block-modal.component';
+
 @Injectable()
 export class ModalService {
 
@@ -45,6 +47,10 @@ export class ModalService {
   
   openBlock(blockNumber: any = null, block: any = null): Promise<any> {
     return this.openModal(BlockModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', blockNumber, block });
+  }
+
+  openAndGetBlock(blockNumber: any = null): Promise<any> {
+    return this.openModal(GetBlockModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', blockNumber  });
   }
 
   openTransaction(hash: any = null, transaction: any): Promise<any> {
