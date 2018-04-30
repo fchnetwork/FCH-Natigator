@@ -89,6 +89,16 @@ export class CreateTransactionComponent implements OnInit {
     this.tokens = this.tokenService.getTokens();
   }
 
+
+
+
+
+
+
+
+
+
+
   copyToClipboard() {
     this.clipboardService.copy(this.senderAddress);
     this.notificationService.showMessage('Copied to clipboard!');
@@ -174,11 +184,21 @@ export class CreateTransactionComponent implements OnInit {
     } else {
       this.txnServ.checkAddressCode(this.receiverAddress).then((res:any)=>{
         let message = null;
+
         if(res.length > 3) {
           message = {
             title: 'WARNING!',
             text: 'The address you are sending to appears to be a smart contract address. Unless this token contract follows ERC223 standard and receiving smart contract implements a call back function that allows it to handle incoming token transfers your tokens can be lost forever. Do you still want to continue?',
           };
+        } else {
+          // else standard transaction so prepare the txn details for the modal window
+          message = {
+            sender:  this.senderAddress,
+            recipient: this.receiverAddress,
+            amount:  this.amount,
+            fee: this.totalAmount,
+            maxFee: this.maxTransactionFee ,
+          }          
         }
         this.modalSrv.openTransactionConfirm(message).then( result =>{ 
           if(result === true) {
