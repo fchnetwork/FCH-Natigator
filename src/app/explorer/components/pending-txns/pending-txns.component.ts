@@ -58,7 +58,7 @@ export class PendingTxnsComponent implements OnInit {
 
 
   openTransaction(transaction) {
-    this.modal.openTransaction(transaction.hash, transaction).then((result) => {
+    this.modal.openTransaction(transaction.hash, transaction, false, null).then((result) => {
     }).catch( () => {});
   }
 
