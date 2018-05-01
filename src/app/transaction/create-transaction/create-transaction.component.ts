@@ -220,7 +220,7 @@ export class CreateTransactionComponent implements OnInit {
             recipient: this.receiverAddress,
             amount:  this.amount,
             fee: this.totalAmount,
-            maxFee: this.maxTransactionFee ,
+            maxFee: this.maxTransactionFee,
           }          
         }
         this.modalSrv.openTransactionConfirm(message).then( result =>{ 

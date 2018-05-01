@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ExplorerService } from '../../services/explorer.service';
 import { iBlocks, iTransaction } from '../../../shared/app.interfaces';
 import { ModalService } from '../../../shared/services/modal.service';
+import {BehaviorSubject} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-transactions',
@@ -22,23 +23,19 @@ export class TransactionsComponent implements OnInit {
   descending: boolean = false;
   transactionStatus: boolean = false;
 
-
   constructor( public exploreSrv: ExplorerService,
                private route: ActivatedRoute,
                private router: Router,
-               private modal: ModalService
-               ) { }
+               private modal: ModalService) {}
 
   ngOnInit() {
     this.getAllTransactions();
   }
 
-
   sort(){
     this.descending = !this.descending;
     this.order = this.descending ? 1 : -1;
   }
-
   
   getAllTransactions() {
     this.transactions = [];
@@ -60,8 +57,6 @@ export class TransactionsComponent implements OnInit {
       }
     });
   }
-  
-
 
   openBlock(blockNumber) {
     this.modal.openBlock(blockNumber).then( result =>{ 
@@ -93,8 +88,6 @@ export class TransactionsComponent implements OnInit {
 
   }
  
-
-
   exploreBlock(id: number) {
     this.router.navigate(['/explorer/block', id]);
   }

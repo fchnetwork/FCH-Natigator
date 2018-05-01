@@ -35,12 +35,10 @@ export class BlocksComponent implements OnInit {
     this.getLatestBlocks();
   }
 
-
   sort(){
     this.descending = !this.descending;
     this.order = this.descending ? 1 : -1;
   }
-
 
   getLatestBlocks(){
     this.blocks = [];
@@ -57,7 +55,6 @@ export class BlocksComponent implements OnInit {
       }
     });
   }
-
 
   openBlock(block: iBlocks) {
     this.modal.openBlock(block.number,block).then( result => {

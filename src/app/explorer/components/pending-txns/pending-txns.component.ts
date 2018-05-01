@@ -1,12 +1,10 @@
 import { element } from 'protractor';
-import { Component, OnInit, ChangeDetectorRef, NgZone  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router'; 
 import { ExplorerService } from '../../services/explorer.service';
 import { iBlocks, iPendingTxn } from '../../../shared/app.interfaces';
 import { ModalService } from '../../../shared/services/modal.service';
-import {Observable} from 'rxjs/Observable';
-
 
 @Component({
   selector: 'app-pending-txns',
@@ -15,19 +13,13 @@ import {Observable} from 'rxjs/Observable';
 export class PendingTxnsComponent implements OnInit {
 
   transactions: Array<iPendingTxn> = [];
-  constructor(
-               private _ngZone: NgZone,
-               public exploreSrv: ExplorerService,
-               private cd: ChangeDetectorRef,
+  constructor( public exploreSrv: ExplorerService,
                private router: Router,
-               private modal: ModalService
-  ) { }
+               private modal: ModalService) { }
 
   ngOnInit() {
     this.getPendingTxPool();   
   }
-
-
 
   getPendingTxPool() {
     const pendingTxnKeys = [];
@@ -53,14 +45,8 @@ export class PendingTxnsComponent implements OnInit {
     });
   }
 
-
-
-
-
   openTransaction(transaction) {
     this.modal.openTransaction(transaction.hash, transaction, false, null).then((result) => {
     }).catch( () => {});
   }
-
-
 }
