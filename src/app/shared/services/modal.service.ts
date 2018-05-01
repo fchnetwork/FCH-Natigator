@@ -49,8 +49,8 @@ export class ModalService {
     return this.openModal(BlockModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', blockNumber, block });
   }
 
-  openTransaction(hash: any = null, transaction: any): Promise<any> {
-    return this.openModal(TransactionModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', hash, transaction });
+  openTransaction(hash: any = null, transaction: any, external, redirectUrl): Promise<any> {
+    return this.openModal(TransactionModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', hash, transaction, external, redirectUrl });
   }
   
   openSwapCreateConfirm(data?: any): Promise<any> {

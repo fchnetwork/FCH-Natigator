@@ -156,15 +156,17 @@ export class AuthenticationService {
     }
 
     login(password) {
-        this.unencryptKeystore(password).then( result => {
-            this.sessionStorage.store('acc_address', result.web3.address);
-            this.sessionStorage.store('acc_avatar',  this.generateCryptedAvatar( result.web3.address ) );
-            this.sessionStorage.store('seed', result.s);
-            this.sessionStorage.store('private_key', result.web3.privateKey);
-            this.sessionStorage.store('password', password);
-            this.sessionStorage.store('transactions', result.transactions.length ? JSON.parse(result.transactions) : []);
-            this.sessionStorage.store('tokens', result.tokens.length ? JSON.parse(result.tokens) : []);
-            this.router.navigate(['/transaction']);
+        return new Promise((resolve, reject) =>{
+            this.unencryptKeystore(password).then( result => {
+                this.sessionStorage.store('acc_address', result.web3.address);
+                this.sessionStorage.store('acc_avatar',  this.generateCryptedAvatar( result.web3.address ) );
+                this.sessionStorage.store('seed', result.s);
+                this.sessionStorage.store('private_key', result.web3.privateKey);
+                this.sessionStorage.store('password', password);
+                this.sessionStorage.store('transactions', result.transactions.length ? JSON.parse(result.transactions) : []);
+                this.sessionStorage.store('tokens', result.tokens.length ? JSON.parse(result.tokens) : []);
+                resolve('success');
+            });
         });
     }
 

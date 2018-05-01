@@ -29,27 +29,36 @@ export class PendingTxnsComponent implements OnInit {
 
 
 
-getPendingTxPool() {
-  const pendingTxnKeys = [];
-  this.exploreSrv.getPendingTransactions().subscribe( res => {
-    Object.keys(res).forEach( (key,index) => {
-      pendingTxnKeys.push(key)
+  getPendingTxPool() {
+    const pendingTxnKeys = [];
+    this.exploreSrv.getPendingTransactions().subscribe( res => {
+      Object.keys(res).forEach( (key,index) => {
+        pendingTxnKeys.push(key)
+      });
+      pendingTxnKeys.forEach( element => {
+          Object.keys(res[element]).forEach( (key,index) => {
+            this.transactions.push({
+              blockHash:  res[element][key].blockHash,
+              from:  res[element][key].from,
+              to:  res[element][key].to,
+              gas:  res[element][key].gas,
+              gasPrice:  res[element][key].gasPrice,
+              hash:  res[element][key].hash,
+              nonce:  res[element][key].nonce,
+              transactionIndex:  res[element][key].transactionIndex,
+              value:  res[element][key].value
+            })
+        });
+      });
     });
-    pendingTxnKeys.forEach( element => {
-      for (let index = 0; index < Object.keys(res[element]).length; index++) {
-       const txn = res[element][index];
-       this.transactions.push({ blockHash: txn.blockHash, from: txn.from, to: txn.to, gas: txn.gas, gasPrice: txn.gasPrice, hash: txn.hash, nonce: txn.nonce, transactionIndex: txn.transactionIndex, value: txn.value })
-      }
-    });
-});
-}
+  }
 
 
 
 
 
   openTransaction(transaction) {
-    this.modal.openTransaction(transaction.hash, transaction).then((result) => {
+    this.modal.openTransaction(transaction.hash, transaction, false, null).then((result) => {
     }).catch( () => {});
   }
 

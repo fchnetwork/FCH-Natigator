@@ -4,7 +4,7 @@ import { RegistrationRouteData } from '../models/RegistrationRouteData';
 import { AerumBackupFile } from '../../shared/components/file-download/file-download';
 import { Router } from '@angular/router';
 import { ClipboardService } from '../../shared/services/clipboard.service';
-import { NotificationService } from '../../shared/services/notification.service';
+import { InternalNotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-backup-create',
@@ -18,7 +18,7 @@ export class BackupCreateComponent implements OnInit {
   constructor(private routeDataService: RouteDataService<RegistrationRouteData>,
     private router: Router,
     private clipboardService: ClipboardService,
-    private notificationService: NotificationService) {
+    private notificationService: InternalNotificationService) {
 
     if (!routeDataService.hasData()) {
       router.navigate(['account/register']);

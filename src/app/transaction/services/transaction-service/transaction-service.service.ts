@@ -109,7 +109,7 @@ export class TransactionServiceService {
         }
     }
 
-    transaction( privkey, activeUser, to, amount, data ) : Promise<any> {
+    transaction( privkey, activeUser, to, amount, data, external, redirectUrl ) : Promise<any> {
       return new Promise( (resolve, reject) => {
           const privateKey          = ethJsUtil.toBuffer( privkey )
           const sendTo              = ethJsUtil.toChecksumAddress( to ) ;
@@ -138,7 +138,7 @@ export class TransactionServiceService {
                 transaction.on('transactionHash', hash => { 
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash);
                   this.web3.eth.getTransaction(hash).then((res)=>{
-                    this.modalService.openTransaction(hash, res);
+                    this.modalService.openTransaction(hash, res, external, redirectUrl);
                   });
                 }).catch( error => {
                     // alert( error )
@@ -147,7 +147,7 @@ export class TransactionServiceService {
       });
     }
 
-    async sendTokens(myAddress, to, amount, contractAddress) {
+    async sendTokens(myAddress, to, amount, contractAddress, external, redirectUrl) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
       const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 100000});
       const rawTransaction = {
@@ -169,7 +169,7 @@ export class TransactionServiceService {
         this.web3.eth.getTransaction(hash).then((res)=>{
           this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash);
           this.web3.eth.getTransaction(hash).then((res)=>{
-            this.modalService.openTransaction(hash, res);
+            this.modalService.openTransaction(hash, res, external, redirectUrl);
           });
         });
       }).catch( error => {

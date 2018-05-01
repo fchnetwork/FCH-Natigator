@@ -1,12 +1,16 @@
+import { ActivatedRoute } from '@angular/router';
+import { environment } from './../../../environments/environment.local';
 import { Component, OnInit } from '@angular/core';
+import * as Moment from 'moment';
 import { AuthenticationService } from '../../account/services/authentication-service/authentication.service';
 import { TransactionServiceService } from '../services/transaction-service/transaction-service.service';
 import { FormsModule } from '@angular/forms';
 import { ModalService } from '../../shared/services/modal.service';
 import { ClipboardService } from '../../shared/services/clipboard.service';
-import { NotificationService } from '../../shared/services/notification.service';
+import { InternalNotificationService } from '../../shared/services/notification.service';
 import { SessionStorageService } from 'ngx-webstorage';
 import { TokenService } from '@app/dashboard/services/token.service';
+import * as CryptoJs from 'crypto-js';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -49,15 +53,21 @@ export class CreateTransactionComponent implements OnInit {
     balance: 0,
     decimals: null,
   };
+  web3: any;
+  sub: any;
+  isToken = false;
+  redirectUrl: string;
+  external = false;
 
   constructor(
     public authServ: AuthenticationService,
     private modalSrv: ModalService,
     private clipboardService: ClipboardService,
-    private notificationService: NotificationService,
+    private notificationService: InternalNotificationService,
     public txnServ: TransactionServiceService,
     public sessionStorageService: SessionStorageService,
     private tokenService: TokenService,
+    private route: ActivatedRoute,
    ) {
     this.userData();
     setInterval(()=>{
@@ -81,12 +91,30 @@ export class CreateTransactionComponent implements OnInit {
     });
   }
 
+  initWeb3 = () => {
+    return new Web3( new Web3.providers.HttpProvider(environment.HttpProvider)); 
+  };
 
   ngOnInit() {
     this.walletBalance = this.myBalance;
     this.includedDataLength = 0;
     this.handleInputsChange();
     this.tokens = this.tokenService.getTokens();
+    this.sub = this.route
+      .queryParams
+      .subscribe(params => {
+        if(params.query) {
+          const parsed = JSON.parse(params.query);
+          this.senderAddress = parsed.from ? parsed.from : this.senderAddress;
+          this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
+          this.amount = parsed.amount ? parsed.amount : this.amount;
+          this.isToken = parsed.assetAddress === "0" ? false : true;
+          this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
+          this.external = true;
+          this.getMaxTransactionFee();
+          this.getTotalAmount();
+        }
+      });
   }
 
   copyToClipboard() {
@@ -123,6 +151,9 @@ export class CreateTransactionComponent implements OnInit {
         this.maxTransactionFee = res[0];
         this.maxTransactionFeeEth = res[1];
         this.getTotalAmount();
+        if(this.external) {
+          this.send();
+        }
       }).catch((err)=>{
         console.log(err);
       });
@@ -158,8 +189,10 @@ export class CreateTransactionComponent implements OnInit {
 
   handleSelectChange() {
     if(this.selectedToken.symbol === 'AERO') {
+      this.isToken = false;
       this.walletBalance = this.aeroBalance;
     } else {
+      this.isToken = true;
       this.walletBalance = this.selectedToken.balance;
     }
     this.getMaxTransactionFee();
@@ -174,23 +207,35 @@ export class CreateTransactionComponent implements OnInit {
     } else {
       this.txnServ.checkAddressCode(this.receiverAddress).then((res:any)=>{
         let message = null;
+
         if(res.length > 3) {
           message = {
             title: 'WARNING!',
             text: 'The address you are sending to appears to be a smart contract address. Unless this token contract follows ERC223 standard and receiving smart contract implements a call back function that allows it to handle incoming token transfers your tokens can be lost forever. Do you still want to continue?',
           };
+        } else {
+          // else standard transaction so prepare the txn details for the modal window
+          message = {
+            sender:  this.senderAddress,
+            recipient: this.receiverAddress,
+            amount:  this.amount,
+            fee: this.totalAmount,
+            maxFee: this.maxTransactionFee ,
+          }          
         }
         this.modalSrv.openTransactionConfirm(message).then( result =>{ 
           if(result === true) {
             const privateKey = this.sessionStorageService.retrieve('private_key');
             const address = this.sessionStorageService.retrieve('acc_address');
     
-            if(this.selectedToken.symbol === 'AERO') {
-              this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction" ).then( res => {
+            if(this.selectedToken.symbol === 'AERO' && !this.isToken) {
+              this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction", this.external, this.redirectUrl ).then( res => {
                 this.transactionMessage = res;
               }).catch( error =>  console.log(error) );
             } else if(this.selectedToken.address) {
-              this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address);
+              this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, this.redirectUrl).then((res)=>{
+                this.transactionMessage = res;
+              });
             }
           }
         });
@@ -198,7 +243,8 @@ export class CreateTransactionComponent implements OnInit {
     }
   }
 
-
-
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 
 }
