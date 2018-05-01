@@ -5,12 +5,10 @@
         <div class="dataTable-info-label">
             <label>{{'TRANSACTIONS_FOUND_COUNT'|translate: {transactionsCount: transactions.length} }}</label>
         </div>
-
-        {{ finishedSearching  }} 
-
-        <h1 *ngIf="!finishedSearching">
-           Searching for Transactions
-        </h1>
+        
+        <p *ngIf="!transactionStatus">
+           When this goes we have finished searching..... our loader icon will replace this.
+        </p>
 
         <table>
             <thead>
