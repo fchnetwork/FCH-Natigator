@@ -128,8 +128,12 @@
 "DASHBOARD": {
   "TITLE": "Account Overview"
 },
-"TRANSACTION_COST":"Txn cost"
-
+"TRANSACTION_COST":"Txn cost",
+"DASHBOARD_TOKENS": {
+  "NAME": "Name",
+  "DECIMALS": "Decimals",
+  "OWNED":"Owned"
+}
 }
 
 
