@@ -138,6 +138,7 @@
   "SUB_MENU_CREATE_SWAP_ITEM_NAME":"Create Atomic Swap",
   "SUB_MENU_LOAD_SWAP_ITEM_NAME":"Load Atomic Swap",
   "AERO_TO_TOKEN":"Aero > Token",
+  "AERO_TO_AERO":"Aero > Aero",
   "TOKEN_TO_AERO":"Token > Aero",
   "TOKEN_TO_TOKEN":"Token > Token",
   "CREATE": {
