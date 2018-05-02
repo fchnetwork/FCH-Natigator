@@ -9,4 +9,5 @@ export const environment = {
   // HttpProvider: "http://127.0.0.1:8545"
   cookiesDomain: "localhost",
   webSocketStatServer: "ws://localhost:3000/primus",
+  externalBlockExplorer: "http://explore.aerum.net/#/",
 };

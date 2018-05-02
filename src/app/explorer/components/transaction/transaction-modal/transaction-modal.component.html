@@ -77,10 +77,10 @@
               <ng-template #normalTxn>
                   <div *ngIf="showHexData; then hex else text"></div>
                   <ng-template #text>
-                      {{transaction.input | hextoAscii}} 
+                      {{transaction.input|hextoAscii}} 
                   </ng-template>
                   <ng-template #hex>
-                      {{transaction.input }} 
+                      {{transaction.input}} 
                   </ng-template>    
               </ng-template>
               <ng-template #contractTxn>

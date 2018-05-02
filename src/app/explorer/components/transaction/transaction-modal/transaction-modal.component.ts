@@ -3,6 +3,7 @@ import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { iTransaction } from '@shared/app.interfaces';
 import * as Moment from 'moment';
 import { ModalService } from '@shared/services/modal.service';
+import { environment } from '@env/environment'
 export interface TransactionModalContext {
   hash?: string;
   transaction?: iTransaction;
@@ -44,6 +45,8 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
   }
 
   openBlock(blockNumber) {
+    window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
+     // http://explore.aerum.net/#/block/245490
     // to do  - setup external blockchain explorer and feed this block number into it in a new tab
   }
   
