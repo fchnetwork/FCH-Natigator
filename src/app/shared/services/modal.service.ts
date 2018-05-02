@@ -11,6 +11,8 @@ import { AddTokenComponent } from '@app/dashboard/components/add-token/add-token
 import { CreateSwapConfirmComponent } from '@app/swap/components/create-swap/create-swap-confirm/create-swap-confirm.component';
 import { LoadSwapConfirmComponent } from '@app/swap/components/load-swap/load-swap-confirm/load-swap-confirm.component';
 
+import { GetBlockModalComponent } from '@explorer/components/block/get-block-modal/get-block-modal.component';
+
 @Injectable()
 export class ModalService {
 
@@ -49,6 +51,10 @@ export class ModalService {
     return this.openModal(BlockModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', blockNumber, block });
   }
 
+  openAndGetBlock(blockNumber: any = null): Promise<any> {
+    return this.openModal(GetBlockModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', blockNumber  });
+  }
+  
   openTransaction(hash: any = null, transaction: any, external, redirectUrl): Promise<any> {
     return this.openModal(TransactionModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', hash, transaction, external, redirectUrl });
   }

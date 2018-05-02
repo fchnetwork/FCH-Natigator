@@ -1,8 +1,8 @@
 <aer-sidebar>
   <aer-sidebar-header></aer-sidebar-header>
-  <aer-sidebar-group title="{{'TRANSACTIONS'|translate}}" iconName="transaction">
-    <aer-sidebar-item iconName="transaction" [routerLink]="['/transaction']">{{'SEND_RECEIVE'|translate}}</aer-sidebar-item>
-  </aer-sidebar-group>
+
+  <aer-sidebar-item class="o-menu__item" iconName="transaction" [routerLink]="['/transaction']">{{'SEND_RECEIVE'|translate}}</aer-sidebar-item>
+
   <aer-sidebar-group title="{{'STAKING'|translate}}" iconName="staking">
 
   </aer-sidebar-group>
@@ -29,7 +29,7 @@
     <aer-sidebar-item iconName="pending" [routerLink]="['/explorer/transactions/pending']">{{'PENDING_TXNS'|translate}}</aer-sidebar-item>
   </aer-sidebar-group>
 
-  <aer-sidebar-group title="{{'DIAGNOSTICS'|translate}}" iconName="diagnosticview">
+  <aer-sidebar-group style="display:none;" title="{{'DIAGNOSTICS'|translate}}" iconName="diagnosticview">
     <aer-sidebar-item iconName="diagnosticview" [routerLink]="['/diagnostics']">{{'OVERVIEW'|translate}}</aer-sidebar-item>
     <aer-sidebar-item iconName="diagnosticview" [routerLink]="['/diagnostics/stats']">Test Page</aer-sidebar-item>
   </aer-sidebar-group>
@@ -37,7 +37,7 @@
   <button (click)="logout()">Logout</button>
 </aer-sidebar>
 <aer-toolbar>
-  <app-sidebar-account-select></app-sidebar-account-select>
+  <app-sidebar-account-select style="display: none!important;"></app-sidebar-account-select>
 </aer-toolbar>
 <aer-content>
   <router-outlet></router-outlet>

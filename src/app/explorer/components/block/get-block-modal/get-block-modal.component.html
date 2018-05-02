@@ -1,0 +1,80 @@
+<aer-modal-dialog>
+    <div class="explorer detail-modal" *ngIf="block">
+      <div class="title">{{'BLOCK'|translate}}</div>
+      <app-divider></app-divider>
+      <div class="link">{{block.number}}</div>
+      <div><p class="aer-small">{{block.timestamp | transactionTimeStamp  }} </p></div>
+      <div class="age">({{block.timestamp | transactionTimeAgo  }}</div>
+  
+      <div class="transaction-table">
+        <div class="tr">
+          <div class="name">
+            {{'TXNS'|translate}}
+          </div>
+          <div class="value">
+            {{block.transactions.length}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'HASH'|translate}}
+          </div>
+          <div class="value">
+            {{block.hash}}
+          </div>
+        </div>
+        <div class="tr">
+            <div class="name">
+              {{'PARENT_HASH'|translate}}
+            </div>
+            <div class="value">
+                {{block.parentHash}}
+            </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'SIZE'|translate}}
+          </div>
+          <div class="value">
+              {{block.size}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'GAS_USED'|translate}}
+          </div>
+          <div class="value">
+              {{block.gasUsed | convertToEther  }}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'GAS_LIMIT'|translate}}
+          </div>
+          <div class="value">
+              {{block.gasLimit | convertToEther  }}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'NONCE'|translate}}
+          </div>
+          <div class="value">
+              {{block.nonce}}
+          </div>
+        </div>
+        <div class="tr">
+            <div class="name">
+              {{'EXTRA_DATA'|translate}}
+            </div>
+            <div class="value">
+                {{block.extraData  | hextoAscii   }}
+            </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!block">
+      <div class="title">{{'BLOCK'|translate}}</div>
+      <p>{{blockNumber}}</p>
+    </div>
+  </aer-modal-dialog>
