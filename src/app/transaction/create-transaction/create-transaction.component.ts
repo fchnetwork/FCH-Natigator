@@ -199,6 +199,25 @@ export class CreateTransactionComponent implements OnInit {
     this.getTotalAmount();
   }
 
+  openTransactionConfirm(message) {
+    this.modalSrv.openTransactionConfirm(message).then( result =>{ 
+      if(result === true) {
+        const privateKey = this.sessionStorageService.retrieve('private_key');
+        const address = this.sessionStorageService.retrieve('acc_address');
+
+        if(this.selectedToken.symbol === 'AERO' && !this.isToken) {
+          this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction", this.external, this.redirectUrl ).then( res => {
+            this.transactionMessage = res;
+          }).catch( error =>  console.log(error) );
+        } else if(this.selectedToken.address) {
+          this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, this.redirectUrl).then((res)=>{
+            this.transactionMessage = res;
+          });
+        }
+      }
+    });
+  }
+
   send() {
     this.transactionMessage = "";
     if( this.receiverAddress === undefined || this.receiverAddress == null) {
@@ -212,7 +231,19 @@ export class CreateTransactionComponent implements OnInit {
           message = {
             title: 'WARNING!',
             text: 'The address you are sending to appears to be a smart contract address. Unless this token contract follows ERC223 standard and receiving smart contract implements a call back function that allows it to handle incoming token transfers your tokens can be lost forever. Do you still want to continue?',
+            sender:  this.senderAddress,
+            recipient: this.receiverAddress,
+            amount:  this.amount,
+            fee: this.totalAmount,
+            maxFee: this.maxTransactionFee,
           };
+          this.tokenService.tokenFallbackCheck(this.selectedToken.address).then((res)=>{
+            if(!res) {
+              message.text = 'The contract address you are sending your tokens to does not appear to support ERC223 standard, sending your tokens to this contract address will likely result in a loss of tokens sent. Please acknowledge your understanding of risks before proceeding further.';
+              message.checkbox = true;
+            }
+            this.openTransactionConfirm(message);
+          });
         } else {
           // else standard transaction so prepare the txn details for the modal window
           message = {
@@ -221,24 +252,9 @@ export class CreateTransactionComponent implements OnInit {
             amount:  this.amount,
             fee: this.totalAmount,
             maxFee: this.maxTransactionFee,
-          }          
+          };
+          this.openTransactionConfirm(message);        
         }
-        this.modalSrv.openTransactionConfirm(message).then( result =>{ 
-          if(result === true) {
-            const privateKey = this.sessionStorageService.retrieve('private_key');
-            const address = this.sessionStorageService.retrieve('acc_address');
-    
-            if(this.selectedToken.symbol === 'AERO' && !this.isToken) {
-              this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction", this.external, this.redirectUrl ).then( res => {
-                this.transactionMessage = res;
-              }).catch( error =>  console.log(error) );
-            } else if(this.selectedToken.address) {
-              this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, this.redirectUrl).then((res)=>{
-                this.transactionMessage = res;
-              });
-            }
-          }
-        });
       });
     }
   }

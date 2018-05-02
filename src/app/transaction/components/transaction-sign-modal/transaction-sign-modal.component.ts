@@ -27,11 +27,11 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
   amount: string;
   maxFee: string;
   fee: string;
-
+  checkbox: false;
+  checked: false;
   constructor( public dialog: DialogRef<BasicModalContext>,
                public authServ: AuthenticationService,
                public formBuilder: FormBuilder) {
-
             if(dialog.context.param) {
               this.getVariable = dialog.context.param;
               this.message = dialog.context.param;
@@ -41,7 +41,8 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
               this.receiverAvatar = this.authServ.generateCryptedAvatar( dialog.context.param.recipient );
               this.maxFee = dialog.context.param.maxFee;
               this.fee = dialog.context.param.fee;     
-              this.amount = dialog.context.param.amount;        
+              this.amount = dialog.context.param.amount;   
+              this.checkbox = dialog.context.param.checkbox || false;     
             }
   }
 

@@ -19,7 +19,6 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
 
   hash: string;
   transaction: iTransaction;
-
     constructor(
     @Inject( forwardRef( () => ModalService ) ) private modal: ModalService, // IMPORTANT - you cant add a modal within a modal so have to inject the dependency using forwardRef
     public dialog: DialogRef<TransactionModalContext>) {

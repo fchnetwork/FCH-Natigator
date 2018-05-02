@@ -103,4 +103,16 @@ export class TokenService {
       }
     });
   }
+
+  tokenFallbackCheck(receiver) {
+    return new Promise((resolve, reject)=>{
+      const signature = 'tokenFallback(address,uint,bytes)';
+      this.web3.eth.getCode(receiver).then((res)=>{
+        let hash = this.web3.utils.sha3(signature);
+        hash = "63" + hash.slice(2,10);
+        resolve(res.includes(hash));
+      });
+    });
+
+  }
 }
