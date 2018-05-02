@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../../account/services/authentication-
 
 export interface BasicModalContext {
   param?: any;
+  external?: boolean;
 }
 
 @Component({
@@ -18,8 +19,6 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
   getVariable: any;
   unlockAccountForm: FormGroup;
   message = {};
-
-
   senderAddress: string;
   receiverAddress: string;  
   senderAvatar: string;
@@ -27,11 +26,12 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
   amount: string;
   maxFee: string;
   fee: string;
+  external = false;
+  pin: number;
 
   constructor( public dialog: DialogRef<BasicModalContext>,
                public authServ: AuthenticationService,
                public formBuilder: FormBuilder) {
-
             if(dialog.context.param) {
               this.getVariable = dialog.context.param;
               this.message = dialog.context.param;
@@ -41,7 +41,8 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
               this.receiverAvatar = this.authServ.generateCryptedAvatar( dialog.context.param.recipient );
               this.maxFee = dialog.context.param.maxFee;
               this.fee = dialog.context.param.fee;     
-              this.amount = dialog.context.param.amount;        
+              this.amount = dialog.context.param.amount;   
+              this.external = dialog.context.external;     
             }
   }
 
@@ -51,7 +52,7 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
    }
 
   accept(){
-    this.dialog.close(true);
+    this.dialog.close({result: true, pin: this.pin ? this.pin : ''});
   }
 
   dismiss() {
