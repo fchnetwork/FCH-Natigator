@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TokenService } from '@app/dashboard/services/token.service';
-import { SwapToken } from './swap-tokens-list.interfaces';
+import { SwapToken } from '@app/swap/swap.models';
 
 @Component({
   selector: 'app-swap-tokens-list',

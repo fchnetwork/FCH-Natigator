@@ -6,8 +6,8 @@ import { TokenService } from '@app/dashboard/services/token.service';
 import { ModalService } from '@app/shared/services/modal.service';
 import { NotificationService } from "@aerum/ui";
 
-import { SwapToken } from './swap-tokens-list/swap-tokens-list.interfaces';
 import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.service';
+import { SwapToken } from '@app/swap/swap.models';
 
 @Component({
   selector: 'create-swap',
