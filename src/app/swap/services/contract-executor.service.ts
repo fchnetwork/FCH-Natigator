@@ -49,15 +49,11 @@ export class ContractExecutorService {
         console.log('Transaction receipt returned:', receipt);
         resolve(receipt); 
       })
-      .on('error', (error) => {
+      .on('error', async (error) => {
         // TODO: We do this workarround due to this issue: https://github.com/ethereum/web3.js/issues/1534
-        // TODO: We probably need retry here / not rely on seconds
         if(error && error.message && error.message.startsWith('Failed to check for transaction receipt:')) {
-          setTimeout(async () => {
-            const receipt = await this.web3.eth.getTransactionReceipt(transactionHash);
-            console.log('Transaction receipt:', receipt);
-            resolve(receipt);
-          }, 10 * 1000);
+          const receipt = await this.retry(() => this.web3.eth.getTransactionReceipt(transactionHash), 10, 1500);
+          resolve(receipt);
         } else {
           console.log('Transaction error:', error);
           reject(error);
@@ -103,4 +99,26 @@ export class ContractExecutorService {
     };
   }
 
+  private retry<T>(func: () => Promise<T>, times: number, interval: number) : Promise<T> {
+    return new Promise<T>(async (resolve, reject) => {
+      if(times <= 0) {
+        reject('Cannot retry 0 times');
+      }
+
+      if(times === 1) {
+        resolve(await func());
+      }
+  
+      try {
+        const respone = await func();
+        resolve(respone);
+      } catch(e) {
+        console.warn(e.message);
+      }
+  
+      setTimeout(async () => {
+        resolve(await this.retry(func, times - 1, interval));
+      }, interval);
+    });
+  }
 }
