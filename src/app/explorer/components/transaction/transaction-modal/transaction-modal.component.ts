@@ -7,7 +7,7 @@ export interface TransactionModalContext {
   hash?: string;
   transaction?: iTransaction;
   external?: boolean;
-  redirectUrl?: string;
+  urls?: any;
 }
 
 @Component({
@@ -60,7 +60,7 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
 
   redirectExternal(){
     if(this.dialog.context.external) {
-      window.location.href=this.dialog.context.redirectUrl;
+      window.location.href=this.dialog.context.urls.success;
     }
   }
 

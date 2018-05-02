@@ -58,6 +58,10 @@ export class CreateTransactionComponent implements OnInit {
   isToken = false;
   redirectUrl: string;
   external = false;
+  hash: any;
+  assetAddress: any;
+  timeStamp: any;
+  returnUrlFailed: any;
 
   constructor(
     public authServ: AuthenticationService,
@@ -111,10 +115,15 @@ export class CreateTransactionComponent implements OnInit {
           this.isToken = parsed.assetAddress === "0" ? false : true;
           this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
           this.external = true;
+          this.hash = parsed.hash ? parsed.hash : this.hash;
+          this.assetAddress = parsed.assetAddress ? parsed.assetAddress : this.assetAddress;
+          this.timeStamp = parsed.timeStamp ? parsed.timeStamp : this.timeStamp;
+          this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
           this.getMaxTransactionFee();
           this.getTotalAmount();
         }
       });
+    this.web3 = this.initWeb3();
   }
 
   copyToClipboard() {
@@ -199,6 +208,16 @@ export class CreateTransactionComponent implements OnInit {
     this.getTotalAmount();
   }
 
+  checkHash(pin){
+    if(this.external) {
+      // console.log(this.hash);
+      // console.log(this.web3.utils.keccak256(`${this.senderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
+      return String(this.hash) === String(this.web3.utils.keccak256(`${this.senderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
+    }
+    return false;
+    
+  }
+
   send() {
     this.transactionMessage = "";
     if( this.receiverAddress === undefined || this.receiverAddress == null) {
@@ -226,22 +245,31 @@ export class CreateTransactionComponent implements OnInit {
             amount:  this.amount,
             fee: this.totalAmount,
             maxFee: this.maxTransactionFee,
-          }          
+          }; 
         }
-        this.modalSrv.openTransactionConfirm(message).then( result =>{ 
-          if(result === true) {
+        this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
+          const urls = {success: this.redirectUrl, failed: this.returnUrlFailed};
+          const validHash = this.checkHash(result.pin);
+          if(result.result === true && validHash) {
             const privateKey = this.sessionStorageService.retrieve('private_key');
             const address = this.sessionStorageService.retrieve('acc_address');
-    
+
             if(this.selectedToken.symbol === 'AERO' && !this.isToken) {
-              this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction", this.external, this.redirectUrl ).then( res => {
+              this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction", this.external, urls).then( res => {
                 this.transactionMessage = res;
-              }).catch( error =>  console.log(error) );
+              }).catch( (error) =>  {
+                console.log(error);
+                if(this.external) {
+                  window.location.href=urls.failed;
+                }
+              });
             } else if(this.selectedToken.address) {
-              this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, this.redirectUrl).then((res)=>{
+              this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, urls).then((res)=>{
                 this.transactionMessage = res;
               });
             }
+          } else if(this.external) {
+            window.location.href=this.returnUrlFailed;
           }
         });
       });
