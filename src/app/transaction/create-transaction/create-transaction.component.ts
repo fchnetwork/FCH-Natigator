@@ -239,8 +239,8 @@ export class CreateTransactionComponent implements OnInit {
             recipient: this.receiverAddress,
             amount:  this.amount,
             fee: this.totalAmount,
-            maxFee: this.maxTransactionFee ,
-          };
+            maxFee: this.maxTransactionFee,
+          }; 
         }
         this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
           const urls = {success: this.redirectUrl, failed: this.returnUrlFailed};

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ExplorerService } from '../../services/explorer.service';
 import { iBlocks, iTransaction } from '../../../shared/app.interfaces';
 import { ModalService } from '../../../shared/services/modal.service';
+import {BehaviorSubject} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-transactions',
@@ -22,46 +23,42 @@ export class TransactionsComponent implements OnInit {
   descending: boolean = false;
   transactionStatus: boolean = false;
 
-
   constructor( public exploreSrv: ExplorerService,
                private route: ActivatedRoute,
                private router: Router,
-               private modal: ModalService
-               ) { }
+               private modal: ModalService) {}
 
   ngOnInit() {
     this.getAllTransactions();
   }
 
-
   sort(){
     this.descending = !this.descending;
     this.order = this.descending ? 1 : -1;
   }
-
   
   getAllTransactions() {
     this.transactions = [];
-    this.exploreSrv.getBlock().subscribe( async currentBlock => {
-      for ( let i = currentBlock-400; i < currentBlock; ++i) {
-        this.exploreSrv.web3.eth.getBlock(i, (error, blockData) => {
-          if( !error && blockData !== null || blockData !== undefined ) {
-            this.exploreSrv.web3.eth.getBlockTransactionCount( blockData['number'], (error, txCount) => {
-                for ( let blockIdx = 0; blockIdx < txCount; blockIdx++) {
-                  this.transactionStatus = true;
-                  this.exploreSrv.web3.eth.getTransactionFromBlock( blockData['number'], blockIdx, (error, txn) => {
-                  const mergeBlockTransaction = Object.assign( txn, blockData ); // need to merge block info with transaction because we need the block timestamp
-                  this.transactions.push(mergeBlockTransaction);
-                })
-              }
-            })
-          }
-        });
+    let searchAmount = 400;
+    this.exploreSrv.getBlock().subscribe( async currentBlock => {      
+      let bookmarkCurrenBlock = currentBlock - 1;
+      for ( let i = currentBlock - searchAmount; i < currentBlock; ++i) {
+        this.exploreSrv.web3.eth.getBlock(i).then( (blockData:any) => {
+              return Promise.all([
+                  this.exploreSrv.web3.eth.getBlockTransactionCount( blockData['number'] )
+              ]).then(results => {
+                  for ( let blockIdx = 0; blockIdx < results[0]; blockIdx++) {
+                    this.exploreSrv.web3.eth.getTransactionFromBlock( blockData['number'], blockIdx, (error, txn) => {
+                    const mergeBlockTransaction = Object.assign( txn, blockData ); // need to merge block info with transaction because we need the block timestamp
+                    this.transactions.push(mergeBlockTransaction);
+                  })
+                }            
+                this.transactionStatus = ( searchAmount-- == 1) ? true : false;  // show or hide our loader animation - coming soon!! 
+              });          
+          })
       }
     });
   }
-  
-
 
   openBlock(blockNumber) {
     this.modal.openBlock(blockNumber).then( result =>{ 
@@ -93,8 +90,6 @@ export class TransactionsComponent implements OnInit {
 
   }
  
-
-
   exploreBlock(id: number) {
     this.router.navigate(['/explorer/block', id]);
   }
