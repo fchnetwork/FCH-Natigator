@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { BasicModalContext } from '@app/shared/components/modals/basic-modal/basic-modal.component';
+import { LoadedSwap } from '@app/swap/swap.models';
 
 @Component({
   selector: 'app-load-swap-confirm',
@@ -9,7 +10,7 @@ import { BasicModalContext } from '@app/shared/components/modals/basic-modal/bas
 })
 export class LoadSwapConfirmComponent implements ModalComponent<BasicModalContext>, OnInit {
 
-  param: any;
+  param: LoadedSwap;
 
   constructor(public dialog: DialogRef<BasicModalContext>) { 
     this.param = dialog.context.param;

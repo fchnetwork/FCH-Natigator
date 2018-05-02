@@ -2,11 +2,11 @@
 
 <div aerRow>
   <div aerColumn size="6" prefix="sm">
-    <aer-card title="{{'SWAP.AERO_TO_TOKEN'|translate}}">
+    <aer-card title="{{title|translate}}">
       <div aerRow>
         <div aerColumn size="12" prefix="sm">
           {{'SWAP.LOAD.FIELD_SWAP_ID'|translate}}
-          <aer-input [(ngModel)]="swapId" class="with-button blue" buttonLabel="{{'SWAP.LOAD.BTN_LOAD'|translate}}" (buttonFn)="loadSwap()" ngDefaultControl></aer-input>
+          <aer-input [(ngModel)]="swapId" class="with-button blue" buttonLabel="{{'SWAP.LOAD.BTN_LOAD'|translate}}" (buttonFn)="loadSwap()" (keyup)="onSwapIdChange()" ngDefaultControl></aer-input>
         </div>
       </div>
     </aer-card>

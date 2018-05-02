@@ -1,7 +1,50 @@
 <aer-modal-dialog>
-  <h3>{{'SWAP.LOAD.CONRIM_TITLE'|translate}}</h3>
-  {{param.swapId}}
-  <aer-button class="btn-swap-create blue" (buttonFn)="onConfirm()">{{'SWAP.LOAD.BTN_CONFIRM'|translate}}</aer-button>
-  <aer-button class="btn-swap-create blue" (buttonFn)="onReject()">{{'SWAP.LOAD.BTN_REJECT'|translate}}</aer-button>
-  <aer-button class="btn-swap-cancel grey" (buttonFn)="onCancel()">{{'SWAP.LOAD.BTN_CANCEL'|translate}}</aer-button>
+  <div class="c-load-swap c-load-swap__table c-load-swap__unlock">
+    <h1>{{'SWAP.LOAD.CONRIM_TITLE'|translate}}</h1>
+    <div class="o-table">
+        <div class="o-table__row">
+            <div class="o-table__cell o-data--left">
+              {{ 'SWAP.LOAD.FIELD_SWAP_ID' | translate }}
+            </div>     
+            <div class="o-table__cell o-data--right">
+              {{ param.swapId }}
+            </div>
+        </div>
+        <div class="o-table__row">
+            <div class="o-table__cell o-data--left">
+              {{ param.tokenAddress | truncate: 32 }}
+            </div>     
+            <div class="o-table__cell o-data--right">
+              {{ param.tokenAmount }}
+            </div>
+        </div>
+        <div class="o-table__row">
+            <div class="o-table__cell o-data--left">
+              {{ 'SWAP.LOAD.FIELD_COUNTERPARTY' | translate }}
+            </div>     
+            <div class="o-table__cell o-data--right">
+              {{ param.counterpartyTrader | truncate: 32 }}
+            </div>
+        </div>
+        <div class="o-table__row">
+            <div class="o-table__cell o-data--left">
+              {{ param.counterpartyTokenAddress | truncate: 32 }}
+            </div>     
+            <div class="o-table__cell o-data--right">
+              {{ param.counterpartyAmount }}
+            </div>
+        </div>
+        <div class="o-table__row">
+            <div class="o-table__cell o-data--left">
+              {{ 'SWAP.LOAD.FIELD_STATUS' | translate }}
+            </div>     
+            <div class="o-table__cell o-data--right">
+              {{ param.status }}
+            </div>
+        </div>
+    </div>
+    <aer-button class="btn-swap-create blue" (buttonFn)="onConfirm()">{{'SWAP.LOAD.BTN_CONFIRM'|translate}}</aer-button>
+    <aer-button class="btn-swap-create blue" (buttonFn)="onReject()">{{'SWAP.LOAD.BTN_REJECT'|translate}}</aer-button>
+    <aer-button class="btn-swap-cancel grey" (buttonFn)="onCancel()">{{'SWAP.LOAD.BTN_CANCEL'|translate}}</aer-button>
+  </div>
 </aer-modal-dialog>

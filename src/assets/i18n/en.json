@@ -161,6 +161,8 @@
     "BTN_CONFIRM":"Confirm",
     "BTN_REJECT":"Reject",
     "BTN_CANCEL":"Cancel",
+    "FIELD_COUNTERPARTY":"Counterparty",
+    "FIELD_STATUS":"Status",
     "CONRIM_TITLE":"Confirm / Reject Atomic Swap"
     }
   }
