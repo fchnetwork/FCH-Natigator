@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, forwardRef } from '@angular/core';
+import { Component, OnInit, Inject, forwardRef, Output, EventEmitter } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { iTransaction } from '@shared/app.interfaces';
 import * as Moment from 'moment';
@@ -19,9 +19,12 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
 
   hash: string;
   transaction: iTransaction;
+  transactionHex: string;
+  showHexData: boolean = true;
+  @Output() toText: EventEmitter<any> = new EventEmitter();
+  @Output() toHex: EventEmitter<any> = new EventEmitter();
 
     constructor(
-    @Inject( forwardRef( () => ModalService ) ) private modal: ModalService, // IMPORTANT - you cant add a modal within a modal so have to inject the dependency using forwardRef
     public dialog: DialogRef<TransactionModalContext>) {
       if(dialog.context.hash) {
         this.hash = dialog.context.hash;
@@ -41,9 +44,7 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
   }
 
   openBlock(blockNumber) {
-    this.modal.openAndGetBlock(blockNumber).then( result =>{ 
-     })
-     .catch( () => {});
+    // to do  - setup external blockchain explorer and feed this block number into it in a new tab
   }
   
 
@@ -62,4 +63,14 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
       window.location.href=this.dialog.context.redirectUrl;
     }
   }
+
+  convert() {
+    this.showHexData = !this.showHexData;
+    if (this.showHexData) {
+      this.toText.emit(null);
+    } else {
+      this.toHex.emit(null);
+    }
+  }
+
 }
