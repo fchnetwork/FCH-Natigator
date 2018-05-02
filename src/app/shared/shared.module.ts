@@ -30,12 +30,12 @@ import { OrderbyPipe } from '@shared/pipes/orderby.pipe';
 import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
 import { HextoAsciiPipe } from '@shared/pipes/hextoAscii.pipe';
 import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
+import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
 
 import { DashboardRoutingModule } from '@app/dashboard/dashboard.routes';
 import { AppUIModule } from '@app/app.ui.module';
 
-import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component'
-
+import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -75,6 +75,7 @@ export function createTranslateLoader(http: HttpClient) {
     HextoAsciiPipe,
     HextoDecimalPipe,
     SidebarAccountSelectComponent,
+    TruncatePipe,
   ],
   providers: [
     ModalService,
@@ -100,6 +101,7 @@ export function createTranslateLoader(http: HttpClient) {
     ConvertToEtherPipe,
     HextoAsciiPipe,
     HextoDecimalPipe,
+    TruncatePipe,
     SidebarAccountSelectComponent,
   ]
 })

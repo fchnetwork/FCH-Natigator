@@ -77,15 +77,23 @@ export class CreateSwapComponent implements OnInit {
   }
 
   onTokenChanged(token: SwapToken) {
+    const oldMode = this.mode;
     this.token = token;
     this.updateSwapMode();
     this.updateTitle();
+    if(oldMode !== this.mode) {
+      this.generateSwapId();
+    }
   }
 
   onCounterpartyTokenChanged(token: SwapToken) {
+    const oldMode = this.mode;
     this.counterpartyToken = token;
     this.updateSwapMode();
     this.updateTitle();
+    if(oldMode !== this.mode) {
+      this.generateSwapId();
+    }
   }
 
   async createSwap() {
@@ -103,7 +111,7 @@ export class CreateSwapComponent implements OnInit {
       counterpartyTokenAmount: this.counterpartyTokenAmount,
       rate: this.rate
     });
-    
+
     if(!modalResult.confirmed) {
       console.log('Swap creation canceled');
       return;
