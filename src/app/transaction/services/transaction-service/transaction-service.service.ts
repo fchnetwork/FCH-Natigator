@@ -109,7 +109,7 @@ export class TransactionServiceService {
         }
     }
 
-    transaction( privkey, activeUser, to, amount, data, external, redirectUrl ) : Promise<any> {
+    transaction( privkey, activeUser, to, amount, data, external, urls ) : Promise<any> {
       return new Promise( (resolve, reject) => {
           const privateKey          = ethJsUtil.toBuffer( privkey )
           const sendTo              = ethJsUtil.toChecksumAddress( to ) ;
@@ -138,16 +138,19 @@ export class TransactionServiceService {
                 transaction.on('transactionHash', hash => { 
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash);
                   this.web3.eth.getTransaction(hash).then((res)=>{
-                    this.modalService.openTransaction(hash, res, external, redirectUrl);
+                    this.modalService.openTransaction(hash, res, external, urls);
                   });
                 }).catch( error => {
+                  if(external) {
+                    window.location.href=urls.failed;
+                  }
                     // alert( error )
                 });
           });
       });
     }
 
-    async sendTokens(myAddress, to, amount, contractAddress, external, redirectUrl) {
+    async sendTokens(myAddress, to, amount, contractAddress, external, urls) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
       const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 100000});
       const rawTransaction = {
@@ -169,10 +172,13 @@ export class TransactionServiceService {
         this.web3.eth.getTransaction(hash).then((res)=>{
           this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash);
           this.web3.eth.getTransaction(hash).then((res)=>{
-            this.modalService.openTransaction(hash, res, external, redirectUrl);
+            this.modalService.openTransaction(hash, res, external, urls);
           });
         });
       }).catch( error => {
+        if(external) {
+          window.location.href=urls.failed;
+        }
           // alert( error )
       });
     }
