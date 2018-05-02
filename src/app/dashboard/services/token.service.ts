@@ -6,6 +6,7 @@ import { SessionStorageService } from 'ngx-webstorage';
 import Web3 from 'web3';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { tokensABI } from '@app/abi/tokens';
+import utf8 from 'utf8';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -102,5 +103,16 @@ export class TokenService {
         reject('not valid address');
       }
     });
+  }
+
+  tokenFallbackCheck(receiver, signature) {
+    return new Promise((resolve, reject)=>{
+      this.web3.eth.getCode(receiver).then((res)=>{
+        let hash = this.web3.utils.keccak256(signature);
+        hash = "63" + hash.slice(2,10);
+        resolve(res.includes(hash));
+      });
+    });
+
   }
 }

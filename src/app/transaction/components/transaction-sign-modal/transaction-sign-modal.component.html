@@ -1,6 +1,7 @@
 <aer-modal-dialog >
   <div class="c-transaction c-transaction__table c-transaction__unlock">
     <h1>{{message.title || 'Confirm transaction'}}</h1>
+    <span *ngIf="message.text" class="message-text">{{message.text}}</span>
     <ul class="o-txnID u-lreset">
       <li>
         <ul class="o-txnID__person u-lreset">
@@ -50,13 +51,13 @@
               </div>                          
           </div>          
       </div>
-      <div class="pin">
+      <div *ngIf="external" class="pin">
         <span>PIN</span>
-        <input *ngIf="external" [(ngModel)]="pin" placeholder="Type your pin here" />
+        <input [(ngModel)]="pin" placeholder="Type your pin here" />
         <div class="clearfix"></div>
       </div>
-      
-      <aer-button (buttonFn)="accept()" class="blue">Send transaction</aer-button>
+      <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">I acknowledge risks.</aer-checkbox>
+      <aer-button [disabled]="checkbox && !checked" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue">Send transaction</aer-button>
       <aer-button (buttonFn)="dismiss()">Cancel</aer-button>
   </div>
 </aer-modal-dialog>

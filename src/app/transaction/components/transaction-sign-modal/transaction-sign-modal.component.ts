@@ -26,6 +26,8 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
   amount: string;
   maxFee: string;
   fee: string;
+  checkbox: false;
+  checked: false;
   external = false;
   pin: number;
 
@@ -42,6 +44,7 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
               this.maxFee = dialog.context.param.maxFee;
               this.fee = dialog.context.param.fee;     
               this.amount = dialog.context.param.amount;   
+              this.checkbox = dialog.context.param.checkbox || false;     
               this.external = dialog.context.external;     
             }
   }
