@@ -62,12 +62,6 @@ export class CreateSwapComponent implements OnInit {
     this.recalculateTokenRate();
   }
 
-  generateSwapId() {
-    const prefix = this.getSwapIdPrefix();
-    const randomPart = Guid.newGuid().replace(/-/g, '').slice(prefix.length);
-    this.swapId = prefix + randomPart;
-  }
-
   recalculateTokenRate() {
     if(!this.counterpartyTokenAmount) {
       return;
@@ -100,7 +94,16 @@ export class CreateSwapComponent implements OnInit {
       return;
     }
 
-    const modalResult = await this.modalService.openSwapCreateConfirm({ swapId: this.swapId });
+    const modalResult = await this.modalService.openSwapCreateConfirm({ 
+      swapId: this.swapId,
+      token: this.token,
+      tokenAmount: this.tokenAmount,
+      counterpartyAddress: this.counterpartyAddress,
+      counterpartyToken: this.counterpartyToken,
+      counterpartyTokenAmount: this.counterpartyTokenAmount,
+      rate: this.rate
+    });
+    
     if(!modalResult.confirmed) {
       console.log('Swap creation canceled');
       return;
@@ -109,6 +112,12 @@ export class CreateSwapComponent implements OnInit {
     await this.executeSwapCreate();
 
     this.notificationService.notify('Swap created', `Swap Id: ${this.swapId}`, "aerum");
+  }
+
+  private generateSwapId() {
+    const prefix = this.getSwapIdPrefix();
+    const randomPart = Guid.newGuid().replace(/-/g, '').slice(prefix.length);
+    this.swapId = prefix + randomPart;
   }
 
   private async executeSwapCreate() {
