@@ -223,7 +223,7 @@ export class CreateTransactionComponent implements OnInit {
             maxFee: this.maxTransactionFee ,
           }          
         }
-        this.modalSrv.openTransactionConfirm(message).then( result =>{ 
+        this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
           if(result === true) {
             const privateKey = this.sessionStorageService.retrieve('private_key');
             const address = this.sessionStorageService.retrieve('acc_address');

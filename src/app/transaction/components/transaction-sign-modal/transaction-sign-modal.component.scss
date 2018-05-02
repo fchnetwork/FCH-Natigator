@@ -79,3 +79,24 @@
     margin:0 auto;
   }
 }
+
+.pin {
+  margin-bottom: 30px;
+
+  input {
+    float: right;
+    width: calc(40% - 20px);
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  span {
+    float: left;
+    padding-top: 10px;
+  }
+
+  .clearfix {
+    clear: both;
+  }
+}

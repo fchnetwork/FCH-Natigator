@@ -35,8 +35,8 @@ export class ModalService {
     return this.openModal(BackupDisclamerComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 
-  openTransactionConfirm(data?: any): Promise<any> {
-    return this.openModal(TransactionSignModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
+  openTransactionConfirm(data?: any, external?: boolean): Promise<any> {
+    return this.openModal(TransactionSignModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data, external });
   }
 
   openAddToken(data?: any): Promise<any> {

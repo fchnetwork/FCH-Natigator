@@ -50,6 +50,12 @@
               </div>                          
           </div>          
       </div>
+      <div class="pin">
+        <span>PIN</span>
+        <input *ngIf="external" [(ngModel)]="pin" placeholder="Type your pin here" />
+        <div class="clearfix"></div>
+      </div>
+      
       <aer-button (buttonFn)="accept()" class="blue">Send transaction</aer-button>
       <aer-button (buttonFn)="dismiss()">Cancel</aer-button>
   </div>
