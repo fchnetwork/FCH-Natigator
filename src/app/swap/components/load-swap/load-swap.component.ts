@@ -58,8 +58,15 @@ export class LoadSwapComponent implements OnInit {
 
   async loadSwap() {
     const swapService = this.getCurrentSwapService();
-    const swap = await swapService.checkSwap(this.swapId);
-    console.log(swap);
+    let swap; 
+    
+    try {
+      swap = await swapService.checkSwap(this.swapId);
+      console.log(swap);
+    } catch (e) {
+      this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
+      throw e;
+    }
 
     const status = this.convertSwapStatus(swap.state);
     if(status === 'Invalid') {
@@ -83,30 +90,34 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async confirm(swap: LoadedSwap) {
-    console.log(`Approving swap: ${this.swapId}`);
+    try {
+      console.log(`Approving swap: ${this.swapId}`);
 
-    if(this.mode === 'aero_to_erc20') {
-      await this.ensureAllowance(
-        swap.counterpartyTokenAddress,
-        environment.contracts.swap.address.AeroToErc20,
-        Number(swap.counterpartyAmount)
-      );
+      if(this.mode === 'aero_to_erc20') {
+        await this.ensureAllowance(
+          swap.counterpartyTokenAddress,
+          environment.contracts.swap.address.AeroToErc20,
+          Number(swap.counterpartyAmount)
+        );
+      }
+
+      if(this.mode === 'erc20_to_erc20') {
+        await this.ensureAllowance(
+          swap.counterpartyTokenAddress,
+          environment.contracts.swap.address.Erc20ToAero,
+          Number(swap.counterpartyAmount)
+        );
+      }
+
+      console.log(`Confirming swap: ${this.swapId}`);
+      const swapService = this.getCurrentSwapService();
+      await swapService.closeSwap(this.swapId);
+
+      this.notificationService.notify('Swap done', `Swap Id: ${this.swapId}`, "aerum");
+    } catch (e) {
+      this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
+      throw e;
     }
-
-    if(this.mode === 'erc20_to_erc20') {
-      await this.ensureAllowance(
-        swap.counterpartyTokenAddress,
-        environment.contracts.swap.address.Erc20ToAero,
-        Number(swap.counterpartyAmount)
-      );
-    }
-
-    console.log(`Confirming swap: ${this.swapId}`);
-    const swapService = this.getCurrentSwapService();
-    await swapService.closeSwap(this.swapId);
-
-    this.notificationService.notify('Swap done', `Swap Id: ${this.swapId}`, "aerum");
-    // TODO: if failed send allowance to 0
   }
 
   private async ensureAllowance(tokenContractAddress: string, spender: string, amount: number) {
@@ -118,12 +129,17 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async reject() {
-    console.log(`Rejecting swap: ${this.swapId}`);
+    try {
+      console.log(`Rejecting swap: ${this.swapId}`);
 
-    const swapService = this.getCurrentSwapService();
-    await swapService.expireSwap(this.swapId);
-    
-    this.notificationService.notify('Swap rejected', `Swap Id: ${this.swapId}`, "aerum");
+      const swapService = this.getCurrentSwapService();
+      await swapService.expireSwap(this.swapId);
+      
+      this.notificationService.notify('Swap rejected', `Swap Id: ${this.swapId}`, "aerum");
+    } catch (e) {
+      this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
+      throw e;
+    }
   }
 
   private updateSwapMode() {
