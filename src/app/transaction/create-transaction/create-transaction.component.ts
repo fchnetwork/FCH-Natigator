@@ -240,7 +240,7 @@ export class CreateTransactionComponent implements OnInit {
             amount:  this.amount,
             fee: this.totalAmount,
             maxFee: this.maxTransactionFee ,
-          }          
+          };
         }
         this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
           const urls = {success: this.redirectUrl, failed: this.returnUrlFailed};
@@ -254,14 +254,16 @@ export class CreateTransactionComponent implements OnInit {
                 this.transactionMessage = res;
               }).catch( (error) =>  {
                 console.log(error);
-                window.location.href=urls.failed;
+                if(this.external) {
+                  window.location.href=urls.failed;
+                }
               });
             } else if(this.selectedToken.address) {
               this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, urls).then((res)=>{
                 this.transactionMessage = res;
               });
             }
-          } else {
+          } else if(this.external) {
             window.location.href=this.returnUrlFailed;
           }
         });

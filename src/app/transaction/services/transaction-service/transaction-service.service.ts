@@ -141,7 +141,9 @@ export class TransactionServiceService {
                     this.modalService.openTransaction(hash, res, external, urls);
                   });
                 }).catch( error => {
-                  window.location.href=urls.failed;
+                  if(external) {
+                    window.location.href=urls.failed;
+                  }
                     // alert( error )
                 });
           });
@@ -174,7 +176,9 @@ export class TransactionServiceService {
           });
         });
       }).catch( error => {
-        window.location.href=urls.failed;
+        if(external) {
+          window.location.href=urls.failed;
+        }
           // alert( error )
       });
     }
