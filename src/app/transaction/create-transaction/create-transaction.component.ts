@@ -230,14 +230,14 @@ export class CreateTransactionComponent implements OnInit {
         if(res.length > 3) {
           message = {
             title: 'WARNING!',
-            text: 'The address you are sending to appears to be a smart contract address. Unless this token contract follows ERC223 standard and receiving smart contract implements a call back function that allows it to handle incoming token transfers your tokens can be lost forever. Do you still want to continue?',
+            text: 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guaranty that your token transfer will be processed properly. Always make sure you trust a contract you are sending your tokens to.',
             sender:  this.senderAddress,
             recipient: this.receiverAddress,
             amount:  this.amount,
             fee: this.totalAmount,
             maxFee: this.maxTransactionFee,
           };
-          this.tokenService.tokenFallbackCheck(this.selectedToken.address).then((res)=>{
+          this.tokenService.tokenFallbackCheck(this.receiverAddress, 'tokenFallback(address,uint256,bytes)').then((res)=>{
             if(!res) {
               message.text = 'The contract address you are sending your tokens to does not appear to support ERC223 standard, sending your tokens to this contract address will likely result in a loss of tokens sent. Please acknowledge your understanding of risks before proceeding further.';
               message.checkbox = true;
