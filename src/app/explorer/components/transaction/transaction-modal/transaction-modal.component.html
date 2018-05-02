@@ -36,12 +36,12 @@
             {{'GAS_USED'|translate}}
           </div>
           <div class="value">
-              {{transaction.gasUsed | convertToEther }} {{'AERO'|translate}}
+              {{transaction.gasUsed | convertToEther }} 
           </div>
         </div>
         <div class="tr">
           <div class="name">
-            {{'GAS'|translate}}
+            {{'TRANSACTION_COST'|translate}}
           </div>
           <div class="value">
               {{transaction.gas | convertToEther }} {{'AERO'|translate}}
@@ -59,8 +59,8 @@
           <div class="name">
             {{'BLOCK'|translate}}
           </div>
-          <div class="value">
-              {{transaction.blockHash}}
+          <div class="value link" (click)="openBlock(transaction.blockNumber)">
+              {{transaction.blockNumber}}
           </div>
         </div>
         <div class="tr">
@@ -68,7 +68,7 @@
             {{'SEND_DATA'|translate}}
           </div>
           <div class="value">
-              {{transaction.data}}
+              {{transaction.input | hextoAscii }}
           </div>
         </div>
       </div>

@@ -8,6 +8,18 @@
         <aer-button (click)="addToken()" class="small blue">Add Token</aer-button>
       </div>
     </div>
+    <div *ngIf="tokens" class="row token-item">
+          <div class="col-sm-6 name">
+             {{ 'DASHBOARD_TOKENS.NAME' | translate }}
+          </div>
+          <div class="col-sm-3 amount">
+              {{ 'DASHBOARD_TOKENS.DECIMALS' | translate }}
+          </div>
+          <div class="col-sm-2 amount">
+              {{ 'DASHBOARD_TOKENS.OWNED' | translate }}
+          </div>
+    </div>
+            
     <div *ngFor="let token of tokens" class="row token-item">
       <div class="col-sm-1 token-img">
         an

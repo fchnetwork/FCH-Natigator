@@ -11,6 +11,7 @@ import { SearchComponent } from './components/search/search.component';
 import { BlocksComponent } from './components/blocks/blocks.component';
 import { BlockModalComponent } from './components/block/block-modal/block-modal.component';
 import { TransactionModalComponent } from './components/transaction/transaction-modal/transaction-modal.component';
+import { GetBlockModalComponent } from './components/block/get-block-modal/get-block-modal.component'
 import { ExplorerService } from './services/explorer.service';
 import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -25,7 +26,7 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }    
 
-const modals = [BlockModalComponent, TransactionModalComponent];
+const modals = [BlockModalComponent, TransactionModalComponent, GetBlockModalComponent];
 
 @NgModule({
   imports: [
