@@ -91,7 +91,7 @@ export class LoadSwapComponent implements OnInit {
 
   private async confirm(swap: LoadedSwap) {
     try {
-      console.log(`Approving swap: ${this.swapId}`);
+      console.log(`Confirming swap: ${this.swapId}`);
 
       if(this.mode === 'aero_to_erc20') {
         await this.ensureAllowance(
@@ -99,19 +99,18 @@ export class LoadSwapComponent implements OnInit {
           environment.contracts.swap.address.AeroToErc20,
           Number(swap.counterpartyAmount)
         );
-      }
-
-      if(this.mode === 'erc20_to_erc20') {
+        await this.aeroToErc20SwapService.closeSwap(this.swapId);
+      } else if(this.mode === 'erc20_to_erc20') {
         await this.ensureAllowance(
           swap.counterpartyTokenAddress,
-          environment.contracts.swap.address.Erc20ToAero,
+          environment.contracts.swap.address.Erc20ToErc20,
           Number(swap.counterpartyAmount)
         );
+        await this.erc20ToErc20SwapService.closeSwap(this.swapId);
+      } else if(this.mode === 'erc20_to_aero') {
+        const closeEtherAmount = this.web3.utils.fromWei(swap.counterpartyAmount, 'ether');
+        await this.erc20ToAeroSwapService.closeSwap(this.swapId, closeEtherAmount);
       }
-
-      console.log(`Confirming swap: ${this.swapId}`);
-      const swapService = this.getCurrentSwapService();
-      await swapService.closeSwap(this.swapId);
 
       this.notificationService.notify('Swap done', `Swap Id: ${this.swapId}`, "aerum");
     } catch (e) {

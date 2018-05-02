@@ -20,7 +20,7 @@ export class Erc20ToAeroSwapService {
     private contractExecutorService: ContractExecutorService
   ) {
     this.web3 = this.authenticationService.initWeb3();
-    this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.address.Erc20ToErc20);
+    this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.address.Erc20ToAero);
   }
 
   async openSwap(swapId: string, erc20Value: string, erc20ContractAddress: string, aeroValue: string, aeroTrader: string) {
@@ -28,16 +28,16 @@ export class Erc20ToAeroSwapService {
       this.web3.utils.fromAscii(swapId),
       erc20Value,
       erc20ContractAddress,
-      aeroValue,
+      this.web3.utils.toWei(aeroValue, 'ether'),
       aeroTrader
     );
     const receipt = await this.contractExecutorService.send(openSwap);
     return receipt;
   }
 
-  async closeSwap(swapId: string) {
+  async closeSwap(swapId: string, ethValue: string) {
     const closeSwap = this.contract.methods.close(this.web3.utils.fromAscii(swapId));
-    const receipt = await this.contractExecutorService.send(closeSwap);
+    const receipt = await this.contractExecutorService.send(closeSwap, { value: ethValue });
     return receipt;
   }
 

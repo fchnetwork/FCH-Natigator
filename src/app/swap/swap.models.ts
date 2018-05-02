@@ -9,7 +9,6 @@ export interface SwapToken {
 export type SwapMode = 'aero_to_erc20'|'erc20_to_aero'|'erc20_to_erc20'|'aero_to_aero';
 
 export interface SwapManager {
-    closeSwap(swapId: string) : Promise<TransactionReceipt>;
     expireSwap(swapId: string) : Promise<TransactionReceipt>;
     checkSwap(swapId: string) : Promise<any>;
 }

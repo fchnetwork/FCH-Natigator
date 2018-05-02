@@ -103,15 +103,18 @@ export class ContractExecutorService {
     return new Promise<T>(async (resolve, reject) => {
       if(times <= 0) {
         reject('Cannot retry 0 times');
+        return;
       }
 
       if(times === 1) {
         resolve(await func());
+        return;
       }
   
       try {
         const respone = await func();
         resolve(respone);
+        return;
       } catch(e) {
         console.warn(e.message);
       }

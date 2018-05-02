@@ -192,11 +192,11 @@ export class CreateSwapComponent implements OnInit {
   }
 
   private getTokenAmountInclusingDecimals() {
-    return this.tokenAmount * Math.pow(10, Number(this.token.decimals));
+    return Number(this.tokenAmount) * Math.pow(10, Number(this.token.decimals));
   }
 
   private getCounterpartyTokenAmountInclusingDecimals() {
-    return this.counterpartyTokenAmount * Math.pow(10, Number(this.counterpartyToken.decimals));
+    return Number(this.counterpartyTokenAmount) * Math.pow(10, Number(this.counterpartyToken.decimals));
   }
 
   private async ensureAllowance(tokenContractAddress: string, spender: string, amount: number) {
