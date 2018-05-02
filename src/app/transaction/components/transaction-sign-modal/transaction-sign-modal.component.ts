@@ -52,7 +52,7 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
    }
 
   accept(){
-    this.dialog.close(true);
+    this.dialog.close({result: true, pin: this.pin ? this.pin : ''});
   }
 
   dismiss() {
