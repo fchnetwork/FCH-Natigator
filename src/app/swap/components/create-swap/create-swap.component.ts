@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { Guid } from "@shared/helpers/guid";
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { SessionStorageService } from 'ngx-webstorage';
@@ -41,7 +42,8 @@ export class CreateSwapComponent implements OnInit {
     private erc20TokenService: ERC20TokenService,
     private aeroToErc20SwapService: AeroToErc20SwapService,
     private erc20ToAeroSwapService: Erc20ToAeroSwapService,
-    private erc20ToErc20SwapService: Erc20ToErc20SwapService
+    private erc20ToErc20SwapService: Erc20ToErc20SwapService,
+    public formBuilder: FormBuilder
   ) { }
 
   async ngOnInit() {
@@ -63,17 +65,19 @@ export class CreateSwapComponent implements OnInit {
   }
 
   recalculateTokenRate() {
-    if(!this.counterpartyTokenAmount) {
+    const counterpartyTokenAmount = Number(this.counterpartyTokenAmount);
+    if(counterpartyTokenAmount <= 0) {
       return;
     }
-    this.rate = this.tokenAmount / this.counterpartyTokenAmount;
+    this.rate = Number(this.tokenAmount) / counterpartyTokenAmount;
   }
 
   recalculateCounterpartyTokenAmount() {
-    if(!this.rate) {
+    const rate = Number(this.rate);
+    if(rate <= 0) {
       return;
     }
-    this.counterpartyTokenAmount = this.tokenAmount / this.rate;
+    this.counterpartyTokenAmount = Number(this.tokenAmount) / rate;
   }
 
   onTokenChanged(token: SwapToken) {
@@ -98,7 +102,13 @@ export class CreateSwapComponent implements OnInit {
 
   async createSwap() {
     if(this.mode === 'aero_to_aero') {
-      this.notificationService.notify('Warning', 'Aero > Aero swaps are not supported', "aerum", 5000);
+      this.notificationService.notify('Error', 'Aero > Aero swaps are not supported', "aerum", 3000);
+      return;
+    }
+
+    // TODO: Replace with better validation
+    if(!this.counterpartyToken) {
+      this.notificationService.notify('Error', 'Please select counterparty token', "aerum", 3000);
       return;
     }
 
