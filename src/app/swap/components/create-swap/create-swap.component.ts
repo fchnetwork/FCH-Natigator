@@ -7,7 +7,7 @@ import { ModalService } from '@app/shared/services/modal.service';
 import { NotificationService } from "@aerum/ui";
 
 import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.service';
-import { SwapToken } from '@app/swap/swap.models';
+import { SwapToken, SwapMode } from '@app/swap/swap.models';
 
 @Component({
   selector: 'create-swap',
@@ -26,6 +26,9 @@ export class CreateSwapComponent implements OnInit {
   counterpartyTokenAmount: number;
   rate: number;
 
+  mode: SwapMode;
+  title: string;
+
   constructor(
     private authService: AuthenticationService,
     private modalService: ModalService,
@@ -39,6 +42,11 @@ export class CreateSwapComponent implements OnInit {
 
     this.generateSwapId();
     this.tokenAmount = 0.01;
+
+    this.token = { symbol: 'AERO', address: '' };
+
+    this.updateSwapMode();
+    this.updateTitle();
 
     // TODO: Temporary values
     this.counterpartyAddress = this.currentAddress;
@@ -92,10 +100,77 @@ export class CreateSwapComponent implements OnInit {
   onTokenChanged(token: SwapToken) {
     console.log(token);
     this.token = token;
+    this.updateSwapMode();
+    this.updateTitle();
   }
 
   onCounterpartyTokenChanged(token: SwapToken) {
     console.log(token);
     this.counterpartyToken = token;
+    this.updateSwapMode();
+    this.updateTitle();
+  }
+
+  updateSwapMode() {
+    this.mode = this.recalculateSwapMode();
+  }
+
+  recalculateSwapMode(): SwapMode {
+    if(this.isAeroInOpenSelected()) {
+      if(this.isAeroInCounterpartySelected()) {
+        // NOTE: NOT supported swap mode aero to aero
+        return 'aero_to_aero';
+      } else {
+        return 'aero_to_erc20';
+      }
+    } else {
+      if(this.isAeroInCounterpartySelected()) {
+        return 'erc20_to_aero';
+      } else {
+        return 'erc20_to_erc20';
+      }
+    }
+  }
+
+  isAeroInOpenSelected() {
+    return this.isAeroSelected(this.token);
+  }
+
+  isAeroInCounterpartySelected() {
+    return this.isAeroSelected(this.counterpartyToken);
+  }
+
+  isAeroSelected(token: SwapToken) {
+    return token && !token.address;
+  }
+
+  isTokenInOpenSelected() {
+    return this.isTokenSelected(this.token);
+  }
+
+  isTokenInCounterpartySelected() {
+    return this.isTokenSelected(this.counterpartyToken);
+  }
+
+  isTokenSelected(token: SwapToken) {
+    return token && token.address;
+  }
+
+  updateTitle() {
+    switch(this.mode) {
+      case 'aero_to_erc20': {
+        this.title = 'SWAP.AERO_TO_TOKEN';
+        break;
+      }
+      case 'erc20_to_aero': {
+        this.title = 'SWAP.TOKEN_TO_AERO';
+        break;
+      }
+      case 'erc20_to_erc20': {
+        this.title = 'SWAP.TOKEN_TO_TOKEN';
+        break;
+      }
+      default: {}
+    }
   }
 }
