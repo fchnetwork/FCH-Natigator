@@ -208,6 +208,34 @@ export class CreateTransactionComponent implements OnInit {
     this.getTotalAmount();
   }
 
+  openTransactionConfirm(message) {
+    this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
+      const urls = {success: this.redirectUrl, failed: this.returnUrlFailed};
+      const validHash = this.checkHash(result.pin);
+      if(result.result === true && validHash) {
+        const privateKey = this.sessionStorageService.retrieve('private_key');
+        const address = this.sessionStorageService.retrieve('acc_address');
+
+        if(this.selectedToken.symbol === 'AERO' && !this.isToken) {
+          this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction", this.external, urls).then( res => {
+            this.transactionMessage = res;
+          }).catch( (error) =>  {
+            console.log(error);
+            if(this.external) {
+              window.location.href=urls.failed;
+            }
+          });
+        } else if(this.selectedToken.address) {
+          this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, urls).then((res)=>{
+            this.transactionMessage = res;
+          });
+        }
+      } else if(this.external) {
+        window.location.href=this.returnUrlFailed;
+      }
+    });
+  }
+
   checkHash(pin){
     if(this.external) {
       // console.log(this.hash);
@@ -215,7 +243,6 @@ export class CreateTransactionComponent implements OnInit {
       return String(this.hash) === String(this.web3.utils.keccak256(`${this.senderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
     }
     return false;
-    
   }
 
   send() {
@@ -230,8 +257,20 @@ export class CreateTransactionComponent implements OnInit {
         if(res.length > 3) {
           message = {
             title: 'WARNING!',
-            text: 'The address you are sending to appears to be a smart contract address. Unless this token contract follows ERC223 standard and receiving smart contract implements a call back function that allows it to handle incoming token transfers your tokens can be lost forever. Do you still want to continue?',
+            text: 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guaranty that your token transfer will be processed properly. Always make sure you trust a contract you are sending your tokens to.',
+            sender:  this.senderAddress,
+            recipient: this.receiverAddress,
+            amount:  this.amount,
+            fee: this.totalAmount,
+            maxFee: this.maxTransactionFee,
           };
+          this.tokenService.tokenFallbackCheck(this.receiverAddress, 'tokenFallback(address,uint256,bytes)').then((res)=>{
+            if(!res) {
+              message.text = 'The contract address you are sending your tokens to does not appear to support ERC223 standard, sending your tokens to this contract address will likely result in a loss of tokens sent. Please acknowledge your understanding of risks before proceeding further.';
+              message.checkbox = true;
+            }
+            this.openTransactionConfirm(message);
+          });
         } else {
           // else standard transaction so prepare the txn details for the modal window
           message = {
@@ -240,33 +279,9 @@ export class CreateTransactionComponent implements OnInit {
             amount:  this.amount,
             fee: this.totalAmount,
             maxFee: this.maxTransactionFee,
-          }; 
+          };
+          this.openTransactionConfirm(message);        
         }
-        this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
-          const urls = {success: this.redirectUrl, failed: this.returnUrlFailed};
-          const validHash = this.checkHash(result.pin);
-          if(result.result === true && validHash) {
-            const privateKey = this.sessionStorageService.retrieve('private_key');
-            const address = this.sessionStorageService.retrieve('acc_address');
-
-            if(this.selectedToken.symbol === 'AERO' && !this.isToken) {
-              this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction", this.external, urls).then( res => {
-                this.transactionMessage = res;
-              }).catch( (error) =>  {
-                console.log(error);
-                if(this.external) {
-                  window.location.href=urls.failed;
-                }
-              });
-            } else if(this.selectedToken.address) {
-              this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, urls).then((res)=>{
-                this.transactionMessage = res;
-              });
-            }
-          } else if(this.external) {
-            window.location.href=this.returnUrlFailed;
-          }
-        });
       });
     }
   }

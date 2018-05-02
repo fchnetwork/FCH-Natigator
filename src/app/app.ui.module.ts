@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 // @aerum/UI Framework Modules 
 import {
    ContentModule,
+   CheckboxModule,
    IconModule,
    SidebarModule,
    ToolbarModule,
@@ -25,6 +26,7 @@ import {
    imports: [
        // UI Framework Modules
        ContentModule,
+       CheckboxModule,
        IconModule,
        SidebarModule,
        ToolbarModule,
@@ -44,6 +46,7 @@ import {
    exports: [
        // UI Framework Modules
        ContentModule,
+       CheckboxModule,
        IconModule,
        SidebarModule,
        ToolbarModule,
