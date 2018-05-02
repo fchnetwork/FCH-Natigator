@@ -1,4 +1,4 @@
-const artifacts = require('./abi/AtomicSwapERC20ToERC20.json');
+const artifacts = require('./abi/AtomicSwapERC20ToEther.json');
 
 import { Injectable } from '@angular/core';
 
@@ -9,9 +9,8 @@ import { ContractExecutorService } from './contract-executor.service';
 import Web3 from 'web3';
 import { Contract } from 'web3/types';
 
-
 @Injectable()
-export class Erc20ToErc20SwapService {
+export class Erc20ToAeroSwapService {
 
   private web3: Web3;
   private contract: Contract;
@@ -24,14 +23,13 @@ export class Erc20ToErc20SwapService {
     this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.address.Erc20ToErc20);
   }
 
-  async openSwap(swapId: string, openValue: string, openContractAddress: string, closeValue: string, closeTrader: string, closeContractAddress: string) {
+  async openSwap(swapId: string, erc20Value: string, erc20ContractAddress: string, aeroValue: string, aeroTrader: string) {
     const openSwap = this.contract.methods.open(
       this.web3.utils.fromAscii(swapId),
-      openValue,
-      openContractAddress,
-      closeValue,
-      closeTrader,
-      closeContractAddress
+      erc20Value,
+      erc20ContractAddress,
+      aeroValue,
+      aeroTrader
     );
     const receipt = await this.contractExecutorService.send(openSwap);
     return receipt;
