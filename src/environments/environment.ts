@@ -12,9 +12,9 @@ export const environment = {
   contracts: {
     swap: {
       address: {
-        AeroToErc20: "0x597c59b85b9d75abb040091e084ffdbe687ac2f0",
-        Erc20ToAero: "0x132042ea011f2b0f3b2910a3ac56f78c047b82c8",
-        Erc20ToErc20: "0xb08d606c34e2b259512be2d06e9748af662ede71"
+        AeroToErc20: "0x6fdf39d14b9caffab2ef746f37bec1cf7a12011a",
+        Erc20ToAero: "0x5613008e456d5ae946d328de647ce7400eab63e5",
+        Erc20ToErc20: "0xf0c9a6f06c38b0b8ae255ef9d592e16e419f9676"
       }
     }
   },
