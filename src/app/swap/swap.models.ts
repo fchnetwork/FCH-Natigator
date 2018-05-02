@@ -17,11 +17,15 @@ export interface SwapManager {
 export interface LoadedSwap {
     swapId: string;
     tokenAmount: string;
+    tokenAmountFormated: number;
     tokenTrader: string;
     tokenAddress: string;
+    tokenInfo?: any,
     counterpartyAmount: string;
+    counterpartyAmountFormated: number;
     counterpartyTrader: string;
     counterpartyTokenAddress: string;
+    counterpartyTokenInfo?: any,
     status: SwapStatus;
 }
 

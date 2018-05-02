@@ -12,10 +12,10 @@
         </div>
         <div class="o-table__row">
             <div class="o-table__cell o-data--left">
-              {{ param.tokenAddress | truncate: 32 }}
+              {{ param.tokenInfo && param.tokenInfo.symbol ? param.tokenInfo.symbol : 'Aero' }}
             </div>     
             <div class="o-table__cell o-data--right">
-              {{ param.tokenAmount }}
+              {{ param.tokenAmountFormated }}
             </div>
         </div>
         <div class="o-table__row">
@@ -28,10 +28,10 @@
         </div>
         <div class="o-table__row">
             <div class="o-table__cell o-data--left">
-              {{ param.counterpartyTokenAddress | truncate: 32 }}
+              {{ param.counterpartyTokenInfo && param.counterpartyTokenInfo.symbol ? param.counterpartyTokenInfo.symbol : 'Aero' }}
             </div>     
             <div class="o-table__cell o-data--right">
-              {{ param.counterpartyAmount }}
+              {{ param.counterpartyAmountFormated }}
             </div>
         </div>
         <div class="o-table__row">
@@ -43,8 +43,8 @@
             </div>
         </div>
     </div>
-    <aer-button class="btn-swap-create blue" (buttonFn)="onConfirm()">{{'SWAP.LOAD.BTN_CONFIRM'|translate}}</aer-button>
-    <aer-button class="btn-swap-create blue" (buttonFn)="onReject()">{{'SWAP.LOAD.BTN_REJECT'|translate}}</aer-button>
+    <aer-button *ngIf="isCloser && param.status === 'Open'" class="btn-swap-create blue" (buttonFn)="onConfirm()">{{'SWAP.LOAD.BTN_CONFIRM'|translate}}</aer-button>
+    <aer-button *ngIf="param.status === 'Open'" class="btn-swap-create blue" (buttonFn)="onReject()">{{'SWAP.LOAD.BTN_REJECT'|translate}}</aer-button>
     <aer-button class="btn-swap-cancel grey" (buttonFn)="onCancel()">{{'SWAP.LOAD.BTN_CANCEL'|translate}}</aer-button>
   </div>
 </aer-modal-dialog>

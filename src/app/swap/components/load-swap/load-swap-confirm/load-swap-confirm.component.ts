@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { BasicModalContext } from '@app/shared/components/modals/basic-modal/basic-modal.component';
 import { LoadedSwap } from '@app/swap/swap.models';
+import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-load-swap-confirm',
@@ -12,11 +13,20 @@ export class LoadSwapConfirmComponent implements ModalComponent<BasicModalContex
 
   param: LoadedSwap;
 
-  constructor(public dialog: DialogRef<BasicModalContext>) { 
+  isCloser: boolean;
+
+  constructor(
+    public dialog: DialogRef<BasicModalContext>,
+    private authService: AuthenticationService
+  ) { 
     this.param = dialog.context.param;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const keystore = await this.authService.showKeystore();
+    const currentAddress = "0x" + keystore.address;
+
+    this.isCloser = currentAddress.toLowerCase() === this.param.counterpartyTrader.toLowerCase();
   }
 
   onConfirm() {

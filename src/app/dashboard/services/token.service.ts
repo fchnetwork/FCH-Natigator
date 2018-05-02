@@ -75,7 +75,7 @@ export class TokenService {
 
   getTokensInfo(contractAddress) {
     return new Promise((resolve, reject) => {
-      const address = this.web3.utils.isAddress([contractAddress]);
+      const address = this.web3.utils.isAddress(contractAddress);
       const myAddress = this.sessionStorage.retrieve('acc_address');
       if(address) {
         this.tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress);
