@@ -25,14 +25,9 @@ declare var window: any;
 })
 export class CreateTransactionComponent implements OnInit {
 
-  backupKeystore: any;
-  decryptKeystore: any;
   myBalance: any;
-  theirBalance: any;
-
   privateKey: string;
 
-  /* new fields */
   senderAddress: string;
   receiverAddress: string;
   amount = 0;
@@ -238,8 +233,6 @@ export class CreateTransactionComponent implements OnInit {
 
   checkHash(pin){
     if(this.external) {
-      // console.log(this.hash);
-      // console.log(this.web3.utils.keccak256(`${this.senderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
       return String(this.hash) === String(this.web3.utils.keccak256(`${this.senderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
     }
     return false;
@@ -272,7 +265,6 @@ export class CreateTransactionComponent implements OnInit {
             this.openTransactionConfirm(message);
           });
         } else {
-          // else standard transaction so prepare the txn details for the modal window
           message = {
             sender:  this.senderAddress,
             recipient: this.receiverAddress,

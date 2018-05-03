@@ -16,11 +16,7 @@ export interface BasicModalContext {
 })
 export class TransactionSignModalComponent implements ModalComponent<BasicModalContext> {
 
-  // getVariable: any;
   unlockAccountForm: FormGroup;
-  // message = {};
-
-
   senderAddress: string;
   receiverAddress: string;  
   senderAvatar: string;
@@ -38,9 +34,8 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
   constructor( public dialog: DialogRef<BasicModalContext>,
                public authServ: AuthenticationService,
                public formBuilder: FormBuilder) {
+                 
             if(dialog.context.param) {
-
-             // this.getVariable = dialog.context.param;
               this.title = dialog.context.param.title;
               this.text = dialog.context.param.text;              
               this.senderAddress = this.cropAddress( dialog.context.param.sender );

@@ -20,14 +20,6 @@ children: [
         path: 'transactions',
         component: TransactionsComponent
       },
-      // {
-      //   path: 'transaction/:id',
-      //   component: TransactionComponent
-      // },
-      // {
-      //   path: 'block/:id',
-      //   component: BlockComponent
-      // },
       {
         path: 'blocks',
         component: BlocksComponent
