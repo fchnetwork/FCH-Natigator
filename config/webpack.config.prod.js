@@ -17,6 +17,8 @@ const { CommonsChunkPlugin, ModuleConcatenationPlugin } = require('webpack').opt
 const { LicenseWebpackPlugin } = require('license-webpack-plugin');
 const { PurifyPlugin } = require('@angular-devkit/build-optimizer');
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
+const webpack = require('webpack');
+const echarts = require('echarts');
 
 const nodeModules = path.join(process.cwd(), 'node_modules');
 const realNodeModules = fs.realpathSync(nodeModules);
@@ -590,6 +592,9 @@ module.exports = {
       "sourceMap": false,
       "tsConfigPath": "src/tsconfig.app.json",
       "compilerOptions": {}
+    }),
+    new webpack.ProvidePlugin({
+      echarts: "echarts"
     })
   ],
   "node": {
