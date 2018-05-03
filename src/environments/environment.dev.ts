@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
   HttpProvider: "http://52.51.85.249:8545",
-  // HttpProvider: "http://127.0.0.1:8545"
   cookiesDomain: "dev.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
+  externalBlockExplorer: "http://explore.aerum.net/#/",
 };

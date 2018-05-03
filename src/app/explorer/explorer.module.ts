@@ -4,8 +4,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TransactionsComponent } from './components/transactions/transactions.component';
-import { TransactionComponent } from './components/transaction/transaction.component';
-import { BlockComponent } from './components/block/block.component';
 import { AddressComponent } from './components/address/address.component';
 import { SearchComponent } from './components/search/search.component';
 import { BlocksComponent } from './components/blocks/blocks.component';
@@ -21,11 +19,9 @@ import { AppUIModule } from '../app.ui.module';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 import { SharedModule } from '../shared/shared.module';
 import { TransactionServiceService } from '@app/transaction/services/transaction-service/transaction-service.service';
-
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }    
-
 const modals = [BlockModalComponent, TransactionModalComponent, GetBlockModalComponent];
 
 @NgModule({
@@ -39,15 +35,13 @@ const modals = [BlockModalComponent, TransactionModalComponent, GetBlockModalCom
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    }),      
+    }),
     RouterModule.forChild(EXPLORER_ROUTES),
     AppUIModule,
     SharedModule,
   ],
   declarations: [
     TransactionsComponent,
-    TransactionComponent,
-    BlockComponent,
     AddressComponent,
     SearchComponent,
     modals,
