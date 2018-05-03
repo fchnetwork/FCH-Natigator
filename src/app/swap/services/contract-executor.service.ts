@@ -53,6 +53,7 @@ export class ContractExecutorService {
         // TODO: We do this workarround due to this issue: https://github.com/ethereum/web3.js/issues/1534
         if(error && error.message && error.message.startsWith('Failed to check for transaction receipt:')) {
           const receipt = await this.retry(() => this.web3.eth.getTransactionReceipt(transactionHash), 10, 1500);
+          console.log('Transaction receipt returned:', receipt);
           resolve(receipt);
         } else {
           console.log('Transaction error:', error);

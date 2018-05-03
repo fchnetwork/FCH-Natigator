@@ -9,10 +9,16 @@ import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.se
 import { ERC20TokenService } from '@app/swap/services/erc20-token.service';
 import { Erc20ToAeroSwapService } from '@app/swap/services/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@app/swap/services/erc20-to-erc20-swap.service';
-import { SwapMode, SwapManager, LoadedSwap, SwapStatus } from '@app/swap/swap.models';
+import { SwapMode, LoadedSwap, SwapStatus } from '@app/swap/models/models';
 import { TokenService } from '@app/dashboard/services/token.service';
 
 import Web3 from 'web3';
+import { TransactionReceipt } from 'web3/types';
+
+interface SwapCommonOperationsService {
+  expireSwap(swapId: string) : Promise<TransactionReceipt>;
+  checkSwap(swapId: string) : Promise<any>;
+}
 
 @Component({
   selector: 'app-load-swap',
@@ -56,7 +62,6 @@ export class LoadSwapComponent implements OnInit {
   }
 
   async loadSwap() {
-
     if(!this.swapId) {
       console.log('Swap ID empty');
       return;
@@ -67,72 +72,73 @@ export class LoadSwapComponent implements OnInit {
       return;
     }
 
-    this.startLoading();
-
-    const swapService = this.getCurrentSwapService();
-    let swap; 
-    
-    try {
-      swap = await swapService.checkSwap(this.swapId);
-      console.log(swap);
-    } catch (e) {
-      this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
-      this.stopLoading();
-      throw e;
-    }
-
-    const status = this.convertSwapStatus(swap.state);
-    if(status === 'Invalid') {
+    try{
+      this.startLoading();
+      await this.showSwapInModalAndProcess();
+    } catch(e) {
       this.notificationService.notify('Error', 'Swap not found or invalid', "aerum", 3000);
+      throw e;
+    } 
+    finally {
       this.stopLoading();
-      return;
+    }
+  }
+
+  private async showSwapInModalAndProcess() {
+    const swapService = this.getCurrentSwapService();
+    const swap = await swapService.checkSwap(this.swapId);
+    console.log(swap);
+
+    const status = this.mapSwapStatus(swap.state);
+    if(status === 'Invalid') {
+      throw new Error(`Swap wit ID ${this.swapId} not found or invalid`);
     }
 
-    const loadedSwap = await this.convertToLoadedSwap(this.swapId, swap);
+    const loadedSwap = await this.mapToLoadedSwap(this.swapId, swap);
     console.log(loadedSwap);
 
     const modalResult = await this.modalService.openLoadCreateConfirm(loadedSwap);
     if(modalResult.confirmed) {
       await this.confirm(loadedSwap);
-      this.stopLoading();
-      return;
-    }
-
-    if(modalResult.rejected) {
+      this.notificationService.notify('Swap done', `Swap ID: ${this.swapId}`, "aerum");
+    } else if(modalResult.rejected) {
       await this.reject();
-      this.stopLoading();
-      return;
+      this.notificationService.notify('Swap rejected', `Swap ID: ${this.swapId}`, "aerum");
     }
-    this.stopLoading();
   }
 
   private async confirm(swap: LoadedSwap) {
-    try {
-      console.log(`Confirming swap: ${this.swapId}`);
-      if(this.mode === 'aero_to_erc20') {
-        await this.ensureAllowance(
-          swap.counterpartyTokenAddress,
-          environment.contracts.swap.address.AeroToErc20,
-          Number(swap.counterpartyAmount)
-        );
-        await this.aeroToErc20SwapService.closeSwap(this.swapId);
-      } else if(this.mode === 'erc20_to_erc20') {
-        await this.ensureAllowance(
-          swap.counterpartyTokenAddress,
-          environment.contracts.swap.address.Erc20ToErc20,
-          Number(swap.counterpartyAmount)
-        );
-        await this.erc20ToErc20SwapService.closeSwap(this.swapId);
-      } else if(this.mode === 'erc20_to_aero') {
-        const closeEtherAmount = this.web3.utils.fromWei(swap.counterpartyAmount, 'ether');
-        await this.erc20ToAeroSwapService.closeSwap(this.swapId, closeEtherAmount);
-      }
-
-      this.notificationService.notify('Swap done', `Swap ID: ${this.swapId}`, "aerum");
-    } catch (e) {
-      this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
-      throw e;
+    console.log(`Confirming swap: ${this.swapId}`);
+    if(this.mode === 'aero_to_erc20') {
+      this.confirmAeroToErc20Swap(swap);
+    } else if(this.mode === 'erc20_to_erc20') {
+      this.confirmErc20ToErc20Swap(swap);
+    } else if(this.mode === 'erc20_to_aero') {
+      this.confirmErc20ToAeroSwap(swap);
     }
+  }
+
+  private async confirmAeroToErc20Swap(swap: LoadedSwap) {
+    await this.ensureAllowance(
+      swap.counterpartyTokenAddress,
+      environment.contracts.swap.address.AeroToErc20,
+      Number(swap.counterpartyAmount)
+    );
+    await this.aeroToErc20SwapService.closeSwap(this.swapId);
+  }
+
+  private async confirmErc20ToErc20Swap(swap: LoadedSwap) { 
+    await this.ensureAllowance(
+      swap.counterpartyTokenAddress,
+      environment.contracts.swap.address.Erc20ToErc20,
+      Number(swap.counterpartyAmount)
+    );
+    await this.erc20ToErc20SwapService.closeSwap(this.swapId);
+  }
+
+  private async confirmErc20ToAeroSwap(swap: LoadedSwap) { 
+    const closeEtherAmount = this.web3.utils.fromWei(swap.counterpartyAmount, 'ether');
+    await this.erc20ToAeroSwapService.closeSwap(this.swapId, closeEtherAmount);
   }
 
   private async ensureAllowance(tokenContractAddress: string, spender: string, amount: number) {
@@ -144,17 +150,9 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async reject() {
-    try {
-      console.log(`Rejecting swap: ${this.swapId}`);
-
-      const swapService = this.getCurrentSwapService();
-      await swapService.expireSwap(this.swapId);
-      
-      this.notificationService.notify('Swap rejected', `Swap ID: ${this.swapId}`, "aerum");
-    } catch (e) {
-      this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
-      throw e;
-    }
+    console.log(`Rejecting swap: ${this.swapId}`);
+    const swapService = this.getCurrentSwapService();
+    await swapService.expireSwap(this.swapId);
   }
 
   private updateSwapMode() {
@@ -177,7 +175,7 @@ export class LoadSwapComponent implements OnInit {
     }
   }
 
-  private getCurrentSwapService() : SwapManager {
+  private getCurrentSwapService() : SwapCommonOperationsService {
     switch(this.mode) {
       case 'aero_to_erc20': return this.aeroToErc20SwapService;
       case 'erc20_to_aero': return this.erc20ToAeroSwapService;
@@ -208,60 +206,76 @@ export class LoadSwapComponent implements OnInit {
     }
   }
 
-  private async convertToLoadedSwap(swapId: string, swap: any) : Promise<LoadedSwap> {
+  private async mapToLoadedSwap(swapId: string, swap: any) : Promise<LoadedSwap> {
     if(this.mode === 'aero_to_erc20') {
-      const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
-      return {
-        swapId,
-        tokenAmount: swap.ethValue,
-        tokenAmountFormated: this.web3.utils.fromWei(swap.ethValue, 'ether'),
-        tokenTrader: swap.ethTrader,
-        tokenAddress: '',
-        counterpartyAmount: swap.erc20Value,
-        counterpartyAmountFormated: swap.erc20Value / Math.pow(10, Number(counterpartyTokenInfo.decimals)),
-        counterpartyTrader: swap.erc20Trader,
-        counterpartyTokenAddress: swap.erc20ContractAddress,
-        counterpartyTokenInfo,
-        status: this.convertSwapStatus(swap.state)
-      };
+      return await this.mapToLoadedSwapFromAeroToErc20Swap(swapId, swap);
     } else if (this.mode === 'erc20_to_aero') {
-      const tokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
-      return {
-        swapId,
-        tokenAmount: swap.erc20Value,
-        tokenAmountFormated: swap.erc20Value / Math.pow(10, Number(tokenInfo.decimals)),
-        tokenTrader: swap.erc20Trader,
-        tokenAddress: swap.erc20ContractAddress,
-        tokenInfo,
-        counterpartyAmount: swap.ethValue,
-        counterpartyAmountFormated: this.web3.utils.fromWei(swap.ethValue, 'ether'),
-        counterpartyTrader: swap.ethTrader,
-        counterpartyTokenAddress: '',
-        status: this.convertSwapStatus(swap.state)
-      };
+      return await this.mapToLoadedSwapFromErc20ToAeroSwap(swapId, swap);
     } else if (this.mode === 'erc20_to_erc20') {
-      const tokenInfo: any = await this.tokenService.getTokensInfo(swap.openContractAddress);
-      const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.closeContractAddress);
-      return {
-        swapId,
-        tokenAmount: swap.openValue,
-        tokenAmountFormated: swap.erc20Value / Math.pow(10, Number(tokenInfo.decimals)),
-        tokenTrader: swap.openTrader,
-        tokenAddress: swap.openContractAddress,
-        tokenInfo,
-        counterpartyAmount: swap.closeValue,
-        counterpartyAmountFormated: swap.erc20Value / Math.pow(10, Number(counterpartyTokenInfo.decimals)),
-        counterpartyTrader: swap.closeTrader,
-        counterpartyTokenAddress: swap.closeContractAddress,
-        counterpartyTokenInfo,
-        status: this.convertSwapStatus(swap.state)
-      };
+      return await this.mapToLoadedSwapFromErc20ToErc20Swap(swapId, swap);
     } else {
-      throw new Error('Unknow swap mode');
+      throw new Error(`Not supported swap mode: ${this.mode}`);
     }
   }
 
-  private convertSwapStatus(status: string) : SwapStatus {
+  private async mapToLoadedSwapFromAeroToErc20Swap(swapId: string, swap: any) {
+    const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
+    return {
+      swapId,
+      tokenAmount: swap.ethValue,
+      tokenAmountFormated: this.web3.utils.fromWei(swap.ethValue, 'ether'),
+      tokenTrader: swap.ethTrader,
+      tokenAddress: '',
+      counterpartyAmount: swap.erc20Value,
+      counterpartyAmountFormated: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals),
+      counterpartyTrader: swap.erc20Trader,
+      counterpartyTokenAddress: swap.erc20ContractAddress,
+      counterpartyTokenInfo,
+      status: this.mapSwapStatus(swap.state)
+    };
+  }
+
+  private async mapToLoadedSwapFromErc20ToAeroSwap(swapId: string, swap: any) {
+    const tokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
+    return {
+      swapId,
+      tokenAmount: swap.erc20Value,
+      tokenAmountFormated: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals),
+      tokenTrader: swap.erc20Trader,
+      tokenAddress: swap.erc20ContractAddress,
+      tokenInfo,
+      counterpartyAmount: swap.ethValue,
+      counterpartyAmountFormated: this.web3.utils.fromWei(swap.ethValue, 'ether'),
+      counterpartyTrader: swap.ethTrader,
+      counterpartyTokenAddress: '',
+      status: this.mapSwapStatus(swap.state)
+    };
+  }
+
+  private async mapToLoadedSwapFromErc20ToErc20Swap(swapId: string, swap: any) {
+    const tokenInfo: any = await this.tokenService.getTokensInfo(swap.openContractAddress);
+    const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.closeContractAddress);
+    return {
+      swapId,
+      tokenAmount: swap.openValue,
+      tokenAmountFormated: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals),
+      tokenTrader: swap.openTrader,
+      tokenAddress: swap.openContractAddress,
+      tokenInfo,
+      counterpartyAmount: swap.closeValue,
+      counterpartyAmountFormated: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals),
+      counterpartyTrader: swap.closeTrader,
+      counterpartyTokenAddress: swap.closeContractAddress,
+      counterpartyTokenInfo,
+      status: this.mapSwapStatus(swap.state)
+    };
+  }
+
+  private getDecimalTokenValue(value: number, decimals: number) {
+    return value / Math.pow(10, Number(decimals));
+  }
+
+  private mapSwapStatus(status: string) : SwapStatus {
     switch(status) {
       case '1': return 'Open';
       case '2': return 'Closed';

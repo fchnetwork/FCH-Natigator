@@ -9,7 +9,7 @@ import { NotificationService } from "@aerum/ui";
 
 import { environment } from 'environments/environment';
 
-import { SwapToken, SwapMode } from '@app/swap/swap.models';
+import { SwapToken, SwapMode } from '@app/swap/models/models';
 import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@app/swap/services/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@app/swap/services/erc20-to-erc20-swap.service';
@@ -113,8 +113,18 @@ export class CreateSwapComponent implements OnInit {
       return;
     }
 
-    this.startLoading();
+    try {
+      this.startLoading();
+      await this.confirmAndCreateSwap();
+    } catch (e) {
+      this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
+      throw e;
+    } finally {
+      this.stopLoading();
+    }
+  } 
 
+  private async confirmAndCreateSwap() {
     const modalResult = await this.modalService.openSwapCreateConfirm({ 
       swapId: this.swapId,
       token: this.token,
@@ -127,28 +137,14 @@ export class CreateSwapComponent implements OnInit {
 
     if(!modalResult.confirmed) {
       console.log('Swap creation canceled');
-      this.stopLoading();
       return;
     }
 
-    try {
-      await this.executeSwapCreate();
-      this.notificationService.notify('Swap created', `Swap ID: ${this.swapId}`, "aerum");
-    } catch (e) {
-      this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
-      this.stopLoading();
-      throw e;
-    }
-    this.stopLoading();
+    await this.createSwapBasedOnMode();
+    this.notificationService.notify('Swap created', `Swap ID: ${this.swapId}`, "aerum");
   }
 
-  private generateSwapId() {
-    const prefix = this.getSwapIdPrefix();
-    const randomPart = Guid.newGuid().replace(/-/g, '').slice(prefix.length);
-    this.swapId = prefix + randomPart;
-  }
-
-  private async executeSwapCreate() {
+  private async createSwapBasedOnMode() {
     if(this.mode === 'aero_to_erc20') {
       await this.createAeroToErc20Swap();
     } else if (this.mode === 'erc20_to_aero') {
@@ -156,7 +152,7 @@ export class CreateSwapComponent implements OnInit {
     } else if (this.mode === 'erc20_to_erc20') {
       await this.createErc20ToErc20Swap();
     } else {
-      console.error(`Unknown swap mode: ${this.mode}`);
+      throw new Error(`Unknown swap mode: ${this.mode}`);
     }
   }
 
@@ -211,6 +207,12 @@ export class CreateSwapComponent implements OnInit {
       console.log(`Allowance value: ${allowance}. Needed: ${amount}`);
       await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
     }
+  }
+
+  private generateSwapId() {
+    const prefix = this.getSwapIdPrefix();
+    const randomPart = Guid.newGuid().replace(/-/g, '').slice(prefix.length);
+    this.swapId = prefix + randomPart;
   }
 
   private updateSwapMode() {
