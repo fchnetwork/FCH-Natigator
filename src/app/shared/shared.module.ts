@@ -11,6 +11,7 @@ import { BasicModalComponent } from './components/modals/basic-modal/basic-modal
 import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
 import { EqualValidator } from './directives/equal-validator.directive';
 import { RouteDataService } from './services/route-data.service'; 
 import { InternalNotificationService } from './services/notification.service';
@@ -53,6 +54,7 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    NgxEchartsModule,
   ],
   declarations: [
     I18nComponent,
@@ -100,6 +102,8 @@ export function createTranslateLoader(http: HttpClient) {
     HextoDecimalPipe,
     TruncatePipe,
     SidebarAccountSelectComponent,
+    ChartComponent,
+    NgxEchartsModule,
   ]
 })
 
