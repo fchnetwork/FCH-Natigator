@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';  
-
-import { ExplorerService } from '../../services/explorer.service';
-import { iBlocks, iTransaction } from '../../../shared/app.interfaces';
-import { ModalService } from '../../../shared/services/modal.service';
-import {BehaviorSubject} from 'rxjs/Rx';
+import { ExplorerService } from '@explorer/services/explorer.service';
+import { iBlocks, iTransaction } from '@shared/app.interfaces';
+import { ModalService } from '@shared/services/modal.service';
 
 @Component({
   selector: 'app-transactions',
@@ -17,7 +15,6 @@ export class TransactionsComponent implements OnInit {
 
   transactionsFound: number;
   transactions: iTransaction[];
-     
   order: number;
   column: string = 'timestamp';
   descending: boolean = false;
@@ -39,7 +36,7 @@ export class TransactionsComponent implements OnInit {
   
   getAllTransactions() {
     this.transactions = [];
-    let searchAmount = 400;
+    let searchAmount = 1800;
     this.exploreSrv.getBlock().subscribe( async currentBlock => {      
       let bookmarkCurrenBlock = currentBlock - 1;
       for ( let i = currentBlock - searchAmount; i < currentBlock; ++i) {
@@ -62,8 +59,7 @@ export class TransactionsComponent implements OnInit {
 
   openBlock(blockNumber) {
     this.modal.openBlock(blockNumber).then( result =>{ 
-     })
-     .catch( () => {});
+     }).catch( () => {});
   }
 
   openTransaction(transaction) {
@@ -73,21 +69,17 @@ export class TransactionsComponent implements OnInit {
 
   search(item: any) {
     if( /[a-z]/i.test(item)  ) {
-
        item = item.split('0x').join('');
-
        if ( item.length == 40 ) {
           alert("address");
        } else if( item.length === 64 && /[0-9a-zA-Z]{64}?/.test(item) ) {
         alert("txn");
        }
-
     } else if ( /[0-9]{1,7}?/.test(item)) {
       alert('block Found' + parseInt(item) );
     } else {
       alert(`Error: ${item} is not a valid Block, Address or Transaction`);
     }
-
   }
  
   exploreBlock(id: number) {

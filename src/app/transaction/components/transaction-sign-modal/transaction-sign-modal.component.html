@@ -1,7 +1,6 @@
 <aer-modal-dialog >
   <div class="c-transaction c-transaction__table c-transaction__unlock">
-    <h1>{{message.title || 'Confirm transaction'}}</h1>
-    <span *ngIf="message.text" class="message-text">{{message.text}}</span>
+    <h1>{{ title || 'Confirm transaction'}}</h1>
     <ul class="o-txnID u-lreset">
       <li>
         <ul class="o-txnID__person u-lreset">
@@ -25,6 +24,11 @@
           </ul>        
       </li>
     </ul>
+    <div class="">
+        <p *ngIf="text">
+            {{ text }}
+        </p>
+    </div>
       <div class="o-table">
            <div class="o-table__row">
               <div class="o-table__cell o-data--left">

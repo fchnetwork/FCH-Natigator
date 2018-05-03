@@ -5,11 +5,9 @@
         <div class="dataTable-info-label">
             <label>{{'TRANSACTIONS_FOUND_COUNT'|translate: {transactionsCount: transactions.length} }}</label>
         </div>
-        
         <p *ngIf="!transactionStatus">
            When this goes we have finished searching..... our loader icon will replace this.
         </p>
-
         <table>
             <thead>
                 <th class="">{{'TX_HASH'|translate}}</th>
@@ -28,7 +26,15 @@
                     <td class="age">{{transaction.timestamp | transactionTimeAgo }}</td>
                     <td class="link hash">{{transaction.from}}</td>
                     <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>
-                    <td class="link hash">{{transaction.to}}</td>
+                    <td class="link hash">
+                        <div *ngIf="!transaction.to; then contractTxn else normalTxn"></div>
+                        <ng-template #normalTxn>
+                            {{transaction.to  }} 
+                        </ng-template>
+                        <ng-template #contractTxn>
+                            [Contract Creation Transaction]
+                        </ng-template>   
+                    </td>
                     <td class="value">{{transaction.value | convertToEther }} {{'AERO'|translate}}</td>
                     <td class="txfee"><!--{{transaction.txFee}}-->{{transaction.gasPrice | convertToEther}} {{'AERO'|translate}}</td>
                 </tr>
