@@ -55,16 +55,16 @@ export class TransactionServiceService {
         const gasPrice = this.web3.eth.getGasPrice();
 
         Promise.all([gasPrice, estimateGas]).then((res) =>{
-          const price = res[0];
+          const price = Number(this.web3.utils.fromWei(String(res[0]), 'gwei'));
           const transactionFee = Number(this.web3.utils.toWei(String(1), 'gwei')) * Number(res[1]);
           const resultInGwei = this.web3.utils.fromWei(String(transactionFee), 'gwei');
           const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
-          resolve([resultInGwei, resultInEther, price]);
+          resolve([resultInGwei, resultInEther, price, res[1]]);
         }).catch((err)=>{
           const transactionFee = Number(this.web3.utils.toWei(String(1), 'gwei')) * Number(1000000);
            const resultInGwei = this.web3.utils.fromWei(String(transactionFee), 'gwei');
            const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
-           resolve([resultInGwei, resultInEther, 1000000]);
+           resolve([resultInGwei, resultInEther, 1000000, 1000000]);
         });
       });
     }
