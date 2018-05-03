@@ -125,7 +125,7 @@ export class TransactionServiceService {
             const nonce = parseInt(values[1], 10);
             const gas = parseInt(values[2], 10);
 
-            const rawTransaction = {
+            const rawTransaction:any = {
               nonce: this.web3.utils.toHex( nonce ), 
               gas: this.web3.utils.toHex( gas ),
               gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( "16", 'gwei')),
@@ -137,7 +137,7 @@ export class TransactionServiceService {
             if(moreOptionsData.gasLimit) {
               rawTransaction.gasLimit = moreOptionsData.gasLimit;
             }
-            
+
             const tx = new Tx(rawTransaction);
                   tx.sign(privateKey);       
             const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
