@@ -55,15 +55,16 @@ export class TransactionServiceService {
         const gasPrice = this.web3.eth.getGasPrice();
 
         Promise.all([gasPrice, estimateGas]).then((res) =>{
-           const transactionFee = Number(this.web3.utils.toWei(String(1), 'gwei')) * Number(res[1]);
-           const resultInGwei = this.web3.utils.fromWei(String(transactionFee), 'gwei');
-           const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
-           resolve([resultInGwei, resultInEther]);
+          const price = res[0];
+          const transactionFee = Number(this.web3.utils.toWei(String(1), 'gwei')) * Number(res[1]);
+          const resultInGwei = this.web3.utils.fromWei(String(transactionFee), 'gwei');
+          const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
+          resolve([resultInGwei, resultInEther, price]);
         }).catch((err)=>{
           const transactionFee = Number(this.web3.utils.toWei(String(1), 'gwei')) * Number(1000000);
            const resultInGwei = this.web3.utils.fromWei(String(transactionFee), 'gwei');
            const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
-           resolve([resultInGwei, resultInEther]);
+           resolve([resultInGwei, resultInEther, 1000000]);
         });
       });
     }
@@ -109,7 +110,7 @@ export class TransactionServiceService {
         }
     }
 
-    transaction( privkey, activeUser, to, amount, data, external, urls ) : Promise<any> {
+    transaction( privkey, activeUser, to, amount, data, external, urls, moreOptionsData ) : Promise<any> {
       return new Promise( (resolve, reject) => {
           const privateKey          = ethJsUtil.toBuffer( privkey )
           const sendTo              = ethJsUtil.toChecksumAddress( to ) ;
@@ -118,20 +119,25 @@ export class TransactionServiceService {
           const txData              = this.web3.utils.asciiToHex( data ); 
           const getGasPrice         = this.web3.eth.getGasPrice()
           const getTransactionCount = this.web3.eth.getTransactionCount( from )
-          const estimateGas         = this.web3.eth.estimateGas({to:sendTo, data:txData})            
+          const estimateGas         = this.web3.eth.estimateGas({to:sendTo, data:txData});
 
        return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
-            let nonce = parseInt(values[1], 10);
-            let gas = parseInt(values[2], 10);
+            const nonce = parseInt(values[1], 10);
+            const gas = parseInt(values[2], 10);
 
             const rawTransaction = {
               nonce: this.web3.utils.toHex( nonce ), 
               gas: this.web3.utils.toHex( gas ),
               gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( "16", 'gwei')),
-              to: to,
+              to,
               value: txValue,
               // data: txData
             };
+
+            if(moreOptionsData.gasLimit) {
+              rawTransaction.gasLimit = moreOptionsData.gasLimit;
+            }
+            
             const tx = new Tx(rawTransaction);
                   tx.sign(privateKey);       
             const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
@@ -150,7 +156,7 @@ export class TransactionServiceService {
       });
     }
 
-    async sendTokens(myAddress, to, amount, contractAddress, external, urls) {
+    async sendTokens(myAddress, to, amount, contractAddress, external, urls, moreOptionsData) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
       const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 100000});
       const rawTransaction = {

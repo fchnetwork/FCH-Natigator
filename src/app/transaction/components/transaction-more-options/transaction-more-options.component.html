@@ -1,0 +1,30 @@
+<div class="more-options">
+    <div aerRow>
+        <div aerColumn size="md-12"><span>Data</span></div>
+        <div aerColumn size="md-7">
+          <aer-textarea [ngModel]="data.data" (ngModelChange)="onChange($event, 'data')" ngDefaultControl></aer-textarea>
+        </div>
+        <div aerColumn size="md-5">
+            You can add extra data to send along with your transaction. If you don't know what this is then <strong>don't touch it or bad things may happen.</strong>
+        </div>
+    </div>
+    <div aerRow>
+        <div aerColumn size="md-12"><span>Gas Limit</span></div>
+        <div aerColumn size="md-7">
+          <aer-input [ngModel]="data.limit" (ngModelChange)="onChange($event, 'limit')"></aer-input>
+        </div>
+        <div aerColumn size="md-5">
+            <span class="unit">UNITS</span>
+        </div>
+    </div>
+    <div aerRow>
+        <div aerColumn size="md-12"><span>Gas Price</span></div>
+        <div aerColumn size="md-7">
+          <aer-input [ngModel]="data.price" (ngModelChange)="onChange($event, 'price')"></aer-input>
+        </div>
+        <div aerColumn size="md-5">
+            <span class="unit">GWEI</span>
+        </div>
+    </div>
+</div>
+
