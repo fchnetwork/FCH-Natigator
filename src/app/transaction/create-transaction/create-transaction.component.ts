@@ -58,6 +58,12 @@ export class CreateTransactionComponent implements OnInit {
   assetAddress: any;
   timeStamp: any;
   returnUrlFailed: any;
+  moreOptionsData = {
+    data: '',
+    limit: '',
+    price: '',
+  };
+  showedMore = false;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -175,6 +181,7 @@ export class CreateTransactionComponent implements OnInit {
       this.txnServ.maxTransactionFee(this.receiverAddress, this.selectedToken.symbol === 'AERO' ? "aerum test transaction" : {type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10,this.selectedToken.decimals))}).then(res=>{
         this.maxTransactionFee = res[0];
         this.maxTransactionFeeEth = res[1];
+        this.moreOptionsData.price = res[2];
         this.getTotalAmount();
         if(this.external) {
           this.send();
@@ -203,7 +210,9 @@ export class CreateTransactionComponent implements OnInit {
     }
   }
 
-  showMore() {}
+  showMore() {
+    this.showedMore = this.showedMore ? false : true;
+  }
 
   showTransactions() {}
 
@@ -224,16 +233,22 @@ export class CreateTransactionComponent implements OnInit {
     this.getTotalAmount();
   }
 
+  checkHash(pin){
+    if(this.external) {
+      return String(this.hash) === String(this.web3.utils.keccak256(`${this.senderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
+    }
+    return true;
+  }
+
   openTransactionConfirm(message) {
     this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
       const urls = {success: this.redirectUrl, failed: this.returnUrlFailed};
-      const validHash = this.checkHash(result.pin);
+      const validHash = this.checkHash(result.pin ? result.pin : '');
       if(result.result === true && validHash) {
         const privateKey = this.sessionStorageService.retrieve('private_key');
         const address = this.sessionStorageService.retrieve('acc_address');
-
         if(this.selectedToken.symbol === 'AERO' && !this.isToken) {
-          this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, "aerum test transaction", this.external, urls).then( res => {
+          this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, this.external, urls, this.moreOptionsData).then( res => {
             this.transactionMessage = res;
           }).catch( (error) =>  {
             console.log(error);
@@ -242,7 +257,7 @@ export class CreateTransactionComponent implements OnInit {
             }
           });
         } else if(this.selectedToken.address) {
-          this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, urls).then((res)=>{
+          this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, urls, this.moreOptionsData).then((res)=>{
             this.transactionMessage = res;
           });
         }
@@ -250,14 +265,7 @@ export class CreateTransactionComponent implements OnInit {
         window.location.href=this.returnUrlFailed;
       }
     });
-  }
-
-  checkHash(pin){
-    if(this.external) {
-      return String(this.hash) === String(this.web3.utils.keccak256(`${this.senderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
-    }
-    return false;
-  }
+  };
 
   send() {
     this.transactionMessage = "";
@@ -266,18 +274,21 @@ export class CreateTransactionComponent implements OnInit {
       return false;      
     } else {
       this.txnServ.checkAddressCode(this.receiverAddress).then((res:any)=>{
-        let message = null;
+        let message = {
+          title: null,
+          text: null,
+          checkbox: false,
+          sender:  this.senderAddress,
+          recipient: this.receiverAddress,
+          amount:  this.amount,
+          fee: this.totalAmount,
+          maxFee: this.maxTransactionFee,
+        };
 
         if(res.length > 3) {
-          message = {
-            title: 'WARNING!',
-            text: 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guaranty that your token transfer will be processed properly. Always make sure you trust a contract you are sending your tokens to.',
-            sender:  this.senderAddress,
-            recipient: this.receiverAddress,
-            amount:  this.amount,
-            fee: this.totalAmount,
-            maxFee: this.maxTransactionFee,
-          };
+          message.title = 'WARNING!';
+          message.text = 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guaranty that your token transfer will be processed properly. Always make sure you trust a contract you are sending your tokens to.';
+
           this.tokenService.tokenFallbackCheck(this.receiverAddress, 'tokenFallback(address,uint256,bytes)').then((res)=>{
             if(!res) {
               message.text = 'The contract address you are sending your tokens to does not appear to support ERC223 standard, sending your tokens to this contract address will likely result in a loss of tokens sent. Please acknowledge your understanding of risks before proceeding further.';
@@ -286,13 +297,7 @@ export class CreateTransactionComponent implements OnInit {
             this.openTransactionConfirm(message);
           });
         } else {
-          message = {
-            sender:  this.senderAddress,
-            recipient: this.receiverAddress,
-            amount:  this.amount,
-            fee: this.totalAmount,
-            maxFee: this.maxTransactionFee,
-          };
+          message = message;
           this.openTransactionConfirm(message);        
         }
       });
@@ -301,6 +306,10 @@ export class CreateTransactionComponent implements OnInit {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+  }
+
+  moreOptionsChange(event){
+    this.moreOptionsData = event;
   }
 
 }

@@ -16,6 +16,7 @@ import { TransactionServiceService } from "./services/transaction-service/transa
 import { CreateTransactionComponent } from "./create-transaction/create-transaction.component";
 import { TransactionSignModalComponent } from "./components/transaction-sign-modal/transaction-sign-modal.component";
 import { LastTransactionsComponent } from "@app/transaction/components/last-transactions/last-transactions.component";
+import { TransactionMoreOptionsComponent } from "@app/transaction/components/transaction-more-options/transaction-more-options.component";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -38,6 +39,7 @@ export function createTranslateLoader(http: HttpClient) {
         CreateTransactionComponent,
         TransactionSignModalComponent,
         LastTransactionsComponent,
+        TransactionMoreOptionsComponent,
     ],
     providers: [
         AuthenticationService,

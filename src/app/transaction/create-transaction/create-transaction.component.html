@@ -50,13 +50,15 @@
           <span *ngIf="txnForm.controls['amount'].hasError('pattern')" class="login-error">must be an integer or decimal.</span>
 
         </form>
-          <!-- <div class="show-more-button">
+        <div class="show-more-button">
               <div class="row">
                   <div class="col-sm-12">
-                    <aer-button class="medium blue" (buttonFn)="showMore()">{{'SHOW_MORE_OPTIONS'|translate}}</aer-button>
+                    <aer-button *ngIf="!showedMore" class="medium blue" (buttonFn)="showMore()">{{'SHOW_MORE_OPTIONS'|translate}}</aer-button>
+                    <aer-button *ngIf="showedMore" class="medium blue" (buttonFn)="showMore()">Show less options</aer-button>
                   </div>
                 </div>
-          </div> -->
+          </div>
+          <app-transaction-more-options *ngIf="showedMore" [data]="moreOptionsData" (ngModelChange)="moreOptionsChange($event)"></app-transaction-more-options>
           <div class="row">
             <div class="col-sm-4">
               <div class="note">{{'MAX_TRANSACTION_FEE'|translate}}</div>
