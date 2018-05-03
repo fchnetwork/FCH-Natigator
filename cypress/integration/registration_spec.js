@@ -2,13 +2,16 @@ describe('Render register', () => {
     it('Page title has Aerum', () => {
       cy
       .visit('/')
-      .title().should('contain', 'Aerum');
+      .title()
+      .should('contain', 'Aerum');
     });
+
     it('Button Continue disabled', () => {
         cy
             .get('[data-cy=continue]')
             .should('have.class', 'disabled')
     });
+
     it('Button Continue still disabled', () => {
         cy
             .get('[data-cy=password] div input')
@@ -20,6 +23,7 @@ describe('Render register', () => {
             .get('[data-cy=continue]')
             .should('have.class', 'disabled')
     });
+
     it('Button Continue Enabled', () => {
         cy
             .get('[data-cy=password] div input')
@@ -33,6 +37,7 @@ describe('Render register', () => {
             .get('[data-cy=continue]')
             .should('not.have.class', 'disabled')
     });
+
     it('Check Restore an Account Router', () => {
         cy
             .contains('restore an account')
