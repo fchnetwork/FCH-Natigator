@@ -8,9 +8,9 @@
       <a routerLink="/account/register">{{'LOGIN_TEXT3'|translate}}</a>
     </div>
     <aer-input type="text" [(ngModel)]="address" ngDefaultControl style="display:none"></aer-input>
-    <aer-input type="password" icon="key" placeholder="{{'PASSWORD'|translate}}" [(ngModel)]="password" ngDefaultControl></aer-input>
+    <aer-input data-cy="password" type="password" icon="key" placeholder="{{'PASSWORD'|translate}}" [(ngModel)]="password" ngDefaultControl></aer-input>
     <div class="button">
-      <aer-button (buttonFn)="onSubmitAddress()">{{'LOGIN'|translate}}</aer-button>
+      <aer-button data-cy="continue" (buttonFn)="onSubmitAddress()">{{'LOGIN'|translate}}</aer-button>
     </div>
     <div class="link-text">
       <a routerLink="/account/restore">{{'RESTORE_ACCOUNT'|translate}}</a>
