@@ -1,30 +1,26 @@
-<div class="content">
-  <div class="title">{{'SEND_TRANSACTION'|translate}}</div>
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="panel">
-        <div class="panel-header">
-          {{'SEND_TO'|translate}}
-        </div>
-        <div class="panel-content">
+<div class="create-transaction">
+  <h3>{{'SEND_TRANSACTION'|translate}}</h3>
+  <div aerRow>
+    <div aerColumn size="sm-6">
+      <aer-card title="{{'SEND_TO'|translate}}">
           <form [formGroup]="txnForm" >
-            <div class="row">
-              <div class="col-sm-6">
+            <div aerRow>
+              <div aerColumn size="sm-6">
                 <div class="input-name">{{'FROM'|translate}}</div>
                 <aer-input icon="aerum" [ngClass]="{'has-error':!txnForm.controls['senderAddress'].valid && txnForm.controls['senderAddress'].touched}" formControlName="senderAddress" [(ngModel)]="senderAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
               </div>
-              <div class="col-sm-6">
+              <div aerColumn size="sm-6">
                 <div class="input-name">{{'TO'|translate}}</div>
                 <aer-input  [ngClass]="{'has-error':!txnForm.controls['receiverAddress'].valid && txnForm.controls['receiverAddress'].touched}" formControlName="receiverAddress" [(ngModel)]="receiverAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-6">
+            <div aerRow>
+              <div aerColumn size="sm-6">
                 <div class="input-name">{{'AMOUNT'|translate}}</div>
                 <aer-input [ngClass]="{'has-error':!txnForm.controls['amount'].valid && txnForm.controls['amount'].touched}" formControlName="amount" [(ngModel)]="amount" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
                 <input id="sendEverything" type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{selectedToken.symbol}})</label>
               </div>
-              <div class="col-sm-6 tokensSelect">
+              <div aerColumn size="sm-6" class="tokensSelect">
                     <aer-select formControlName="selectedToken" [(ngModel)]="selectedToken" (ngModelChange)="handleSelectChange()" dataKey="symbol" icon="aerum" placeholder="Select your token">
                         <aer-select-option [value]="{symbol: 'AERO'}">AERO</aer-select-option>
                         <aer-select-option *ngFor="let item of tokens;" [value]="item">{{item.symbol}}</aer-select-option>
@@ -36,7 +32,7 @@
               </div>
           </div>
 
-          <span *ngIf="txnForm.controls['senderAddress'].hasError('required') && txnForm.controls['senderAddress'].touched" class="login-error">You must include a sender address.</span>
+          <!-- <span *ngIf="txnForm.controls['senderAddress'].hasError('required') && txnForm.controls['senderAddress'].touched" class="login-error">You must include a sender address.</span>
           <span *ngIf="txnForm.controls['senderAddress'].hasError('minlength') && txnForm.controls['senderAddress'].touched" class="login-error">Your sender address must be at least 42 characters in length and be prefixed with '0x'.</span>
           <span *ngIf="txnForm.controls['senderAddress'].hasError('maxlength') && txnForm.controls['senderAddress'].touched" class="login-error">Your sender address cannot exceed 42 characters in length and be prefixed with '0x'.</span>
           <span *ngIf="txnForm.controls['senderAddress'].hasError('pattern') && txnForm.controls['senderAddress'].touched" class="login-error">sender address needs to be a hex string</span>
@@ -47,31 +43,30 @@
           <span *ngIf="txnForm.controls['receiverAddress'].hasError('pattern') && txnForm.controls['senderAddress'].touched" class="login-error">receiver address needs to be a hex string</span>
 
           <span *ngIf="txnForm.controls['amount'].hasError('required') && txnForm.controls['amount'].touched" class="login-error">You must specify an amount for the transaction</span>
-          <span *ngIf="txnForm.controls['amount'].hasError('pattern')" class="login-error">must be an integer or decimal.</span>
-
+          <span *ngIf="txnForm.controls['amount'].hasError('pattern')" class="login-error">must be an integer or decimal.</span> -->
         </form>
         <div class="show-more-button">
-              <div class="row">
-                  <div class="col-sm-12">
+              <div aerRow>
+                  <div aerColumn size="sm-12">
                     <aer-button *ngIf="!showedMore" class="medium blue" (buttonFn)="showMore()">{{'SHOW_MORE_OPTIONS'|translate}}</aer-button>
                     <aer-button *ngIf="showedMore" class="medium blue" (buttonFn)="showMore()">Show less options</aer-button>
                   </div>
                 </div>
           </div>
           <app-transaction-more-options *ngIf="showedMore" [data]="moreOptionsData" (ngModelChange)="moreOptionsChange($event)"></app-transaction-more-options>
-          <div class="row">
-            <div class="col-sm-4">
+          <div aerRow>
+            <div aerColumn size="sm-4">
               <div class="note">{{'MAX_TRANSACTION_FEE'|translate}}</div>
             </div>
-            <div class="col-sm-4">
+            <div aerColumn size="sm-4">
               <div class="note">{{maxTransactionFee}} aergwei</div>
             </div>
-            <div class="col-sm-4">
+            <div aerColumn size="sm-4">
               <div class="note">{{'MAX_TRANS_FEE_WARNING'|translate}}</div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-12">
+          <div aerRow>
+            <div aerColumn size="sm-6">
               <div class="input-name">{{'TOTAL'|translate}}</div>
               <div *ngIf="selectedToken.symbol !== 'AERO'" class="amount-total">
                   {{amount}} {{selectedToken.symbol}}
@@ -89,23 +84,25 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
+      </aer-card>
     </div>
-    <div class="col-sm-6">
-      <div class="panel min-width-470">
-        <div class="panel-header">
-            {{ 'RECEIVE_TO'|translate }}
-        </div>
-        <div class="panel-content">
-            {{ transactionMessage }}
-            <img [src]="addressQR" alt="">
-            <div class="c-copy__address" >
-              <a (click)="copyToClipboard()">{{ senderAddress }}</a>
-            </div>
+    <div aerColumn size="sm-6">
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <aer-card title="{{'RECEIVE_TO'|translate }}">
+              {{ transactionMessage }}
+              <img [src]="addressQR" alt="">
+              <div class="c-copy__address" >
+                <a (click)="copyToClipboard()">{{ senderAddress }}</a>
+              </div>
+            </aer-card>
         </div>
       </div>
-      <app-last-transactions></app-last-transactions>
+      <div aerRow>
+        <div aerColumn size="sm-12">
+            <app-last-transactions></app-last-transactions>
+        </div>
+      </div>
     </div>
   </div>
 </div>

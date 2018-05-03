@@ -182,6 +182,7 @@ export class CreateTransactionComponent implements OnInit {
         this.maxTransactionFee = res[0];
         this.maxTransactionFeeEth = res[1];
         this.moreOptionsData.price = res[2];
+        this.moreOptionsData.limit = res[3];
         this.getTotalAmount();
         if(this.external) {
           this.send();
