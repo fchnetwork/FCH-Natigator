@@ -99,9 +99,11 @@ export class LoadSwapComponent implements OnInit {
 
     const modalResult = await this.modalService.openLoadCreateConfirm(loadedSwap);
     if(modalResult.confirmed) {
+      this.notificationService.notify('Swap completion in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
       await this.confirm(loadedSwap);
       this.notificationService.notify('Swap done', `Swap ID: ${this.swapId}`, "aerum");
     } else if(modalResult.rejected) {
+      this.notificationService.notify('Swap rejection in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
       await this.reject();
       this.notificationService.notify('Swap rejected', `Swap ID: ${this.swapId}`, "aerum");
     }
@@ -110,11 +112,11 @@ export class LoadSwapComponent implements OnInit {
   private async confirm(swap: LoadedSwap) {
     console.log(`Confirming swap: ${this.swapId}`);
     if(this.mode === 'aero_to_erc20') {
-      this.confirmAeroToErc20Swap(swap);
+      await this.confirmAeroToErc20Swap(swap);
     } else if(this.mode === 'erc20_to_erc20') {
-      this.confirmErc20ToErc20Swap(swap);
+      await this.confirmErc20ToErc20Swap(swap);
     } else if(this.mode === 'erc20_to_aero') {
-      this.confirmErc20ToAeroSwap(swap);
+      await this.confirmErc20ToAeroSwap(swap);
     }
   }
 
@@ -258,12 +260,12 @@ export class LoadSwapComponent implements OnInit {
     return {
       swapId,
       tokenAmount: swap.openValue,
-      tokenAmountFormated: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals),
+      tokenAmountFormated: this.getDecimalTokenValue(swap.openValue, tokenInfo.decimals),
       tokenTrader: swap.openTrader,
       tokenAddress: swap.openContractAddress,
       tokenInfo,
       counterpartyAmount: swap.closeValue,
-      counterpartyAmountFormated: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals),
+      counterpartyAmountFormated: this.getDecimalTokenValue(swap.closeValue, counterpartyTokenInfo.decimals),
       counterpartyTrader: swap.closeTrader,
       counterpartyTokenAddress: swap.closeContractAddress,
       counterpartyTokenInfo,

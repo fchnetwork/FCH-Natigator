@@ -140,6 +140,7 @@ export class CreateSwapComponent implements OnInit {
       return;
     }
 
+    this.notificationService.notify('Swap creation in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
     await this.createSwapBasedOnMode();
     this.notificationService.notify('Swap created', `Swap ID: ${this.swapId}`, "aerum");
   }
