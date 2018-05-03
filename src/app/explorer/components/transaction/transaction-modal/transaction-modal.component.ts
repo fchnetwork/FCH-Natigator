@@ -32,8 +32,6 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
       }
       if(dialog.context.transaction) {
         this.transaction = dialog.context.transaction;
-         //  this.transaction.timestamp = dialog.context.transaction.timestamp ? dialog.context.transaction.timestamp : Moment(new Date()).unix();
-        // this.transaction.data = dialog.context.transaction.data ? String(dialog.context.transaction.data) : '0x0000002';
         this.transaction.data = dialog.context.transaction.data;
       }
       else {
@@ -46,8 +44,6 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
 
   openBlock(blockNumber) {
     window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
-     // http://explore.aerum.net/#/block/245490
-    // to do  - setup external blockchain explorer and feed this block number into it in a new tab
   }
   
 
