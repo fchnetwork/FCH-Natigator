@@ -20,11 +20,9 @@ import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/si
 import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
 import { TransactionTimeStampPipe } from '@shared/pipes/transaction-time-stamp.pipe';
 import { HexToTextPipe } from '@shared/pipes/hex-to-text.pipe';
-
 import { SafeResourceUrlPipe } from '@shared/pipes/safeResourceUrl.pipe';
 import { SafeUrlPipe } from '@shared/pipes/safeUrl.pipe';
 import { SafeHTMLPipe } from '@shared/pipes/safeHTML.pipe';
-
 import { GenerateAvatarPipe } from '@app/shared/pipes/generate-avatar.pipe';
 import { OrderbyPipe } from '@shared/pipes/orderby.pipe';
 import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
@@ -34,7 +32,6 @@ import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
 
 import { DashboardRoutingModule } from '@app/dashboard/dashboard.routes';
 import { AppUIModule } from '@app/app.ui.module';
-
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
 
 export function createTranslateLoader(http: HttpClient) {

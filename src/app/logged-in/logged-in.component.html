@@ -1,7 +1,9 @@
 <aer-sidebar>
   <aer-sidebar-header></aer-sidebar-header>
 
-  <aer-sidebar-item class="o-menu__item" iconName="transaction" [routerLink]="['/transaction']">{{'SEND_RECEIVE'|translate}}</aer-sidebar-item>
+  <aer-sidebar-group title="{{'SEND_RECEIVE'|translate}}" iconName="transaction" [single]="true" [routerLink]="['/transaction']" routerLinkActive="route-selected">
+  
+  </aer-sidebar-group>
 
   <aer-sidebar-group title="{{'STAKING'|translate}}" iconName="staking">
 
@@ -23,9 +25,9 @@
 
   </aer-sidebar-group>
 
-  <aer-sidebar-group title="{{'BLOCKCHAIN_EXPLORER'|translate}}" iconName="bc-explorer">
+  <aer-sidebar-group title="{{'INFORMATION'|translate}}" iconName="bc-explorer">
     <aer-sidebar-item iconName="blocks" [routerLink]="['/explorer/blocks']">{{'BLOCKS'|translate}}</aer-sidebar-item>
-    <aer-sidebar-item iconName="transaction" [routerLink]="['/explorer/transactions']">{{'TXNS'|translate}}</aer-sidebar-item>
+    <aer-sidebar-item iconName="transaction" [routerLink]="['/explorer/transactions']">{{'TRANSACTIONS'|translate}}</aer-sidebar-item>
     <aer-sidebar-item iconName="pending" [routerLink]="['/explorer/transactions/pending']">{{'PENDING_TXNS'|translate}}</aer-sidebar-item>
   </aer-sidebar-group>
 
