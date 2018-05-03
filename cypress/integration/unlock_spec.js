@@ -12,11 +12,11 @@ describe('Render Unlock', () => {
 
     context('Unlock account', function () {
 
-        it('Button Continue disabled', () => {
-            cy
-                .get('[data-cy=continue]')
-                .should('have.class', 'disabled')
-        });
+        // it('Button Continue disabled', () => {
+        //     cy
+        //         .get('[data-cy=continue]')
+        //         .should('have.class', 'disabled')
+        // });
 
         it('Button Continue Enabled', () => {
             cy
@@ -27,7 +27,21 @@ describe('Render Unlock', () => {
                 .should('not.have.class', 'disabled')
         })
 
+        it('Check Dashbord Router', () => {
+            cy
+                .get('[data-cy=continue] div')
+                .click({ force: true })
+            cy
+                .url()
+                .should('include', '/dashboard')
+                .then(() => {
+                    if (condition) {
 
+                    }
+                })
+        });
+
+        after
     })
     
 });
