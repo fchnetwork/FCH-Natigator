@@ -8,6 +8,8 @@ import { TransactionSignModalComponent } from '../../transaction/components/tran
 import { BlockModalComponent } from '../../explorer/components/block/block-modal/block-modal.component';
 import { TransactionModalComponent } from '../../explorer/components/transaction/transaction-modal/transaction-modal.component';
 import { AddTokenComponent } from '@app/dashboard/components/add-token/add-token.component';
+import { CreateSwapConfirmComponent } from '@app/swap/components/create-swap/create-swap-confirm/create-swap-confirm.component';
+import { LoadSwapConfirmComponent } from '@app/swap/components/load-swap/load-swap-confirm/load-swap-confirm.component';
 
 import { GetBlockModalComponent } from '@explorer/components/block/get-block-modal/get-block-modal.component';
 
@@ -55,5 +57,13 @@ export class ModalService {
   
   openTransaction(hash: any = null, transaction: any, external, urls): Promise<any> {
     return this.openModal(TransactionModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', hash, transaction, external, urls });
+  }
+  
+  openSwapCreateConfirm(data?: any): Promise<any> {
+    return this.openModal(CreateSwapConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
+  }
+
+  openLoadCreateConfirm(data?: any): Promise<any> {
+    return this.openModal(LoadSwapConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 }

@@ -117,7 +117,6 @@
 "CONTRACTS":"Contracts",
 "EXCHANGE":"Exchange",
 "ENS":"ENS",
-"SWAP":"Swap",
 "KYC":"KYC",
 "SEND_TO": "Send To",
 "RECEIVE_TO": "Receive To",
@@ -134,7 +133,39 @@
   "NAME": "Name",
   "DECIMALS": "Decimals",
   "OWNED":"Owned"
+  },
+"SWAP": {
+  "MAIN_MENU_ITEM_NAME":"Swap",
+  "SUB_MENU_CREATE_SWAP_ITEM_NAME":"Create Atomic Swap",
+  "SUB_MENU_LOAD_SWAP_ITEM_NAME":"Load Atomic Swap",
+  "AERO_TO_TOKEN":"Aero > Token",
+  "AERO_TO_AERO":"Aero > Aero",
+  "TOKEN_TO_AERO":"Token > Aero",
+  "TOKEN_TO_TOKEN":"Token > Token",
+  "CREATE": {
+    "TITLE":"Create Atomic Swap",
+    "FIELD_SWAP_ID":"Swap ID",
+    "FIELD_YOUR_TOKEN_OR_AERO":"Your Token / Aero",
+    "FIELD_COUNTERPARTY":"Counterparty",
+    "FIELD_COUNTERPARTY_TOKEN_OR_AERO":"Counterparty Token / Aero",
+    "FIELD_AMOUNT": "Amount",
+    "FIELD_RATE": "Rate",
+    "PLACEHOLDER_SELECT_TOKEN_OR_AERO": "Select Aero / Token",
+    "BTN_GENERATE_SWAP_ID":"Generate",
+    "BTN_CREATE":"Create",
+    "BTN_CANCEL":"Cancel"
+    },
+  "LOAD": {
+    "TITLE":"Load Atomic Swap",
+    "FIELD_SWAP_ID":"Swap ID",
+    "BTN_LOAD":"Load",
+    "BTN_CONFIRM":"Confirm",
+    "BTN_REJECT":"Reject",
+    "BTN_CANCEL":"Cancel",
+    "FIELD_COUNTERPARTY":"Counterparty",
+    "FIELD_STATUS":"Status",
+    "CONRIM_TITLE":"Confirm / Reject Atomic Swap"
+    }
+  }
 }
-}
-
 

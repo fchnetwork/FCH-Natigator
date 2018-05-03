@@ -7,6 +7,7 @@ export class InternalNotificationService {
         private notificationService: NotificationService,
     ) { }
 
+    // TODO: We should remove this one & use one from aerum/ui
     showMessage(text: string) {
         // alert(text);
         this.notificationService.notify(this.counter + ' Done', text, 'gear', 3000);

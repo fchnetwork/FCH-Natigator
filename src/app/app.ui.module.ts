@@ -39,7 +39,7 @@ import {
        CardModule,
        ToggleModule,
        SelectModule,
-        GridModule,
+       GridModule,
        FileUploadModule,
        NotificationModule
    ],
@@ -59,7 +59,7 @@ import {
        CardModule,
        ToggleModule,
        SelectModule,
-        GridModule,
+       GridModule,
        FileUploadModule,
        NotificationModule
    ]
