@@ -18,7 +18,7 @@
                               ngDefaultControl>{{ seedFileText }}</aer-textarea>
                 <aer-input formControlName="password" type="password" placeholder="Create new password" ngDefaultControl></aer-input>
                 <aer-input formControlName="confirmpassword" type="password" placeholder="Confirm password" ngDefaultControl></aer-input>
-                <aer-button [ngClass]="{'disabled': !recoverForm.valid}" [disabled]="!recoverForm.valid" (click)="onSubmitAddress()">Continue</aer-button>
+                <aer-button data-cy="continue" [ngClass]="{'disabled': !recoverForm.valid}" [disabled]="!recoverForm.valid" (click)="onSubmitAddress()">Continue</aer-button>
             </form>
 
             <!-- <form [formGroup]="recoverForm" (ngSubmit)="onSubmitAddress()" class="o-login o-loginForm">

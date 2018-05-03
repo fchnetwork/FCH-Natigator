@@ -22,6 +22,7 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TransactionModule } from "./transaction/transaction.module";
 import { BasicModalComponent } from "./shared/components/modals/basic-modal/basic-modal.component";
 import { LoggedInComponent } from './logged-in/logged-in.component';
+import { SwapModule } from "@app/swap/swap.module";
  
 const modalComponents = [BasicModalComponent];
 @NgModule({
@@ -38,6 +39,7 @@ const modalComponents = [BasicModalComponent];
     SharedModule,
     DiagnosticsModule,
     DashboardModule.forRoot(),
+    SwapModule,
     // aerumUI modules
     AppUIModule,
     // MISC modules

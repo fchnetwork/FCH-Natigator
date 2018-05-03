@@ -11,13 +11,14 @@ import { InternalNotificationService } from '../../shared/services/notification.
 import { SessionStorageService } from 'ngx-webstorage';
 import { TokenService } from '@app/dashboard/services/token.service';
 import * as CryptoJs from 'crypto-js';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
 const Web3 = require('web3');
 
 declare var window: any;
- 
+  
 @Component({
   selector: 'app-create-transaction',
   templateUrl: './create-transaction.component.html',
@@ -26,7 +27,7 @@ declare var window: any;
 export class CreateTransactionComponent implements OnInit {
 
   myBalance: any;
-  privateKey: string;
+  txnForm: FormGroup = this.formBuilder.group({});
 
   senderAddress: string;
   receiverAddress: string;
@@ -65,6 +66,7 @@ export class CreateTransactionComponent implements OnInit {
   showedMore = false;
 
   constructor(
+    public formBuilder: FormBuilder,
     public authServ: AuthenticationService,
     private modalSrv: ModalService,
     private clipboardService: ClipboardService,
@@ -72,15 +74,34 @@ export class CreateTransactionComponent implements OnInit {
     public txnServ: TransactionServiceService,
     public sessionStorageService: SessionStorageService,
     private tokenService: TokenService,
-    private route: ActivatedRoute,
-   ) {
+    private route: ActivatedRoute,) {
     this.userData();
     setInterval(()=>{
       this.userData();
       this.updateTokensBalance();
     },3000);
     
+    // work on these more with https://regex101.com
+    let regexAmount = "^-?(?!0*(?:\.0*)?$|0+\d)(?:\d+(?:\.\d{1,2})?|\.\d{1,2})$"; // issues with decimals and validation - needs more work
+    let regexAddress = '^0x[0-9a-{0,42}]+$' 
+
+    this.txnForm = this.formBuilder.group({
+      senderAddress: [ this.senderAddress, [Validators.required, Validators.minLength(42), Validators.maxLength(42), Validators.pattern(regexAddress)]],
+      receiverAddress: [ this.receiverAddress, [Validators.required, Validators.minLength(42), Validators.maxLength(42), Validators.pattern(regexAddress)]],
+      amount: [ null, [Validators.required, Validators.pattern(regexAmount) ]],
+      selectedToken: [ this.selectedToken, [Validators.required]],
+      sendEverything: [ this.sendEverything, [Validators.required]],
+    }, {
+      validator: this.validAerumAddress('adress')
+    });
+    
    }
+
+   validAerumAddress(address){
+    console.log(address)
+   }
+
+
 
   updateTokensBalance() {
     this.tokenService.updateTokensBalance().then((res)=>{

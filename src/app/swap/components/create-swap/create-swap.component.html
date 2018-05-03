@@ -1,0 +1,56 @@
+<h3>{{'SWAP.CREATE.TITLE'|translate}}</h3>
+    
+<div aerRow>
+  <div aerColumn size="sm-6">
+    <aer-card title="{{title|translate}}">
+      <div aerRow>
+          <div aerColumn size="sm-12">
+            <div class="input-name">{{'SWAP.CREATE.FIELD_SWAP_ID'|translate}}</div>
+            <aer-input [(ngModel)]="swapId" readonly="readonly" class="with-button blue" buttonLabel="{{'SWAP.CREATE.BTN_GENERATE_SWAP_ID'|translate}}" (buttonFn)="generateSwapId()" ngDefaultControl></aer-input>
+          </div>
+      </div>
+      <div aerRow>
+          <div aerColumn size="sm-12">
+            <div class="input-name">{{'SWAP.CREATE.FIELD_YOUR_TOKEN_OR_AERO'|translate}}</div>
+            <app-swap-tokens-list [selectAero]='true' (tokenChange)="onTokenChanged($event)"></app-swap-tokens-list>
+          </div>
+        </div>
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <div class="input-name">{{'SWAP.CREATE.FIELD_AMOUNT'|translate}}</div>
+          <aer-input [(ngModel)]="tokenAmount" (keyup)="recalculateCounterpartyTokenAmount()" ngDefaultControl></aer-input>
+        </div>
+      </div>
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <div class="input-name">{{'SWAP.CREATE.FIELD_COUNTERPARTY'|translate}}</div>
+          <aer-input required [(ngModel)]="counterpartyAddress" ngDefaultControl></aer-input>
+        </div>
+      </div>
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <div class="input-name">{{'SWAP.CREATE.FIELD_COUNTERPARTY_TOKEN_OR_AERO'|translate}}</div>
+          <app-swap-tokens-list (tokenChange)="onCounterpartyTokenChanged($event)"></app-swap-tokens-list>
+        </div>
+      </div>
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <div class="input-name">{{'SWAP.CREATE.FIELD_AMOUNT'|translate}}</div>
+          <aer-input [(ngModel)]="counterpartyTokenAmount" (keyup)="recalculateTokenRate()" ngDefaultControl></aer-input>
+        </div>
+      </div>
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <div class="input-name">{{'SWAP.CREATE.FIELD_RATE'|translate}}</div>
+          <aer-input [(ngModel)]="rate" (keyup)="recalculateCounterpartyTokenAmount()" ngDefaultControl></aer-input>
+        </div>
+      </div>
+      <hr>
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <aer-button class="btn-create-swap normal" [ngClass]="{'blue': !processing}" (buttonFn)="createSwap()" [disabled]="processing">{{'SWAP.CREATE.BTN_CREATE'|translate}}</aer-button>
+        </div>
+      </div>
+    </aer-card>
+  </div>
+</div>

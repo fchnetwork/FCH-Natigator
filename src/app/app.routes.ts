@@ -17,6 +17,7 @@ import { ExplorerModule } from '@explorer/explorer.module';
 import { EXPLORER_ROUTES } from './explorer/explorer.routes';
 import { DIAGNOSTICS_ROUTES } from './diagnostics/diagnostics.routes';
 import { TRANSACTION_ROUTES } from '@app/transaction/transaction.routes';
+import { SWAP_ROUTES } from '@app/swap/swap.routes';
 
 export const ROUTES = [
   {
@@ -67,6 +68,11 @@ export const ROUTES = [
     path: 'diagnostics',
     children: DIAGNOSTICS_ROUTES
   },  
+  {
+    path: 'swap',
+    canActivate: [CanActivateViaAuthGuard], // NOTE: Use the same guard as transactions
+    children: SWAP_ROUTES
+  },
   { 
     path: '**',
     redirectTo: '/not-found'

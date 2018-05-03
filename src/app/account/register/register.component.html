@@ -4,16 +4,16 @@
         <app-divider></app-divider>
         <p class="aer-small paragraph">
             {{ 'SIGNED_UP_PREFIX' | translate }}
-            <a routerLink="/account/restore">{{ 'SIGNED_UP_LINK' | translate }}</a> {{ 'SIGNED_UP_SUFFIX' | translate }}
+            <a data-cy="restore" routerLink="/account/restore">{{ 'SIGNED_UP_LINK' | translate }}</a> {{ 'SIGNED_UP_SUFFIX' | translate }}
         </p>
         <app-divider></app-divider>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <p class="paragraph--small">{{ 'CHOOSE_AVATAR' | translate }}</p>
             <app-avatar-select formControlName="avatar"></app-avatar-select>
             <p class="paragraph--small">{{ 'UNIQUE_AVATAR' | translate }}</p>
-            <aer-input placeholder="Choose your password" type="password" formControlName="password" [(ngModel)]="password" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
-            <aer-input placeholder="Repeat password" type="password" formControlName="confirmPassword" [(ngModel)]="confirmPassword" ngDefaultControl equalValidator="password"></aer-input>
-            <aer-button [ngClass]="{'disabled': !registerForm.valid}" [disabled]="!registerForm.valid" (click)="onSubmit()">CONTINUE</aer-button> 
+            <aer-input data-cy="password" placeholder="Choose your password" type="password" formControlName="password" [(ngModel)]="password" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
+            <aer-input data-cy="repeat_password" placeholder="Repeat password" type="password" formControlName="confirmPassword" [(ngModel)]="confirmPassword" ngDefaultControl equalValidator="password"></aer-input>
+            <aer-button data-cy="continue" [ngClass]="{'disabled': !registerForm.valid}" [disabled]="!registerForm.valid" (click)="onSubmit()">Continue</aer-button> 
         </form>
     </div>
 </aer-modal-container>
