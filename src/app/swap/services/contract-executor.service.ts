@@ -70,7 +70,7 @@ export class ContractExecutorService {
 
   private async createTx(transaction: TransactionObject<any>, aeroValue = '0') : Promise<Tx> {
     const aeroValueInWei = this.web3.utils.toWei(aeroValue, 'ether');
-    const contractGasThreshold = 1000;
+    const contractGasThreshold = 10 * 1000;
 
     const getGasPrice = this.web3.eth.getGasPrice();
     const getTransactionsCount = this.web3.eth.getTransactionCount(this.currentWalletAddress);

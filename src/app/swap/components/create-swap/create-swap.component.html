@@ -48,7 +48,7 @@
       <hr>
       <div aerRow>
         <div aerColumn size="sm-12">
-          <aer-button class="btn-create-swap normal blue" (buttonFn)="createSwap()">{{'SWAP.CREATE.BTN_CREATE'|translate}}</aer-button>
+          <aer-button class="btn-create-swap normal" [ngClass]="{'blue': !processing}" (buttonFn)="createSwap()" [disabled]="processing">{{'SWAP.CREATE.BTN_CREATE'|translate}}</aer-button>
         </div>
       </div>
     </aer-card>

@@ -34,6 +34,7 @@ export class CreateSwapComponent implements OnInit {
 
   mode: SwapMode;
   title: string;
+  processing = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -112,6 +113,8 @@ export class CreateSwapComponent implements OnInit {
       return;
     }
 
+    this.startLoading();
+
     const modalResult = await this.modalService.openSwapCreateConfirm({ 
       swapId: this.swapId,
       token: this.token,
@@ -124,6 +127,7 @@ export class CreateSwapComponent implements OnInit {
 
     if(!modalResult.confirmed) {
       console.log('Swap creation canceled');
+      this.stopLoading();
       return;
     }
 
@@ -132,8 +136,10 @@ export class CreateSwapComponent implements OnInit {
       this.notificationService.notify('Swap created', `Swap ID: ${this.swapId}`, "aerum");
     } catch (e) {
       this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
+      this.stopLoading();
       throw e;
     }
+    this.stopLoading();
   }
 
   private generateSwapId() {
@@ -282,5 +288,13 @@ export class CreateSwapComponent implements OnInit {
       case 'aero_to_aero': return 'a2a';
       default: return 'a2e';
     }
+  }
+
+  private startLoading() {
+    this.processing = true;
+  }
+
+  private stopLoading() {
+    this.processing = false;
   }
 }

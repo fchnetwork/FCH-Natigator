@@ -25,10 +25,9 @@ export class LoadSwapComponent implements OnInit {
 
   currentAddress: string;
   swapId: string;
-
   title: string;
-
   mode: SwapMode | 'unknown';
+  processing = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -63,6 +62,13 @@ export class LoadSwapComponent implements OnInit {
       return;
     }
 
+    if(this.processing) {
+      console.log('Other operation in progress');
+      return;
+    }
+
+    this.startLoading();
+
     const swapService = this.getCurrentSwapService();
     let swap; 
     
@@ -71,12 +77,14 @@ export class LoadSwapComponent implements OnInit {
       console.log(swap);
     } catch (e) {
       this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
+      this.stopLoading();
       throw e;
     }
 
     const status = this.convertSwapStatus(swap.state);
     if(status === 'Invalid') {
       this.notificationService.notify('Error', 'Swap not found or invalid', "aerum", 3000);
+      this.stopLoading();
       return;
     }
 
@@ -86,19 +94,21 @@ export class LoadSwapComponent implements OnInit {
     const modalResult = await this.modalService.openLoadCreateConfirm(loadedSwap);
     if(modalResult.confirmed) {
       await this.confirm(loadedSwap);
+      this.stopLoading();
       return;
     }
 
     if(modalResult.rejected) {
       await this.reject();
+      this.stopLoading();
       return;
     }
+    this.stopLoading();
   }
 
   private async confirm(swap: LoadedSwap) {
     try {
       console.log(`Confirming swap: ${this.swapId}`);
-
       if(this.mode === 'aero_to_erc20') {
         await this.ensureAllowance(
           swap.counterpartyTokenAddress,
@@ -258,5 +268,13 @@ export class LoadSwapComponent implements OnInit {
       case '3': return 'Expired';
       default: return 'Invalid';
     }
+  }
+
+  private startLoading() {
+    this.processing = true;
+  }
+
+  private stopLoading() {
+    this.processing = false;
   }
 }

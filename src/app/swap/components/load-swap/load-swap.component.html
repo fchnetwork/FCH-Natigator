@@ -6,7 +6,7 @@
       <div aerRow>
         <div aerColumn size="sm-12">
           <div class="input-name">{{'SWAP.LOAD.FIELD_SWAP_ID'|translate}}</div>
-          <aer-input [(ngModel)]="swapId" class="with-button blue" buttonLabel="{{'SWAP.LOAD.BTN_LOAD'|translate}}" (buttonFn)="loadSwap()" (keyup)="onSwapIdChange()" ngDefaultControl></aer-input>
+          <aer-input [(ngModel)]="swapId" class="with-button" [ngClass]="{'blue': !processing}" buttonLabel="{{'SWAP.LOAD.BTN_LOAD'|translate}}" (buttonFn)="loadSwap()" (keyup)="onSwapIdChange()" ngDefaultControl></aer-input>
         </div>
       </div>
     </aer-card>
