@@ -11,6 +11,7 @@ import { BasicModalComponent } from './components/modals/basic-modal/basic-modal
 import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
 import { EqualValidator } from './directives/equal-validator.directive';
 import { RouteDataService } from './services/route-data.service'; 
 import { InternalNotificationService } from './services/notification.service';
@@ -31,8 +32,8 @@ import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 import { DashboardRoutingModule } from '@app/dashboard/dashboard.routes';
 import { AppUIModule } from '@app/app.ui.module';
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component'
-
-
+import { ChartComponent } from '@app/shared/components/chart/chart.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
 }
@@ -52,6 +53,7 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    NgxEchartsModule,
   ],
   declarations: [
     I18nComponent,
@@ -71,6 +73,7 @@ export function createTranslateLoader(http: HttpClient) {
     HextoAsciiPipe,
     HextoDecimalPipe,
     SidebarAccountSelectComponent,
+    ChartComponent,
   ],
   providers: [
     ModalService,
@@ -97,6 +100,8 @@ export function createTranslateLoader(http: HttpClient) {
     HextoAsciiPipe,
     HextoDecimalPipe,
     SidebarAccountSelectComponent,
+    ChartComponent,
+    NgxEchartsModule,
   ]
 })
 
