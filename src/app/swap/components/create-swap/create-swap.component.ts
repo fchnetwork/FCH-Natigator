@@ -129,7 +129,7 @@ export class CreateSwapComponent implements OnInit {
 
     try {
       await this.executeSwapCreate();
-      this.notificationService.notify('Swap created', `Swap Id: ${this.swapId}`, "aerum");
+      this.notificationService.notify('Swap created', `Swap ID: ${this.swapId}`, "aerum");
     } catch (e) {
       this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
       throw e;

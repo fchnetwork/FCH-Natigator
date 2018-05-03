@@ -57,6 +57,12 @@ export class LoadSwapComponent implements OnInit {
   }
 
   async loadSwap() {
+
+    if(!this.swapId) {
+      console.log('Swap ID empty');
+      return;
+    }
+
     const swapService = this.getCurrentSwapService();
     let swap; 
     
@@ -112,7 +118,7 @@ export class LoadSwapComponent implements OnInit {
         await this.erc20ToAeroSwapService.closeSwap(this.swapId, closeEtherAmount);
       }
 
-      this.notificationService.notify('Swap done', `Swap Id: ${this.swapId}`, "aerum");
+      this.notificationService.notify('Swap done', `Swap ID: ${this.swapId}`, "aerum");
     } catch (e) {
       this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
       throw e;
@@ -134,7 +140,7 @@ export class LoadSwapComponent implements OnInit {
       const swapService = this.getCurrentSwapService();
       await swapService.expireSwap(this.swapId);
       
-      this.notificationService.notify('Swap rejected', `Swap Id: ${this.swapId}`, "aerum");
+      this.notificationService.notify('Swap rejected', `Swap ID: ${this.swapId}`, "aerum");
     } catch (e) {
       this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
       throw e;
