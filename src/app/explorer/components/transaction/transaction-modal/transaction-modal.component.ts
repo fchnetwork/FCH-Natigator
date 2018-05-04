@@ -3,7 +3,8 @@ import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { iTransaction } from '@shared/app.interfaces';
 import * as Moment from 'moment';
 import { ModalService } from '@shared/services/modal.service';
-import { environment } from '@env/environment'
+import { environment } from '@env/environment';
+
 export interface TransactionModalContext {
   hash?: string;
   transaction?: iTransaction;
@@ -70,6 +71,10 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
     } else {
       this.toHex.emit(null);
     }
+  }
+
+  redirectToExplorer(hash) {
+    window.location.href = `http://explore.aerum.net/#/transaction/${hash}`;
   }
 
 }

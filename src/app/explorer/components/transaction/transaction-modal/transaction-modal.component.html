@@ -2,7 +2,7 @@
     <div class="explorer detail-modal" *ngIf="transaction">
       <div class="title">{{'TRANSACTION'|translate}}</div>
       <app-divider></app-divider>
-      <div class="link">{{transaction.hash}}</div>
+      <div (click)="redirectToExplorer(transaction.hash)" class="link">{{transaction.hash}}</div>
       <div><p class="aer-small">{{transaction.timestamp | transactionTimeStamp }}</p></div>
       <div class="age">({{transaction.timestamp | transactionTimeAgo  }})</div>
         <div class="transaction-table">
@@ -60,7 +60,7 @@
               {{transaction.gasPrice | convertToEther  }} {{'AERO'|translate}}
           </div>
         </div>
-        <div class="tr">
+        <div *ngIf="transaction.blockNumber" class="tr">
           <div class="name">
             {{'BLOCK'|translate}}
           </div>
