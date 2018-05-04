@@ -5,16 +5,16 @@
       <aer-card title="{{'SEND_TO'|translate}}">
           <form [formGroup]="txnForm" >
               <div aerRow>
-              <ng-container *ngFor="let eachControl of formControlKeys">
+              <!-- <ng-container *ngFor="let eachControl of formControlKeys">
                   <ng-container *ngIf="txnForm.controls[eachControl].touched">
                     <span *ngFor="let eachError of (getObjectKeys(txnForm.controls[eachControl].errors))">
                     {{errorMessages[eachError]}}<br>
                     </span> <br>
                   </ng-container> 
-               </ng-container>   
+               </ng-container>    -->
               </div>
             <div aerRow>
-              <div aerColumn size="sm-6">             
+              <div aerColumn size="sm-6">           
                 <div class="input-name">{{'FROM'|translate}}</div>
                 <aer-input icon="aerum" [ngClass]="{'has-error':!txnForm.controls['senderAddress'].valid && txnForm.controls['senderAddress'].touched}" formControlName="senderAddress" [(ngModel)]="senderAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
               </div>
@@ -70,7 +70,7 @@
               <div class="note">{{'MAX_TRANSACTION_FEE'|translate}}</div>
             </div>
             <div aerColumn size="sm-4">
-              <div class="note">{{maxTransactionFee}} aergwei</div>
+              <div class="note">{{maxTransactionFee}} gwei</div>
             </div>
             <div aerColumn size="sm-4">
               <div class="note">{{'MAX_TRANS_FEE_WARNING'|translate}}</div>
@@ -91,7 +91,7 @@
               </div>
               <hr>
               <div class="footer-buttons">
-                  <aer-button class="normal blue" (buttonFn)="send()">{{'SEND'|translate}}</aer-button>
+                  <aer-button [disabled]="txnForm.status === 'INVALID'" [ngClass]="txnForm.status === 'INVALID' ? 'disabled' : 'blue'" class="normal" (buttonFn)="send()">{{'SEND'|translate}}</aer-button>
               </div>
             </div>
           </div>
