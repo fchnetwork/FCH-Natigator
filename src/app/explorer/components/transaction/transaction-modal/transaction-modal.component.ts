@@ -4,6 +4,8 @@ import { iTransaction } from '@shared/app.interfaces';
 import * as Moment from 'moment';
 import { ModalService } from '@shared/services/modal.service';
 import { environment } from '@env/environment'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+
 export interface TransactionModalContext {
   hash?: string;
   transaction?: iTransaction;
@@ -24,7 +26,9 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
   showHexData: boolean = true;
   @Output() toText: EventEmitter<any> = new EventEmitter();
   @Output() toHex: EventEmitter<any> = new EventEmitter();
-
+  setBtnTxt$ = new BehaviorSubject("Convert to UTF-8"); 
+  btnText: string;
+  
     constructor(
     public dialog: DialogRef<TransactionModalContext>) {
       if(dialog.context.hash) {
@@ -37,6 +41,11 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
       else {
         // GET TRANSACTION via HASH or id or define it
       }
+      
+      this.setBtnTxt$.subscribe((value) => {
+        this.btnText = value
+      });
+      
    }
 
   ngOnInit() {
@@ -70,8 +79,10 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
     this.showHexData = !this.showHexData;
     if (this.showHexData) {
       this.toText.emit(null);
+      this.setBtnTxt$.next("Convert to UTF-8");
     } else {
       this.toHex.emit(null);
+      this.setBtnTxt$.next("Convert to Hex");
     }
   }
 

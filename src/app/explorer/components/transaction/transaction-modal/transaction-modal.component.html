@@ -90,7 +90,7 @@
         </div>
         </div>
         <div class="tr" *ngIf="transaction.to && transaction.input > 3">
-            <aer-button (click)="convert()" class="small blue">Convert send data to Text</aer-button>
+            <aer-button (click)="convert()" class="small blue">{{btnText}}</aer-button>
         </div>        
       <aer-button (click)="close()">Close</aer-button>
     </div>
