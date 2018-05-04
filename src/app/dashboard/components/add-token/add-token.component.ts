@@ -5,6 +5,7 @@ import { ModalComponent } from 'ngx-modialog';
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from '@app/dashboard/services/token.service';
 import { SessionStorageService } from 'ngx-webstorage';
+import { InternalNotificationService } from '@app/shared/services/notification.service';
 
 @Component({
   selector: 'app-add-token',
@@ -24,6 +25,7 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
     public formBuilder: FormBuilder,
     private tokenService: TokenService,
     private sessionStorage: SessionStorageService,
+    public notificationService: InternalNotificationService,
   ) { }
 
   ngOnInit() {
@@ -43,29 +45,26 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
 
   validateTokens() {
     const tokens = this.sessionStorage.retrieve('tokens');
-    if(tokens) {
+    if(tokens.length) {
       // TODO: handle errors in any styled component
       for(let i = 0; i < tokens.length; i++) {
         if(this.totalSupply <= 0 || !Number.isInteger(this.totalSupply)) {
-          alert('Tokens supply has to be bigger than 0');
+          this.notificationService.showMessage('Tokens supply has to be bigger than 0');
           return false;
         } else if(this.addTokenForm.value.tokenSymbol === tokens[i].symbol){
-          alert('You cannot add token with the same token name');
+          this.notificationService.showMessage('You cannot add token with the same token name');
           return false;
         } else if (this.addTokenForm.value.tokenAddress === tokens[i].address) {
-          alert('You cannot add token with the same token address');
+          this.notificationService.showMessage('You cannot add token with the same token address');
           return false;
         }
       }
-    } else {
-      return true;
-    }
+    } 
     return true;
   }
 
   onSubmit() {
     const validate = this.validateTokens();
-    // const validate = true;
     if (this.addTokenForm.valid && validate) {
       const token = {
         address: this.addTokenForm.value.tokenAddress,
@@ -75,7 +74,7 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
       };
       this.tokenService.addToken(token);
       this.dialog.dismiss();
-    };
+    }
   }
 
   getTokenInfo(address) {

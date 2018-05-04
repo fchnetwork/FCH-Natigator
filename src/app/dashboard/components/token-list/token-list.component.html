@@ -1,38 +1,36 @@
-<div class="token-list panel">
-  <div class="panel-content">
-    <div class="row title-row">
-      <div class="col-sm-6">
+<aer-card class="token-list">
+    <div aerRow class="title-row">
+      <div aerColumn size="sm-6">
           <span class="title">Tokens</span>
       </div>
-      <div class="col-sm-6 add-token">
+      <div aerColumn size="sm-6" class="add-token">
         <aer-button (click)="addToken()" class="small blue">Add Token</aer-button>
       </div>
     </div>
-    <div *ngIf="tokens" class="row token-item">
-          <div class="col-sm-6 name">
-             {{ 'DASHBOARD_TOKENS.NAME' | translate }}
-          </div>
-          <div class="col-sm-3 amount">
-              {{ 'DASHBOARD_TOKENS.DECIMALS' | translate }}
-          </div>
-          <div class="col-sm-2 amount">
-              {{ 'DASHBOARD_TOKENS.OWNED' | translate }}
-          </div>
-    </div>
-            
-    <div *ngFor="let token of tokens" class="row token-item">
-      <div class="col-sm-1 token-img">
-        an
+    <div aerRow *ngIf="tokens"  class="token-item">
+      <div aerColumn size="sm-6" class="name">
+          {{ 'DASHBOARD_TOKENS.NAME' | translate }}
       </div>
-      <div class="col-sm-6 name">
+      <div aerColumn size="sm-3" class="amount">
+          {{ 'DASHBOARD_TOKENS.DECIMALS' | translate }}
+      </div>
+      <div aerColumn size="sm-3" class="amount">
+          {{ 'DASHBOARD_TOKENS.OWNED' | translate }}
+      </div>
+    </div>
+
+    <div aerRow *ngFor="let token of tokens" class="token-item">
+      <div aerColumn size="sm-2" class="token-img">
+        <span>an</span>
+      </div>
+      <div aerColumn size="sm-5" class="name">
           {{token.symbol}}
       </div>
-      <div class="col-sm-3 amount">
+      <div aerColumn size="sm-2" class="amount">
           {{token.decimals}}
       </div>
-      <div class="col-sm-2 amount">
+      <div aerColumn size="sm-3" class="amount">
           {{token.balance}}
       </div>
     </div>
-  </div>
-</div>
+</aer-card>
