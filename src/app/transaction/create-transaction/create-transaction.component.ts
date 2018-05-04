@@ -107,7 +107,7 @@ export class CreateTransactionComponent implements OnInit {
       required: "You must add a value to this field",
       max: "Max allowed value for input is 42",
       min: "Min allowed value for input is 42",
-      pattern: "this is not an allowed vlaue",
+      pattern: "this is not an allowed value",
     };
    
     
