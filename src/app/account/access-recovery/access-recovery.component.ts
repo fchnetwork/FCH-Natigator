@@ -100,7 +100,7 @@ export class AccessRecoveryComponent implements OnInit {
         console.log( this.private );
         console.log( this.recoverForm.value.password );
         this.authServ.saveKeyStore( this.private, this.recoverForm.value.password, this.recoverForm.value.seed );
-        this.router.navigate(['/transaction']); // improvements need to be made here but for now the auth guard should work just fine
+        this.router.navigate(['/dashboard']); // improvements need to be made here but for now the auth guard should work just fine
       }
     }
 

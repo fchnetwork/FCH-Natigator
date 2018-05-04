@@ -3,11 +3,11 @@
         <div class="c-registration__step1 o-loginForm" *ngIf="step == 'step_1'">
             <div class="header">{{'ACCESS_RECOVERY'|translate}}</div>
             <app-divider></app-divider>
-            <p class="paragraph">
+            <p class="aer-small paragraph">
                 {{'ACCESS_REC_HINT'|translate}}
                 <a [routerLink]="['/account/register']"> {{'ACCESS_REC_HINT_SUFF'|translate}}</a>
             </p>
-            <app-divider [showLine]="false"></app-divider>
+            <app-divider></app-divider>
             <aer-file-upload class="medium blue" (filesChange)="openSeedFile($event)">{{'SEL_KEY'|translate}}</aer-file-upload>
             <app-divider label="OR"></app-divider>
             <form [formGroup]="recoverForm">
@@ -18,7 +18,7 @@
                               ngDefaultControl>{{ seedFileText }}</aer-textarea>
                 <aer-input formControlName="password" type="password" placeholder="Create new password" ngDefaultControl></aer-input>
                 <aer-input formControlName="confirmpassword" type="password" placeholder="Confirm password" ngDefaultControl></aer-input>
-                <aer-button data-cy="continue" [ngClass]="{'disabled': !recoverForm.valid}" [disabled]="!recoverForm.valid" (click)="onSubmitAddress()">Continue</aer-button>
+                <aer-button data-cy="continue" class="large full-width" [ngClass]="{'disabled': !recoverForm.valid}" [disabled]="!recoverForm.valid" (click)="onSubmitAddress()">Continue</aer-button>
             </form>
 
             <!-- <form [formGroup]="recoverForm" (ngSubmit)="onSubmitAddress()" class="o-login o-loginForm">
