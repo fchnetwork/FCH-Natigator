@@ -17,7 +17,11 @@ export class LastTransactionsComponent implements OnInit {
     private transactionService: TransactionServiceService,
   ) { 
     setInterval(()=>{
-      this.transactions = this.sessionStorage.retrieve('transactions');
+      this.transactions = this.sessionStorage.retrieve('transactions').sort((b,a)=>{
+        const c:any = new Date(a.date);
+        const d:any = new Date(b.date);
+        return c - d;
+        });
     },3000);
     setInterval(()=>{
       if(this.transactions.length > 0 && (this.transactions[Number(this.transactions.length - 1)].data === 'Pending transaction' || this.transactions[Number(this.transactions.length - 1)].data === 'Contract execution(pending)')) {
