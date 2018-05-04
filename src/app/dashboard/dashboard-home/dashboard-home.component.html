@@ -1,12 +1,24 @@
-<div class="content">
-  <div class="title">{{'DASHBOARD.TITLE'|translate}}</div>
-  <div class="row">
-      <div class="col-sm-4">
-          <app-account-overview></app-account-overview>
-          <app-token-list></app-token-list>
+<div class="dashboard">
+        <h3>{{'SEND_TRANSACTION'|translate}}</h3>
+  <div aerRow>
+      <div aerColumn size="sm-4">
+        <div aerRow>
+            <div aerColumn size="sm-12">
+                <app-account-overview></app-account-overview>
+            </div>
+        </div>
+        <div aerRow>
+            <div aerColumn size="sm-12">
+                <app-token-list></app-token-list>
+            </div>
+        </div>
       </div>
-      <div class="col-sm-8">
-          <app-chart></app-chart>
+      <div aerColumn size="sm-8">
+        <div aerRow>
+            <div aerColumn size="sm-12">
+                <app-chart></app-chart>
+            </div>
+        </div>
       </div>
     </div>
 </div>

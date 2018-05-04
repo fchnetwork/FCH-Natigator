@@ -1,18 +1,5 @@
 .token-list {
-  .col-sm-1 {
-    padding-left: 0;
-  }
-  .col-sm-3 {
-    padding-right: 0;
-  }
-
   .title-row {
-    padding-bottom: 10px;
-
-    .col-sm-8 {
-      padding-left: 0;
-    }
-
     .title {
       font-size: 18px;
       padding: 0;
@@ -21,28 +8,26 @@
 
   .add-token {
     text-align: right;
-    padding-right: 0;
   }
-
   .token-item {
-    padding: 10px 0;
     border-bottom: 1px solid #F1F1F3;
 
     .token-img {
-      height: 35px;
-      width: 35px;
-      background-color: gray;
+
+      span {
+        height: 35px;
+        width: 35px;
+        background-color: gray;
+      }
     }
 
     .name {
       color: #2D353D;
       font-weight: 600;
-      padding-top: 7px;
     }
 
     .amount {
       text-align: right;
-      padding-top: 7px;
     }
   }
 }
