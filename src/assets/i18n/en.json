@@ -69,6 +69,7 @@
 "CRT_PASS":"Create your new password.",
 "CONF_PASS":"Confirm password",
 "TRANSACTIONS_SHORT":"Txns",
+"LAST_TRANSACTIONS":"Last transactions",
 "TX_HASH":"Tx hash",
 "TX_FEE":"Tx Fee",
 "BLOCK":"Block",
@@ -118,8 +119,8 @@
 "EXCHANGE":"Exchange",
 "ENS":"ENS",
 "KYC":"KYC",
-"SEND_TO": "Send To",
-"RECEIVE_TO": "Receive To",
+"SEND_TO": "Send",
+"RECEIVE_TO": "Receive",
 "TRANSACTIONS": "Transactions",
 "BASIC_TRANSACTION":"Basic Transaction",
 "SEND_RECEIVE":"Send & Receive",
@@ -128,7 +129,7 @@
 "DASHBOARD": {
   "TITLE": "Account Overview"
 },
-"TRANSACTION_COST":"Txn cost",
+"TRANSACTION_COST":"Txn fee",
 "DASHBOARD_TOKENS": {
   "NAME": "Name",
   "DECIMALS": "Decimals",
