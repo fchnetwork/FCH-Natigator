@@ -24,8 +24,10 @@ export class LastTransactionsComponent implements OnInit {
         });
     },3000);
     setInterval(()=>{
-      if(this.transactions.length > 0 && (this.transactions[Number(this.transactions.length - 1)].data === 'Pending transaction' || this.transactions[Number(this.transactions.length - 1)].data === 'Contract execution(pending)')) {
-        this.transactionService.updateTransactionsStatuses(this.transactions);
+      for(let i = 0; i < this.transactions.length; i++) {
+        if(this.transactions[i].data === 'Pending transaction' || this.transactions[i].data === 'Contract execution(pending)'){
+          this.transactionService.updateTransactionsStatuses(this.transactions);
+        }
       }
     }, 5000);
   }
