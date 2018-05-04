@@ -14,7 +14,7 @@ import { ModalService } from '@shared/services/modal.service';
 export class TransactionsComponent implements OnInit {
 
   transactionsFound: number;
-  transactions: iTransaction[];
+  transactions: iTransaction[] = [];
   order: number;
   column: string = 'timestamp';
   descending: boolean = false;
@@ -35,8 +35,8 @@ export class TransactionsComponent implements OnInit {
   }
   
   getAllTransactions() {
-    this.transactions = [];
-    let searchAmount = 1800;
+    const transactions = [];
+    let searchAmount = 180;
     this.exploreSrv.getBlock().subscribe( async currentBlock => {      
       let bookmarkCurrenBlock = currentBlock - 1;
       for ( let i = currentBlock - searchAmount; i < currentBlock; ++i) {
@@ -46,10 +46,19 @@ export class TransactionsComponent implements OnInit {
               ]).then(results => {
                   for ( let blockIdx = 0; blockIdx < results[0]; blockIdx++) {
                     this.exploreSrv.web3.eth.getTransactionFromBlock( blockData['number'], blockIdx, (error, txn) => {
-                    const mergeBlockTransaction = Object.assign( txn, blockData ); // need to merge block info with transaction because we need the block timestamp
-                    this.transactions.push(mergeBlockTransaction);
-                  })
-                }            
+                      const mergeBlockTransaction = Object.assign( txn, blockData ); // need to merge block info with transaction because we need the block timestamp
+                      this.transactions.push(mergeBlockTransaction);
+                      // TODO: refactor to use pipe for sorting!
+                      if(blockIdx === Number(results[0] - 1)){
+                        this.transactions = transactions.sort((b,a)=>{
+                          const c:any = new Date(a.timestamp);
+                          const d:any = new Date(b.timestamp);
+                          return c - d;
+                          });
+                      }
+                    });
+                }
+
                 this.transactionStatus = ( searchAmount-- == 1) ? true : false;  // show or hide our loader animation - coming soon!! 
               });          
           })

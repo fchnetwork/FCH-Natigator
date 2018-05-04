@@ -69,6 +69,7 @@
 "CRT_PASS":"Create your new password.",
 "CONF_PASS":"Confirm password",
 "TRANSACTIONS_SHORT":"Txns",
+"LAST_TRANSACTIONS":"Last transactions",
 "TX_HASH":"Tx hash",
 "TX_FEE":"Tx Fee",
 "BLOCK":"Block",
@@ -128,7 +129,7 @@
 "DASHBOARD": {
   "TITLE": "Account Overview"
 },
-"TRANSACTION_COST":"Txn cost",
+"TRANSACTION_COST":"Txn fee",
 "DASHBOARD_TOKENS": {
   "NAME": "Name",
   "DECIMALS": "Decimals",
