@@ -65,6 +65,12 @@ export class CreateTransactionComponent implements OnInit {
   };
   showedMore = false;
 
+  invalid = [];
+  
+  
+  formControlKeys = [];
+  errorMessages = {};
+  
   constructor(
     public formBuilder: FormBuilder,
     public authServ: AuthenticationService,
@@ -91,17 +97,24 @@ export class CreateTransactionComponent implements OnInit {
       amount: [ null, [Validators.required, Validators.pattern(regexAmount) ]],
       selectedToken: [ this.selectedToken, [Validators.required]],
       sendEverything: [ this.sendEverything, [Validators.required]],
-    }, {
-      validator: this.validAerumAddress('adress')
     });
+    
+
+    this.formControlKeys = Object.keys(this.txnForm.controls);
+
+    this.errorMessages = {
+      required: "You must add a value to this field",
+      max: "Max allowed value for input is 42",
+      min: "Min allowed value for input is 42",
+      pattern: "this is not an allowed vlaue"
+    }
+   
     
    }
 
-   validAerumAddress(address){
-    console.log(address)
-   }
-
-
+   getObjectKeys(arg) {
+    return Object.keys(arg);
+  }
 
   updateTokensBalance() {
     this.tokenService.updateTokensBalance().then((res)=>{
@@ -188,7 +201,7 @@ export class CreateTransactionComponent implements OnInit {
           this.send();
         }
       }).catch((err)=>{
-        console.log(err);
+       // console.log(err);
       });
     } else {
       this.maxTransactionFee = 0.000;
