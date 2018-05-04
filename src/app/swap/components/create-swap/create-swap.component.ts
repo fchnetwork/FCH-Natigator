@@ -65,6 +65,12 @@ export class CreateSwapComponent implements OnInit {
     this.recalculateTokenRate();
   }
 
+  generateSwapId() {
+    const prefix = this.getSwapIdPrefix();
+    const randomPart = Guid.newGuid().replace(/-/g, '').slice(prefix.length);
+    this.swapId = prefix + randomPart;
+  }
+
   recalculateTokenRate() {
     const counterpartyTokenAmount = Number(this.counterpartyTokenAmount);
     if(!counterpartyTokenAmount || counterpartyTokenAmount <= 0) {
@@ -219,12 +225,6 @@ export class CreateSwapComponent implements OnInit {
       console.log(`Allowance value: ${allowance}. Needed: ${amount}`);
       await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
     }
-  }
-
-  private generateSwapId() {
-    const prefix = this.getSwapIdPrefix();
-    const randomPart = Guid.newGuid().replace(/-/g, '').slice(prefix.length);
-    this.swapId = prefix + randomPart;
   }
 
   private updateSwapMode() {
