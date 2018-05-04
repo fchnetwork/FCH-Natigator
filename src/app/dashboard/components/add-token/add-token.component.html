@@ -9,7 +9,7 @@
         <aer-input placeholder="Token" type="tokenSymbol" formControlName="tokenSymbol" [(ngModel)]="tokenSymbol" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
         <span>Token Decimals of Precision</span>
         <aer-input placeholder="18" type="decimals" formControlName="decimals" [(ngModel)]="decimals" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
-        <aer-button [ngClass]="{'disabled': !addTokenForm.valid}" [disabled]="!addTokenForm.valid" (click)="onSubmit()">Add</aer-button> 
+        <aer-button [ngClass]="{'disabled': !addTokenForm.valid}" type="submit" [disabled]="!addTokenForm.valid">Add</aer-button> 
     </form>
   </div>
 </aer-modal-dialog>
