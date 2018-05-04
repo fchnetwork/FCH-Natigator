@@ -46,6 +46,9 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
     window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
   }
   
+  openTxn(txnHash){
+    window.open( environment.externalBlockExplorer + 'transaction/' + txnHash, "_blank");
+  }  
 
   dismiss(): void {
     this.dialog.dismiss();

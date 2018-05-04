@@ -2,7 +2,7 @@
     <div class="explorer detail-modal" *ngIf="transaction">
       <div class="title">{{'TRANSACTION'|translate}}</div>
       <app-divider></app-divider>
-      <div class="link">{{transaction.hash}}</div>
+      <div class="link" (click)="openTxn(transaction.hash)">{{transaction.hash}}</div>
       <div><p class="aer-small">{{transaction.timestamp | transactionTimeStamp }}</p></div>
       <div class="age">({{transaction.timestamp | transactionTimeAgo  }})</div>
         <div class="transaction-table">
