@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Overlay } from 'ngx-modialog';
 import { Observable } from 'rxjs/Observable';
+import * as Moment from 'moment';
 
 import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -144,6 +145,7 @@ export class TransactionServiceService {
                 transaction.on('transactionHash', hash => { 
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash);
                   this.web3.eth.getTransaction(hash).then((res)=>{
+                    res.timestamp = Moment(new Date()).unix();
                     this.modalService.openTransaction(hash, res, external, urls);
                   });
                 }).catch( error => {
@@ -178,6 +180,7 @@ export class TransactionServiceService {
         this.web3.eth.getTransaction(hash).then((res)=>{
           this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash);
           this.web3.eth.getTransaction(hash).then((res)=>{
+            res.timestamp = Moment(new Date()).unix();
             this.modalService.openTransaction(hash, res, external, urls);
           });
         });

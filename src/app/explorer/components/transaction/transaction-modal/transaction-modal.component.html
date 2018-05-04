@@ -60,7 +60,7 @@
               {{transaction.gasPrice | convertToEther  }} {{'AERO'|translate}}
           </div>
         </div>
-        <div class="tr">
+        <div *ngIf="transaction.blockNumber" class="tr">
           <div class="name">
             {{'BLOCK'|translate}}
           </div>
