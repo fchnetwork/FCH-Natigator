@@ -62,6 +62,7 @@ export class CreateTransactionComponent implements OnInit {
     data: '',
     limit: '',
     price: '',
+    selectedToken: 'AERO',
   };
   showedMore = false;
 
@@ -88,15 +89,15 @@ export class CreateTransactionComponent implements OnInit {
     },3000);
     
     // work on these more with https://regex101.com
-    let regexAmount = "^-?(?!0*(?:\.0*)?$|0+\d)(?:\d+(?:\.\d{1,2})?|\.\d{1,2})$"; // issues with decimals and validation - needs more work
+    let regexAmount = "^[0-9\.\-\/]+$"; // issues with decimals and validation - needs more work
+    // Address is to fix
     let regexAddress = '^0x[0-9a-{0,42}]+$' 
 
     this.txnForm = this.formBuilder.group({
-      senderAddress: [ this.senderAddress, [Validators.required, Validators.minLength(42), Validators.maxLength(42), Validators.pattern(regexAddress)]],
-      receiverAddress: [ this.receiverAddress, [Validators.required, Validators.minLength(42), Validators.maxLength(42), Validators.pattern(regexAddress)]],
+      senderAddress: [ this.senderAddress, [Validators.required, Validators.minLength(42), Validators.maxLength(42)]],
+      receiverAddress: [ this.receiverAddress, [Validators.required, Validators.minLength(42), Validators.maxLength(42)]],
       amount: [ null, [Validators.required, Validators.pattern(regexAmount) ]],
-      selectedToken: [ this.selectedToken, [Validators.required]],
-      sendEverything: [ this.sendEverything, [Validators.required]],
+      selectedToken: [ this.selectedToken, [Validators.required]]
     });
     
 
@@ -106,8 +107,8 @@ export class CreateTransactionComponent implements OnInit {
       required: "You must add a value to this field",
       max: "Max allowed value for input is 42",
       min: "Min allowed value for input is 42",
-      pattern: "this is not an allowed vlaue"
-    }
+      pattern: "this is not an allowed value",
+    };
    
     
    }
@@ -228,6 +229,14 @@ export class CreateTransactionComponent implements OnInit {
 
   showMore() {
     this.showedMore = this.showedMore ? false : true;
+    if(!this.showedMore) {
+      this.moreOptionsData = {
+        data: '',
+        limit: '',
+        price: '',
+        selectedToken: this.selectedToken.symbol,
+      };
+    }
   }
 
   showTransactions() {}
@@ -244,7 +253,9 @@ export class CreateTransactionComponent implements OnInit {
     } else {
       this.isToken = true;
       this.walletBalance = this.selectedToken.balance;
+      this.moreOptionsData.data = null;
     }
+    this.moreOptionsData.selectedToken = this.selectedToken.symbol;
     this.getMaxTransactionFee();
     this.getTotalAmount();
   }

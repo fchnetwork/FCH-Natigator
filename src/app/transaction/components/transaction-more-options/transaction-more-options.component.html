@@ -1,5 +1,5 @@
 <div class="more-options">
-    <div aerRow>
+    <div *ngIf="data.selectedToken === 'AERO'" aerRow>
         <div aerColumn size="md-12"><span>Data</span></div>
         <div aerColumn size="md-7">
           <aer-textarea [ngModel]="data.data" (ngModelChange)="onChange($event, 'data')" ngDefaultControl></aer-textarea>
@@ -13,9 +13,6 @@
         <div aerColumn size="md-7">
           <aer-input [ngModel]="data.limit" (ngModelChange)="onChange($event, 'limit')"></aer-input>
         </div>
-        <div aerColumn size="md-5">
-            <span class="unit">UNITS</span>
-        </div>
     </div>
     <div aerRow>
         <div aerColumn size="md-12"><span>Gas Price</span></div>
@@ -23,7 +20,7 @@
           <aer-input [ngModel]="data.price" (ngModelChange)="onChange($event, 'price')"></aer-input>
         </div>
         <div aerColumn size="md-5">
-            <span class="unit">GWEI</span>
+            <span class="unit">gwei</span>
         </div>
     </div>
 </div>
