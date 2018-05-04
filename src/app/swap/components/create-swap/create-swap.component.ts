@@ -67,7 +67,7 @@ export class CreateSwapComponent implements OnInit {
 
   recalculateTokenRate() {
     const counterpartyTokenAmount = Number(this.counterpartyTokenAmount);
-    if(counterpartyTokenAmount <= 0) {
+    if(!counterpartyTokenAmount || counterpartyTokenAmount <= 0) {
       return;
     }
     this.rate = Number(this.tokenAmount) / counterpartyTokenAmount;
@@ -75,7 +75,7 @@ export class CreateSwapComponent implements OnInit {
 
   recalculateCounterpartyTokenAmount() {
     const rate = Number(this.rate);
-    if(rate <= 0) {
+    if(!rate || rate <= 0) {
       return;
     }
     this.counterpartyTokenAmount = Number(this.tokenAmount) / rate;
@@ -102,6 +102,17 @@ export class CreateSwapComponent implements OnInit {
   }
 
   async createSwap() {
+    const tokenAmountParsed = Number(this.tokenAmount);
+    const counterpartyTokenAmountParsed = Number(this.counterpartyTokenAmount);
+    const rateParsed = Number(this.rate);
+
+    if((!tokenAmountParsed || tokenAmountParsed <= 0) ||
+       (!counterpartyTokenAmountParsed || counterpartyTokenAmountParsed <= 0) ||
+       (!rateParsed || rateParsed <= 0)) {
+      this.notificationService.notify('Error', 'Swap ammount or rate not valid', "aerum", 3000);
+      return;
+    }
+
     if(this.mode === 'aero_to_aero') {
       this.notificationService.notify('Error', 'Aero > Aero swaps are not supported', "aerum", 3000);
       return;

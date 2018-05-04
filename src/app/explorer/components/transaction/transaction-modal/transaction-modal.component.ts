@@ -3,7 +3,8 @@ import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { iTransaction } from '@shared/app.interfaces';
 import * as Moment from 'moment';
 import { ModalService } from '@shared/services/modal.service';
-import { environment } from '@env/environment';
+import { environment } from '@env/environment'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 export interface TransactionModalContext {
   hash?: string;
@@ -25,7 +26,9 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
   showHexData: boolean = true;
   @Output() toText: EventEmitter<any> = new EventEmitter();
   @Output() toHex: EventEmitter<any> = new EventEmitter();
-
+  setBtnTxt$ = new BehaviorSubject("Convert to UTF-8"); 
+  btnText: string;
+  
     constructor(
     public dialog: DialogRef<TransactionModalContext>) {
       if(dialog.context.hash) {
@@ -38,6 +41,11 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
       else {
         // GET TRANSACTION via HASH or id or define it
       }
+      
+      this.setBtnTxt$.subscribe((value) => {
+        this.btnText = value
+      });
+      
    }
 
   ngOnInit() {
@@ -47,6 +55,9 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
     window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
   }
   
+  openTxn(txnHash){
+    window.open( environment.externalBlockExplorer + 'transaction/' + txnHash, "_blank");
+  }  
 
   dismiss(): void {
     this.dialog.dismiss();
@@ -68,13 +79,11 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
     this.showHexData = !this.showHexData;
     if (this.showHexData) {
       this.toText.emit(null);
+      this.setBtnTxt$.next("Convert to UTF-8");
     } else {
       this.toHex.emit(null);
+      this.setBtnTxt$.next("Convert to Hex");
     }
-  }
-
-  redirectToExplorer(hash) {
-    window.location.href = `http://explore.aerum.net/#/transaction/${hash}`;
   }
 
 }
