@@ -113,7 +113,9 @@ export class CreateTransactionComponent implements OnInit {
    }
 
    getObjectKeys(arg) {
-    return Object.keys(arg);
+     if(arg != null || arg != null) {
+        return Object.keys(arg);
+     }
   }
 
   updateTokensBalance() {
