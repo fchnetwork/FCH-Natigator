@@ -4,9 +4,20 @@
   <div aerColumn size="sm-6">
     <aer-card title="{{title|translate}}">
       <div aerRow>
+        <!-- TODO: This input with btn is not working on firefox so comment out for now
           <div aerColumn size="sm-12">
             <div class="input-name">{{'SWAP.CREATE.FIELD_SWAP_ID'|translate}}</div>
             <aer-input [(ngModel)]="swapId" readonly="readonly" class="with-button blue" buttonLabel="{{'SWAP.CREATE.BTN_GENERATE_SWAP_ID'|translate}}" (buttonFn)="generateSwapId()" ngDefaultControl></aer-input>
+          </div>
+        -->
+        <div aerColumn size="sm-8">
+            <div class="input-name">{{'SWAP.CREATE.FIELD_SWAP_ID'|translate}}</div>
+            <div>
+              <aer-input [(ngModel)]="swapId" readonly="readonly" ngDefaultControl></aer-input>
+            </div>
+          </div>
+          <div aerColumn size="sm-4" class="aerColumn__btn-holder">
+            <aer-button class="normal full-width" [ngClass]="{'blue': !processing}" (buttonFn)="generateSwapId()" [disabled]="processing">{{'SWAP.CREATE.BTN_GENERATE_SWAP_ID'|translate}}</aer-button>
           </div>
       </div>
       <div aerRow>
