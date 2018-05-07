@@ -49,7 +49,6 @@ export class TokenService {
   }
 
   getTokens() {
-    console.log('called');
    return this.sessionStorage.retrieve('tokens');
   }
 
