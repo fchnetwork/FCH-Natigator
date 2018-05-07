@@ -38,7 +38,7 @@
                         </ng-template>   
                     </td> -->
                     <td class="value">{{transaction.value | convertToEther }} {{'AERO'|translate}}</td>
-                    <td class="txfee"><!--{{transaction.txFee}}-->{{transaction.gasPrice | convertToEther}} {{'AERO'|translate}}</td>
+                    <td class="txfee"><!--{{transaction.txFee}}-->{{transaction.gasUsed * transaction.gasPrice | convertToEther}} {{'AERO'|translate}}</td>
                 </tr>
             </tbody>
         </table>
