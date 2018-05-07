@@ -169,7 +169,7 @@ export class TransactionServiceService {
 
     async sendTokens(myAddress, to, amount, contractAddress, external, urls, moreOptionsData) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
-      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 100000});
+      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 4000000});
       const rawTransaction = {
         "from": myAddress,
         "nonce": this.web3.utils.toHex( count ), 
