@@ -43,7 +43,7 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
       }
       
       this.setBtnTxt$.subscribe((value) => {
-        this.btnText = value
+        this.btnText = value;
       });
       
    }
