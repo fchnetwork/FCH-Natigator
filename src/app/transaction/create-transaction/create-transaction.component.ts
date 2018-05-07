@@ -65,7 +65,7 @@ export class CreateTransactionComponent implements OnInit {
     selectedToken: 'AERO',
   };
   showedMore = false;
-
+  updateInterval: any;
   invalid = [];
   
   
@@ -83,7 +83,7 @@ export class CreateTransactionComponent implements OnInit {
     private tokenService: TokenService,
     private route: ActivatedRoute,) {
     this.userData();
-    setInterval(()=>{
+    this.updateInterval = setInterval(()=>{
       this.userData();
       this.updateTokensBalance();
     },3000);
@@ -333,6 +333,7 @@ export class CreateTransactionComponent implements OnInit {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    clearInterval(this.updateInterval);
   }
 
   moreOptionsChange(event){
