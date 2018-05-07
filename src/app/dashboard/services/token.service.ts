@@ -6,15 +6,18 @@ import { SessionStorageService } from 'ngx-webstorage';
 import Web3 from 'web3';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { tokensABI } from '@app/abi/tokens';
-import utf8 from 'utf8';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { iToken } from '@shared/app.interfaces'
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
+
 
 @Injectable()
 export class TokenService {
   web3: any;
   tokensContract: any;
+  tokens$: BehaviorSubject<iToken>= new BehaviorSubject(<any>[]); 
 
   constructor(
     private _auth: AuthenticationService,
@@ -34,6 +37,7 @@ export class TokenService {
     tokens.push(token);
     this.saveTokens(tokens);
     // ADD observable here
+    this.tokens$.next(tokens);
     setTimeout(()=>{
       this.updateTokensBalance();
     }, 100);
