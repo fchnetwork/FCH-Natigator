@@ -91,10 +91,18 @@ export class TransactionServiceService {
         for(let i = 0; i < transactions.length; i++) {
           this.web3.eth.getTransactionReceipt( transactions[i].hash ).then( res =>  {
             if(res.status) {
-              transactions[i].data = transactions[i].data === 'Contract execution(pending)' ? 'Contract execution' : 'Successful transaction';
+              if(transactions[i].data === 'Contract execution(pending)') {
+                transactions[i].data = 'Contract execution';
+              } else if (transactions[i].data === 'Pending transaction') {
+                transactions[i].data = 'Successful transaction';
+              }
               sortedTransactions.push(transactions[i]);
             } else  {
-              transactions[i].data = transactions[i].data === 'Contract execution(pending)' ? 'Failed contract execution' : 'Failed transaction';
+              if(transactions[i].data === 'Contract execution(pending)') {
+                transactions[i].data = 'Failed contract execution';
+              } else if (transactions[i].data === 'Pending transaction') {
+                transactions[i].data = 'Failed transaction';
+              }
               sortedTransactions.push(transactions[i]);
             }
 
@@ -161,7 +169,7 @@ export class TransactionServiceService {
 
     async sendTokens(myAddress, to, amount, contractAddress, external, urls, moreOptionsData) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
-      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 100000});
+      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 4000000});
       const rawTransaction = {
         "from": myAddress,
         "nonce": this.web3.utils.toHex( count ), 
