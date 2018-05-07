@@ -22,7 +22,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let transaction of transactions">
-                    <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash|slice:0:10}}...</td>
+                    <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash|slice:0:20}}...</td>
                     <td class="link block" (click)="openBlock(transaction)">{{transaction.blockNumber}}</td>
                     <td class="age">{{transaction.timestamp | transactionTimeAgo }}</td>
                     <!-- DONT DELETE NOW, TO REFACTOR TO GRID -->

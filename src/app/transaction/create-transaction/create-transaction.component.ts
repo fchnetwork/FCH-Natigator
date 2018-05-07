@@ -194,7 +194,7 @@ export class CreateTransactionComponent implements OnInit {
 
   getMaxTransactionFee() {
     if(this.receiverAddress) {
-      this.txnServ.maxTransactionFee(this.receiverAddress, this.selectedToken.symbol === 'AERO' ? "aerum test transaction" : {type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10,this.selectedToken.decimals))}).then(res=>{
+      this.txnServ.maxTransactionFee(this.receiverAddress, this.selectedToken.symbol === 'AERO' ? (this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : "aerum test transaction"): {type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10,this.selectedToken.decimals))}).then(res=>{
         this.maxTransactionFee = res[0];
         this.maxTransactionFeeEth = res[1];
         this.moreOptionsData.price = res[2];
@@ -338,6 +338,8 @@ export class CreateTransactionComponent implements OnInit {
 
   moreOptionsChange(event){
     this.moreOptionsData = event;
+    this.getMaxTransactionFee();
+    this.getTotalAmount();
   }
 
 }
