@@ -65,7 +65,7 @@ export class CreateTransactionComponent implements OnInit {
     selectedToken: 'AERO',
   };
   showedMore = false;
-
+  updateInterval: any;
   invalid = [];
   
   
@@ -83,7 +83,7 @@ export class CreateTransactionComponent implements OnInit {
     private tokenService: TokenService,
     private route: ActivatedRoute,) {
     this.userData();
-    setInterval(()=>{
+    this.updateInterval = setInterval(()=>{
       this.userData();
       this.updateTokensBalance();
     },3000);
@@ -194,7 +194,7 @@ export class CreateTransactionComponent implements OnInit {
 
   getMaxTransactionFee() {
     if(this.receiverAddress) {
-      this.txnServ.maxTransactionFee(this.receiverAddress, this.selectedToken.symbol === 'AERO' ? "aerum test transaction" : {type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10,this.selectedToken.decimals))}).then(res=>{
+      this.txnServ.maxTransactionFee(this.receiverAddress, this.selectedToken.symbol === 'AERO' ? (this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : ''): {type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10,this.selectedToken.decimals))}).then(res=>{
         this.maxTransactionFee = res[0];
         this.maxTransactionFeeEth = res[1];
         this.moreOptionsData.price = res[2];
@@ -333,10 +333,15 @@ export class CreateTransactionComponent implements OnInit {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    clearInterval(this.updateInterval);
   }
 
   moreOptionsChange(event){
-    this.moreOptionsData = event;
+    this.moreOptionsData = event.data;
+    if(event.type === 'data') {
+      this.getMaxTransactionFee();
+      this.getTotalAmount();
+    }
   }
 
 }

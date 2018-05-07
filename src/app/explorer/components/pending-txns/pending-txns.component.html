@@ -16,10 +16,10 @@
             </thead>
             <tbody>
                 <tr *ngFor="let txn of transactions">
-                    <td class="link hash">{{txn.hash}}</td>
-                    <td class="link hash">{{txn.from}}</td>
+                    <td class="link hash">{{txn.hash|slice:0:20}}</td>
+                    <td class="link hash">{{txn.from|slice:0:20}}</td>
                     <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td>
-                    <td class="link hash">{{txn.to}}</td>
+                    <td class="link hash">{{txn.to|slice:0:20}}</td>
                     <td>{{txn.gas | hextoDecimal }}</td>
                     <td>{{txn.gasPrice | hextoDecimal}} {{'GWEI'|translate}}</td>                    
                     <td class="value">{{txn.value | convertToEther}} {{'AETH'|translate}}</td>

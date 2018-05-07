@@ -18,7 +18,7 @@ export class TransactionMoreOptionsComponent implements OnInit {
 
   onChange(event, type) {
     this.data[type] = event;
-    this.ngModelChange.emit(this.data);
+    this.ngModelChange.emit({data: this.data, type});
   }
 
 }

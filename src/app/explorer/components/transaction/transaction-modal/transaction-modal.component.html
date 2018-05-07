@@ -41,7 +41,7 @@
             {{'GAS_USED'|translate}}
           </div>
           <div class="value">
-              {{transaction.gasUsed}}
+              {{transaction.gasUsedinTxn }}
           </div>
         </div>
         <div class="tr">
@@ -49,7 +49,7 @@
             {{'TRANSACTION_COST'|translate}}
           </div>
           <div class="value">
-              {{transaction.gas | convertToEther}}
+              {{transaction.gasUsedinTxn * transaction.gasPrice | convertToEther}}
           </div>
         </div>
         <div class="tr">

@@ -91,10 +91,18 @@ export class TransactionServiceService {
         for(let i = 0; i < transactions.length; i++) {
           this.web3.eth.getTransactionReceipt( transactions[i].hash ).then( res =>  {
             if(res.status) {
-              transactions[i].data = transactions[i].data === 'Contract execution(pending)' ? 'Contract execution' : 'Successful transaction';
+              if(transactions[i].data === 'Contract execution(pending)') {
+                transactions[i].data = 'Contract execution';
+              } else if (transactions[i].data === 'Pending transaction') {
+                transactions[i].data = 'Successful transaction';
+              }
               sortedTransactions.push(transactions[i]);
             } else  {
-              transactions[i].data = transactions[i].data === 'Contract execution(pending)' ? 'Failed contract execution' : 'Failed transaction';
+              if(transactions[i].data === 'Contract execution(pending)') {
+                transactions[i].data = 'Failed contract execution';
+              } else if (transactions[i].data === 'Pending transaction') {
+                transactions[i].data = 'Failed transaction';
+              }
               sortedTransactions.push(transactions[i]);
             }
 
@@ -118,18 +126,19 @@ export class TransactionServiceService {
           const from                = ethJsUtil.toChecksumAddress( activeUser );
           const txValue             = this.web3.utils.numberToHex(this.web3.utils.toWei( amount.toString(), 'ether'));
           const txData              = this.web3.utils.asciiToHex( data ); 
-          const getGasPrice         = this.web3.eth.getGasPrice()
+          const getGasPrice         = this.web3.eth.getGasPrice();
           const getTransactionCount = this.web3.eth.getTransactionCount( from )
           const estimateGas         = this.web3.eth.estimateGas({to:sendTo, data:txData});
 
        return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
+            const gasPrice = values[0];
             const nonce = parseInt(values[1], 10);
             const gas = parseInt(values[2], 10);
-
             const rawTransaction:any = {
               nonce: this.web3.utils.toHex( nonce ), 
               gas: this.web3.utils.toHex( gas ),
-              gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( "16", 'gwei')),
+              // TODO: export it to any config and import from there
+              gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( "1", 'gwei')),
               to,
               value: txValue,
               // data: txData
@@ -149,6 +158,7 @@ export class TransactionServiceService {
                     this.modalService.openTransaction(hash, res, external, urls);
                   });
                 }).catch( error => {
+                  console.log(error);
                   if(external) {
                     window.location.href=urls.failed;
                   }
@@ -160,11 +170,13 @@ export class TransactionServiceService {
 
     async sendTokens(myAddress, to, amount, contractAddress, external, urls, moreOptionsData) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
-      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 100000});
+      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 4000000});
+      const gasPrice = await this.web3.eth.getGasPrice();
       const rawTransaction = {
         "from": myAddress,
         "nonce": this.web3.utils.toHex( count ), 
-        "gasPrice": "0x003B9ACA00",
+        "gasPrice": this.web3.utils.toHex(gasPrice) || "0x003B9ACA00",
+        // "gasLimit": this.web3.utils.toHex(moreOptionsData.limit) || "0x250CA",
         "gasLimit": "0x250CA",
         "to": contractAddress,
         "value": "0x0",
@@ -185,6 +197,7 @@ export class TransactionServiceService {
           });
         });
       }).catch( error => {
+        console.log(error);
         if(external) {
           window.location.href=urls.failed;
         }
