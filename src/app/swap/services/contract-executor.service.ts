@@ -52,7 +52,7 @@ export class ContractExecutorService {
       .on('error', async (error) => {
         // TODO: We do this workarround due to this issue: https://github.com/ethereum/web3.js/issues/1534
         if(error && error.message && error.message.startsWith('Failed to check for transaction receipt:')) {
-          const receipt = await this.retry(() => this.web3.eth.getTransactionReceipt(transactionHash), 10, 1500);
+          const receipt = await this.retry(() => this.web3.eth.getTransactionReceipt(transactionHash), 40, 1500);
           console.log('Transaction receipt returned:', receipt);
           resolve(receipt);
         } else {
@@ -71,7 +71,7 @@ export class ContractExecutorService {
 
   private async createSendTx(transaction: TransactionObject<any>, aeroValue = '0') : Promise<Tx> {
     const aeroValueInWei = this.web3.utils.toWei(aeroValue, 'ether');
-    const contractGasThreshold = 10 * 1000;
+    const contractGasThreshold = 100 * 1000;
 
     const getGasPrice = this.web3.eth.getGasPrice();
     const getTransactionsCount = this.web3.eth.getTransactionCount(this.currentWalletAddress);
