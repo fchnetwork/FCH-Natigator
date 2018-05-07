@@ -36,7 +36,7 @@ export class TransactionsComponent implements OnInit {
   
   getAllTransactions() {
     const transactions = [];
-    let searchAmount = 180;
+    let searchAmount = 480;
     this.exploreSrv.getBlock().subscribe( async currentBlock => {      
       let bookmarkCurrenBlock = currentBlock - 1;
       for ( let i = currentBlock - searchAmount; i < currentBlock; ++i) {
@@ -46,7 +46,7 @@ export class TransactionsComponent implements OnInit {
               ]).then(results => {
                   for ( let blockIdx = 0; blockIdx < results[0]; blockIdx++) {
                     this.exploreSrv.web3.eth.getTransactionFromBlock( blockData['number'], blockIdx, (error, txn) => {
-                      const mergeBlockTransaction = Object.assign( txn, blockData ); // need to merge block info with transaction because we need the block timestamp
+                      const mergeBlockTransaction = Object.assign( txn, {timestamp: blockData.timestamp}); // need to merge block info with transaction because we need the block timestamp
                       this.transactions.push(mergeBlockTransaction);
                       // TODO: refactor to use pipe for sorting!
                       if(blockIdx === Number(results[0] - 1)){
