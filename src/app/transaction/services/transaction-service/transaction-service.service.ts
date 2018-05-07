@@ -158,6 +158,7 @@ export class TransactionServiceService {
                     this.modalService.openTransaction(hash, res, external, urls);
                   });
                 }).catch( error => {
+                  console.log(error);
                   if(external) {
                     window.location.href=urls.failed;
                   }
@@ -170,11 +171,12 @@ export class TransactionServiceService {
     async sendTokens(myAddress, to, amount, contractAddress, external, urls, moreOptionsData) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
       const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 4000000});
+      const gasPrice = await this.web3.eth.getGasPrice();
       const rawTransaction = {
         "from": myAddress,
         "nonce": this.web3.utils.toHex( count ), 
-        "gasPrice": "0x003B9ACA00",
-        "gasLimit": "0x250CA",
+        "gasPrice": this.web3.utils.toHex(gasPrice) || "0x003B9ACA00",
+        "gasLimit": this.web3.utils.toHex(moreOptionsData.limit) || "0x250CA",
         "to": contractAddress,
         "value": "0x0",
         "data": tokensContract.methods.transfer(to, amount).encodeABI(),
@@ -194,6 +196,7 @@ export class TransactionServiceService {
           });
         });
       }).catch( error => {
+        console.log(error);
         if(external) {
           window.location.href=urls.failed;
         }
