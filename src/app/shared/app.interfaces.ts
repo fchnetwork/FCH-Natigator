@@ -61,3 +61,12 @@ export interface iBlocks {
     "transactionIndex": string;
     "value": string; 
   }
+
+
+
+  export interface iToken {
+    "address": string,
+    "symbol": string,
+    "decimals": string,
+    "balance": string
+  }
