@@ -18,7 +18,6 @@
                 <!-- <th class="arrow"></th> -->
                 <!-- <th class="">{{'TO'|translate}}</th> -->
                 <th class="">{{'VALUE'|translate}}</th>
-                <th class="">{{'TX_FEE'|translate}}</th>
             </thead>
             <tbody>
                 <tr *ngFor="let transaction of transactions">
@@ -38,7 +37,6 @@
                         </ng-template>   
                     </td> -->
                     <td class="value">{{transaction.value | convertToEther }} {{'AERO'|translate}}</td>
-                    <td class="txfee"><!--{{transaction.txFee}}-->{{transaction.gasUsed * transaction.gasPrice | convertToEther}} {{'AERO'|translate}}</td>
                 </tr>
             </tbody>
         </table>

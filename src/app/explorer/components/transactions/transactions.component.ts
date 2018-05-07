@@ -46,7 +46,9 @@ export class TransactionsComponent implements OnInit {
               ]).then(results => {
                   for ( let blockIdx = 0; blockIdx < results[0]; blockIdx++) {
                     this.exploreSrv.web3.eth.getTransactionFromBlock( blockData['number'], blockIdx, (error, txn) => {
-                      const mergeBlockTransaction = Object.assign( txn, {timestamp: blockData.timestamp}); // need to merge block info with transaction because we need the block timestamp
+                      this.exploreSrv.web3.eth.getTransactionReceipt(txn.hash).then( txnReceipt => { 
+                      const mergeBlockTransaction = Object.assign( txn, {timestamp: blockData.timestamp, gasUsedinTxn: txnReceipt.gasUsed }); // need to merge block info with transaction because we need the block timestamp
+                      console.log("mergeBlockTransaction "+ JSON.stringify( mergeBlockTransaction ) )
                       this.transactions.push(mergeBlockTransaction);
                       // TODO: refactor to use pipe for sorting!
                       if(blockIdx === Number(results[0] - 1)){
@@ -57,6 +59,7 @@ export class TransactionsComponent implements OnInit {
                           });
                       }
                     });
+                  })
                 }
 
                 this.transactionStatus = ( searchAmount-- == 1) ? true : false;  // show or hide our loader animation - coming soon!! 
