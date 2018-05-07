@@ -118,18 +118,19 @@ export class TransactionServiceService {
           const from                = ethJsUtil.toChecksumAddress( activeUser );
           const txValue             = this.web3.utils.numberToHex(this.web3.utils.toWei( amount.toString(), 'ether'));
           const txData              = this.web3.utils.asciiToHex( data ); 
-          const getGasPrice         = this.web3.eth.getGasPrice()
+          const getGasPrice         = this.web3.eth.getGasPrice();
           const getTransactionCount = this.web3.eth.getTransactionCount( from )
           const estimateGas         = this.web3.eth.estimateGas({to:sendTo, data:txData});
 
        return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
+            const gasPrice = values[0];
             const nonce = parseInt(values[1], 10);
             const gas = parseInt(values[2], 10);
-
             const rawTransaction:any = {
               nonce: this.web3.utils.toHex( nonce ), 
               gas: this.web3.utils.toHex( gas ),
-              gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( "16", 'gwei')),
+              // TODO: export it to any config and import from there
+              gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( "1", 'gwei')),
               to,
               value: txValue,
               // data: txData
