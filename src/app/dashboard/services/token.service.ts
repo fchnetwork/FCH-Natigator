@@ -33,6 +33,11 @@ export class TokenService {
     const tokens = this.sessionStorage.retrieve('tokens') || [];
     tokens.push(token);
     this.saveTokens(tokens);
+    // ADD observable here
+    setTimeout(()=>{
+      this.updateTokensBalance();
+    }, 100);
+    
   }
 
   saveTokens(tokens) {
@@ -44,29 +49,32 @@ export class TokenService {
   }
 
   getTokens() {
+    console.log('called');
    return this.sessionStorage.retrieve('tokens');
+  }
+
+  updateStoredTokens(token) {
+    const tokens = this.sessionStorage.retrieve('tokens');
+    const updatedTokens = tokens.filter((item)=>{
+      return item.symbol !== token.symbol;
+    });
+    updatedTokens.push(token);
+    this.saveTokens(updatedTokens);
   }
 
   updateTokensBalance() {
     const tokens = this.sessionStorage.retrieve('tokens');
     const address = this.sessionStorage.retrieve('acc_address');
     const updatedTokens = [];
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve)=> {
       for (let i = 0; i < tokens.length; i++) {
         this.tokensContract = new this.web3.eth.Contract(tokensABI, tokens[i].address);
         this.tokensContract.methods.balanceOf(address).call({}).then((res)=>{
           tokens[i].balance = res / Math.pow(10, tokens[i].decimals);
-          updatedTokens.push(tokens[i]);
+          this.updateStoredTokens(tokens[i]);
           if(i === Number(tokens.length - 1)) {
-            this.saveTokens(updatedTokens);
-            resolve(updatedTokens);
-          }
-        }).catch((err)=>{
-          tokens[i].balance = 0;
-          updatedTokens.push(tokens[i]);
-          if(i === Number(tokens.length - 1)) {
-            this.saveTokens(updatedTokens);
-            resolve(updatedTokens);
+            const tokens = this.sessionStorage.retrieve('tokens');
+            resolve(tokens);
           }
         });
       }
