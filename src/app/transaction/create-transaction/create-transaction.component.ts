@@ -337,9 +337,11 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   moreOptionsChange(event){
-    this.moreOptionsData = event;
-    this.getMaxTransactionFee();
-    this.getTotalAmount();
+    this.moreOptionsData = event.data;
+    if(event.type === 'data') {
+      this.getMaxTransactionFee();
+      this.getTotalAmount();
+    }
   }
 
 }
