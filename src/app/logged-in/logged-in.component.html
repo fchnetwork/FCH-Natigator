@@ -13,10 +13,10 @@
   </aer-sidebar-group>
   <aer-sidebar-group title="{{'EXCHANGE'|translate}}" iconName="exchange">
 
-  </aer-sidebar-group>
-  <aer-sidebar-group title="{{'ENS'|translate}}" iconName="ans">
+  </aer-sidebar-group>-->
+  <aer-sidebar-group title="{{'ENS.MAIN_MENU_ITEM_NAME'|translate}}" iconName="ans" [single]="true" [routerLink]="['/aens']" routerLinkActive="route-selected">
 
-  </aer-sidebar-group> -->
+  </aer-sidebar-group>
   <aer-sidebar-group title="{{'SWAP.MAIN_MENU_ITEM_NAME'|translate}}" iconName="swap">
     <aer-sidebar-item iconName="aerum" [routerLink]="['/swap/create']">{{'SWAP.SUB_MENU_CREATE_SWAP_ITEM_NAME'|translate}}</aer-sidebar-item>
     <aer-sidebar-item iconName="check-square-o" [routerLink]="['/swap/load']">{{'SWAP.SUB_MENU_LOAD_SWAP_ITEM_NAME'|translate}}</aer-sidebar-item>

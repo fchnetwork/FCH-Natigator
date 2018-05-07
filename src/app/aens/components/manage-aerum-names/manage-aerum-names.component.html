@@ -1,0 +1,14 @@
+<h3>{{'ENS.TITLE'|translate}}</h3>
+
+<div aerRow>
+  <div aerColumn size="sm-10">
+    <aer-card title="{{'ENS.CHECK_NAME_TITLE'|translate}}">
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <div class="input-name">{{'ENS.FIELD_NAME'|translate}}</div>
+          <aer-input [(ngModel)]="name" class="with-button" [ngClass]="{'blue': !processing}" buttonLabel=".aer" (buttonFn)="search()" [disabled]="processing" ngDefaultControl></aer-input>
+        </div>
+      </div>
+    </aer-card>
+  </div>
+</div>

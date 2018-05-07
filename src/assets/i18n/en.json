@@ -117,7 +117,6 @@
 "STAKING":"STAKING",
 "CONTRACTS":"Contracts",
 "EXCHANGE":"Exchange",
-"ENS":"ENS",
 "KYC":"KYC",
 "SEND_TO": "Send",
 "RECEIVE_TO": "Receive",
@@ -167,6 +166,12 @@
     "FIELD_STATUS":"Status",
     "CONRIM_TITLE":"Confirm / Reject Atomic Swap"
     }
+  },
+  "ENS": {
+    "MAIN_MENU_ITEM_NAME":"Aerum Name Service",
+    "TITLE":"Aerum Name Service",
+    "CHECK_NAME_TITLE":"Check Name",
+    "FIELD_NAME":"Name"
   }
 }
 

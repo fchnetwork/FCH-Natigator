@@ -12,6 +12,8 @@ import { AccountModule } from "./account/account.module";
 import { SharedModule } from "./shared/shared.module";
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { DiagnosticsModule } from "./diagnostics/diagnostics.module";
+import { SwapModule } from "./swap/swap.module";
+import { AensModule } from "./aens/aens.module";
 
 import { AppUIModule } from "./app.ui.module";
 
@@ -22,7 +24,6 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TransactionModule } from "./transaction/transaction.module";
 import { BasicModalComponent } from "./shared/components/modals/basic-modal/basic-modal.component";
 import { LoggedInComponent } from './logged-in/logged-in.component';
-import { SwapModule } from "@app/swap/swap.module";
  
 const modalComponents = [BasicModalComponent];
 @NgModule({
@@ -40,6 +41,7 @@ const modalComponents = [BasicModalComponent];
     DiagnosticsModule,
     DashboardModule.forRoot(),
     SwapModule,
+    AensModule,
     // aerumUI modules
     AppUIModule,
     // MISC modules
