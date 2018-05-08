@@ -1,12 +1,57 @@
-<h3>{{'ENS.TITLE'|translate}}</h3>
+<h3>{{'ENS.MAIN_TITLE'|translate}}</h3>
 
 <div aerRow>
-  <div aerColumn size="sm-10">
+  <div aerColumn size="sm-9">
     <aer-card title="{{'ENS.CHECK_NAME_TITLE'|translate}}">
       <div aerRow>
-        <div aerColumn size="sm-12">
+        <div aerColumn size="sm-6">
           <div class="input-name">{{'ENS.FIELD_NAME'|translate}}</div>
-          <aer-input [(ngModel)]="name" class="with-button" [ngClass]="{'blue': !processing}" buttonLabel=".aer" (buttonFn)="search()" [disabled]="processing" ngDefaultControl></aer-input>
+          <aer-input [(ngModel)]="name" class="with-button blue" buttonLabel=".aer" [disabled]="processing" ngDefaultControl></aer-input>
+        </div>
+        <div aerColumn size="sm-6" class="aens__info">{{'ENS.LONG_DESCRIPTION'|translate}}</div>
+      </div>
+      <hr class="aens__separator">
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <aer-button class="aens__btn-check normal" [ngClass]="{'blue': !processing}" (buttonFn)="checkName()" [disabled]="processing">{{'ENS.BTN_CHECK_NAME'|translate}}</aer-button>
+        </div>
+      </div>
+    </aer-card>
+  </div>
+  <div aerColumn size="sm-3">
+    <aer-card *ngIf="nameFound">
+      <div>{{'ENS.NAME_IS'|translate}} {{(nameAvailable ? 'ENS.AVAILABLE' : 'ENS.NOT_AVAILABLE')|translate}}</div>
+      <div class="aens__name-info" [ngClass]="{'aens__name-info--available': nameAvailable, 'aens__name-info--not-available': !nameAvailable}">{{name}}.aer</div>
+    </aer-card>
+  </div>
+</div>
+
+<div aerRow *ngIf="nameAvailable">
+  <div aerColumn size="sm-9">
+    <aer-card title="{{'ENS.BUY_NAME_TITLE'|translate}}">
+      <div aerRow>
+        <div aerColumn size="sm-6">
+          <div class="input-name">{{'ENS.FIELD_ACCOUNT'|translate}}</div>
+          <aer-input icon="aerum" [(ngModel)]="account" [disabled]="processing" ngDefaultControl></aer-input>
+        </div>
+        <div aerColumn size="sm-6" class="aens__account-info">
+          {{'ENS.ACCOUNT_DESCRIPTION'|translate}}
+        </div>
+      </div>
+      <div aerRow>
+        <div aerColumn size="sm-6">
+          <div class="input-name">{{'ENS.FIELD_NAME'|translate}}</div>
+          <aer-input [(ngModel)]="name" class="with-button blue" readonly buttonLabel=".aer" [disabled]="processing" ngDefaultControl></aer-input>
+        </div>
+        <div aerColumn size="sm-6" class="aens__price-info">
+          <div class="pull-left">{{'ENS.FIELD_PRICE'|translate}}</div>
+          <div class="pull-right">{{price | number:'1.2-5'}} AERO</div>
+        </div>
+      </div>
+      <hr class="aens__separator">
+      <div aerRow>
+        <div aerColumn size="sm-12">
+          <aer-button class="aens__btn-buy normal" [ngClass]="{'blue': !processing}" (buttonFn)="buyName()" [disabled]="processing">{{'ENS.BTN_BUY_NAME'|translate}}</aer-button>
         </div>
       </div>
     </aer-card>

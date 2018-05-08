@@ -169,9 +169,22 @@
   },
   "ENS": {
     "MAIN_MENU_ITEM_NAME":"Aerum Name Service",
-    "TITLE":"Aerum Name Service",
+    "MAIN_TITLE":"Aerum Name Service",
     "CHECK_NAME_TITLE":"Check Name",
-    "FIELD_NAME":"Name"
+    "BUY_NAME_TITLE":"Buy Name",
+    "FIELD_NAME":"Name",
+    "FIELD_PRICE":"Price",
+    "BTN_CHECK_NAME":"Check ANS Name",
+    "BTN_BUY_NAME":"Buy Name",
+    "AVAILABLE":"free",
+    "NOT_AVAILABLE":"not available",
+    "NAME_IS":"Name is",
+    "LONG_DESCRIPTION":"The Aerum Name Service is a distributed, open, and extensible naming system based on the Aerum blockchain. Once you have a name, you can tell your friends to send AERO or tokens to yourname.aer instead of 0x7cB57B5A97eAbe942.....",
+    "FIELD_ACCOUNT":"Account",
+    "UNHANDLED_ERROR":"Unknown erorr occured",
+    "CHECK_NAME_ERROR":"Error while checking name",
+    "BUY_NAME_ERROR":"Error while buying name",
+    "ACCOUNT_DESCRIPTION":"This is account for which you wnat to register a name"
   }
 }
 

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { HttpClient } from '@angular/common/http';
