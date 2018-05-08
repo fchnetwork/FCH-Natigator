@@ -42,23 +42,7 @@ export const ROUTES = [
   {
     path: 'not-found',
     component: Error404Component,
-  },
-  {
-    path: 'backup-confirmation',
-    component: BackupPromptComponent
-  },
-  {
-    path: 'backup-disclamer',
-    component: BackupDisclamerComponent
-  },
-  {
-    path: 'backup-create',
-    component: BackupCreateComponent
-  },
-  {
-    path: 'backup-confirm',
-    component: BackupConfirmComponent
-  },
+  }, 
   {
     path: 'transaction',
     canActivate: [CanActivateViaAuthGuard], // leave this here!!!

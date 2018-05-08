@@ -12,7 +12,8 @@ export class LoggedInComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     public router: Router,
-  ) { }
+  ) { 
+  }
 
   logout() {
     this.authService.logout();
