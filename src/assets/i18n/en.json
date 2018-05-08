@@ -184,7 +184,10 @@
     "UNHANDLED_ERROR":"Unknown erorr occured",
     "CHECK_NAME_ERROR":"Error while checking name",
     "BUY_NAME_ERROR":"Error while buying name",
-    "ACCOUNT_DESCRIPTION":"This is account for which you wnat to register a name"
+    "ACCOUNT_DESCRIPTION":"This is account for which you wnat to register a name",
+    "NAME_BUY_SUCCESS_TITLE":"Success",
+    "NAME_BUY_SUCCESS":"You bought name",
+    "CONFIRM_BUY_TITLE":"Buy Name"
   }
 }
 
