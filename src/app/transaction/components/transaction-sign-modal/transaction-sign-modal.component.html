@@ -55,11 +55,11 @@
               </div>                          
           </div>          
       </div>
-      <div *ngIf="external" class="pin">
+      <!-- <div *ngIf="external" class="pin">
         <span>PIN</span>
         <input [(ngModel)]="pin" placeholder="Type your pin here" />
         <div class="clearfix"></div>
-      </div>
+      </div> -->
       <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">I acknowledge risks.</aer-checkbox>
       <aer-button [disabled]="checkbox && !checked" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue">Send transaction</aer-button>
       <aer-button (buttonFn)="dismiss()">Cancel</aer-button>

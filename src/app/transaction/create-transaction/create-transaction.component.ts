@@ -263,16 +263,17 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   checkHash(pin){
-    if(this.external) {
-      return String(this.hash) === String(this.web3.utils.keccak256(`${this.querySenderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
-    }
+    // if(this.external) {
+    //   return String(this.hash) === String(this.web3.utils.keccak256(`${this.querySenderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
+    // }
     return true;
   }
 
   openTransactionConfirm(message) {
     this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
       const urls = {success: this.redirectUrl, failed: this.returnUrlFailed};
-      const validHash = this.checkHash(result.pin ? result.pin : '');
+      // const validHash = this.checkHash(result.pin ? result.pin : '');
+      const validHash = true;
       if(result.result === true && validHash) {
         const privateKey = this.sessionStorageService.retrieve('private_key');
         const address = this.sessionStorageService.retrieve('acc_address');
