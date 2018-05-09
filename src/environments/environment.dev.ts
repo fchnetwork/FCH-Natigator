@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
+  configInUse: "environment.dev",
   HttpProvider: "http://52.51.85.249:8545",
   cookiesDomain: "dev.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
