@@ -71,7 +71,7 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
 
   redirectExternal(){
     if(this.dialog.context.external) {
-      window.location.href=this.dialog.context.urls.success;
+      window.location.href=`${this.dialog.context.urls.success}?hash=${this.hash}`;
     }
   }
 
