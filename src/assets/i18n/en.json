@@ -174,8 +174,12 @@
     "BUY_NAME_TITLE":"Buy Name",
     "FIELD_NAME":"Name",
     "FIELD_PRICE":"Price",
+    "FIELD_NEW_PRICE":"New Name Price",
+    "FIELD_TRANSFER_TO":"Transfer To",
     "BTN_CHECK_NAME":"Check ANS Name",
     "BTN_BUY_NAME":"Buy Name",
+    "BTN_SET_PRICE":"Set Price",
+    "BTN_TRANSFER":"Transfer",
     "AVAILABLE":"free",
     "NOT_AVAILABLE":"not available",
     "NAME_IS":"Name is",
@@ -184,10 +188,13 @@
     "UNHANDLED_ERROR":"Unknown erorr occured",
     "CHECK_NAME_ERROR":"Error while checking name",
     "BUY_NAME_ERROR":"Error while buying name",
+    "SET_PRICE_ERROR":"Error setting new name price",
+    "SET_OWNER_ERROR":"Error setting new ANS owner",
     "ACCOUNT_DESCRIPTION":"This is account for which you wnat to register a name",
     "NAME_BUY_SUCCESS_TITLE":"Success",
     "NAME_BUY_SUCCESS":"You bought name",
-    "CONFIRM_BUY_TITLE":"Buy Name"
+    "CONFIRM_BUY_TITLE":"Buy Name",
+    "MANAGE_TITLE":"Manage"
   }
 }
 
