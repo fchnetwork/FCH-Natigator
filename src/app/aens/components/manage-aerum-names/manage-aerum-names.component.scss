@@ -13,6 +13,9 @@
         margin-top: 5px;
         font-weight: bold;
         font-size: 20px;
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         &--available {
             color: #8CCC67;
@@ -34,5 +37,9 @@
         display: -webkit-flex; /* Safari */
         display: flex;
         justify-content: space-between;
+
+        &__aero {
+            font-size: 20px;
+        }
     }
 }

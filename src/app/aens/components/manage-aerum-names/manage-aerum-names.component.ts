@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { ModalService } from '@app/shared/services/modal.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
@@ -15,6 +16,7 @@ import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
 export class ManageAerumNamesComponent implements OnInit {
 
   name: string;
+  nameToBuy: string;
   account: string;
 
   price: number;
@@ -26,11 +28,15 @@ export class ManageAerumNamesComponent implements OnInit {
   newPrice: number;
   transferTo: string;
 
+  checkForm: FormGroup;
+  buyForm: FormGroup;
+
   constructor(
     private authService: AuthenticationService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private formBuilder: FormBuilder
   ) 
     { }
 
@@ -44,10 +50,24 @@ export class ManageAerumNamesComponent implements OnInit {
     this.price = 0.01;
     this.newPrice = this.price;
     this.isOwner = true;
+
+    this.checkForm = this.formBuilder.group({
+      name: [null, [Validators.pattern("^[a-zA-Z0-9_-]{5,50}$")]],
+    });
+
+    this.buyForm = this.formBuilder.group({
+      name: [null, [Validators.pattern("^[a-zA-Z0-9_-]{5,50}$")]],
+      account: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
+    });
   }
 
   async checkName() {
     try {
+      if(!this.checkForm.valid) {
+        console.log(`${this.name} is invalid name`);
+        return;
+      }
+
       this.startProcessing();
       await this.tryCheckName();
     } catch (e) {
@@ -63,14 +83,20 @@ export class ManageAerumNamesComponent implements OnInit {
     // TODO: Test code. Remove later
     this.nameFound = true;
     this.nameAvailable = !this.nameAvailable;
+    this.nameToBuy = this.name;
   }
 
   async buyName() {
     try {
+      if(!this.buyForm.valid) {
+        console.log('Buy form is invalid');
+        return;
+      }
+
       this.startProcessing();
       await this.tryBuyName();
     } catch (e) {
-      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.BUY_NAME_ERROR')}: ${this.name}.aer`, 'aerum', 5000);
+      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.BUY_NAME_ERROR')}: ${this.nameToBuy}.aer`, 'aerum', 5000);
       throw e;
     }
     finally{
@@ -81,7 +107,7 @@ export class ManageAerumNamesComponent implements OnInit {
   async tryBuyName() {
     // TODO: Test code here. Remove later
     const buyRequest: BuyConfirmRequest = {
-      name: this.name.trim() + '.aer',
+      name: this.nameToBuy.trim() + '.aer',
       amount: this.price,
       buyer: this.account,
       ansOwner: this.account,
@@ -96,7 +122,23 @@ export class ManageAerumNamesComponent implements OnInit {
     }
 
     // TODO: buy
-    this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.name}.aer`, 'aerum');
+    this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.nameToBuy}.aer`, 'aerum');
+  }
+
+  hasError(control: FormControl) {
+    if(!control) {
+      return false;
+    }
+
+    return !control.valid && control.touched;
+  }
+
+  canCheckName() {
+    return !this.processing && this.checkForm.valid;
+  }
+
+  canBuyName() {
+    return !this.processing && this.buyForm.valid && this.nameAvailable;
   }
 
   async setPrice() {
@@ -104,7 +146,7 @@ export class ManageAerumNamesComponent implements OnInit {
       this.startProcessing();
       await this.trySetPrice();
     } catch (e) {
-      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.SET_PRICE_ERROR')}: ${this.name}.aer`, 'aerum', 5000);
+      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), this.translate('ENS.SET_PRICE_ERROR'), 'aerum', 5000);
       throw e;
     }
     finally{
@@ -121,7 +163,7 @@ export class ManageAerumNamesComponent implements OnInit {
       this.startProcessing();
       await this.trySetOwner();
     } catch (e) {
-      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.SET_OWNER_ERROR')}: ${this.name}.aer`, 'aerum', 5000);
+      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), this.translate('ENS.SET_OWNER_ERROR'), 'aerum', 5000);
       throw e;
     }
     finally{
