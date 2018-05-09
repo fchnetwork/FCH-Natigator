@@ -160,7 +160,7 @@ export class TransactionServiceService {
                 }).catch( error => {
                   console.log(error);
                   if(external) {
-                    window.location.href=urls.failed;
+                    // window.location.href=urls.failed;
                   }
                     // alert( error )
                 });
@@ -199,7 +199,7 @@ export class TransactionServiceService {
       }).catch( error => {
         console.log(error);
         if(external) {
-          window.location.href=urls.failed;
+          // window.location.href=urls.failed;
         }
           // alert( error )
       });
