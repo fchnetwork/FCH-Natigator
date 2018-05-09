@@ -30,6 +30,7 @@ import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
 import { HextoAsciiPipe } from '@shared/pipes/hextoAscii.pipe';
 import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
+import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe';
 
 import { DashboardRoutingModule } from '@app/dashboard/dashboard.routes';
 import { AppUIModule } from '@app/app.ui.module';
@@ -78,6 +79,7 @@ export function createTranslateLoader(http: HttpClient) {
     SidebarAccountSelectComponent,
     TruncatePipe,
     ChartComponent,
+    CropAddressPipe,
   ],
   providers: [
     ModalService,
@@ -107,6 +109,7 @@ export function createTranslateLoader(http: HttpClient) {
     SidebarAccountSelectComponent,
     ChartComponent,
     NgxEchartsModule,
+    CropAddressPipe,
   ]
 })
 

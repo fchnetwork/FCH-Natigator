@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-
 import { NotificationService } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ModalService } from '@app/shared/services/modal.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
-import { Address } from 'cluster';
-import { timeHour } from 'd3-time';
+import { BuyConfirmRequest } from '@app/aens/models/buyConfirmRequest';
+import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
 
 @Component({
   selector: 'app-manage-aerum-names',
@@ -70,7 +69,6 @@ export class ManageAerumNamesComponent implements OnInit {
     try {
       this.startProcessing();
       await this.tryBuyName();
-      this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.name}.aer`, 'aerum');
     } catch (e) {
       this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.BUY_NAME_ERROR')}: ${this.name}.aer`, 'aerum', 5000);
       throw e;
@@ -81,13 +79,23 @@ export class ManageAerumNamesComponent implements OnInit {
   }
 
   async tryBuyName() {
-    const modalResult = await this.modalService.openBuyAensConfirm();
-    if(!modalResult.confirmed) {
+    // TODO: Test code here. Remove later
+    const buyRequest: BuyConfirmRequest = {
+      amount: this.price,
+      buyer: this.account,
+      ansOwner: this.account,
+      gasPrice: 1000 * 1000 * 1000,
+      estimatedFeeInGas: 200 * 1000,
+      maximumFeeInGas: 220 * 1000 
+    };
+    const modalResult: BuyConfirmReponse = await this.modalService.openBuyAensConfirm(buyRequest);
+    if(!modalResult.accepted) {
       console.log('Name buy cancelled');
       return;
     }
 
     // TODO: buy
+    this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.name}.aer`, 'aerum');
   }
 
   async setPrice() {

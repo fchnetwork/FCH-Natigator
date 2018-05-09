@@ -194,7 +194,12 @@
     "NAME_BUY_SUCCESS_TITLE":"Success",
     "NAME_BUY_SUCCESS":"You bought name",
     "CONFIRM_BUY_TITLE":"Buy Name",
-    "MANAGE_TITLE":"Manage"
+    "MANAGE_TITLE":"Manage",
+    "ESTIMATED_FEE":"Esimated fee consumption",
+    "MAX_FEE":"Provide maximum fee",
+    "GAS_PRICE":"Gas Price",
+    "BTN_MODAL_BUY":"Buy",
+    "BTN_MODAL_CANCEL":"Cancel"
   }
 }
 
