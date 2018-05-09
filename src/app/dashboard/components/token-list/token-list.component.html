@@ -4,7 +4,8 @@
           <span class="title">Tokens</span>
       </div>
       <div aerColumn size="sm-6" class="add-token">
-        <aer-button (click)="addToken()" class="small blue">Add Token</aer-button>
+          <span (click)="addToken()">Add token +</span>
+        <!-- <aer-button (click)="addToken()" class="small blue">Add Token</aer-button> -->
       </div>
     </div>
     <div aerRow *ngIf="tokens"  class="token-item">
@@ -21,7 +22,7 @@
 
     <div aerRow *ngFor="let token of tokens" class="token-item">
       <div aerColumn size="sm-2" class="token-img">
-        <span>an</span>
+        <aer-icon>generaltoken</aer-icon>
       </div>
       <div aerColumn size="sm-5" class="name">
           {{token.symbol}}
