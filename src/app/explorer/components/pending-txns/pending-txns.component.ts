@@ -2,9 +2,9 @@ import { element } from 'protractor';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router'; 
-import { ExplorerService } from '../../services/explorer.service';
-import { iBlocks, iPendingTxn } from '../../../shared/app.interfaces';
-import { ModalService } from '../../../shared/services/modal.service';
+import { ExplorerService } from '@explorer/services/explorer.service';
+import { iBlocks, iPendingTxn } from '@shared/app.interfaces';
+import { ModalService } from '@shared/services/modal.service';
 
 @Component({
   selector: 'app-pending-txns',

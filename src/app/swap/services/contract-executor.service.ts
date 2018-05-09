@@ -29,7 +29,7 @@ export class ContractExecutorService {
   }
 
   async send(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) {
-    const tx = await this.createTx(transaction, options.value);
+    const tx = await this.createSendTx(transaction, options.value);
     const txHex = this.web3.utils.toHex(tx);
     const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey) as any;
     console.log('Transaction being sent');
@@ -52,7 +52,7 @@ export class ContractExecutorService {
       .on('error', async (error) => {
         // TODO: We do this workarround due to this issue: https://github.com/ethereum/web3.js/issues/1534
         if(error && error.message && error.message.startsWith('Failed to check for transaction receipt:')) {
-          const receipt = await this.retry(() => this.web3.eth.getTransactionReceipt(transactionHash), 10, 1500);
+          const receipt = await this.retry(() => this.web3.eth.getTransactionReceipt(transactionHash), 40, 1500);
           console.log('Transaction receipt returned:', receipt);
           resolve(receipt);
         } else {
@@ -64,14 +64,14 @@ export class ContractExecutorService {
   }
 
   async call(transaction: TransactionObject<any>) {
-    const tx = await this.createTx(transaction);
+    const tx = this.createCallTx(transaction);
     const response = await transaction.call(tx);
     return response.valueOf();
   }
 
-  private async createTx(transaction: TransactionObject<any>, aeroValue = '0') : Promise<Tx> {
+  private async createSendTx(transaction: TransactionObject<any>, aeroValue = '0') : Promise<Tx> {
     const aeroValueInWei = this.web3.utils.toWei(aeroValue, 'ether');
-    const contractGasThreshold = 10 * 1000;
+    const contractGasThreshold = 100 * 1000;
 
     const getGasPrice = this.web3.eth.getGasPrice();
     const getTransactionsCount = this.web3.eth.getTransactionCount(this.currentWalletAddress);
@@ -96,6 +96,16 @@ export class ContractExecutorService {
       gasPrice: this.web3.utils.toHex(gasPrice),
       gas: this.web3.utils.toHex(estimatedGas + contractGasThreshold),
       nonce: this.web3.utils.toHex(transactionsCount),
+      data: transaction.encodeABI()
+    };
+  }
+
+  private createCallTx(transaction: TransactionObject<any>) : Tx {
+    return {
+      chainId: environment.chainId,
+      // NOTE: Accessing private members is not the best way to do this but no need for another parameter
+      to: (transaction as any)._parent._address,
+      from: this.currentWalletAddress,
       data: transaction.encodeABI()
     };
   }

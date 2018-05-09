@@ -30,8 +30,8 @@ import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
 import { HextoAsciiPipe } from '@shared/pipes/hextoAscii.pipe';
 import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
+import { WeiToGweiPipe } from '@shared/pipes/wei-to-gwei.pipe'
 import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe';
-
 import { DashboardRoutingModule } from '@app/dashboard/dashboard.routes';
 import { AppUIModule } from '@app/app.ui.module';
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
@@ -78,6 +78,7 @@ export function createTranslateLoader(http: HttpClient) {
     HextoDecimalPipe,
     SidebarAccountSelectComponent,
     TruncatePipe,
+    WeiToGweiPipe,
     ChartComponent,
     CropAddressPipe,
   ],
@@ -106,6 +107,7 @@ export function createTranslateLoader(http: HttpClient) {
     HextoAsciiPipe,
     HextoDecimalPipe,
     TruncatePipe,
+    WeiToGweiPipe,
     SidebarAccountSelectComponent,
     ChartComponent,
     NgxEchartsModule,
