@@ -38,6 +38,9 @@ export class AppComponent implements OnInit {
 
     // Start watch when time is up.
     this.idle.onTimeout().subscribe(() => console.log('Time is up!'));
+
+    console.log(`Current Env: ${environment.configInUse}`);
+
   }
 
   initTranslate() {
