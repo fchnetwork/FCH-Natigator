@@ -33,6 +33,7 @@
 "AERO":"aero",
 "SHOW_MORE_OPTIONS":"Show more options",
 "MAX_TRANSACTION_FEE":"Max gas",
+"APP_TRANSACTION_FEE":"Approx. transaction fee",
 "MAX_TRANS_FEE_WARNING":"This is the most amount of aero that might be used to process this transaction.",
 "TOTAL":"Total",
 "DATA_INCLUDED":"Data included",

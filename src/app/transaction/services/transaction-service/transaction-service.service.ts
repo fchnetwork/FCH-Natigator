@@ -138,7 +138,7 @@ export class TransactionServiceService {
               nonce: this.web3.utils.toHex( nonce ), 
               gas: this.web3.utils.toHex( gas ),
               // TODO: export it to any config and import from there
-              gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( "1", 'gwei')),
+              gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( environment.gasPrice, 'gwei')),
               to,
               value: txValue,
               // data: txData
