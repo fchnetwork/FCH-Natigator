@@ -1,4 +1,5 @@
 export class BuyConfirmRequest {
+    name: string;
     buyer: string;
     ansOwner: string;
     amount: number;

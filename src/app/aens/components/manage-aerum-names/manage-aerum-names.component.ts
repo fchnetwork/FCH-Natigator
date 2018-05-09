@@ -81,6 +81,7 @@ export class ManageAerumNamesComponent implements OnInit {
   async tryBuyName() {
     // TODO: Test code here. Remove later
     const buyRequest: BuyConfirmRequest = {
+      name: this.name.trim() + '.aer',
       amount: this.price,
       buyer: this.account,
       ansOwner: this.account,
