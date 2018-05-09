@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
+  configInUse: "environment.uat",
   HttpProvider: "http://52.51.85.249:8545",
   cookiesDomain: "uat.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
