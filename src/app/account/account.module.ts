@@ -6,8 +6,7 @@ import { LoginComponent } from "./login/login.component";
 import { AvatarSelectComponent } from "./components/avatar-select/avatar-select.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ToastModule } from "ng2-toastr";
-import { ExplorerModule } from "../explorer/explorer.module";
+import { ToastModule } from "ng2-toastr"; 
 import { SharedModule } from "../shared/shared.module";
 import { TranslateModule } from "@ngx-translate/core";
 import { TranslateLoader } from "@ngx-translate/core";
@@ -23,6 +22,7 @@ import { BackupConfirmComponent } from './backup-confirm/backup-confirm.componen
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
 import { AccessRecoveryComponent } from "./access-recovery/access-recovery.component";
+import { ExplorerModule } from "@app/wallet/explorer/explorer.module";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');

@@ -3,8 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
 import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs/Subject';
-import { PasswordValidator } from '../../shared/helpers/validator.password';
+import { Subject } from 'rxjs/Subject'; 
 
 import { Cookie } from 'ng2-cookies/ng2-cookies';
   

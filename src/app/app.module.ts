@@ -9,20 +9,20 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.routes";
 
 import { AccountModule } from "./account/account.module";
-import { SharedModule } from "./shared/shared.module";
-import { DashboardModule } from "./dashboard/dashboard.module";
-import { DiagnosticsModule } from "./diagnostics/diagnostics.module";
+import { SharedModule } from "./shared/shared.module"; 
 
 import { AppUIModule } from "./app.ui.module";
 
-import { ToastModule } from "ng2-toastr";
-import { ExplorerModule } from "./explorer/explorer.module"; 
+import { ToastModule } from "ng2-toastr"; 
 import { TranslateHttpLoader } from "@ngx-translate/http-loader"; 
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { TransactionModule } from "./transaction/transaction.module";
-import { BasicModalComponent } from "./shared/components/modals/basic-modal/basic-modal.component";
-import { LoggedInComponent } from './logged-in/logged-in.component';
-import { SwapModule } from "@app/swap/swap.module";
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core"; 
+import { BasicModalComponent } from "./shared/components/modals/basic-modal/basic-modal.component"; 
+import { TransactionModule } from "@app/wallet/transaction/transaction.module";
+import { DiagnosticsModule } from "@app/wallet/diagnostics/diagnostics.module";
+import { DashboardModule } from "@app/wallet/dashboard/dashboard.module";
+import { SwapModule } from "@app/wallet/swap/swap.module";
+import { ExplorerModule } from "@app/wallet/explorer/explorer.module";
+import { LoggedInComponent } from "@app/wallet/logged-in/logged-in.component";
  
 const modalComponents = [BasicModalComponent];
 @NgModule({

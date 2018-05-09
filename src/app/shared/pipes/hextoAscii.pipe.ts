@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { TransactionServiceService } from '@transaction/services/transaction-service/transaction-service.service'
+import { Pipe, PipeTransform } from '@angular/core'; 
+import { TransactionServiceService } from '@app/wallet/transaction/services/transaction-service/transaction-service.service';
 
 @Pipe({
   name: 'hextoAscii'
