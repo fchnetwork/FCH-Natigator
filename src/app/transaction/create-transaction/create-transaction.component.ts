@@ -55,6 +55,7 @@ export class CreateTransactionComponent implements OnInit {
   redirectUrl: string;
   external = false;
   hash: any;
+  querySenderAddress: any;
   assetAddress: any;
   timeStamp: any;
   returnUrlFailed: any;
@@ -148,6 +149,7 @@ export class CreateTransactionComponent implements OnInit {
         if(params.query) {
           const parsed = JSON.parse(params.query);
           this.senderAddress = parsed.from ? parsed.from : this.senderAddress;
+          this.querySenderAddress = parsed.from;
           this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
           this.amount = parsed.amount ? parsed.amount : this.amount;
           this.isToken = parsed.assetAddress === "0" ? false : true;
@@ -262,7 +264,7 @@ export class CreateTransactionComponent implements OnInit {
 
   checkHash(pin){
     if(this.external) {
-      return String(this.hash) === String(this.web3.utils.keccak256(`${this.senderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
+      return String(this.hash) === String(this.web3.utils.keccak256(`${this.querySenderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
     }
     return true;
   }
