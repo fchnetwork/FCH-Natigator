@@ -18,6 +18,11 @@ export class RegisterComponent implements OnInit {
   password: string;
   confirmPassword: string;
   avatar: string;
+  passwordStrength = {
+    strength: 'Very Weak',
+    class: 'blue',
+    description: 'VERY_WEAK_PASSWORD',
+  };
 
   constructor(public translate: TranslateService, public formBuilder: FormBuilder, public router: Router, private routeDataService: RouteDataService<RegistrationRouteData>) { }
 

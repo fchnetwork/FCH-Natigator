@@ -5,7 +5,7 @@
   <div class="user_data">
     <!-- <a routerLink="/dashboard" routerLinkActive="active">Welcome</a> -->
     <span class="welcome">Welcome,</span>
-    <span class="address">{{ address | slice : 0 : 14 }}...</span>      
+    <span class="address">{{ address | slice : 0 : 7 }}...{{ address | slice : -5 }}</span>      
   </div>
   <div class="clearfix"></div>
 </div>

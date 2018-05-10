@@ -1,26 +1,37 @@
 <aer-card class="last-transations" title="{{'LATEST_TRANSACTION'|translate}}">
   <div class="panel-content">
     <div class="latest-transaction-list-container">
-      <div class="transaction-event row" *ngFor="let transaction of (transactions ? transactions.slice(0,limit): [])">
-          <div class="date col-sm-1">
-            <div class="month">{{transaction.date | date:['MMM']}}</div>
-            <div class="day">{{transaction.date | date:['d']}}</div>
-          </div>
-          <div class="trans-detail col-sm-8">
+      <div class="transaction-main-flex-container" *ngFor="let transaction of (transactions ? transactions.slice(0,limit): [])">
+        <div class="transaction-main-flex-item">
+          <div class="sub-flex-container">
+            <div class="date">
+              <div class="month">{{transaction.date | date:['MMM']}}</div>
+              <div class="day">{{transaction.date | date:['dd']}}</div>
+            </div>
+            <div class="transaction-info">
               <div class="eventType">{{transaction.data}}</div>
               <div class="addresses">
                   <img [src]="transaction.from | generateavatar"/>
-                  <div class="sender">{{transaction.from}}</div>
-                  <div class="pd-5">></div>
+                  <div class="address">{{transaction.from | slice : 0 : 7}}...{{transaction.from | slice : -5}}</div>
+                  <aer-icon>angle-right</aer-icon>
                   <img [src]="transaction.to | generateavatar"/>
-                  <div class="receiver">{{transaction.to}}</div>
+                  <div class="address">{{transaction.to | slice:0:7}}...{{transaction.to | slice:-5}}</div>
               </div>
+            </div>
           </div>
-          <div class="amount-detail col-sm-3" [ngClass]="{'red': getICoin(transaction.amount)}">
-              <div class="amount" class="col-sm-10">{{transaction.amount}} {{'AERO'|translate}}</div>
-              <aer-icon *ngIf="getICoin(transaction.amount)" class="col-sm-2">right-circled</aer-icon>
-              <aer-icon *ngIf="!getICoin(transaction.amount)" class="col-sm-2">left-circled</aer-icon>
+        </div>
+
+        <div class="transaction-main-flex-item">
+          <div class="sub-flex-container">
+            <div class="amount">
+              {{transaction.amount}} {{'AERO'|translate}}
+            </div>
+            <div class="operation-icon">
+              <aer-icon *ngIf="getICoin(transaction.amount)" class="red">angle-right</aer-icon>
+              <aer-icon *ngIf="!getICoin(transaction.amount)" class="green">angle-left</aer-icon>
+            </div>
           </div>
+        </div>
       </div>
     </div>
     <div *ngIf="!showedAll" class="show-more-label-div">

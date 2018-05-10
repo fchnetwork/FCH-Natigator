@@ -15,6 +15,7 @@ import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { AppRoutingModule } from "../app.routes";
 import { AuthenticationService } from "./services/authentication-service/authentication.service";
+
 import { CanActivateViaAuthGuard, CanActivateAccountAuthGuard } from "../app.guard";
 import { ModalService } from "../shared/services/modal.service";
 import { RegisterComponent } from './register/register.component';
@@ -23,6 +24,8 @@ import { BackupConfirmComponent } from './backup-confirm/backup-confirm.componen
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
 import { AccessRecoveryComponent } from "./access-recovery/access-recovery.component";
+
+import { PasswordCheckerService } from "./services/password-checker-service/password-checker.service";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -66,6 +69,7 @@ export function createTranslateLoader(http: HttpClient) {
         ModalService,
         CanActivateViaAuthGuard,
         CanActivateAccountAuthGuard,
+        PasswordCheckerService,
     ]
 })
 export class AccountModule { } 
