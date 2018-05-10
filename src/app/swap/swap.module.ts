@@ -18,6 +18,7 @@ import { LoadSwapComponent } from './components/load-swap/load-swap.component';
 import { CreateSwapConfirmComponent } from './components/create-swap/create-swap-confirm/create-swap-confirm.component';
 import { LoadSwapConfirmComponent } from './components/load-swap/load-swap-confirm/load-swap-confirm.component';
 import { SwapTokensListComponent } from './components/create-swap/swap-tokens-list/swap-tokens-list.component';
+import { NameResolverService } from '@app/swap/services/name-resolver.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -46,7 +47,8 @@ export function createTranslateLoader(http: HttpClient) {
     AeroToErc20SwapService,
     Erc20ToAeroSwapService,
     Erc20ToErc20SwapService,
-    ERC20TokenService
+    ERC20TokenService,
+    NameResolverService
   ],
   exports: [
     CreateSwapConfirmComponent,

@@ -39,6 +39,7 @@
     "d3-ng2-service": "^2.2.0",
     "dotenv": "^5.0.1",
     "echarts": "^4.1.0",
+    "eth-ens-namehash": "^2.0.8",
     "ethereumjs-util": "^5.1.5",
     "ethereumjs-wallet": "^0.6.0",
     "hammerjs": "^2.0.8",
