@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
-import { ContractExecutorService } from './contract-executor.service';
+import { ContractExecutorService } from '@app/shared/services/contract-executor.service';
 
 import Web3 from 'web3';
 import { Contract } from 'web3/types';
