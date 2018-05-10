@@ -18,6 +18,7 @@ import { EXPLORER_ROUTES } from './explorer/explorer.routes';
 import { DIAGNOSTICS_ROUTES } from './diagnostics/diagnostics.routes';
 import { TRANSACTION_ROUTES } from '@app/transaction/transaction.routes';
 import { SWAP_ROUTES } from '@app/swap/swap.routes';
+import { AENS_ROUTES } from '@app/aens/aens.routes';
 
 export const ROUTES = [
   {
@@ -70,8 +71,13 @@ export const ROUTES = [
   },  
   {
     path: 'swap',
-    canActivate: [CanActivateViaAuthGuard], // NOTE: Use the same guard as transactions
+    canActivate: [CanActivateViaAuthGuard],
     children: SWAP_ROUTES
+  },
+  {
+    path: 'aens',
+    canActivate: [CanActivateViaAuthGuard],
+    children: AENS_ROUTES
   },
   { 
     path: '**',

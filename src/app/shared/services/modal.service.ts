@@ -10,8 +10,8 @@ import { TransactionModalComponent } from '../../explorer/components/transaction
 import { AddTokenComponent } from '@app/dashboard/components/add-token/add-token.component';
 import { CreateSwapConfirmComponent } from '@app/swap/components/create-swap/create-swap-confirm/create-swap-confirm.component';
 import { LoadSwapConfirmComponent } from '@app/swap/components/load-swap/load-swap-confirm/load-swap-confirm.component';
-
 import { GetBlockModalComponent } from '@explorer/components/block/get-block-modal/get-block-modal.component';
+import { AerunNameBuyConfirmComponent } from '@app/aens/components/aerun-name-buy-confirm/aerun-name-buy-confirm.component';
 
 @Injectable()
 export class ModalService {
@@ -63,7 +63,11 @@ export class ModalService {
     return this.openModal(CreateSwapConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 
-  openLoadCreateConfirm(data?: any): Promise<any> {
+  openSwapLoadConfirm(data?: any): Promise<any> {
     return this.openModal(LoadSwapConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
+  }
+
+  openBuyAensConfirm(data?: any): Promise<any> {
+    return this.openModal(AerunNameBuyConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 }

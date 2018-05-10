@@ -31,6 +31,7 @@ import { HextoAsciiPipe } from '@shared/pipes/hextoAscii.pipe';
 import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
 import { WeiToGweiPipe } from '@shared/pipes/wei-to-gwei.pipe'
+import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe';
 import { DashboardRoutingModule } from '@app/dashboard/dashboard.routes';
 import { AppUIModule } from '@app/app.ui.module';
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
@@ -80,6 +81,7 @@ export function createTranslateLoader(http: HttpClient) {
     TruncatePipe,
     WeiToGweiPipe,
     ChartComponent,
+    CropAddressPipe,
   ],
   providers: [
     ModalService,
@@ -111,6 +113,7 @@ export function createTranslateLoader(http: HttpClient) {
     SidebarAccountSelectComponent,
     ChartComponent,
     NgxEchartsModule,
+    CropAddressPipe,
   ]
 })
 
