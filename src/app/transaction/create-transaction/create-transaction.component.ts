@@ -311,8 +311,9 @@ export class CreateTransactionComponent implements OnInit {
           sender:  this.senderAddress,
           recipient: this.receiverAddress,
           amount:  this.amount,
-          fee: this.totalAmount,
+          fee: this.maxTransactionFeeEth,
           maxFee: this.maxTransactionFee,
+          token: this.selectedToken.symbol
         };
 
         if(res.length > 3) {
