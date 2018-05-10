@@ -24,6 +24,7 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
   amount: string;
   maxFee: string;
   fee: string;
+  token: string;
   checkbox: false;
   checked: false;
   title: string;
@@ -43,7 +44,8 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
               this.senderAvatar = this.authServ.generateCryptedAvatar( dialog.context.param.sender );
               this.receiverAvatar = this.authServ.generateCryptedAvatar( dialog.context.param.recipient );
               this.maxFee = dialog.context.param.maxFee;
-              this.fee = dialog.context.param.fee;     
+              this.fee = dialog.context.param.fee;
+              this.token = dialog.context.param.token;   
               this.amount = dialog.context.param.amount;   
               this.checkbox = dialog.context.param.checkbox || false;     
               this.external = dialog.context.external;     

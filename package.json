@@ -17,7 +17,7 @@
   },
   "private": true,
   "dependencies": {
-    "@aerum/ui": "^0.2.49",
+    "@aerum/ui": "^0.3.0",
     "@angular/animations": "^5.2.8",
     "@angular/cdk": "^5.2.4",
     "@angular/common": "^5.2.9",
@@ -55,6 +55,7 @@
     "rxjs": "^5.5.6",
     "soltsice": "^0.10.3",
     "stylelint": "^9.2.0",
+    "tai-password-strength": "^1.1.1",
     "truffle": "^4.0.6",
     "utf8": "^3.0.0",
     "web3": "^1.0.0-beta.34",
