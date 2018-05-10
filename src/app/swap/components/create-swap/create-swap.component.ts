@@ -14,7 +14,6 @@ import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.se
 import { Erc20ToAeroSwapService } from '@app/swap/services/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@app/swap/services/erc20-to-erc20-swap.service';
 import { ERC20TokenService } from '@app/swap/services/erc20-token.service';
-import { NameResolverService } from '@app/swap/services/name-resolver.service';
 
 @Component({
   selector: 'create-swap',
@@ -45,8 +44,7 @@ export class CreateSwapComponent implements OnInit {
     private aeroToErc20SwapService: AeroToErc20SwapService,
     private erc20ToAeroSwapService: Erc20ToAeroSwapService,
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
-    public formBuilder: FormBuilder,
-    private resolver: NameResolverService
+    private formBuilder: FormBuilder
   ) { }
 
   async ngOnInit() {

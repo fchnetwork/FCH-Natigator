@@ -7,6 +7,7 @@ import { ModalService } from '@app/shared/services/modal.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { BuyConfirmRequest } from '@app/aens/models/buyConfirmRequest';
 import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
+import { NameResolverService } from '@app/aens/services/name-resolver.service';
 
 @Component({
   selector: 'app-manage-aerum-names',
@@ -34,7 +35,8 @@ export class ManageAerumNamesComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private translateService: TranslateService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private aensService: NameResolverService
   ) 
     { }
 
@@ -76,11 +78,9 @@ export class ManageAerumNamesComponent implements OnInit {
   }
 
   async tryCheckName() {
-    await this.timeout(1000);
-
-    // TODO: Test code. Remove later
+    const isAvailable = await this.aensService.isNameAvailable(this.name + ".aer");
     this.nameFound = true;
-    this.nameAvailable = !this.nameAvailable;
+    this.nameAvailable = isAvailable;
     this.nameToBuy = this.name;
   }
 

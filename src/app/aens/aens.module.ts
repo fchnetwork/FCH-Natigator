@@ -8,9 +8,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppUIModule } from '@app/app.ui.module';
 import { SharedModule } from '@app/shared/shared.module';
 
+import { NameResolverService } from './services/name-resolver.service';
+
 import { ManageAerumNamesComponent } from './components/manage-aerum-names/manage-aerum-names.component';
 import { AerunNameBuyConfirmComponent } from './components/aerun-name-buy-confirm/aerun-name-buy-confirm.component';
 import { ManageAensContractComponent } from './components/manage-aens-contract/manage-aens-contract.component';
+import { AenRegistryContractService } from '@app/aens/services/aen-registry-contract.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -28,7 +31,18 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [ManageAerumNamesComponent, AerunNameBuyConfirmComponent, ManageAensContractComponent],
-  exports: [ManageAerumNamesComponent, AerunNameBuyConfirmComponent]
+  declarations: [
+    ManageAerumNamesComponent,
+    AerunNameBuyConfirmComponent,
+    ManageAensContractComponent
+  ],
+  exports: [
+    ManageAerumNamesComponent,
+    AerunNameBuyConfirmComponent
+  ],
+  providers: [
+    NameResolverService,
+    AenRegistryContractService
+  ]
 })
 export class AensModule { }

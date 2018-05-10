@@ -38,6 +38,7 @@ import { SidebarAccountSelectComponent } from '@shared/components/sidebar-accoun
 import { ChartComponent } from '@app/shared/components/chart/chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ContractExecutorService } from '@app/shared/services/contract-executor.service';
+import { BaseContractService } from '@app/shared/services/base-contract-service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
