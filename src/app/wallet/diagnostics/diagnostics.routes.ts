@@ -1,18 +1,13 @@
 import {Routes, RouterModule} from '@angular/router';
 import { NgModule } from "@angular/core";
-import { OverviewComponent } from './overview/overview.component'; 
-import { LoggedInComponent } from '@app/wallet/logged-in/logged-in.component';
+import { OverviewComponent } from './overview/overview.component';  
 import { TestPageComponent } from '@app/wallet/diagnostics/test-page/test-page.component';
 
 export const DIAGNOSTICS_ROUTES: Routes = [
   {
     path: '',
-    component: LoggedInComponent,
-    children: [
-      {
-        path: '',
-        component: OverviewComponent
-      },
+    component: OverviewComponent,
+    children: [ 
       {
         path: 'stats',
         component: TestPageComponent

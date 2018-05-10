@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
-import { iBlocks } from '@shared/app.interfaces'; 
-import { ExplorerService } from '@app/wallet/explorer/services/explorer.service';
+import { iBlocks } from '@shared/app.interfaces';  
+import { ExplorerService } from '@app/core/explorer-service/explorer.service';
 
 export interface BlockModalContext {
   blockNumber?: number;

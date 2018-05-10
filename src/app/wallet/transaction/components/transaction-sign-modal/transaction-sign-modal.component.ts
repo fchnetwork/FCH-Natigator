@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms'; 
-import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';  
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
 
 export interface BasicModalContext {
   param?: any;

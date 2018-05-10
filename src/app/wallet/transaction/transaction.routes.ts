@@ -1,18 +1,11 @@
 import { RouterModule } from "@angular/router";
 import { NgModule } from "@angular/core";
-import { CreateTransactionComponent } from "@app/wallet/transaction/create-transaction/create-transaction.component";
-import { LoggedInComponent } from "@app/wallet/logged-in/logged-in.component";
+import { CreateTransactionComponent } from "@app/wallet/transaction/create-transaction/create-transaction.component"; 
 
 export const TRANSACTION_ROUTES = [
     {
         path: '',
-        component: LoggedInComponent,
-        children: [
-            {
-                path: '',
-                component: CreateTransactionComponent
-            },
-        ]
+        component: CreateTransactionComponent
     }
 ];
 

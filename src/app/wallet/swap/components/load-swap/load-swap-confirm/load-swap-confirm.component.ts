@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
-import { BasicModalContext } from '@app/shared/components/modals/basic-modal/basic-modal.component'; 
-import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
+import { BasicModalContext } from '@app/shared/components/modals/basic-modal/basic-modal.component';  
 import { LoadedSwap } from '@app/wallet/swap/models/models';
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-load-swap-confirm',

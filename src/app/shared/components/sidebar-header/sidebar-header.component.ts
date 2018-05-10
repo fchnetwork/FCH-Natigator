@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import * as avatars from 'identity-img';
-import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
 import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage';
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
+
 @Component({
   selector: 'aer-sidebar-header',
   templateUrl: './sidebar-header.component.html',

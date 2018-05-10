@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject, forwardRef, Output, EventEmitter } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { iTransaction } from '@shared/app.interfaces';
-import * as Moment from 'moment';
-import { ModalService } from '@shared/services/modal.service';
+import * as Moment from 'moment'; 
 import { environment } from '@env/environment'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 

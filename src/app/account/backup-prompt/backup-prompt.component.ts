@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RouteDataService } from '../../shared/services/route-data.service';
-import { RegistrationRouteData } from '../models/RegistrationRouteData';
-import { ModalService } from '../../shared/services/modal.service';
-import { BackupDisclamerComponent } from '../backup-disclamer/backup-disclamer.component';
-import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
+import { ActivatedRoute, Router } from '@angular/router'; 
+import { RegistrationRouteData } from '../models/RegistrationRouteData'; 
+import { BackupDisclamerComponent } from '../backup-disclamer/backup-disclamer.component'; 
+import { ModalService } from '@app/core/modal-service/modal.service';
+import { RouteDataService } from '@app/core/route-data-service/route-data.service';
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-backup-prompt',

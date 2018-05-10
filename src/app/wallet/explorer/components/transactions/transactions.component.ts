@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';   
-import { iBlocks, iTransaction } from '@shared/app.interfaces';
-import { ModalService } from '@shared/services/modal.service';
-import { ExplorerService } from '@app/wallet/explorer/services/explorer.service';
+import { iBlocks, iTransaction } from '@shared/app.interfaces'; 
+import { ExplorerService } from '@app/core/explorer-service/explorer.service';
+import { ModalService } from '@app/core/modal-service/modal.service';
 
 @Component({
   selector: 'app-transactions',

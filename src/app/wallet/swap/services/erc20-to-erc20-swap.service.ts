@@ -3,11 +3,11 @@ const artifacts = require('./abi/AtomicSwapERC20ToERC20.json');
 import { Injectable } from '@angular/core';
 
 import { environment } from 'environments/environment';
-import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { ContractExecutorService } from './contract-executor.service';
 
 import Web3 from 'web3';
 import { Contract } from 'web3/types';
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
 
 
 @Injectable()

@@ -5,9 +5,8 @@ import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import QRCode from 'qrcode';
 import { SessionStorageService } from 'ngx-webstorage';
-import { Router } from '@angular/router';
-
-import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
+import { Router } from '@angular/router'; 
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
 
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");

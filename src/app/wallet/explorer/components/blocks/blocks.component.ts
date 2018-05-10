@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
  
-import { iTransaction, iBlocks } from '@shared/app.interfaces';
-import { ModalService } from '@shared/services/modal.service';
-import { setInterval } from 'timers';
-import { ExplorerService } from '@app/wallet/explorer/services/explorer.service';
+import { iTransaction, iBlocks } from '@shared/app.interfaces'; 
+import { setInterval } from 'timers'; 
+import { ExplorerService } from '@app/core/explorer-service/explorer.service';
+import { ModalService } from '@app/core/modal-service/modal.service';
 
 
 @Component({

@@ -4,8 +4,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { testAccount } from '../../shared/helpers/data.mock';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 import { RegistrationRouteData } from '../models/RegistrationRouteData';
-import { Router } from '@angular/router';
-import { RouteDataService } from '../../shared/services/route-data.service';
+import { Router } from '@angular/router'; 
+import { RouteDataService } from '@app/core/route-data-service/route-data.service';
 
 @Component({
   selector: 'app-register',

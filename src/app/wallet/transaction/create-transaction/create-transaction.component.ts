@@ -4,14 +4,14 @@ import * as Moment from 'moment';
 import { FormsModule } from '@angular/forms'; 
 import { SessionStorageService } from 'ngx-webstorage'; 
 import * as CryptoJs from 'crypto-js';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
-import { ModalService } from '@app/shared/services/modal.service';
-import { ClipboardService } from '@app/shared/services/clipboard.service';
-import { InternalNotificationService } from '@app/shared/services/notification.service';
-import { TransactionServiceService } from '@app/wallet/transaction/services/transaction-service/transaction-service.service';
-import { TokenService } from '@app/wallet/dashboard/services/token.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';  
 import { environment } from '@env/environment';
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
+import { ModalService } from '@app/core/modal-service/modal.service';
+import { ClipboardService } from '@app/core/clipboard-service/clipboard.service'; 
+import { TransactionService } from '@app/core/transaction-service/transaction-service.service';
+import { InternalNotificationService } from '@app/core/internal-notification-service/internal-notification.service';
+import { TokenService } from '@app/core/token-service/token.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -78,7 +78,7 @@ export class CreateTransactionComponent implements OnInit {
     private modalSrv: ModalService,
     private clipboardService: ClipboardService,
     private notificationService: InternalNotificationService,
-    public txnServ: TransactionServiceService,
+    public txnServ: TransactionService,
     public sessionStorageService: SessionStorageService,
     private tokenService: TokenService,
     private route: ActivatedRoute,) {

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalService } from '@app/shared/services/modal.service';
-import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { NotificationService } from "@aerum/ui";
 
 import { environment } from 'environments/environment'; 
@@ -11,8 +9,10 @@ import { SwapMode, LoadedSwap, SwapStatus } from '@app/wallet/swap/models/models
 import { AeroToErc20SwapService } from '@app/wallet/swap/services/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@app/wallet/swap/services/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@app/wallet/swap/services/erc20-to-erc20-swap.service';
-import { ERC20TokenService } from '@app/wallet/swap/services/erc20-token.service';
-import { TokenService } from '@app/wallet/dashboard/services/token.service';
+import { ERC20TokenService } from '@app/wallet/swap/services/erc20-token.service'; 
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
+import { ModalService } from '@app/core/modal-service/modal.service';
+import { TokenService } from '@app/core/token-service/token.service';
 
 interface SwapCommonOperationsService {
   expireSwap(swapId: string) : Promise<TransactionReceipt>;

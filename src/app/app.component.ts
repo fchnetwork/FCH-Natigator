@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { AuthenticationService } from './account/services/authentication-service/authentication.service';
-import { AccountIdleService } from './shared/services/account-idle.service';
 import { environment } from '../environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AccountIdleService } from '@app/core/account-idle-service/account-idle.service';
 
 @Component({
   selector: 'app-root',
@@ -14,19 +12,13 @@ export class AppComponent implements OnInit {
   title = 'app';
 
   constructor(
-    public authServ: AuthenticationService,
     private idle: AccountIdleService,
-    private translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    console.log(this.router.routerState.snapshot.url);
-    this.initTranslate();
-    
-    this.authServ.authState().subscribe(res => {
-      // this.router.navigate(['/transaction']); 
-    },
-      err => console.log(err));
+    router.events.subscribe((val) => {
+      console.log(val);
+    });
   }
 
   ngOnInit() {
@@ -38,15 +30,5 @@ export class AppComponent implements OnInit {
 
     // Start watch when time is up.
     this.idle.onTimeout().subscribe(() => console.log('Time is up!'));
-  }
-
-  initTranslate() {
-    // Set the default language for translation strings, and the current language.
-    this.translate.setDefaultLang('en');
-    if (this.translate.getBrowserLang() !== undefined) {
-      this.translate.use(this.translate.getBrowserLang());
-    } else {
-      this.translate.use('en'); // Set your language here
-    }
   }
 }

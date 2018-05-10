@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { SessionStorageService } from 'ngx-webstorage/dist/services';
-import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
+import { SessionStorageService } from 'ngx-webstorage/dist/services'; 
 
 import { environment } from 'environments/environment';
 
 import Web3 from 'web3';
 import { Contract, Tx, TransactionObject, EventLog, Signature, TransactionReceipt } from 'web3/types';
 import { setTimeout } from 'timers';
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
 
 @Injectable()
 export class ContractExecutorService {

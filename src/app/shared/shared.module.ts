@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Error404Component } from './components/error404/error404.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-import { I18nComponent } from './components/i18n/i18n.component'; 
-import { ModalService } from './services/modal.service';
+import { I18nComponent } from './components/i18n/i18n.component';  
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { BasicModalComponent } from './components/modals/basic-modal/basic-modal.component';
@@ -12,11 +11,7 @@ import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { EqualValidator } from './directives/equal-validator.directive';
-import { RouteDataService } from './services/route-data.service'; 
-import { InternalNotificationService } from './services/notification.service';
-import { ClipboardService } from './services/clipboard.service';
-import { AccountIdleService } from './services/account-idle.service';
+import { EqualValidator } from './directives/equal-validator.directive'; 
 import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
 import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
 import { TransactionTimeStampPipe } from '@shared/pipes/transaction-time-stamp.pipe';
@@ -47,7 +42,7 @@ export function createTranslateLoader(http: HttpClient) {
     ModalModule.forRoot(),
     AppUIModule,
     BootstrapModalModule, 
-    TranslateModule.forChild({
+    TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
@@ -76,14 +71,7 @@ export function createTranslateLoader(http: HttpClient) {
     SidebarAccountSelectComponent,
     TruncatePipe,
     ChartComponent,
-  ],
-  providers: [
-    ModalService,
-    RouteDataService,
-    ClipboardService,
-    InternalNotificationService,
-    AccountIdleService,
-  ],
+  ], 
   exports:[
     I18nComponent,
     DividerComponent,

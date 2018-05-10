@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Guid } from "@shared/helpers/guid";
-import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
-import { SessionStorageService } from 'ngx-webstorage'; 
-import { ModalService } from '@app/shared/services/modal.service';
+import { Guid } from "@shared/helpers/guid"; 
+import { SessionStorageService } from 'ngx-webstorage';  
 import { NotificationService } from "@aerum/ui";
 
 import { environment } from 'environments/environment'; 
@@ -12,6 +10,8 @@ import { ERC20TokenService } from '@app/wallet/swap/services/erc20-token.service
 import { AeroToErc20SwapService } from '@app/wallet/swap/services/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@app/wallet/swap/services/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@app/wallet/swap/services/erc20-to-erc20-swap.service';
+import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
+import { ModalService } from '@app/core/modal-service/modal.service';
 
 @Component({
   selector: 'create-swap',

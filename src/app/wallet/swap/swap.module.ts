@@ -19,6 +19,7 @@ import { LoadSwapComponent } from './components/load-swap/load-swap.component';
 import { CreateSwapConfirmComponent } from './components/create-swap/create-swap-confirm/create-swap-confirm.component';
 import { LoadSwapConfirmComponent } from './components/load-swap/load-swap-confirm/load-swap-confirm.component';
 import { SwapTokensListComponent } from './components/create-swap/swap-tokens-list/swap-tokens-list.component';
+import { SwapRoutingModule } from '@app/wallet/swap/swap.routes';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -34,7 +35,8 @@ export function createTranslateLoader(http: HttpClient) {
     AppUIModule,
     CommonModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    SwapRoutingModule
   ],
   declarations: [
     CreateSwapComponent,
