@@ -64,19 +64,6 @@
 
 <div aerRow *ngIf="isOwner">
   <div aerColumn size="sm-9">
-    <aer-card title="{{'ENS.MANAGE_TITLE'|translate}}">
-      <div aerRow>
-        <div aerColumn size="sm-6">
-          <div class="input-name">{{'ENS.FIELD_NEW_PRICE'|translate}}</div>
-          <aer-input [(ngModel)]="newPrice" class="with-button blue" buttonLabel="{{'ENS.BTN_SET_PRICE'|translate}}" [attr.disabled]="processing" (buttonFn)="setPrice()" ngDefaultControl></aer-input>
-        </div>
-      </div>
-      <div aerRow>
-        <div aerColumn size="sm-6">
-          <div class="input-name">{{'ENS.FIELD_TRANSFER_TO'|translate}}</div>
-          <aer-input [(ngModel)]="transferTo" class="with-button blue" buttonLabel="{{'ENS.BTN_TRANSFER'|translate}}" [attr.disabled]="processing" (buttonFn)="setOwner()" icon="aerum" ngDefaultControl></aer-input>
-        </div>
-      </div>
-    </aer-card>
+      <app-manage-aens-contract [price]="price"></app-manage-aens-contract>
   </div>
 </div>

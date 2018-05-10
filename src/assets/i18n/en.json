@@ -176,11 +176,14 @@
     "FIELD_NAME":"Name",
     "FIELD_PRICE":"Price",
     "FIELD_NEW_PRICE":"New Name Price",
-    "FIELD_TRANSFER_TO":"Transfer To",
+    "FIELD_TRANSFER_TO":"Transfer Ownership To",
+    "FIELD_WIDTHDRAW_TO":"Widthdraw To",
+    "FIELD_BALANCE":"Balance",
     "BTN_CHECK_NAME":"Check ANS Name",
     "BTN_BUY_NAME":"Buy Name",
     "BTN_SET_PRICE":"Set Price",
     "BTN_TRANSFER":"Transfer",
+    "BTN_WIDTHDRAW_TO":"Widthdraw",
     "AVAILABLE":"free",
     "NOT_AVAILABLE":"not available",
     "NAME_IS":"Name is",
@@ -195,12 +198,17 @@
     "NAME_BUY_SUCCESS_TITLE":"Success",
     "NAME_BUY_SUCCESS":"You bought name",
     "CONFIRM_BUY_TITLE":"Buy Name",
-    "MANAGE_TITLE":"Manage",
+    "MANAGE_TITLE":"Manage ANS Contract",
     "ESTIMATED_FEE":"Esimated fee consumption",
     "MAX_FEE":"Provide maximum fee",
     "GAS_PRICE":"Gas Price",
     "BTN_MODAL_BUY":"Buy",
-    "BTN_MODAL_CANCEL":"Cancel"
+    "BTN_MODAL_CANCEL":"Cancel",
+    "SUCCESS_TITLE":"Success",
+    "SET_PRICE_SUCCESS":"New name price",
+    "SET_OWNER_SUCCESS":"ANS transfered to",
+    "OPERATION_STARTED_TITLE":"Started",
+    "OPERATION_IN_PROGRESS":"Operation in progress..."
   }
 }
 

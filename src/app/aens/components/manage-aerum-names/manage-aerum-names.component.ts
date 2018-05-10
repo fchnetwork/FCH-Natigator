@@ -25,8 +25,6 @@ export class ManageAerumNamesComponent implements OnInit {
   processing: boolean;
 
   isOwner: boolean;
-  newPrice: number;
-  transferTo: string;
 
   checkForm: FormGroup;
   buyForm: FormGroup;
@@ -43,12 +41,10 @@ export class ManageAerumNamesComponent implements OnInit {
   ngOnInit() {
     const keystore = this.authService.getKeystore();
     this.account  = "0x" + keystore.address;
-    this.transferTo = this.account;
 
     // TODO: Test code. Remove later
     this.name = 'asrcrypto';
     this.price = 0.01;
-    this.newPrice = this.price;
     this.isOwner = true;
 
     this.checkForm = this.formBuilder.group({
@@ -62,12 +58,12 @@ export class ManageAerumNamesComponent implements OnInit {
   }
 
   async checkName() {
-    try {
-      if(!this.checkForm.valid) {
-        console.log(`${this.name} is invalid name`);
-        return;
-      }
+    if(!this.canCheckName()) {
+      console.log(`${this.name} is invalid name or other thing in proggress`);
+      return;
+    }
 
+    try {
       this.startProcessing();
       await this.tryCheckName();
     } catch (e) {
@@ -80,6 +76,8 @@ export class ManageAerumNamesComponent implements OnInit {
   }
 
   async tryCheckName() {
+    await this.timeout(1000);
+
     // TODO: Test code. Remove later
     this.nameFound = true;
     this.nameAvailable = !this.nameAvailable;
@@ -87,12 +85,12 @@ export class ManageAerumNamesComponent implements OnInit {
   }
 
   async buyName() {
-    try {
-      if(!this.buyForm.valid) {
-        console.log('Buy form is invalid');
-        return;
-      }
+    if(!this.canBuyName()) {
+      console.log('Buy form is invalid or other thing in proggress');
+      return;
+    }
 
+    try {
       this.startProcessing();
       await this.tryBuyName();
     } catch (e) {
@@ -121,7 +119,9 @@ export class ManageAerumNamesComponent implements OnInit {
       return;
     }
 
+    this.notificationService.notify(this.translate('ENS.OPERATION_STARTED_TITLE'), this.translate('ENS.OPERATION_IN_PROGRESS'), 'aerum', 3000);
     // TODO: buy
+    await this.timeout(2000);
     this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.nameToBuy}.aer`, 'aerum');
   }
 
@@ -141,40 +141,6 @@ export class ManageAerumNamesComponent implements OnInit {
     return !this.processing && this.buyForm.valid && this.nameAvailable;
   }
 
-  async setPrice() {
-    try {
-      this.startProcessing();
-      await this.trySetPrice();
-    } catch (e) {
-      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), this.translate('ENS.SET_PRICE_ERROR'), 'aerum', 5000);
-      throw e;
-    }
-    finally{
-      this.stopProcessing();
-    }
-  }
-
-  async trySetPrice() {
-
-  }
-
-  async setOwner() {
-    try {
-      this.startProcessing();
-      await this.trySetOwner();
-    } catch (e) {
-      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), this.translate('ENS.SET_OWNER_ERROR'), 'aerum', 5000);
-      throw e;
-    }
-    finally{
-      this.stopProcessing();
-    }
-  }
-
-  async trySetOwner() {
-
-  }
-
   private startProcessing() {
     this.processing = true;
   }
@@ -185,5 +151,10 @@ export class ManageAerumNamesComponent implements OnInit {
 
   private translate(key: string) {
     return this.translateService.instant(key);
+  }
+
+  // TODO: Test method
+  private timeout(time: number) : Promise<number> {
+    return new Promise((resolve) => setTimeout(() => resolve(time), time));
   }
 }

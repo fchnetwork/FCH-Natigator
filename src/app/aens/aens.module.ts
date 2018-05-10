@@ -10,6 +10,7 @@ import { SharedModule } from '@app/shared/shared.module';
 
 import { ManageAerumNamesComponent } from './components/manage-aerum-names/manage-aerum-names.component';
 import { AerunNameBuyConfirmComponent } from './components/aerun-name-buy-confirm/aerun-name-buy-confirm.component';
+import { ManageAensContractComponent } from './components/manage-aens-contract/manage-aens-contract.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -27,7 +28,7 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [ManageAerumNamesComponent, AerunNameBuyConfirmComponent],
+  declarations: [ManageAerumNamesComponent, AerunNameBuyConfirmComponent, ManageAensContractComponent],
   exports: [ManageAerumNamesComponent, AerunNameBuyConfirmComponent]
 })
 export class AensModule { }

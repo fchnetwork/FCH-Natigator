@@ -38,7 +38,7 @@
           {{ 'AMOUNT' | translate }}
         </div>
         <div class="o-table__cell o-data--right">
-          {{ param.amount }} Aero
+          {{ param.amount | number:'1.2-5' }} Aero
         </div>
       </div>
       <div class="o-table__row">
@@ -46,7 +46,7 @@
           {{ 'ENS.ESTIMATED_FEE' | translate }}
         </div>
         <div class="o-table__cell o-data--right">
-          {{ estimatedFeeInWei | convertToEther }} aero ({{ param.estimatedFeeInGas }} gas)
+          {{ estimatedFeeInWei | convertToEther | number:'1.0-10' }} aero ({{ param.estimatedFeeInGas | number:'1.0-10' }} gas)
         </div>
       </div>
       <div class="o-table__row">
@@ -54,7 +54,7 @@
           {{ 'ENS.MAX_FEE' | translate }}
         </div>
         <div class="o-table__cell o-data--right">
-          {{ maximumFeeInWei | convertToEther }} aero ({{ param.maximumFeeInGas }} gas)
+          {{ maximumFeeInWei | convertToEther | number:'1.0-10' }} aero ({{ param.maximumFeeInGas | number:'1.0-10' }} gas)
         </div>
       </div>
       <div class="o-table__row">
@@ -62,7 +62,7 @@
           {{ 'ENS.GAS_PRICE' | translate }}
         </div>
         <div class="o-table__cell o-data--right">
-          {{ param.gasPrice }}
+          {{ param.gasPrice | number:'1.0-10' }}
         </div>
       </div>
     </div>
