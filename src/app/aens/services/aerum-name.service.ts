@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 
 import { hash } from "eth-ens-namehash";
 
-import { AenRegistryContractService } from '@app/aens/services/aen-registry-contract.service';
+import { AensRegistryContractService } from '@app/aens/services/aens-registry-contract.service';
 
 @Injectable()
-// TODO: Rename this one
-export class NameResolverService {
+export class AerumNameService {
 
-  constructor(private registryContractService: AenRegistryContractService) 
+  constructor(private registryContractService: AensRegistryContractService) 
   { }
 
   async isNameAvailable(name: string) : Promise<boolean> {

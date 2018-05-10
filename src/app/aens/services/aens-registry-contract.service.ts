@@ -7,11 +7,8 @@ import { AuthenticationService } from '@app/account/services/authentication-serv
 import { ContractExecutorService } from '@app/shared/services/contract-executor.service';
 import { BaseContractService } from '@app/shared/services/base-contract-service';
 
-import Web3 from 'web3';
-import { Contract } from 'web3/types';
-
 @Injectable()
-export class AenRegistryContractService extends BaseContractService {
+export class AensRegistryContractService extends BaseContractService {
 
   constructor(
     authenticationService: AuthenticationService,

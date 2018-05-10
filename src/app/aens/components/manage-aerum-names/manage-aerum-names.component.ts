@@ -7,7 +7,7 @@ import { ModalService } from '@app/shared/services/modal.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { BuyConfirmRequest } from '@app/aens/models/buyConfirmRequest';
 import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
-import { NameResolverService } from '@app/aens/services/name-resolver.service';
+import { AerumNameService } from '@app/aens/services/aerum-name.service';
 
 @Component({
   selector: 'app-manage-aerum-names',
@@ -36,7 +36,7 @@ export class ManageAerumNamesComponent implements OnInit {
     private notificationService: NotificationService,
     private translateService: TranslateService,
     private formBuilder: FormBuilder,
-    private aensService: NameResolverService
+    private aensService: AerumNameService
   ) 
     { }
 
