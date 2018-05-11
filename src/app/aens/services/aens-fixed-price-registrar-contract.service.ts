@@ -47,6 +47,12 @@ export class AensFixedPriceRegistrarContractService extends BaseContractService 
     return receipt;
   }
 
+  async estimateBuyCost(labelHash: string, price: string) {
+    const buy = this.contract.methods.buy(labelHash);
+    const cost = await this.contractExecutorService.estimateCost(buy, { value: price });
+    return cost;
+  }
+
   async balance() {
     const balance = await this.web3.eth.getBalance(environment.contracts.aens.address.FixedPriceRegistrar);
     return balance;

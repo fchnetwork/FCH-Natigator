@@ -23,6 +23,12 @@ export class AensPublicResolverContractService extends BaseContractService {
     return receipt;
   }
 
+  async estimateSetAddressCost(node: string, name: string) {
+    const setAddr = this.contract.methods.setAddr(node, name);
+    const cost = await this.contractExecutorService.estimateCost(setAddr);
+    return cost;
+  }
+
   async getAddress(node: string) : Promise<string> {
     const getAddr = this.contract.methods.addr(node);
     const address = await this.contractExecutorService.call(getAddr);

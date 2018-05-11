@@ -56,12 +56,33 @@ export class AerumNameService {
     const node = hash(name);
     const hashedLabel = this.web3.utils.sha3(label);
     
-    debugger;
     if(!await this.isNodeOwner(node, address)) {
       await this.registrarContractService.buy(hashedLabel, priceInWei);
     }
     await this.registryContractService.setResolver(node, this.resolverContractService.getContractAddress());
     await this.resolverContractService.setAddress(node, address);
+  }
+
+  async estimateBuyNameCost(label: string, address: string, priceInWei: string) {
+    if(!label) {
+      throw new Error('Can only resolve not empty names ending with .aer');
+    }
+
+    const name = label + ".aer";
+    const node = hash(name);
+    const hashedLabel = this.web3.utils.sha3(label);
+    
+    let buyCost = [0, 0, 0];
+    if(!await this.isNodeOwner(node, address)) {
+      buyCost = await this.registrarContractService.estimateBuyCost(hashedLabel, priceInWei);
+    }
+
+    // NOTE: We cannot estimate these methods cost as they require buy to be executed
+    // const registrarCost = await this.registryContractService.estimateSetResolverCost(node, this.resolverContractService.getContractAddress());
+    // const resolverCost = await this.resolverContractService.estimateSetAddressCost(node, address);
+
+    const cost = buyCost;
+    return cost;
   }
 
   async setPrice(priceInWei: string) {

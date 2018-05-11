@@ -3,6 +3,7 @@ import { NotificationService } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
+import { environment } from 'environments/environment';
 import { ModalService } from '@app/shared/services/modal.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { BuyConfirmRequest } from '@app/aens/models/buyConfirmRequest';
@@ -112,15 +113,17 @@ export class ManageAerumNamesComponent implements OnInit {
   }
 
   async tryBuyName() {
-    // TODO: Test code here. Remove later
+    const cost = await this.aensService.estimateBuyNameCost(this.nameToBuy, this.account, this.price.toString(10));
+    console.log(`Buy name cost: ${cost}`);
+    
     const buyRequest: BuyConfirmRequest = {
       name: this.nameToBuy.trim() + '.aer',
       amount: this.price,
       buyer: this.account,
-      ansOwner: this.account,
-      gasPrice: 1000 * 1000 * 1000,
-      estimatedFeeInGas: 200 * 1000,
-      maximumFeeInGas: 220 * 1000 
+      ansOwner: environment.contracts.aens.address.FixedPriceRegistrar,
+      gasPrice: cost[0],
+      estimatedFeeInGas: cost[1],
+      maximumFeeInGas: cost[2] 
     };
     const modalResult: BuyConfirmReponse = await this.modalService.openBuyAensConfirm(buyRequest);
     if(!modalResult.accepted) {
@@ -163,10 +166,5 @@ export class ManageAerumNamesComponent implements OnInit {
 
   private translate(key: string) {
     return this.translateService.instant(key);
-  }
-
-  // TODO: Test method
-  private timeout(time: number) : Promise<number> {
-    return new Promise((resolve) => setTimeout(() => resolve(time), time));
   }
 }

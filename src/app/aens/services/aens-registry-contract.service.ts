@@ -23,6 +23,12 @@ export class AensRegistryContractService extends BaseContractService {
     return receipt;
   }
 
+  async estimateSetResolverCost(node: string, resolverAddress: string) {
+    const setResolver = this.contract.methods.setResolver(node, resolverAddress);
+    const cost = await this.contractExecutorService.estimateCost(setResolver);
+    return cost;
+  }
+
   async getResolver(node: string): Promise<string> {
     const resolver = this.contract.methods.resolver(node);
     const resolverAddress = await this.contractExecutorService.call(resolver);
