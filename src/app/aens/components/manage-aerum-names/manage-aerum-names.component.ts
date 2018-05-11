@@ -10,7 +10,6 @@ import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
 import { AerumNameService } from '@app/aens/services/aerum-name.service';
 
 import Web3 from 'web3';
-import { AensRegistryContractService } from '@app/aens/services/aens-registry-contract.service';
 
 @Component({
   selector: 'app-manage-aerum-names',
@@ -53,11 +52,11 @@ export class ManageAerumNamesComponent implements OnInit {
     this.name = 'asrcrypto';
 
     this.checkForm = this.formBuilder.group({
-      name: [null, [Validators.pattern("^[a-zA-Z0-9_-]{5,50}$")]],
+      name: [null, [Validators.pattern("^[a-zA-Z0-9-]{5,50}$")]],
     });
 
     this.buyForm = this.formBuilder.group({
-      name: [null, [Validators.pattern("^[a-zA-Z0-9_-]{5,50}$")]],
+      name: [null, [Validators.pattern("^[a-zA-Z0-9-]{5,50}$")]],
       account: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
     });
 
@@ -66,6 +65,7 @@ export class ManageAerumNamesComponent implements OnInit {
 
     // TODO: Test code
     await this.aensService.resolveAddressFromName('sidlovskyy-test1.aer');
+    this.isOwner = true;
   }
 
   async checkName() {
@@ -129,8 +129,7 @@ export class ManageAerumNamesComponent implements OnInit {
     }
 
     this.notificationService.notify(this.translate('ENS.OPERATION_STARTED_TITLE'), this.translate('ENS.OPERATION_IN_PROGRESS'), 'aerum', 3000);
-    // TODO: buy
-    await this.timeout(2000);
+    await this.aensService.buyName(this.nameToBuy, this.account, this.price.toString(10));
     this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.nameToBuy}.aer`, 'aerum');
   }
 

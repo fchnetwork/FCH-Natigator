@@ -5,15 +5,23 @@ import { hash } from "eth-ens-namehash";
 import { AensRegistryContractService } from '@app/aens/services/aens-registry-contract.service';
 import { AensFixedPriceRegistrarContractService } from '@app/aens/services/aens-fixed-price-registrar-contract.service';
 import { AensPublicResolverContractService } from '@app/aens/services/aens-public-resolver-contract.service';
+import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
+
+import Web3 from 'web3';
 
 @Injectable()
 export class AerumNameService {
 
+  web3: Web3;
+
   constructor(
+    private authService: AuthenticationService,
     private registryContractService: AensRegistryContractService,
     private registrarContractService: AensFixedPriceRegistrarContractService,
     private resolverContractService: AensPublicResolverContractService
-  ) { }
+  ) {
+    this.web3 = this.authService.initWeb3();
+  }
 
   async resolveAddressFromName(name: string) : Promise<string> {
     if(!name || !name.endsWith(".aer")) {
@@ -21,7 +29,7 @@ export class AerumNameService {
     }
 
     const node = hash(name);
-    const address = await this.resolverContractService.getName(node);
+    const address = await this.resolverContractService.getAddress(node);
     console.log(`Name ${name} resolved into: ${address}`);
 
     return address || null;
@@ -34,20 +42,26 @@ export class AerumNameService {
 
     const node = hash(name);
     const owner = await this.registryContractService.getOwner(node);
-    console.log("Owner: ", owner);
+    console.log("Name owner: ", owner);
 
     return this.isEmptyAddress(owner);
   }
 
-  async buyName(name: string, priceInWei: string) {
-    if(!name || !name.endsWith(".aer")) {
-      return false;
+  async buyName(label: string, address: string, priceInWei: string) {
+    if(!label) {
+      throw new Error('Can only resolve not empty names ending with .aer');
     }
 
+    const name = label + ".aer";
     const node = hash(name);
-    await this.registrarContractService.buy(node, priceInWei);
-    // TODO: set resolver
-    // TODO: set address
+    const hashedLabel = this.web3.utils.sha3(label);
+    
+    debugger;
+    if(!await this.isNodeOwner(node, address)) {
+      await this.registrarContractService.buy(hashedLabel, priceInWei);
+    }
+    await this.registryContractService.setResolver(node, this.resolverContractService.getContractAddress());
+    await this.resolverContractService.setAddress(node, address);
   }
 
   async setPrice(priceInWei: string) {
@@ -72,6 +86,11 @@ export class AerumNameService {
 
   async isRegistrarOwner(address: string) {
     const owner = await this.registrarContractService.owner();
+    return owner.toUpperCase() === address.toUpperCase();
+  }
+
+  async isNodeOwner(node: string, address: string) {
+    const owner = await this.registryContractService.getOwner(node);
     return owner.toUpperCase() === address.toUpperCase();
   }
 

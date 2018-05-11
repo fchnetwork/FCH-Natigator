@@ -41,8 +41,8 @@ export class AensFixedPriceRegistrarContractService extends BaseContractService 
     return receipt;
   }
 
-  async buy(node: string, price: string) {
-    const buy = this.contract.methods.buy(node);
+  async buy(labelHash: string, price: string) {
+    const buy = this.contract.methods.buy(labelHash);
     const receipt = await this.contractExecutorService.send(buy, { value: price });
     return receipt;
   }
