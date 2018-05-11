@@ -97,7 +97,7 @@ export class LoadSwapComponent implements OnInit {
     const loadedSwap = await this.mapToLoadedSwap(this.swapId, swap);
     console.log(loadedSwap);
 
-    const modalResult = await this.modalService.openLoadCreateConfirm(loadedSwap);
+    const modalResult = await this.modalService.openSwapLoadConfirm(loadedSwap);
     if(modalResult.confirmed) {
       this.notificationService.notify('Swap completion in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
       await this.confirm(loadedSwap);

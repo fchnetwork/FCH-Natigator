@@ -1,0 +1,72 @@
+<aer-modal-dialog>
+  <div class="c-confirm-buy c-confirm-buy__table c-confirm-buy__unlock">
+    <h1>{{'ENS.CONFIRM_BUY_TITLE'|translate}}</h1>
+    <ul class="o-txnID u-lreset">
+      <li>
+        <ul class="o-txnID__person u-lreset">
+          <li>
+            <div class="u-marginCntr c-avatar__img" [style.background-image]="'url(' + buyerAvatar + ')'"></div>
+          </li>
+          <li>
+            {{ param.buyer | cropAddress }}
+          </li>
+        </ul>
+        <ul class="o-txnID__person o-txnID__arrow u-lreset">
+          <li><aer-icon>angle-right</aer-icon></li>
+        </ul>
+        <ul class="o-txnID__person u-lreset">
+          <li>
+            <div class="u-marginCntr c-avatar__img" [style.background-image]="'url(' + ansOwnerAvatar + ')'"></div>
+          </li>
+          <li>
+            {{ param.ansOwner | cropAddress }}
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="o-table">
+      <div class="o-table__row">
+        <div class="o-table__cell o-data--left">
+          {{ 'ENS.FIELD_NAME' | translate }}
+        </div>
+        <div class="o-table__cell o-data--right">
+          {{ param.name }}
+        </div>
+      </div>
+      <div class="o-table__row">
+        <div class="o-table__cell o-data--left">
+          {{ 'AMOUNT' | translate }}
+        </div>
+        <div class="o-table__cell o-data--right">
+          {{ param.amount | number:'1.2-5' }} Aero
+        </div>
+      </div>
+      <div class="o-table__row">
+        <div class="o-table__cell o-data--left">
+          {{ 'ENS.ESTIMATED_FEE' | translate }}
+        </div>
+        <div class="o-table__cell o-data--right">
+          {{ estimatedFeeInWei | convertToEther | number:'1.0-10' }} aero ({{ param.estimatedFeeInGas | number:'1.0-10' }} gas)
+        </div>
+      </div>
+      <div class="o-table__row">
+        <div class="o-table__cell o-data--left">
+          {{ 'ENS.MAX_FEE' | translate }}
+        </div>
+        <div class="o-table__cell o-data--right">
+          {{ maximumFeeInWei | convertToEther | number:'1.0-10' }} aero ({{ param.maximumFeeInGas | number:'1.0-10' }} gas)
+        </div>
+      </div>
+      <div class="o-table__row">
+        <div class="o-table__cell o-data--left">
+          {{ 'ENS.GAS_PRICE' | translate }}
+        </div>
+        <div class="o-table__cell o-data--right">
+          {{ param.gasPrice | number:'1.0-10' }}
+        </div>
+      </div>
+    </div>
+    <aer-button (buttonFn)="accept()" class="full-width blue">{{ 'ENS.BTN_MODAL_BUY' | translate }}</aer-button>
+    <aer-button (buttonFn)="dismiss()" class="full-width">{{ 'ENS.BTN_MODAL_CANCEL' | translate }}</aer-button>
+  </div>
+</aer-modal-dialog>

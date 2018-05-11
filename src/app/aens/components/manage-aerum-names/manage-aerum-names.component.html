@@ -1,0 +1,69 @@
+<h3>{{'ENS.MAIN_TITLE'|translate}}</h3>
+
+<div aerRow>
+  <div aerColumn size="sm-9">
+    <aer-card title="{{'ENS.CHECK_NAME_TITLE'|translate}}">
+      <form [formGroup]="checkForm">
+        <div aerRow>
+          <div aerColumn size="sm-6">
+            <div class="input-name">{{'ENS.FIELD_NAME'|translate}}</div>
+            <aer-input [(ngModel)]="name" class="with-button blue" [ngClass]="{'has-error': hasError(checkForm.controls.name)}"  buttonLabel=".aer" [attr.disabled]="processing" formControlName="name" ngDefaultControl></aer-input>
+          </div>
+          <div aerColumn size="sm-6" class="aens__info">{{'ENS.LONG_DESCRIPTION'|translate}}</div>
+        </div>
+        <hr class="aens__separator">
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            <aer-button class="aens__btn-check normal" [ngClass]="{'blue': canCheckName()}" (buttonFn)="checkName()" [disabled]="!canCheckName()">{{'ENS.BTN_CHECK_NAME'|translate}}</aer-button>
+          </div>
+        </div>
+      </form>
+    </aer-card>
+  </div>
+  <div aerColumn size="sm-3">
+    <aer-card *ngIf="nameFound">
+      <div>{{'ENS.NAME_IS'|translate}} {{(nameAvailable ? 'ENS.AVAILABLE' : 'ENS.NOT_AVAILABLE')|translate}}</div>
+      <div class="aens__name-info" [ngClass]="{'aens__name-info--available': nameAvailable, 'aens__name-info--not-available': !nameAvailable}">{{nameToBuy}}.aer</div>
+    </aer-card>
+  </div>
+</div>
+
+<div aerRow *ngIf="nameAvailable">
+  <div aerColumn size="sm-9">
+    <aer-card title="{{'ENS.BUY_NAME_TITLE'|translate}}">
+      <form [formGroup]="buyForm">
+        <div aerRow>
+          <div aerColumn size="sm-6">
+            <div class="input-name">{{'ENS.FIELD_ACCOUNT'|translate}}</div>
+            <aer-input icon="aerum" [(ngModel)]="account" [ngClass]="{'has-error': hasError(buyForm.controls.account)}" [attr.disabled]="processing" formControlName="account" ngDefaultControl></aer-input>
+          </div>
+          <div aerColumn size="sm-6" class="aens__account-info">
+            {{'ENS.ACCOUNT_DESCRIPTION'|translate}}
+          </div>
+        </div>
+        <div aerRow>
+          <div aerColumn size="sm-6">
+            <div class="input-name">{{'ENS.FIELD_NAME'|translate}}</div>
+            <aer-input [(ngModel)]="nameToBuy" class="with-button blue" [ngClass]="{'has-error': hasError(buyForm.controls.name)}" readonly="readonly" buttonLabel=".aer" formControlName="name" ngDefaultControl></aer-input>
+          </div>
+          <div aerColumn size="sm-6" class="aens__price-info">
+            <div>{{'ENS.FIELD_PRICE'|translate}}</div>
+            <div class="aens__price-info__aero">{{price | number:'1.2-5'}} AERO</div>
+          </div>
+        </div>
+        <hr class="aens__separator">
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            <aer-button class="aens__btn-buy normal" [ngClass]="{'blue': canBuyName()}" (buttonFn)="buyName()" [disabled]="!canBuyName()">{{'ENS.BTN_BUY_NAME'|translate}}</aer-button>
+          </div>
+        </div>
+      </form>
+    </aer-card>
+  </div>
+</div>
+
+<div aerRow *ngIf="isOwner">
+  <div aerColumn size="sm-9">
+      <app-manage-aens-contract [price]="price"></app-manage-aens-contract>
+  </div>
+</div>
