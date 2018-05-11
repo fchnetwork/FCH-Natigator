@@ -46,4 +46,9 @@ export class AensFixedPriceRegistrarContractService extends BaseContractService 
     const receipt = await this.contractExecutorService.send(buy, { value: price });
     return receipt;
   }
+
+  async balance() {
+    const balance = await this.web3.eth.getBalance(environment.contracts.aens.address.FixedPriceRegistrar);
+    return balance;
+  }
 }

@@ -10,6 +10,7 @@ import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
 import { AerumNameService } from '@app/aens/services/aerum-name.service';
 
 import Web3 from 'web3';
+import { AensRegistryContractService } from '@app/aens/services/aens-registry-contract.service';
 
 @Component({
   selector: 'app-manage-aerum-names',

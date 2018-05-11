@@ -49,6 +49,18 @@ export class AerumNameService {
     return await this.registrarContractService.getPrice();
   }
 
+  async getBalance() {
+    return await this.registrarContractService.balance();
+  }
+
+  async widthdraw(address: string, amountInWei: string) {
+    await this.registrarContractService.widthdraw(address, amountInWei);
+  }
+
+  async transferOwnership(to: string) {
+    await this.registrarContractService.setOwner(to);
+  }
+
   private isEmptyAddress(address: string) {
     return address === "0x0000000000000000000000000000000000000000";
   }
