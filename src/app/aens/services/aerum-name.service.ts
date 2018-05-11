@@ -15,9 +15,16 @@ export class AerumNameService {
     private resolverContractService: AensPublicResolverContractService
   ) { }
 
-  // TODO: Implement
   async resolveAddressFromName(name: string) : Promise<string> {
-    return '';
+    if(!name || !name.endsWith(".aer")) {
+      throw new Error('Can only resolve not empty names ending with .aer');
+    }
+
+    const node = hash(name);
+    const address = await this.resolverContractService.getName(node);
+    console.log(`Name ${name} resolved into: ${address}`);
+
+    return address || null;
   }
 
   async isNameAvailable(name: string) : Promise<boolean> {
@@ -39,6 +46,8 @@ export class AerumNameService {
 
     const node = hash(name);
     await this.registrarContractService.buy(node, priceInWei);
+    // TODO: set resolver
+    // TODO: set address
   }
 
   async setPrice(priceInWei: string) {
@@ -59,6 +68,11 @@ export class AerumNameService {
 
   async transferOwnership(to: string) {
     await this.registrarContractService.setOwner(to);
+  }
+
+  async isRegistrarOwner(address: string) {
+    const owner = await this.registrarContractService.owner();
+    return owner.toUpperCase() === address.toUpperCase();
   }
 
   private isEmptyAddress(address: string) {

@@ -15,6 +15,7 @@ import Web3 from 'web3';
 })
 export class ManageAensContractComponent implements OnInit {
 
+  @Output() priceChange: EventEmitter<number> = new EventEmitter<number>();
   @Input() price: number;
   transferTo: string;
   widthdrawTo: string;
@@ -29,8 +30,6 @@ export class ManageAensContractComponent implements OnInit {
   widthdrawForm: FormGroup;
 
   web3: Web3;
-
-  @Output() priceChange: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(
     private authService: AuthenticationService,

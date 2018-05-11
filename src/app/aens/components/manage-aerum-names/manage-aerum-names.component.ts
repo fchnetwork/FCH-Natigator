@@ -62,9 +62,10 @@ export class ManageAerumNamesComponent implements OnInit {
     });
 
     this.price = this.web3.utils.fromWei(await this.aensService.getPrice(), 'ether');
+    this.isOwner = await this.aensService.isRegistrarOwner(this.account);
 
-    // TODO: Test code. Remove later
-    this.isOwner = true;
+    // TODO: Test code
+    await this.aensService.resolveAddressFromName('sidlovskyy-test1.aer');
   }
 
   async checkName() {
@@ -131,6 +132,10 @@ export class ManageAerumNamesComponent implements OnInit {
     // TODO: buy
     await this.timeout(2000);
     this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.nameToBuy}.aer`, 'aerum');
+  }
+
+  onNamePriceChanged(newPrice: number) {
+    this.price = newPrice;
   }
 
   hasError(control: FormControl) {

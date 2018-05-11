@@ -64,6 +64,6 @@
 
 <div aerRow *ngIf="isOwner">
   <div aerColumn size="sm-9">
-      <app-manage-aens-contract [price]="price"></app-manage-aens-contract>
+      <app-manage-aens-contract [price]="price" (priceChange)="onNamePriceChanged($event)"></app-manage-aens-contract>
   </div>
 </div>

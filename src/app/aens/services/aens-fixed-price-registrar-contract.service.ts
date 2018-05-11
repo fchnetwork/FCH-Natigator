@@ -51,4 +51,11 @@ export class AensFixedPriceRegistrarContractService extends BaseContractService 
     const balance = await this.web3.eth.getBalance(environment.contracts.aens.address.FixedPriceRegistrar);
     return balance;
   }
+
+  async owner(): Promise<string> {
+    const ownerField = this.contract.methods.owner();
+    const owner = await this.contractExecutorService.call(ownerField);
+    console.log(`Registrar owner: ${owner}`);
+    return owner;
+  }
 }
