@@ -10,10 +10,12 @@ import { SharedModule } from '@app/shared/shared.module';
 
 import { AerumNameService } from './services/aerum-name.service';
 
+import { ManageAensContractComponent } from './components/manage-aens-contract/manage-aens-contract.component';
 import { ManageAerumNamesComponent } from './components/manage-aerum-names/manage-aerum-names.component';
 import { AerunNameBuyConfirmComponent } from './components/aerun-name-buy-confirm/aerun-name-buy-confirm.component';
-import { ManageAensContractComponent } from './components/manage-aens-contract/manage-aens-contract.component';
-import { AensRegistryContractService } from '@app/aens/services/aens-registry-contract.service';
+import { AensRegistryContractService } from './services/aens-registry-contract.service';
+import { AensFixedPriceRegistrarContractService } from './services/aens-fixed-price-registrar-contract.service';
+import { AensPublicResolverContractService } from './services/aens-public-resolver-contract.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -42,7 +44,9 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   providers: [
     AerumNameService,
-    AensRegistryContractService
+    AensRegistryContractService,
+    AensFixedPriceRegistrarContractService,
+    AensPublicResolverContractService
   ]
 })
 export class AensModule { }

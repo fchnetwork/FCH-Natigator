@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
+import { AerumNameService } from '@app/aens/services/aerum-name.service';
 
 @Component({
   selector: 'app-manage-aens-contract',
@@ -29,7 +30,8 @@ export class ManageAensContractComponent implements OnInit {
     private authService: AuthenticationService,
     private notificationService: NotificationService,
     private translateService: TranslateService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private aensService: AerumNameService
   ) { }
 
   ngOnInit() {

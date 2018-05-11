@@ -17,6 +17,12 @@ export class AensFixedPriceRegistrarContractService extends BaseContractService 
     super(artifacts.abi, environment.contracts.aens.address.FixedPriceRegistrar, authenticationService, contractExecutorService);
   }
 
+  async getPrice(): Promise<string> {
+    const priceMethod = this.contract.methods.price();
+    const price = await this.contractExecutorService.call(priceMethod);
+    return price;
+  }
+
   async setPrice(priceInWei: string) {
     const setPrice = this.contract.methods.setPrice(priceInWei);
     const receipt = await this.contractExecutorService.send(setPrice);
@@ -35,9 +41,9 @@ export class AensFixedPriceRegistrarContractService extends BaseContractService 
     return receipt;
   }
 
-  async buy(node: string) {
+  async buy(node: string, price: string) {
     const buy = this.contract.methods.buy(node);
-    const receipt = await this.contractExecutorService.send(buy);
+    const receipt = await this.contractExecutorService.send(buy, { value: price });
     return receipt;
   }
 }

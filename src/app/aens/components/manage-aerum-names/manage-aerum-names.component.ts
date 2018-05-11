@@ -9,6 +9,8 @@ import { BuyConfirmRequest } from '@app/aens/models/buyConfirmRequest';
 import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
 import { AerumNameService } from '@app/aens/services/aerum-name.service';
 
+import Web3 from 'web3';
+
 @Component({
   selector: 'app-manage-aerum-names',
   templateUrl: './manage-aerum-names.component.html',
@@ -30,6 +32,8 @@ export class ManageAerumNamesComponent implements OnInit {
   checkForm: FormGroup;
   buyForm: FormGroup;
 
+  web3: Web3;
+
   constructor(
     private authService: AuthenticationService,
     private modalService: ModalService,
@@ -38,16 +42,14 @@ export class ManageAerumNamesComponent implements OnInit {
     private formBuilder: FormBuilder,
     private aensService: AerumNameService
   ) 
-    { }
+  { }
 
-  ngOnInit() {
+  async ngOnInit() {
     const keystore = this.authService.getKeystore();
     this.account  = "0x" + keystore.address;
 
-    // TODO: Test code. Remove later
+    this.web3 = this.authService.initWeb3();
     this.name = 'asrcrypto';
-    this.price = 0.01;
-    this.isOwner = true;
 
     this.checkForm = this.formBuilder.group({
       name: [null, [Validators.pattern("^[a-zA-Z0-9_-]{5,50}$")]],
@@ -57,6 +59,11 @@ export class ManageAerumNamesComponent implements OnInit {
       name: [null, [Validators.pattern("^[a-zA-Z0-9_-]{5,50}$")]],
       account: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
     });
+
+    this.price = this.web3.utils.fromWei(await this.aensService.getPrice(), 'ether');
+
+    // TODO: Test code. Remove later
+    this.isOwner = true;
   }
 
   async checkName() {
