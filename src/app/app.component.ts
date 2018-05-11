@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
     this.idle.onTimeout().subscribe(() => console.log('Time is up!'));
 
     console.log(`Current Env: ${environment.configInUse}`);
+    console.log(`Current HttpProvider: ${environment.HttpProvider}`);
 
   }
 
