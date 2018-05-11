@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotificationService } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
+import { environment } from 'environments/environment';
 import { ModalService } from '@app/shared/services/modal.service';
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
 import { BuyConfirmRequest } from '@app/aens/models/buyConfirmRequest';
 import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
+import { AerumNameService } from '@app/aens/services/aerum-name.service';
+
+import Web3 from 'web3';
+import { ManageAensContractComponent } from '@app/aens/components/manage-aens-contract/manage-aens-contract.component';
 
 @Component({
   selector: 'app-manage-aerum-names',
@@ -14,6 +19,8 @@ import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
   styleUrls: ['./manage-aerum-names.component.scss']
 })
 export class ManageAerumNamesComponent implements OnInit {
+
+  @ViewChild('manageContractComponent') manageContractComponent: ManageAensContractComponent;
 
   name: string;
   nameToBuy: string;
@@ -29,32 +36,39 @@ export class ManageAerumNamesComponent implements OnInit {
   checkForm: FormGroup;
   buyForm: FormGroup;
 
+  web3: Web3;
+
   constructor(
     private authService: AuthenticationService,
     private modalService: ModalService,
     private notificationService: NotificationService,
     private translateService: TranslateService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private aensService: AerumNameService
   ) 
-    { }
+  { }
 
-  ngOnInit() {
+  async ngOnInit() {
     const keystore = this.authService.getKeystore();
     this.account  = "0x" + keystore.address;
 
-    // TODO: Test code. Remove later
+    this.web3 = this.authService.initWeb3();
     this.name = 'asrcrypto';
-    this.price = 0.01;
-    this.isOwner = true;
 
     this.checkForm = this.formBuilder.group({
-      name: [null, [Validators.pattern("^[a-zA-Z0-9_-]{5,50}$")]],
+      name: [null, [Validators.pattern("^[a-zA-Z0-9-]{5,50}$")]],
     });
 
     this.buyForm = this.formBuilder.group({
-      name: [null, [Validators.pattern("^[a-zA-Z0-9_-]{5,50}$")]],
+      name: [null, [Validators.pattern("^[a-zA-Z0-9-]{5,50}$")]],
       account: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
     });
+
+    this.price = this.web3.utils.fromWei(await this.aensService.getPrice(), 'ether');
+    this.isOwner = await this.aensService.isRegistrarOwner(this.account);
+
+    // TODO: Test code. Just checking if resolve works. Remove later
+    await this.aensService.resolveAddressFromName('sidlovskyy-test1.aer');
   }
 
   async checkName() {
@@ -76,11 +90,9 @@ export class ManageAerumNamesComponent implements OnInit {
   }
 
   async tryCheckName() {
-    await this.timeout(1000);
-
-    // TODO: Test code. Remove later
+    const isAvailable = await this.aensService.isNameAvailable(this.name + ".aer");
     this.nameFound = true;
-    this.nameAvailable = !this.nameAvailable;
+    this.nameAvailable = isAvailable;
     this.nameToBuy = this.name;
   }
 
@@ -103,15 +115,17 @@ export class ManageAerumNamesComponent implements OnInit {
   }
 
   async tryBuyName() {
-    // TODO: Test code here. Remove later
+    const cost = await this.aensService.estimateBuyNameCost(this.nameToBuy, this.account, this.price.toString(10));
+    console.log(`Buy name cost: ${cost}`);
+    
     const buyRequest: BuyConfirmRequest = {
       name: this.nameToBuy.trim() + '.aer',
       amount: this.price,
       buyer: this.account,
-      ansOwner: this.account,
-      gasPrice: 1000 * 1000 * 1000,
-      estimatedFeeInGas: 200 * 1000,
-      maximumFeeInGas: 220 * 1000 
+      ansOwner: environment.contracts.aens.address.FixedPriceRegistrar,
+      gasPrice: cost[0],
+      estimatedFeeInGas: cost[1],
+      maximumFeeInGas: cost[2] 
     };
     const modalResult: BuyConfirmReponse = await this.modalService.openBuyAensConfirm(buyRequest);
     if(!modalResult.accepted) {
@@ -120,9 +134,14 @@ export class ManageAerumNamesComponent implements OnInit {
     }
 
     this.notificationService.notify(this.translate('ENS.OPERATION_STARTED_TITLE'), this.translate('ENS.OPERATION_IN_PROGRESS'), 'aerum', 3000);
-    // TODO: buy
-    await this.timeout(2000);
+    await this.aensService.buyName(this.nameToBuy, this.account, this.price.toString(10));
     this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.nameToBuy}.aer`, 'aerum');
+
+    await this.manageContractComponent.refreshBalance();
+  }
+
+  onNamePriceChanged(newPrice: number) {
+    this.price =  this.web3.utils.fromWei(newPrice, 'ether');
   }
 
   hasError(control: FormControl) {
@@ -151,10 +170,5 @@ export class ManageAerumNamesComponent implements OnInit {
 
   private translate(key: string) {
     return this.translateService.instant(key);
-  }
-
-  // TODO: Test method
-  private timeout(time: number) : Promise<number> {
-    return new Promise((resolve) => setTimeout(() => resolve(time), time));
   }
 }

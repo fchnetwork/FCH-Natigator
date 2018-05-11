@@ -14,6 +14,7 @@ import { AeroToErc20SwapService } from '@app/swap/services/aero-to-erc20-swap.se
 import { Erc20ToAeroSwapService } from '@app/swap/services/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@app/swap/services/erc20-to-erc20-swap.service';
 import { ERC20TokenService } from '@app/swap/services/erc20-token.service';
+import { AerumNameService } from '@app/aens/services/aerum-name.service';
 
 @Component({
   selector: 'create-swap',
@@ -44,7 +45,8 @@ export class CreateSwapComponent implements OnInit {
     private aeroToErc20SwapService: AeroToErc20SwapService,
     private erc20ToAeroSwapService: Erc20ToAeroSwapService,
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
-    public formBuilder: FormBuilder
+    private aensService: AerumNameService,
+    private formBuilder: FormBuilder
   ) { }
 
   async ngOnInit() {
@@ -180,7 +182,7 @@ export class CreateSwapComponent implements OnInit {
       this.swapId,
       this.tokenAmount.toString(10),
       counterpartyTokenAmount.toString(10),
-      this.counterpartyAddress,
+      await this.aensService.resolveNameOrAddress(this.counterpartyAddress),
       this.counterpartyToken.address
     );
   }
@@ -193,7 +195,7 @@ export class CreateSwapComponent implements OnInit {
       tokenAmount.toString(10),
       this.token.address,
       this.counterpartyTokenAmount.toString(10),
-      this.counterpartyAddress
+      await this.aensService.resolveNameOrAddress(this.counterpartyAddress),
     );
   }
 
@@ -206,7 +208,7 @@ export class CreateSwapComponent implements OnInit {
       tokenAmount.toString(10),
       this.token.address,
       counterpartyTokenAmount.toString(10),
-      this.counterpartyAddress,
+      await this.aensService.resolveNameOrAddress(this.counterpartyAddress),
       this.counterpartyToken.address
     );
   }

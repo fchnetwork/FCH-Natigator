@@ -12,7 +12,6 @@ import { AeroToErc20SwapService } from './services/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from './services/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from './services/erc20-to-erc20-swap.service';
 import { ERC20TokenService } from './services/erc20-token.service';
-import { ContractExecutorService } from './services/contract-executor.service';
 
 import { CreateSwapComponent } from './components/create-swap/create-swap.component';
 import { LoadSwapComponent } from './components/load-swap/load-swap.component';
@@ -47,8 +46,7 @@ export function createTranslateLoader(http: HttpClient) {
     AeroToErc20SwapService,
     Erc20ToAeroSwapService,
     Erc20ToErc20SwapService,
-    ERC20TokenService,
-    ContractExecutorService
+    ERC20TokenService
   ],
   exports: [
     CreateSwapConfirmComponent,

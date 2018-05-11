@@ -1,9 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NotificationService } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { AuthenticationService } from '@app/account/services/authentication-service/authentication.service';
+import { AerumNameService } from '@app/aens/services/aerum-name.service';
+
+import Web3 from 'web3';
 
 @Component({
   selector: 'app-manage-aens-contract',
@@ -12,6 +15,7 @@ import { AuthenticationService } from '@app/account/services/authentication-serv
 })
 export class ManageAensContractComponent implements OnInit {
 
+  @Output() priceChange: EventEmitter<number> = new EventEmitter<number>();
   @Input() price: number;
   transferTo: string;
   widthdrawTo: string;
@@ -25,16 +29,21 @@ export class ManageAensContractComponent implements OnInit {
   transferForm: FormGroup;
   widthdrawForm: FormGroup;
 
+  web3: Web3;
+
   constructor(
     private authService: AuthenticationService,
     private notificationService: NotificationService,
     private translateService: TranslateService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private aensService: AerumNameService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     const keystore = this.authService.getKeystore();
     this.account  = "0x" + keystore.address;
+
+    this.web3 = this.authService.initWeb3();
 
     this.transferTo = this.account;
     this.widthdrawTo = this.account;
@@ -51,8 +60,7 @@ export class ManageAensContractComponent implements OnInit {
       widthdrawTo: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
     });
 
-    // TODO: Test code here
-    this.balanceInWei = 10000000000000000000;
+    await this.refreshBalance();
   }
 
   async setPrice() {
@@ -76,8 +84,9 @@ export class ManageAensContractComponent implements OnInit {
   }
 
   async trySetPrice() {
-    // TODO: set price
-    await this.timeout(2000);
+    const newPrice = this.web3.utils.toWei(this.price.toString(10), 'ether');
+    await this.aensService.setPrice(newPrice);
+    this.priceChange.emit(newPrice);
   }
 
   async setOwner() {
@@ -101,8 +110,7 @@ export class ManageAensContractComponent implements OnInit {
   }
 
   async trySetOwner() {
-    // TODO: transfer
-    await this.timeout(2000);
+    await this.aensService.transferOwnership(this.transferTo);
   }
 
   async widthdraw() {
@@ -126,8 +134,14 @@ export class ManageAensContractComponent implements OnInit {
   }
 
   async tryWidthdraw() {
-    // TODO: transfer
-    await this.timeout(5000);
+    // NOTE: Transfer all balance
+    await this.aensService.widthdraw(this.widthdrawTo, this.balanceInWei.toString(10));
+    this.refreshBalance();
+  }
+
+  async refreshBalance() {
+    this.balanceInWei = await this.aensService.getBalance();
+    console.log(`ANS contract balance in wei: ${this.balanceInWei}`);
   }
 
   hasError(control: FormControl) {
@@ -168,10 +182,5 @@ export class ManageAensContractComponent implements OnInit {
 
   showErrorNotification() {
     this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), this.translate('ENS.SET_OWNER_ERROR'), 'aerum', 5000);
-  }
-
-  // TODO: Test method
-  private timeout(time: number) : Promise<number> {
-    return new Promise((resolve) => setTimeout(() => resolve(time), time));
   }
 }

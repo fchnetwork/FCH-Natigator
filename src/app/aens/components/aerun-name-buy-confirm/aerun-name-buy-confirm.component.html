@@ -46,7 +46,7 @@
           {{ 'ENS.ESTIMATED_FEE' | translate }}
         </div>
         <div class="o-table__cell o-data--right">
-          {{ estimatedFeeInWei | convertToEther | number:'1.0-10' }} aero ({{ param.estimatedFeeInGas | number:'1.0-10' }} gas)
+          {{ estimatedFeeInWei | convertToEther | number:'1.0-18' }} aero ({{ param.estimatedFeeInGas | number:'1.0-10' }} gas)
         </div>
       </div>
       <div class="o-table__row">
@@ -54,7 +54,7 @@
           {{ 'ENS.MAX_FEE' | translate }}
         </div>
         <div class="o-table__cell o-data--right">
-          {{ maximumFeeInWei | convertToEther | number:'1.0-10' }} aero ({{ param.maximumFeeInGas | number:'1.0-10' }} gas)
+          {{ maximumFeeInWei | convertToEther | number:'1.0-18' }} aero ({{ param.maximumFeeInGas | number:'1.0-10' }} gas)
         </div>
       </div>
       <div class="o-table__row">
@@ -66,7 +66,7 @@
         </div>
       </div>
     </div>
-    <aer-button (buttonFn)="accept()" class="full-width blue">{{ 'ENS.BTN_MODAL_BUY' | translate }}</aer-button>
-    <aer-button (buttonFn)="dismiss()" class="full-width">{{ 'ENS.BTN_MODAL_CANCEL' | translate }}</aer-button>
+    <aer-button (buttonFn)="accept()" class="large full-width blue">{{ 'ENS.BTN_MODAL_BUY' | translate }}</aer-button>
+    <aer-button (buttonFn)="dismiss()" class="large full-width">{{ 'ENS.BTN_MODAL_CANCEL' | translate }}</aer-button>
   </div>
 </aer-modal-dialog>

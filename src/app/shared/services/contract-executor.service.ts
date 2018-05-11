@@ -15,6 +15,7 @@ export class ContractExecutorService {
   currentWalletAddress: string;
   privateKey: string;
 
+  private readonly contractGasThreshold = 100 * 1000;
   private web3: Web3;
 
   constructor(
@@ -29,7 +30,7 @@ export class ContractExecutorService {
   }
 
   async send(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) {
-    const tx = await this.createSendTx(transaction, options.value);
+    const tx = await this.createSendTx(transaction, options);
     const txHex = this.web3.utils.toHex(tx);
     const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey) as any;
     console.log('Transaction being sent');
@@ -69,9 +70,36 @@ export class ContractExecutorService {
     return response.valueOf();
   }
 
-  private async createSendTx(transaction: TransactionObject<any>, aeroValue = '0') : Promise<Tx> {
-    const aeroValueInWei = this.web3.utils.toWei(aeroValue, 'ether');
-    const contractGasThreshold = 100 * 1000;
+  private createCallTx(transaction: TransactionObject<any>) : Tx {
+    return {
+      chainId: environment.chainId,
+      // NOTE: Accessing private members is not the best way to do this but no need for another parameter
+      to: (transaction as any)._parent._address,
+      from: this.currentWalletAddress,
+      data: transaction.encodeABI()
+    };
+  }
+
+  private async createSendTx(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<Tx> {
+    const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
+    const [gasPrice, estimatedGas, transactionsCount] = await this.getSentTxData(transaction, options);
+
+    console.log(`Transaction estimated gas: ${estimatedGas}`);
+    return {
+      chainId: environment.chainId,
+      // NOTE: Accessing private members is not the best way to do this but no need for another parameter
+      to: (transaction as any)._parent._address,
+      from: this.currentWalletAddress,
+      value: this.web3.utils.toHex(aeroValueInWei),
+      gasPrice: this.web3.utils.toHex(gasPrice),
+      gas: this.web3.utils.toHex(estimatedGas + this.contractGasThreshold),
+      nonce: this.web3.utils.toHex(transactionsCount),
+      data: transaction.encodeABI()
+    };
+  }
+
+  private async getSentTxData(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> { 
+    const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
 
     const getGasPrice = this.web3.eth.getGasPrice();
     const getTransactionsCount = this.web3.eth.getTransactionCount(this.currentWalletAddress);
@@ -85,29 +113,24 @@ export class ContractExecutorService {
     });
 
     const [gasPrice, estimatedGas, transactionsCount] = await Promise.all([getGasPrice, getEstimatedGas, getTransactionsCount]);
+    return [gasPrice, estimatedGas, transactionsCount];
+  }
 
-    console.log(`Transaction estimated gas: ${estimatedGas}`);
-    return {
+  async estimateCost(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> { 
+    const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
+
+    const getGasPrice = this.web3.eth.getGasPrice();
+    const getEstimatedGas = transaction.estimateGas({
       chainId: environment.chainId,
       // NOTE: Accessing private members is not the best way to do this but no need for another parameter
       to: (transaction as any)._parent._address,
       from: this.currentWalletAddress,
       value: this.web3.utils.toHex(aeroValueInWei),
-      gasPrice: this.web3.utils.toHex(gasPrice),
-      gas: this.web3.utils.toHex(estimatedGas + contractGasThreshold),
-      nonce: this.web3.utils.toHex(transactionsCount),
       data: transaction.encodeABI()
-    };
-  }
+    });
 
-  private createCallTx(transaction: TransactionObject<any>) : Tx {
-    return {
-      chainId: environment.chainId,
-      // NOTE: Accessing private members is not the best way to do this but no need for another parameter
-      to: (transaction as any)._parent._address,
-      from: this.currentWalletAddress,
-      data: transaction.encodeABI()
-    };
+    const [gasPrice, estimatedGas] = await Promise.all([getGasPrice, getEstimatedGas]);
+    return [gasPrice, estimatedGas, estimatedGas + this.contractGasThreshold];
   }
 
   private retry<T>(func: () => Promise<T>, times: number, interval: number) : Promise<T> {
