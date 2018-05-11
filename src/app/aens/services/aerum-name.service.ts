@@ -23,6 +23,14 @@ export class AerumNameService {
     this.web3 = this.authService.initWeb3();
   }
 
+  async resolveNameOrAddress(nameOrAddress: string) {
+    if(nameOrAddress.endsWith(".aer")) {
+      return this.resolveAddressFromName(nameOrAddress);
+    }
+
+    return nameOrAddress;
+  }
+
   async resolveAddressFromName(name: string) : Promise<string> {
     if(!name || !name.endsWith(".aer")) {
       throw new Error('Can only resolve not empty names ending with .aer');

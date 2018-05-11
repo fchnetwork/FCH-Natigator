@@ -4,20 +4,9 @@
   <div aerColumn size="sm-6">
     <aer-card title="{{title|translate}}">
       <div aerRow>
-        <!-- TODO: This input with btn is not working on firefox so comment out for now
         <div aerColumn size="sm-12">
           <div class="input-name">{{'SWAP.LOAD.FIELD_SWAP_ID'|translate}}</div>
-          <aer-input [(ngModel)]="swapId" class="with-button" [ngClass]="{'blue': !processing}" buttonLabel="{{'SWAP.LOAD.BTN_LOAD'|translate}}" (buttonFn)="loadSwap()" (keyup)="onSwapIdChange()" [disabled]="processing" ngDefaultControl></aer-input>
-        </div>
-        -->
-        <div aerColumn size="sm-8">
-          <div class="input-name">{{'SWAP.LOAD.FIELD_SWAP_ID'|translate}}</div>
-          <div>
-            <aer-input [(ngModel)]="swapId" (keyup)="onSwapIdChange()" ngDefaultControl></aer-input>
-          </div>
-        </div>
-        <div aerColumn size="sm-4" class="aerColumn__btn-holder">
-          <aer-button class="normal full-width" [ngClass]="{'blue': !processing}" (buttonFn)="loadSwap()" [disabled]="processing">{{'SWAP.LOAD.BTN_LOAD'|translate}}</aer-button>
+          <aer-input [(ngModel)]="swapId" class="with-button" [ngClass]="{'blue': !processing}" buttonLabel="{{'SWAP.LOAD.BTN_LOAD'|translate}}" (buttonFn)="loadSwap()" (keyup)="onSwapIdChange()" [attr.disabled]="processing" ngDefaultControl></aer-input>
         </div>
       </div>
     </aer-card>
