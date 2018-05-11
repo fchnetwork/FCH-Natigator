@@ -60,7 +60,7 @@ export class ManageAensContractComponent implements OnInit {
       widthdrawTo: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
     });
 
-    this.balanceInWei = await this.aensService.getBalance();
+    await this.refreshBalance();
   }
 
   async setPrice() {
@@ -136,6 +136,12 @@ export class ManageAensContractComponent implements OnInit {
   async tryWidthdraw() {
     // NOTE: Transfer all balance
     await this.aensService.widthdraw(this.widthdrawTo, this.balanceInWei.toString(10));
+    this.refreshBalance();
+  }
+
+  async refreshBalance() {
+    this.balanceInWei = await this.aensService.getBalance();
+    console.log(`ANS contract balance in wei: ${this.balanceInWei}`);
   }
 
   hasError(control: FormControl) {

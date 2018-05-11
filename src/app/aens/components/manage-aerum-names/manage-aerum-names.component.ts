@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NotificationService } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -11,6 +11,7 @@ import { BuyConfirmReponse } from '@app/aens/models/buyConfirmReponse';
 import { AerumNameService } from '@app/aens/services/aerum-name.service';
 
 import Web3 from 'web3';
+import { ManageAensContractComponent } from '@app/aens/components/manage-aens-contract/manage-aens-contract.component';
 
 @Component({
   selector: 'app-manage-aerum-names',
@@ -18,6 +19,8 @@ import Web3 from 'web3';
   styleUrls: ['./manage-aerum-names.component.scss']
 })
 export class ManageAerumNamesComponent implements OnInit {
+
+  @ViewChild('manageContractComponent') manageContractComponent: ManageAensContractComponent;
 
   name: string;
   nameToBuy: string;
@@ -64,9 +67,8 @@ export class ManageAerumNamesComponent implements OnInit {
     this.price = this.web3.utils.fromWei(await this.aensService.getPrice(), 'ether');
     this.isOwner = await this.aensService.isRegistrarOwner(this.account);
 
-    // TODO: Test code
+    // TODO: Test code. Just checking if resolve works. Remove later
     await this.aensService.resolveAddressFromName('sidlovskyy-test1.aer');
-    this.isOwner = true;
   }
 
   async checkName() {
@@ -134,10 +136,12 @@ export class ManageAerumNamesComponent implements OnInit {
     this.notificationService.notify(this.translate('ENS.OPERATION_STARTED_TITLE'), this.translate('ENS.OPERATION_IN_PROGRESS'), 'aerum', 3000);
     await this.aensService.buyName(this.nameToBuy, this.account, this.price.toString(10));
     this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.nameToBuy}.aer`, 'aerum');
+
+    await this.manageContractComponent.refreshBalance();
   }
 
   onNamePriceChanged(newPrice: number) {
-    this.price = newPrice;
+    this.price =  this.web3.utils.fromWei(newPrice, 'ether');
   }
 
   hasError(control: FormControl) {
