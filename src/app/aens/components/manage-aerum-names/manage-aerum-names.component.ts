@@ -137,7 +137,9 @@ export class ManageAerumNamesComponent implements OnInit {
     await this.aensService.buyName(this.nameToBuy, this.account, this.price.toString(10));
     this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.nameToBuy}.aer`, 'aerum');
 
-    await this.manageContractComponent.refreshBalance();
+    if(this.manageContractComponent) {
+      await this.manageContractComponent.refreshBalance();
+    }
   }
 
   onNamePriceChanged(newPrice: number) {
