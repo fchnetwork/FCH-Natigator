@@ -5,7 +5,8 @@ import { CreateTransactionComponent } from "@app/wallet/transaction/create-trans
 export const TRANSACTION_ROUTES = [
     {
         path: '',
-        component: CreateTransactionComponent
+        component: CreateTransactionComponent,
+        data: { sidebarGroup: 'swap'}
     }
 ];
 

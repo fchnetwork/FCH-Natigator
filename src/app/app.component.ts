@@ -15,11 +15,7 @@ export class AppComponent implements OnInit {
     private idle: AccountIdleService,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-    router.events.subscribe((val) => {
-      console.log(val);
-    });
-  }
+  ) {  }
 
   ngOnInit() {
     //Start watching for user inactivity.

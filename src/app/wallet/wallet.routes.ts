@@ -15,15 +15,22 @@ export const WALLET_ROUTES = [
             },
             {
                 path: 'home',
-                loadChildren: 'home/home.module#HomeModule'
+                loadChildren: 'app/wallet/home/home.module#HomeModule'
             },
             {
                 path: 'swap',
-                loadChildren: 'swap/swap.module#SwapModule'
+                loadChildren: 'app/wallet/swap/swap.module#SwapModule',
+                data: { sidebarGroup: 'swap'}
             },
             {
                 path: 'transaction',
-                loadChildren: 'transaction/transaction.module#TransactionModule'
+                loadChildren: 'app/wallet/transaction/transaction.module#TransactionModule',
+                data: { sidebarGroup: 'transaction'}
+            },
+            {
+                path: 'explorer',
+                loadChildren: 'app/wallet/explorer/explorer.module#ExplorerModule',
+                data: { sidebarGroup: 'explorer'}
             }
         ]
     }

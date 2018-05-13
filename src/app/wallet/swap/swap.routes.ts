@@ -3,10 +3,8 @@ import { NgModule } from "@angular/core";
 import { CreateSwapComponent } from '@app/wallet/swap/components/create-swap/create-swap.component';
 import { LoadSwapComponent } from '@app/wallet/swap/components/load-swap/load-swap.component';
 
-export const SWAP_ROUTES: Routes = [{
-  path: '',
-  redirectTo: 'create',
-  pathMatch: 'full',
+const SWAP_ROUTES: Routes = [{
+  path: '', 
   children: [
     {
       path: 'create',

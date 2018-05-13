@@ -6,7 +6,7 @@ import { BlocksComponent } from './components/blocks/blocks.component';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 import { NgModule } from "@angular/core";
 
-export const EXPLORER_ROUTES: Routes = [{
+const EXPLORER_ROUTES: Routes = [{
   path: '',
   children: [
     {

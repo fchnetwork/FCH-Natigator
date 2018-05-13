@@ -13,7 +13,7 @@ import { GetBlockModalComponent } from './components/block/get-block-modal/get-b
 import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { EXPLORER_ROUTES, ExplorerRoutingModule } from './explorer.routes'; 
+import { ExplorerRoutingModule } from './explorer.routes'; 
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component'; 
 import { AppUIModule } from '@app/app.ui.module';
 import { SharedModule } from '@app/shared/shared.module'; 
