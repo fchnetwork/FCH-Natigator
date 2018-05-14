@@ -4,6 +4,8 @@ import { NgModule, ModuleWithProviders } from "@angular/core";
 import { AppUIModule } from "../app.ui.module";
 import { LoginComponent } from "./login/login.component";
 import { AvatarSelectComponent } from "./components/avatar-select/avatar-select.component";
+import { PasswordLinesComponent } from "./components/password-lines/password-lines.component";
+
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastModule } from "ng2-toastr";
@@ -42,6 +44,7 @@ export function createTranslateLoader(http: HttpClient) {
         BackupDisclamerComponent,
         LoginComponent,
         AccessRecoveryComponent,
+        PasswordLinesComponent
     ],
     imports: [
         AccountRoutingModule,
@@ -62,7 +65,8 @@ export function createTranslateLoader(http: HttpClient) {
         BackupPromptComponent,
         BackupDisclamerComponent,
         LoginComponent,
-        AccessRecoveryComponent
+        AccessRecoveryComponent,
+        PasswordLinesComponent
     ],
     providers: [
         AuthenticationService,

@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
     'VERY_WEAK': 'red',
     'WEAK': 'yellow',
     'REASONABLE': 'green',
-    'STRONG': 'green',
+    'STRONG': 'blue',
     'VERY_STRONG': 'blue'
   }
   passwordStrength = {
