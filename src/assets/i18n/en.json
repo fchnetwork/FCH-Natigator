@@ -8,9 +8,28 @@
 "SIGNED_UP_SUFFIX": "from a previous backup",
 "CHOOSE_AVATAR": "Choose your address avatar:",
 "UNIQUE_AVATAR": "This avatar is unique. You cannot change it later.",
-"VERY_WEAK_PASSWORD": "Your password is easily guessed. Combine uppercase & lowercase letters. Add special characters.",
-"MEDIUM_PASSWORD": "Your password is good enough to proceed, but it is recommended to strengthen your password further.",
-"STRONG_PASSWORD": "This password will withstand most typical brute-force attacks. Please ensure that you will remember it.",
+
+"VERY_WEAK": {
+  "DESCRIPTION": "Your password is easily guessed. Combine uppercase & lowercase letters. Add special characters.",
+  "TITLE": "Very Weak"
+},
+"WEAK": {
+  "DESCRIPTION": "Your password is easily guessed. Combine uppercase & lowercase letters. Add special characters.",
+  "TITLE": "Weak"
+},
+"REASONABLE": {
+  "DESCRIPTION": "Your password is good enough to proceed, but it is recommended to strengthen your password further.",
+  "TITLE": "Good"
+},
+"STRONG": {
+  "DESCRIPTION": "Your password is good enough to proceed, but it is recommended to strengthen your password further.",
+  "TITLE": "Strong"
+},
+"VERY_STRONG": {
+  "DESCRIPTION": "This password will withstand most sophisticated brute-force attacks. Please ensure that you will remember it.",
+  "TITLE": "Very Strong"
+},
+
 "ACCESS_RECOVERY": "Access Recovery",
 "CREATE_BACKUP": "Backup",
 "BACKUP_PHRASE":"You must save the mneumonic seed. It is the only one way to recover access",

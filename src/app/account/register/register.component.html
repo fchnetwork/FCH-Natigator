@@ -11,9 +11,9 @@
             <p class="paragraph--small">{{ 'CHOOSE_AVATAR' | translate }}</p>
             <app-avatar-select formControlName="avatar"></app-avatar-select>
             <p class="paragraph--small">{{ 'UNIQUE_AVATAR' | translate }}</p>
-            <aer-input data-cy="password" placeholder="Choose your password" type="password" class="with-button {{ passwordStrength.class }}" buttonLabel="{{ passwordStrength.strength }}" formControlName="password" [(ngModel)]="password" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
-            <p class="paragraph--small">{{ passwordStrength.description | translate }}</p>
-            <aer-input data-cy="repeat_password" placeholder="Repeat password" type="password" formControlName="confirmPassword" [(ngModel)]="confirmPassword" ngDefaultControl equalValidator="password"></aer-input>
+            <aer-input icon="key" data-cy="password" placeholder="Choose your password" type="password" class="with-button {{ passwordStrength.class }}" buttonLabel="{{ passwordStrength.strength + '.TITLE' | translate }}" formControlName="password" [(ngModel)]="password" ngDefaultControl equalValidator="confirmPassword" reverse="true" (keyup)="onKey($event)"></aer-input>
+            <p class="paragraph--small">{{ passwordStrength.strength + '.DESCRIPTION' | translate }}</p>
+            <aer-input icon="key" data-cy="repeat_password" placeholder="Repeat password" type="password" formControlName="confirmPassword" [(ngModel)]="confirmPassword" ngDefaultControl equalValidator="password"></aer-input>
             <aer-button data-cy="continue" class="large full-width" [ngClass]="{'disabled': !registerForm.valid}" [disabled]="!registerForm.valid" (click)="onSubmit()">Continue</aer-button> 
         </form>
     </div>
