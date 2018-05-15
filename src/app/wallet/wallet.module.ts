@@ -17,6 +17,9 @@ import { CoreModule } from "@app/core/core.module";
     ],
     declarations: [
         WalletComponent
+    ],
+    exports: [
+        WalletComponent
     ]
 })
 export class WalletModule { }
