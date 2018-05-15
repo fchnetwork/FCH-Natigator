@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit, EventEmitter, AfterViewChecked, ChangeDetectorRef, OnDestroy, AfterContentInit, AfterContentChecked } from '@angular/core';
 import { Router, RoutesRecognized, ActivatedRoute, NavigationEnd, Data } from '@angular/router';
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service'; 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-wallet',

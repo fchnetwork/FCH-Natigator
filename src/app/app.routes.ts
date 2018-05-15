@@ -1,9 +1,8 @@
 import { RouterModule, PreloadAllModules } from "@angular/router";
-import { NgModule } from "@angular/core"; 
-import { CanActivateViaAuthGuard } from "@app/core/auth-guards/can-activate-auth.guard";
+import { NgModule } from "@angular/core";   
+import { CanActivateViaAuthGuard } from "@app/core/authentication/auth-guards/can-activate-auth.guard";
 
-
-export const ROUTES = [
+const ROUTES = [
   {
     path: '',
     redirectTo: 'wallet',
@@ -18,7 +17,7 @@ export const ROUTES = [
     path: 'wallet',
     canActivate: [CanActivateViaAuthGuard],
     loadChildren: 'app/wallet/wallet.module#WalletModule'
-  },
+  }, 
   { 
     path: '**',
     redirectTo: '/not-found'

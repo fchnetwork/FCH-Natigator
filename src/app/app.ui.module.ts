@@ -19,6 +19,7 @@ import {
    NotificationModule,
    SelectModule,
    GridModule,
+   ExpandableModule,
 } from "@aerum/ui";
 
 
@@ -41,7 +42,8 @@ import {
        SelectModule,
        GridModule,
        FileUploadModule,
-       NotificationModule
+       NotificationModule,
+       ExpandableModule,
    ],
    exports: [
        // UI Framework Modules
@@ -61,7 +63,8 @@ import {
        SelectModule,
        GridModule,
        FileUploadModule,
-       NotificationModule
+       NotificationModule,
+       ExpandableModule,
    ]
 })
 export class AppUIModule { }

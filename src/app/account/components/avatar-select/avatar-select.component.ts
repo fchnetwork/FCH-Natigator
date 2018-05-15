@@ -1,6 +1,6 @@
 import { Component, Input, forwardRef, OnInit } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR,  } from '@angular/forms'; 
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR,  } from '@angular/forms';  
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-avatar-select',

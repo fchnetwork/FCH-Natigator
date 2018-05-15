@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AccountIdleService } from '@app/core/account-idle-service/account-idle.service';
+import { ActivatedRoute, Router } from '@angular/router'; 
+import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
 
 @Component({
   selector: 'app-root',
@@ -26,5 +26,9 @@ export class AppComponent implements OnInit {
 
     // Start watch when time is up.
     this.idle.onTimeout().subscribe(() => console.log('Time is up!'));
+
+    console.log(`Current Env: ${environment.configInUse}`);
+    console.log(`Current HttpProvider: ${environment.HttpProvider}`);
+
   }
 }

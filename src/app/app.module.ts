@@ -8,8 +8,7 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.routes";
 import { AccountModule } from "./account/account.module";
 import { SharedModule } from "./shared/shared.module";
-import { AppUIModule } from "./app.ui.module";
-import { BasicModalComponent } from "@app/shared/components/modals/basic-modal/basic-modal.component";
+import { AppUIModule } from "./app.ui.module"; 
 import { CoreModule } from "@app/core/core.module";
 
 @NgModule({

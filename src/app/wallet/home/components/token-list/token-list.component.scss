@@ -8,6 +8,16 @@
 
   .add-token {
     text-align: right;
+
+    span {
+      cursor: pointer;
+      padding: 4px 8px;
+
+      &:hover {
+        background-color: #eaecf0;
+        border-radius: 4px;
+      }
+    }
   }
 
   .token-item {
@@ -15,12 +25,7 @@
     margin: 0 -15px;
 
     .token-img {
-
-      span {
-        height: 35px;
-        width: 35px;
-        background-color: gray;
-      }
+      font-size: 20px;
     }
 
     .name {

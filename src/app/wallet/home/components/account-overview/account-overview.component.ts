@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core'; 
-import { SessionStorageService } from 'ngx-webstorage'; 
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
-import { TransactionService } from '@app/core/transaction-service/transaction-service.service';
-import { ClipboardService } from '@app/core/clipboard-service/clipboard.service'; 
-import { InternalNotificationService } from '@app/core/internal-notification-service/internal-notification.service';
+import { SessionStorageService } from 'ngx-webstorage';    
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { TransactionService } from '@app/core/transaction-service/transaction.service';
+import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
+import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 
 @Component({
   selector: 'app-account-overview',

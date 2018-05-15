@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
  
-import { ContractExecutorService } from './contract-executor.service';
 
 import Web3 from 'web3';
 import { Contract } from 'web3/types';
-import { tokensABI } from "@app/abi/tokens";
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
+import { tokensABI } from "@app/core/abi/tokens"; 
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { ContractExecutorService } from '@app/core/contract/contract-executor.service';
 
 @Injectable()
 export class ERC20TokenService {

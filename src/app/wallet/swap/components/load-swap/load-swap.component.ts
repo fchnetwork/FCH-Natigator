@@ -5,14 +5,14 @@ import { environment } from 'environments/environment';
 
 import Web3 from 'web3';
 import { TransactionReceipt } from 'web3/types';
-import { SwapMode, LoadedSwap, SwapStatus } from '@app/wallet/swap/models/models';
-import { AeroToErc20SwapService } from '@app/wallet/swap/services/aero-to-erc20-swap.service';
-import { Erc20ToAeroSwapService } from '@app/wallet/swap/services/erc20-to-aero-swap.service';
-import { Erc20ToErc20SwapService } from '@app/wallet/swap/services/erc20-to-erc20-swap.service';
-import { ERC20TokenService } from '@app/wallet/swap/services/erc20-token.service'; 
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
-import { ModalService } from '@app/core/modal-service/modal.service';
+import { SwapMode, LoadedSwap, SwapStatus } from '@app/wallet/swap/models/models';  
 import { TokenService } from '@app/core/token-service/token.service';
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { AeroToErc20SwapService } from '@app/core/swap/aero-to-erc20-swap.service';
+import { Erc20ToAeroSwapService } from '@app/core/swap/erc20-to-aero-swap.service';
+import { Erc20ToErc20SwapService } from '@app/core/swap/erc20-to-erc20-swap.service';
+import { ERC20TokenService } from '@app/core/swap/erc20-token.service';
+import { ModalService } from '@app/core/general/modal-service/modal.service';
 
 interface SwapCommonOperationsService {
   expireSwap(swapId: string) : Promise<TransactionReceipt>;
@@ -96,7 +96,7 @@ export class LoadSwapComponent implements OnInit {
     const loadedSwap = await this.mapToLoadedSwap(this.swapId, swap);
     console.log(loadedSwap);
 
-    const modalResult = await this.modalService.openLoadCreateConfirm(loadedSwap);
+    const modalResult = await this.modalService.openSwapLoadConfirm(loadedSwap);
     if(modalResult.confirmed) {
       this.notificationService.notify('Swap completion in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
       await this.confirm(loadedSwap);

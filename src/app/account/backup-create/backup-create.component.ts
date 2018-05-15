@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core'; 
 import { RegistrationRouteData } from '../models/RegistrationRouteData';
 import { AerumBackupFile } from '../../shared/components/file-download/file-download';
-import { Router } from '@angular/router'; 
-import { ClipboardService } from '@app/core/clipboard-service/clipboard.service';
-import { RouteDataService } from '@app/core/route-data-service/route-data.service'; 
-import { InternalNotificationService } from '@app/core/internal-notification-service/internal-notification.service';
+import { Router } from '@angular/router';  
+import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
+import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
+import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 
 @Component({
   selector: 'app-backup-create',

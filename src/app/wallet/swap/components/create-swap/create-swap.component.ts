@@ -5,13 +5,14 @@ import { SessionStorageService } from 'ngx-webstorage';
 import { NotificationService } from "@aerum/ui";
 
 import { environment } from 'environments/environment'; 
-import { SwapToken, SwapMode } from '@app/wallet/swap/models/models';
-import { ERC20TokenService } from '@app/wallet/swap/services/erc20-token.service';
-import { AeroToErc20SwapService } from '@app/wallet/swap/services/aero-to-erc20-swap.service';
-import { Erc20ToAeroSwapService } from '@app/wallet/swap/services/erc20-to-aero-swap.service';
-import { Erc20ToErc20SwapService } from '@app/wallet/swap/services/erc20-to-erc20-swap.service';
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
-import { ModalService } from '@app/core/modal-service/modal.service';
+import { SwapToken, SwapMode } from '@app/wallet/swap/models/models';  
+import { AerumNameService } from '@app/core/aens/aerum-name.service';
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { ERC20TokenService } from '@app/core/swap/erc20-token.service';
+import { AeroToErc20SwapService } from '@app/core/swap/aero-to-erc20-swap.service';
+import { Erc20ToAeroSwapService } from '@app/core/swap/erc20-to-aero-swap.service';
+import { Erc20ToErc20SwapService } from '@app/core/swap/erc20-to-erc20-swap.service';
+import { ModalService } from '@app/core/general/modal-service/modal.service';
 
 @Component({
   selector: 'create-swap',
@@ -42,7 +43,8 @@ export class CreateSwapComponent implements OnInit {
     private aeroToErc20SwapService: AeroToErc20SwapService,
     private erc20ToAeroSwapService: Erc20ToAeroSwapService,
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
-    public formBuilder: FormBuilder
+    private aensService: AerumNameService,
+    private formBuilder: FormBuilder
   ) { }
 
   async ngOnInit() {
@@ -178,7 +180,7 @@ export class CreateSwapComponent implements OnInit {
       this.swapId,
       this.tokenAmount.toString(10),
       counterpartyTokenAmount.toString(10),
-      this.counterpartyAddress,
+      await this.aensService.resolveNameOrAddress(this.counterpartyAddress),
       this.counterpartyToken.address
     );
   }
@@ -191,7 +193,7 @@ export class CreateSwapComponent implements OnInit {
       tokenAmount.toString(10),
       this.token.address,
       this.counterpartyTokenAmount.toString(10),
-      this.counterpartyAddress
+      await this.aensService.resolveNameOrAddress(this.counterpartyAddress),
     );
   }
 
@@ -204,7 +206,7 @@ export class CreateSwapComponent implements OnInit {
       tokenAmount.toString(10),
       this.token.address,
       counterpartyTokenAmount.toString(10),
-      this.counterpartyAddress,
+      await this.aensService.resolveNameOrAddress(this.counterpartyAddress),
       this.counterpartyToken.address
     );
   }

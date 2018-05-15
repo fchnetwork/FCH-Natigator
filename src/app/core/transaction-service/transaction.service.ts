@@ -5,10 +5,10 @@ import { Observable } from 'rxjs/Observable';
 import * as Moment from 'moment'; 
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage'; 
-import { tokensABI } from '@app/abi/tokens';
-import { environment } from '@env/environment';
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
-import { ModalService } from '@app/core/modal-service/modal.service';
+import { tokensABI } from '@app/core/abi/tokens';
+import { environment } from '@env/environment'; 
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { ModalService } from '@app/core/general/modal-service/modal.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -137,7 +137,7 @@ export class TransactionService {
               nonce: this.web3.utils.toHex( nonce ), 
               gas: this.web3.utils.toHex( gas ),
               // TODO: export it to any config and import from there
-              gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( "1", 'gwei')),
+              gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( environment.gasPrice, 'gwei')),
               to,
               value: txValue,
               // data: txData
@@ -159,7 +159,7 @@ export class TransactionService {
                 }).catch( error => {
                   console.log(error);
                   if(external) {
-                    window.location.href=urls.failed;
+                    // window.location.href=urls.failed;
                   }
                     // alert( error )
                 });
@@ -198,7 +198,7 @@ export class TransactionService {
       }).catch( error => {
         console.log(error);
         if(external) {
-          window.location.href=urls.failed;
+          // window.location.href=urls.failed;
         }
           // alert( error )
       });

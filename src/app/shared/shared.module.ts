@@ -30,6 +30,8 @@ import { AppUIModule } from '@app/app.ui.module';
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
 import { ChartComponent } from '@app/shared/components/chart/chart.component';
 import { NgxEchartsModule } from 'ngx-echarts'; 
+import { WeiToGweiPipe } from '@app/shared/pipes/wei-to-gwei.pipe';
+import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe'; 
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -70,8 +72,10 @@ export function createTranslateLoader(http: HttpClient) {
     HextoDecimalPipe,
     SidebarAccountSelectComponent,
     TruncatePipe,
-    ChartComponent,
-  ], 
+    WeiToGweiPipe,
+    ChartComponent, 
+    CropAddressPipe
+  ],
   exports:[
     I18nComponent,
     DividerComponent,
@@ -90,9 +94,11 @@ export function createTranslateLoader(http: HttpClient) {
     HextoAsciiPipe,
     HextoDecimalPipe,
     TruncatePipe,
+    WeiToGweiPipe,
     SidebarAccountSelectComponent,
     ChartComponent,
     NgxEchartsModule,
+    CropAddressPipe,
   ]
 })
 

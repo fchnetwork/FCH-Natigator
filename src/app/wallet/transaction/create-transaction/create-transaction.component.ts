@@ -5,13 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { SessionStorageService } from 'ngx-webstorage'; 
 import * as CryptoJs from 'crypto-js';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';  
-import { environment } from '@env/environment';
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
-import { ModalService } from '@app/core/modal-service/modal.service';
-import { ClipboardService } from '@app/core/clipboard-service/clipboard.service'; 
-import { TransactionService } from '@app/core/transaction-service/transaction-service.service';
-import { InternalNotificationService } from '@app/core/internal-notification-service/internal-notification.service';
+import { environment } from '@env/environment';  
 import { TokenService } from '@app/core/token-service/token.service';
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { TransactionService } from '@app/core/transaction-service/transaction.service';
+import { ModalService } from '@app/core/general/modal-service/modal.service';
+import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
+import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -55,6 +55,7 @@ export class CreateTransactionComponent implements OnInit {
   redirectUrl: string;
   external = false;
   hash: any;
+  querySenderAddress: any;
   assetAddress: any;
   timeStamp: any;
   returnUrlFailed: any;
@@ -148,6 +149,7 @@ export class CreateTransactionComponent implements OnInit {
         if(params.query) {
           const parsed = JSON.parse(params.query);
           this.senderAddress = parsed.from ? parsed.from : this.senderAddress;
+          this.querySenderAddress = parsed.from;
           this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
           this.amount = parsed.amount ? parsed.amount : this.amount;
           this.isToken = parsed.assetAddress === "0" ? false : true;
@@ -261,16 +263,17 @@ export class CreateTransactionComponent implements OnInit {
   }
 
   checkHash(pin){
-    if(this.external) {
-      return String(this.hash) === String(this.web3.utils.keccak256(`${this.senderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
-    }
+    // if(this.external) {
+    //   return String(this.hash) === String(this.web3.utils.keccak256(`${this.querySenderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
+    // }
     return true;
   }
 
   openTransactionConfirm(message) {
     this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
       const urls = {success: this.redirectUrl, failed: this.returnUrlFailed};
-      const validHash = this.checkHash(result.pin ? result.pin : '');
+      // const validHash = this.checkHash(result.pin ? result.pin : '');
+      const validHash = true;
       if(result.result === true && validHash) {
         const privateKey = this.sessionStorageService.retrieve('private_key');
         const address = this.sessionStorageService.retrieve('acc_address');
@@ -308,8 +311,9 @@ export class CreateTransactionComponent implements OnInit {
           sender:  this.senderAddress,
           recipient: this.receiverAddress,
           amount:  this.amount,
-          fee: this.totalAmount,
+          fee: this.maxTransactionFeeEth,
           maxFee: this.maxTransactionFee,
+          token: this.selectedToken.symbol
         };
 
         if(res.length > 3) {

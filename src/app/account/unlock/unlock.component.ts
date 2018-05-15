@@ -5,8 +5,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
 import { SessionStorageService } from 'ngx-webstorage';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
+import { Cookie } from 'ng2-cookies/ng2-cookies'; 
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 
 @Component({

@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
  
 import { iTransaction, iBlocks } from '@shared/app.interfaces'; 
 import { setInterval } from 'timers'; 
-import { ExplorerService } from '@app/core/explorer-service/explorer.service';
-import { ModalService } from '@app/core/modal-service/modal.service';
+import { ExplorerService } from '@app/core/explorer-service/explorer.service'; 
+import { ModalService } from '@app/core/general/modal-service/modal.service';
 
 
 @Component({

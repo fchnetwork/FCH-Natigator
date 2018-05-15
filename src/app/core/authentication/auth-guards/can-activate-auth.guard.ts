@@ -1,8 +1,8 @@
 import { ActivatedRouteSnapshot, Router, CanActivate } from "@angular/router";
-import { SessionStorageService } from "ngx-webstorage";
-import { AuthenticationService } from "@app/core/authentication-service/authentication.service";
+import { SessionStorageService } from "ngx-webstorage"; 
 import { Injectable } from "@angular/core";
 import { Cookie } from "ng2-cookies/ng2-cookies";
+import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 
 @Injectable()
 export class CanActivateViaAuthGuard implements CanActivate {

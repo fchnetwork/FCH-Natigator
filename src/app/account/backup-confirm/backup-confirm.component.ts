@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core'; 
 import { RegistrationRouteData } from '../models/RegistrationRouteData';
-import { Router } from '@angular/router'; 
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
-import { RouteDataService } from '@app/core/route-data-service/route-data.service';
+import { Router } from '@angular/router';   
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 
 @Component({
   selector: 'app-backup-confirm',

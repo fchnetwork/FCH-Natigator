@@ -1,15 +1,18 @@
 .sidebar_header {
-  padding: 20px 10px 10px 10px;
+  height: 104px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 
   .avatar {
-  //  float: left;
-    width: 30%;
+    padding-left: 22px;
+    margin-right: 10px;
 
     // WARNING: double code!
     // TODO: refactor to global this class
     .c-avatar__img {
-      width: 49px;
-      height: 49px;
+      width: 50px;
+      height: 50px;
       overflow: hidden;
       border-radius: 50%;
       background-position: center center;
@@ -18,50 +21,51 @@
       -webkit-filter: brightness(2.2) saturate(2);
       filter: brightness(2.2) saturate(2);
       box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.75);
-
-      @media screen and (max-width: 1024px) and (min-width: 480px) {
-        height: 30px;
-        width: 30px;
-      }
     }
-  }
-
-  .user_data,
-  .avatar {
-    display: inline-block;
-    vertical-align: middle;
   }
 
   .user_data {
     color: white;
-    font-size: 19px;
-    text-align: center;
-    margin: 0 auto;
-
-    @media screen and (max-width: 1024px) and (min-width: 480px) {
-      font-size: 10px;
-    }
-
-    span {
-      color: #fff;
-    }
-
-    a {
-      color: #fff;
-    }
 
     .address {
-      font-size: 16px;
+      font-size: 15px;
       white-space: nowrap;
       display: block;
       width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .welcome {
+      font-size: 13px;
+      color: #D1D1D1;
+    }
   }
 
   .clearfix {
     clear: both;
+  }
+
+  @media screen and (max-width: 1024px) {
+    justify-content: center;
+    height: 50px;
+
+    .user_data {
+      display:none;
+    }
+
+    .avatar {
+      padding: 0;
+      margin: 0;
+      .c-avatar__img {
+        height: 30px;
+        width: 30px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    display: none;
   }
 }
 

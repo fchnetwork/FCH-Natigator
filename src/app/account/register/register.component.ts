@@ -4,8 +4,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { testAccount } from '../../shared/helpers/data.mock';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 import { RegistrationRouteData } from '../models/RegistrationRouteData';
-import { Router } from '@angular/router'; 
-import { RouteDataService } from '@app/core/route-data-service/route-data.service';
+import { Router } from '@angular/router';  
+import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +18,11 @@ export class RegisterComponent implements OnInit {
   password: string;
   confirmPassword: string;
   avatar: string;
+  passwordStrength = {
+    strength: 'Very Weak',
+    class: 'blue',
+    description: 'VERY_WEAK_PASSWORD',
+  };
 
   constructor(public translate: TranslateService, public formBuilder: FormBuilder, public router: Router, private routeDataService: RouteDataService<RegistrationRouteData>) { }
 

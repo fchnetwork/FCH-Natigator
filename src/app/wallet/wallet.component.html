@@ -9,6 +9,8 @@
     <aer-sidebar-item iconName="check-square-o" [routerLink]="['/wallet/swap/load']">{{'SWAP.SUB_MENU_LOAD_SWAP_ITEM_NAME'|translate}}</aer-sidebar-item>
   </aer-sidebar-group> 
 
+  <aer-sidebar-group title="{{'ENS.MAIN_MENU_ITEM_NAME'|translate}}" iconName="ans" [single]="true" [routerLink]="['/wallet/aens']" routerLinkActive="route-selected"></aer-sidebar-group>
+
   <aer-sidebar-group title="{{'INFORMATION'|translate}}" iconName="bc-explorer" groupName="explorer">
     <aer-sidebar-item iconName="blocks" [routerLink]="['/wallet/explorer/blocks']">{{'BLOCKS'|translate}}</aer-sidebar-item>
     <aer-sidebar-item iconName="transaction" [routerLink]="['/wallet/explorer/transactions']">{{'TRANSACTIONS'|translate}}</aer-sidebar-item>

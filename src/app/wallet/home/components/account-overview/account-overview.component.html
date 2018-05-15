@@ -2,13 +2,13 @@
     <div aerRow>
       <div aerColumn size="sm-8">
           <span class="title">Overview</span>
-          <span class="balance">{{walletBalance}} Aero</span>
+          <span class="balance">{{walletBalance | number:'.6'}} Aero</span>
+          <div class="address">
+            <span (click)="copyToClipboard()">0x{{address | slice:0:5}}...{{address | slice:-5}}</span>
+          </div>
       </div>
       <div class="qr" aerColumn size="sm-4">
           <img [src]="addressQR" alt="">
       </div>
-    </div>
-    <div class="address">
-      <span (click)="copyToClipboard()">0x{{address}}</span>
     </div>
 </aer-card>

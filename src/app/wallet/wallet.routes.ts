@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { WalletComponent } from './wallet.component';
-import { CanActivateViaAuthGuard } from "@app/core/auth-guards/can-activate-auth.guard";
+import { WalletComponent } from './wallet.component'; 
 
 export const WALLET_ROUTES = [ 
     {
@@ -31,6 +30,10 @@ export const WALLET_ROUTES = [
                 path: 'explorer',
                 loadChildren: 'app/wallet/explorer/explorer.module#ExplorerModule',
                 data: { sidebarGroup: 'explorer'}
+            },
+            {
+                path: 'aens',
+                loadChildren: 'app/wallet/aens/aens.module#AensModule'
             }
         ]
     }

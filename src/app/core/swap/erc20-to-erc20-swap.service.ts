@@ -1,16 +1,17 @@
-const artifacts = require('./abi/AtomicSwapEtherToERC20.json');
+const artifacts = require('../abi/AtomicSwapERC20ToERC20.json');
 
 import { Injectable } from '@angular/core';
 
 import { environment } from 'environments/environment'; 
-import { ContractExecutorService } from './contract-executor.service';
 
 import Web3 from 'web3';
-import { Contract } from 'web3/types';
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
+import { Contract } from 'web3/types'; 
+import { ContractExecutorService } from '@app/core/contract/contract-executor.service';
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+
 
 @Injectable()
-export class AeroToErc20SwapService {
+export class Erc20ToErc20SwapService {
 
   private web3: Web3;
   private contract: Contract;
@@ -18,19 +19,21 @@ export class AeroToErc20SwapService {
   constructor(
     private authenticationService: AuthenticationService,
     private contractExecutorService: ContractExecutorService
-  ) { 
+  ) {
     this.web3 = this.authenticationService.initWeb3();
-    this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.address.AeroToErc20);
+    this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.address.Erc20ToErc20);
   }
 
-  async openSwap(swapId: string, aeroValue: string, erc20Value: string, erc20Trader: string, erc20ContractAddress: string) {
+  async openSwap(swapId: string, openValue: string, openContractAddress: string, closeValue: string, closeTrader: string, closeContractAddress: string) {
     const openSwap = this.contract.methods.open(
       this.web3.utils.fromAscii(swapId),
-      erc20Value,
-      erc20Trader,
-      erc20ContractAddress
+      openValue,
+      openContractAddress,
+      closeValue,
+      closeTrader,
+      closeContractAddress
     );
-    const receipt = await this.contractExecutorService.send(openSwap, { value: aeroValue });
+    const receipt = await this.contractExecutorService.send(openSwap);
     return receipt;
   }
 

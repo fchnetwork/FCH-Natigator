@@ -4,9 +4,8 @@ import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject'; 
 
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
-  
+import { Cookie } from 'ng2-cookies/ng2-cookies';   
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-access-recovery',

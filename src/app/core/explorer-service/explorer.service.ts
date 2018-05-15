@@ -10,8 +10,8 @@ import 'rxjs/Rx';
 import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { environment } from '@env/environment';
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
+import { environment } from '@env/environment'; 
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 const ethJsUtil = require('ethereumjs-util');
 const Web3 = require('web3');

@@ -1,26 +1,37 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
-import { ModalService } from '@app/core/modal-service/modal.service';
-import { RouteDataService } from '@app/core/route-data-service/route-data.service';
-import { ClipboardService } from '@app/core/clipboard-service/clipboard.service'; 
-import { AccountIdleService } from '@app/core/account-idle-service/account-idle.service';
-import { AuthenticationService } from '@app/core/authentication-service/authentication.service';
-import { TransactionService } from '@app/core/transaction-service/transaction-service.service';
+import { CommonModule } from '@angular/common';   
+import { TransactionService } from '@app/core/transaction-service/transaction.service';
 import { ExplorerService } from '@app/core/explorer-service/explorer.service';
-import { TokenService } from '@app/core/token-service/token.service'; 
-import { InternalNotificationService } from '@app/core/internal-notification-service/internal-notification.service';
-import { CanActivateAccountAuthGuard } from '@app/core/auth-guards/can-activate-account.guard';
-import { CanActivateViaAuthGuard } from '@app/core/auth-guards/can-activate-auth.guard';
+import { TokenService } from '@app/core/token-service/token.service';  
 import { AerumStatsService } from '@app/core/aerum-stats-service/aerum-stats.service';
 import { AerumStatsWebsocketsService } from '@app/core/aerum-stats-websockets-service/aerum-stats-websockets.service';
+import { AerumNameService } from '@app/core/aens/aerum-name.service';
+import { AensFixedPriceRegistrarContractService } from '@app/core/aens/aens-fixed-price-registrar-contract.service';
+import { AensPublicResolverContractService } from '@app/core/aens/aens-public-resolver-contract.service';
+import { AensRegistryContractService } from '@app/core/aens/aens-registry-contract.service';
+import { AeroToErc20SwapService } from '@app/core/swap/aero-to-erc20-swap.service';
+import { Erc20ToAeroSwapService } from '@app/core/swap/erc20-to-aero-swap.service';
+import { Erc20ToErc20SwapService } from '@app/core/swap/erc20-to-erc20-swap.service';
+import { ERC20TokenService } from '@app/core/swap/erc20-token.service';
+import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { CanActivateAccountAuthGuard } from '@app/core/authentication/auth-guards/can-activate-account.guard';
+import { CanActivateViaAuthGuard } from '@app/core/authentication/auth-guards/can-activate-auth.guard';
+import { BaseContractService } from '@app/core/contract/base-contract-service';
+import { ContractExecutorService } from '@app/core/contract/contract-executor.service';
+import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
+import { ModalService } from '@app/core/general/modal-service/modal.service';
+import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 
 @NgModule({
   imports: [
     CommonModule
   ], 
   providers: [
+    ContractExecutorService, 
     AccountIdleService,
-    AuthenticationService,
+    AuthenticationService,    
     ClipboardService,
     ExplorerService,
     ModalService,
@@ -31,7 +42,15 @@ import { AerumStatsWebsocketsService } from '@app/core/aerum-stats-websockets-se
     CanActivateAccountAuthGuard,
     CanActivateViaAuthGuard,
     AerumStatsService,
-    AerumStatsWebsocketsService
+    AerumStatsWebsocketsService,
+    AerumNameService,
+    AensFixedPriceRegistrarContractService,
+    AensPublicResolverContractService,
+    AensRegistryContractService,
+    AeroToErc20SwapService,
+    Erc20ToAeroSwapService,
+    Erc20ToErc20SwapService,
+    ERC20TokenService    
   ],
 })
 export class CoreModule { }

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Overlay } from 'ngx-modialog'; 
 import { Modal, DialogRef, overlayConfigFactory, OverlayConfig, ModalComponent, ContainerContent } from "ngx-modialog";
-import { BSModalContext } from "ngx-modialog/plugins/bootstrap";
-import { BackupDisclamerComponent } from '../../account/backup-disclamer/backup-disclamer.component'; 
+import { BSModalContext } from "ngx-modialog/plugins/bootstrap"; 
 import { TransactionSignModalComponent } from '@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component';
 import { AddTokenComponent } from '@app/wallet/home/components/add-token/add-token.component';
 import { BlockModalComponent } from '@app/wallet/explorer/components/block/block-modal/block-modal.component';
@@ -10,6 +9,8 @@ import { GetBlockModalComponent } from '@app/wallet/explorer/components/block/ge
 import { TransactionModalComponent } from '@app/wallet/explorer/components/transaction/transaction-modal/transaction-modal.component';
 import { CreateSwapConfirmComponent } from '@app/wallet/swap/components/create-swap/create-swap-confirm/create-swap-confirm.component';
 import { LoadSwapConfirmComponent } from '@app/wallet/swap/components/load-swap/load-swap-confirm/load-swap-confirm.component';
+import { AerunNameBuyConfirmComponent } from '@app/wallet/aens/components/aerun-name-buy-confirm/aerun-name-buy-confirm.component';
+import { BackupDisclamerComponent } from '@app/account/backup-disclamer/backup-disclamer.component';
 
 @Injectable()
 export class ModalService {
@@ -57,7 +58,11 @@ export class ModalService {
     return this.openModal(CreateSwapConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 
-  openLoadCreateConfirm(data?: any): Promise<any> {
+  openSwapLoadConfirm(data?: any): Promise<any> {
     return this.openModal(LoadSwapConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
+  }
+
+  openBuyAensConfirm(data?: any): Promise<any> {
+    return this.openModal(AerunNameBuyConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 }
