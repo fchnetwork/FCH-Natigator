@@ -3,6 +3,8 @@ import { CommonModule } from "@angular/common";
 import { NgModule, ModuleWithProviders } from "@angular/core";
 import { AppUIModule } from "../app.ui.module"; 
 import { AvatarSelectComponent } from "./components/avatar-select/avatar-select.component";
+import { PasswordLinesComponent } from "./components/password-lines/password-lines.component";
+
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ToastModule } from "ng2-toastr";
@@ -32,6 +34,7 @@ import { UnlockComponent } from "@app/account/unlock/unlock.component";
         BackupPromptComponent,
         BackupDisclamerComponent,
         AccessRecoveryComponent,
+        PasswordLinesComponent
     ],
     imports: [
         AccountRoutingModule,
@@ -50,7 +53,8 @@ import { UnlockComponent } from "@app/account/unlock/unlock.component";
         BackupConfirmComponent,
         BackupPromptComponent,
         BackupDisclamerComponent, 
-        AccessRecoveryComponent
+        AccessRecoveryComponent,
+        PasswordLinesComponent
     ]
 })
 export class AccountModule { } 

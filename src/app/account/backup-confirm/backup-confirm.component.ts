@@ -33,7 +33,7 @@ export class BackupConfirmComponent implements OnInit {
     const data = this.routeDataService.routeData;
     this.authService.saveKeyStore( data.privateKey, data.password, this.seed);
     this.routeDataService.clear();
-    this.router.navigate(['/transaction']);
+    this.router.navigate(['/wallet/home']);
   }
 
   clear() {

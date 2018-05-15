@@ -23,6 +23,7 @@ import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
+import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import { RouteDataService } from '@app/core/general/route-data-service/route-dat
     AeroToErc20SwapService,
     Erc20ToAeroSwapService,
     Erc20ToErc20SwapService,
-    ERC20TokenService    
+    ERC20TokenService,
+    PasswordCheckerService
   ],
 })
 export class CoreModule { }
