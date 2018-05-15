@@ -13,7 +13,8 @@
     "test": "karma start ./karma.conf.js",
     "pree2e": "webdriver-manager update --standalone false --gecko false --quiet",
     "e2e": "protractor ./protractor.conf.js",
-    "update:ui": "npm update @aerum/ui --save"
+    "update:ui": "npm update @aerum/ui --save",
+    "jest": "jest --watch"
   },
   "private": true,
   "dependencies": {
@@ -68,6 +69,7 @@
     "@ngtools/webpack": "1.10.2",
     "@types/jasmine": "^2.8.7",
     "@types/jasminewd2": "~2.0.2",
+    "@types/jest": "^22.2.3",
     "@types/node": "^6.0.109",
     "autoprefixer": "^7.2.3",
     "circular-dependency-plugin": "^4.2.1",
@@ -80,6 +82,7 @@
     "istanbul-instrumenter-loader": "^3.0.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
+    "jest": "^22.4.3",
     "karma": "^2.0.2",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "^1.2.1",
@@ -95,6 +98,7 @@
     "source-map-loader": "^0.2.0",
     "style-loader": "^0.19.1",
     "stylus-loader": "^3.0.1",
+    "ts-jest": "^22.4.6",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "2.5.2",
@@ -102,5 +106,19 @@
     "url-loader": "^0.6.2",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^3.0.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }
