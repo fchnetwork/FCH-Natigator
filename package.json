@@ -17,7 +17,7 @@
   },
   "private": true,
   "dependencies": {
-    "@aerum/ui": "^0.3.1",
+    "@aerum/ui": "^0.3.4",
     "@angular/animations": "^5.2.10",
     "@angular/common": "^5.2.10",
     "@angular/compiler": "^5.2.10",
@@ -37,8 +37,8 @@
     "d3-ng2-service": "^2.2.0",
     "dotenv": "^5.0.1",
     "echarts": "^4.1.0",
-    "ethereumjs-util": "^5.2.0",
     "eth-ens-namehash": "^2.0.8",
+    "ethereumjs-util": "^5.2.0",
     "ethereumjs-wallet": "^0.6.0",
     "hammerjs": "^2.0.8",
     "identity-img": "^1.0.0",
