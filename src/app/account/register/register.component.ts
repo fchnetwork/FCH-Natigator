@@ -75,6 +75,7 @@ export class RegisterComponent implements OnInit {
       this.passwordStrength.strength = this.passCheck.checkPassword(event.target.value).strengthCode;
       this.passwordStrength.class = this.passClass[this.passCheck.checkPassword(event.target.value).strengthCode];
     }
+    return this.passwordStrength.strength;
   }
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
