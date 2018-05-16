@@ -1,5 +1,7 @@
 module.exports = {
-    "preset": "jest-preset-angular",
+    "roots": [
+        "<rootDir>/src/"
+    ],
     "setupTestFrameworkScriptFile": "<rootDir>/src/setup-jest.ts",
     "moduleNameMapper": {
         "^@app(.*)$": "<rootDir>/src/app$1",
@@ -17,6 +19,7 @@ module.exports = {
         "node"
     ],
     "transform": {
+        "^.+\\.tsx?$": "ts-jest",
         "^.+\\.(ts|html)$": "<rootDir>/node_modules/jest-preset-angular/preprocessor.js",
         "^.+\\.js$": "babel-jest"
     },
