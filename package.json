@@ -68,6 +68,7 @@
     "@types/jest": "^22.2.3",
     "@types/node": "^6.0.109",
     "autoprefixer": "^7.2.3",
+    "babel-preset-env": "^1.7.0",
     "circular-dependency-plugin": "^4.2.1",
     "codelyzer": "^4.3.0",
     "copy-webpack-plugin": "~4.4.1",

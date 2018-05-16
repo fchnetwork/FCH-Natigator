@@ -16,8 +16,11 @@ module.exports = {
         "json",
         "node"
     ],
+    "transform": {
+        "^.+\\.(ts|html)$": "<rootDir>/node_modules/jest-preset-angular/preprocessor.js",
+        "^.+\\.js$": "babel-jest"
+    },
     "transformIgnorePatterns": [
-        "node_modules/(?!ngx-webstorage)",
-        "node_modules/(?!@ngrx)"
+        "node_modules/(?!@ngrx|angular2-ui-switch|ng-dynamic|ngx-webstorage)"
     ]
 };
