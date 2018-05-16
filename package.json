@@ -84,6 +84,7 @@
     "jasmine-spec-reporter": "~4.2.1",
     "jest": "^22.4.3",
     "jest-preset-angular": "^5.2.2",
+    "jest-webpack-alias": "^3.3.3",
     "karma": "^2.0.2",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "^1.2.1",
@@ -109,10 +110,29 @@
     "webpack-dev-server": "^3.0.0"
   },
   "jest": {
-    "preset": "jest-preset-angular",
     "roots": [
       "<rootDir>/src/"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-jest.ts"
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(spec|test))\\.(jsx?|ts?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-jest.ts",
+    "moduleNameMapper": {
+      "^@app(.*)$": "<rootDir>/src/app$1",
+      "^@core(.*)$": "<rootDir>/app/core$1",
+      "^@(account)(.*)$": "<rootDir>/src/app/account$1$2",
+      "^@(account|shared)(.*)$": "<rootDir>/src/app/$1$2",
+      "^@(dashboard|explorer|transaction|diagnostics)(.*)$": "<rootDir>/src/app/wallet/$1$2",
+      "^@env(.*)$": "<rootDir>/src/environments$1"
+    }
   }
 }
