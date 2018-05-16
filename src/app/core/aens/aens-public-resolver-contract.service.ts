@@ -2,7 +2,7 @@ const artifacts = require('../abi/PublicResolver.json');
 
 import { Injectable } from '@angular/core';
 
-import { environment } from 'environments/environment'; 
+import { environment } from '@env/environment'; 
 import { BaseContractService } from '@app/core/contract/base-contract-service';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { ContractExecutorService } from '@app/core/contract/contract-executor.service';

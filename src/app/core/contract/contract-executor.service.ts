@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SessionStorageService } from 'ngx-webstorage/dist/services'; 
-import { environment } from 'environments/environment';
+import { environment } from '@env/environment';
 import Web3 from 'web3';
 import { Contract, Tx, TransactionObject, EventLog, Signature, TransactionReceipt } from 'web3/types';
 import { setTimeout } from 'timers';
