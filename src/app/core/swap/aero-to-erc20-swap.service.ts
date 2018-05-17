@@ -2,7 +2,7 @@ const artifacts = require('../abi/AtomicSwapEtherToERC20.json');
 
 import { Injectable } from '@angular/core';
 
-import { environment } from 'environments/environment'; 
+import { environment } from '@env/environment'; 
 
 import Web3 from 'web3';
 

@@ -174,11 +174,11 @@ export class ManageAensContractComponent implements OnInit {
     return this.translateService.instant(key);
   }
 
-  showProcessingNotification() {
+  private showProcessingNotification() {
     this.notificationService.notify(this.translate('ENS.OPERATION_STARTED_TITLE'), this.translate('ENS.OPERATION_IN_PROGRESS'), 'aerum', 3000);
   }
 
-  showErrorNotification() {
+  private showErrorNotification() {
     this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), this.translate('ENS.SET_OWNER_ERROR'), 'aerum', 5000);
   }
 }

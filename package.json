@@ -10,11 +10,9 @@
     "start": "webpack-dev-server --port=4200 --config config/webpack.config.local.js",
     "start:dev": "webpack-dev-server --port=4200 --config config/webpack.config.dev.js",
     "start:prod": "webpack-dev-server --port=4200 --config config/webpack.config.prod.js",
-    "test": "karma start ./karma.conf.js",
-    "pree2e": "webdriver-manager update --standalone false --gecko false --quiet",
-    "e2e": "protractor ./protractor.conf.js",
-    "update:ui": "npm update @aerum/ui --save",
-    "jest": "jest --watch"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "update:ui": "npm update @aerum/ui --save"
   },
   "private": true,
   "dependencies": {
@@ -67,11 +65,10 @@
     "@angular/compiler-cli": "^5.2.9",
     "@angular/language-service": "^5.2.9",
     "@ngtools/webpack": "1.10.2",
-    "@types/jasmine": "^2.8.7",
-    "@types/jasminewd2": "~2.0.2",
     "@types/jest": "^22.2.3",
     "@types/node": "^6.0.109",
     "autoprefixer": "^7.2.3",
+    "babel-preset-env": "^1.7.0",
     "circular-dependency-plugin": "^4.2.1",
     "codelyzer": "^4.3.0",
     "copy-webpack-plugin": "~4.4.1",
@@ -80,21 +77,12 @@
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.29.0",
     "istanbul-instrumenter-loader": "^3.0.0",
-    "jasmine-core": "~2.8.0",
-    "jasmine-spec-reporter": "~4.2.1",
     "jest": "^22.4.3",
     "jest-preset-angular": "^5.2.2",
-    "jest-webpack-alias": "^3.3.3",
-    "karma": "^2.0.2",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "^1.2.1",
-    "karma-jasmine": "^1.1.2",
-    "karma-jasmine-html-reporter": "^0.2.2",
     "less-loader": "^4.0.5",
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.1.5",
     "postcss-url": "^7.1.2",
-    "protractor": "~5.1.2",
     "raw-loader": "^0.5.1",
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.0",
@@ -108,31 +96,5 @@
     "url-loader": "^0.6.2",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^3.0.0"
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src/"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(spec|test))\\.(jsx?|ts?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-jest.ts",
-    "moduleNameMapper": {
-      "^@app(.*)$": "<rootDir>/src/app$1",
-      "^@core(.*)$": "<rootDir>/app/core$1",
-      "^@(account)(.*)$": "<rootDir>/src/app/account$1$2",
-      "^@(account|shared)(.*)$": "<rootDir>/src/app/$1$2",
-      "^@(dashboard|explorer|transaction|diagnostics)(.*)$": "<rootDir>/src/app/wallet/$1$2",
-      "^@env(.*)$": "<rootDir>/src/environments$1"
-    }
   }
 }

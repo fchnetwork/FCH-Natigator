@@ -31,7 +31,7 @@ As with development server, always ensure you have the latest version of `aerumU
 
 ## Running tests
 
-Run `npm run test` to execute `Karma` tests.To execute the end-to-end tests via [Protractor](http://www.protractortest.org/), run `npm run e2e`.
+Run `npm run test` to execute `Jest` tests.
 
 ## Further help
 

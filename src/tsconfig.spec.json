@@ -1,5 +1,15 @@
 {
   "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/spec",
+    "baseUrl": "./",
+    "module": "commonjs",
+    "allowJs": true,
+    "types": [
+      "jest",
+      "node"
+    ]
+  },
   "include": [
     "**/*.spec.ts",
     "**/*.test.ts",
