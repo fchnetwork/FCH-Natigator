@@ -1,33 +1,34 @@
 <!-- <app-search></app-search> -->
-<div class="explorer">
-    <h1>{{'LAST_TRANSACTIONS'|translate}}</h1>
-    <aer-card>
-        <div class="dataTable-info-label">
-            <label>{{'TRANSACTIONS_FOUND_COUNT'|translate: {transactionsCount: transactions.length} }}</label>
-        </div>
-        <p *ngIf="!transactionStatus">
-           When this goes we have finished searching..... our loader icon will replace this.
-        </p>
-        <table>
-            <thead>
-                <th class="">{{'TX_HASH'|translate}}</th>
-                <th class="">{{'BLOCK'|translate}}</th>
-                <th class="">{{'AGE'|translate}}</th>
-                <!-- DONT DELETE NOW, TO REFACTOR TO GRID -->
-                <!-- <th class="">{{'FROM'|translate}}</th> -->
-                <!-- <th class="arrow"></th> -->
-                <!-- <th class="">{{'TO'|translate}}</th> -->
-                <th class="">{{'VALUE'|translate}}</th>
-            </thead>
-            <tbody>
-                <tr *ngFor="let transaction of transactions">
-                    <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash|slice:0:20}}...</td>
-                    <td class="link block" (click)="openBlock(transaction)">{{transaction.blockNumber}}</td>
-                    <td class="age">{{transaction.timestamp | transactionTimeAgo }}</td>
+<div aerRow class="explorer">
+    <div aerColumn size="sm-12 md-12">
+        <h3>{{'LAST_TRANSACTIONS'|translate}}</h3>
+        <aer-card>
+            <div class="dataTable-info-label">
+                <label>{{'TRANSACTIONS_FOUND_COUNT'|translate: {transactionsCount: transactions.length} }}</label>
+            </div>
+            <p *ngIf="!transactionStatus">
+                When this goes we have finished searching..... our loader icon will replace this.
+            </p>
+            <table>
+                <thead>
+                    <th class="">{{'TX_HASH'|translate}}</th>
+                    <th class="">{{'BLOCK'|translate}}</th>
+                    <th class="">{{'AGE'|translate}}</th>
                     <!-- DONT DELETE NOW, TO REFACTOR TO GRID -->
-                    <!-- <td class="link hash">{{transaction.from}}</td> -->
-                    <!-- <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td> -->
-                    <!-- <td class="link hash">
+                    <!-- <th class="">{{'FROM'|translate}}</th> -->
+                    <!-- <th class="arrow"></th> -->
+                    <!-- <th class="">{{'TO'|translate}}</th> -->
+                    <th class="">{{'VALUE'|translate}}</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let transaction of transactions">
+                        <td class="link hash" (click)="openTransaction(transaction)">{{transaction.hash|slice:0:20}}...</td>
+                        <td class="link block" (click)="openBlock(transaction)">{{transaction.blockNumber}}</td>
+                        <td class="age">{{transaction.timestamp | transactionTimeAgo }}</td>
+                        <!-- DONT DELETE NOW, TO REFACTOR TO GRID -->
+                        <!-- <td class="link hash">{{transaction.from}}</td> -->
+                        <!-- <td class="arrow"><aer-icon>arrow-right-a</aer-icon></td> -->
+                        <!-- <td class="link hash">
                         <div *ngIf="!transaction.to; then contractTxn else normalTxn"></div>
                         <ng-template #normalTxn>
                             {{transaction.to  }} 
@@ -36,9 +37,10 @@
                             [Contract Creation Transaction]
                         </ng-template>   
                     </td> -->
-                    <td class="value">{{transaction.value | convertToEther }} {{'AERO'|translate}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </aer-card>
+                        <td class="value">{{transaction.value | convertToEther }} {{'AERO'|translate}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </aer-card>
+    </div>
 </div>

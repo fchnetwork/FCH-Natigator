@@ -11,8 +11,7 @@ import { LogLevel } from '@app/core/general/logger-service/log-level.enum';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'app';
-  isLoading = true;
+  title = 'app'; 
 
   constructor
     (

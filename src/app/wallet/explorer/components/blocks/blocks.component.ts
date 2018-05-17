@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
  
@@ -6,13 +6,15 @@ import { iTransaction, iBlocks } from '@shared/app.interfaces';
 import { setInterval } from 'timers';  
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
+import { LoaderService } from '@app/core/general/loader-service/loader.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
   selector: 'app-blocks',
   templateUrl: './blocks.component.html'
 })
-export class BlocksComponent implements OnInit {
+export class BlocksComponent implements AfterViewInit, OnDestroy {
 
   blocks: iBlocks[];
   maxBlocks: number = 50;
@@ -25,14 +27,20 @@ export class BlocksComponent implements OnInit {
   column: string = 'number';
   descending: boolean = false;
 
+  getBlockSource:Subscription;
 
   constructor(
     public exploreSrv: ExplorerService,
     private router: Router,
-    private modal: ModalService) {}
+    private modal: ModalService,
+    private loaderService: LoaderService) {}
 
-  ngOnInit() {
-    this.getLatestBlocks();
+  ngAfterViewInit() {
+    this.getLatestBlocks(); 
+  }
+
+  ngOnDestroy() {
+    this.getBlockSource.unsubscribe();
   }
 
   sort(){
@@ -41,8 +49,9 @@ export class BlocksComponent implements OnInit {
   }
 
   getLatestBlocks(){
-    this.blocks = [];
-    this.exploreSrv.getBlock().subscribe( async currentBlock => {
+    this.blocks = [];     
+    this.getBlockSource = this.exploreSrv.getBlock().subscribe( async currentBlock => {
+      this.loaderService.toggle(true);
       for (var i = 0; i < this.maxBlocks; ++i) {
           this.exploreSrv.web3.eth.getBlock( currentBlock - i, (error, result) => {
             if(!error) {
@@ -53,13 +62,12 @@ export class BlocksComponent implements OnInit {
             }
           })
       }
+      this.loaderService.toggle(false);
     });
   }
 
   openBlock(block: iBlocks) {
     this.modal.openBlock(block.number,block).then( result => {
     }).catch( err => console.log('block component ' + err ) );
-  }
-
-
+  } 
 }

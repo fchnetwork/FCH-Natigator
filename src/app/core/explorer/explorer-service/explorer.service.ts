@@ -12,6 +12,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { environment } from '@env/environment'; 
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { LoaderService } from '@app/core/general/loader-service/loader.service';
 
 const ethJsUtil = require('ethereumjs-util');
 const Web3 = require('web3');
@@ -25,7 +26,7 @@ export class ExplorerService {
   txpoolContentData = { "jsonrpc": "2.0", "method": "txpool_content", "params": [], "id": 1 }
   txpoolInspectData = { "jsonrpc": "2.0", "method": "txpool_inspect", "params": [], "id": 1 }
 
-  constructor(private _http: Http, _auth: AuthenticationService) {
+  constructor(private _http: Http, _auth: AuthenticationService, public loaderService: LoaderService) {
     this.web3 = _auth.initWeb3();
     this.account = JSON.parse(Cookie.get('account'));
   }
@@ -44,19 +45,19 @@ export class ExplorerService {
   }
 
   getBlock(): Observable<any> {
-    return Observable.create(observer => {
+    return Observable.create(observer => {      
       this.web3.eth.getBlockNumber((err, block) => {
+        
         if (err != null) {
           observer.error('There was an error fetching your blocks.');
+          observer.complete();
         }
         if (block.length === 0) {
           observer.error('no blocks');
-        }
-        // setInterval(() => {
-        //   return observer.next(block);
-        // }, 1000);
-        return observer.next(block);
-        // observer.complete()
+          observer.complete();
+        } 
+
+        return observer.next(block); 
       });
     });
   }

@@ -25,6 +25,8 @@ import { TransactionService } from '@app/core/transactions/transaction-service/t
 import { AerumStatsService } from '@app/core/stats/aerum-stats-service/aerum-stats.service';
 import { AerumStatsWebsocketsService } from '@app/core/stats/aerum-stats-websockets-service/aerum-stats-websockets.service';
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
+import { LoaderService } from '@app/core/general/loader-service/loader.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -54,7 +56,13 @@ import { LoggerService } from '@app/core/general/logger-service/logger.service';
     Erc20ToErc20SwapService,
     ERC20TokenService,
     PasswordCheckerService,
-    LoggerService
+    LoggerService,
+    LoaderService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderService,
+      multi: true
+    }
   ],
 })
 export class CoreModule { }
