@@ -10,7 +10,7 @@ import 'rxjs/Rx';
 import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { environment } from '@env/environment'; 
+import { environment } from '@env/environment';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
 
@@ -45,9 +45,9 @@ export class ExplorerService {
   }
 
   getBlock(): Observable<any> {
-    return Observable.create(observer => {      
+    return Observable.create(observer => {
       this.web3.eth.getBlockNumber((err, block) => {
-        
+
         if (err != null) {
           observer.error('There was an error fetching your blocks.');
           observer.complete();
@@ -55,15 +55,10 @@ export class ExplorerService {
         if (block.length === 0) {
           observer.error('no blocks');
           observer.complete();
-        } 
+        }
 
-        return observer.next(block); 
+        return observer.next(block);
       });
     });
-  }
-
-
-
-
-
+  } 
 }

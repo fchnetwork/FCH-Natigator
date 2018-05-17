@@ -17,11 +17,11 @@ export class LoaderService implements HttpInterceptor {
         })
     }
 
-    public toggle(visible: boolean) {
+    public toggle(visible: boolean) { 
         this.loaderShownSource.next(visible);
     }
 
-    private interceptNavigation(event: RouterEvent) {
+    private interceptNavigation(event: RouterEvent) { 
         if (event instanceof NavigationStart) {
             this.ngZone.runOutsideAngular(() => {
                 this.loaderShownSource.next(true);

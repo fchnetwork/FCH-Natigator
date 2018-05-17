@@ -35,8 +35,13 @@ export class BlocksComponent implements AfterViewInit, OnDestroy {
     private modal: ModalService,
     private loaderService: LoaderService) {}
 
-  ngAfterViewInit() {
+  ngAfterViewInit() {    
+    setTimeout(() => {
+      this.loaderService.toggle(true);
+      console.log('timer ran out');
+    }, 5000);
     this.getLatestBlocks(); 
+    
   }
 
   ngOnDestroy() {
@@ -51,7 +56,6 @@ export class BlocksComponent implements AfterViewInit, OnDestroy {
   getLatestBlocks(){
     this.blocks = [];     
     this.getBlockSource = this.exploreSrv.getBlock().subscribe( async currentBlock => {
-      this.loaderService.toggle(true);
       for (var i = 0; i < this.maxBlocks; ++i) {
           this.exploreSrv.web3.eth.getBlock( currentBlock - i, (error, result) => {
             if(!error) {
@@ -61,8 +65,7 @@ export class BlocksComponent implements AfterViewInit, OnDestroy {
               this.countblocks = this.blocks.length;
             }
           })
-      }
-      this.loaderService.toggle(false);
+      } 
     });
   }
 
