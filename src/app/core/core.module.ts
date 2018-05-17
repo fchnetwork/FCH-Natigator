@@ -1,10 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';   
-import { TransactionService } from '@app/core/transaction-service/transaction.service';
-import { ExplorerService } from '@app/core/explorer-service/explorer.service';
-import { TokenService } from '@app/core/token-service/token.service';  
-import { AerumStatsService } from '@app/core/aerum-stats-service/aerum-stats.service';
-import { AerumStatsWebsocketsService } from '@app/core/aerum-stats-websockets-service/aerum-stats-websockets.service';
+import { CommonModule } from '@angular/common';    
 import { AerumNameService } from '@app/core/aens/aerum-name.service';
 import { AensFixedPriceRegistrarContractService } from '@app/core/aens/aens-fixed-price-registrar-contract.service';
 import { AensPublicResolverContractService } from '@app/core/aens/aens-public-resolver-contract.service';
@@ -24,6 +19,12 @@ import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
+import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
+import { TokenService } from '@app/core/transactions/token-service/token.service';
+import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
+import { AerumStatsService } from '@app/core/stats/aerum-stats-service/aerum-stats.service';
+import { AerumStatsWebsocketsService } from '@app/core/stats/aerum-stats-websockets-service/aerum-stats-websockets.service';
+import { LoggerService } from '@app/core/general/logger-service/logger.service';
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import { PasswordCheckerService } from '@app/core/authentication/password-checke
     Erc20ToAeroSwapService,
     Erc20ToErc20SwapService,
     ERC20TokenService,
-    PasswordCheckerService
+    PasswordCheckerService,
+    LoggerService
   ],
 })
 export class CoreModule { }

@@ -1,13 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild, TemplateRef, ViewContainerRef, Inject } from '@angular/core';
-import { D3Service, D3, Selection } from 'd3-ng2-service';
-import { AerumStatsWebsocketsService } from '@app/core/aerum-stats-websockets-service/aerum-stats-websockets.service';
-import { AerumStatsService } from '@app/core/aerum-stats-service/aerum-stats.service';
+import { D3Service, D3, Selection } from 'd3-ng2-service'; 
+import { AerumStatsService } from '@app/core/stats/aerum-stats-service/aerum-stats.service';
 
 @Component({
   selector: 'app-test-page',
   templateUrl: './test-page.component.html',
-  styleUrls: ['./test-page.component.scss'],
-  providers: [AerumStatsWebsocketsService, AerumStatsService]
+  styleUrls: ['./test-page.component.scss']
 })
 
 export class TestPageComponent {
@@ -149,4 +147,4 @@ export class TestPageComponent {
       .attr("d", line(data));
 
   } 
-}
+} 

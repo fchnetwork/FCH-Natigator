@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
-import { ActivatedRoute, Router } from '@angular/router'; 
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
+import { LoggerService } from '@app/core/general/logger-service/logger.service';
+import { LogLevel } from '@app/core/general/logger-service/log-level.enum';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +12,17 @@ import { AccountIdleService } from '@app/core/authentication/account-idle-servic
 })
 export class AppComponent implements OnInit {
   title = 'app';
+  isLoading = true;
 
-  constructor(
+  constructor
+    (
     private idle: AccountIdleService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {  }
+    private router: Router,
+    private logger: LoggerService
+    ) {
+      logger.setLogLevel(LogLevel.All);
+    }
 
   ngOnInit() {
     //Start watching for user inactivity.

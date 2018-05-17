@@ -5,13 +5,13 @@ import { FormsModule } from '@angular/forms';
 import { SessionStorageService } from 'ngx-webstorage'; 
 import * as CryptoJs from 'crypto-js';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';  
-import { environment } from '@env/environment';  
-import { TokenService } from '@app/core/token-service/token.service';
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { TransactionService } from '@app/core/transaction-service/transaction.service';
+import { environment } from '@env/environment';   
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service'; 
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
+import { TokenService } from '@app/core/transactions/token-service/token.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');

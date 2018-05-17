@@ -1,7 +1,7 @@
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Component, OnInit } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage'; 
-import { TransactionService } from '@app/core/transaction-service/transaction.service';
+import { SessionStorageService } from 'ngx-webstorage';  
+import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 
 @Component({
   selector: 'app-last-transactions',

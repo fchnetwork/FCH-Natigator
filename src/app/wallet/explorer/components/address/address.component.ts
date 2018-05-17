@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Router, Params } from '@angular/router'; 
-import { ExplorerService } from '@app/core/explorer-service/explorer.service';
+import { Router, Params } from '@angular/router';  
+import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 
 @Component({
   selector: 'app-address',

@@ -3,9 +3,9 @@ import { BasicModalContext } from '@shared/components/modals/basic-modal/basic-m
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalComponent } from 'ngx-modialog';
 import { Component, OnInit } from '@angular/core'; 
-import { SessionStorageService } from 'ngx-webstorage';  
-import { TokenService } from '@app/core/token-service/token.service'; 
+import { SessionStorageService } from 'ngx-webstorage';   
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { TokenService } from '@app/core/transactions/token-service/token.service';
 
 @Component({
   selector: 'app-add-token',

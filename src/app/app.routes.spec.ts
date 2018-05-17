@@ -1,8 +1,7 @@
 import {Location} from "@angular/common";
 import {TestBed, fakeAsync, tick} from '@angular/core/testing';
 import {RouterTestingModule} from "@angular/router/testing";
-import {Router} from "@angular/router"; 
-import { WalletComponent } from "app/wallet/wallet.module";
+import {Router} from "@angular/router";  
 import { RegisterComponent } from "@app/account/register/register.component";
 import { UnlockComponent } from "@app/account/unlock/unlock.component";
 import { AppComponent } from "@app/app.component";
@@ -10,6 +9,7 @@ import { HomeComponent } from "@app/wallet/home/home.component";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { environment } from '@env/environment';
+import { WalletComponent } from "@app/wallet/wallet.component";
 
 declare let Zone: any;
 

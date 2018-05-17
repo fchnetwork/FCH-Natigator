@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';   
-import { TokenService } from '@app/core/token-service/token.service';
+import { Component, OnInit } from '@angular/core';    
 import { ModalService } from '@app/core/general/modal-service/modal.service';
+import { TokenService } from '@app/core/transactions/token-service/token.service';
 
 @Component({
   selector: 'app-token-list',

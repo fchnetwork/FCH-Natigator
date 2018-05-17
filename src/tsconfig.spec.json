@@ -1,5 +1,6 @@
 {
   "extends": "../tsconfig.json",
+<<<<<<< HEAD
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
@@ -9,8 +10,11 @@
       "node"
     ]
   },
+=======
+>>>>>>> 3425622cf86f16b4228ba1ad31f6a92956fc65ec
   "include": [
     "**/*.spec.ts",
+    "**/*.test.ts",
     "**/*.d.ts"
   ]
 }

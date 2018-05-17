@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';  
-import { iBlocks, iPendingTxn } from '@shared/app.interfaces'; 
-import { ExplorerService } from '@app/core/explorer-service/explorer.service'; 
+import { iBlocks, iPendingTxn } from '@shared/app.interfaces';  
 import { ModalService } from '@app/core/general/modal-service/modal.service';
+import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 
 @Component({
   selector: 'app-pending-txns',

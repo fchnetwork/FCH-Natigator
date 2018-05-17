@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';   
-import { TransactionService } from '@app/core/transaction-service/transaction.service';
+import { Pipe, PipeTransform } from '@angular/core';    
+import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 
 @Pipe({
   name: 'hextoDecimal'

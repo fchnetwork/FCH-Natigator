@@ -16,7 +16,7 @@
   },
   "private": true,
   "dependencies": {
-    "@aerum/ui": "^0.3.4",
+    "@aerum/ui": "^0.3.6",
     "@angular/animations": "^5.2.10",
     "@angular/common": "^5.2.10",
     "@angular/compiler": "^5.2.10",
@@ -78,6 +78,12 @@
     "istanbul-instrumenter-loader": "^3.0.0",
     "jest": "^22.4.3",
     "jest-preset-angular": "^5.2.2",
+    "jest-webpack-alias": "^3.3.3",
+    "karma": "^2.0.2",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "^1.2.1",
+    "karma-jasmine": "^1.1.2",
+    "karma-jasmine-html-reporter": "^0.2.2",
     "less-loader": "^4.0.5",
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.1.5",
@@ -97,15 +103,13 @@
     "webpack-dev-server": "^3.0.0"
   },
   "jest": {
-    "preset": "jest-preset-angular",
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-jest.ts",
-    "moduleNameMapper": {
-      "^@app(.*)$": "<rootDir>/src/app$1",
-      "^@core(.*)$": "<rootDir>/app/core$1",
-      "^@(account|shared)(.*)$": "<rootDir>/src/app/$1$2",
-      "^@(dashboard|explorer|transaction|diagnostics)(.*)$": "<rootDir>/src/app/wallet/$1$2",
-      "^@env(.*)$": "<rootDir>/src/environments$1"
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
     },
+    "testRegex": "(/__tests__/.*|(\\.|/)(spec|test))\\.(jsx?|ts?)$",
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -114,9 +118,14 @@
       "json",
       "node"
     ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!ngx-webstorage)",
-      "node_modules/(?!@ngrx)"
-    ]
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-jest.ts",
+    "moduleNameMapper": {
+      "^@app(.*)$": "<rootDir>/src/app$1",
+      "^@core(.*)$": "<rootDir>/app/core$1",
+      "^@(account)(.*)$": "<rootDir>/src/app/account$1$2",
+      "^@(account|shared)(.*)$": "<rootDir>/src/app/$1$2",
+      "^@(dashboard|explorer|transaction|diagnostics)(.*)$": "<rootDir>/src/app/wallet/$1$2",
+      "^@env(.*)$": "<rootDir>/src/environments$1"
+    }
   }
 }

@@ -32,6 +32,7 @@ import { ChartComponent } from '@app/shared/components/chart/chart.component';
 import { NgxEchartsModule } from 'ngx-echarts'; 
 import { WeiToGweiPipe } from '@app/shared/pipes/wei-to-gwei.pipe';
 import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe'; 
+import { LoaderComponent } from '@app/shared/components/loader/loader.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -74,11 +75,13 @@ export function createTranslateLoader(http: HttpClient) {
     TruncatePipe,
     WeiToGweiPipe,
     ChartComponent, 
-    CropAddressPipe
+    CropAddressPipe,
+    LoaderComponent
   ],
   exports:[
     I18nComponent,
     DividerComponent,
+    LoaderComponent,
     TranslateModule,
     EqualValidator,
     SidebarHeaderComponent,
