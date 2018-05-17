@@ -1,97 +1,57 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { ManageAensContractComponent } from './manage-aens-contract.component';
-import { AerumNameService } from '@app/core/aens/aerum-name.service';
-import { TranslateModule, TranslateLoader, TranslateFakeLoader, TranslateService } from '@ngx-translate/core';
+
+import { TranslateModule, TranslateLoader, TranslateFakeLoader, TranslateService, TranslatePipe } from '@ngx-translate/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@app/shared/shared.module';
 import { AppUIModule } from '@app/app.ui.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@app/core/core.module';
+
+import { AerumNameService } from '@app/core/aens/aerum-name.service';
 import { NotificationService } from '@aerum/ui';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { SessionStorageService } from 'ngx-webstorage';
-import { PrivateKey } from 'web3/types';
-import { Observable } from 'rxjs/Observable';
 
-import Web3 from 'web3';
-
-class MockAerumNameService { 
-  getBalance() {
-    return 0;
-  }
-}
-class MockNotificationService { }
-class MockAuthService implements AuthenticationService {
-  web3: Web3;
-  
-  initWeb3: () => Web3 = () => null;
-
-  avatarsGenerator(): any[] {
-    throw new Error("Method not implemented.");
-  }
-  generateCryptedAvatar(address: string) {
-    throw new Error("Method not implemented.");
-  }
-  authState(): Observable<any> {
-    throw new Error("Method not implemented.");
-  }
-  saveKeyStore(privateKey: string, password: string, seed: any): PrivateKey {
-    throw new Error("Method not implemented.");
-  }
-  showKeystore(): Promise<any> {
-    throw new Error("Method not implemented.");
-  }
-  getKeystore() {
-    return "test_keystore";
-  }
-  unencryptKeystore(password: string): Promise<any> {
-    throw new Error("Method not implemented.");
-  }
-  login(password: any): Promise<{}> {
-    throw new Error("Method not implemented.");
-  }
-  logout(): void {
-    throw new Error("Method not implemented.");
-  }
-  seedCleaner(seed: any) {
-    throw new Error("Method not implemented.");
-  }
-  generateAdditionalAccounts(password: string, amount: number): any[] {
-    throw new Error("Method not implemented.");
-  }
-  isHexAddress(str: any): boolean {
-    throw new Error("Method not implemented.");
-  }
-  createQRcode(address: string): Promise<any> {
-    throw new Error("Method not implemented.");
-  }
-  generateAddressLogin(seed: any): Promise<any> {
-    throw new Error("Method not implemented.");
-  }
-}
-
+import { ConvertToEtherPipe } from '@app/shared/pipes/convertToEther.pipe';
+import { Router } from '@angular/router';
 
 class MockSessionService { }
 
 describe('ManageAensContractComponent', () => {
   let component: ManageAensContractComponent;
   let fixture: ComponentFixture<ManageAensContractComponent>;
+  const authService: Partial<AuthenticationService> = {
+    initWeb3: () => null,
+    getKeystore: () => ({ address: "test_keystroke" })
+  };
+  const ansService: Partial<AerumNameService> = {
+    getBalance: () => Promise.resolve(5)
+  };
+
+  // const routerSpy = jest.spyOn(Router.prototype, "navigateByUrl");
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TranslateModule.forRoot({
-        loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
-      }), FormsModule, AppUIModule, CommonModule, ReactiveFormsModule, CoreModule, SharedModule],
+         loader: { provide: TranslateLoader, useClass: TranslateFakeLoader }
+      }), FormsModule, AppUIModule, ReactiveFormsModule, CoreModule, SharedModule],
       declarations: [ ManageAensContractComponent ],
       providers: [
+        // { provide: Router, useValue: routerSpy },
         TranslateService,
-        { provide: AerumNameService, useValue: new MockAerumNameService() },
-        { provide: NotificationService, useValue: new MockNotificationService() },
-        { provide: SessionStorageService, useValue: new MockSessionService() },
-        { provide: AuthenticationService, useValue: new MockAuthService() }
+        { provide: AerumNameService, useValue: ansService },
+        { provide: NotificationService, useValue: jest.fn() },
+        { provide: AuthenticationService, useValue: authService },
+        // TODO: Routes requires this. We should mock routes as well
+        { provide: SessionStorageService, useValue: jest.fn() }
       ],
     })
     .compileComponents();
+
+    jest.spyOn(ConvertToEtherPipe.prototype, "transform").mockImplementation((value) => value);
+    jest.spyOn(TranslatePipe.prototype, "transform").mockImplementation((value) => value);
   }));
 
   beforeEach(() => {
@@ -102,5 +62,11 @@ describe('ManageAensContractComponent', () => {
  
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should not be able to transfer ownership to invalid address', () => {
+    component.transferTo = '';
+    fixture.detectChanges();
+    expect(component.canTransfer()).toBeFalsy();
   });
 });
