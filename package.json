@@ -16,7 +16,7 @@
   },
   "private": true,
   "dependencies": {
-    "@aerum/ui": "^0.3.6",
+    "@aerum/ui": "^0.3.7",
     "@angular/animations": "^5.2.10",
     "@angular/common": "^5.2.10",
     "@angular/compiler": "^5.2.10",
@@ -67,6 +67,7 @@
     "@ngtools/webpack": "1.10.2",
     "@types/jest": "^22.2.3",
     "@types/node": "^6.0.109",
+    "@types/underscore": "^1.8.8",
     "autoprefixer": "^7.2.3",
     "babel-preset-env": "^1.7.0",
     "circular-dependency-plugin": "^4.2.1",
