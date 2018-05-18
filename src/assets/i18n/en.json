@@ -148,6 +148,9 @@
 "SEND_RECEIVE":"Send & Receive",
 "DIAGNOSTICS":"Diagnostics",
 "OVERVIEW":"Overview",
+"UNLOCK": {
+  "INVALID_PASSWORD": "The password you've entered is incorrect."
+},
 "DASHBOARD": {
   "TITLE": "Account Overview"
 },

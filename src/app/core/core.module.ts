@@ -58,11 +58,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     PasswordCheckerService,
     LoggerService,
     LoaderService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoaderService,
-      multi: true
-    }
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: LoaderService,
+    //   multi: true
+    // }
   ],
 })
 export class CoreModule { }

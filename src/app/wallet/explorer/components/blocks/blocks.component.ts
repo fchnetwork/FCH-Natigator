@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-blocks',
   templateUrl: './blocks.component.html'
 })
-export class BlocksComponent implements AfterViewInit, OnDestroy {
+export class BlocksComponent implements OnInit, OnDestroy {
 
   blocks: iBlocks[];
   maxBlocks: number = 50;
@@ -33,13 +33,11 @@ export class BlocksComponent implements AfterViewInit, OnDestroy {
     public exploreSrv: ExplorerService,
     private router: Router,
     private modal: ModalService,
-    private loaderService: LoaderService) {}
+    public loaderService: LoaderService) {}
 
-  ngAfterViewInit() {    
-    setTimeout(() => {
-      this.loaderService.toggle(true);
-      console.log('timer ran out');
-    }, 5000);
+  ngOnInit() {    
+    
+    this.loaderService.toggle(true);
     this.getLatestBlocks(); 
     
   }

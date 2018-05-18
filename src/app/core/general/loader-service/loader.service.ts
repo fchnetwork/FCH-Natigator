@@ -17,26 +17,28 @@ export class LoaderService implements HttpInterceptor {
         })
     }
 
-    public toggle(visible: boolean) { 
-        this.loaderShownSource.next(visible);
+    public toggle(visible: boolean) {
+        //this.ngZone.runOutsideAngular(() => {
+            console.log('toggled ' + visible);
+            this.loaderShownSource.next(visible);
+        //});
     }
 
-    private interceptNavigation(event: RouterEvent) { 
+    private interceptNavigation(event: RouterEvent) {
         if (event instanceof NavigationStart) {
-            this.ngZone.runOutsideAngular(() => {
-                this.loaderShownSource.next(true);
-            })
+            this.toggle(true);           
         }
+
         if (event instanceof NavigationEnd) {
-            this.loaderShownSource.next(false);
+            this.toggle(false);
         }
         // Set loading state to false in both of the below events to
         // hide the spinner in case a request fails
         if (event instanceof NavigationCancel) {
-            this.loaderShownSource.next(false);
+            this.toggle(false);
         }
         if (event instanceof NavigationError) {
-            this.loaderShownSource.next(false);
+            this.toggle(false);
         }
     }
 
@@ -46,15 +48,16 @@ export class LoaderService implements HttpInterceptor {
     ): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(
             map(event => {
-                this.loaderShownSource.next(true);
+                this.toggle(true);
                 return event;
             }),
             catchError(error => {
-                this.loaderShownSource.next(false);
+                this.toggle(false);
+                this.logger.logError("HTTP request failed", error);
                 return Observable.throw(error);
             }),
-            finalize(() => { 
-                this.loaderShownSource.next(false);
+            finalize(() => {
+                this.toggle(false);
             })
         )
     }
