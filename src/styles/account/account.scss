@@ -11,6 +11,7 @@
     color: $text-color;
     font-size: 18px;
     text-align: center;
+    margin-bottom: 28px;
 
     a {
       text-decoration: unset;
@@ -23,7 +24,7 @@
   }
 
   .button {
-    padding: 28px 0;
+    padding: 14px 0;
   }
 
   .link-text {
@@ -54,6 +55,7 @@
   .paragraph {
     text-align: center;
     color: $text-color;
+    margin-top: 0;
 
     &--small {
       font-size: 13px;
@@ -162,4 +164,8 @@
   &.backup-confirmation {
     max-width: 376px;
   }
+}
+
+.button-wrapper {
+  padding-top: 14px;
 }

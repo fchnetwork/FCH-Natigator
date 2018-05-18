@@ -1,19 +1,27 @@
 {
   "extends": "../tsconfig.json",
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e35cea539a630a57ed84daf0a649290f0b6d2b00
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
     "module": "commonjs",
+    "allowJs": true,
     "types": [
-      "jasmine",
+      "jest",
       "node"
     ]
   },
-  "files": [
-    "test.ts"
-  ],
+<<<<<<< HEAD
+=======
+>>>>>>> 3425622cf86f16b4228ba1ad31f6a92956fc65ec
+=======
+>>>>>>> e35cea539a630a57ed84daf0a649290f0b6d2b00
   "include": [
     "**/*.spec.ts",
+    "**/*.test.ts",
     "**/*.d.ts"
   ]
 }

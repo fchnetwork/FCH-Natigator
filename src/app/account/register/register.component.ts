@@ -4,8 +4,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { testAccount } from '../../shared/helpers/data.mock';
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 import { RegistrationRouteData } from '../models/RegistrationRouteData';
-import { Router } from '@angular/router';
-import { RouteDataService } from '../../shared/services/route-data.service';
+import { Router } from '@angular/router';  
+import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
+import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
 
 @Component({
   selector: 'app-register',
@@ -18,13 +19,24 @@ export class RegisterComponent implements OnInit {
   password: string;
   confirmPassword: string;
   avatar: string;
+  passClass = {
+    'VERY_WEAK': 'red',
+    'WEAK': 'yellow',
+    'REASONABLE': 'green',
+    'STRONG': 'blue',
+    'VERY_STRONG': 'blue'
+  }
   passwordStrength = {
-    strength: 'Very Weak',
-    class: 'blue',
-    description: 'VERY_WEAK_PASSWORD',
+    strength: 'VERY_WEAK',
+    class: 'red',
   };
 
-  constructor(public translate: TranslateService, public formBuilder: FormBuilder, public router: Router, private routeDataService: RouteDataService<RegistrationRouteData>) { }
+  constructor(
+    public translate: TranslateService, 
+    public formBuilder: FormBuilder, 
+    public router: Router, 
+    private routeDataService: RouteDataService<RegistrationRouteData>,
+    public passCheck: PasswordCheckerService) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -53,6 +65,17 @@ export class RegisterComponent implements OnInit {
       this.routeDataService.routeData = data;
       this.router.navigate(['/account/backup']);
     }
+  }
+
+  onKey(event: any) {
+    if (event.target.value == "") {
+      this.passwordStrength.class = "red";
+      this.passwordStrength.strength = "VERY_WEAK";
+    } else {
+      this.passwordStrength.strength = this.passCheck.checkPassword(event.target.value).strengthCode;
+      this.passwordStrength.class = this.passClass[this.passCheck.checkPassword(event.target.value).strengthCode];
+    }
+    return this.passwordStrength.strength;
   }
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string) {

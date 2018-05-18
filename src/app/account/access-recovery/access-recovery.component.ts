@@ -1,13 +1,11 @@
 import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms'; 
-import { AuthenticationService } from '@account/services/authentication-service/authentication.service';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';  
 import { Router } from '@angular/router'
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs/Subject';
-import { PasswordValidator } from '../../shared/helpers/validator.password';
+import { Subject } from 'rxjs/Subject'; 
 
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-  
+import { Cookie } from 'ng2-cookies/ng2-cookies';   
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-access-recovery',
@@ -100,7 +98,7 @@ export class AccessRecoveryComponent implements OnInit {
         console.log( this.private );
         console.log( this.recoverForm.value.password );
         this.authServ.saveKeyStore( this.private, this.recoverForm.value.password, this.recoverForm.value.seed );
-        this.router.navigate(['/dashboard']); // improvements need to be made here but for now the auth guard should work just fine
+        this.router.navigate(['/wallet/home']); // improvements need to be made here but for now the auth guard should work just fine
       }
     }
 

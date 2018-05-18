@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { AuthenticationService } from './account/services/authentication-service/authentication.service';
-import { AccountIdleService } from './shared/services/account-idle.service';
 import { environment } from '../environments/environment';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
+import { LoggerService } from '@app/core/general/logger-service/logger.service';
+import { LogLevel } from '@app/core/general/logger-service/log-level.enum';
 
 @Component({
   selector: 'app-root',
@@ -11,23 +11,17 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'app';
+  title = 'app'; 
 
-  constructor(
-    public authServ: AuthenticationService,
+  constructor
+    (
     private idle: AccountIdleService,
-    private translate: TranslateService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {
-    console.log(this.router.routerState.snapshot.url);
-    this.initTranslate();
-    
-    this.authServ.authState().subscribe(res => {
-      // this.router.navigate(['/transaction']); 
-    },
-      err => console.log(err));
-  }
+    private router: Router,
+    private logger: LoggerService
+    ) {
+      logger.setLogLevel(LogLevel.All);
+    }
 
   ngOnInit() {
     //Start watching for user inactivity.
@@ -42,15 +36,5 @@ export class AppComponent implements OnInit {
     console.log(`Current Env: ${environment.configInUse}`);
     console.log(`Current HttpProvider: ${environment.HttpProvider}`);
 
-  }
-
-  initTranslate() {
-    // Set the default language for translation strings, and the current language.
-    this.translate.setDefaultLang('en');
-    if (this.translate.getBrowserLang() !== undefined) {
-      this.translate.use(this.translate.getBrowserLang());
-    } else {
-      this.translate.use('en'); // Set your language here
-    }
   }
 }

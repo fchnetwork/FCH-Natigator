@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { TransactionServiceService } from '@transaction/services/transaction-service/transaction-service.service'
+import { Pipe, PipeTransform } from '@angular/core';   
+import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 
 @Pipe({
   name: 'hextoAscii'
@@ -9,7 +9,7 @@ export class HextoAsciiPipe implements PipeTransform {
   web3: any;
   plainText: string;
 
-  constructor(  _txnSrv: TransactionServiceService ) { 
+  constructor(  _txnSrv: TransactionService ) { 
     this.web3 = _txnSrv.web3;
   }
 

@@ -10,6 +10,7 @@ const rxPaths = require('rxjs/_esm5/path-mapping');
 const autoprefixer = require('autoprefixer'); 
 const postcssUrl = require('postcss-url');
 const postcssImports = require('postcss-import');
+const aliases = require('./webpack.aliases');
 
 const { NoEmitOnErrorsPlugin, EnvironmentPlugin, HashedModuleIdsPlugin } = require('webpack');
 const { BaseHrefWebpackPlugin, SuppressExtractedTextChunksWebpackPlugin, CleanCssWebpackPlugin, BundleBudgetPlugin, PostcssCliResources } = require('@angular/cli/plugins/webpack');
@@ -137,16 +138,7 @@ module.exports = {
       "./node_modules"
     ],
     "alias": rxPaths(),
-    "alias": {
-      '@app': path.resolve('src/app/app'),
-      '@account': path.resolve('src/app/account'),
-      '@dashboard': path.resolve('src/app/dashboard'),
-      '@explorer': path.resolve('src/app/explorer'),
-      '@shared': path.resolve('src/app/shared'),
-      '@transaction': path.resolve('src/app/transaction'),
-      '@diagnostics': path.resolve('src/app/diagnostics'),
-      '@env': path.resolve('src/environments')
-    },
+    "alias": aliases,
     "mainFields": [
       "browser",
       "module",
