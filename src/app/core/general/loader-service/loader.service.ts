@@ -13,15 +13,15 @@ export class LoaderService implements HttpInterceptor {
 
     constructor(public router: Router, private ngZone: NgZone, public logger: LoggerService) {
         router.events.subscribe((event: RouterEvent) => {
-            this.interceptNavigation(event)
-        })
+            this.interceptNavigation(event);
+        });
     }
 
-    public toggle(visible: boolean) { 
+    public toggle(visible: boolean) {
         this.loaderShownSource.next(visible);
     }
 
-    private interceptNavigation(event: RouterEvent) { 
+    private interceptNavigation(event: RouterEvent) {
         if (event instanceof NavigationStart) {
             this.ngZone.runOutsideAngular(() => {
                 this.loaderShownSource.next(true);
@@ -53,7 +53,7 @@ export class LoaderService implements HttpInterceptor {
                 this.loaderShownSource.next(false);
                 return Observable.throw(error);
             }),
-            finalize(() => { 
+            finalize(() => {
                 this.loaderShownSource.next(false);
             })
         )
