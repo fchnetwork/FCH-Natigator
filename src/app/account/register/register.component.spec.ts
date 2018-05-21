@@ -1,4 +1,4 @@
-const taiPasswordStrength = require("tai-password-strength")
+const taiPasswordStrength = require("tai-password-strength");
 
 class PasswordCheckerService {
   strengthTester: any;
@@ -47,13 +47,13 @@ describe('Component: Login', () => {
   let component: RegisterComponent;
   let passCheck: PasswordCheckerService;
   let response: Object = {
-    'VERY_WEAK':"Hello", 
-    'WEAK': "HelloWor", 
-    'REASONABLE':'Ma.@Ki<3', 
+    'VERY_WEAK':"Hello",
+    'WEAK': "HelloWor",
+    'REASONABLE':'Ma.@Ki<3',
     'STRONG':'Ma.@Ki<35^D',
     'VERY_STRONG':'Ma.@Ki<35^DoT'};
 
-  beforeEach(() => { 
+  beforeEach(() => {
     passCheck = new PasswordCheckerService;
     component = new RegisterComponent(passCheck);
   });
