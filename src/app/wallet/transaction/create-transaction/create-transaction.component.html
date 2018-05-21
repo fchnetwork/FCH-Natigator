@@ -104,6 +104,7 @@
               <div class="c-copy__address" >
                 <a (click)="copyToClipboard()">{{ senderAddress }}</a>
               </div>
+              <aer-button (buttonFn)="toggleLoader()">Toggle</aer-button>
             </aer-card>
         </div>
       </div>

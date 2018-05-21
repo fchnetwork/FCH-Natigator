@@ -6,8 +6,7 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 
 @Component({
   selector: 'app-wallet',
-  templateUrl: './wallet.component.html',
-  styleUrls: ['./wallet.component.scss']
+  templateUrl: './wallet.component.html'
 })
 export class WalletComponent implements AfterViewChecked, OnDestroy {
   @ViewChild('sidebar') sidebar: any;

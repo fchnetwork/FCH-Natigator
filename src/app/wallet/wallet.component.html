@@ -2,10 +2,10 @@
   <aer-sidebar-header></aer-sidebar-header>
 
   <aer-sidebar-group title="{{'SEND_RECEIVE'|translate}}" iconName="transaction" [single]="true" [routerLink]="['/wallet/transaction']"
-    routerLinkActive="route-selected"></aer-sidebar-group>
+    routerLinkActive="route-selected" groupName="transaction"></aer-sidebar-group>
 
   <aer-sidebar-group title="{{'ENS.MAIN_MENU_ITEM_NAME'|translate}}" iconName="ans" [single]="true" [routerLink]="['/wallet/aens']"
-    routerLinkActive="route-selected"></aer-sidebar-group>
+    routerLinkActive="route-selected" groupName="aens"></aer-sidebar-group>
 
   <aer-sidebar-group title="{{'SWAP.MAIN_MENU_ITEM_NAME'|translate}}" iconName="swap" groupName="swap">
     <aer-sidebar-item iconName="aerum" [routerLink]="['/wallet/swap/create']">{{'SWAP.SUB_MENU_CREATE_SWAP_ITEM_NAME'|translate}}</aer-sidebar-item>

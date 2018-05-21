@@ -21,6 +21,7 @@ import { CoreModule } from "@app/core/core.module";
     AppRoutingModule,
     CoreModule,
     SharedModule,
+    AppUIModule
   ],
   declarations: [
     AppComponent

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { iBlocks, iTransaction } from '@shared/app.interfaces';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-transactions',
@@ -12,8 +13,9 @@ import { LoaderService } from '@app/core/general/loader-service/loader.service';
   styleUrls: ['./transactions.component.scss']
 })
 
-export class TransactionsComponent implements OnInit {
+export class TransactionsComponent implements OnInit, OnDestroy {
 
+  getTransactions: Subscription;
   transactionsFound: number;
   transactions: iTransaction[] = [];
   order: number;
@@ -42,7 +44,7 @@ export class TransactionsComponent implements OnInit {
 
     this.loaderService.toggle(true);
 
-    this.exploreSrv.getBlock().subscribe(async currentBlock => {
+    this.getTransactions = this.exploreSrv.getBlock().subscribe(async currentBlock => {
       let bookmarkCurrenBlock = currentBlock - 1;
       for (let i = currentBlock - searchAmount; i < currentBlock; ++i) {
         this.exploreSrv.web3.eth.getBlock(i).then((blockData: any) => {
@@ -101,6 +103,10 @@ export class TransactionsComponent implements OnInit {
 
   exploreBlock(id: number) {
     this.router.navigate(['/explorer/block', id]);
+  }
+
+  ngOnDestroy() {
+    this.getTransactions.unsubscribe();
   }
 
 

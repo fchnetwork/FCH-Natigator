@@ -53,7 +53,9 @@ export class BlocksComponent implements OnInit, OnDestroy {
 
   getLatestBlocks(){
     this.blocks = [];     
+    
     this.getBlockSource = this.exploreSrv.getBlock().subscribe( async currentBlock => {
+      console.log('subscription created');
       for (var i = 0; i < this.maxBlocks; ++i) {
           this.exploreSrv.web3.eth.getBlock( currentBlock - i, (error, result) => {
             if(!error) {

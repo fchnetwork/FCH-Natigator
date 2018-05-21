@@ -6,9 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { AddressComponent } from './components/address/address.component';
 import { BlocksComponent } from './components/blocks/blocks.component';
-import { BlockModalComponent } from './components/block/block-modal/block-modal.component';
-import { TransactionModalComponent } from './components/transaction/transaction-modal/transaction-modal.component';
-import { GetBlockModalComponent } from './components/block/get-block-modal/get-block-modal.component' 
 import { RouterModule } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -20,7 +17,6 @@ import { CoreModule } from '@app/core/core.module';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }    
-const modals = [BlockModalComponent, TransactionModalComponent, GetBlockModalComponent];
 
 @NgModule({
   imports: [
@@ -34,13 +30,9 @@ const modals = [BlockModalComponent, TransactionModalComponent, GetBlockModalCom
   ],
   declarations: [
     TransactionsComponent,
-    AddressComponent,
-    modals,
+    AddressComponent, 
     BlocksComponent,
     PendingTxnsComponent,
-  ],
-  entryComponents: [
-    modals
   ]
 })
 export class ExplorerModule {}

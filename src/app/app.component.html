@@ -1,3 +1,5 @@
-<app-loader></app-loader> 
+<div class="loader-overlay" [style.display]="loaderShown ?'inherit':'none'">
+    <aer-loader></aer-loader>
+  </div>
 <router-outlet></router-outlet>
 <app-i18n></app-i18n>

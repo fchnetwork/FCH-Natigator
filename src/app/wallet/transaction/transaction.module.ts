@@ -6,25 +6,19 @@ import { TranslateModule } from "@ngx-translate/core";
 import { TranslateLoader } from "@ngx-translate/core";
 import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";  
-import { CreateTransactionComponent } from "./create-transaction/create-transaction.component";
-import { TransactionSignModalComponent } from "./components/transaction-sign-modal/transaction-sign-modal.component"; 
+import { CreateTransactionComponent } from "./create-transaction/create-transaction.component"; 
 import { LastTransactionsComponent } from "@app/wallet/transaction/components/last-transactions/last-transactions.component";
 import { AppUIModule } from "@app/app.ui.module";
 import { SharedModule } from "@app/shared/shared.module";
 import { TransactionMoreOptionsComponent } from "@app/wallet/transaction/components/transaction-more-options/transaction-more-options.component";  
 import { TransactionRoutingModule } from "@app/wallet/transaction/transaction.routes";
-import { CoreModule } from "@app/core/core.module";
+import { CoreModule } from "@app/core/core.module"; 
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
 }
 
-@NgModule({
-    entryComponents: [
-        TransactionSignModalComponent,
-        CreateTransactionComponent,
-        LastTransactionsComponent,
-    ],
+@NgModule({ 
     imports: [
         FormsModule,
         AppUIModule,
@@ -35,10 +29,9 @@ export function createTranslateLoader(http: HttpClient) {
         CoreModule
     ],
     declarations: [
-        CreateTransactionComponent,
-        TransactionSignModalComponent,
+        CreateTransactionComponent, 
         LastTransactionsComponent,
-        TransactionMoreOptionsComponent,
+        TransactionMoreOptionsComponent
     ]
 })
 export class TransactionModule { }

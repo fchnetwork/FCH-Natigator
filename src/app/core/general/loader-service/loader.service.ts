@@ -5,11 +5,11 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/c
 import { Observable } from 'rxjs/Observable';
 import { catchError, finalize, map } from 'rxjs/operators';
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
-export class LoaderService implements HttpInterceptor {
-    private loaderShownSource = new Subject<boolean>();
-    public loaderShown$ = this.loaderShownSource.asObservable();
+export class LoaderService {
+    public loaderShown$ = new BehaviorSubject<boolean>(false); 
 
     constructor(public router: Router, private ngZone: NgZone, public logger: LoggerService) {
         router.events.subscribe((event: RouterEvent) => {
@@ -20,8 +20,8 @@ export class LoaderService implements HttpInterceptor {
     public toggle(visible: boolean) {
         //this.ngZone.runOutsideAngular(() => {
             console.log('toggled ' + visible);
-            this.loaderShownSource.next(visible);
-        //});
+            this.loaderShown$.next(visible);
+       //});
     }
 
     private interceptNavigation(event: RouterEvent) {
@@ -31,35 +31,13 @@ export class LoaderService implements HttpInterceptor {
 
         if (event instanceof NavigationEnd) {
             this.toggle(false);
+            console.log('navigation ended');
         }
-        // Set loading state to false in both of the below events to
-        // hide the spinner in case a request fails
         if (event instanceof NavigationCancel) {
             this.toggle(false);
         }
         if (event instanceof NavigationError) {
             this.toggle(false);
         }
-    }
-
-    intercept(
-        req: HttpRequest<any>,
-        next: HttpHandler
-    ): Observable<HttpEvent<any>> {
-        return next.handle(req).pipe(
-            map(event => {
-                this.toggle(true);
-                return event;
-            }),
-            catchError(error => {
-                this.toggle(false);
-                this.logger.logError("HTTP request failed", error);
-                return Observable.throw(error);
-            }),
-            finalize(() => {
-                this.toggle(false);
-            })
-        )
-    }
-
+    } 
 }

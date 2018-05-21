@@ -4,23 +4,29 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
 import { LogLevel } from '@app/core/general/logger-service/log-level.enum';
+import { LoaderService } from '@app/core/general/loader-service/loader.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  title = 'app'; 
+export class AppComponent implements OnInit {  
+  private loaderShown = false;
 
   constructor
     (
     private idle: AccountIdleService,
     private route: ActivatedRoute,
     private router: Router,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private loaderService: LoaderService
     ) {
       logger.setLogLevel(LogLevel.All);
+
+      this.loaderService.loaderShown$.subscribe(shown => {
+        this.loaderShown = shown; 
+      }, (err) => console.log(err));
     }
 
   ngOnInit() {

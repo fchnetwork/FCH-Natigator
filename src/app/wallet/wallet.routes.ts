@@ -23,8 +23,7 @@ export const WALLET_ROUTES = [
             },
             {
                 path: 'transaction',
-                loadChildren: 'app/wallet/transaction/transaction.module#TransactionModule',
-                data: { sidebarGroup: 'transaction'}
+                loadChildren: 'app/wallet/transaction/transaction.module#TransactionModule'
             },
             {
                 path: 'explorer',

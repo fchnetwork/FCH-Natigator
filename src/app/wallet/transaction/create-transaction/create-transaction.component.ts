@@ -12,6 +12,7 @@ import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
+import { LoaderService } from '@app/core/general/loader-service/loader.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -82,7 +83,8 @@ export class CreateTransactionComponent implements OnInit {
     public txnServ: TransactionService,
     public sessionStorageService: SessionStorageService,
     private tokenService: TokenService,
-    private route: ActivatedRoute,) {
+    private route: ActivatedRoute,
+    private loaderService: LoaderService) {
     this.userData();
     this.updateInterval = setInterval(()=>{
       this.userData();
@@ -138,7 +140,13 @@ export class CreateTransactionComponent implements OnInit {
     return new Web3( new Web3.providers.HttpProvider(environment.HttpProvider)); 
   };
 
+  toggleLoader() {
+    this.loaderService.toggle(true);
+  }
+
   ngOnInit() {
+    this.loaderService.toggle(false);
+
     this.walletBalance = this.myBalance;
     this.includedDataLength = 0;
     this.handleInputsChange();
