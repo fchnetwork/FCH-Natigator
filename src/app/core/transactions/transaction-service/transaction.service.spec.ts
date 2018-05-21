@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import { TransactionService } from '@app/core/transaction-service/transaction.service';
+import { TestBed, inject } from '@angular/core/testing';
+import { TransactionService } from "@app/core/transactions/transaction-service/transaction.service";
 
 describe('Service: TransactionService', () => {
   beforeEach(() => {
