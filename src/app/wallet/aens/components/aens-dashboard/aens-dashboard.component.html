@@ -1,0 +1,28 @@
+<h3>{{'ENS.MAIN_TITLE'|translate}}</h3>
+
+<div aerRow>
+  <div aerColumn size="sm-9">
+    <app-name-check [name]="name" [account]="currentAccount" (nameChecked)="onNameChecked($event)" (processing)="onProcessing($event)"></app-name-check>
+  </div>
+  <div aerColumn size="sm-3">
+    <app-name-status [name]="checkedName" [status]="status" *ngIf="isCheckDone()"></app-name-status>
+  </div>
+</div>
+
+<div aerRow *ngIf="isNameAvailable()">
+  <div aerColumn size="sm-9">
+    <app-name-buy [name]="checkedName" [price]="price" [account]="currentAccount" (namePurchased)="onNamePurchased($event)" (processing)="onProcessing($event)"></app-name-buy>
+  </div>
+</div>
+
+<div aerRow *ngIf="isNameOwner()">
+  <div aerColumn size="sm-9">
+    <app-name-update [name]="checkedName" [account]="currentAccount" (nameTransferred)="onNameTransferred($event)" (nameReleased)="onNameReleased($event)" (processing)="onProcessing($event)"></app-name-update>
+  </div>
+</div>
+
+<div aerRow *ngIf="isRegistrarOwner">
+  <div aerColumn size="sm-9">
+      <app-aens-contract-manage [price]="price" [account]="currentAccount" (priceChange)="onNamePriceChanged($event)" (processing)="onProcessing($event)"></app-aens-contract-manage>
+  </div>
+</div>
