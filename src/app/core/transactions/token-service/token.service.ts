@@ -5,8 +5,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage';
 import Web3 from 'web3';
 import { tokensABI } from '@app/core/abi/tokens';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-import { iToken } from '@shared/app.interfaces'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { iToken } from '@shared/app.interfaces';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 const Tx = require('ethereumjs-tx');

@@ -5,9 +5,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { toWei } from 'web3-utils';
 
+import { AddressValidator } from "@shared/validators/address.validator";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { AerumNameService } from '@core/aens/aerum-name-service/aerum-name.service';
-import {AensBaseComponent} from "@aens/components/aens-base.component";
+import { AensBaseComponent } from "@aens/components/aens-base.component";
 
 @Component({
   selector: 'app-aens-contract-manage',
@@ -45,11 +46,11 @@ export class AensContractManageComponent extends AensBaseComponent implements On
     });
 
     this.transferForm = this.formBuilder.group({
-      transferTo: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
+      transferTo: [null, [AddressValidator.isAddress]]
     });
 
     this.withdrawForm = this.formBuilder.group({
-      withdrawTo: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
+      withdrawTo: [null, [AddressValidator.isAddress]]
     });
 
     await this.refreshBalance();

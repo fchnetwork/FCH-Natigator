@@ -2,10 +2,12 @@ import { DialogRef } from 'ngx-modialog';
 import { BasicModalContext } from '@shared/components/modals/basic-modal/basic-modal.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalComponent } from 'ngx-modialog';
-import { Component, OnInit } from '@angular/core'; 
-import { SessionStorageService } from 'ngx-webstorage';   
+import { Component, OnInit } from '@angular/core';
+import { SessionStorageService } from 'ngx-webstorage';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
+import { AddressValidator } from "@shared/validators/address.validator";
+import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
 
 @Component({
   selector: 'app-add-token',
@@ -26,21 +28,19 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
     private tokenService: TokenService,
     private sessionStorage: SessionStorageService,
     public notificationService: InternalNotificationService,
+    private aerumNameService: AerumNameService
   ) { }
 
   ngOnInit() {
     this.addTokenForm = this.formBuilder.group({
-      // password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower]],
-      tokenAddress: [ null, [Validators.required, Validators.minLength(5)]],
+      tokenAddress: [ null, [], [new AddressValidator(this.aerumNameService).isAddressOrAensName]],
       tokenSymbol: [ null, [Validators.required, Validators.minLength(2)]],
       decimals: [ null, [Validators.required]]
     });
-    this.getTokenInfo(this.addTokenForm.value.tokenAddress);
 
-    this.addTokenForm.controls['tokenAddress'].valueChanges.subscribe( (res) => {
-      this.getTokenInfo(res);
+    this.addTokenForm.controls['tokenAddress'].valueChanges.subscribe( async (res) => {
+      await this.getTokenInfo(res);
     });
-
   }
 
   validateTokens() {
@@ -59,15 +59,15 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
           return false;
         }
       }
-    } 
+    }
     return true;
   }
 
-  onSubmit() {
+  async onSubmit() {
     const validate = this.validateTokens();
     if (this.addTokenForm.valid && validate) {
       const token = {
-        address: this.addTokenForm.value.tokenAddress,
+        address: await this.aerumNameService.resolveNameOrAddress(this.addTokenForm.value.tokenAddress),
         symbol: this.addTokenForm.value.tokenSymbol,
         decimals: this.addTokenForm.value.decimals,
         balance: this.balance,
@@ -77,16 +77,40 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
     }
   }
 
-  getTokenInfo(address) {
-    // const address = "0x8414d0b6205d82100f694be759e40a16e31e8d40";
-    const tokensInfo = this.tokenService.getTokensInfo(address).then((res:any)=>{
-      this.tokenSymbol = res.symbol;
-      this.decimals = res.decimals;
-      this.balance = res.balance;
-      this.totalSupply = Number(res.totalSupply) || 0;
-    }).catch((err)=>{
-      console.log(err);
-    });
+  async getTokenInfo(address) {
+    // const address = "0x8414d0b6205d82100f694be759e40a16e31e8d40"; or fab-token.aer
+    if(!address) {
+      this.clearTokenData();
+      return;
+    }
+
+    try {
+      const resolvedAddress = await this.aerumNameService.resolveNameOrAddress(address);
+      if(!resolvedAddress) {
+        this.clearTokenData();
+        return;
+      }
+
+      const res = await this.tokenService.getTokensInfo(resolvedAddress);
+      this.fillTokenData(res);
+    } catch (e) {
+      this.clearTokenData();
+      console.log(e);
+    }
+  }
+
+  private fillTokenData(data: any) {
+    this.tokenSymbol = data.symbol;
+    this.decimals = data.decimals;
+    this.balance = data.balance;
+    this.totalSupply = Number(data.totalSupply) || 0;
+  }
+
+  private clearTokenData() {
+    this.tokenSymbol = '';
+    this.decimals = 0;
+    this.balance = 0;
+    this.totalSupply = 0;
   }
 
 }

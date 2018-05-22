@@ -31,7 +31,7 @@
       "@aens/*": ["app/wallet/aens/*"],
       "@swap/*": ["app/wallet/swap/*"],
       "@env/*": ["environments/*"]
-    },
+    }
   },
   "exclude": [
     "**/node_modules/*",

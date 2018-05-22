@@ -35,8 +35,21 @@ export class AerumNameService {
     this.web3 = this.authService.initWeb3();
   }
 
+  async safeResolveNameOrAddress(nameOrAddress: string) {
+    try {
+      return await this.resolveNameOrAddress(nameOrAddress);
+    } catch (e) {
+      this.logger.logMessage(`Resolve ${nameOrAddress} failed silently: ${e.message}`);
+      return null;
+    }
+  }
+
   async resolveNameOrAddress(nameOrAddress: string) {
-    if(nameOrAddress.endsWith(".aer")) {
+    if(!nameOrAddress) {
+      return null;
+    }
+
+    if(nameOrAddress.endsWith('.aer')) {
       return this.resolveAddressFromName(nameOrAddress);
     }
 
@@ -49,8 +62,25 @@ export class AerumNameService {
     const node = hash(name);
     const address = await this.resolverContractService.getAddress(node);
     this.logger.logMessage(`Name ${name} resolved into: ${address}`);
+    if(address === this.emptyAddress) {
+      return null;
+    }
 
     return address || null;
+  }
+
+  async ensureNameCanBeResolved(name: string): Promise<boolean> {
+    try {
+      if(!name || !name.endsWith(".aer")) {
+        return false;
+      }
+
+      const address = await this.safeResolveNameOrAddress(name);
+      return address && (address !== this.emptyAddress);
+    } catch (e) {
+      this.logger.logError(`Error resolving name: ${name}`, e);
+      return false;
+    }
   }
 
   async isNameAvailable(name: string) : Promise<boolean> {

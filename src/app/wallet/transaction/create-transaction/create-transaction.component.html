@@ -4,17 +4,8 @@
     <div aerColumn size="sm-6">
       <aer-card title="{{'SEND_TO'|translate}}">
           <form [formGroup]="txnForm" >
-              <div aerRow>
-              <!-- <ng-container *ngFor="let eachControl of formControlKeys">
-                  <ng-container *ngIf="txnForm.controls[eachControl].touched">
-                    <span *ngFor="let eachError of (getObjectKeys(txnForm.controls[eachControl].errors))">
-                    {{errorMessages[eachError]}}<br>
-                    </span> <br>
-                  </ng-container> 
-               </ng-container>    -->
-              </div>
             <div aerRow>
-              <div aerColumn size="sm-6">           
+              <div aerColumn size="sm-6">
                 <div class="input-name">{{'FROM'|translate}}</div>
                 <aer-input icon="aerum" [ngClass]="{'has-error':!txnForm.controls['senderAddress'].valid && txnForm.controls['senderAddress'].touched}" formControlName="senderAddress" [(ngModel)]="senderAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
               </div>
@@ -40,7 +31,7 @@
                     </div>
               </div>
           </div>
-         
+
           <!-- <span *ngIf="txnForm.controls['senderAddress'].hasError('required') && txnForm.controls['senderAddress'].touched" class="login-error">You must include a sender address.</span>
           <span *ngIf="txnForm.controls['senderAddress'].hasError('minlength') && txnForm.controls['senderAddress'].touched" class="login-error">Your sender address must be at least 42 characters in length and be prefixed with '0x'.</span>
           <span *ngIf="txnForm.controls['senderAddress'].hasError('maxlength') && txnForm.controls['senderAddress'].touched" class="login-error">Your sender address cannot exceed 42 characters in length and be prefixed with '0x'.</span>
@@ -89,7 +80,7 @@
               </div>
               <hr>
               <div class="footer-buttons">
-                  <aer-button [disabled]="txnForm.status === 'INVALID'" [ngClass]="txnForm.status === 'INVALID' ? 'disabled' : 'blue'" class="normal" (buttonFn)="send()">{{'SEND'|translate}}</aer-button>
+                  <aer-button [disabled]="!txnForm.valid" [ngClass]="!txnForm.valid ? 'disabled' : 'blue'" class="normal" (buttonFn)="send()">{{'SEND'|translate}}</aer-button>
               </div>
             </div>
           </div>
