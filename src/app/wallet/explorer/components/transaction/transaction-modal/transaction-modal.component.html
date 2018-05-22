@@ -1,0 +1,97 @@
+<aer-modal-dialog>
+    <div class="explorer detail-modal" *ngIf="transaction">
+      <div class="title">{{'TRANSACTION'|translate}}</div>
+      <app-divider></app-divider>
+      <div class="link" (click)="openTxn(transaction.hash)">{{transaction.hash}}</div>
+      <div><p class="aer-small">{{transaction.timestamp | transactionTimeStamp }}</p></div>
+      <div class="age">({{transaction.timestamp | transactionTimeAgo  }})</div>
+        <div class="transaction-table">
+        <div class="tr">
+          <div class="name">
+            {{'AMOUNT'|translate}} 
+          </div>
+          <div class="value">
+            {{transaction.value | convertToEther }} {{'AERO'|translate}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'FROM'|translate}}
+          </div>
+          <div class="value">
+            {{transaction.from}}
+          </div> 
+        </div>
+        <div class="tr">
+            <div class="name">
+              {{'TO'|translate}}
+            </div>
+            <div class="value">
+                <div *ngIf="!transaction.to; then contractTxn else normalTxn"></div>
+                <ng-template #normalTxn>
+                    {{transaction.to  }} 
+                </ng-template>
+                <ng-template #contractTxn>
+                  [Contract Creation Transaction]
+                </ng-template>    
+            </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'GAS_USED'|translate}}
+          </div>
+          <div class="value">
+              {{transaction.gasUsedinTxn }}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name"> 
+            {{'TRANSACTION_COST'|translate}}
+          </div>
+          <div class="value">
+              {{transaction.gasUsedinTxn * transaction.gasPrice | convertToEther}} {{'AERO'|translate}}
+          </div>
+        </div>
+        <div class="tr">
+          <div class="name">
+            {{'GAS_PRICE'|translate}}
+          </div>
+          <div class="value">
+              {{transaction.gasPrice | convertToEther  }} {{'AERO'|translate}}
+          </div>
+        </div>
+        <div *ngIf="transaction.blockNumber" class="tr">
+          <div class="name">
+            {{'BLOCK'|translate}}
+          </div>
+          <div class="value link" (click)="openBlock(transaction.blockNumber)">
+              {{transaction.blockNumber}}
+          </div>
+        </div>
+        <div class="tr" *ngIf="transaction.input.length > 3">
+          <div class="name">
+            {{'SEND_DATA'|translate}}
+          </div>
+          <div class="value">
+              <div *ngIf="!transaction.to; then contractTxn else normalTxn"></div>
+              <ng-template #normalTxn>
+                  <div *ngIf="showHexData; then hex else text"></div>
+                  <ng-template #text>
+                      {{transaction.input|hextoAscii}} 
+                  </ng-template>
+                  <ng-template #hex>
+                      {{transaction.input}} 
+                  </ng-template>    
+              </ng-template>
+              <ng-template #contractTxn>
+                [Contract Creation Transaction]
+              </ng-template>            
+          </div>
+        </div>
+        </div>
+        <div class="tr" *ngIf="transaction.to && transaction.input > 3">
+            <aer-button (click)="convert()" class="small blue">{{btnText}}</aer-button>
+        </div>        
+      <aer-button (click)="close()" class="large full-width">Close</aer-button>
+    </div>
+  </aer-modal-dialog>

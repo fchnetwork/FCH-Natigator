@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { Guid } from "@shared/helpers/guid"; 
-import { SessionStorageService } from 'ngx-webstorage';  
+import { Guid } from "@shared/helpers/guid";
 import { NotificationService } from "@aerum/ui";
 
-import { environment } from 'environments/environment'; 
-import { SwapToken, SwapMode } from '@app/wallet/swap/models/models';  
-import { AerumNameService } from '@app/core/aens/aerum-name.service';
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { ERC20TokenService } from '@app/core/swap/erc20-token.service';
-import { AeroToErc20SwapService } from '@app/core/swap/aero-to-erc20-swap.service';
-import { Erc20ToAeroSwapService } from '@app/core/swap/erc20-to-aero-swap.service';
-import { Erc20ToErc20SwapService } from '@app/core/swap/erc20-to-erc20-swap.service';
-import { ModalService } from '@app/core/general/modal-service/modal.service';
+import { environment } from '@env/environment';
+import { SwapToken, SwapMode } from '@swap/models/models';
+import { LoggerService } from "@core/general/logger-service/logger.service";
+import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
+import { AerumNameService } from '@core/aens/aerum-name-service/aerum-name.service';
+import { ERC20TokenService } from '@core/swap/erc20-token-service/erc20-token.service';
+import { AeroToErc20SwapService } from '@core/swap/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
+import { Erc20ToAeroSwapService } from '@core/swap/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
+import { Erc20ToErc20SwapService } from '@core/swap/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
+import { ModalService } from '@core/general/modal-service/modal.service';
 
 @Component({
   selector: 'create-swap',
@@ -36,6 +35,7 @@ export class CreateSwapComponent implements OnInit {
   processing = false;
 
   constructor(
+    private logger: LoggerService,
     private authService: AuthenticationService,
     private modalService: ModalService,
     private notificationService: NotificationService,
@@ -43,8 +43,7 @@ export class CreateSwapComponent implements OnInit {
     private aeroToErc20SwapService: AeroToErc20SwapService,
     private erc20ToAeroSwapService: Erc20ToAeroSwapService,
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
-    private aensService: AerumNameService,
-    private formBuilder: FormBuilder
+    private aensService: AerumNameService
   ) { }
 
   async ngOnInit() {
@@ -115,7 +114,7 @@ export class CreateSwapComponent implements OnInit {
     if((!tokenAmountParsed || tokenAmountParsed <= 0) ||
        (!counterpartyTokenAmountParsed || counterpartyTokenAmountParsed <= 0) ||
        (!rateParsed || rateParsed <= 0)) {
-      this.notificationService.notify('Error', 'Swap ammount or rate not valid', "aerum", 3000);
+      this.notificationService.notify('Error', 'Swap amount or rate not valid', "aerum", 3000);
       return;
     }
 
@@ -135,14 +134,14 @@ export class CreateSwapComponent implements OnInit {
       await this.confirmAndCreateSwap();
     } catch (e) {
       this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
-      throw e;
+      this.logger.logError('Swap creation error:', e);
     } finally {
       this.stopLoading();
     }
-  } 
+  }
 
   private async confirmAndCreateSwap() {
-    const modalResult = await this.modalService.openSwapCreateConfirm({ 
+    const modalResult = await this.modalService.openSwapCreateConfirm({
       swapId: this.swapId,
       token: this.token,
       tokenAmount: this.tokenAmount,
@@ -153,7 +152,7 @@ export class CreateSwapComponent implements OnInit {
     });
 
     if(!modalResult.confirmed) {
-      console.log('Swap creation canceled');
+      this.logger.logMessage('Swap creation canceled');
       return;
     }
 
@@ -222,7 +221,7 @@ export class CreateSwapComponent implements OnInit {
   private async ensureAllowance(tokenContractAddress: string, spender: string, amount: number) {
     const allowance = await this.erc20TokenService.allowance(tokenContractAddress, this.currentAddress, spender);
     if (Number(allowance) < amount) {
-      console.log(`Allowance value: ${allowance}. Needed: ${amount}`);
+      this.logger.logMessage(`Allowance value: ${allowance}. Needed: ${amount}`);
       await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
     }
   }
@@ -258,18 +257,6 @@ export class CreateSwapComponent implements OnInit {
 
   private isAeroSelected(token: SwapToken) {
     return token && !token.address;
-  }
-
-  private isTokenInOpenSelected() {
-    return this.isTokenSelected(this.token);
-  }
-
-  private isTokenInCounterpartySelected() {
-    return this.isTokenSelected(this.counterpartyToken);
-  }
-
-  private isTokenSelected(token: SwapToken) {
-    return token && token.address;
   }
 
   private updateTitle() {

@@ -1,0 +1,23 @@
+.aens {
+  &__separator {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  &__address-info {
+    // TODO: This is temporary solution as grid doesn't do columns row the same for row
+    padding-top: 45px;
+  }
+
+  &__price-info {
+    // TODO: This is temporary solution as grid doesn't do columns row the same for row
+    padding-top: 45px;
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    justify-content: space-between;
+
+    &__aero {
+      font-size: 20px;
+    }
+  }
+}

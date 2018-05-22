@@ -2,11 +2,15 @@
 
 import { TestBed, async, inject } from '@angular/core/testing';
 import { ModalService } from './modal.service';
+import { Modal } from "ngx-modialog";
 
 describe('Service: Modal', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ModalService]
+      providers: [
+        ModalService,
+        { provide: Modal, useValue: jest.fn() }
+      ]
     });
   });
 

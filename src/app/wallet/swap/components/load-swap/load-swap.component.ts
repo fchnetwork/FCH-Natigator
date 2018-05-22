@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from "@aerum/ui";
 
-import { environment } from 'environments/environment'; 
+import { environment } from '@env/environment';
 
-import Web3 from 'web3';
+import { fromWei } from 'web3-utils';
+
 import { TransactionReceipt } from 'web3/types';
-import { SwapMode, LoadedSwap, SwapStatus } from '@app/wallet/swap/models/models';   
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { AeroToErc20SwapService } from '@app/core/swap/aero-to-erc20-swap.service';
-import { Erc20ToAeroSwapService } from '@app/core/swap/erc20-to-aero-swap.service';
-import { Erc20ToErc20SwapService } from '@app/core/swap/erc20-to-erc20-swap.service';
-import { ERC20TokenService } from '@app/core/swap/erc20-token.service';
-import { ModalService } from '@app/core/general/modal-service/modal.service';
-import { TokenService } from '@app/core/transactions/token-service/token.service';
+import { SwapMode, LoadedSwap, SwapStatus } from '@swap/models/models';
+import { LoggerService } from "@core/general/logger-service/logger.service";
+import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
+import { AeroToErc20SwapService } from '@core/swap/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
+import { Erc20ToAeroSwapService } from '@core/swap/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
+import { Erc20ToErc20SwapService } from '@core/swap/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
+import { ERC20TokenService } from '@core/swap/erc20-token-service/erc20-token.service';
+import { ModalService } from '@core/general/modal-service/modal.service';
+import { TokenService } from '@core/transactions/token-service/token.service';
 
 interface SwapCommonOperationsService {
   expireSwap(swapId: string) : Promise<TransactionReceipt>;
@@ -26,8 +28,6 @@ interface SwapCommonOperationsService {
 })
 export class LoadSwapComponent implements OnInit {
 
-  private web3: Web3;
-
   currentAddress: string;
   swapId: string;
   title: string;
@@ -35,6 +35,7 @@ export class LoadSwapComponent implements OnInit {
   processing = false;
 
   constructor(
+    private logger: LoggerService,
     private authService: AuthenticationService,
     private modalService: ModalService,
     private aeroToErc20SwapService: AeroToErc20SwapService,
@@ -43,9 +44,7 @@ export class LoadSwapComponent implements OnInit {
     private erc20TokenService: ERC20TokenService,
     private notificationService: NotificationService,
     private tokenService: TokenService
-  ) {
-    this.web3 = this.authService.initWeb3();
-  }
+  ) { }
 
   async ngOnInit() {
     const keystore = await this.authService.showKeystore();
@@ -62,12 +61,12 @@ export class LoadSwapComponent implements OnInit {
 
   async loadSwap() {
     if(!this.swapId) {
-      console.log('Swap ID empty');
+      this.logger.logMessage('Swap ID empty');
       return;
     }
 
     if(this.processing) {
-      console.log('Other operation in progress');
+      this.logger.logMessage('Other operation in progress');
       return;
     }
 
@@ -76,8 +75,8 @@ export class LoadSwapComponent implements OnInit {
       await this.showSwapInModalAndProcess();
     } catch(e) {
       this.notificationService.notify('Error', 'Swap not found or invalid', "aerum", 3000);
-      throw e;
-    } 
+      this.logger.logError('Swap action error:', e);
+    }
     finally {
       this.stopLoading();
     }
@@ -86,7 +85,7 @@ export class LoadSwapComponent implements OnInit {
   private async showSwapInModalAndProcess() {
     const swapService = this.getCurrentSwapService();
     const swap = await swapService.checkSwap(this.swapId);
-    console.log(swap);
+    this.logger.logMessage('Original swap:', swap);
 
     const status = this.mapSwapStatus(swap.state);
     if(status === 'Invalid') {
@@ -94,7 +93,7 @@ export class LoadSwapComponent implements OnInit {
     }
 
     const loadedSwap = await this.mapToLoadedSwap(this.swapId, swap);
-    console.log(loadedSwap);
+    this.logger.logMessage('Mapped swap:', loadedSwap);
 
     const modalResult = await this.modalService.openSwapLoadConfirm(loadedSwap);
     if(modalResult.confirmed) {
@@ -109,7 +108,7 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async confirm(swap: LoadedSwap) {
-    console.log(`Confirming swap: ${this.swapId}`);
+    this.logger.logMessage(`Confirming swap: ${this.swapId}`);
     if(this.mode === 'aero_to_erc20') {
       await this.confirmAeroToErc20Swap(swap);
     } else if(this.mode === 'erc20_to_erc20') {
@@ -128,7 +127,7 @@ export class LoadSwapComponent implements OnInit {
     await this.aeroToErc20SwapService.closeSwap(this.swapId);
   }
 
-  private async confirmErc20ToErc20Swap(swap: LoadedSwap) { 
+  private async confirmErc20ToErc20Swap(swap: LoadedSwap) {
     await this.ensureAllowance(
       swap.counterpartyTokenAddress,
       environment.contracts.swap.address.Erc20ToErc20,
@@ -137,21 +136,21 @@ export class LoadSwapComponent implements OnInit {
     await this.erc20ToErc20SwapService.closeSwap(this.swapId);
   }
 
-  private async confirmErc20ToAeroSwap(swap: LoadedSwap) { 
-    const closeEtherAmount = this.web3.utils.fromWei(swap.counterpartyAmount, 'ether');
+  private async confirmErc20ToAeroSwap(swap: LoadedSwap) {
+    const closeEtherAmount = fromWei(swap.counterpartyAmount, 'ether');
     await this.erc20ToAeroSwapService.closeSwap(this.swapId, closeEtherAmount);
   }
 
   private async ensureAllowance(tokenContractAddress: string, spender: string, amount: number) {
     const allowance = await this.erc20TokenService.allowance(tokenContractAddress, this.currentAddress, spender);
     if (Number(allowance) < amount) {
-      console.log(`Allowance value: ${allowance}. Needed: ${amount}`);
+      this.logger.logMessage(`Allowance value: ${allowance}. Needed: ${amount}`);
       await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
     }
   }
 
   private async reject() {
-    console.log(`Rejecting swap: ${this.swapId}`);
+    this.logger.logMessage(`Rejecting swap: ${this.swapId}`);
     const swapService = this.getCurrentSwapService();
     await swapService.expireSwap(this.swapId);
   }
@@ -219,16 +218,16 @@ export class LoadSwapComponent implements OnInit {
     }
   }
 
-  private async mapToLoadedSwapFromAeroToErc20Swap(swapId: string, swap: any) {
+  private async mapToLoadedSwapFromAeroToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
     const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.ethValue,
-      tokenAmountFormated: this.web3.utils.fromWei(swap.ethValue, 'ether'),
+      tokenAmountFormatted: fromWei(swap.ethValue, 'ether'),
       tokenTrader: swap.ethTrader,
       tokenAddress: '',
       counterpartyAmount: swap.erc20Value,
-      counterpartyAmountFormated: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals),
+      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals),
       counterpartyTrader: swap.erc20Trader,
       counterpartyTokenAddress: swap.erc20ContractAddress,
       counterpartyTokenInfo,
@@ -236,35 +235,35 @@ export class LoadSwapComponent implements OnInit {
     };
   }
 
-  private async mapToLoadedSwapFromErc20ToAeroSwap(swapId: string, swap: any) {
+  private async mapToLoadedSwapFromErc20ToAeroSwap(swapId: string, swap: any) : Promise<LoadedSwap> {
     const tokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.erc20Value,
-      tokenAmountFormated: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals),
+      tokenAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals),
       tokenTrader: swap.erc20Trader,
       tokenAddress: swap.erc20ContractAddress,
       tokenInfo,
       counterpartyAmount: swap.ethValue,
-      counterpartyAmountFormated: this.web3.utils.fromWei(swap.ethValue, 'ether'),
+      counterpartyAmountFormatted: fromWei(swap.ethValue, 'ether'),
       counterpartyTrader: swap.ethTrader,
       counterpartyTokenAddress: '',
       status: this.mapSwapStatus(swap.state)
     };
   }
 
-  private async mapToLoadedSwapFromErc20ToErc20Swap(swapId: string, swap: any) {
+  private async mapToLoadedSwapFromErc20ToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
     const tokenInfo: any = await this.tokenService.getTokensInfo(swap.openContractAddress);
     const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.closeContractAddress);
     return {
       swapId,
       tokenAmount: swap.openValue,
-      tokenAmountFormated: this.getDecimalTokenValue(swap.openValue, tokenInfo.decimals),
+      tokenAmountFormatted: this.getDecimalTokenValue(swap.openValue, tokenInfo.decimals),
       tokenTrader: swap.openTrader,
       tokenAddress: swap.openContractAddress,
       tokenInfo,
       counterpartyAmount: swap.closeValue,
-      counterpartyAmountFormated: this.getDecimalTokenValue(swap.closeValue, counterpartyTokenInfo.decimals),
+      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.closeValue, counterpartyTokenInfo.decimals),
       counterpartyTrader: swap.closeTrader,
       counterpartyTokenAddress: swap.closeContractAddress,
       counterpartyTokenInfo,

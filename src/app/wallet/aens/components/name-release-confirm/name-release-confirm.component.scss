@@ -1,0 +1,50 @@
+.c-confirm-name-release {
+  &__unlock {
+    width: 380px;
+  }
+
+  &__table {
+    color: #83868A;
+    font-size: 13px;
+    line-height: 1;
+    text-align: center;
+
+    h1 {
+      font-size: 36px;
+      font-weight: normal;
+      color: #27282A;
+      margin: 0 0 38px;
+    }
+
+    aer-button {
+      margin-bottom: 20px;
+      display: block;
+    }
+  }
+}
+
+.o-table {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  margin: 46px 0 25px;
+
+  &__row {
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__cell {
+    display: inline-block;
+    padding-bottom: 15px;
+
+    &.o-data--left {
+      text-align: left;
+    }
+
+    &.o-data--right {
+      text-align: right;
+    }
+  }
+}

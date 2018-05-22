@@ -1,5 +1,3 @@
-import { TransactionReceipt } from "web3/types";
-
 export interface SwapToken {
     address: string;
     decimals?: number;
@@ -11,12 +9,12 @@ export type SwapMode = 'aero_to_erc20'|'erc20_to_aero'|'erc20_to_erc20'|'aero_to
 export interface LoadedSwap {
     swapId: string;
     tokenAmount: string;
-    tokenAmountFormated: number;
+    tokenAmountFormatted: number;
     tokenTrader: string;
     tokenAddress: string;
     tokenInfo?: any,
     counterpartyAmount: string;
-    counterpartyAmountFormated: number;
+    counterpartyAmountFormatted: number;
     counterpartyTrader: string;
     counterpartyTokenAddress: string;
     counterpartyTokenInfo?: any,

@@ -5,11 +5,11 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { environment } from 'environments/environment';  
 import Web3 from 'web3'; 
 import { ManageAensContractComponent } from '@app/wallet/aens/components/manage-aens-contract/manage-aens-contract.component';
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service'; 
-import { AerumNameService } from '@app/core/aens/aerum-name.service';
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';  
 import { BuyConfirmRequest } from '@app/wallet/aens/models/buyConfirmRequest';
 import { BuyConfirmReponse } from '@app/wallet/aens/models/buyConfirmReponse';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
+import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 
 @Component({
   selector: 'app-manage-aerum-names',

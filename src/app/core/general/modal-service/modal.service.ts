@@ -11,6 +11,9 @@ import { TransactionSignModalComponent } from '@app/shared/modals/transaction-si
 import { AddTokenComponent } from '@app/wallet/home/components/add-token/add-token.component';
 import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
 import { GetBlockModalComponent } from '@app/shared/modals/get-block-modal/get-block-modal.component';
+import { NameUpdateAddressConfirmComponent } from '@app/wallet/aens/components/name-update-address-confirm/name-update-address-confirm.component';
+import { NameTransferConfirmComponent } from '@app/wallet/aens/components/name-transfer-confirm/name-transfer-confirm.component';
+import { NameReleaseConfirmComponent } from '@app/wallet/aens/components/name-release-confirm/name-release-confirm.component';
 
 @Injectable()
 export class ModalService {
@@ -68,5 +71,17 @@ export class ModalService {
 
   openBuyAensConfirm(data?: any): Promise<any> {
     return this.openModal(AerunNameBuyConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
+  }
+
+  openSetAensAddressConfirm(data?: any): Promise<any> {
+    return this.openModal(NameUpdateAddressConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
+  }
+
+  openTransferAensNameConfirm(data?: any): Promise<any> {
+    return this.openModal(NameTransferConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
+  }
+
+  openReleaseAensNameConfirm(data?: any): Promise<any> {
+    return this.openModal(NameReleaseConfirmComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', param: data });
   }
 }

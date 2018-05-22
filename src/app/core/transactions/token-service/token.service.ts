@@ -3,10 +3,10 @@ import { environment } from '@app/../environments/environment';
 import { Injectable } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage';
-import Web3 from 'web3'; 
+import Web3 from 'web3';
 import { tokensABI } from '@app/core/abi/tokens';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-import { iToken } from '@shared/app.interfaces' 
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { iToken } from '@shared/app.interfaces';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 const Tx = require('ethereumjs-tx');
@@ -15,23 +15,18 @@ const ethJsUtil = require('ethereumjs-util');
 
 @Injectable()
 export class TokenService {
-  web3: any;
+  web3: Web3;
   tokensContract: any;
-  tokens$: BehaviorSubject<iToken>= new BehaviorSubject(<any>[]); 
+  tokens$: BehaviorSubject<iToken>= new BehaviorSubject(<any>[]);
 
   constructor(
     private _auth: AuthenticationService,
     private sessionStorage: SessionStorageService,
-  ) { 
-    this.web3 = this.initWeb3();
+  ) {
+    this.web3 = _auth.initWeb3();
   }
 
-  initWeb3 = () => {
-    return new Web3( new Web3.providers.HttpProvider(environment.HttpProvider)); 
-  };
-
   addToken(tokenData) {
-    const date = new Date();
     const token = tokenData;
     const tokens = this.sessionStorage.retrieve('tokens') || [];
     tokens.push(token);
@@ -41,7 +36,6 @@ export class TokenService {
     setTimeout(()=>{
       this.updateTokensBalance();
     }, 100);
-    
   }
 
   saveTokens(tokens) {
@@ -68,7 +62,6 @@ export class TokenService {
   updateTokensBalance() {
     const tokens = this.sessionStorage.retrieve('tokens');
     const address = this.sessionStorage.retrieve('acc_address');
-    const updatedTokens = [];
     return new Promise((resolve)=> {
       for (let i = 0; i < tokens.length; i++) {
         this.tokensContract = new this.web3.eth.Contract(tokensABI, tokens[i].address);
@@ -107,7 +100,7 @@ export class TokenService {
                 resolve(contract);
               });
             });
-            
+
           });
         });
       } else {

@@ -3,8 +3,8 @@ import { NotificationService } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'; 
 import Web3 from 'web3';
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { AerumNameService } from '@app/core/aens/aerum-name.service';
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service'; 
+import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 
 @Component({
   selector: 'app-manage-aens-contract',

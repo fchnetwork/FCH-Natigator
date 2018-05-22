@@ -21,13 +21,20 @@
     ],
     "paths": {
       "@app/*": ["app/*"],
+      "@core/*": ["app/core/*"],
       "@account/*": ["app/account/*"],
-      "@dashboard/*": ["app/dashboard/*"],
-      "@explorer/*": ["app/explorer/*"],
       "@shared/*": ["app/shared/*"],
-      "@transaction/*": ["app/transaction/*"],
-      "@diagnostics/*": ["app/diagnostics/*"],
+      "@dashboard/*": ["app/wallet/dashboard/*"],
+      "@explorer/*": ["app/wallet/explorer/*"],
+      "@transaction/*": ["app/wallet/transaction/*"],
+      "@diagnostics/*": ["app/wallet/diagnostics/*"],
+      "@aens/*": ["app/wallet/aens/*"],
+      "@swap/*": ["app/wallet/swap/*"],
       "@env/*": ["environments/*"]
-    },
-  }
+    }
+  },
+  "exclude": [
+    "**/node_modules/*",
+    "dist"
+  ]
 }
