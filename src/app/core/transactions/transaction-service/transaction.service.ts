@@ -202,7 +202,7 @@ export class TransactionService {
       });
     }
 
-    checkAddressCode(address){
+    checkAddressCode(address) {
       return new Promise((resolve, reject)=>{
         this.web3.eth.getCode(address).then((res)=>{
           resolve(res);

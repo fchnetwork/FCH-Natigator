@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { environment } from '@env/environment';
 
+import { AddressValidator } from "@shared/validators/address.validator";
 import { NameBuyConfirmRequest } from '@aens/models/nameBuyConfirmRequest';
 import { ConfirmResponse } from '@aens/models/confirmResponse';
 import { ModalService } from '@core/general/modal-service/modal.service';
@@ -45,7 +46,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
 
     this.buyForm = this.formBuilder.group({
       name: [null, [Validators.pattern("^[a-zA-Z0-9-]{5,50}$")]],
-      address: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
+      address: [null, [AddressValidator.isAddress]]
     });
 
     this.currentAccountBalanceInWei = await this.transactionService.checkBalance(this.account);

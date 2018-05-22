@@ -1,8 +1,9 @@
-import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { NotificationService } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
+import { AddressValidator } from "@shared/validators/address.validator";
 import { SetAddressConfirmRequest } from '@aens/models/setAddressConfirmRequest';
 import { NameReleaseConfirmRequest } from "@aens/models/nameReleaseConfirmRequest";
 import { NameTransferConfirmRequest } from "@aens/models/nameTransferConfirmRequest";
@@ -46,11 +47,11 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
     this.fullName = this.name.trim() + ".aer";
 
     this.setAddressForm = this.formBuilder.group({
-      address: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
+      address: [null, [AddressValidator.isAddress]]
     });
 
     this.transferForm = this.formBuilder.group({
-      address: [null, [Validators.required, Validators.pattern("^(0x){1}[0-9a-fA-F]{40}$")]]
+      address: [null, [AddressValidator.isAddress]]
     });
 
     this.oldAddress = await this.aensService.resolveAddressFromName(this.fullName);

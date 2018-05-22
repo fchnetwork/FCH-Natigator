@@ -1,30 +1,26 @@
-import { ActivatedRoute } from '@angular/router'; 
-import { Component, OnInit } from '@angular/core';
-import * as Moment from 'moment';  
-import { FormsModule } from '@angular/forms'; 
-import { SessionStorageService } from 'ngx-webstorage'; 
-import * as CryptoJs from 'crypto-js';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';  
-import { environment } from '@env/environment';   
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service'; 
+import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SessionStorageService } from 'ngx-webstorage';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
-
-const Tx = require('ethereumjs-tx');
-const ethJsUtil = require('ethereumjs-util');
-const Web3 = require('web3');
+import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
+import { AddressValidator } from "@shared/validators/address.validator";
+import { LoggerService } from "@core/general/logger-service/logger.service";
+import Web3 from "web3";
 
 declare var window: any;
-  
+
 @Component({
   selector: 'app-create-transaction',
   templateUrl: './create-transaction.component.html',
   styleUrls: ['./create-transaction.component.scss']
 })
-export class CreateTransactionComponent implements OnInit {
+export class CreateTransactionComponent implements OnInit, OnDestroy {
 
   myBalance: any;
   txnForm: FormGroup = this.formBuilder.group({});
@@ -37,7 +33,7 @@ export class CreateTransactionComponent implements OnInit {
   walletBalance: number;
   aeroBalance: number;
   sendEverything: boolean;
-  transactionMessage:any;
+  transactionMessage: any;
   addressQR: string;
   maxTransactionFee = 0;
   maxTransactionFeeEth = 0;
@@ -49,7 +45,7 @@ export class CreateTransactionComponent implements OnInit {
     balance: 0,
     decimals: null,
   };
-  web3: any;
+  web3: Web3;
   sub: any;
   isToken = false;
   redirectUrl: string;
@@ -67,171 +63,136 @@ export class CreateTransactionComponent implements OnInit {
   };
   showedMore = false;
   updateInterval: any;
-  invalid = [];
-  
-  
-  formControlKeys = [];
-  errorMessages = {};
-  
+
   constructor(
-    public formBuilder: FormBuilder,
-    public authServ: AuthenticationService,
+    private logger: LoggerService,
+    private formBuilder: FormBuilder,
+    private authService: AuthenticationService,
     private modalSrv: ModalService,
     private clipboardService: ClipboardService,
     private notificationService: InternalNotificationService,
-    public txnServ: TransactionService,
-    public sessionStorageService: SessionStorageService,
+    private transactionService: TransactionService,
+    private sessionStorageService: SessionStorageService,
     private tokenService: TokenService,
-    private route: ActivatedRoute,) {
-    this.userData();
-    this.updateInterval = setInterval(()=>{
-      this.userData();
-      this.updateTokensBalance();
-    },3000);
-    
-    // work on these more with https://regex101.com
-    let regexAmount = "^[0-9\.\-\/]+$"; // issues with decimals and validation - needs more work
-    // Address is to fix
-    let regexAddress = '^0x[0-9a-{0,42}]+$' 
+    private route: ActivatedRoute,
+    private nameService: AerumNameService) {
 
-    this.txnForm = this.formBuilder.group({
-      senderAddress: [ this.senderAddress, [Validators.required, Validators.minLength(42), Validators.maxLength(42)]],
-      receiverAddress: [ this.receiverAddress, [Validators.required, Validators.minLength(42), Validators.maxLength(42)]],
-      amount: [ null, [Validators.required, Validators.pattern(regexAmount) ]],
-      selectedToken: [ this.selectedToken, [Validators.required]]
-    });
-    
+    this.loadUserData().catch((e) => this.logger.logError(e));
+    this.updateInterval = setInterval(async () => {
+      // TODO: Do we really need to update user data every n seconds? Possibly only aero amount
+      await this.loadUserData();
+      await this.updateTokensBalance();
+    }, 3000);
 
-    this.formControlKeys = Object.keys(this.txnForm.controls);
-
-    this.errorMessages = {
-      required: "You must add a value to this field",
-      max: "Max allowed value for input is 42",
-      min: "Min allowed value for input is 42",
-      pattern: "this is not an allowed value",
-    };
-   
-    
-   }
-
-   getObjectKeys(arg) {
-     if(arg != null || arg != null) {
-        return Object.keys(arg);
-     }
+    this.web3 = this.authService.initWeb3();
   }
 
-  updateTokensBalance() {
-    this.tokenService.updateTokensBalance().then((res)=>{
-      this.tokens = res;
-      for (let i = 0; i < this.tokens.length; i ++) {
-        if(this.selectedToken.symbol === this.tokens[i].symbol) {
-          this.walletBalance = this.tokens[i].balance;
-          return true;
-        } else {
-          this.walletBalance = this.aeroBalance;
-        }
-      }
-    });
-  }
-
-  initWeb3 = () => {
-    return new Web3( new Web3.providers.HttpProvider(environment.HttpProvider)); 
-  };
-
-  ngOnInit() {
+  async ngOnInit() {
     this.walletBalance = this.myBalance;
     this.includedDataLength = 0;
     this.handleInputsChange();
     this.tokens = this.tokenService.getTokens();
+
+    // work on these more with https://regex101.com
+    const regexAmount = "^[0-9\.\-\/]+$"; // issues with decimals and validation - needs more work
+    this.txnForm = this.formBuilder.group({
+      senderAddress: [this.senderAddress, [AddressValidator.isAddress]],
+      receiverAddress: [this.receiverAddress, [], [new AddressValidator(this.nameService).isAddressOrAensName]],
+      amount: [null, [Validators.required, Validators.pattern(regexAmount)]],
+      selectedToken: [this.selectedToken, [Validators.required]]
+    });
+
     this.sub = this.route
       .queryParams
       .subscribe(params => {
-        if(params.query) {
+        if (params.query) {
           const parsed = JSON.parse(params.query);
           this.senderAddress = parsed.from ? parsed.from : this.senderAddress;
           this.querySenderAddress = parsed.from;
           this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
           this.amount = parsed.amount ? parsed.amount : this.amount;
-          this.isToken = parsed.assetAddress === "0" ? false : true;
+          this.isToken = parsed.assetAddress !== "0";
           this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
           this.external = true;
           this.hash = parsed.hash ? parsed.hash : this.hash;
           this.assetAddress = parsed.assetAddress ? parsed.assetAddress : this.assetAddress;
           this.timeStamp = parsed.timeStamp ? parsed.timeStamp : this.timeStamp;
           this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
-          this.getMaxTransactionFee();
-          this.getTotalAmount();
+          this.safeGetMaxTransactionFee();
         }
       });
-    this.web3 = this.initWeb3();
   }
 
-  copyToClipboard() {
-    this.clipboardService.copy(this.senderAddress);
-    this.notificationService.showMessage('Copied to clipboard!');
-  }
-
-  userData() {
-      return this.authServ.showKeystore().then( 
-        (keystore) => {
-
-          const getBalance = this.txnServ.checkBalance(keystore.address);
-          const getQR      = this.authServ.createQRcode( "0x" + keystore.address );  
-
-          return Promise.all([ keystore, getBalance, getQR ]); 
-
+  async updateTokensBalance(): Promise<void> {
+    this.tokens = await this.tokenService.updateTokensBalance();
+    for (let i = 0; i < this.tokens.length; i++) {
+      if (this.selectedToken.symbol === this.tokens[i].symbol) {
+        this.walletBalance = this.tokens[i].balance;
+        return;
+      } else {
+        this.walletBalance = this.aeroBalance;
       }
-    )
-      .then(
-        ([ keystore, accBalance, qrCode ]) => {
-        this.senderAddress = "0x" + keystore.address ;
-        if(this.selectedToken.symbol === 'AERO') {
-          this.walletBalance = accBalance;
-        }
-        this.aeroBalance = accBalance;
-        this.addressQR     = qrCode;
-      }
-    );
-  }
-
-  getMaxTransactionFee() {
-    if(this.receiverAddress) {
-      this.txnServ.maxTransactionFee(this.receiverAddress, this.selectedToken.symbol === 'AERO' ? (this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : ''): {type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10,this.selectedToken.decimals))}).then(res=>{
-        this.maxTransactionFee = res[0];
-        this.maxTransactionFeeEth = res[1];
-        this.moreOptionsData.price = res[2];
-        this.moreOptionsData.limit = res[3];
-        this.getTotalAmount();
-        if(this.external) {
-          this.send();
-        }
-      }).catch((err)=>{
-       // console.log(err);
-      });
-    } else {
-      this.maxTransactionFee = 0.000;
     }
   }
 
   setSendEverything(event) {
-    if(event) {
+    if (event) {
       this.amount = Number(this.walletBalance) - Number(this.maxTransactionFeeEth);
     }
     this.sendEverything = event;
   }
 
-  getTotalAmount() {
-    if(this.receiverAddress) {
-      this.totalAmount = this.selectedToken.symbol === 'AERO' ?  Number(this.amount) + Number(this.maxTransactionFeeEth) : Number(this.maxTransactionFeeEth);
+  async copyToClipboard() {
+    await this.clipboardService.copy(this.senderAddress);
+    this.notificationService.showMessage('Copied to clipboard!');
+  }
+
+  async loadUserData(): Promise<void> {
+    const keystore = await this.authService.showKeystore();
+    const getBalance = this.transactionService.checkBalance(keystore.address);
+    const getQR = this.authService.createQRcode("0x" + keystore.address);
+    const [accBalance, qrCode] = await Promise.all([getBalance, getQR]);
+    this.senderAddress = "0x" + keystore.address;
+    if (this.selectedToken.symbol === 'AERO') {
+      this.walletBalance = accBalance;
     }
-    else {
+    this.aeroBalance = accBalance;
+    this.addressQR = qrCode;
+  }
+
+  async getMaxTransactionFee(): Promise<void> {
+    const resolvedAddress = await this.nameService.safeResolveNameOrAddress(this.receiverAddress);
+    if (resolvedAddress) {
+      const data = this.selectedToken.symbol === 'AERO'
+        ? (this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : '')
+        : { type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10, this.selectedToken.decimals)) };
+
+      try {
+        const res = await this.transactionService.maxTransactionFee(resolvedAddress, data);
+        this.maxTransactionFee = res[0];
+        this.maxTransactionFeeEth = res[1];
+        this.moreOptionsData.price = res[2];
+        this.moreOptionsData.limit = res[3];
+        this.totalAmount = this.selectedToken.symbol === 'AERO'
+          ? Number(this.amount) + Number(this.maxTransactionFeeEth)
+          : Number(this.maxTransactionFeeEth);
+
+        if (this.external) {
+          await this.send();
+        }
+      } catch (e) {
+        // TODO: Leave previous catch here
+        // console.log(e);
+      }
+    } else {
+      this.maxTransactionFee = 0.000;
       this.totalAmount = 0;
     }
   }
 
   showMore() {
-    this.showedMore = this.showedMore ? false : true;
-    if(!this.showedMore) {
+    this.showedMore = !this.showedMore;
+    if (!this.showedMore) {
       this.moreOptionsData = {
         data: '',
         limit: '',
@@ -241,15 +202,18 @@ export class CreateTransactionComponent implements OnInit {
     }
   }
 
-  showTransactions() {}
+  showTransactions() { }
 
   handleInputsChange() {
-    this.getMaxTransactionFee();
-    this.getTotalAmount();
+    this.safeGetMaxTransactionFee();
   }
 
-  handleSelectChange() {
-    if(this.selectedToken.symbol === 'AERO') {
+  safeGetMaxTransactionFee() {
+    this.getMaxTransactionFee().catch((error) => this.logger.logError(error));
+  }
+
+  async handleSelectChange() {
+    if (this.selectedToken.symbol === 'AERO') {
       this.isToken = false;
       this.walletBalance = this.aeroBalance;
     } else {
@@ -258,94 +222,82 @@ export class CreateTransactionComponent implements OnInit {
       this.moreOptionsData.data = null;
     }
     this.moreOptionsData.selectedToken = this.selectedToken.symbol;
-    this.getMaxTransactionFee();
-    this.getTotalAmount();
+    await this.getMaxTransactionFee();
   }
 
-  checkHash(pin){
-    // if(this.external) {
-    //   return String(this.hash) === String(this.web3.utils.keccak256(`${this.querySenderAddress},${this.receiverAddress}, ${this.amount}, ${this.assetAddress}, ${this.timeStamp}, ${pin}`));
-    // }
-    return true;
-  }
-
-  openTransactionConfirm(message) {
-    this.modalSrv.openTransactionConfirm(message, this.external).then( result =>{ 
-      const urls = {success: this.redirectUrl, failed: this.returnUrlFailed};
-      // const validHash = this.checkHash(result.pin ? result.pin : '');
-      const validHash = true;
-      if(result.result === true && validHash) {
-        const privateKey = this.sessionStorageService.retrieve('private_key');
-        const address = this.sessionStorageService.retrieve('acc_address');
-        if(this.selectedToken.symbol === 'AERO' && !this.isToken) {
-          this.txnServ.transaction( privateKey, address, this.receiverAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, this.external, urls, this.moreOptionsData).then( res => {
-            this.transactionMessage = res;
-          }).catch( (error) =>  {
-            console.log(error);
-            if(this.external) {
-              window.location.href=urls.failed;
-            }
-          });
-        } else if(this.selectedToken.address) {
-          this.txnServ.sendTokens(address, this.receiverAddress, Number(this.amount * Math.pow(10,this.selectedToken.decimals)), this.selectedToken.address, this.external, urls, this.moreOptionsData).then((res)=>{
-            this.transactionMessage = res;
-          });
-        }
-      } else if(this.external) {
-        window.location.href=this.returnUrlFailed;
+  async openTransactionConfirm(message) {
+    const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
+    const result = await this.modalSrv.openTransactionConfirm(message, this.external);
+    const urls = { success: this.redirectUrl, failed: this.returnUrlFailed };
+    const validHash = true;
+    if (result.result === true && validHash) {
+      const privateKey = this.sessionStorageService.retrieve('private_key');
+      const address = this.sessionStorageService.retrieve('acc_address');
+      if (this.selectedToken.symbol === 'AERO' && !this.isToken) {
+        this.transactionService.transaction(privateKey, address, resolvedAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, this.external, urls, this.moreOptionsData).then(res => {
+          this.transactionMessage = res;
+        }).catch((error) => {
+          console.log(error);
+          if (this.external) {
+            window.location.href = urls.failed;
+          }
+        });
+      } else if (this.selectedToken.address) {
+        this.transactionService.sendTokens(address, resolvedAddress, Number(this.amount * Math.pow(10, this.selectedToken.decimals)), this.selectedToken.address, this.external, urls, this.moreOptionsData).then((res) => {
+          this.transactionMessage = res;
+        });
       }
-    });
-  };
+    } else if (this.external) {
+      window.location.href = this.returnUrlFailed;
+    }
+  }
 
-  send() {
+  async send() : Promise<void> {
     this.transactionMessage = "";
-    if( this.receiverAddress === undefined || this.receiverAddress == null) {
-      alert("You need to add a receiver address");  
-      return false;      
+    const resolvedAddress = await this.nameService.safeResolveNameOrAddress(this.receiverAddress);
+    if (!resolvedAddress) {
+      alert("You need to add a receiver address");
+      return;
     } else {
-      this.txnServ.checkAddressCode(this.receiverAddress).then((res:any)=>{
-        let message = {
-          title: null,
-          text: null,
-          checkbox: false,
-          sender:  this.senderAddress,
-          recipient: this.receiverAddress,
-          amount:  this.amount,
-          fee: this.maxTransactionFeeEth,
-          maxFee: this.maxTransactionFee,
-          token: this.selectedToken.symbol
-        };
+      const res: any = await this.transactionService.checkAddressCode(resolvedAddress);
+      const message = {
+        title: null,
+        text: null,
+        checkbox: false,
+        sender: this.senderAddress,
+        recipient: resolvedAddress,
+        amount: this.amount,
+        fee: this.maxTransactionFeeEth,
+        maxFee: this.maxTransactionFee,
+        token: this.selectedToken.symbol
+      };
 
-        if(res.length > 3) {
-          message.title = 'WARNING!';
-          message.text = 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guaranty that your token transfer will be processed properly. Always make sure you trust a contract you are sending your tokens to.';
+      if (res.length > 3) {
+        message.title = 'WARNING!';
+        message.text = 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guaranty that your token transfer will be processed properly. Always make sure you trust a contract you are sending your tokens to.';
 
-          this.tokenService.tokenFallbackCheck(this.receiverAddress, 'tokenFallback(address,uint256,bytes)').then((res)=>{
-            if(!res) {
-              message.text = 'The contract address you are sending your tokens to does not appear to support ERC223 standard, sending your tokens to this contract address will likely result in a loss of tokens sent. Please acknowledge your understanding of risks before proceeding further.';
-              message.checkbox = true;
-            }
-            this.openTransactionConfirm(message);
-          });
-        } else {
-          message = message;
-          this.openTransactionConfirm(message);        
+        const res = await this.tokenService.tokenFallbackCheck(resolvedAddress, 'tokenFallback(address,uint256,bytes)');
+        if (!res) {
+          message.text = 'The contract address you are sending your tokens to does not appear to support ERC223 standard, sending your tokens to this contract address will likely result in a loss of tokens sent. Please acknowledge your understanding of risks before proceeding further.';
+          message.checkbox = true;
         }
-      });
+        await this.openTransactionConfirm(message);
+      } else {
+        await this.openTransactionConfirm(message);
+      }
+    }
+  }
+
+  async moreOptionsChange(event) {
+    this.moreOptionsData = event.data;
+    if (event.type === 'data') {
+      await this.getMaxTransactionFee();
     }
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
     clearInterval(this.updateInterval);
-  }
-
-  moreOptionsChange(event){
-    this.moreOptionsData = event.data;
-    if(event.type === 'data') {
-      this.getMaxTransactionFee();
-      this.getTotalAmount();
-    }
   }
 
 }
