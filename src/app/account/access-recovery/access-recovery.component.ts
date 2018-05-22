@@ -1,10 +1,7 @@
 import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';  
-import { Router } from '@angular/router'
-import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs/Subject'; 
-
-import { Cookie } from 'ng2-cookies/ng2-cookies';   
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs/Subject';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 @Component({
@@ -17,8 +14,8 @@ export class AccessRecoveryComponent implements OnInit {
   address = "";
   avatar: string;
   private: string;
-  recoverForm: FormGroup; 
-  loginFormGetKey: FormGroup; 
+  recoverForm: FormGroup;
+  loginFormGetKey: FormGroup;
   componentDestroyed$: Subject<boolean> = new Subject();
 	step = 'step_1';
   accountPayload = { address: "", password: "" };
@@ -53,12 +50,12 @@ export class AccessRecoveryComponent implements OnInit {
         // password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
         password: [ "", [Validators.required ] ],
         confirmpassword: ["", [Validators.required ] ]
-      },{ 
+      },{
         validator: this.matchingPasswords('password', 'confirmpassword')
       });
 
       this._processFormData();
-      
+
     }
 
     private _processFormData() {
@@ -67,7 +64,7 @@ export class AccessRecoveryComponent implements OnInit {
               if ( v && v.length > 2 ) {
 
                 let cleanSeed = v.trim(); // trim starting and ending spaces
-                    cleanSeed = cleanSeed.replace(/[^\w\s]/gi, ' '); // clean all special characters 
+                    cleanSeed = cleanSeed.replace(/[^\w\s]/gi, ' '); // clean all special characters
                     cleanSeed.replace(/\s\s+/g, ' ');  // remove double spaces
 
                 this.authServ.generateAddressLogin( cleanSeed ).then( async res => {
@@ -75,14 +72,14 @@ export class AccessRecoveryComponent implements OnInit {
                     this.avatar = res.avatar;
                     this.private = res.private;
                 });
-                
-              } 
+
+              }
           this.address = "";
           this.cd.detectChanges();
         });
     }
 
-    // Custom validator to make sure the password and confirm password match /    
+    // Custom validator to make sure the password and confirm password match /
     matchingPasswords( passwordKey: string, passwordConfirmationKey: string ) {
       return (group: FormGroup ) => {
         const passwordInput = group.controls[passwordKey];

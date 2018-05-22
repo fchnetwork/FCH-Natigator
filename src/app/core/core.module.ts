@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';    
+import { CommonModule } from '@angular/common';
 import { AerumNameService } from '@app/core/aens/aerum-name.service';
 import { AensFixedPriceRegistrarContractService } from '@app/core/aens/aens-fixed-price-registrar-contract.service';
 import { AensPublicResolverContractService } from '@app/core/aens/aens-public-resolver-contract.service';
@@ -12,7 +12,6 @@ import { AccountIdleService } from '@app/core/authentication/account-idle-servic
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { CanActivateAccountAuthGuard } from '@app/core/authentication/auth-guards/can-activate-account.guard';
 import { CanActivateViaAuthGuard } from '@app/core/authentication/auth-guards/can-activate-auth.guard';
-import { BaseContractService } from '@app/core/contract/base-contract-service';
 import { ContractExecutorService } from '@app/core/contract/contract-executor.service';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
@@ -31,11 +30,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 @NgModule({
   imports: [
     CommonModule
-  ], 
+  ],
   providers: [
-    ContractExecutorService, 
+    ContractExecutorService,
     AccountIdleService,
-    AuthenticationService,    
+    AuthenticationService,
     ClipboardService,
     ExplorerService,
     ModalService,

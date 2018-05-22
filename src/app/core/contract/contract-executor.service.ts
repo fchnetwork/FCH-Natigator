@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage/dist/services'; 
+import { SessionStorageService } from 'ngx-webstorage';
 import { environment } from '@env/environment';
 import Web3 from 'web3';
 import { Contract, Tx, TransactionObject, EventLog, Signature, TransactionReceipt } from 'web3/types';
@@ -34,7 +34,7 @@ export class ContractExecutorService {
     const receipt = await this.sendSignedTransaction(signedTransaction.rawTransaction);
     return receipt;
   }
-  
+
   private sendSignedTransaction(data: string) : Promise<TransactionReceipt> {
     let transactionHash: string;
     return new Promise((resolve, reject) => {
@@ -45,7 +45,7 @@ export class ContractExecutorService {
       })
       .on('receipt', (receipt) => {
         console.log('Transaction receipt returned:', receipt);
-        resolve(receipt); 
+        resolve(receipt);
       })
       .on('error', async (error) => {
         // TODO: We do this workarround due to this issue: https://github.com/ethereum/web3.js/issues/1534
@@ -95,7 +95,7 @@ export class ContractExecutorService {
     };
   }
 
-  private async getSentTxData(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> { 
+  private async getSentTxData(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> {
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
 
     const getGasPrice = this.web3.eth.getGasPrice();
@@ -113,7 +113,7 @@ export class ContractExecutorService {
     return [gasPrice, estimatedGas, transactionsCount];
   }
 
-  async estimateCost(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> { 
+  async estimateCost(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> {
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
 
     const getGasPrice = this.web3.eth.getGasPrice();
@@ -141,7 +141,7 @@ export class ContractExecutorService {
         resolve(await func());
         return;
       }
-  
+
       try {
         const respone = await func();
         resolve(respone);
@@ -149,7 +149,7 @@ export class ContractExecutorService {
       } catch(e) {
         console.warn(e.message);
       }
-  
+
       setTimeout(async () => {
         resolve(await this.retry(func, times - 1, interval));
       }, interval);

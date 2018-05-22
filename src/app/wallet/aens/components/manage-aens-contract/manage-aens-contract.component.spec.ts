@@ -6,7 +6,6 @@ import { TranslateModule, TranslateLoader, TranslateFakeLoader, TranslateService
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@app/shared/shared.module';
 import { AppUIModule } from '@app/app.ui.module';
-import { CommonModule } from '@angular/common';
 import { CoreModule } from '@app/core/core.module';
 
 import { AerumNameService } from '@app/core/aens/aerum-name.service';
@@ -15,22 +14,18 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 import { SessionStorageService } from 'ngx-webstorage';
 
 import { ConvertToEtherPipe } from '@app/shared/pipes/convertToEther.pipe';
-import { Router } from '@angular/router';
-
-class MockSessionService { }
+import Web3 from "web3";
 
 describe('ManageAensContractComponent', () => {
   let component: ManageAensContractComponent;
   let fixture: ComponentFixture<ManageAensContractComponent>;
   const authService: Partial<AuthenticationService> = {
-    initWeb3: () => null,
+    initWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3),
     getKeystore: () => ({ address: "test_keystroke" })
   };
   const ansService: Partial<AerumNameService> = {
     getBalance: () => Promise.resolve(5)
   };
-
-  // const routerSpy = jest.spyOn(Router.prototype, "navigateByUrl");
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -39,7 +34,6 @@ describe('ManageAensContractComponent', () => {
       }), FormsModule, AppUIModule, ReactiveFormsModule, CoreModule, SharedModule],
       declarations: [ ManageAensContractComponent ],
       providers: [
-        // { provide: Router, useValue: routerSpy },
         TranslateService,
         { provide: AerumNameService, useValue: ansService },
         { provide: NotificationService, useValue: jest.fn() },
@@ -59,7 +53,7 @@ describe('ManageAensContractComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
- 
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });

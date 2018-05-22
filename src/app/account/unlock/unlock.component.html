@@ -7,8 +7,8 @@
         <span>{{'LOGIN_TEXT2'|translate}}</span>
         <a routerLink="/account/register">{{'LOGIN_TEXT3'|translate}}</a>
       </div>
-      <aer-input type="text" [(ngModel)]="address" ngDefaultControl style="display:none"></aer-input>
-      <aer-input data-cy="password" type="password" icon="key" placeholder="{{'PASSWORD'|translate}}" [(ngModel)]="password" ngDefaultControl></aer-input>
+      <aer-input type="text" [(ngModel)]="address" name="address" ngDefaultControl style="display:none"></aer-input>
+      <aer-input data-cy="password" type="password" name="password" icon="key" placeholder="{{'PASSWORD'|translate}}" [(ngModel)]="password" ngDefaultControl></aer-input>
       <div class="button">
         <aer-button class="large full-width" data-cy="continue" type="submit">{{'LOGIN'|translate}}</aer-button>
       </div>
