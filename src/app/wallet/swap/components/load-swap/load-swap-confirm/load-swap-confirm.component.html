@@ -1,11 +1,11 @@
 <aer-modal-dialog>
   <div class="c-load-swap c-load-swap__table c-load-swap__unlock">
-    <h1>{{'SWAP.LOAD.CONRIM_TITLE'|translate}}</h1>
+    <h1>{{'SWAP.LOAD.CONFIRM_TITLE'|translate}}</h1>
     <div class="o-table">
         <div class="o-table__row">
             <div class="o-table__cell o-data--left">
               {{ 'SWAP.LOAD.FIELD_SWAP_ID' | translate }}
-            </div>     
+            </div>
             <div class="o-table__cell o-data--right">
               {{ param.swapId }}
             </div>
@@ -13,15 +13,15 @@
         <div class="o-table__row">
             <div class="o-table__cell o-data--left">
               {{ param.tokenInfo && param.tokenInfo.symbol ? param.tokenInfo.symbol : 'Aero' }}
-            </div>     
+            </div>
             <div class="o-table__cell o-data--right">
-              {{ param.tokenAmountFormated }}
+              {{ param.tokenAmountFormatted }}
             </div>
         </div>
         <div class="o-table__row">
             <div class="o-table__cell o-data--left">
               {{ 'SWAP.LOAD.FIELD_COUNTERPARTY' | translate }}
-            </div>     
+            </div>
             <div class="o-table__cell o-data--right">
               {{ param.counterpartyTrader | truncate: 32 }}
             </div>
@@ -29,15 +29,15 @@
         <div class="o-table__row">
             <div class="o-table__cell o-data--left">
               {{ param.counterpartyTokenInfo && param.counterpartyTokenInfo.symbol ? param.counterpartyTokenInfo.symbol : 'Aero' }}
-            </div>     
+            </div>
             <div class="o-table__cell o-data--right">
-              {{ param.counterpartyAmountFormated }}
+              {{ param.counterpartyAmountFormatted }}
             </div>
         </div>
         <div class="o-table__row">
             <div class="o-table__cell o-data--left">
               {{ 'SWAP.LOAD.FIELD_STATUS' | translate }}
-            </div>     
+            </div>
             <div class="o-table__cell o-data--right">
               {{ param.status }}
             </div>

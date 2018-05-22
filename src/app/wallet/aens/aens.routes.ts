@@ -1,12 +1,12 @@
 import {Routes, RouterModule} from '@angular/router';
-import { NgModule } from "@angular/core"; 
+import { NgModule } from "@angular/core";
 
-import { ManageAerumNamesComponent } from './components/manage-aerum-names/manage-aerum-names.component';
+import { AensDashboardComponent } from './components/aens-dashboard/aens-dashboard.component';
 
 export const AENS_ROUTES = [
   {
       path: '',
-      component: ManageAerumNamesComponent, 
+      component: AensDashboardComponent,
   }
 ];
 

@@ -1,0 +1,17 @@
+<aer-card title="{{'ENS.CHECK_NAME_TITLE'|translate}}">
+  <form [formGroup]="checkForm">
+    <div aerRow>
+      <div aerColumn size="sm-6">
+        <div class="input-name">{{'ENS.FIELD_NAME'|translate}}</div>
+        <aer-input [(ngModel)]="name" class="with-button blue" [ngClass]="{'has-error': hasError(checkForm.controls.name)}" buttonLabel=".aer" [attr.disabled]="locked" formControlName="name" ngDefaultControl></aer-input>
+      </div>
+      <div aerColumn size="sm-6" class="aens__info">{{'ENS.LONG_DESCRIPTION'|translate}}</div>
+    </div>
+    <hr class="aens__separator">
+    <div aerRow>
+      <div aerColumn size="sm-12">
+        <aer-button class="aens__btn-check normal" type="submit" [ngClass]="{'blue': canCheckName()}" [disabled]="!canCheckName()" (buttonFn)="checkName()">{{'ENS.BTN_CHECK_NAME'|translate}}</aer-button>
+      </div>
+    </div>
+  </form>
+</aer-card>
