@@ -37,6 +37,7 @@ import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/
 import { GetBlockModalComponent } from '@app/shared/modals/get-block-modal/get-block-modal.component';
 import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
 import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
+import { NameBuyConfirmComponent } from '@app/wallet/aens/components/name-buy-confirm/name-buy-confirm.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
@@ -46,7 +47,7 @@ const modalWindows = [
   TransactionModalComponent,
   GetBlockModalComponent,
   BlockModalComponent,
-  TransactionSignModalComponent
+  TransactionSignModalComponent  
 ];
 
 @NgModule({

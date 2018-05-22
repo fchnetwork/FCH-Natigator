@@ -32,8 +32,8 @@ import { NameTransferConfirmComponent } from './components/name-transfer-confirm
     AppUIModule,
     CommonModule,
     ReactiveFormsModule,
-    CoreModule,
     SharedModule,
+    CoreModule,    
     AensRoutingModule
   ],
   declarations: [
