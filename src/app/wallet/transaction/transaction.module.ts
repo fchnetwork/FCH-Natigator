@@ -14,10 +14,6 @@ import { TransactionMoreOptionsComponent } from "@app/wallet/transaction/compone
 import { TransactionRoutingModule } from "@app/wallet/transaction/transaction.routes";
 import { CoreModule } from "@app/core/core.module"; 
 
-export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
-}
-
 @NgModule({ 
     imports: [
         FormsModule,

@@ -12,8 +12,7 @@ export class LoaderComponent implements OnInit {
 
   constructor(public loaderService: LoaderService) {
     this.loaderService.loaderShown$.subscribe(shown => {
-      this.loaderShown = shown;
-      console.log('toggled ' + shown + ' from loader');
+      this.loaderShown = shown; 
     }, (err) => console.log(err));
   }
 
