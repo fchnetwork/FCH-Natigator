@@ -26,10 +26,8 @@ declare var window: any;
   styleUrls: ['./create-transaction.component.scss']
 })
 export class CreateTransactionComponent implements OnInit {
-
   myBalance: any;
   txnForm: FormGroup = this.formBuilder.group({});
-
   senderAddress: string;
   receiverAddress: string;
   amount = 0;
@@ -69,8 +67,6 @@ export class CreateTransactionComponent implements OnInit {
   showedMore = false;
   updateInterval: any;
   invalid = [];
-  
-  
   formControlKeys = [];
   errorMessages = {};
   
@@ -140,12 +136,7 @@ export class CreateTransactionComponent implements OnInit {
     return new Web3( new Web3.providers.HttpProvider(environment.HttpProvider)); 
   };
 
-  toggleLoader() {
-    this.loaderService.toggle(true);
-  }
-
-  ngOnInit() {
-    this.loaderService.toggle(false);
+  ngOnInit() { 
 
     this.walletBalance = this.myBalance;
     this.includedDataLength = 0;

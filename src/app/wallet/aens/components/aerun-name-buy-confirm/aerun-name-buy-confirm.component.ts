@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogRef } from 'ngx-modialog'; 
-import { BuyConfirmRequest } from '@app/wallet/aens/models/buyConfirmRequest';
-import { BasicModalContext } from '@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component';
+import { BuyConfirmRequest } from '@app/wallet/aens/models/buyConfirmRequest'; 
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { BasicModalContext } from '@app/shared/components/modals/basic-modal/basic-modal.component';
 
 @Component({
   selector: 'app-aerun-name-buy-confirm',
@@ -11,11 +11,9 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 })
 export class AerunNameBuyConfirmComponent implements OnInit {
 
-  param: BuyConfirmRequest;
-
+  param: BuyConfirmRequest; 
   buyerAvatar: string;
-  ansOwnerAvatar: string;
-
+  ansOwnerAvatar: string; 
   estimatedFeeInWei: number;
   maximumFeeInWei: number;
 

@@ -2,29 +2,29 @@
     <div aerColumn size="sm-12 md-12">
         <h3>{{'BLOCKS'|translate}}</h3>
         <aer-card>
-            <div class="dataTable-info-label">
-                <label>{{'SHOWING_BLOCK'|translate: { lowestBlockNumber: lowBlock, highestBlockNumber: highBlock, blocksCount: countblocks
-                    } }}</label>
-            </div>
-            <table>
-                <thead>
-                    <th class="">{{'HEIGHT'|translate}}</th>
-                    <th class="">{{'AGE'|translate}}</th>
-                    <th class="">{{'TXN'|translate}}</th>
-                    <th class="">{{'GAS_USED'|translate}}</th>
-                    <th class="">{{'GAS_LIMIT'|translate}}</th>
-                </thead>
-                <tbody>
-                    <!-- <tr *ngFor="let block of blocks |  orderby: {property: column, order: order} "> -->
-                    <tr *ngFor="let block of blocks">
-                        <td class="link" (click)="openBlock(block)">{{block.number}}</td>
+            <aer-table [data]="blocks" [paginator]="false">
+                <ng-template aerTemplate="header">
+                    <th sortable id="id" class="">{{'HEIGHT'|translate}}</th>
+                    <th id="lastSeen" class="">{{'AGE'|translate}}</th>
+                    <th sortable id="gas" class="">{{'TXN'|translate}}</th>
+                    <th id="gasPrice" class="">{{'GAS_USED'|translate}}</th>
+                    <th id="value" class="">{{'GAS_LIMIT'|translate}}</th>
+                </ng-template>
+                <ng-template aerTemplate="body" let-block>
+                    <tr>
+                        <td class="link hash" (click)="openBlock(block)">{{block.number}}</td>
                         <td class="age">{{ block.timestamp | transactionTimeAgo }}</td>
                         <td>{{block.transactions.length}}</td>
                         <td>{{block.gasUsed}}</td>
                         <td>{{block.gasLimit}}</td>
                     </tr>
-                </tbody>
-            </table>
+                </ng-template>
+            </aer-table>
+
+            <div class="dataTable-info-label">
+                <label>{{'SHOWING_BLOCK'|translate: { lowestBlockNumber: lowBlock, highestBlockNumber: highBlock, blocksCount: countblocks
+                    } }}</label>
+            </div>
         </aer-card>
     </div>
 </div>

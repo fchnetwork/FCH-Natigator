@@ -22,7 +22,7 @@ export function createTranslateLoader(http: HttpClient) {
     imports: [
         FormsModule,
         AppUIModule,
-        CommonModule,
+        CommonModule, 
         ReactiveFormsModule,
         TransactionRoutingModule,
         SharedModule,

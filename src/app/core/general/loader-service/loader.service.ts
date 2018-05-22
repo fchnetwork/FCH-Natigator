@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class LoaderService {
     public loaderShown$ = new BehaviorSubject<boolean>(false); 
+    private instanceId = Math.random() * 1000;
 
     constructor(public router: Router, private ngZone: NgZone, public logger: LoggerService) {
         router.events.subscribe((event: RouterEvent) => {
@@ -19,7 +20,8 @@ export class LoaderService {
 
     public toggle(visible: boolean) {
         //this.ngZone.runOutsideAngular(() => {
-            console.log('toggled ' + visible);
+            console.log('toggled ' + visible + ' from ' + this.instanceId);
+            
             this.loaderShown$.next(visible);
        //});
     }
@@ -30,8 +32,7 @@ export class LoaderService {
         }
 
         if (event instanceof NavigationEnd) {
-            this.toggle(false);
-            console.log('navigation ended');
+            this.toggle(false); 
         }
         if (event instanceof NavigationCancel) {
             this.toggle(false);

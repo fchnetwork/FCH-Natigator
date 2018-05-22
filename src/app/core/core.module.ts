@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';    
+import { NgModule, ModuleWithProviders } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AerumNameService } from '@app/core/aens/aerum-name.service';
 import { AensFixedPriceRegistrarContractService } from '@app/core/aens/aens-fixed-price-registrar-contract.service';
 import { AensPublicResolverContractService } from '@app/core/aens/aens-public-resolver-contract.service';
@@ -31,38 +31,46 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 @NgModule({
   imports: [
     CommonModule
-  ], 
-  providers: [
-    ContractExecutorService, 
-    AccountIdleService,
-    AuthenticationService,    
-    ClipboardService,
-    ExplorerService,
-    ModalService,
-    InternalNotificationService,
-    RouteDataService,
-    TokenService,
-    TransactionService,
-    CanActivateAccountAuthGuard,
-    CanActivateViaAuthGuard,
-    AerumStatsService,
-    AerumStatsWebsocketsService,
-    AerumNameService,
-    AensFixedPriceRegistrarContractService,
-    AensPublicResolverContractService,
-    AensRegistryContractService,
-    AeroToErc20SwapService,
-    Erc20ToAeroSwapService,
-    Erc20ToErc20SwapService,
-    ERC20TokenService,
-    PasswordCheckerService,
-    LoggerService,
-    LoaderService,
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: LoaderService,
-    //   multi: true
-    // }
-  ],
+  ]
 })
-export class CoreModule { }
+export class CoreModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      //At this point I can set any other class than FeatureModuleA for root
+      //So lets create a FeatureRootModuleA class: see below!
+      ngModule: CoreModule,
+      providers: [
+        ContractExecutorService,
+        AccountIdleService,
+        AuthenticationService,
+        ClipboardService,
+        ExplorerService,
+        ModalService,
+        InternalNotificationService,
+        RouteDataService,
+        TokenService,
+        TransactionService,
+        CanActivateAccountAuthGuard,
+        CanActivateViaAuthGuard,
+        AerumStatsService,
+        AerumStatsWebsocketsService,
+        AerumNameService,
+        AensFixedPriceRegistrarContractService,
+        AensPublicResolverContractService,
+        AensRegistryContractService,
+        AeroToErc20SwapService,
+        Erc20ToAeroSwapService,
+        Erc20ToErc20SwapService,
+        ERC20TokenService,
+        PasswordCheckerService,
+        LoggerService,
+        LoaderService
+        // {
+        //   provide: HTTP_INTERCEPTORS,
+        //   useClass: LoaderService,
+        //   multi: true
+        // }
+      ]
+    };
+  }
+}

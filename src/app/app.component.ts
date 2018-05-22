@@ -4,30 +4,24 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
 import { LogLevel } from '@app/core/general/logger-service/log-level.enum';
-import { LoaderService } from '@app/core/general/loader-service/loader.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {  
-  private loaderShown = false;
+export class AppComponent implements OnInit {
+  title = 'app';
 
   constructor
     (
     private idle: AccountIdleService,
     private route: ActivatedRoute,
     private router: Router,
-    private logger: LoggerService,
-    private loaderService: LoaderService
+    private logger: LoggerService
     ) {
-      logger.setLogLevel(LogLevel.All);
-
-      this.loaderService.loaderShown$.subscribe(shown => {
-        this.loaderShown = shown; 
-      }, (err) => console.log(err));
-    }
+    logger.setLogLevel(LogLevel.All);
+  }
 
   ngOnInit() {
     //Start watching for user inactivity.
@@ -39,8 +33,8 @@ export class AppComponent implements OnInit {
     // Start watch when time is up.
     this.idle.onTimeout().subscribe(() => console.log('Time is up!'));
 
-    console.log(`Current Env: ${environment.configInUse}`);
-    console.log(`Current HttpProvider: ${environment.HttpProvider}`);
+    this.logger.logMessage(`Current Env: ${environment.configInUse}`);
+    this.logger.logMessage(`Current HttpProvider: ${environment.HttpProvider}`);
 
   }
 }

@@ -13,6 +13,7 @@ import 'rxjs/add/operator/map';
 import { environment } from '@env/environment';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
+import { BlockListModel } from '@app/core/explorer/explorer-service/blocks-list.model';
 
 const ethJsUtil = require('ethereumjs-util');
 const Web3 = require('web3');
@@ -44,21 +45,51 @@ export class ExplorerService {
       .map(response => response.json().result.pending);
   }
 
-  getBlock(): Observable<any> {
+  getLatestBlockNumber(): Observable<number> {
     return Observable.create(observer => {
-      this.web3.eth.getBlockNumber((err, block) => {
-
+      return this.web3.eth.getBlockNumber((err, block) => {
         if (err != null) {
-          observer.error('There was an error fetching your blocks.');
-          observer.complete();
-        }
-        if (block.length === 0) {
-          observer.error('no blocks');
+          observer.error();
           observer.complete();
         }
 
-        return observer.next(block);
+        observer.next(block);
+        observer.complete();
       });
     });
-  } 
+  }
+
+  getBlocks(topBlockNumber: number, pageSize: number): Observable<BlockListModel> {
+    return Observable.create(observer => {
+      let blocks = [];
+
+      for (var i = 0; i < pageSize; ++i) {
+        this.web3.eth.getBlock(topBlockNumber - i, (error, result) => {
+          if (!error) {
+            blocks.push(result);
+          }
+
+          // Check if it's the last block
+          if (result.number == topBlockNumber - pageSize + 1) {
+            let lowBlock = blocks[0].number;
+            let highBlock = blocks[blocks.length - 1].number;
+
+            blocks.sort((a, b):number => {
+                if(a.number > b.number) return 1;
+                if(a.number < b.number) return -1;
+            });
+
+            blocks.reverse();
+
+            observer.next({
+              blocks: blocks,
+              lowBlock: lowBlock,
+              highBlock: highBlock
+            });
+            observer.complete();
+          }
+        });
+      } 
+    });
+  }
 }

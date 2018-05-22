@@ -44,7 +44,7 @@ export class TransactionsComponent implements OnInit, OnDestroy {
 
     this.loaderService.toggle(true);
 
-    this.getTransactions = this.exploreSrv.getBlock().subscribe(async currentBlock => {
+    this.getTransactions = this.exploreSrv.getLatestBlockNumber().subscribe(async currentBlock => {
       let bookmarkCurrenBlock = currentBlock - 1;
       for (let i = currentBlock - searchAmount; i < currentBlock; ++i) {
         this.exploreSrv.web3.eth.getBlock(i).then((blockData: any) => {

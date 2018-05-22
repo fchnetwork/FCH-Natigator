@@ -14,12 +14,12 @@ import { CoreModule } from "@app/core/core.module";
 @NgModule({
   imports: [
     CommonModule,
+    CoreModule.forRoot(),
     BrowserAnimationsModule,
     Ng2Webstorage,
     HttpClientModule,
     HttpModule,
-    AppRoutingModule,
-    CoreModule,
+    AppRoutingModule,    
     SharedModule,
     AppUIModule
   ],
