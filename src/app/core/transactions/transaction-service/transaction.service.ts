@@ -191,7 +191,6 @@ export class TransactionService {
           this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash);
           this.web3.eth.getTransaction(hash).then((res)=>{
             res.timestamp = Moment(new Date()).unix();
-            this.modalService.openTransaction(hash, res, external, urls);
           });
         });
       }).catch( error => {
