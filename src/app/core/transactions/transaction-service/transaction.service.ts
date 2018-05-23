@@ -154,7 +154,8 @@ export class TransactionService {
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash);
                   this.web3.eth.getTransaction(hash).then((res)=>{
                     res.timestamp = Moment(new Date()).unix();
-                    this.modalService.openTransaction(hash, res, external, urls);
+                    
+                    //this.modalService.openTransaction(hash, res, external, urls);
                   });
                 }).catch( error => {
                   console.log(error);
