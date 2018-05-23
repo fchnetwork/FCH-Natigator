@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
-import { BasicModalContext } from '@app/shared/components/modals/basic-modal/basic-modal.component';
+import { BasicModalContext } from '@shared/components/modals/basic-modal/basic-modal.component';
 
 @Component({
   selector: 'app-create-swap-confirm',

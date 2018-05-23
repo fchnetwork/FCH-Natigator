@@ -1,45 +1,61 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
-import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
-import { HttpClient } from '@angular/common/http';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppUIModule } from '@app/app.ui.module';
-import { SharedModule } from '@app/shared/shared.module'; 
-
-import { ManageAensContractComponent } from './components/manage-aens-contract/manage-aens-contract.component';
-import { ManageAerumNamesComponent } from './components/manage-aerum-names/manage-aerum-names.component';
-import { AerunNameBuyConfirmComponent } from './components/aerun-name-buy-confirm/aerun-name-buy-confirm.component';  
+import { SharedModule } from '@app/shared/shared.module';
 import { AensRoutingModule } from '@app/wallet/aens/aens.routes';
 import { CoreModule } from '@app/core/core.module';
 
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
-}
+import { AensContractManageComponent } from './components/aens-contract-manage/aens-contract-manage.component';
+import { AensDashboardComponent } from './components/aens-dashboard/aens-dashboard.component';
+import { NameBuyConfirmComponent } from './components/name-buy-confirm/name-buy-confirm.component';
+import { NameUpdateAddressConfirmComponent } from './components/name-update-address-confirm/name-update-address-confirm.component';
+import { NameBuyComponent } from './components/name-buy/name-buy.component';
+import { NameUpdateComponent } from './components/name-update/name-update.component';
+import { NameReleaseConfirmComponent } from './components/name-release-confirm/name-release-confirm.component';
+import { NameCheckComponent } from './components/name-check/name-check.component';
+import { NameStatusComponent } from './components/name-status/name-status.component';
+import { NameTransferConfirmComponent } from './components/name-transfer-confirm/name-transfer-confirm.component';
 
 @NgModule({
   entryComponents: [
-    ManageAerumNamesComponent,
-    AerunNameBuyConfirmComponent
+    AensDashboardComponent,
+    NameBuyConfirmComponent,
+    NameUpdateComponent,
+    NameUpdateAddressConfirmComponent,
+    NameTransferConfirmComponent,
+    NameReleaseConfirmComponent
   ],
   imports: [
     FormsModule,
     AppUIModule,
     CommonModule,
     ReactiveFormsModule,
-    CoreModule,
     SharedModule,
+    CoreModule,    
     AensRoutingModule
   ],
   declarations: [
-    ManageAerumNamesComponent,
-    AerunNameBuyConfirmComponent,
-    ManageAensContractComponent
+    AensDashboardComponent,
+    NameBuyConfirmComponent,
+    AensContractManageComponent,
+    NameUpdateComponent,
+    NameBuyComponent,
+    NameUpdateComponent,
+    NameCheckComponent,
+    NameStatusComponent,
+    NameUpdateAddressConfirmComponent,
+    NameTransferConfirmComponent,
+    NameReleaseConfirmComponent
   ],
   exports: [
-    ManageAerumNamesComponent,
-    AerunNameBuyConfirmComponent
+    AensDashboardComponent,
+    NameBuyConfirmComponent,
+    NameUpdateComponent,
+    NameUpdateAddressConfirmComponent,
+    NameTransferConfirmComponent,
+    NameReleaseConfirmComponent
   ]
 })
 export class AensModule { }

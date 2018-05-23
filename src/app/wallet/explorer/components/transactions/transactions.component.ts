@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { iBlocks, iTransaction } from '@shared/app.interfaces';
@@ -6,6 +6,7 @@ import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-transactions',
@@ -13,15 +14,16 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./transactions.component.scss']
 })
 
-export class TransactionsComponent implements OnInit, OnDestroy {
-
-  getTransactions: Subscription;
+export class TransactionsComponent implements AfterViewInit {
   transactionsFound: number;
   transactions: iTransaction[] = [];
-  order: number;
   column: string = 'timestamp';
   descending: boolean = false;
   transactionStatus: boolean = false;
+  latestBlock: number;
+  highBlock: number;
+  lowBlock: number;
+  maxBlocks: number = 100;
 
   constructor(public exploreSrv: ExplorerService,
     private route: ActivatedRoute,
@@ -29,55 +31,27 @@ export class TransactionsComponent implements OnInit, OnDestroy {
     private modal: ModalService,
     private loaderService: LoaderService) { }
 
-  ngOnInit() {
-    this.getAllTransactions();
-  }
-
-  sort() {
-    this.descending = !this.descending;
-    this.order = this.descending ? 1 : -1;
-  }
-
-  getAllTransactions() {
-    const transactions = [];
-    let searchAmount = 480;
-
-    this.loaderService.toggle(true);
-
-    this.getTransactions = this.exploreSrv.getLatestBlockNumber().subscribe(async currentBlock => {
-      let bookmarkCurrenBlock = currentBlock - 1;
-      for (let i = currentBlock - searchAmount; i < currentBlock; ++i) {
-        this.exploreSrv.web3.eth.getBlock(i).then((blockData: any) => {
-          return Promise.all([
-            this.exploreSrv.web3.eth.getBlockTransactionCount(blockData['number'])
-          ]).then(results => {
-            for (let blockIdx = 0; blockIdx < results[0]; blockIdx++) {
-              this.exploreSrv.web3.eth.getTransactionFromBlock(blockData['number'], blockIdx, (error, txn) => {
-                this.exploreSrv.web3.eth.getTransactionReceipt(txn.hash).then(txnReceipt => {
-                  const mergeBlockTransaction = Object.assign(txn, { timestamp: blockData.timestamp, gasUsedinTxn: txnReceipt.gasUsed }); // need to merge block info with transaction because we need the block timestamp
-                  console.log("mergeBlockTransaction " + JSON.stringify(mergeBlockTransaction))
-                  this.transactions.push(mergeBlockTransaction);
-                  // TODO: refactor to use pipe for sorting!
-                  if (blockIdx === Number(results[0] - 1)) {
-                    this.transactions = transactions.sort((b, a) => {
-                      const c: any = new Date(a.timestamp);
-                      const d: any = new Date(b.timestamp);
-                      return c - d;
-                    });
-                  }
-                });
-              })
-            }
-
-            this.transactionStatus = (searchAmount-- == 1) ? true : false;  // show or hide our loader animation - coming soon!! 
-          });
-        })
-      }
+  ngAfterViewInit() {
+    // First get the latest block number
+    this.exploreSrv.getLatestBlockNumber().then(latestBlockNumber => {
+      this.highBlock = latestBlockNumber;
+      this.latestBlock = latestBlockNumber;
+      this.loadTransactions();
     });
   }
 
-  openBlock(blockNumber) {
-    this.modal.openBlock(blockNumber).then(result => {
+  loadTransactions() {
+    this.loaderService.toggle(true);
+
+    this.exploreSrv.getTransactions(this.highBlock, this.maxBlocks).then(transactionList => {
+      this.loaderService.toggle(false);
+      this.transactions = this.transactions.concat(transactionList.transactions);
+      this.highBlock = transactionList.highBlock - 1; 
+    });
+  }
+
+  openBlock(transaction) {
+    this.modal.openBlock(transaction.blockNumber, transaction.block).then(result => {
     }).catch(() => { });
   }
 
@@ -85,29 +59,4 @@ export class TransactionsComponent implements OnInit, OnDestroy {
     this.modal.openTransaction(transaction.hash, transaction, false, null).then((result) => {
     }).catch(() => { });
   }
-
-  search(item: any) {
-    if (/[a-z]/i.test(item)) {
-      item = item.split('0x').join('');
-      if (item.length == 40) {
-        alert("address");
-      } else if (item.length === 64 && /[0-9a-zA-Z]{64}?/.test(item)) {
-        alert("txn");
-      }
-    } else if (/[0-9]{1,7}?/.test(item)) {
-      alert('block Found' + parseInt(item));
-    } else {
-      alert(`Error: ${item} is not a valid Block, Address or Transaction`);
-    }
-  }
-
-  exploreBlock(id: number) {
-    this.router.navigate(['/explorer/block', id]);
-  }
-
-  ngOnDestroy() {
-    this.getTransactions.unsubscribe();
-  }
-
-
 }

@@ -1,0 +1,30 @@
+<aer-expandable-panel title="{{'ENS.MANAGE_TITLE'|translate}}">
+  <div aerRow>
+    <div aerColumn size="sm-6">
+      <form [formGroup]="setPriceForm">
+        <div class="input-name">{{'ENS.FIELD_NEW_PRICE'|translate}}</div>
+        <aer-input [(ngModel)]="price" class="with-button" [ngClass]="{'has-error': hasError(setPriceForm.controls.price), 'blue': canSetPrice(), 'grey': !canSetPrice()}" buttonLabel="{{'ENS.BTN_SET_PRICE'|translate}}" (buttonFn)="setPrice()" formControlName="price" ngDefaultControl></aer-input>
+      </form>
+    </div>
+    <div aerColumn size="sm-6" class="aens-manage__balance">
+      <div>{{'ENS.FIELD_BALANCE'|translate}}</div>
+      <div class="aens-manage__balance__aero">{{balanceInWei | convertToEther | number:'1.2-5'}} AERO</div>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-6">
+      <form [formGroup]="transferForm">
+        <div class="input-name">{{'ENS.FIELD_TRANSFER_TO'|translate}}</div>
+        <aer-input [(ngModel)]="transferTo" class="with-button" [ngClass]="{'has-error': hasError(transferForm.controls.transferTo), 'blue': canTransfer(), 'grey': !canTransfer()}" buttonLabel="{{'ENS.BTN_TRANSFER'|translate}}" (buttonFn)="setOwner()" icon="aerum" formControlName="transferTo" ngDefaultControl></aer-input>
+      </form>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-6">
+      <form [formGroup]="withdrawForm">
+        <div class="input-name">{{'ENS.FIELD_WITHDRAW_TO'|translate}}</div>
+        <aer-input [(ngModel)]="withdrawTo" class="with-button" [ngClass]="{'has-error': hasError(withdrawForm.controls.withdrawTo), 'blue': canWithdraw(), 'grey': !canWithdraw()}" buttonLabel="{{'ENS.BTN_WITHDRAW_TO'|translate}}" (buttonFn)="withdraw()" icon="aerum" formControlName="withdrawTo" ngDefaultControl></aer-input>
+      </form>
+    </div>
+  </div>
+</aer-expandable-panel>

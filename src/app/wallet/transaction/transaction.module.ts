@@ -13,25 +13,29 @@ import { SharedModule } from "@app/shared/shared.module";
 import { TransactionMoreOptionsComponent } from "@app/wallet/transaction/components/transaction-more-options/transaction-more-options.component";  
 import { TransactionRoutingModule } from "@app/wallet/transaction/transaction.routes";
 import { CoreModule } from "@app/core/core.module"; 
-
-export function createTranslateLoader(http: HttpClient) {
-    return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
-}
-
-@NgModule({ 
+import { TransactionModalComponent } from "@app/shared/modals/transaction-modal/transaction-modal.component";
+import { TransactionSignModalComponent } from "@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component";
+ 
+@NgModule({
+    entryComponents: [
+      TransactionModalComponent,
+      TransactionSignModalComponent,
+      CreateTransactionComponent,
+      LastTransactionsComponent,
+    ],
     imports: [
-        FormsModule,
-        AppUIModule,
-        CommonModule, 
-        ReactiveFormsModule,
-        TransactionRoutingModule,
-        SharedModule,
-        CoreModule
+      FormsModule,
+      AppUIModule,
+      CommonModule,
+      ReactiveFormsModule,
+      TransactionRoutingModule,
+      SharedModule,
+      CoreModule
     ],
     declarations: [
-        CreateTransactionComponent, 
-        LastTransactionsComponent,
-        TransactionMoreOptionsComponent
+      CreateTransactionComponent, 
+      LastTransactionsComponent,
+      TransactionMoreOptionsComponent,
     ]
 })
 export class TransactionModule { }

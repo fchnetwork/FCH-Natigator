@@ -29,11 +29,8 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
       })
       .mergeMap(route => route.data)
       .subscribe(currentData => {
-        if (currentData && currentData.sidebarGroup) {
-          console.log('Selected the ' + currentData.sidebarGroup + ' group');
-
+        if (currentData && currentData.sidebarGroup) { 
           this.viewLoaded$.subscribe(w => {
-            console.log('view loaded');
             this.sidebar.toggleGroup(currentData.sidebarGroup); 
             this.viewLoaded$.complete();
           });

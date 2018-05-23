@@ -14,6 +14,8 @@ import { environment } from '@env/environment';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { BlockListModel } from '@app/core/explorer/explorer-service/blocks-list.model';
+import { iTransaction, iBlocks } from '@app/shared/app.interfaces';
+import { TransactionListModel } from '@app/core/explorer/explorer-service/transaction-list.model';
 
 const ethJsUtil = require('ethereumjs-util');
 const Web3 = require('web3');
@@ -45,26 +47,37 @@ export class ExplorerService {
       .map(response => response.json().result.pending);
   }
 
-  getLatestBlockNumber(): Observable<number> {
-    return Observable.create(observer => {
+  /**
+   * Returns the number of the last block.
+   * 
+   * @returns {Observable<number>} Number of the last block.
+   * @memberof ExplorerService
+   */
+  getLatestBlockNumber(): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
       return this.web3.eth.getBlockNumber((err, block) => {
         if (err != null) {
-          observer.error();
-          observer.complete();
+          reject();
         }
-
-        observer.next(block);
-        observer.complete();
+        resolve(block);
       });
     });
   }
 
-  getBlocks(topBlockNumber: number, pageSize: number): Observable<BlockListModel> {
-    return Observable.create(observer => {
+  /**
+   * Returns blocks from the blockchain in specified range.
+   * 
+   * @param {number} topBlockNumber Initial block number from which the blocks are being retireved. 
+   * @param {number} pageSize Ammount of blocks to retrieve.
+   * @returns {Observable<BlockListModel>} Returns an array of blocks, the highest and the lowest block number encapsulated in BlockListModel.
+   * @memberof ExplorerService
+   */
+  getBlocks(topBlockNumber: number, pageSize: number): Promise<BlockListModel> {
+    return new Promise<BlockListModel>((resolve, reject) => {
       let blocks = [];
 
       for (var i = 0; i < pageSize; ++i) {
-        this.web3.eth.getBlock(topBlockNumber - i, (error, result) => {
+        this.web3.eth.getBlock(topBlockNumber - i, true, (error, result) => {
           if (!error) {
             blocks.push(result);
           }
@@ -74,22 +87,55 @@ export class ExplorerService {
             let lowBlock = blocks[0].number;
             let highBlock = blocks[blocks.length - 1].number;
 
-            blocks.sort((a, b):number => {
-                if(a.number > b.number) return 1;
-                if(a.number < b.number) return -1;
+            blocks.sort((a, b): number => {
+              if (a.number > b.number) return 1;
+              if (a.number < b.number) return -1;
             });
 
             blocks.reverse();
 
-            observer.next({
+            resolve({
               blocks: blocks,
               lowBlock: lowBlock,
               highBlock: highBlock
             });
-            observer.complete();
           }
         });
-      } 
+      }
+    });
+  }
+
+  /**
+   * Retrieves transactions from the specified range of blocks.
+   * 
+   * @param {number} topBlockNumber Initial block number from which the transactions are being retireved. 
+   * @param {number} pageSize Ammount of blocks to scan for transactions.
+   * @returns {Promise<TransactionListModel>} 
+   * @memberof ExplorerService
+   */
+  getTransactions(topBlockNumber: number, pageSize: number): Promise<TransactionListModel> {
+    return new Promise<TransactionListModel>((resolve, reject) => {
+      this.getBlocks(topBlockNumber, pageSize).then(blockList => {
+        let completeTransactionList = [];
+
+        for (let i = 0; i < blockList.blocks.length; i++) {
+          let currentBlock = blockList.blocks[i];
+
+          if (currentBlock.transactions.length > 0) {
+            for(let txn of currentBlock.transactions) {
+              let extendedTxn = Object.assign(txn, { timestamp: currentBlock.timestamp, gasUsedinTxn: currentBlock.gasUsed, block: currentBlock });
+            }
+
+            completeTransactionList = completeTransactionList.concat(blockList.blocks[i].transactions)
+          }
+        }
+
+        resolve({
+          transactions: completeTransactionList,
+          highBlock: blockList.highBlock,
+          lowBlock: blockList.lowBlock
+        });
+      });
     });
   }
 }

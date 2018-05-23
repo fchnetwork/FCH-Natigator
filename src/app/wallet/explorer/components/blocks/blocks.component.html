@@ -20,11 +20,8 @@
                     </tr>
                 </ng-template>
             </aer-table>
-
-            <div class="dataTable-info-label">
-                <label>{{'SHOWING_BLOCK'|translate: { lowestBlockNumber: lowBlock, highestBlockNumber: highBlock, blocksCount: countblocks
-                    } }}</label>
-            </div>
+            <app-divider [showLine]="false"></app-divider>
+            <aer-button class="full-width white" (buttonFn)="loadBlocks()">{{'SHOW_MORE'|translate}}</aer-button>
         </aer-card>
     </div>
 </div>

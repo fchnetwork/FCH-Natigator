@@ -1,0 +1,11 @@
+.aens {
+  &__info {
+    display: flex;
+    align-items: center;
+  }
+
+  &__separator {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+}

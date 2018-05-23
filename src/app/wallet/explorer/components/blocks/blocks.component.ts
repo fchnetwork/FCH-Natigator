@@ -8,27 +8,17 @@ import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 
 @Component({
   selector: 'app-blocks',
   templateUrl: './blocks.component.html'
 })
-export class BlocksComponent implements AfterViewInit, OnDestroy {
-
+export class BlocksComponent implements AfterViewInit {
   blocks: any[] = [];
-  maxBlocks: number = 10;
-
-  lowBlock: number;
+  maxBlocks: number = 20;
   highBlock: number;
-  countblocks: number;
-
-  order: number;
-  column: string = 'number';
-  descending: boolean = false;
-
-  getBlockSource: Subscription;
-  getLatestBlockSource: Subscription;
 
   constructor(
     public exploreSrv: ExplorerService,
@@ -39,28 +29,20 @@ export class BlocksComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.loaderService.toggle(true);
     // First get the latest block number
-    this.getLatestBlockSource = this.exploreSrv.getLatestBlockNumber().subscribe(latestBlockNumber => {
+    this.exploreSrv.getLatestBlockNumber().then(latestBlockNumber => {
       this.highBlock = latestBlockNumber;
       this.loadBlocks();
     });
   }
 
-  ngOnDestroy() {
-    this.getBlockSource.unsubscribe();
-    this.getLatestBlockSource.unsubscribe();
-  } 
-
   loadBlocks() {
     this.loaderService.toggle(true);
-    this.getBlockSource = this.exploreSrv.getBlocks(this.highBlock, this.maxBlocks).finally(() => {
-      this.loaderService.toggle(false)
-    }).subscribe(blockList => { 
-      this.blocks = this.blocks.concat(blockList.blocks);        
-      this.highBlock = blockList.highBlock - 1;
-    });
+    this.exploreSrv.getBlocks(this.highBlock, this.maxBlocks).then(blockList => {
+        this.loaderService.toggle(false) 
+        this.blocks = this.blocks.concat(blockList.blocks);
+        this.highBlock = blockList.highBlock - 1;
+      });
   }
-
-  
 
   openBlock(block: iBlocks) {
     this.modal.openBlock(block.number, block).then(result => {
