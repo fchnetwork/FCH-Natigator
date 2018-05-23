@@ -30,16 +30,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 @NgModule({
   imports: [
     CommonModule
-  ]
-})
-export class CoreModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      //At this point I can set any other class than FeatureModuleA for root
-      //So lets create a FeatureRootModuleA class: see below!
-      ngModule: CoreModule,
-      providers: [
-        ContractExecutorService,
+  ],
+  providers: [
+    ContractExecutorService,
         AccountIdleService,
         AuthenticationService,
         ClipboardService,
@@ -63,12 +56,14 @@ export class CoreModule {
         ERC20TokenService,
         PasswordCheckerService,
         LoggerService,
+  ]
+})
+export class CoreModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: CoreModule,
+      providers: [ 
         LoaderService
-        // {
-        //   provide: HTTP_INTERCEPTORS,
-        //   useClass: LoaderService,
-        //   multi: true
-        // }
       ]
     };
   }
