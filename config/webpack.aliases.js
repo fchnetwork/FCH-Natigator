@@ -9,7 +9,7 @@ module.exports = {
     '@explorer': path.resolve('src/app/wallet/explorer'),
     '@transaction': path.resolve('src/app/wallet/transaction'),
     '@diagnostics': path.resolve('src/app/wallet/diagnostics'),
+    '@env': path.resolve('src/environments'),
     '@aens': path.resolve('src/app/wallet/aens'),
-    '@swap': path.resolve('src/app/wallet/swap'),
-    '@env': path.resolve('src/environments')
+    '@swap': path.resolve('src/app/wallet/swap')
 };

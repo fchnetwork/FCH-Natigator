@@ -33,13 +33,27 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { WeiToGweiPipe } from '@app/shared/pipes/wei-to-gwei.pipe';
 import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe'; 
 import { LoaderComponent } from '@app/shared/components/loader/loader.component';
+import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/transaction-modal.component';
+import { GetBlockModalComponent } from '@app/shared/modals/get-block-modal/get-block-modal.component';
+import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
+import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
+import { NameBuyConfirmComponent } from '@app/wallet/aens/components/name-buy-confirm/name-buy-confirm.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
 }
 
+const modalWindows = [
+  TransactionModalComponent,
+  GetBlockModalComponent,
+  BlockModalComponent,
+  TransactionSignModalComponent  
+];
+
 @NgModule({
-  entryComponents: [],
+  entryComponents: [
+    modalWindows
+  ],
   imports: [
     CommonModule,
     ModalModule.forRoot(),
@@ -76,7 +90,8 @@ export function createTranslateLoader(http: HttpClient) {
     WeiToGweiPipe,
     ChartComponent, 
     CropAddressPipe,
-    LoaderComponent
+    LoaderComponent,
+    modalWindows
   ],
   exports:[
     I18nComponent,

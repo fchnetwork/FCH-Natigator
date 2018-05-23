@@ -11,13 +11,12 @@ export class LoaderComponent implements OnInit {
   private loaderShown = false;
 
   constructor(public loaderService: LoaderService) {
-    loaderService.loaderShown$.subscribe(shown => {
-      this.loaderShown = shown;
-      console.log('loader ' + shown);
-    });
+    this.loaderService.loaderShown$.subscribe(shown => {
+      this.loaderShown = shown; 
+    }, (err) => console.log(err));
   }
 
   ngOnInit() {
-  }
-
+    
+  } 
 }

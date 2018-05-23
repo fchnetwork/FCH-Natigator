@@ -20,8 +20,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private logger: LoggerService
     ) {
-      logger.setLogLevel(LogLevel.All);
-    }
+    logger.setLogLevel(LogLevel.All);
+  }
 
   ngOnInit() {
     //Start watching for user inactivity.
@@ -33,8 +33,8 @@ export class AppComponent implements OnInit {
     // Start watch when time is up.
     this.idle.onTimeout().subscribe(() => console.log('Time is up!'));
 
-    console.log(`Current Env: ${environment.configInUse}`);
-    console.log(`Current HttpProvider: ${environment.HttpProvider}`);
+    this.logger.logMessage(`Current Env: ${environment.configInUse}`);
+    this.logger.logMessage(`Current HttpProvider: ${environment.HttpProvider}`);
 
   }
 }

@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Modal, DialogRef, overlayConfigFactory, ContainerContent } from "ngx-modialog";
-import { BSModalContext } from "ngx-modialog/plugins/bootstrap";
-import { TransactionSignModalComponent } from '@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component';
-import { AddTokenComponent } from '@app/wallet/home/components/add-token/add-token.component';
-import { BlockModalComponent } from '@app/wallet/explorer/components/block/block-modal/block-modal.component';
-import { TransactionModalComponent } from '@app/wallet/explorer/components/transaction/transaction-modal/transaction-modal.component';
+import { BSModalContext } from "ngx-modialog/plugins/bootstrap"; 
+import { AddTokenComponent } from '@app/wallet/home/components/add-token/add-token.component';  
 import { CreateSwapConfirmComponent } from '@app/wallet/swap/components/create-swap/create-swap-confirm/create-swap-confirm.component';
 import { LoadSwapConfirmComponent } from '@app/wallet/swap/components/load-swap/load-swap-confirm/load-swap-confirm.component';
 import { BackupDisclamerComponent } from '@app/account/backup-disclamer/backup-disclamer.component';
@@ -12,6 +9,9 @@ import { NameBuyConfirmComponent } from '@app/wallet/aens/components/name-buy-co
 import { NameUpdateAddressConfirmComponent } from '@app/wallet/aens/components/name-update-address-confirm/name-update-address-confirm.component';
 import { NameTransferConfirmComponent } from "@aens/components/name-transfer-confirm/name-transfer-confirm.component";
 import { NameReleaseConfirmComponent } from "@aens/components/name-release-confirm/name-release-confirm.component";
+import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
+import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/transaction-modal.component';
+import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
 
 @Injectable()
 export class ModalService {
@@ -19,7 +19,7 @@ export class ModalService {
   constructor(private modal: Modal) {
   }
 
-  private openModal(modal: ContainerContent, config: any = {}): Promise<DialogRef<any>> {
+  openModal(modal: ContainerContent, config: any = {}): Promise<DialogRef<any>> {
     const overlayConfig = overlayConfigFactory(config, BSModalContext);
     return this.modal.open(modal, overlayConfig).result.then((modal) => {
       if(!modal) {

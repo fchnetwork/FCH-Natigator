@@ -10,9 +10,9 @@ import { LoadSwapComponent } from './components/load-swap/load-swap.component';
 import { CreateSwapConfirmComponent } from './components/create-swap/create-swap-confirm/create-swap-confirm.component';
 import { LoadSwapConfirmComponent } from './components/load-swap/load-swap-confirm/load-swap-confirm.component';
 import { SwapTokensListComponent } from './components/create-swap/swap-tokens-list/swap-tokens-list.component';
-import { SwapRoutingModule } from './swap.routes';
+import { SwapRoutingModule } from '@app/wallet/swap/swap.routes';
 import { CoreModule } from '@app/core/core.module';
-
+ 
 @NgModule({
   entryComponents: [
     CreateSwapConfirmComponent,
@@ -33,7 +33,7 @@ import { CoreModule } from '@app/core/core.module';
     CreateSwapConfirmComponent,
     LoadSwapConfirmComponent,
     SwapTokensListComponent
-  ],
+  ], 
   exports: [
     CreateSwapConfirmComponent,
     LoadSwapConfirmComponent

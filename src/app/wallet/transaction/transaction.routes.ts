@@ -6,7 +6,7 @@ export const TRANSACTION_ROUTES = [
     {
         path: '',
         component: CreateTransactionComponent,
-        data: { sidebarGroup: 'swap'}
+        data: { sidebarGroup: 'transaction'}
     }
 ];
 

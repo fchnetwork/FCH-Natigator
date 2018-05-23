@@ -47,7 +47,7 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
               this.token = dialog.context.param.token;   
               this.amount = dialog.context.param.amount;   
               this.checkbox = dialog.context.param.checkbox || false;     
-              this.external = dialog.context.external;     
+              this.external = dialog.context.param.external;     
             }
   }
 

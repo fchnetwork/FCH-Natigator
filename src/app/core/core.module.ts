@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 import { AensFixedPriceRegistrarContractService } from '@app/core/aens/aens-fixed-price-registrar-contract-service/aens-fixed-price-registrar-contract.service';
@@ -33,35 +33,38 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
   ],
   providers: [
     ContractExecutorService,
-    AccountIdleService,
-    AuthenticationService,
-    ClipboardService,
-    ExplorerService,
-    ModalService,
-    InternalNotificationService,
-    RouteDataService,
-    TokenService,
-    TransactionService,
-    CanActivateAccountAuthGuard,
-    CanActivateViaAuthGuard,
-    AerumStatsService,
-    AerumStatsWebsocketsService,
-    AerumNameService,
-    AensFixedPriceRegistrarContractService,
-    AensPublicResolverContractService,
-    AensRegistryContractService,
-    AeroToErc20SwapService,
-    Erc20ToAeroSwapService,
-    Erc20ToErc20SwapService,
-    ERC20TokenService,
-    PasswordCheckerService,
-    LoggerService,
-    LoaderService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoaderService,
-      multi: true
-    }
-  ],
+        AccountIdleService,
+        AuthenticationService,
+        ClipboardService,
+        ExplorerService,
+        ModalService,
+        InternalNotificationService,
+        RouteDataService,
+        TokenService,
+        TransactionService,
+        CanActivateAccountAuthGuard,
+        CanActivateViaAuthGuard,
+        AerumStatsService,
+        AerumStatsWebsocketsService,
+        AerumNameService,
+        AensFixedPriceRegistrarContractService,
+        AensPublicResolverContractService,
+        AensRegistryContractService,
+        AeroToErc20SwapService,
+        Erc20ToAeroSwapService,
+        Erc20ToErc20SwapService,
+        ERC20TokenService,
+        PasswordCheckerService,
+        LoggerService,
+  ]
 })
-export class CoreModule { }
+export class CoreModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: CoreModule,
+      providers: [ 
+        LoaderService
+      ]
+    };
+  }
+}
