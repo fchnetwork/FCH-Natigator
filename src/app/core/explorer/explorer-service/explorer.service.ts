@@ -1,35 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subject } from 'rxjs/Subject';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 import 'rxjs/Rx';
-import { Observer } from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { environment } from '@env/environment';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { BlockListModel } from '@app/core/explorer/explorer-service/blocks-list.model';
-import { iTransaction, iBlocks } from '@app/shared/app.interfaces';
 import { TransactionListModel } from '@app/core/explorer/explorer-service/transaction-list.model';
-
-const ethJsUtil = require('ethereumjs-util');
-const Web3 = require('web3');
-
 
 @Injectable()
 export class ExplorerService {
 
   web3: any;
   account: any;
-  txpoolContentData = { "jsonrpc": "2.0", "method": "txpool_content", "params": [], "id": 1 }
-  txpoolInspectData = { "jsonrpc": "2.0", "method": "txpool_inspect", "params": [], "id": 1 }
+  txpoolContentData = { "jsonrpc": "2.0", "method": "txpool_content", "params": [], "id": 1 };
 
-  constructor(private _http: Http, _auth: AuthenticationService, public loaderService: LoaderService) {
+  constructor(private _http: Http, _auth: AuthenticationService) {
     this.web3 = _auth.initWeb3();
     this.account = JSON.parse(Cookie.get('account'));
   }
@@ -49,7 +38,7 @@ export class ExplorerService {
 
   /**
    * Returns the number of the last block.
-   * 
+   *
    * @returns {Observable<number>} Number of the last block.
    * @memberof ExplorerService
    */
@@ -66,8 +55,8 @@ export class ExplorerService {
 
   /**
    * Returns blocks from the blockchain in specified range.
-   * 
-   * @param {number} topBlockNumber Initial block number from which the blocks are being retireved. 
+   *
+   * @param {number} topBlockNumber Initial block number from which the blocks are being retireved.
    * @param {number} pageSize Ammount of blocks to retrieve.
    * @returns {Observable<BlockListModel>} Returns an array of blocks, the highest and the lowest block number encapsulated in BlockListModel.
    * @memberof ExplorerService
@@ -107,10 +96,10 @@ export class ExplorerService {
 
   /**
    * Retrieves transactions from the specified range of blocks.
-   * 
-   * @param {number} topBlockNumber Initial block number from which the transactions are being retireved. 
+   *
+   * @param {number} topBlockNumber Initial block number from which the transactions are being retireved.
    * @param {number} pageSize Ammount of blocks to scan for transactions.
-   * @returns {Promise<TransactionListModel>} 
+   * @returns {Promise<TransactionListModel>}
    * @memberof ExplorerService
    */
   getTransactions(topBlockNumber: number, pageSize: number): Promise<TransactionListModel> {

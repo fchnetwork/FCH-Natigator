@@ -1,12 +1,19 @@
-/* tslint:disable:no-unused-variable */
-
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { AerumStatsService } from './aerum-stats.service';
+import { AerumStatsWebsocketsService } from "@app/core/stats/aerum-stats-websockets-service/aerum-stats-websockets.service";
+import { Subject } from "rxjs/Subject";
 
 describe('Service: AerumStats', () => {
+  const statsWebsocketService: Partial<AerumStatsWebsocketsService> = {
+    connect: () => new Subject<MessageEvent>()
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AerumStatsService]
+      providers: [
+        AerumStatsService,
+        { provide: AerumStatsWebsocketsService, useValue: statsWebsocketService }
+      ]
     });
   });
 
