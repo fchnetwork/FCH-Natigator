@@ -63,6 +63,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   };
   showedMore = false;
   updateInterval: any;
+  orderId: string;
 
   constructor(
     private logger: LoggerService,
@@ -114,14 +115,16 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
           this.isToken = parsed.assetAddress !== "0";
           this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
           this.external = true;
-          this.hash = parsed.hash ? parsed.hash : this.hash;
+          // this.hash = parsed.hash ? parsed.hash : this.hash;
           this.assetAddress = parsed.assetAddress ? parsed.assetAddress : this.assetAddress;
-          this.timeStamp = parsed.timeStamp ? parsed.timeStamp : this.timeStamp;
+          this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
+          // this.timeStamp = parsed.timeStamp ? parsed.timeStamp : this.timeStamp;
           this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
           this.safeGetMaxTransactionFee();
         }
       });
   }
+
 
   async updateTokensBalance(): Promise<void> {
     this.tokens = await this.tokenService.updateTokensBalance();
@@ -234,7 +237,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
       const privateKey = this.sessionStorageService.retrieve('private_key');
       const address = this.sessionStorageService.retrieve('acc_address');
       if (this.selectedToken.symbol === 'AERO' && !this.isToken) {
-        this.transactionService.transaction(privateKey, address, resolvedAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, this.external, urls, this.moreOptionsData).then(res => {
+        this.transactionService.transaction(privateKey, address, resolvedAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, this.external, urls, this.orderId, this.moreOptionsData).then(res => {
           this.transactionMessage = res;
         }).catch((error) => {
           console.log(error);
@@ -243,7 +246,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
           }
         });
       } else if (this.selectedToken.address) {
-        this.transactionService.sendTokens(address, resolvedAddress, Number(this.amount * Math.pow(10, this.selectedToken.decimals)), this.selectedToken.address, this.external, urls, this.moreOptionsData).then((res) => {
+        this.transactionService.sendTokens(address, resolvedAddress, Number(this.amount * Math.pow(10, this.selectedToken.decimals)), this.selectedToken.address, this.external, urls, this.orderId, this.moreOptionsData).then((res) => {
           this.transactionMessage = res;
         });
       }

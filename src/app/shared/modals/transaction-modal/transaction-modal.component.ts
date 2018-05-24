@@ -14,6 +14,7 @@ import { TransactionModalContext } from '@app/shared/modals/models/transaction-m
 export class TransactionModalComponent implements OnInit, ModalComponent<TransactionModalContext> {
 
   hash: string;
+  orderId: string;
   transaction: iTransaction;
   transactionHex: string;
   showHexData: boolean = true;
@@ -23,7 +24,10 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
   btnText: string;
   
     constructor(
-    public dialog: DialogRef<TransactionModalContext>) {
+    public dialog: DialogRef<any>) {
+      if(dialog.context.orderId) {
+        this.orderId = dialog.context.orderId;
+      }
       if(dialog.context.hash) {
         this.hash = dialog.context.hash;
       }
@@ -64,7 +68,14 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
 
   redirectExternal(){
     if(this.dialog.context.external) {
-      window.location.href=`${this.dialog.context.urls.success}?hash=${this.hash}`;
+      console.log(this.dialog.context);
+      const query = {
+        orderId: this.dialog.context.orderId,
+        txHash: this.dialog.context.transaction.hash,
+        from: this.dialog.context.transaction.from,
+        to: this.dialog.context.transaction.to
+      };
+      window.location.href=`${this.dialog.context.urls.success}?query=${JSON.stringify(query)}`;
     }
   }
 
