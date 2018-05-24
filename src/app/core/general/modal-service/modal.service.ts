@@ -20,7 +20,14 @@ export class ModalService {
   }
 
   openModal(modal: ContainerContent, config: any = {}): Promise<DialogRef<any>> {
-    const overlayConfig = overlayConfigFactory(config, BSModalContext);
+    let defaultConfig = {
+      isBlocking: false,
+      dialogClass: 'adaptive-dialog'      
+    };
+
+    Object.assign(defaultConfig, config);
+
+    const overlayConfig = overlayConfigFactory(defaultConfig, BSModalContext);
     return this.modal.open(modal, overlayConfig).result.then((modal) => {
       if(!modal) {
         return {dismiss: false};

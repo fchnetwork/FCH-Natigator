@@ -1,5 +1,4 @@
-import { DialogRef } from 'ngx-modialog';
-import { BasicModalContext } from '@shared/components/modals/basic-modal/basic-modal.component';
+import { DialogRef } from 'ngx-modialog'; 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalComponent } from 'ngx-modialog';
 import { Component, OnInit } from '@angular/core';
@@ -8,13 +7,14 @@ import { InternalNotificationService } from '@app/core/general/internal-notifica
 import { TokenService } from '@app/core/transactions/token-service/token.service';
 import { AddressValidator } from "@shared/validators/address.validator";
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
+import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
 
 @Component({
   selector: 'app-add-token',
   templateUrl: './add-token.component.html',
   styleUrls: ['./add-token.component.scss']
 })
-export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnInit {
+export class AddTokenComponent implements ModalComponent<DefaultModalContext>, OnInit {
   addTokenForm: FormGroup = this.formBuilder.group({});
   tokenAddress: any;
   tokenSymbol: any;
@@ -23,7 +23,7 @@ export class AddTokenComponent implements ModalComponent<BasicModalContext>, OnI
   balance: any;
 
   constructor(
-    public dialog: DialogRef<BasicModalContext>,
+    public dialog: DialogRef<DefaultModalContext>,
     public formBuilder: FormBuilder,
     private tokenService: TokenService,
     private sessionStorage: SessionStorageService,

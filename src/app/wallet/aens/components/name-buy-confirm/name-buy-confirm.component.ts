@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogRef } from 'ngx-modialog';
-
-import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
-import { BasicModalContext } from '@shared/components/modals/basic-modal/basic-modal.component';
+import { DialogRef } from 'ngx-modialog'; 
+import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service'; 
 import { NameBuyConfirmRequest } from '@aens/models/nameBuyConfirmRequest';
+import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
 
 @Component({
   selector: 'app-name-buy-confirm',
@@ -21,7 +20,7 @@ export class NameBuyConfirmComponent implements OnInit {
   maximumFeeInWei: number;
 
   constructor(
-    public dialog: DialogRef<BasicModalContext>,
+    public dialog: DialogRef<DefaultModalContext>,
     public authenticationService: AuthenticationService) {
       if(dialog.context.param) {
         this.param = dialog.context.param as NameBuyConfirmRequest;
