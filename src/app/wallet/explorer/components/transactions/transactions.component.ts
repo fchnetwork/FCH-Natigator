@@ -56,7 +56,7 @@ export class TransactionsComponent implements AfterViewInit {
   }
 
   openTransaction(transaction) {
-    this.modal.openTransaction(transaction.hash, transaction, false, null).then((result) => {
+    this.modal.openTransaction(transaction.hash, transaction, false, null, null).then((result) => {
     }).catch(() => { });
   }
 }
