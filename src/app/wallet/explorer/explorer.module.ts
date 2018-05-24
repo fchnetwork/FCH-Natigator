@@ -4,20 +4,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { AddressComponent } from './components/address/address.component';
 import { BlocksComponent } from './components/blocks/blocks.component';
-import { RouterModule } from '@angular/router';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { ExplorerRoutingModule } from './explorer.routes'; 
-import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component'; 
+import { ExplorerRoutingModule } from './explorer.routes';
+import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 import { AppUIModule } from '@app/app.ui.module';
-import { SharedModule } from '@app/shared/shared.module';  
+import { SharedModule } from '@app/shared/shared.module';
 import { CoreModule } from '@app/core/core.module'; 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
     ExplorerRoutingModule,
     AppUIModule,
     SharedModule,
@@ -25,9 +22,9 @@ import { CoreModule } from '@app/core/core.module';
   ],
   declarations: [
     TransactionsComponent,
-    AddressComponent, 
+    AddressComponent,
     BlocksComponent,
-    PendingTxnsComponent,
+    PendingTxnsComponent
   ]
 })
 export class ExplorerModule {}
