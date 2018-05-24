@@ -8,7 +8,7 @@ import { LoaderService } from '@app/core/general/loader-service/loader.service';
   styleUrls: ['./loader.component.scss']
 })
 export class LoaderComponent implements OnInit {
-  private loaderShown = false;
+  public loaderShown = false;
 
   constructor(public loaderService: LoaderService) {
     this.loaderService.loaderShown$.subscribe(shown => {
