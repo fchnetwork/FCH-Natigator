@@ -1,4 +1,4 @@
-import { FormControl } from "@angular/forms";
+import { AbstractControl } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import {EventEmitter, Output} from "@angular/core";
 
@@ -9,7 +9,7 @@ export abstract class AensBaseComponent {
 
   protected constructor(private translateService: TranslateService) { }
 
-  hasError(control: FormControl): boolean {
+  hasError(control: AbstractControl): boolean {
     if(!control) {
       return false;
     }
