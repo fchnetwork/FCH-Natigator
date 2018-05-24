@@ -16,7 +16,7 @@
   },
   "private": true,
   "dependencies": {
-    "@aerum/ui": "^0.3.12",
+    "@aerum/ui": "^0.3.13",
     "@angular/animations": "^5.2.10",
     "@angular/common": "^5.2.10",
     "@angular/compiler": "^5.2.10",
