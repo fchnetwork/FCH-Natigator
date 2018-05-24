@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DialogRef } from 'ngx-modialog';
-
-import { BasicModalContext } from '@shared/components/modals/basic-modal/basic-modal.component';
+import { DialogRef } from 'ngx-modialog'; 
 import { NameTransferConfirmRequest } from "@aens/models/nameTransferConfirmRequest";
+import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
 
 @Component({
   selector: 'app-name-transfer-confirm',
@@ -16,7 +15,7 @@ export class NameTransferConfirmComponent implements OnInit {
   estimatedFeeInWei: number;
   maximumFeeInWei: number;
 
-  constructor(private dialog: DialogRef<BasicModalContext>) {
+  constructor(private dialog: DialogRef<DefaultModalContext>) {
     if(dialog.context.param) {
       this.param = dialog.context.param as NameTransferConfirmRequest;
 

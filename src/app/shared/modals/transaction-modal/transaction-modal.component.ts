@@ -4,14 +4,8 @@ import { iTransaction } from '@shared/app.interfaces';
 import * as Moment from 'moment'; 
 import { environment } from '@env/environment'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-
-export interface TransactionModalContext {
-  hash?: string;
-  transaction?: iTransaction;
-  external?: boolean;
-  urls?: any;
-}
-
+import { TransactionModalContext } from '@app/shared/modals/models/transaction-modal-context.model';
+ 
 @Component({
   selector: 'app-transaction-modal',
   templateUrl: './transaction-modal.component.html',

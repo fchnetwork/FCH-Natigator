@@ -2,18 +2,14 @@ import { Component } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';   
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-
-export interface BasicModalContext {
-  param?: any;
-  external?: boolean;
-}
-
+import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
+ 
 @Component({
   selector: 'app-transaction-sign-modal',
   templateUrl: './transaction-sign-modal.component.html',
   styleUrls: ['./transaction-sign-modal.component.scss']
 })
-export class TransactionSignModalComponent implements ModalComponent<BasicModalContext> {
+export class TransactionSignModalComponent implements ModalComponent<DefaultModalContext> {
 
   unlockAccountForm: FormGroup;
   senderAddress: string;
@@ -31,7 +27,7 @@ export class TransactionSignModalComponent implements ModalComponent<BasicModalC
   external = false;
   pin: number;
 
-  constructor( public dialog: DialogRef<BasicModalContext>,
+  constructor( public dialog: DialogRef<DefaultModalContext>,
                public authServ: AuthenticationService,
                public formBuilder: FormBuilder) {
                  

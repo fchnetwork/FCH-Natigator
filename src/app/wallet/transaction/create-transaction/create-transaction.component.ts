@@ -274,7 +274,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
 
       if (res.length > 3) {
         message.title = 'WARNING!';
-        message.text = 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guaranty that your token transfer will be processed properly. Always make sure you trust a contract you are sending your tokens to.';
+        message.text = 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guarantee that your token transfer will be processed properly. Mmake sure you always trust a contract that you are sending your tokens to.';
 
         const res = await this.tokenService.tokenFallbackCheck(resolvedAddress, 'tokenFallback(address,uint256,bytes)');
         if (!res) {
