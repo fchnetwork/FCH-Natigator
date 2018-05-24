@@ -5,6 +5,11 @@
   margin-bottom: 14px;
 }
 
+.divider--line-full {
+  @extend .divider--line;
+  width: 100%;
+}
+
 .divider--noline {
   @extend .divider--line;
 

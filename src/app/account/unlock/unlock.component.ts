@@ -20,9 +20,7 @@ export class UnlockComponent implements OnInit {
   address: string;
   password: string;
   avatar: string;
-  private: string; // i dont know  
-  sub: any;
-  step = 'step_1';
+  sub: any; 
   query: string;
   passwordIncorrect = false;
 

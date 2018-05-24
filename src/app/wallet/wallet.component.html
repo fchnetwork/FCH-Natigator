@@ -22,6 +22,9 @@
   <aer-system-button iconName="power-off" (buttonFn)="logout()"></aer-system-button>
 </aer-sidebar>
 <aer-toolbar>
+  <div style="padding: 10px 7px; font-size: 24px;">
+      <aer-icon style="padding: 7px; font-size: 21px;" (click)="sidebar.toggleSidebar()">bars</aer-icon>
+  </div>
   <app-sidebar-account-select style="display: none!important;"></app-sidebar-account-select>
 </aer-toolbar>
 <aer-content>

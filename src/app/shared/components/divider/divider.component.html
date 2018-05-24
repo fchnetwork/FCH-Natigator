@@ -1,4 +1,4 @@
-<hr class="divider--line" *ngIf="label == null && showLine">
+<hr [ngClass]="fullWidth ? 'divider--line-full' : 'divider--line'" *ngIf="label == null && showLine">
 <hr class="divider--noline" *ngIf="label == null && !showLine">
 <div class="divider--label" *ngIf="label != null">
   <p>
