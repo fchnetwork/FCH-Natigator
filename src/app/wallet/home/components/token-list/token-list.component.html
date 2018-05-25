@@ -1,36 +1,36 @@
 <aer-card class="token-list">
     <div aerRow class="title-row">
-      <div aerColumn size="sm-6">
+      <div aerColumn size="lg-6 md-6 sm-6 xs-6">
           <span class="title">Tokens</span>
       </div>
-      <div aerColumn size="sm-6" class="add-token">
-          <span (click)="addToken()">Add token +</span>
+      <div aerColumn size="lg-6 md-6 sm-6 xs-6" class="add-token">
+        <aer-button class="blue medium" (click)="addToken()">Add token <aer-icon>plus</aer-icon></aer-button>
         <!-- <aer-button (click)="addToken()" class="small blue">Add Token</aer-button> -->
       </div>
     </div>
     <div aerRow *ngIf="tokens"  class="token-item">
-      <div aerColumn size="sm-6" class="name">
+      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="name">
           {{ 'DASHBOARD_TOKENS.NAME' | translate }}
       </div>
-      <div aerColumn size="sm-3" class="amount">
+      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
           {{ 'DASHBOARD_TOKENS.DECIMALS' | translate }}
       </div>
-      <div aerColumn size="sm-3" class="amount">
+      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
           {{ 'DASHBOARD_TOKENS.OWNED' | translate }}
       </div>
     </div>
 
     <div aerRow *ngFor="let token of tokens" class="token-item">
-      <div aerColumn size="sm-2" class="token-img">
+      <!-- <div aerColumn size="lg-1 md-1 sm-1 xs-1" class="token-img">
         <aer-icon>generaltoken</aer-icon>
+      </div> -->
+      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="name">
+            <span class="token-img"><aer-icon>generaltoken</aer-icon></span> {{token.symbol}}
       </div>
-      <div aerColumn size="sm-5" class="name">
-          {{token.symbol}}
-      </div>
-      <div aerColumn size="sm-2" class="amount">
+      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
           {{token.decimals}}
       </div>
-      <div aerColumn size="sm-3" class="amount">
+      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
           {{token.balance}}
       </div>
     </div>
