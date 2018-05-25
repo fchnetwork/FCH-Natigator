@@ -166,7 +166,7 @@ export class TransactionService {
       });
     }
 
-    async sendTokens(myAddress, to, amount, contractAddress, external, urls, orderId, moreOptionsData) {
+    async sendTokens(myAddress, to, amount, contractAddress, external, urls, orderId) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
       const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 4000000});
       const gasPrice = await this.web3.eth.getGasPrice();
@@ -174,7 +174,6 @@ export class TransactionService {
         "from": myAddress,
         "nonce": this.web3.utils.toHex( count ),
         "gasPrice": this.web3.utils.toHex(gasPrice) || "0x003B9ACA00",
-        // "gasLimit": this.web3.utils.toHex(moreOptionsData.limit) || "0x250CA",
         "gasLimit": "0x250CA",
         "to": contractAddress,
         "value": "0x0",
@@ -198,7 +197,7 @@ export class TransactionService {
       }).catch( error => {
         console.log(error);
         if(external) {
-          // window.location.href=urls.failed;
+          // window.location.href = urls.failed;
         }
           // alert( error )
       });

@@ -1,7 +1,7 @@
 import { AccountRoutingModule } from "./account.routes";
 import { CommonModule } from "@angular/common";
 import { NgModule, ModuleWithProviders } from "@angular/core";
-import { AppUIModule } from "../app.ui.module"; 
+import { AppUIModule } from "../app.ui.module";
 import { AvatarSelectComponent } from "./components/avatar-select/avatar-select.component";
 import { PasswordLinesComponent } from "./components/password-lines/password-lines.component";
 
@@ -13,7 +13,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { TranslateLoader } from "@ngx-translate/core";
 import { HttpClient } from "@angular/common/http";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { AppRoutingModule } from "../app.routes";  
+import { AppRoutingModule } from "../app.routes";
 import { RegisterComponent } from './register/register.component';
 import { BackupCreateComponent } from './backup-create/backup-create.component';
 import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component';
@@ -52,9 +52,9 @@ import { UnlockComponent } from "@app/account/unlock/unlock.component";
         BackupCreateComponent,
         BackupConfirmComponent,
         BackupPromptComponent,
-        BackupDisclamerComponent, 
+        BackupDisclamerComponent,
         AccessRecoveryComponent,
         PasswordLinesComponent
     ]
 })
-export class AccountModule { } 
+export class AccountModule { }

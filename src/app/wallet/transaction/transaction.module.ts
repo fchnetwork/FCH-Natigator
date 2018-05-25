@@ -12,7 +12,7 @@ import { AppUIModule } from "@app/app.ui.module";
 import { SharedModule } from "@app/shared/shared.module";
 import { TransactionMoreOptionsComponent } from "@app/wallet/transaction/components/transaction-more-options/transaction-more-options.component";  
 import { TransactionRoutingModule } from "@app/wallet/transaction/transaction.routes";
-import { CoreModule } from "@app/core/core.module"; 
+import { CoreModule } from "@app/core/core.module";
 import { TransactionModalComponent } from "@app/shared/modals/transaction-modal/transaction-modal.component";
 import { TransactionSignModalComponent } from "@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component";
  
@@ -30,12 +30,12 @@ import { TransactionSignModalComponent } from "@app/shared/modals/transaction-si
       ReactiveFormsModule,
       TransactionRoutingModule,
       SharedModule,
-      CoreModule
+      CoreModule,
     ],
     declarations: [
-      CreateTransactionComponent, 
+      CreateTransactionComponent,
       LastTransactionsComponent,
       TransactionMoreOptionsComponent,
-    ]
+]
 })
 export class TransactionModule { }

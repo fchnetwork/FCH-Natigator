@@ -20,7 +20,7 @@ export class UnlockComponent implements OnInit {
   address: string;
   password: string;
   avatar: string;
-  sub: any; 
+  sub: any;
   query: string;
   passwordIncorrect = false;
 
@@ -54,16 +54,16 @@ export class UnlockComponent implements OnInit {
   onSubmitAddress() {
     this.authServ.login(this.password).then((res) => {
       if (this.query) {
-        this.router.navigate([`/wallet/transaction`], { queryParams: { query: this.query } });
+        this.router.navigate([`/external/transaction`], { queryParams: { query: this.query } });
       } else {
         this.router.navigate([`/wallet/home`]);
       }
     }).catch((reason) => {
       this.passwordIncorrect = true;
-      
+
       this.translateService.get("UNLOCK.INVALID_PASSWORD").subscribe(message => {
-        this.notificationService.showMessage(message);        
-      })
+        this.notificationService.showMessage(message);
+      });
     });
   }
 
