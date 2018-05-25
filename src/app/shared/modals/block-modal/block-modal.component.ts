@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog'; 
 import { iBlocks } from '@app/shared/app.interfaces';
+import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
+import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { environment } from '@env/environment';
 
 export interface BlockModalContext {
   blockNumber?: number;
@@ -17,7 +20,9 @@ export class BlockModalComponent implements OnInit, ModalComponent<BlockModalCon
   blockNumber: number;
   block: iBlocks;
 
-  constructor(public dialog: DialogRef<BlockModalContext>) {
+  constructor(public dialog: DialogRef<BlockModalContext>,
+              public clipboardService: ClipboardService,
+              public notificationService: InternalNotificationService) {
     if(dialog.context.blockNumber) {
       this.blockNumber = dialog.context.blockNumber;
     }
@@ -38,5 +43,14 @@ export class BlockModalComponent implements OnInit, ModalComponent<BlockModalCon
 
   close(): void {
     this.dialog.close();
+  }
+
+  copyToClipboard(hash) {
+    this.clipboardService.copy(hash);
+    this.notificationService.showMessage('Copied to clipboard!');
+  }
+
+  openBlock(blockNumber) {
+    window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
   }
 }

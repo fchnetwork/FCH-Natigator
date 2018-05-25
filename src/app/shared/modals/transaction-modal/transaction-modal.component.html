@@ -2,7 +2,7 @@
     <div class="explorer detail-modal" *ngIf="transaction">
       <div class="title">{{'TRANSACTION'|translate}}</div>
       <app-divider></app-divider>
-      <div class="link" (click)="openTxn(transaction.hash)">{{transaction.hash}}</div>
+      <div class="link copy" (click)="openTxn(transaction.hash)">{{transaction.hash | slice:0:20}}...{{transaction.hash | slice:-18}}</div> 
       <div><p class="aer-small">{{transaction.timestamp | transactionTimeStamp }}</p></div>
       <div class="age">({{transaction.timestamp | transactionTimeAgo  }})</div>
         <div class="transaction-table">
@@ -18,18 +18,18 @@
           <div class="name">
             {{'FROM'|translate}}
           </div>
-          <div class="value">
-            {{transaction.from}}
+          <div class="value copy" (click)="copyToClipboard(transaction.from)">
+            {{transaction.from | slice:0:16}}...{{transaction.from | slice:-14}}
           </div> 
         </div>
         <div class="tr">
             <div class="name">
               {{'TO'|translate}}
             </div>
-            <div class="value">
+            <div class="value" [ngClass]="{'copy': transaction.to}" (click)="copyToClipboard(transaction.to)">
                 <div *ngIf="!transaction.to; then contractTxn else normalTxn"></div>
                 <ng-template #normalTxn>
-                    {{transaction.to  }} 
+                    {{transaction.to | slice:0:16}}...{{transaction.to | slice:-14}}
                 </ng-template>
                 <ng-template #contractTxn>
                   [Contract Creation Transaction]
@@ -89,7 +89,7 @@
           </div>
         </div>
         </div>
-        <div class="tr" *ngIf="transaction.to && transaction.input > 3">
+        <div class="tr button" *ngIf="transaction.to && transaction.input > 3">
             <aer-button (click)="convert()" class="small blue">{{btnText}}</aer-button>
         </div>        
       <aer-button (click)="close()" class="large full-width">Close</aer-button>
