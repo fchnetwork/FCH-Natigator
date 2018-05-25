@@ -106,8 +106,8 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     this.sub = this.route
       .queryParams
       .subscribe(async params => {
-        if (params) {
-          this.external = !this.isEmptyObject(params);
+        if (!this.isEmptyObject(params)) {
+          this.external = true;
           this.senderAddress = params.from ? params.from : this.senderAddress;
           this.querySenderAddress = params.from;
           this.receiverAddress = params.to ? params.to : this.receiverAddress;
@@ -120,9 +120,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
           // this.timeStamp = parsed.timeStamp ? parsed.timeStamp : this.timeStamp;
           this.returnUrlFailed = params.returnUrlFailed ? params.returnUrlFailed : this.returnUrlFailed;
           await this.getMaxTransactionFee();
-          if (this.external) {
-            await this.send();
-          }
+          await this.send();
         }
       });
   }
