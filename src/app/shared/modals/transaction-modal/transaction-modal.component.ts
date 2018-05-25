@@ -2,8 +2,8 @@ import { Component, OnInit, Inject, forwardRef, Output, EventEmitter } from '@an
 import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { iTransaction } from '@shared/app.interfaces';
 import * as Moment from 'moment'; 
-import { environment } from '@env/environment'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { environment } from '@env/environment';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TransactionModalContext } from '@app/shared/modals/models/transaction-modal-context.model';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';

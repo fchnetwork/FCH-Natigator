@@ -2,7 +2,7 @@
     <div class="explorer detail-modal" *ngIf="block">
       <div class="title">{{'BLOCK'|translate}}</div>
       <app-divider></app-divider>
-      <div class="link">{{block.number}}</div>
+      <div class="link" (click)="openBlock(block.number)">{{block.number}}</div>
       <div><p class="aer-small">{{block.timestamp | transactionTimeStamp  }} </p></div>
       <div class="age">({{block.timestamp | transactionTimeAgo  }})</div>
   
