@@ -5,6 +5,8 @@ import * as Moment from 'moment';
 import { environment } from '@env/environment'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { TransactionModalContext } from '@app/shared/modals/models/transaction-modal-context.model';
+import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
+import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
  
 @Component({
   selector: 'app-transaction-modal',
@@ -23,8 +25,9 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
   setBtnTxt$ = new BehaviorSubject("Convert to UTF-8"); 
   btnText: string;
   
-    constructor(
-    public dialog: DialogRef<any>) {
+    constructor(public dialog: DialogRef<any>,
+                public clipboardService: ClipboardService,
+                public notificationService: InternalNotificationService) {
       if(dialog.context.orderId) {
         this.orderId = dialog.context.orderId;
       }
@@ -87,6 +90,13 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
     } else {
       this.toHex.emit(null);
       this.setBtnTxt$.next("Convert to Hex");
+    }
+  }
+
+  copyToClipboard(hash) {
+    if (hash) {
+      this.clipboardService.copy(hash);
+      this.notificationService.showMessage('Copied to clipboard!');
     }
   }
 

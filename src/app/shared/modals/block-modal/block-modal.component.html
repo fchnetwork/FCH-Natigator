@@ -4,7 +4,7 @@
       <app-divider></app-divider>
       <div class="link">{{block.number}}</div>
       <div><p class="aer-small">{{block.timestamp | transactionTimeStamp  }} </p></div>
-      <div class="age">({{block.timestamp | transactionTimeAgo  }}</div>
+      <div class="age">({{block.timestamp | transactionTimeAgo  }})</div>
   
       <div class="transaction-table">
         <div class="tr">
@@ -19,16 +19,16 @@
           <div class="name">
             {{'HASH'|translate}}
           </div>
-          <div class="value">
-            {{block.hash}}
+          <div class="value copy" (click)="copyToClipboard(block.hash)">
+            {{block.hash | slice:0:8}}...{{block.hash | slice:-6}}
           </div>
         </div>
         <div class="tr">
             <div class="name">
               {{'PARENT_HASH'|translate}}
             </div>
-            <div class="value">
-                {{block.parentHash}}
+            <div class="value copy" (click)="copyToClipboard(block.parentHash)">
+                {{block.parentHash | slice:0:8}}...{{block.parentHash | slice:-6}}
             </div>
         </div>
         <div class="tr">
@@ -67,8 +67,8 @@
             <div class="name">
               {{'EXTRA_DATA'|translate}}
             </div>
-            <div class="value">
-                {{block.extraData  | hextoAscii   }}
+            <div class="value copy" (click)="copyToClipboard(block.extraData)">
+                {{block.extraData  | hextoAscii  }}
             </div>
         </div>
       </div>
@@ -77,4 +77,6 @@
       <div class="title">{{'BLOCK'|translate}}</div>
       <p>{{blockNumber}}</p>
     </div>
+    <app-divider [showLine]="false"></app-divider>
+    <aer-button (click)="close()" class="large full-width">Close</aer-button>
   </aer-modal-dialog>
