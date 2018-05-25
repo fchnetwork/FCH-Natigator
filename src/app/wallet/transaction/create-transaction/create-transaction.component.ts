@@ -105,22 +105,22 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
 
     this.sub = this.route
       .queryParams
-      .subscribe(params => {
-        if (params.query) {
-          const parsed = JSON.parse(params.query);
-          this.senderAddress = parsed.from ? parsed.from : this.senderAddress;
-          this.querySenderAddress = parsed.from;
-          this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
-          this.amount = parsed.amount ? parsed.amount : this.amount;
-          this.isToken = parsed.assetAddress !== "0";
-          this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
+      .subscribe(async params => {
+        if (!this.isEmptyObject(params)) {
           this.external = true;
+          this.senderAddress = params.from ? params.from : this.senderAddress;
+          this.querySenderAddress = params.from;
+          this.receiverAddress = params.to ? params.to : this.receiverAddress;
+          this.amount = params.amount ? params.amount : this.amount;
+          this.isToken = params.assetAddress !== "0";
+          this.redirectUrl = params.returnUrl ? params.returnUrl : this.redirectUrl;
           // this.hash = parsed.hash ? parsed.hash : this.hash;
-          this.assetAddress = parsed.assetAddress ? parsed.assetAddress : this.assetAddress;
-          this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
+          this.assetAddress = params.assetAddress ? params.assetAddress : this.assetAddress;
+          this.orderId = params.orderId ? params.orderId : this.orderId;
           // this.timeStamp = parsed.timeStamp ? parsed.timeStamp : this.timeStamp;
-          this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
-          this.safeGetMaxTransactionFee();
+          this.returnUrlFailed = params.returnUrlFailed ? params.returnUrlFailed : this.returnUrlFailed;
+          await this.getMaxTransactionFee();
+          await this.send();
         }
       });
   }
@@ -179,10 +179,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         this.totalAmount = this.selectedToken.symbol === 'AERO'
           ? Number(this.amount) + Number(this.maxTransactionFeeEth)
           : Number(this.maxTransactionFeeEth);
-
-        if (this.external) {
-          await this.send();
-        }
       } catch (e) {
         // TODO: Leave previous catch here
         // console.log(e);
@@ -296,6 +292,10 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     if (event.type === 'data') {
       await this.getMaxTransactionFee();
     }
+  }
+
+  private isEmptyObject(obj): boolean {
+    return (obj && (Object.keys(obj).length === 0));
   }
 
   ngOnDestroy() {
