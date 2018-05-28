@@ -45,7 +45,7 @@
           <aer-input [(ngModel)]="rate" (keyup)="recalculateCounterpartyTokenAmount()" ngDefaultControl></aer-input>
         </div>
       </div>
-      <hr>
+      <app-divider [showLine]="true" [fullWidth]="true"></app-divider>
       <div aerRow>
         <div aerColumn size="sm-12">
           <aer-button class="btn-create-swap normal" [ngClass]="{'blue': !processing}" (buttonFn)="createSwap()" [disabled]="processing">{{'SWAP.CREATE.BTN_CREATE'|translate}}</aer-button>
