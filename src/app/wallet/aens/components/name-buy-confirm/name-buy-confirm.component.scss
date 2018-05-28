@@ -1,6 +1,6 @@
 .c-name-buy-confirm {
   &__unlock {
-    width: 400px;
+    // width: 400px;
   }
 
   &__table {
@@ -15,11 +15,6 @@
       color: #27282A;
       margin: 0 0 38px;
     }
-
-    aer-button {
-      margin-bottom: 20px;
-      display: block;
-    }
   }
 }
 
@@ -27,6 +22,11 @@
   list-style: none;
   padding: 0;
   margin: 0;
+
+  li {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .o-txnID {
@@ -58,7 +58,9 @@
   margin: 46px 0 25px;
 
   &__row {
-    display: table-row;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   &__cell {
@@ -84,6 +86,9 @@
   background: no-repeat center center;
   filter: brightness(2.2) saturate(2);
   box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   &.u-marginCntr {
     margin: 0 auto;

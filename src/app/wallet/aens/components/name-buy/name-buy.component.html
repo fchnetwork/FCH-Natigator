@@ -19,7 +19,7 @@
         <div class="aens__price-info__aero">{{price | number:'1.2-5'}} AERO</div>
       </div>
     </div>
-    <hr class="aens__separator">
+    <app-divider [showLine]="true" [fullWidth]="true"></app-divider>
     <div aerRow>
       <div aerColumn size="sm-12">
         <aer-button class="aens__btn-buy normal" [ngClass]="{'blue': canBuyName()}" (buttonFn)="buyName()" [disabled]="!canBuyName()">{{'ENS.BTN_BUY_NAME'|translate}}</aer-button>
