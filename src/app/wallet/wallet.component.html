@@ -1,5 +1,5 @@
 <aer-sidebar #sidebar>
-  <aer-sidebar-header></aer-sidebar-header>
+  <aer-sidebar-header [isToggled]="sidebar.isToggled"></aer-sidebar-header>
 
   <aer-sidebar-group title="{{'SEND_RECEIVE'|translate}}" iconName="transaction" [single]="true" [routerLink]="['/wallet/transaction']"
     routerLinkActive="route-selected" groupName="transaction"></aer-sidebar-group>
@@ -16,7 +16,7 @@
     <aer-sidebar-item iconName="blocks" [routerLink]="['/wallet/explorer/blocks']">{{'BLOCKS'|translate}}</aer-sidebar-item>
     <aer-sidebar-item iconName="transaction" [routerLink]="['/wallet/explorer/transactions']">{{'TRANSACTIONS'|translate}}</aer-sidebar-item>
     <aer-sidebar-item iconName="pending" [routerLink]="['/wallet/explorer/transactions/pending']">{{'PENDING_TXNS'|translate}}</aer-sidebar-item>
-  </aer-sidebar-group>
+  </aer-sidebar-group> 
 
   <aer-system-button iconName="home" (buttonFn)="home()"></aer-system-button>
   <aer-system-button iconName="power-off" (buttonFn)="logout()"></aer-system-button>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as avatars from 'identity-img';
 import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
@@ -11,6 +11,8 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
   styleUrls: ['./sidebar-header.component.scss']
 })
 export class SidebarHeaderComponent implements OnInit {
+  @Input()isToggled = false;
+
   avatar: string;
   address: string;
   

@@ -78,11 +78,15 @@
               <div class="note">
                   {{'DATA_INCLUDED'|translate}}: {{includedDataLength}} {{'BYTES'|translate}}
               </div>
-              <hr>
-              <div class="footer-buttons">
-                  <aer-button [disabled]="!txnForm.valid" [ngClass]="!txnForm.valid ? 'disabled' : 'blue'" class="normal" (buttonFn)="send()">{{'SEND'|translate}}</aer-button>
-              </div>
             </div>
+          </div>
+          <div aerRow>
+              <div aerColumn size="sm-12">
+                <app-divider [showLine]="true" [fullWidth]="true"></app-divider>
+                <div class="footer-buttons">
+                    <aer-button [disabled]="!txnForm.valid" [ngClass]="!txnForm.valid ? 'disabled' : 'blue'" class="normal" (buttonFn)="send()">{{'SEND'|translate}}</aer-button>
+                </div>
+              </div>
           </div>
       </aer-card>
     </div>

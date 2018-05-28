@@ -1,11 +1,12 @@
-import { Component, OnInit, Inject, forwardRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { iTransaction } from '@shared/app.interfaces';
-import * as Moment from 'moment'; 
-import { environment } from '@env/environment'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { environment } from '@env/environment';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TransactionModalContext } from '@app/shared/modals/models/transaction-modal-context.model';
- 
+import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
+import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+
 @Component({
   selector: 'app-transaction-modal',
   templateUrl: './transaction-modal.component.html',
@@ -16,15 +17,15 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
   hash: string;
   orderId: string;
   transaction: iTransaction;
-  transactionHex: string;
   showHexData: boolean = true;
   @Output() toText: EventEmitter<any> = new EventEmitter();
   @Output() toHex: EventEmitter<any> = new EventEmitter();
-  setBtnTxt$ = new BehaviorSubject("Convert to UTF-8"); 
+  setBtnTxt$ = new BehaviorSubject("Convert to UTF-8");
   btnText: string;
-  
-    constructor(
-    public dialog: DialogRef<any>) {
+
+    constructor(public dialog: DialogRef<any>,
+                public clipboardService: ClipboardService,
+                public notificationService: InternalNotificationService) {
       if(dialog.context.orderId) {
         this.orderId = dialog.context.orderId;
       }
@@ -38,11 +39,11 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
       else {
         // GET TRANSACTION via HASH or id or define it
       }
-      
+
       this.setBtnTxt$.subscribe((value) => {
         this.btnText = value;
       });
-      
+
    }
 
   ngOnInit() {
@@ -51,10 +52,10 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
   openBlock(blockNumber) {
     window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
   }
-  
+
   openTxn(txnHash){
     window.open( environment.externalBlockExplorer + 'transaction/' + txnHash, "_blank");
-  }  
+  }
 
   dismiss(): void {
     this.dialog.dismiss();
@@ -87,6 +88,13 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
     } else {
       this.toHex.emit(null);
       this.setBtnTxt$.next("Convert to Hex");
+    }
+  }
+
+  copyToClipboard(hash) {
+    if (hash) {
+      this.clipboardService.copy(hash);
+      this.notificationService.showMessage('Copied to clipboard!');
     }
   }
 

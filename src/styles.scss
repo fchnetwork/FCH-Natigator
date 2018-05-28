@@ -93,3 +93,61 @@ a {
   to   {transform: rotate(359deg);}
 }
 }
+
+.input-name {
+  margin-bottom: 14px;
+}
+
+.default-modal {
+  max-width: 500px;
+}
+
+.explorer {
+  &.detail-modal {
+      .title, .link, .aer-small, .age {
+          text-align: center;
+          padding: 0;
+          margin-bottom: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+
+      .link {
+        color: #458cc9;
+        cursor: pointer;
+      }
+
+      .tr {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 14px;
+
+          &.button {
+            justify-content: center;
+
+            aer-button {
+              margin-top: 14px;
+            }
+          }
+
+          .name {
+            margin-right: 25px;
+          }
+
+          .value {
+              text-align: right;
+              overflow: hidden;
+              text-overflow: ellipsis;
+
+              &.link {
+                margin-bottom: 0;
+              }
+          }
+      }
+  }
+}
+
+.copy {
+  color: #458cc9;
+  cursor: pointer;
+}
