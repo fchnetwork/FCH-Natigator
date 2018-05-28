@@ -19,16 +19,10 @@ export class RegisterComponent implements OnInit {
   password: string;
   confirmPassword: string;
   avatar: string;
-  passClass = {
-    'VERY_WEAK': 'red',
-    'WEAK': 'yellow',
-    'REASONABLE': 'green',
-    'STRONG': 'blue',
-    'VERY_STRONG': 'blue'
-  }
+  
   passwordStrength = {
-    strength: 'VERY_WEAK',
-    class: 'red',
+    strength: '',
+    class: '',
   };
 
   constructor(
@@ -69,11 +63,11 @@ export class RegisterComponent implements OnInit {
 
   onKey(event: any) {
     if (event.target.value == "") {
-      this.passwordStrength.class = "red";
-      this.passwordStrength.strength = "VERY_WEAK";
+      this.passwordStrength.class = "";
+      this.passwordStrength.strength = "";
     } else {
       this.passwordStrength.strength = this.passCheck.checkPassword(event.target.value).strengthCode;
-      this.passwordStrength.class = this.passClass[this.passCheck.checkPassword(event.target.value).strengthCode];
+      this.passwordStrength.class = this.passCheck.passClass[this.passCheck.checkPassword(event.target.value).strengthCode];
     }
     return this.passwordStrength.strength;
   }

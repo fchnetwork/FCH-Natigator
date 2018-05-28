@@ -2,8 +2,7 @@
     <div class="account backup-confirm">
       <div class="header">{{'CONFIRM_BACKUP'|translate}}</div>
       <app-divider></app-divider>
-      <div class="b-text">{{'CONFIRM_BACKUP_TEXT'|translate}}</div>
-      <a routerLink="/account/backup/create">{{'CONFIRM_BACKUP_GO_BACK'|translate}}</a>
+      <div class="b-text">{{'CONFIRM_BACKUP_TEXT'|translate}} <a routerLink="/account/backup/create">{{'CONFIRM_BACKUP_GO_BACK'|translate}}</a></div>
       <div class="mnemonic-original-box">
         <div *ngFor="let item of shuffledSeed" class="mnemonic-tag u-full" [class.u-removeSeed]="item.selected" (click)="selectSeed(item)">{{item.name}}</div> 
       </div>

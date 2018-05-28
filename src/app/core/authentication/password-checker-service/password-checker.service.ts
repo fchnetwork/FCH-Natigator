@@ -4,6 +4,13 @@ const taiPasswordStrength = require("tai-password-strength")
 @Injectable()
 export class PasswordCheckerService {
     strengthTester: any;
+    passClass = {
+        'VERY_WEAK': 'red',
+        'WEAK': 'yellow',
+        'REASONABLE': 'green',
+        'STRONG': 'blue',
+        'VERY_STRONG': 'blue'
+      }
 
     constructor() {
         this.strengthTester = new taiPasswordStrength.PasswordStrength();
