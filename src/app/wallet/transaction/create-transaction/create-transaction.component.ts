@@ -193,6 +193,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     }
     this.moreOptionsData.selectedToken = this.selectedToken.symbol;
     await this.getMaxTransactionFee();
+    this.calculateTransactionData();
   }
 
   async openTransactionConfirm(message) {
@@ -255,11 +256,26 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     this.moreOptionsData = event.data;
     if (event.type === 'data') {
       await this.getMaxTransactionFee();
+      this.calculateTransactionData();
     }
   }
 
   ngOnDestroy() {
     clearInterval(this.updateInterval);
+  }
+
+  calculateTransactionData() {
+    let data;
+    if(this.isToken) {
+      const tokensContract  = this.transactionService.generateContract(this.selectedToken.address);
+      data = tokensContract.methods.transfer(this.receiverAddress, this.amount).encodeABI();
+      data = this.web3.utils.toHex(data);
+      this.includedDataLength = Number(data.length - 2) / 2;
+    } else if(this.moreOptionsData.data) {
+      data = this.moreOptionsData.data;
+      data = this.web3.utils.toHex(data);
+      this.includedDataLength = Number(data.length - 2) / 2;
+    }
   }
 
 }
