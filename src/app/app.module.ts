@@ -19,7 +19,7 @@ import { CoreModule } from "@app/core/core.module";
     Ng2Webstorage,
     HttpClientModule,
     HttpModule,
-    AppRoutingModule,    
+    AppRoutingModule,
     SharedModule,
     AppUIModule
   ],

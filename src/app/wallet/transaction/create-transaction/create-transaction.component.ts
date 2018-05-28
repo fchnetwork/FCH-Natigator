@@ -259,7 +259,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe();
     clearInterval(this.updateInterval);
   }
 
