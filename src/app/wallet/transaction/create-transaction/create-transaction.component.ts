@@ -55,6 +55,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     selectedToken: 'AERO',
   };
   showedMore = false;
+  updateInterval: any;
 
   constructor(
     private logger: LoggerService,
@@ -149,10 +150,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         this.totalAmount = this.selectedToken.symbol === 'AERO'
           ? Number(this.amount) + Number(this.maxTransactionFeeEth)
           : Number(this.maxTransactionFeeEth);
-
-        if (this.external) {
-          await this.send();
-        }
       } catch (e) {
         // TODO: Leave previous catch here
         // console.log(e);
