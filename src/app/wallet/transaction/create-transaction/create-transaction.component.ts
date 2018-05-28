@@ -48,13 +48,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   web3: Web3;
   sub: any;
   isToken = false;
-  redirectUrl: string;
-  external = false;
-  hash: any;
-  querySenderAddress: any;
-  assetAddress: any;
-  timeStamp: any;
-  returnUrlFailed: any;
   moreOptionsData = {
     data: '',
     limit: '',
@@ -63,7 +56,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   };
   showedMore = false;
   updateInterval: any;
-  orderId: string;
 
   constructor(
     private logger: LoggerService,
@@ -102,27 +94,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
       amount: [null, [Validators.required, Validators.pattern(regexAmount)]],
       selectedToken: [this.selectedToken, [Validators.required]]
     });
-
-    this.sub = this.route
-      .queryParams
-      .subscribe(async params => {
-        if (!this.isEmptyObject(params)) {
-          this.external = true;
-          this.senderAddress = params.from ? params.from : this.senderAddress;
-          this.querySenderAddress = params.from;
-          this.receiverAddress = params.to ? params.to : this.receiverAddress;
-          this.amount = params.amount ? params.amount : this.amount;
-          this.isToken = params.assetAddress !== "0";
-          this.redirectUrl = params.returnUrl ? params.returnUrl : this.redirectUrl;
-          // this.hash = parsed.hash ? parsed.hash : this.hash;
-          this.assetAddress = params.assetAddress ? params.assetAddress : this.assetAddress;
-          this.orderId = params.orderId ? params.orderId : this.orderId;
-          // this.timeStamp = parsed.timeStamp ? parsed.timeStamp : this.timeStamp;
-          this.returnUrlFailed = params.returnUrlFailed ? params.returnUrlFailed : this.returnUrlFailed;
-          await this.getMaxTransactionFee();
-          await this.send();
-        }
-      });
   }
 
 
@@ -226,28 +197,21 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
 
   async openTransactionConfirm(message) {
     const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
-    const result = await this.modalSrv.openTransactionConfirm(message, this.external);
-    const urls = { success: this.redirectUrl, failed: this.returnUrlFailed };
-    const validHash = true;
-    if (result.result === true && validHash) {
+    const result = await this.modalSrv.openTransactionConfirm(message, false);
+    if (result.result === true) {
       const privateKey = this.sessionStorageService.retrieve('private_key');
       const address = this.sessionStorageService.retrieve('acc_address');
       if (this.selectedToken.symbol === 'AERO' && !this.isToken) {
-        this.transactionService.transaction(privateKey, address, resolvedAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, this.external, urls, this.orderId, this.moreOptionsData).then(res => {
+        this.transactionService.transaction(privateKey, address, resolvedAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, false, {}, null, this.moreOptionsData).then(res => {
           this.transactionMessage = res;
         }).catch((error) => {
           console.log(error);
-          if (this.external) {
-            window.location.href = urls.failed;
-          }
         });
       } else if (this.selectedToken.address) {
-        this.transactionService.sendTokens(address, resolvedAddress, Number(this.amount * Math.pow(10, this.selectedToken.decimals)), this.selectedToken.address, this.external, urls, this.orderId, this.moreOptionsData).then((res) => {
+        this.transactionService.sendTokens(address, resolvedAddress, Number(this.amount * Math.pow(10, this.selectedToken.decimals)), this.selectedToken.address, false, {}, null).then((res) => {
           this.transactionMessage = res;
         });
       }
-    } else if (this.external) {
-      window.location.href = this.returnUrlFailed;
     }
   }
 
@@ -294,12 +258,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     }
   }
 
-  private isEmptyObject(obj): boolean {
-    return (obj && (Object.keys(obj).length === 0));
-  }
-
   ngOnDestroy() {
-    this.sub.unsubscribe();
     clearInterval(this.updateInterval);
   }
 

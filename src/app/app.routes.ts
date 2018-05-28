@@ -17,7 +17,12 @@ const ROUTES = [
     path: 'wallet',
     canActivate: [CanActivateViaAuthGuard],
     loadChildren: 'app/wallet/wallet.module#WalletModule'
-  }, 
+  },
+  {
+    path: 'external',
+    canActivate: [CanActivateViaAuthGuard],
+    loadChildren: 'app/external/external.module#ExternalModule'
+  },
   { 
     path: '**',
     redirectTo: '/not-found'
