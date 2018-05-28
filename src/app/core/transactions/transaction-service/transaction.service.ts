@@ -143,7 +143,7 @@ export class TransactionService {
               gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( environment.gasPrice, 'gwei')),
               to,
               value: txValue,
-              // data: txData
+              data: txData,
             };
 
             if(moreOptionsData.gasLimit) {
