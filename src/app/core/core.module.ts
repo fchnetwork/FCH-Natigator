@@ -26,6 +26,7 @@ import { AerumStatsWebsocketsService } from '@app/core/stats/aerum-stats-websock
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ValidateService } from '@app/core/validation/validate.service';
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
         ERC20TokenService,
         PasswordCheckerService,
         LoggerService,
+        ValidateService,
   ]
 })
 export class CoreModule {

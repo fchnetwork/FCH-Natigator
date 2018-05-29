@@ -49,13 +49,13 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
       // TODO: handle errors in any styled component
       for(let i = 0; i < tokens.length; i++) {
         if(this.totalSupply <= 0 || !Number.isInteger(this.totalSupply)) {
-          this.notificationService.showMessage('Tokens supply has to be bigger than 0');
+          this.notificationService.showMessage('Tokens supply has to be bigger than 0', 'Form error');
           return false;
         } else if(this.addTokenForm.value.tokenSymbol === tokens[i].symbol){
-          this.notificationService.showMessage('You cannot add token with the same token name');
+          this.notificationService.showMessage('You cannot add token with the same token name', 'Form error');
           return false;
         } else if (this.addTokenForm.value.tokenAddress === tokens[i].address) {
-          this.notificationService.showMessage('You cannot add token with the same token address');
+          this.notificationService.showMessage('You cannot add token with the same token address', 'Form error');
           return false;
         }
       }

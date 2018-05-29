@@ -62,7 +62,7 @@ export class UnlockComponent implements OnInit {
       this.passwordIncorrect = true;
 
       this.translateService.get("UNLOCK.INVALID_PASSWORD").subscribe(message => {
-        this.notificationService.showMessage(message);
+        this.notificationService.showMessage(message, 'Error');
       });
     });
   }

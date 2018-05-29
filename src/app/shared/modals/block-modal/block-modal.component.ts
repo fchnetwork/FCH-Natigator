@@ -47,7 +47,7 @@ export class BlockModalComponent implements OnInit, ModalComponent<BlockModalCon
 
   copyToClipboard(hash) {
     this.clipboardService.copy(hash);
-    this.notificationService.showMessage('Copied to clipboard!');
+    this.notificationService.showMessage('Copied to clipboard!', 'Done');
   }
 
   openBlock(blockNumber) {

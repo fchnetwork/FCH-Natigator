@@ -45,7 +45,7 @@ export class AccountOverviewComponent implements OnInit {
 
   copyToClipboard() {
     this.clipboardService.copy(`0x${this.address}`);
-    this.notificationService.showMessage('Copied to clipboard!');
+    this.notificationService.showMessage('Copied to clipboard!', 'Done');
 
   }
 
