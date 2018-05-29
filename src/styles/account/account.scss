@@ -1,5 +1,7 @@
 .account {
   font-family: 'OpenSans';
+  font-size: 14px;
+  color: #83868a;
 
   .header {
     font-size: 36px;
@@ -73,7 +75,11 @@
 
   &.access-recovery {
     max-width: 436px;
-    text-align: center;
+  }
+
+  aer-file-upload {
+    display: flex;
+    justify-content: center;
   }
 
   &.backup-confirm {

@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 
 import { Cookie } from 'ng2-cookies/ng2-cookies';   
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
 
 @Component({
   selector: 'app-access-recovery',
@@ -23,12 +24,17 @@ export class AccessRecoveryComponent implements OnInit {
 	step = 'step_1';
   accountPayload = { address: "", password: "" };
   seedFileText: string;
+  passwordStrength = {
+    strength: '',
+    class: '',
+  };
 
     constructor(
           public authServ: AuthenticationService,
           private router: Router,
           public formBuilder: FormBuilder,
-          public cd: ChangeDetectorRef
+          public cd: ChangeDetectorRef,
+          public passCheck: PasswordCheckerService
         ) {}
 
 
@@ -107,5 +113,15 @@ export class AccessRecoveryComponent implements OnInit {
       this.componentDestroyed$.complete();
     }
 
+    onKey(event: any) {
+      if (event.target.value == "") {
+        this.passwordStrength.class = "";
+        this.passwordStrength.strength = "";
+      } else {
+        this.passwordStrength.strength = this.passCheck.checkPassword(event.target.value).strengthCode;
+        this.passwordStrength.class = this.passCheck.passClass[this.passCheck.checkPassword(event.target.value).strengthCode];
+      }
+      return this.passwordStrength.strength;
+    }
 
 }
