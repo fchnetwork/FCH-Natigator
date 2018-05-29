@@ -34,7 +34,7 @@ export class AccessRecoveryComponent implements OnInit {
           private router: Router,
           public formBuilder: FormBuilder,
           public cd: ChangeDetectorRef,
-          public passCheck: PasswordCheckerService
+          public passCheckService: PasswordCheckerService
         ) {}
 
 
@@ -114,7 +114,7 @@ export class AccessRecoveryComponent implements OnInit {
     }
 
     onKey(event: any) {
-      this.passwordStrength = this.passCheck.checkPassword(event);
+      this.passwordStrength = this.passCheckService.checkPassword(event);
     }
 
 }

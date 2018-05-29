@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
     public formBuilder: FormBuilder, 
     public router: Router, 
     private routeDataService: RouteDataService<RegistrationRouteData>,
-    public passCheck: PasswordCheckerService) { }
+    public passCheckService: PasswordCheckerService) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -62,7 +62,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onKey(event: any) {
-    this.passwordStrength = this.passCheck.checkPassword(event);
+    this.passwordStrength = this.passCheckService.checkPassword(event);
   }
 
   matchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
