@@ -114,14 +114,7 @@ export class AccessRecoveryComponent implements OnInit {
     }
 
     onKey(event: any) {
-      if (event.target.value == "") {
-        this.passwordStrength.class = "";
-        this.passwordStrength.strength = "";
-      } else {
-        this.passwordStrength.strength = this.passCheck.checkPassword(event.target.value).strengthCode;
-        this.passwordStrength.class = this.passCheck.passClass[this.passCheck.checkPassword(event.target.value).strengthCode];
-      }
-      return this.passwordStrength.strength;
+      this.passwordStrength = this.passCheck.checkPassword(event);
     }
 
 }

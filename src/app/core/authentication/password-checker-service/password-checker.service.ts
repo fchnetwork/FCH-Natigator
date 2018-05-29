@@ -10,7 +10,12 @@ export class PasswordCheckerService {
         'REASONABLE': 'green',
         'STRONG': 'blue',
         'VERY_STRONG': 'blue'
-      }
+    }
+
+    passwordStrength = {
+        strength: '',
+        class: '',
+      };
 
     constructor() {
         this.strengthTester = new taiPasswordStrength.PasswordStrength();
@@ -18,8 +23,15 @@ export class PasswordCheckerService {
         this.strengthTester.addTrigraphMap(taiPasswordStrength.trigraphs);
     }
 
-    checkPassword( password: string ) {
-        return this.strengthTester.check(password);
+    checkPassword(event: any) {
+        if (event.target.value == "") {
+          this.passwordStrength.class = "";
+          this.passwordStrength.strength = "";
+        } else {
+          this.passwordStrength.strength = this.strengthTester.check(event.target.value).strengthCode;
+          this.passwordStrength.class = this.passClass[this.strengthTester.check(event.target.value).strengthCode];
+        }
+        return this.passwordStrength;
     }
 
 }
