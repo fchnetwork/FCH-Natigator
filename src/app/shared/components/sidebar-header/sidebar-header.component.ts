@@ -1,9 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as avatars from 'identity-img';
 import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage'; 
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { Router, RoutesRecognized, ActivatedRoute, NavigationEnd, Data } from '@angular/router';
 
 @Component({
   selector: 'aer-sidebar-header',
@@ -12,13 +13,15 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 })
 export class SidebarHeaderComponent implements OnInit {
   @Input()isToggled = false;
+  @Output() headerFn: EventEmitter<any> = new EventEmitter();
 
   avatar: string;
   address: string;
   
   constructor(
     public authServ: AuthenticationService,
-    public sessionStorageService: SessionStorageService ) {}
+    public sessionStorageService: SessionStorageService,
+    public router: Router ) {}
 
   ngOnInit() {
     this.address = this.sessionStorageService.retrieve('acc_address');
@@ -28,6 +31,10 @@ export class SidebarHeaderComponent implements OnInit {
     //     this.address = this.sessionStorageService.retrieve('acc_address');
     //     this.avatar = avatars.create(this.address);
     //   });
+  }
+
+  public callFunction() {
+    this.headerFn.emit(); 
   }
 
 }
