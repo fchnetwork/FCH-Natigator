@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { iBlocks, iTransaction } from '@shared/app.interfaces';
-import { ModalService } from '@app/core/general/modal-service/modal.service';
-import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
-import { LoaderService } from '@app/core/general/loader-service/loader.service';
+import { ModalService } from '@core/general/modal-service/modal.service';
+import { ExplorerService } from '@core/explorer/explorer-service/explorer.service';
+import { LoaderService } from '@core/general/loader-service/loader.service';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 

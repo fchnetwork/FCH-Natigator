@@ -2,7 +2,7 @@
   <div class="panel-content">
     <div class="latest-transaction-list-container">
       <div class="transaction-main-flex-container" *ngFor="let transaction of (transactions ? transactions.slice(0,limit): [])">
-        <div class="transaction-main-flex-item">
+        <div class="transaction-main-flex-item" (click)="openTransaction(transaction)">
           <div class="sub-flex-container">
             <div class="date">
               <div class="month">{{transaction.date | date:['MMM']}}</div>
