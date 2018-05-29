@@ -138,6 +138,7 @@ a {
               text-align: right;
               overflow: hidden;
               text-overflow: ellipsis;
+              word-wrap: break-word;
 
               &.link {
                 margin-bottom: 0;

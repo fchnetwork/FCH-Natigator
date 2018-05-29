@@ -7,9 +7,10 @@ import 'rxjs/Rx';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { environment } from '@env/environment';
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { BlockListModel } from '@app/core/explorer/explorer-service/blocks-list.model';
-import { TransactionListModel } from '@app/core/explorer/explorer-service/transaction-list.model';
+import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
+import { BlockListModel } from '@core/explorer/explorer-service/blocks-list.model';
+import { TransactionListModel } from '@core/explorer/explorer-service/transaction-list.model';
+import { iTransaction } from "@shared/app.interfaces";
 
 @Injectable()
 export class ExplorerService {
@@ -53,6 +54,8 @@ export class ExplorerService {
     });
   }
 
+  
+
   /**
    * Returns blocks from the blockchain in specified range.
    *
@@ -92,6 +95,28 @@ export class ExplorerService {
         });
       }
     });
+  }
+
+  /**
+   * Returns transaction by hash.
+   *
+   * @param {number} transactionHash Transaction hash to look for
+   * @returns {Promise<iTransaction>} Returns an promise with all information about transaction
+   * @memberof ExplorerService
+   */
+  getTransactionByHash(transactionHash: number): Promise<iTransaction> {
+    return new Promise<iTransaction>((resolve, reject) => {
+      this.web3.eth.getTransaction(transactionHash)
+        .then(txn => {
+          if (txn.blockNumber) {
+            this.getBlocks(txn.blockNumber, 1).then(blocks => {
+              let currentBlock = blocks.blocks[0];
+              let extendedTxn = Object.assign(txn, { timestamp: currentBlock.timestamp, gasUsedinTxn: currentBlock.gasUsed })
+              resolve(extendedTxn);
+            })
+          }
+        });
+    }); 
   }
 
   /**

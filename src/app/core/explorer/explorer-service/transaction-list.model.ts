@@ -1,4 +1,4 @@
-import { iTransaction } from "@app/shared/app.interfaces";
+import { iTransaction } from "@shared/app.interfaces";
 
 export class TransactionListModel {
     public transactions: iTransaction[] = [];
