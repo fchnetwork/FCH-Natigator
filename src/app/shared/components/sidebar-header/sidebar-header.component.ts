@@ -4,7 +4,6 @@ import * as CryptoJS from 'crypto-js';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage'; 
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { Router, RoutesRecognized, ActivatedRoute, NavigationEnd, Data } from '@angular/router';
 
 @Component({
   selector: 'aer-sidebar-header',
@@ -20,8 +19,7 @@ export class SidebarHeaderComponent implements OnInit {
   
   constructor(
     public authServ: AuthenticationService,
-    public sessionStorageService: SessionStorageService,
-    public router: Router ) {}
+    public sessionStorageService: SessionStorageService) {}
 
   ngOnInit() {
     this.address = this.sessionStorageService.retrieve('acc_address');
