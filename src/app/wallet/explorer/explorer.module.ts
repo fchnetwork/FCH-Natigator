@@ -7,8 +7,8 @@ import { BlocksComponent } from './components/blocks/blocks.component';
 import { ExplorerRoutingModule } from './explorer.routes';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 import { AppUIModule } from '@app/app.ui.module';
-import { SharedModule } from '@app/shared/shared.module';
-import { CoreModule } from '@app/core/core.module'; 
+import { SharedModule } from '@shared/shared.module';
+import { CoreModule } from '@core/core.module'; 
 
 @NgModule({
   imports: [

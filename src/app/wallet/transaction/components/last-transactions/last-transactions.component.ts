@@ -2,6 +2,9 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Component, OnInit } from '@angular/core';
 import { SessionStorageService } from 'ngx-webstorage';  
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
+import { ModalService } from '@app/core/general/modal-service/modal.service';
+import { iTransaction } from '@shared/app.interfaces';
+import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 
 @Component({
   selector: 'app-last-transactions',
@@ -9,12 +12,14 @@ import { TransactionService } from '@app/core/transactions/transaction-service/t
   styleUrls: ['./last-transactions.component.scss']
 })
 export class LastTransactionsComponent implements OnInit {
-  transactions = [];
+  transactions: iTransaction[] = [];
   limit = 3;
   showedAll = false;
   constructor(
     private sessionStorage: SessionStorageService,
     private transactionService: TransactionService,
+    private modalService: ModalService,
+    public explorerService: ExplorerService
   ) {
     setInterval(() => {
       this.transactions = this.sessionStorage.retrieve('transactions').sort((b, a) => {
@@ -46,5 +51,13 @@ export class LastTransactionsComponent implements OnInit {
   }
 
   ngOnInit() { }
+
+  openTransaction(transaction) {
+    this.explorerService.getTransactionByHash(transaction.hash)
+      .then(response => {
+        this.modalService.openTransaction(transaction.hash, response, false, null, null).then((result) => {
+        }).catch(() => { });
+      });
+  }
 
 }
