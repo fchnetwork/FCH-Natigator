@@ -121,7 +121,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
 
   async copyToClipboard() {
     await this.clipboardService.copy(this.senderAddress);
-    this.notificationService.showMessage('Copied to clipboard!');
+    this.notificationService.showMessage('Copied to clipboard!', 'Done');
   }
 
   async loadUserData(): Promise<void> {

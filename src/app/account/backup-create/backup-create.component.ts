@@ -31,7 +31,7 @@ export class BackupCreateComponent implements OnInit {
 
   public copyToClipboard() {
     this.clipboardService.copy(this.seed);
-    this.notificationService.showMessage('Copied to clipboard!');
+    this.notificationService.showMessage('Copied to clipboard!', 'Done');
 
   }
 

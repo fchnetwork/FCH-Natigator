@@ -94,7 +94,7 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
   copyToClipboard(hash) {
     if (hash) {
       this.clipboardService.copy(hash);
-      this.notificationService.showMessage('Copied to clipboard!');
+      this.notificationService.showMessage('Copied to clipboard!', 'Done');
     }
   }
 
