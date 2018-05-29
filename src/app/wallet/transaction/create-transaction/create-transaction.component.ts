@@ -11,6 +11,7 @@ import { TokenService } from '@app/core/transactions/token-service/token.service
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
 import { AddressValidator } from "@shared/validators/address.validator";
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { ValidateService } from '@app/core/validation/validate.service';
 import Web3 from "web3";
 
 declare var window: any;
@@ -68,7 +69,9 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     private sessionStorageService: SessionStorageService,
     private tokenService: TokenService,
     private route: ActivatedRoute,
-    private nameService: AerumNameService) {
+    private nameService: AerumNameService,
+    private validateService: ValidateService,
+  ) {
 
     this.loadUserData().catch((e) => this.logger.logError(e));
     this.updateInterval = setInterval(async () => {
@@ -217,39 +220,42 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   }
 
   async send() : Promise<void> {
-    this.transactionMessage = "";
-    const resolvedAddress = await this.nameService.safeResolveNameOrAddress(this.receiverAddress);
-    if (!resolvedAddress) {
-      alert("You need to add a receiver address");
-      return;
-    } else {
-      const res: any = await this.transactionService.checkAddressCode(resolvedAddress);
-      const message = {
-        title: null,
-        text: null,
-        checkbox: false,
-        sender: this.senderAddress,
-        recipient: resolvedAddress,
-        amount: this.amount,
-        fee: this.maxTransactionFeeEth,
-        maxFee: this.maxTransactionFee,
-        token: this.selectedToken.symbol
-      };
-
-      if (res.length > 3) {
-        message.title = 'WARNING!';
-        message.text = 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guarantee that your token transfer will be processed properly. Mmake sure you always trust a contract that you are sending your tokens to.';
-
-        const res = await this.tokenService.tokenFallbackCheck(resolvedAddress, 'tokenFallback(address,uint256,bytes)');
-        if (!res) {
-          message.text = 'The contract address you are sending your tokens to does not appear to support ERC223 standard, sending your tokens to this contract address will likely result in a loss of tokens sent. Please acknowledge your understanding of risks before proceeding further.';
-          message.checkbox = true;
-        }
-        await this.openTransactionConfirm(message);
+    const valid = this.validateService.validateForm(this.txnForm, 'All fields are valid');
+    if(valid) {
+      this.transactionMessage = "";
+      const resolvedAddress = await this.nameService.safeResolveNameOrAddress(this.receiverAddress);
+      if (!resolvedAddress) {
+        alert("You need to add a receiver address");
+        return;
       } else {
-        await this.openTransactionConfirm(message);
+        const res: any = await this.transactionService.checkAddressCode(resolvedAddress);
+        const message = {
+          title: null,
+          text: null,
+          checkbox: false,
+          sender: this.senderAddress,
+          recipient: resolvedAddress,
+          amount: this.amount,
+          fee: this.maxTransactionFeeEth,
+          maxFee: this.maxTransactionFee,
+          token: this.selectedToken.symbol
+        };
+
+        if (res.length > 3) {
+          message.title = 'WARNING!';
+          message.text = 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guarantee that your token transfer will be processed properly. Mmake sure you always trust a contract that you are sending your tokens to.';
+          const res = await this.tokenService.tokenFallbackCheck(resolvedAddress, 'tokenFallback(address,uint256,bytes)');
+          if (!res) {
+            message.text = 'The contract address you are sending your tokens to does not appear to support ERC223 standard, sending your tokens to this contract address will likely result in a loss of tokens sent. Please acknowledge your understanding of risks before proceeding further.';
+            message.checkbox = true;
+          }
+          await this.openTransactionConfirm(message);
+        } else {
+          await this.openTransactionConfirm(message);
+        }
       }
     }
+
   }
 
   async moreOptionsChange(event) {

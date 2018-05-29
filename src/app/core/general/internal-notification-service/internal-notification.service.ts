@@ -8,9 +8,9 @@ export class InternalNotificationService {
     ) { }
 
     // TODO: We should remove this one & use one from aerum/ui
-    showMessage(text: string) {
+    showMessage(text: string, type: string) {
         // alert(text);
-        this.notificationService.notify(this.counter + ' Done', text, 'gear', 3000);
+        this.notificationService.notify(`${this.counter} ${type ? type : 'Done'}`, text, 'gear', 3000);
         this.counter++;
         setTimeout(()=>{
             this.counter--;
