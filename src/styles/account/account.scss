@@ -1,5 +1,7 @@
 .account {
   font-family: 'OpenSans';
+  font-size: 14px;
+  color: #83868a;
 
   .header {
     font-size: 36px;
@@ -11,7 +13,7 @@
     color: $text-color;
     font-size: 18px;
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 14px;
 
     a {
       text-decoration: unset;
@@ -24,11 +26,11 @@
   }
 
   .button {
-    padding: 14px 0;
+    padding-top: 14px;
   }
 
   .link-text {
-    margin-top: 26px;
+    margin-top: 28px;
     text-align: center;
     color: $text-color;
     font-size: 12px;
@@ -73,7 +75,11 @@
 
   &.access-recovery {
     max-width: 436px;
-    text-align: center;
+  }
+
+  aer-file-upload {
+    display: flex;
+    justify-content: center;
   }
 
   &.backup-confirm {
@@ -87,7 +93,7 @@
     .mnemonic-original-box { 
       width: 370px;
       height: 114px; 
-      border-radius: 10px;
+      border-radius: 4px;
       margin-top: 28px;
       display: flex;
       align-items: center;
@@ -115,7 +121,7 @@
       }
             
       &.u-full {
-        border-radius: 6px;
+        border-radius: 4px;
         border: dashed 1px transparent;
         margin: 3px;
         cursor: pointer;

@@ -11,13 +11,17 @@
             <aer-file-upload class="medium blue" (filesChange)="openSeedFile($event)">{{'SEL_KEY'|translate}}</aer-file-upload>
             <app-divider label="OR"></app-divider>
             <form [formGroup]="recoverForm">
-                <aer-textarea formControlName="seed"
-                              placeholder="Your seed is 12 words you saved when creating your account"
-                              [addition]="address"
-                              [(ngModel)]="seedFileText"
-                              ngDefaultControl>{{ seedFileText }}</aer-textarea>
-                <aer-input formControlName="password" type="password" placeholder="Create new password" ngDefaultControl></aer-input>
-                <aer-input formControlName="confirmpassword" type="password" placeholder="Confirm password" ngDefaultControl></aer-input>
+                <aer-textarea   icon="aerumleaf"
+                                formControlName="seed"
+                                placeholder="Your seed is 12 words you saved when creating your account"
+                                [addition]="address"
+                                [(ngModel)]="seedFileText"
+                                ngDefaultControl>{{ seedFileText }}</aer-textarea>
+                <aer-input icon="key" data-cy="password" formControlName="password" type="password" [ngClass]="{'with-button': passwordStrength.strength}" class="{{passwordStrength.class}}" buttonLabel="{{ passwordStrength.strength ? (passwordStrength.strength + '.TITLE' | translate) : '' }}" placeholder="Create new password" ngDefaultControl (keyup)="onKey($event)"></aer-input>
+                <app-password-lines passClass='{{passwordStrength.strength | lowercase}}'></app-password-lines>
+
+                <aer-input icon="key" formControlName="confirmpassword" type="password" placeholder="Confirm password" ngDefaultControl></aer-input>
+                <app-divider [showLine]="false"></app-divider>
                 <aer-button data-cy="continue" class="large full-width" [ngClass]="{'disabled': !recoverForm.valid}" [disabled]="!recoverForm.valid" (click)="onSubmitAddress()">Continue</aer-button>
             </form>
 

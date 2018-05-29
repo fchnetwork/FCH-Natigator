@@ -7,6 +7,7 @@
         <span>{{'LOGIN_TEXT2'|translate}}</span>
         <a routerLink="/account/register">{{'LOGIN_TEXT3'|translate}}</a>
       </div> 
+      <app-divider [showLine]="false"></app-divider>
       <aer-input type="password" 
       [ngClass]="{'has-error': passwordIncorrect}" icon="key" placeholder="{{'PASSWORD'|translate}}" [(ngModel)]="password" formControlName="password" ngDefaultControl></aer-input>
       <div class="button">
