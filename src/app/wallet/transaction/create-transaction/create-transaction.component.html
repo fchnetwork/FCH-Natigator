@@ -45,7 +45,7 @@
           <span *ngIf="txnForm.controls['amount'].hasError('required') && txnForm.controls['amount'].touched" class="login-error">You must specify an amount for the transaction</span>
           <span *ngIf="txnForm.controls['amount'].hasError('pattern')" class="login-error">must be an integer or decimal.</span> -->
         </form>
-        <div class="show-more-button">
+        <div class="show-more-button" *ngIf="selectedToken.symbol === 'AERO'">
               <div aerRow>
                   <div aerColumn size="sm-12">
                     <aer-button *ngIf="!showedMore" class="medium blue" (buttonFn)="showMore()">{{'SHOW_MORE_OPTIONS'|translate}}</aer-button>

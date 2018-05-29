@@ -41,9 +41,14 @@ export class TransactionService {
       return this.web3.utils.fromWei( amount.toString(), 'ether');
     }
 
+    generateContract(contractAddress) {
+      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, {gas: 10000000});
+      return tokensContract;
+    }
+
     maxTransactionFee(to, data) {
       if(data.type === 'token') {
-        const tokensContract = new this.web3.eth.Contract(tokensABI, data.contractAddress, {gas: 10000000});
+        const tokensContract = this.generateContract(data.contractAddress);
         data = tokensContract.methods.transfer(to, data.amount).encodeABI();
       }
       return new Promise((resolve, reject) => {
@@ -138,7 +143,7 @@ export class TransactionService {
               gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( environment.gasPrice, 'gwei')),
               to,
               value: txValue,
-              // data: txData
+              data: txData,
             };
 
             if(moreOptionsData.gasLimit) {
