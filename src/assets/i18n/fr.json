@@ -23,7 +23,10 @@
 "CONFIRM_BACKUP_GO_BACK":"go back",
 "CONFIRM":"Confirm",
 "CLEAR":"Clear",
-"SEND_TRANSACTION":"Send transaction",
+"SEND_RECEIVE": {
+    "MAIN_MENU_ITEM_NAME": "Send & Receive",
+    "MAIN_TITLE":"Send & Receive Crypto"
+},
 "FROM":"From",
 "TO":"To",
 "AMOUNT":"Amount",

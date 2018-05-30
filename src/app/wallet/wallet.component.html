@@ -1,7 +1,7 @@
 <aer-sidebar #sidebar>
   <aer-sidebar-header [isToggled]="sidebar.isToggled" (headerFn)="home()"></aer-sidebar-header>
 
-  <aer-sidebar-group title="{{'SEND_RECEIVE'|translate}}" iconName="transaction" [single]="true" [routerLink]="['/wallet/transaction']"
+  <aer-sidebar-group title="{{'SEND_RECEIVE.MAIN_MENU_ITEM_NAME'|translate}}" iconName="transaction" [single]="true" [routerLink]="['/wallet/transaction']"
     routerLinkActive="route-selected" groupName="transaction"></aer-sidebar-group>
 
   <aer-sidebar-group title="{{'ENS.MAIN_MENU_ITEM_NAME'|translate}}" iconName="ans" [single]="true" [routerLink]="['/wallet/aens']"

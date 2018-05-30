@@ -27,6 +27,7 @@ import { LoggerService } from '@app/core/general/logger-service/logger.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ValidateService } from '@app/core/validation/validate.service';
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { ValidateService } from '@app/core/validation/validate.service';
         PasswordCheckerService,
         LoggerService,
         ValidateService,
+        NotificationMessagesService,
   ]
 })
 export class CoreModule {

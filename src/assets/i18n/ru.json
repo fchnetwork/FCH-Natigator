@@ -23,7 +23,10 @@
 "CONFIRM_BACKUP_GO_BACK":"вернитесь",
 "CONFIRM":"Подтвердить",
 "CLEAR":"Очистить",
-"SEND_TRANSACTION":"Отправить транзакцию",
+"SEND_RECEIVE": {
+    "MAIN_MENU_ITEM_NAME": "Отправить & Получить",
+    "MAIN_TITLE":"Отправить & Получить Криптовалюту"
+  },
 "FROM":"От",
 "TO":"Кому",
 "AMOUNT":"Сумма",

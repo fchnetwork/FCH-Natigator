@@ -7,7 +7,8 @@ import { tokensABI } from '@app/core/abi/tokens';
 import { environment } from '@env/environment';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
-import { TokenService } from '@app/core/transactions/token-service/token.service';
+import { TokenService } from '@core/transactions/token-service/token.service';
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -24,6 +25,7 @@ export class TransactionService {
       private sessionStorage: SessionStorageService,
       private modalService: ModalService,
       private tokenService: TokenService,
+      private notificationMessagesService: NotificationMessagesService
      ) {
       this.web3 = _auth.initWeb3();
     }
@@ -97,13 +99,17 @@ export class TransactionService {
           if(receipt) {
             if(receipt.status) {
               if(transactions[i].data === 'Contract execution(pending)') {
+                this.notificationMessagesService.transactionMinedNotification(transactions[i].hash);
                 const tokenInfo = await this.tokenService.getTokensInfo(receipt.to);
                 const tokenName = tokenInfo.symbol;
                 transactions[i].data = `Send ${tokenName} tokens`;
                 transactions[i].amount = await this.tokenService.getTokenTransactionValue(receipt.to, receipt.blockNumber);
                 transactions[i].type = tokenName;
+                this.notificationMessagesService.succefullSentNotification(transactions[i].hash);
               } else if (transactions[i].data === 'Pending transaction') {
+                this.notificationMessagesService.transactionMinedNotification(transactions[i].hash);
                 transactions[i].data = 'Successful transaction';
+                this.notificationMessagesService.succefullSentNotification(transactions[i].hash);
               }
               sortedTransactions.push(transactions[i]);
             } else  {
@@ -139,7 +145,7 @@ export class TransactionService {
           const getTransactionCount = this.web3.eth.getTransactionCount( from )
           const estimateGas         = this.web3.eth.estimateGas({to:sendTo, data:txData});
 
-       return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
+          return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
             const gasPrice = values[0];
             const nonce = parseInt(values[1], 10);
             const gas = parseInt(values[2], 10);
@@ -164,14 +170,19 @@ export class TransactionService {
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash, 'Aero');
                   this.web3.eth.getTransaction(hash).then((res)=>{
                     res.timestamp = Moment(new Date()).unix();
+                    
                     if(external) {
                       this.modalService.openTransaction(hash, res, external, urls, orderId);
+                    } else {
+                      this.notificationMessagesService.pendingTransactionNotification(hash);
                     }
                   });
                 }).catch( error => {
                   console.log(error);
                   if(external) {
                     // window.location.href=urls.failed;
+                  } else {
+                    this.notificationMessagesService.failedTransactionNotification();
                   }
                     // alert( error )
                 });
@@ -182,6 +193,7 @@ export class TransactionService {
     async sendTokens(myAddress, to, amount, contractAddress, external, urls, orderId) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
       const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 4000000});
+
       const gasPrice = await this.web3.eth.getGasPrice();
       const rawTransaction = {
         "from": myAddress,
@@ -205,6 +217,8 @@ export class TransactionService {
             res.timestamp = Moment(new Date()).unix();
             if(external) {
               this.modalService.openTransaction(hash, res, external, urls, orderId);
+            } else {
+              this.notificationMessagesService.pendingTransactionNotification(hash);
             }
           });
         });
@@ -212,6 +226,8 @@ export class TransactionService {
         console.log(error);
         if(external) {
           // window.location.href = urls.failed;
+        } else {
+          this.notificationMessagesService.failedTransactionNotification();
         }
           // alert( error )
       });
@@ -226,4 +242,6 @@ export class TransactionService {
         });
       });
     }
+
+    
 }
