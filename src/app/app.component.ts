@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     this.idle.onTimeout().subscribe(() => console.log('Time is up!'));
 
     this.logger.logMessage(`Current Env: ${environment.configInUse}`);
-    this.logger.logMessage(`Current HttpProvider: ${environment.HttpProvider}`);
+    this.logger.logMessage(`Current WebsocketProvider: ${environment.WebsocketProvider}`);
 
   }
 }

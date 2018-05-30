@@ -77,7 +77,7 @@ export class TokenService {
     });
   }
 
-  getTokensInfo(contractAddress) {
+  getTokensInfo(contractAddress): any {
     return new Promise((resolve, reject) => {
       const address = this.web3.utils.isAddress(contractAddress);
       const myAddress = this.sessionStorage.retrieve('acc_address');
@@ -118,5 +118,20 @@ export class TokenService {
       });
     });
 
+  }
+
+  getTokenTransactionValue(contractAddress, blockNumber) {
+    return new Promise((resolve, reject) => {
+      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress);
+      tokensContract.events.Transfer({ fromBlock: blockNumber}, (contractEventsErr, eventsRes) => {
+        if (contractEventsErr) {
+          reject(contractEventsErr);
+        } else {
+          if (eventsRes.blockNumber === blockNumber) {
+            resolve(eventsRes.returnValues._value);
+          }
+        }
+      });
+    });
   }
 }
