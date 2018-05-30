@@ -25,7 +25,19 @@
 "CLEAR":"Очистить",
 "SEND_RECEIVE": {
     "MAIN_MENU_ITEM_NAME": "Отправить & Получить",
-    "MAIN_TITLE":"Отправить & Получить Криптовалюту"
+    "MAIN_TITLE":"Отправить & Получить Криптовалюту",
+    "NOTIFICATION_TITLE_TRANSACTION_STATUS": "Статус транзакции",
+    "NOTIFICATION_BODY_SUCCES_TRANSACTION":"You have successfully sent",
+    "TO_ADDRESS":"на адрес",
+    "TRANSACTION":"Транзакция",
+    "HAS_BEEN":"была",
+    "IS": "",
+    "STATUSES": {
+      "PENDING": "Ожидание",
+      "SUCCESFULLY_SENT": "Успешно отправлена",
+      "FAILED": "Неудача",
+      "MINED": "Замайнена"
+    }
   },
 "FROM":"От",
 "TO":"Кому",
