@@ -7,6 +7,7 @@ import { tokensABI } from '@app/core/abi/tokens';
 import { environment } from '@env/environment';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
+import { TokenService } from '@core/transactions/token-service/token.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -22,6 +23,7 @@ export class TransactionService {
       _auth: AuthenticationService,
       private sessionStorage: SessionStorageService,
       private modalService: ModalService,
+      private tokenService: TokenService
      ) {
       this.web3 = _auth.initWeb3();
     }
@@ -95,8 +97,10 @@ export class TransactionService {
             if(res.status) {
               if(transactions[i].data === 'Contract execution(pending)') {
                 transactions[i].data = 'Contract execution';
+                //success for tokens
               } else if (transactions[i].data === 'Pending transaction') {
                 transactions[i].data = 'Successful transaction';
+                //success for aero
               }
               sortedTransactions.push(transactions[i]);
             } else  {
@@ -132,7 +136,7 @@ export class TransactionService {
           const getTransactionCount = this.web3.eth.getTransactionCount( from )
           const estimateGas         = this.web3.eth.estimateGas({to:sendTo, data:txData});
 
-       return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
+          return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then( (values) => {
             const gasPrice = values[0];
             const nonce = parseInt(values[1], 10);
             const gas = parseInt(values[2], 10);
@@ -157,14 +161,19 @@ export class TransactionService {
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash);
                   this.web3.eth.getTransaction(hash).then((res)=>{
                     res.timestamp = Moment(new Date()).unix();
+                    
                     if(external) {
                       this.modalService.openTransaction(hash, res, external, urls, orderId);
+                    } else {
+                      // this.pendingTransactionNotification(hash);
                     }
                   });
                 }).catch( error => {
                   console.log(error);
                   if(external) {
                     // window.location.href=urls.failed;
+                  } else {
+                    // this.failedTransactionNotification();
                   }
                     // alert( error )
                 });
@@ -175,6 +184,8 @@ export class TransactionService {
     async sendTokens(myAddress, to, amount, contractAddress, external, urls, orderId) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
       const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 4000000});
+
+      const tokenInfo = await this.tokenService.getTokensInfo(contractAddress);
       const gasPrice = await this.web3.eth.getGasPrice();
       const rawTransaction = {
         "from": myAddress,
@@ -191,18 +202,25 @@ export class TransactionService {
       tx.sign(privateKey);
 
       const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
+      amount = amount/(10**tokenInfo["decimals"]);
       transaction.on('transactionHash', hash => {
         this.web3.eth.getTransaction(hash).then((res)=>{
           this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash);
           this.web3.eth.getTransaction(hash).then((res)=>{
             res.timestamp = Moment(new Date()).unix();
+            if (res.blockNumber) {
+              this.transactionMinedNotification(hash);
+            }
+
             if(external) {
               this.modalService.openTransaction(hash, res, external, urls, orderId);
             }
+            this.succefullSendNotification(amount, to, tokenInfo["symbol"]);
           });
         });
       }).catch( error => {
         console.log(error);
+        this.failedTransactionNotification();
         if(external) {
           // window.location.href = urls.failed;
         }
@@ -219,4 +237,6 @@ export class TransactionService {
         });
       });
     }
+
+    
 }

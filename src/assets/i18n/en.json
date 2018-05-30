@@ -44,7 +44,6 @@
   "CONFIRM_BACKUP_GO_BACK": "go back",
   "CONFIRM": "Confirm",
   "CLEAR": "Clear",
-  "SEND_TRANSACTION": "Send & Receive Crypto",
   "FROM": "From",
   "TO": "To",
   "AMOUNT": "Amount",
@@ -143,7 +142,22 @@
   "RECEIVE_TO": "Receive",
   "TRANSACTIONS": "Transactions",
   "BASIC_TRANSACTION": "Basic Transaction",
-  "SEND_RECEIVE": "Send & Receive",
+  "SEND_RECEIVE": {
+    "MAIN_MENU_ITEM_NAME": "Send & Receive",
+    "MAIN_TITLE":"Send & Receive Crypto",
+    "NOTIFICATION_TITLE_TRANSACTION_STATUS": "Transaction Status",
+    "NOTIFICATION_BODY_SUCCES_TRANSACTION":"You have successfully sent",
+    "TO_ADDRESS":"to address",
+    "TRANSACTION":"Transaction",
+    "HAS_BEEN":"has been",
+    "IS": "is",
+    "STATUSES": {
+      "PENDING": "Pending",
+      "SUCCESFULLY_SENT": "Succesfully sent",
+      "FAILED": "Failed",
+      "MINED": "Mined"
+    }
+  },
   "DIAGNOSTICS": "Diagnostics",
   "OVERVIEW": "Overview",
   "UNLOCK": {
