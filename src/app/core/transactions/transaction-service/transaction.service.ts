@@ -7,6 +7,7 @@ import { tokensABI } from '@app/core/abi/tokens';
 import { environment } from '@env/environment';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
+import { TokenService } from '@app/core/transactions/token-service/token.service';
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
@@ -22,6 +23,7 @@ export class TransactionService {
       _auth: AuthenticationService,
       private sessionStorage: SessionStorageService,
       private modalService: ModalService,
+      private tokenService: TokenService,
      ) {
       this.web3 = _auth.initWeb3();
     }
@@ -72,9 +74,9 @@ export class TransactionService {
       });
     }
 
-    saveTransaction(from, to, amount, data, hash) {
+    saveTransaction(from, to, amount, data, hash, type) {
       const date = new Date();
-      const transaction = { from, to, amount, data, date, hash };
+      const transaction = { from, to, amount, data, date, hash, type };
       const transactions = this.sessionStorage.retrieve('transactions') || [];
       transactions.push(transaction);
       this.updateStorage(transactions);
@@ -88,13 +90,18 @@ export class TransactionService {
       this.sessionStorage.store('transactions', transactions);
     }
 
-    updateTransactionsStatuses(transactions) {
+   async updateTransactionsStatuses(transactions) {
         const sortedTransactions = [];
         for(let i = 0; i < transactions.length; i++) {
-          this.web3.eth.getTransactionReceipt( transactions[i].hash ).then( res =>  {
-            if(res.status) {
+          const receipt = await this.web3.eth.getTransactionReceipt( transactions[i].hash );
+          if(receipt) {
+            if(receipt.status) {
               if(transactions[i].data === 'Contract execution(pending)') {
-                transactions[i].data = 'Contract execution';
+                const tokenInfo = await this.tokenService.getTokensInfo(receipt.to);
+                const tokenName = tokenInfo.symbol;
+                transactions[i].data = `Send ${tokenName} tokens`;
+                transactions[i].amount = await this.tokenService.getTokenTransactionValue(receipt.to, receipt.blockNumber);
+                transactions[i].type = tokenName;
               } else if (transactions[i].data === 'Pending transaction') {
                 transactions[i].data = 'Successful transaction';
               }
@@ -111,13 +118,13 @@ export class TransactionService {
             if(i + 1 === transactions.length) {
               this.updateStorage(sortedTransactions);
             }
-          }).catch((err) =>{
+          } else {
             sortedTransactions.push(transactions[i]);
 
             if(i + 1 === transactions.length) {
               this.updateStorage(sortedTransactions);
             }
-          });
+          }
         }
     }
 
@@ -154,7 +161,7 @@ export class TransactionService {
                   tx.sign(privateKey);
             const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
                 transaction.on('transactionHash', hash => {
-                  this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash);
+                  this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash, 'Aero');
                   this.web3.eth.getTransaction(hash).then((res)=>{
                     res.timestamp = Moment(new Date()).unix();
                     if(external) {
@@ -193,7 +200,7 @@ export class TransactionService {
       const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
       transaction.on('transactionHash', hash => {
         this.web3.eth.getTransaction(hash).then((res)=>{
-          this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash);
+          this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash, 'token');
           this.web3.eth.getTransaction(hash).then((res)=>{
             res.timestamp = Moment(new Date()).unix();
             if(external) {
