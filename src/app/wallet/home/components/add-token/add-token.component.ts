@@ -28,7 +28,7 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
     private tokenService: TokenService,
     private sessionStorage: SessionStorageService,
     public notificationService: InternalNotificationService,
-    private aerumNameService: AerumNameService
+    private aerumNameService: AerumNameService,
   ) { }
 
   ngOnInit() {
@@ -39,7 +39,8 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
     });
 
     this.addTokenForm.controls['tokenAddress'].valueChanges.subscribe( async (res) => {
-      await this.getTokenInfo(res);
+      const resolvedAddress = await this.aerumNameService.resolveNameOrAddress(res);
+      await this.getTokenInfo(resolvedAddress);
     });
   }
 

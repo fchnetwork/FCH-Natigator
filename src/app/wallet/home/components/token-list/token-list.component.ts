@@ -35,4 +35,8 @@ export class TokenListComponent implements OnInit {
     this.modalService.openAddToken();
   }
 
+  deleteToken(token) {
+    this.tokenService.deleteToken(token);
+  }
+
 }
