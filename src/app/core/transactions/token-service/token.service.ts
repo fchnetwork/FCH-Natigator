@@ -38,6 +38,19 @@ export class TokenService {
     }, 100);
   }
 
+  deleteToken(token) {
+    let tokens = this.sessionStorage.retrieve('tokens') || [];
+    tokens = tokens.filter((item)=>{
+      return item.address !== token.address;
+    });
+    this.saveTokens(tokens);
+    // ADD observable here
+    this.tokens$.next(tokens);
+    setTimeout(()=>{
+      this.updateTokensBalance();
+    }, 100);
+  }
+
   saveTokens(tokens) {
     const password = this.sessionStorage.retrieve('password');
     const stringtoken = JSON.stringify(tokens);

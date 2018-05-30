@@ -12,7 +12,7 @@
       <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="name">
           {{ 'DASHBOARD_TOKENS.NAME' | translate }}
       </div>
-      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
+      <div aerColumn size="lg-2 md-2 sm-2 xs-2" class="amount">
           {{ 'DASHBOARD_TOKENS.DECIMALS' | translate }}
       </div>
       <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
@@ -25,13 +25,16 @@
         <aer-icon>generaltoken</aer-icon>
       </div> -->
       <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="name">
-            <span class="token-img"><aer-icon>generaltoken</aer-icon></span> {{token.symbol}}
+        <span class="token-img"><aer-icon>generaltoken</aer-icon></span> {{token.symbol}}
       </div>
-      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
+      <div aerColumn size="lg-2 md-2 sm-2 xs-2" class="amount">
           {{token.decimals}}
       </div>
       <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
           {{token.balance}}
       </div>
+      <div aerColumn size="lg-1 md-1 sm-1 xs-1" class="amount">
+        <span class="delete-token" (click)="deleteToken(token)">x</span>
+    </div>
     </div>
 </aer-card>
