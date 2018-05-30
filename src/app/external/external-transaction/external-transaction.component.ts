@@ -78,7 +78,7 @@ export class ExternalTransactionComponent implements OnInit {
             this.senderAvatar = this.authServ.generateCryptedAvatar( this.senderAddress );
             this.receiverAvatar = this.authServ.generateCryptedAvatar( res );
             this.amount = parsed.amount ? parsed.amount : this.amount;
-            this.isToken = parsed.assetAddress !== "0";
+            this.isToken = String(parsed.assetAddress) !== "0";
             this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
             this.assetAddress = parsed.assetAddress ? parsed.assetAddress : this.assetAddress;
             this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
