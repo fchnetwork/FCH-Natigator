@@ -14,6 +14,7 @@ export class PendingTxnsComponent implements OnInit, OnDestroy {
 
   pendingTransactions: Subscription;
   transactions: Array<iPendingTxn> = [];
+  
   constructor( public exploreSrv: ExplorerService,
                private router: Router,
                private modal: ModalService) { }
