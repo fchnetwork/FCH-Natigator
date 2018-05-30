@@ -15,17 +15,17 @@ constructor(private notificationService: NotificationService,
     //NOTIFICATIONS
 
     //SUCCESFULL transaction notification
-    private succefullSendNotification(amount, to, currency) {
+    public succefullSentNotification(hash) {
         this.notificationService.notify(
-          `${this.translate('SEND_RECEIVE.STATUSES.SUCCESFULLY_SENT')} ${amount} ${currency}`, 
-          `${this.translate('SEND_RECEIVE.NOTIFICATION_BODY_SUCCES_TRANSACTION')} ${amount} ${currency} ${this.translate('SEND_RECEIVE.TO_ADDRESS')} ${to}`, 
+            `${this.translate('SEND_RECEIVE.NOTIFICATION_TITLE_TRANSACTION_STATUS')}: ${this.translate('SEND_RECEIVE.STATUSES.SUCCESFULLY_SENT')}`,
+            `${this.translate('SEND_RECEIVE.TRANSACTION')} ${hash} ${this.translate('SEND_RECEIVE.IS')} ${this.translate('SEND_RECEIVE.STATUSES.SUCCESFULLY_SENT')}`,
           'transaction', 
           10000
         );
       }
   
       //FAILED transaction notification
-      private failedTransactionNotification() {
+      public failedTransactionNotification() {
         this.notificationService.notify(
           this.translate('SEND_RECEIVE.NOTIFICATION_TITLE_TRANSACTION_STATUS'), 
           this.translate('SEND_RECEIVE.STATUSES.FAILED'), 
@@ -35,7 +35,7 @@ constructor(private notificationService: NotificationService,
       }
   
       //PENDING transaction notification
-      private pendingTransactionNotification(hash) {
+      public pendingTransactionNotification(hash) {
         this.notificationService.notify(
           `${this.translate('SEND_RECEIVE.NOTIFICATION_TITLE_TRANSACTION_STATUS')}: ${this.translate('SEND_RECEIVE.STATUSES.PENDING')}`, 
           `${this.translate('SEND_RECEIVE.TRANSACTION')} ${hash} ${this.translate('SEND_RECEIVE.IS')} ${this.translate('SEND_RECEIVE.STATUSES.PENDING')}`,
@@ -45,7 +45,7 @@ constructor(private notificationService: NotificationService,
       }
   
       //MINED transaction notification
-      private transactionMinedNotification(hash) {
+      public transactionMinedNotification(hash) {
         this.notificationService.notify(
           `${this.translate('SEND_RECEIVE.NOTIFICATION_TITLE_TRANSACTION_STATUS')}: ${this.translate('SEND_RECEIVE.STATUSES.MINED')}`, 
           `${this.translate('SEND_RECEIVE.TRANSACTION')} ${hash} ${this.translate('SEND_RECEIVE.HAS_BEEN')} ${this.translate('SEND_RECEIVE.STATUSES.MINED')}`,

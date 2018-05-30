@@ -24,7 +24,7 @@
         <div class="transaction-main-flex-item">
           <div class="sub-flex-container">
             <div class="amount">
-              {{transaction.amount}} {{'AERO'|translate}}
+              {{transaction.amount}} {{transaction.type}}
             </div>
             <div class="operation-icon">
               <aer-icon *ngIf="getICoin(transaction.amount)" class="red">angle-right</aer-icon>
