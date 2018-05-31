@@ -178,7 +178,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   showTransactions() { }
 
   handleInputsChange() {
-    console.log("handleInputsChange");
     this.safeGetMaxTransactionFee();
   }
 
