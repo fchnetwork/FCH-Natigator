@@ -27,7 +27,7 @@ constructor(private notificationService: NotificationService,
       //FAILED transaction notification
       public failedTransactionNotification() {
         this.notificationService.notify(
-          this.translate('SEND_RECEIVE.NOTIFICATION_TITLE_TRANSACTION_STATUS'), 
+          `${this.translate('SEND_RECEIVE.NOTIFICATION_TITLE_TRANSACTION_STATUS')}: ${this.translate('SEND_RECEIVE.STATUSES.FAILED')}`, 
           this.translate('SEND_RECEIVE.STATUSES.FAILED'), 
           'aerumleaf', 
           10000
