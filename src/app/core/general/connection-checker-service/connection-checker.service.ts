@@ -13,7 +13,7 @@ export class ConnectionCheckerService {
     constructor(
         private notificationMessagesService: NotificationMessagesService
     ) { 
-        setInterval(() => this.connectionCheck(), 1000);
+        setInterval(() => this.connectionCheck(), 10000);
     }
 
     onlineCheck() {
