@@ -25,10 +25,12 @@ import { AerumStatsService } from '@app/core/stats/aerum-stats-service/aerum-sta
 import { AerumStatsWebsocketsService } from '@app/core/stats/aerum-stats-websockets-service/aerum-stats-websockets.service';
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ValidateService } from '@app/core/validation/validate.service';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { ConnectionCheckerService } from '@core/general/connection-checker-service/connection-checker.service';
+import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
+import { Erc20SwapService } from "@core/swap/cross-chain/erc20-swap-service/erc20-swap.service";
+import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 
 @NgModule({
   imports: [
@@ -62,13 +64,16 @@ import { ConnectionCheckerService } from '@core/general/connection-checker-servi
         ValidateService,
         NotificationMessagesService,,
         ConnectionCheckerService
+        EtherSwapService,
+        Erc20SwapService,
+        SwapTemplateService
   ]
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: CoreModule,
-      providers: [ 
+      providers: [
         LoaderService
       ]
     };
