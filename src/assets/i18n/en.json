@@ -158,6 +158,16 @@
       "MINED": "Mined"
     }
   },
+  "CONNECTION": {
+    "STATUS_TITLE": {
+      "LOST": "Lost connection",
+      "RESTORED": "Restored connection"
+    },
+    "STATUS_BODY": {
+      "LOST": "Connection to the node has been lost",
+      "RESTORED": "Connection to the node has been restored"
+    }
+  },
   "DIAGNOSTICS": "Diagnostics",
   "OVERVIEW": "Overview",
   "UNLOCK": {

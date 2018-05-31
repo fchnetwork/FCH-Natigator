@@ -53,4 +53,24 @@ constructor(private notificationService: NotificationService,
           10000
         );
       }
+
+      //Lost connection to the node
+      public connectionLost() {
+        this.notificationService.notify(
+          this.translate('CONNECTION.STATUS_TITLE.LOST'), 
+          this.translate('CONNECTION.STATUS_BODY.LOST'), 
+          'blocks', 
+          10000
+        );
+      }
+
+      //Restored connection to the node
+      public connectionRestored() {
+        this.notificationService.notify(
+          this.translate('CONNECTION.STATUS_TITLE.RESTORED'), 
+          this.translate('CONNECTION.STATUS_BODY.RESTORED'), 
+          'blocks', 
+          10000
+        );
+      }
 }
