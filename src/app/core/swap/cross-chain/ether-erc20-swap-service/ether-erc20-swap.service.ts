@@ -1,4 +1,4 @@
-const artifacts = require('@core/abi/AtomicSwapEther.json');
+const artifacts = require('@core/abi/AtomicSwapERC20.json');
 
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
@@ -8,12 +8,12 @@ import { AuthenticationService } from "@core/authentication/authentication-servi
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
 
 @Injectable()
-export class EtherSwapService extends BaseContractService {
+export class EtherErc20SwapService extends BaseContractService {
 
   constructor(
     authenticationService: AuthenticationService,
     contractExecutorService: ContractExecutorService) {
-    super(artifacts.abi, environment.contracts.swap.crossChain.address.ethereum.EtherSwap, authenticationService, contractExecutorService);
+    super(artifacts.abi, environment.contracts.swap.crossChain.address.ethereum.Erc20Swap, authenticationService, contractExecutorService);
   }
 
 }

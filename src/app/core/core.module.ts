@@ -29,7 +29,9 @@ import { ValidateService } from '@app/core/validation/validate.service';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { ConnectionCheckerService } from '@core/general/connection-checker-service/connection-checker.service';
 import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
-import { Erc20SwapService } from "@core/swap/cross-chain/erc20-swap-service/erc20-swap.service";
+import { EtherErc20SwapService } from "@core/swap/cross-chain/ether-erc20-swap-service/ether-erc20-swap.service";
+import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
+import { AeroSwapService } from "@core/swap/cross-chain/aero-swap-service/aero-swap.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 
 @NgModule({
@@ -65,7 +67,9 @@ import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-servic
         NotificationMessagesService,,
         ConnectionCheckerService
         EtherSwapService,
-        Erc20SwapService,
+        EtherErc20SwapService,
+        AeroSwapService,
+        AerumErc20SwapService,
         SwapTemplateService
   ]
 })

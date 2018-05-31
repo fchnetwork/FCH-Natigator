@@ -8,12 +8,12 @@ import { AuthenticationService } from "@core/authentication/authentication-servi
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
 
 @Injectable()
-export class EtherSwapService extends BaseContractService {
+export class AeroSwapService extends BaseContractService {
 
   constructor(
     authenticationService: AuthenticationService,
     contractExecutorService: ContractExecutorService) {
-    super(artifacts.abi, environment.contracts.swap.crossChain.address.ethereum.EtherSwap, authenticationService, contractExecutorService);
+    super(artifacts.abi, environment.contracts.swap.crossChain.address.aerum.AeroSwap, authenticationService, contractExecutorService);
   }
 
 }
