@@ -1,9 +1,12 @@
 import { TestBed, inject } from '@angular/core/testing';
+
+import Web3 from "web3";
 import { TransactionService } from "@app/core/transactions/transaction-service/transaction.service";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { SessionStorageService } from "ngx-webstorage";
 import { ModalService } from "@app/core/general/modal-service/modal.service";
-import Web3 from "web3";
+import { TokenService } from "@core/transactions/token-service/token.service";
+import { NotificationMessagesService } from "@core/general/notification-messages-service/notification-messages.service";
 
 describe('Service: TransactionService', () => {
   const authService: Partial<AuthenticationService> = {
@@ -16,7 +19,9 @@ describe('Service: TransactionService', () => {
         TransactionService,
         { provide: AuthenticationService, useValue: authService },
         { provide: SessionStorageService, useValue: jest.fn() },
-        { provide: ModalService, useValue: jest.fn() }
+        { provide: ModalService, useValue: jest.fn() },
+        { provide: TokenService, useValue: jest.fn() },
+        { provide: NotificationMessagesService, useValue: jest.fn() }
       ]
     });
   });
