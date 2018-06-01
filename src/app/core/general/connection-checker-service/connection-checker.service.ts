@@ -5,45 +5,36 @@ import { environment } from '@env/environment';
 @Injectable()
 export class ConnectionCheckerService {
     
-    web3: any;
     connected: boolean = false;
-    private baseUrl = environment.httpProvider;
-    private isOnline = false;
 
     constructor(
         private notificationMessagesService: NotificationMessagesService
     ) { 
-        setInterval(() => this.connectionCheck(), 10000);
+        this.initialCheck();
+        setInterval(() => this.websocketCheck(), 10000);
     }
 
-    onlineCheck() {
-        let xhr = new XMLHttpRequest();
-        return new Promise((resolve, reject)=>{
-            xhr.onload = () => {
-                // Set online status
-                this.isOnline = true;
-                resolve(true);
-            };
-            xhr.onerror = () => {
-                // Set online status
-                this.isOnline = false;
-                reject(false);
-            };
-            xhr.open('GET', this.baseUrl, true);
-            xhr.send();
+    private initialCheck() {
+        let websocket = new WebSocket(environment.WebsocketProvider);
+        websocket.addEventListener('error', res => {
+            this.notificationMessagesService.connectionDisconnected();
         });
     }
 
-    connectionCheck () {
-        this.onlineCheck().then(() => {
-            if (!this.connected) {
+    private websocketCheck() {
+        let websocket = new WebSocket(environment.WebsocketProvider);
+
+        websocket.addEventListener('open', res => {
+           if (!this.connected) {
                 this.connected = true;
-                this.notificationMessagesService.connectionRestored();
-            }
-        }).catch(() => {
+                this.notificationMessagesService.connectionConnected();
+           }
+        });
+
+        websocket.addEventListener('close', res => {
             if (this.connected) {
                 this.connected = false;
-                this.notificationMessagesService.connectionLost();
+                this.notificationMessagesService.connectionDisconnected();
             }
         });
     }

@@ -159,13 +159,14 @@
     }
   },
   "CONNECTION": {
+    "CONNECTION_STATUS":"Connection status",
     "STATUS_TITLE": {
-      "LOST": "Lost connection",
-      "RESTORED": "Restored connection"
+      "DISCONNECTED": "Disconnected",
+      "CONNECTED": "Connected"
     },
     "STATUS_BODY": {
-      "LOST": "Connection to the node has been lost",
-      "RESTORED": "Connection to the node has been restored"
+      "DISCONNECTED": "Connection to AERUM network has been lost",
+      "CONNECTED": "Connected to AERUM Network"
     }
   },
   "DIAGNOSTICS": "Diagnostics",

@@ -54,21 +54,21 @@ constructor(private notificationService: NotificationService,
         );
       }
 
-      //Lost connection to the node
-      public connectionLost() {
+      //DISCONNECTED to AERUM network
+      public connectionDisconnected() {
         this.notificationService.notify(
-          this.translate('CONNECTION.STATUS_TITLE.LOST'), 
-          this.translate('CONNECTION.STATUS_BODY.LOST'), 
+          `${this.translate('CONNECTION.CONNECTION_STATUS')}: ${this.translate('CONNECTION.STATUS_TITLE.DISCONNECTED')}`, 
+          this.translate('CONNECTION.STATUS_BODY.DISCONNECTED'), 
           'blocks', 
           10000
         );
       }
 
-      //Restored connection to the node
-      public connectionRestored() {
+      //CONNECTED to AERUM network
+      public connectionConnected() {
         this.notificationService.notify(
-          this.translate('CONNECTION.STATUS_TITLE.RESTORED'), 
-          this.translate('CONNECTION.STATUS_BODY.RESTORED'), 
+          `${this.translate('CONNECTION.CONNECTION_STATUS')}: ${this.translate('CONNECTION.STATUS_TITLE.CONNECTED')}`,
+          this.translate('CONNECTION.STATUS_BODY.CONNECTED'), 
           'blocks', 
           10000
         );
