@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
 import { LogLevel } from '@app/core/general/logger-service/log-level.enum';
+import { ConnectionCheckerService } from '@core/general/connection-checker-service/connection-checker.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent implements OnInit {
     private idle: AccountIdleService,
     private route: ActivatedRoute,
     private router: Router,
-    private logger: LoggerService
+    private logger: LoggerService,
+    public connectionCheckerService: ConnectionCheckerService
     ) {
     logger.setLogLevel(LogLevel.All);
   }

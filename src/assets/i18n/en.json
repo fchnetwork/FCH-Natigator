@@ -158,6 +158,17 @@
       "MINED": "Mined"
     }
   },
+  "CONNECTION": {
+    "CONNECTION_STATUS":"Connection status",
+    "STATUS_TITLE": {
+      "DISCONNECTED": "Disconnected",
+      "CONNECTED": "Connected"
+    },
+    "STATUS_BODY": {
+      "DISCONNECTED": "Connection to AERUM network has been lost",
+      "CONNECTED": "Connected to AERUM Network"
+    }
+  },
   "DIAGNOSTICS": "Diagnostics",
   "OVERVIEW": "Overview",
   "UNLOCK": {

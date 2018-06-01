@@ -53,4 +53,24 @@ constructor(private notificationService: NotificationService,
           10000
         );
       }
+
+      //DISCONNECTED to AERUM network
+      public connectionDisconnected() {
+        this.notificationService.notify(
+          `${this.translate('CONNECTION.CONNECTION_STATUS')}: ${this.translate('CONNECTION.STATUS_TITLE.DISCONNECTED')}`, 
+          this.translate('CONNECTION.STATUS_BODY.DISCONNECTED'), 
+          'blocks', 
+          10000
+        );
+      }
+
+      //CONNECTED to AERUM network
+      public connectionConnected() {
+        this.notificationService.notify(
+          `${this.translate('CONNECTION.CONNECTION_STATUS')}: ${this.translate('CONNECTION.STATUS_TITLE.CONNECTED')}`,
+          this.translate('CONNECTION.STATUS_BODY.CONNECTED'), 
+          'blocks', 
+          10000
+        );
+      }
 }

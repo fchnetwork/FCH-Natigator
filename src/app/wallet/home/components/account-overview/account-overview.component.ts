@@ -19,7 +19,7 @@ export class AccountOverviewComponent implements OnInit {
     private authServ: AuthenticationService,
     private txnServ: TransactionService,
     public clipboardService: ClipboardService,
-    public notificationService: InternalNotificationService,
+    public notificationService: InternalNotificationService
   ) { }
 
   userData() {
