@@ -3,7 +3,8 @@ const artifacts = require('@core/abi/SwapTemplateRegistry.json');
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
-import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
+import { Chain } from "./chain.enum";
+import { SwapTemplate } from "./swap-template.model";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
@@ -38,7 +39,7 @@ export class SwapTemplateService extends BaseContractService {
     return receipt;
   }
 
-  async getTemplateById(id: string) {
+  async getTemplateById(id: string) : Promise<SwapTemplate> {
     const templateById = this.contract.methods.templateById(this.web3.utils.fromAscii(id));
     const response = await this.contractExecutorService.call(templateById);
     return response;
@@ -54,5 +55,19 @@ export class SwapTemplateService extends BaseContractService {
     const templatesIdsByAsset = this.contract.methods.templatesIdsByAsset(asset, chain);
     const response = await this.contractExecutorService.call(templatesIdsByAsset);
     return response;
+  }
+
+  async getTemplates(chain: Chain) : Promise<SwapTemplate[]> {
+    const templatesIds = await this.getTemplatesIds(chain);
+    const promises = templatesIds.map((id) => this.getTemplateById(id));
+    const templates = await Promise.all(promises);
+    return templates;
+  }
+
+  async getTemplatesByAsset(asset: string, chain: Chain) : Promise<SwapTemplate[]> {
+    const templatesIds = await this.getTemplatesIdsByAsset(asset, chain);
+    const promises = templatesIds.map((id) => this.getTemplateById(id));
+    const templates = await Promise.all(promises);
+    return templates;
   }
 }

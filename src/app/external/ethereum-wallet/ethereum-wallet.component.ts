@@ -3,10 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { sha3 } from 'web3-utils';
 
 import { Guid } from "@shared/helpers/guid";
+import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { AeroSwapService } from "@core/swap/cross-chain/aero-swap-service/aero-swap.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
+import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 
 @Component({
   selector: 'app-ethereum-wallet',
@@ -21,7 +23,8 @@ export class EthereumWalletComponent implements OnInit {
     private logger: LoggerService,
     private authenticationService: AuthenticationService,
     private aeroSwapService: AeroSwapService,
-    private aerumErc20SwapService: AerumErc20SwapService
+    private aerumErc20SwapService: AerumErc20SwapService,
+    private swapTemplateService: SwapTemplateService
   ) { }
 
   ngOnInit() {
@@ -32,6 +35,7 @@ export class EthereumWalletComponent implements OnInit {
   async accept() {
     await this.testAeroSwap();
     await this.testAerumErc20Swap();
+    await this.testSwapTemplate();
   }
 
   async testAeroSwap() {
@@ -61,6 +65,15 @@ export class EthereumWalletComponent implements OnInit {
     this.logger.logMessage(`Swap created: ${hash}`);
     const swap = await this.aeroSwapService.checkSwap(hash);
     this.logger.logMessage(`Swap checked: ${hash}`, swap);
+  }
+
+  async testSwapTemplate() {
+    const id =  Guid.newGuid().replace(/-/g, '');
+    this.logger.logMessage(`Template: ${id}`);
+    await this.swapTemplateService.registerTemplate(id, '0x0', this.address, '0x0', this.address, 1, Chain.Aerum);
+    this.logger.logMessage(`Template created: ${id}`);
+    const template = await this.swapTemplateService.getTemplateById(id);
+    this.logger.logMessage(`Template loaded: ${id}`, template);
   }
 
   dismiss() {}
