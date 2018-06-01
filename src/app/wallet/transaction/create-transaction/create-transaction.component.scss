@@ -4,15 +4,19 @@
   }
 }
 
-.create-transaction {
-  .tokensSelect {
-    padding-top: 50px;
-  }
+.flex-fee {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .note {
   font-size: 13px;
   color: #83868a;
+}
+
+.amount-label {
+  margin: 0;
 }
 
 .account-status-line {
@@ -34,6 +38,13 @@
     margin-top: 0;
     float: left;
   }
+}
+
+.amount-total {
+  font-size: 24px;
+  margin-bottom: 14px;
+  word-wrap: break-word;
+  line-height: 1;
 }
 
 

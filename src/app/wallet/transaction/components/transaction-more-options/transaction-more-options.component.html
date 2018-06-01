@@ -1,10 +1,10 @@
 <div class="more-options">
     <div *ngIf="data.selectedToken === 'AERO'" aerRow>
         <div aerColumn size="md-12"><span>Data</span></div>
-        <div aerColumn size="md-7">
+        <div aerColumn size="md-6">
           <aer-textarea [ngModel]="data.data" (ngModelChange)="onChange($event, 'data')" ngDefaultControl></aer-textarea>
         </div>
-        <div aerColumn size="md-5">
+        <div aerColumn size="md-6">
             You can add extra data to send along with your transaction. If you don't know what this is then <strong>don't touch it or bad things may happen.</strong>
         </div>
     </div>
