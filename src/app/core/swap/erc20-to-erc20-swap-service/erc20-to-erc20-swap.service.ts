@@ -38,13 +38,13 @@ export class Erc20ToErc20SwapService extends BaseContractService {
 
   async expireSwap(swapId: string) {
     const expireSwap = this.contract.methods.expire(this.web3.utils.fromAscii(swapId));
-    const response = await this.contractExecutorService.send(expireSwap);
-    return response;
+    const receipt = await this.contractExecutorService.send(expireSwap);
+    return receipt;
   }
 
   async checkSwap(swapId: string) {
     const checkSwap = this.contract.methods.check(this.web3.utils.fromAscii(swapId));
-    const receipt = await this.contractExecutorService.call(checkSwap);
-    return receipt;
+    const response = await this.contractExecutorService.call(checkSwap);
+    return response;
   }
 }
