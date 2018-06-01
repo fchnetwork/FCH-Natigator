@@ -64,8 +64,8 @@ import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-servic
         PasswordCheckerService,
         LoggerService,
         ValidateService,
-        NotificationMessagesService,,
-        ConnectionCheckerService
+        NotificationMessagesService,
+        ConnectionCheckerService,
         EtherSwapService,
         EtherErc20SwapService,
         AeroSwapService,
