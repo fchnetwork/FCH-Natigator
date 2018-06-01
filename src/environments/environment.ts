@@ -28,5 +28,5 @@ export const environment = {
   },
   gasPrice: "1",
   maxBlockGas: "1",
-  chainId: 8522
+  chainId: 418313827693
 };
