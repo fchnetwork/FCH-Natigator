@@ -7,7 +7,7 @@
             <div aerRow>
               <div aerColumn size="sm-6">
                 <div class="input-name">{{'FROM'|translate}}</div>
-                <aer-input icon="aerum" [ngClass]="{'has-error':!txnForm.controls['senderAddress'].valid && txnForm.controls['senderAddress'].touched}" formControlName="senderAddress" [(ngModel)]="senderAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
+                <aer-input disabled="true" icon="aerum" [ngClass]="{'has-error':!txnForm.controls['senderAddress'].valid && txnForm.controls['senderAddress'].touched}" formControlName="senderAddress" [(ngModel)]="senderAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
               </div>
               <div aerColumn size="sm-6">
                 <div class="input-name">{{'TO'|translate}}</div>
@@ -15,8 +15,12 @@
               </div>
             </div>
             <div aerRow>
+                <div aerColumn size="sm-2">
+                    <div class="input-name amount-label">{{'AMOUNT'|translate}}</div>
+                </div>
+            </div>
+            <div aerRow>
               <div aerColumn size="sm-6">
-                <div class="input-name">{{'AMOUNT'|translate}}</div>
                 <aer-input [ngClass]="{'has-error':!txnForm.controls['amount'].valid && txnForm.controls['amount'].touched}" formControlName="amount" [(ngModel)]="amount" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
                 <!-- <input id="sendEverything" type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{selectedToken.symbol}})</label> -->
                 <aer-checkbox ([ngModel])="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()">{{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{selectedToken.symbol}})</aer-checkbox>
@@ -57,18 +61,16 @@
           </div>
           <app-transaction-more-options *ngIf="showedMore" [data]="moreOptionsData" (ngModelChange)="moreOptionsChange($event)"></app-transaction-more-options>
           <div aerRow>
-            <div aerColumn size="sm-4">
-              <div class="note">{{'APP_TRANSACTION_FEE'|translate}}</div>
+            <div aerColumn size="sm-6" class="flex-fee">
+                <div class="note">{{'APP_TRANSACTION_FEE'|translate}}</div>
+                <div class="note">{{maxTransactionFee}} gwei</div>
             </div>
-            <div aerColumn size="sm-4">
-              <div class="note">{{maxTransactionFee}} gwei</div>
-            </div>
-            <div aerColumn size="sm-4">
+            <div aerColumn size="sm-6">
               <div class="note">{{'MAX_TRANS_FEE_WARNING'|translate}}</div>
             </div>
           </div>
           <div aerRow>
-            <div aerColumn size="sm-6">
+            <div aerColumn size="sm-12">
               <div class="input-name">{{'TOTAL'|translate}}</div>
               <div *ngIf="selectedToken.symbol !== 'AERO'" class="amount-total">
                   {{amount}} {{selectedToken.symbol}}

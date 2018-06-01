@@ -2,7 +2,7 @@
     <div aerRow>
       <div aerColumn size="sm-8">
           <span class="title">Overview</span>
-          <span class="balance">{{walletBalance | number:'.6'}} Aero</span>
+          <span class="balance">{{walletBalance | number:'.0-6'}} Aero</span>
           <div class="address">
             <span (click)="copyToClipboard()">0x{{address | slice:0:5}}...{{address | slice:-5}}</span>
           </div>
