@@ -42,7 +42,16 @@ export class SwapTemplateService extends BaseContractService {
   async getTemplateById(id: string) : Promise<SwapTemplate> {
     const templateById = this.contract.methods.templateById(this.web3.utils.fromAscii(id));
     const response = await this.contractExecutorService.call(templateById);
-    return response;
+    const template = new SwapTemplate();
+    template.id = this.web3.utils.toAscii(response[0]);
+    template.owner = response[1];
+    template.onchainAsset = response[2];
+    template.onchainAccount = response[3];
+    template.offchainAsset = response[4];
+    template.offchainAccount = response[5];
+    template.rate = Number(response[6]) / Math.pow(10, 18);
+    template.chain = Chain[response[7] as string];
+    return template;
   }
 
   async getTemplatesIds(chain: Chain) : Promise<string[]> {
@@ -59,14 +68,14 @@ export class SwapTemplateService extends BaseContractService {
 
   async getTemplates(chain: Chain) : Promise<SwapTemplate[]> {
     const templatesIds = await this.getTemplatesIds(chain);
-    const promises = templatesIds.map((id) => this.getTemplateById(id));
+    const promises = templatesIds.map((id) => this.getTemplateById(this.web3.utils.toAscii(id)));
     const templates = await Promise.all(promises);
     return templates;
   }
 
   async getTemplatesByAsset(asset: string, chain: Chain) : Promise<SwapTemplate[]> {
     const templatesIds = await this.getTemplatesIdsByAsset(asset, chain);
-    const promises = templatesIds.map((id) => this.getTemplateById(id));
+    const promises = templatesIds.map((id) => this.getTemplateById(this.web3.utils.toAscii(id)));
     const templates = await Promise.all(promises);
     return templates;
   }

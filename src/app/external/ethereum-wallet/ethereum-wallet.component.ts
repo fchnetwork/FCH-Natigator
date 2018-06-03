@@ -33,9 +33,10 @@ export class EthereumWalletComponent implements OnInit {
   }
 
   async accept() {
-    await this.testAeroSwap();
-    await this.testAerumErc20Swap();
-    await this.testSwapTemplate();
+    // await this.testAeroSwap();
+    // await this.testAerumErc20Swap();
+    // await this.testSwapTemplate();
+    await this.testSwapTemplates();
   }
 
   async testAeroSwap() {
@@ -70,10 +71,21 @@ export class EthereumWalletComponent implements OnInit {
   async testSwapTemplate() {
     const id =  Guid.newGuid().replace(/-/g, '');
     this.logger.logMessage(`Template: ${id}`);
-    await this.swapTemplateService.registerTemplate(id, '0x0', this.address, '0x0', this.address, 1, Chain.Aerum);
+    await this.swapTemplateService.registerTemplate(id, '0x0', this.address, '0x0', this.address, 0.01, Chain.Aerum);
     this.logger.logMessage(`Template created: ${id}`);
     const template = await this.swapTemplateService.getTemplateById(id);
     this.logger.logMessage(`Template loaded: ${id}`, template);
+  }
+
+  async testSwapTemplates() {
+    const templates = await this.swapTemplateService.getTemplates(Chain.Aerum);
+    this.logger.logMessage(`Templates loaded:`, templates);
+
+    const templatesById = await this.swapTemplateService.getTemplatesByAsset('0x0', Chain.Aerum);
+    this.logger.logMessage(`Templates by id loaded:`, templatesById);
+
+    const templatesById2 = await this.swapTemplateService.getTemplatesByAsset('0x0', Chain.Ethereum);
+    this.logger.logMessage(`Templates by id loaded:`, templatesById2);
   }
 
   dismiss() {}
