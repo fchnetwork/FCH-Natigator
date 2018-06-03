@@ -20,13 +20,13 @@ export const environment = {
       crossChain: {
         address: {
           aerum: {
-            AeroSwap: "0x15519c7bb96921edfd21cd74b76376b6f5c9874e",
-            Erc20Swap: "0x91a8c0607d2e3a197596292134e78b91006563bb",
-            TemplatesRegistry: "0x0969799b00c06ddb82a47130ba90f13c76bd917e"
+            AeroSwap: "0x0bda3dbaae4faad9e832829557d20321c7309d96",
+            Erc20Swap: "0x6a69122b61f094a574ff21c81b5486fc55a4abc9",
+            TemplatesRegistry: "0x3f5edd8ff0437a87f5ec9992c2722e75f227c8f4"
           },
           ethereum: {
-            EtherSwap: "0x29027c7d509a2deafd554f79d753a85c54e8a366",
-            Erc20Swap: "0x31b52a036be277689a40571df2d481ff317cb184"
+            EtherSwap: "0x29269e39b166744a67aebf9b7a4c8a23acc87c46",
+            Erc20Swap: "0xf43dec38ee501964ce7412612a5665fc8f626b50"
           }
         }
       }
@@ -37,7 +37,7 @@ export const environment = {
         FixedPriceRegistrar: "0xa942a9d2793cc12b35b7801cc0b60b72095f8553",
         PublicResolver: "0x125a0dd27bb49b38b1f023263ccfbf1757e603b7"
       }
-    },
+    }
   },
   gasPrice: "1",
   maxBlockGas: "1",
