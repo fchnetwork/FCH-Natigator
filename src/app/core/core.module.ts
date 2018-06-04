@@ -13,6 +13,7 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 import { CanActivateAccountAuthGuard } from '@app/core/authentication/auth-guards/can-activate-account.guard';
 import { CanActivateViaAuthGuard } from '@app/core/authentication/auth-guards/can-activate-auth.guard';
 import { ContractExecutorService } from '@app/core/contract/contract-executor-service/contract-executor.service';
+import { EthereumContractExecutorService } from "@core/contract/contract-executor-service/ethereum-contract-executor.service";
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
@@ -33,6 +34,8 @@ import { EtherErc20SwapService } from "@core/swap/cross-chain/ether-erc20-swap-s
 import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
 import { AeroSwapService } from "@core/swap/cross-chain/aero-swap-service/aero-swap.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
+import { EthWalletService } from "@core/ethereum/eth-wallet-service/eth-wallet.service";
+import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 
 @NgModule({
   imports: [
@@ -40,37 +43,40 @@ import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-servic
   ],
   providers: [
     ContractExecutorService,
-        AccountIdleService,
-        AuthenticationService,
-        ClipboardService,
-        ExplorerService,
-        ModalService,
-        InternalNotificationService,
-        RouteDataService,
-        TokenService,
-        TransactionService,
-        CanActivateAccountAuthGuard,
-        CanActivateViaAuthGuard,
-        AerumStatsService,
-        AerumStatsWebsocketsService,
-        AerumNameService,
-        AensFixedPriceRegistrarContractService,
-        AensPublicResolverContractService,
-        AensRegistryContractService,
-        AeroToErc20SwapService,
-        Erc20ToAeroSwapService,
-        Erc20ToErc20SwapService,
-        ERC20TokenService,
-        PasswordCheckerService,
-        LoggerService,
-        ValidateService,
-        NotificationMessagesService,
-        ConnectionCheckerService,
-        EtherSwapService,
-        EtherErc20SwapService,
-        AeroSwapService,
-        AerumErc20SwapService,
-        SwapTemplateService
+    EthereumContractExecutorService,
+    EthWalletService,
+    EthereumAuthenticationService,
+    AccountIdleService,
+    AuthenticationService,
+    ClipboardService,
+    ExplorerService,
+    ModalService,
+    InternalNotificationService,
+    RouteDataService,
+    TokenService,
+    TransactionService,
+    CanActivateAccountAuthGuard,
+    CanActivateViaAuthGuard,
+    AerumStatsService,
+    AerumStatsWebsocketsService,
+    AerumNameService,
+    AensFixedPriceRegistrarContractService,
+    AensPublicResolverContractService,
+    AensRegistryContractService,
+    AeroToErc20SwapService,
+    Erc20ToAeroSwapService,
+    Erc20ToErc20SwapService,
+    ERC20TokenService,
+    PasswordCheckerService,
+    LoggerService,
+    ValidateService,
+    NotificationMessagesService,
+    ConnectionCheckerService,
+    EtherSwapService,
+    EtherErc20SwapService,
+    AeroSwapService,
+    AerumErc20SwapService,
+    SwapTemplateService
   ]
 })
 export class CoreModule {
