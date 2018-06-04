@@ -36,6 +36,7 @@ import { AeroSwapService } from "@core/swap/cross-chain/aero-swap-service/aero-s
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { EthWalletService } from "@core/ethereum/eth-wallet-service/eth-wallet.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
+import { InjectedWeb3ContractExecutorService } from "@core/contract/contract-executor-service/injected-web3-contract-executor.service";
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
     EthereumContractExecutorService,
     EthWalletService,
     EthereumAuthenticationService,
+    InjectedWeb3ContractExecutorService,
     AccountIdleService,
     AuthenticationService,
     ClipboardService,

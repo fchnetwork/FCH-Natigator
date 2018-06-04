@@ -39,6 +39,10 @@ export const environment = {
       }
     }
   },
+  ethereum: {
+    endpoint: "wss://rinkeby.infura.io/ws",
+    chainId: 4
+  },
   gasPrice: "1",
   maxBlockGas: "1",
   chainId: 418313827693

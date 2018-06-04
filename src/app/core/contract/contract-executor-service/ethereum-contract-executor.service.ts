@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 
+import { environment } from "@env/environment";
 import Web3 from 'web3';
 
 import { LoggerService } from '@core/general/logger-service/logger.service';
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { BaseContractExecutorService } from "@core/contract/contract-executor-service/base-contract-executor.service";
 import { EthWalletService } from "@core/ethereum/eth-wallet-service/eth-wallet.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
@@ -29,6 +28,6 @@ export class EthereumContractExecutorService extends BaseContractExecutorService
 
     this.web3 = this.ethAuthenticationService.getWeb3();
 
-    this.chainId = 4;
+    this.chainId = environment.ethereum.chainId;
   }
 }

@@ -11,6 +11,7 @@ import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-s
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
 import { EthWalletService } from "@core/ethereum/eth-wallet-service/eth-wallet.service";
+import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 
 @Component({
   selector: 'app-ethereum-wallet',
@@ -28,7 +29,8 @@ export class EthereumWalletComponent implements OnInit {
     private aerumErc20SwapService: AerumErc20SwapService,
     private swapTemplateService: SwapTemplateService,
     private etherSwapService: EtherSwapService,
-    private ethWalletSevice: EthWalletService
+    private ethWalletService: EthWalletService,
+    private ethereumAuthService: EthereumAuthenticationService
   ) { }
 
   ngOnInit() {
@@ -41,7 +43,8 @@ export class EthereumWalletComponent implements OnInit {
     // await this.testAerumErc20Swap();
     // await this.testSwapTemplate();
     await this.testSwapTemplates();
-    await this.testEthereumSwap();
+    // await this.testEthereumSwap();
+    await this.testEthereumInjectedSwap();
   }
 
   async testAeroSwap() {
@@ -100,7 +103,27 @@ export class EthereumWalletComponent implements OnInit {
     const timeout = 120;
     const timestamp = Math.ceil((new Date().getTime() / 1000) + timeout);
 
-    const ethAddress = await this.ethWalletSevice.getAddress();
+    const ethAddress = await this.ethWalletService.getAddress();
+    this.logger.logMessage(`Secret: ${secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${ethAddress}`);
+    const cost = await this.etherSwapService.estimateOpenSwap(hash, aero, ethAddress, timestamp);
+    this.logger.logMessage(`Swap cost: ${hash}`, cost);
+    await this.etherSwapService.openSwap(hash, aero, ethAddress, timestamp);
+    this.logger.logMessage(`Swap created: ${hash}`);
+    const swap = await this.etherSwapService.checkSwap(hash);
+    this.logger.logMessage(`Swap checked: ${hash}`, swap);
+  }
+
+  async testEthereumInjectedSwap() {
+    const secret = Guid.newGuid();
+    const hash = sha3(secret);
+    const aero = '0.01';
+    const timeout = 120;
+    const timestamp = Math.ceil((new Date().getTime() / 1000) + timeout);
+
+    const web3 = await this.ethereumAuthService.getInjectedWeb3();
+    const accounts = await web3.eth.getAccounts();
+
+    const ethAddress = await accounts[0];
     this.logger.logMessage(`Secret: ${secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${ethAddress}`);
     const cost = await this.etherSwapService.estimateOpenSwap(hash, aero, ethAddress, timestamp);
     this.logger.logMessage(`Swap cost: ${hash}`, cost);
