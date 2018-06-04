@@ -8,6 +8,7 @@
 
   .add-token {
     text-align: right;
+    white-space: nowrap;
   }
 
   .token-item {
@@ -16,12 +17,10 @@
 
     .delete-token {
       cursor: pointer;
-      background: #C3C3C3;
-      color: #636363;
-      font-weight: bold;
-      border-radius: 50px;
-      padding: 0 7px 3px 7px;
+      color: #42526e;
+    
     }
+
     .name {
       color: #2D353D;
       font-weight: 600;
@@ -35,8 +34,26 @@
       }
     }
 
+    .right-align {
+        text-align: right;
+    }
+
     .amount {
       text-align: right;
     }
   }
+}
+
+@media only screen and (max-width:480px) {
+  .token-list {
+  
+    .token-item {
+      .amount {
+        word-wrap: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+
 }

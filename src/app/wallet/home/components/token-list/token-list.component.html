@@ -1,40 +1,40 @@
 <aer-card class="token-list">
     <div aerRow class="title-row">
-      <div aerColumn size="lg-6 md-6 sm-6 xs-6">
-          <span class="title">Tokens</span>
-      </div>
-      <div aerColumn size="lg-6 md-6 sm-6 xs-6" class="add-token">
-        <aer-button class="blue medium" (click)="addToken()">Add token <aer-icon>plus</aer-icon></aer-button>
-        <!-- <aer-button (click)="addToken()" class="small blue">Add Token</aer-button> -->
-      </div>
+        <div aerColumn size="lg-6 md-6 sm-6 xs-6">
+            <span class="title">Tokens</span>
+        </div>
+        <div aerColumn size="lg-6 md-6 sm-6 xs-6" class="add-token">
+            <aer-button class="blue medium" (click)="addToken()">Add token <aer-icon>plus</aer-icon></aer-button>
+        </div>
     </div>
-    <div aerRow *ngIf="tokens"  class="token-item">
-      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="name">
-          {{ 'DASHBOARD_TOKENS.NAME' | translate }}
-      </div>
-      <div aerColumn size="lg-2 md-2 sm-2 xs-2" class="amount">
-          {{ 'DASHBOARD_TOKENS.DECIMALS' | translate }}
-      </div>
-      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
-          {{ 'DASHBOARD_TOKENS.OWNED' | translate }}
-      </div>
+    <div aerRow *ngIf="tokens" class="token-item">
+        <div aerColumn size="lg-3 md-3 sm-3 xs-3">
+            {{ 'DASHBOARD_TOKENS.NAME' | translate }}
+        </div>
+        <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="right-align">
+            {{ 'DASHBOARD_TOKENS.DECIMALS' | translate }}
+        </div>
+        <div aerColumn size="lg-3 md-3 sm-3 xs-3" class="right-align">
+            {{ 'DASHBOARD_TOKENS.OWNED' | translate }}
+        </div>
+        <div aerColumn size="lg-2 md-2 sm-2 xs-2">
+            
+        </div>
     </div>
 
     <div aerRow *ngFor="let token of tokens" class="token-item">
-      <!-- <div aerColumn size="lg-1 md-1 sm-1 xs-1" class="token-img">
-        <aer-icon>generaltoken</aer-icon>
-      </div> -->
-      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="name">
-        <span class="token-img"><aer-icon>generaltoken</aer-icon></span> {{token.symbol}}
-      </div>
-      <div aerColumn size="lg-2 md-2 sm-2 xs-2" class="amount">
-          {{token.decimals}}
-      </div>
-      <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
-          {{token.balance}}
-      </div>
-      <div aerColumn size="lg-1 md-1 sm-1 xs-1" class="amount">
-        <span class="delete-token" (click)="deleteToken(token)">x</span>
-    </div>
+        <div aerColumn size="lg-3 md-3 sm-3 xs-3" class="name">
+            <span class="token-img"><aer-icon>generaltoken</aer-icon></span> {{token.symbol}}
+        </div>
+        <div aerColumn size="lg-4 md-4 sm-4 xs-4" class="amount">
+            {{token.decimals}}
+        </div>
+        <div aerColumn size="lg-3 md-3 sm-3 xs-3" class="amount">
+            <!-- {{token.balance | bignumber:'1.0-2'}} -->
+            {{token.balance | bignumber:token.decimals:'1.0-3'}}
+        </div>
+        <div aerColumn size="lg-2 md-2 sm-2 xs-2" class="name">
+            <aer-icon class="delete-token" (click)="deleteToken(token)">close-round</aer-icon>
+        </div>
     </div>
 </aer-card>
