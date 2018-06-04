@@ -4,10 +4,10 @@ import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.s
 import { AensFixedPriceRegistrarContractService } from '@app/core/aens/aens-fixed-price-registrar-contract-service/aens-fixed-price-registrar-contract.service';
 import { AensPublicResolverContractService } from '@app/core/aens/aens-public-resolver-contract-service/aens-public-resolver-contract.service';
 import { AensRegistryContractService } from '@app/core/aens/aens-registry-contract-service/aens-registry-contract.service';
-import { AeroToErc20SwapService } from '@app/core/swap/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
-import { Erc20ToAeroSwapService } from '@app/core/swap/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
-import { Erc20ToErc20SwapService } from '@app/core/swap/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
-import { ERC20TokenService } from '@app/core/swap/erc20-token-service/erc20-token.service';
+import { AeroToErc20SwapService } from '@app/core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
+import { Erc20ToAeroSwapService } from '@app/core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
+import { Erc20ToErc20SwapService } from '@app/core/swap/on-chain/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
+import { ERC20TokenService } from '@app/core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { CanActivateAccountAuthGuard } from '@app/core/authentication/auth-guards/can-activate-account.guard';

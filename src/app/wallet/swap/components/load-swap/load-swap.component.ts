@@ -9,10 +9,10 @@ import { TransactionReceipt } from 'web3/types';
 import { SwapMode, LoadedSwap, SwapStatus } from '@swap/models/models';
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
-import { AeroToErc20SwapService } from '@core/swap/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
-import { Erc20ToAeroSwapService } from '@core/swap/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
-import { Erc20ToErc20SwapService } from '@core/swap/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
-import { ERC20TokenService } from '@core/swap/erc20-token-service/erc20-token.service';
+import { AeroToErc20SwapService } from '@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
+import { Erc20ToAeroSwapService } from '@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
+import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
+import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { ModalService } from '@core/general/modal-service/modal.service';
 import { TokenService } from '@core/transactions/token-service/token.service';
 
