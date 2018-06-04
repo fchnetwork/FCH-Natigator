@@ -13,16 +13,16 @@ export const environment = {
   contracts: {
     swap: {
       address: {
-        AeroToErc20: "0x6fdf39d14b9caffab2ef746f37bec1cf7a12011a",
-        Erc20ToAero: "0x5613008e456d5ae946d328de647ce7400eab63e5",
-        Erc20ToErc20: "0xf0c9a6f06c38b0b8ae255ef9d592e16e419f9676"
+        AeroToErc20: "0xb5b8a711e5abae1940e1b92ad45d4ec86215ce82",
+        Erc20ToAero: "0x52ac5cf9c2823ea9891d347f94f74dfa8258db1c",
+        Erc20ToErc20: "0xf0b36c5e2ab2e66e2c0baeaf5f2cfdfedbaf757a"
       }
     },
     aens: {
       address: {
-        ENSRegistry: "0x5b78f4488c1f915b5b1652a7f0133cd534fd853f",
-        FixedPriceRegistrar: "0x5343f733de635a1371c26ad3dc67963a044f9145",
-        PublicResolver: "0xdc6453947b3ccabd14aa20c29e7df3ee124c42a9"
+        ENSRegistry: "0x49dc6ee5540eb3e0d8015ec2381ed4146315b6b6",
+        FixedPriceRegistrar: "0xa942a9d2793cc12b35b7801cc0b60b72095f8553",
+        PublicResolver: "0x125a0dd27bb49b38b1f023263ccfbf1757e603b7"
       }
     }
   },
