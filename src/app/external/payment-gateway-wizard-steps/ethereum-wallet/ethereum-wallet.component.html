@@ -2,23 +2,40 @@
   <h1>Ethereum Wallet</h1>
   <div class="o-table">
     <div class="o-table__row">
-      <div class="o-table__cell o-data--left">
-        Field 2
+      <div class="o-table__cell o-data--left address-option-label">
+        Select Wallet:
       </div>
       <div class="o-table__cell o-data--right">
-        2
+        <aer-radio-group class="address-option">
+          <aer-radio-button [value]="1">[ Injected web3 nam/addr ]</aer-radio-button>
+          <aer-radio-button [value]="1">Stored Keys</aer-radio-button>
+        </aer-radio-group>
+      </div>
+    </div>
+    <div class="o-table__row--no-cells">
+        Select Address:
+    </div>
+    <div class="o-table__row--no-cells">
+      <aer-select [(ngModel)]="selectResult" dataKey="title" icon="key" img="img" placeholder="Select your account">
+        <aer-select-option *ngFor="let item of aerlists;" [value]="item"><img class="avatar" [src]="item.img"><span>{{item.title}}</span></aer-select-option>
+      </aer-select>
+    </div>
+    <div class="o-table__row--no-cells">
+      <aer-input [(ngModel)]="file" class="with-button blue" buttonLabel="Import"></aer-input>
+      <img [src]="addressQR" alt="">
+      <div class="c-copy__address">
+        <a (click)="copyToClipboard()">{{ address }}</a>
       </div>
     </div>
     <div class="o-table__row">
       <div class="o-table__cell o-data--left">
-        Field 1
+        Balance:
       </div>
       <div class="o-table__cell o-data--right">
-        1
+        ETH
       </div>
     </div>
   </div>
-  <aer-button (buttonFn)="accept()" class="blue large full-width">Test</aer-button>
   <aer-button (buttonFn)="next()" class="blue large full-width">Next</aer-button>
   <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
 </div>

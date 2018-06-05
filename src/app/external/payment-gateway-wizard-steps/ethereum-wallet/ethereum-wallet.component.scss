@@ -27,16 +27,50 @@
   width: 100%;
   margin: 46px 0 25px;
   &__row {
-    display: table-row;
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    justify-content: space-between;
+  }
+  &__row--no-cells {
+    text-align: left;
+    padding-bottom: 15px;
   }
   &__cell {
-    display: table-cell;
+    display: inline-block;
     padding-bottom: 15px;
     &.o-data--left {
       text-align: left;
+      width: 110px;
     }
     &.o-data--right {
       text-align: right;
+    }
+  }
+}
+
+.address-option-label {
+  padding-top: 15px;
+}
+
+.address-option {
+  width: 290px;
+  display: inline-block;
+}
+
+.c-copy__address {
+  display: block;
+  a {
+    padding: 5px 12px;
+    border: 1px dashed #2a669a;
+    display: inline-block;
+    position: relative;
+    border-radius: 5px;
+    &::after {
+      position: absolute;
+      top: -18px;
+      right: -31px;
+      content: "Click to copy";
+      font-size:10px;
     }
   }
 }

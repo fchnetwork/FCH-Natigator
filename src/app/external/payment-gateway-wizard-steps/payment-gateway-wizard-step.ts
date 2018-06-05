@@ -3,12 +3,14 @@ import { Location } from '@angular/common';
 export abstract class PaymentGatewayWizardStep {
 
   active = false;
-  nextStep: PaymentGatewayWizardStep;
+  private prevStep: PaymentGatewayWizardStep;
+  private nextStep: PaymentGatewayWizardStep;
 
   protected constructor(private location: Location) { }
 
   setNextStep(step: PaymentGatewayWizardStep){
     this.nextStep = step;
+    step.prevStep = this;
   }
 
   next() {
@@ -19,7 +21,12 @@ export abstract class PaymentGatewayWizardStep {
   }
 
   cancel() {
-    this.location.back();
+    if(this.prevStep) {
+      this.deactivate();
+      this.prevStep.activate();
+    } else {
+      this.location.back();
+    }
   }
 
   activate() {
