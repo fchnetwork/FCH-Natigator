@@ -7,6 +7,8 @@ import { AppUIModule } from "@app/app.ui.module";
 import { SharedModule } from "@app/shared/shared.module";
 import { EthereumWalletComponent } from './ethereum-wallet/ethereum-wallet.component';
 import { PaymentGatewayWizardComponent } from './payment-gateway-wizard/payment-gateway-wizard.component';
+import { SwapCreateComponent } from './swap-create/swap-create.component';
+import { SwapConfirmComponent } from './swap-confirm/swap-confirm.component';
 
 @NgModule({
     entryComponents: [
@@ -23,6 +25,8 @@ import { PaymentGatewayWizardComponent } from './payment-gateway-wizard/payment-
         ExternalTransactionComponent,
         EthereumWalletComponent,
         PaymentGatewayWizardComponent,
+        SwapCreateComponent,
+        SwapConfirmComponent,
     ]
 })
 export class ExternalModule { }
