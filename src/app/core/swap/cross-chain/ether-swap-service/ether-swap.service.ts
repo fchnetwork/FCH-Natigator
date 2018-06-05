@@ -1,10 +1,12 @@
+import has = Reflect.has;
+
 const artifacts = require('@core/abi/AtomicSwapEther.json');
 
 import { Injectable } from '@angular/core';
 
 import { environment } from "@env/environment";
 import Web3 from "web3";
-import { Contract } from "web3/types";
+import { Callback, Contract } from "web3/types";
 
 import { ContractExecutorService } from "@core/ethereum/contract-executor-service/contract.executor.service";
 
@@ -57,6 +59,13 @@ export class EtherSwapService {
     const checkSecretKey = this.contract.methods.checkSecretKey(hash);
     const receipt = await this.contractExecutorService.call(checkSecretKey);
     return receipt;
+  }
+
+  onOpen(hash: string, callback: Callback<any>) {
+    this.contract.events.Open({
+      filter: { _hash: hash },
+      fromBlock: 0
+    }, callback);
   }
 
 }

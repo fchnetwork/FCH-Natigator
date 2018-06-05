@@ -47,8 +47,8 @@ export class EthereumWalletComponent implements OnInit {
     // await this.testAerumErc20Swap();
     // await this.testSwapTemplate();
     await this.testSwapTemplates();
-    // await this.testEthereumSwap();
-    await this.testEthereumInjectedSwap();
+    await this.testEthereumSwap();
+    // await this.testEthereumInjectedSwap();
   }
 
   async testAeroSwap() {
@@ -109,6 +109,21 @@ export class EthereumWalletComponent implements OnInit {
 
     const ethAddress = await this.ethWalletService.getAddress();
     this.logger.logMessage(`Secret: ${secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${ethAddress}`);
+
+    const rinkebyWeb3 = await this.ethereumAuthService.getWeb3();
+    const privateKey = await this.ethWalletService.getPrivateKey();
+    this.selfSignedEthereumContractExecutorService.init(rinkebyWeb3, ethAddress, privateKey);
+    this.etherSwapService.init(rinkebyWeb3, this.selfSignedEthereumContractExecutorService);
+
+    // TODO: Unsubscribe
+    this.etherSwapService.onOpen(hash, (err, event) => {
+      if(err) {
+        this.logger.logError(`Create swap error: ${hash}`, err);
+      } else {
+        this.logger.logMessage(`Create swap success: ${hash}`, event);
+      }
+    });
+
     const cost = await this.etherSwapService.estimateOpenSwap(hash, aero, ethAddress, timestamp);
     this.logger.logMessage(`Swap cost: ${hash}`, cost);
     await this.etherSwapService.openSwap(hash, aero, ethAddress, timestamp);
@@ -123,7 +138,7 @@ export class EthereumWalletComponent implements OnInit {
     const aero = '0.01';
     const timeout = 120;
     const timestamp = Math.ceil((new Date().getTime() / 1000) + timeout);
-    
+
     const web3 = await this.ethereumAuthService.getInjectedWeb3();
     const accounts = await web3.eth.getAccounts();
 
@@ -133,6 +148,16 @@ export class EthereumWalletComponent implements OnInit {
     const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
     this.injectedWeb3ContractExecutorService.init(injectedWeb3, ethAddress, null);
     this.etherSwapService.init(injectedWeb3, this.injectedWeb3ContractExecutorService);
+
+    // TODO: Unsubscribe
+    this.etherSwapService.onOpen(hash, (err, event) => {
+      if(err) {
+        this.logger.logError(`Create swap error: ${hash}`, err);
+      } else {
+        this.logger.logMessage(`Create swap success: ${hash}`, event);
+      }
+    });
+
     const cost = await this.etherSwapService.estimateOpenSwap(hash, aero, ethAddress, timestamp);
     this.logger.logMessage(`Swap cost: ${hash}`, cost);
     await this.etherSwapService.openSwap(hash, aero, ethAddress, timestamp);
