@@ -3,6 +3,7 @@
   border: 0;
   border-top: 1px solid #c6ccd2;
   margin-bottom: 14px;
+  margin-top: 14px;
 }
 
 .divider--line-full {
@@ -14,6 +15,7 @@
   @extend .divider--line;
 
   border-top: 1px solid transparent !important;
+  margin-top: 0;
 }
 
 .divider--label {

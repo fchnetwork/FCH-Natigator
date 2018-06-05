@@ -9,9 +9,7 @@
       <div class="mnemonic-box">
           <div *ngFor="let item of selectedSeeds; let i = index" class="mnemonic-tag u-full" (click)="deselectSeed(item, i)">{{item.name}}</div>
       </div>
-      <div class="button">
-        <aer-button [ngClass]="{'disabled': !isEqual}" [disabled]="!isEqual" (buttonFn)="confirm()" class="large full-width">{{'CONFIRM'|translate}}</aer-button>
-      </div>
+      <aer-button [ngClass]="{'disabled': !isEqual}" [disabled]="!isEqual" (buttonFn)="confirm()" class="large full-width">{{'CONFIRM'|translate}}</aer-button>
       <app-divider label="{{'OR'|translate}}"></app-divider>
       <aer-button class="medium blue" (buttonFn)="clear()" >{{'CLEAR'|translate}}</aer-button>
     </div>
