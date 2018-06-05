@@ -2,29 +2,32 @@ import { Component, OnInit } from '@angular/core';
 
 import { sha3 } from 'web3-utils';
 
-import { Guid } from "@shared/helpers/guid";
-import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
-import { AeroSwapService } from "@core/swap/cross-chain/aero-swap-service/aero-swap.service";
-import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
-import { LoggerService } from "@core/general/logger-service/logger.service";
-import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
-import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
-import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
-import { EthWalletService } from "@core/ethereum/eth-wallet-service/eth-wallet.service";
-import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
-import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
-import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
+import { Guid } from "../../../shared/helpers/guid";
+import { Chain } from "../../../core/swap/cross-chain/swap-template-service/chain.enum";
+import { AeroSwapService } from "../../../core/swap/cross-chain/aero-swap-service/aero-swap.service";
+import { AuthenticationService } from "../../../core/authentication/authentication-service/authentication.service";
+import { LoggerService } from "../../../core/general/logger-service/logger.service";
+import { AerumErc20SwapService } from "../../../core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
+import { SwapTemplateService } from "../../../core/swap/cross-chain/swap-template-service/swap-template.service";
+import { EtherSwapService } from "../../../core/swap/cross-chain/ether-swap-service/ether-swap.service";
+import { EthWalletService } from "../../../core/ethereum/eth-wallet-service/eth-wallet.service";
+import { EthereumAuthenticationService } from "../../../core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
+import { InjectedWeb3ContractExecutorService } from "../../../core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
+import { SelfSignedEthereumContractExecutorService } from "../../../core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
+import { PaymentGatewayWizardStep } from "../payment-gateway-wizard-step";
+import { Location } from "@angular/common";
 
 @Component({
   selector: 'app-ethereum-wallet',
   templateUrl: './ethereum-wallet.component.html',
   styleUrls: ['./ethereum-wallet.component.scss']
 })
-export class EthereumWalletComponent implements OnInit {
+export class EthereumWalletComponent extends PaymentGatewayWizardStep implements OnInit {
 
   address: string;
 
   constructor(
+    location: Location,
     private logger: LoggerService,
     private authenticationService: AuthenticationService,
     private aeroSwapService: AeroSwapService,
@@ -34,8 +37,10 @@ export class EthereumWalletComponent implements OnInit {
     private ethWalletService: EthWalletService,
     private ethereumAuthService: EthereumAuthenticationService,
     private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
-    private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
-  ) { }
+    private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService,
+  ) {
+    super(location);
+  }
 
   ngOnInit() {
     const keystore = this.authenticationService.getKeystore();

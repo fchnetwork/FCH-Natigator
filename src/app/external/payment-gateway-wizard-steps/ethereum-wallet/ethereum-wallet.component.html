@@ -1,4 +1,4 @@
-<div class="c-eth-wallet c-eth-wallet__table c-eth-wallet__unlock">
+<div class="c-eth-wallet c-eth-wallet__table c-eth-wallet__unlock" *ngIf="active">
   <h1>Ethereum Wallet</h1>
   <div class="o-table">
     <div class="o-table__row">
@@ -19,5 +19,6 @@
     </div>
   </div>
   <aer-button (buttonFn)="accept()" class="blue large full-width">Test</aer-button>
-  <aer-button (buttonFn)="dismiss()" class="large full-width">Cancel</aer-button>
+  <aer-button (buttonFn)="next()" class="blue large full-width">Next</aer-button>
+  <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
 </div>
