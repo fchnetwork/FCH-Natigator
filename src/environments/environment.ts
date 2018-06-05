@@ -20,13 +20,13 @@ export const environment = {
       crossChain: {
         address: {
           aerum: {
-            AeroSwap: "0x0bda3dbaae4faad9e832829557d20321c7309d96",
-            Erc20Swap: "0x6a69122b61f094a574ff21c81b5486fc55a4abc9",
-            TemplatesRegistry: "0x3f5edd8ff0437a87f5ec9992c2722e75f227c8f4"
+            AeroSwap: "0xd7a2fdeedbb6495cdffa6d13f624c771de15a9ca",
+            Erc20Swap: "0x709cebb3bc1d07747cbc84213af09be227ba2ace",
+            TemplatesRegistry: "0x6ce0143a06476a3b1051df548cc096eb5ebb770e"
           },
           ethereum: {
-            EtherSwap: "0x29269e39b166744a67aebf9b7a4c8a23acc87c46",
-            Erc20Swap: "0xf43dec38ee501964ce7412612a5665fc8f626b50"
+            EtherSwap: "0x886cebd831af48f1bff5943605254037361c1d56",
+            Erc20Swap: "0xef0aa2ffc51d039e073ebbb0de3c4b79ec98472c"
           }
         }
       }

@@ -43,12 +43,12 @@ export class EthereumWalletComponent implements OnInit {
   }
 
   async accept() {
-    // await this.testAeroSwap();
+    await this.testAeroSwap();
     // await this.testAerumErc20Swap();
     // await this.testSwapTemplate();
-    await this.testSwapTemplates();
+    // await this.testSwapTemplates();
     // await this.testEthereumSwap();
-    await this.testEthereumInjectedSwap();
+    // await this.testEthereumInjectedSwap();
   }
 
   async testAeroSwap() {
@@ -63,6 +63,11 @@ export class EthereumWalletComponent implements OnInit {
     this.logger.logMessage(`Swap created: ${hash}`);
     const swap = await this.aeroSwapService.checkSwap(hash);
     this.logger.logMessage(`Swap checked: ${hash}`, swap);
+
+    await this.aeroSwapService.closeSwap(hash, secret);
+    this.logger.logMessage(`Swap closed: ${hash}`);
+    const swapClosed = await this.aeroSwapService.checkSwap(hash);
+    this.logger.logMessage(`Swap closed checked: ${hash}`, swapClosed);
   }
 
   async testAerumErc20Swap() {
