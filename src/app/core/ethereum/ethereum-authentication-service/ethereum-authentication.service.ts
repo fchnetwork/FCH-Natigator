@@ -31,14 +31,14 @@ export class EthereumAuthenticationService {
     let provider = new Web3.providers.WebsocketProvider(rinkebyAddress);
     const web3 = new Web3(provider);
 
-    provider.on('error', () => console.log('WS Error'));
+    provider.on('error', () => this.logger.logError('WS Error'));
     provider.on('end', () => {
-      console.log('WS closed');
-      console.log('Attempting to reconnect...');
+      this.logger.logMessage('WS closed');
+      this.logger.logMessage('Attempting to reconnect...');
       provider = new Web3.providers.WebsocketProvider(rinkebyAddress);
 
       provider.on('connect', () => {
-        console.log('WSS Reconnected');
+        this.logger.logMessage('WSS Reconnected');
       });
 
       web3.setProvider(provider);

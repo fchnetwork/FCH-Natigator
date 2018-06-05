@@ -1,5 +1,3 @@
-import has = Reflect.has;
-
 const artifacts = require('@core/abi/AtomicSwapEther.json');
 
 import { Injectable } from '@angular/core';
@@ -19,10 +17,10 @@ export class EtherSwapService {
 
   constructor() { }
 
-  init(web3: Web3, contractExecutorService: ContractExecutorService) {
-    this.web3 = web3;
-    this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.crossChain.address.ethereum.EtherSwap);
+  useContractExecutor(contractExecutorService: ContractExecutorService) {
     this.contractExecutorService = contractExecutorService;
+    this.web3 = contractExecutorService.getWeb3();
+    this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.crossChain.address.ethereum.EtherSwap);
   }
 
   async openSwap(hash: string, aeroValue: string, withdrawTrader: string, timelock: number) {
@@ -62,10 +60,15 @@ export class EtherSwapService {
   }
 
   onOpen(hash: string, callback: Callback<any>) {
-    this.contract.events.Open({
-      filter: { _hash: hash },
-      fromBlock: 0
-    }, callback);
+    this.contract.events.Open({ filter: { _hash: hash }, fromBlock: 0 }, callback);
+  }
+
+  onClose(hash: string, callback: Callback<any>) {
+    this.contract.events.Close({ filter: { _hash: hash }, fromBlock: 0 }, callback);
+  }
+
+  onExpire(hash: string, callback: Callback<any>) {
+    this.contract.events.Expire({ filter: { _hash: hash }, fromBlock: 0 }, callback);
   }
 
 }

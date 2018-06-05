@@ -17,9 +17,13 @@ export class InjectedWeb3ContractExecutorService implements ContractExecutorServ
 
   constructor(private logger: LoggerService) { }
 
-  init(web3: Web3, account: string, privateKey: string): void {
+  init(web3: Web3, account: string): void {
     this.web3 = web3;
     this.currentWalletAddress = account;
+  }
+
+  getWeb3() {
+    return this.web3;
   }
 
   async send(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }): Promise<TransactionReceipt> {

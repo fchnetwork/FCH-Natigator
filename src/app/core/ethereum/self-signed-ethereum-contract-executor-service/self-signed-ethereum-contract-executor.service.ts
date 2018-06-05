@@ -26,4 +26,8 @@ export class SelfSignedEthereumContractExecutorService extends BaseContractExecu
     this.currentWalletAddress = account;
     this.privateKey = privateKey;
   }
+
+  getWeb3() {
+    return this.web3;
+  }
 }

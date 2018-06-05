@@ -47,8 +47,8 @@ export class EthereumWalletComponent implements OnInit {
     // await this.testAerumErc20Swap();
     // await this.testSwapTemplate();
     await this.testSwapTemplates();
-    await this.testEthereumSwap();
-    // await this.testEthereumInjectedSwap();
+    // await this.testEthereumSwap();
+    await this.testEthereumInjectedSwap();
   }
 
   async testAeroSwap() {
@@ -107,13 +107,14 @@ export class EthereumWalletComponent implements OnInit {
     const timeout = 120;
     const timestamp = Math.ceil((new Date().getTime() / 1000) + timeout);
 
-    const ethAddress = await this.ethWalletService.getAddress();
-    this.logger.logMessage(`Secret: ${secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${ethAddress}`);
+    const withdrawTrader = "0xF38eDC62732c418EE18bEbf89CC063B3D1b57e0C";
+    this.logger.logMessage(`Secret: ${secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${withdrawTrader}`);
 
     const rinkebyWeb3 = await this.ethereumAuthService.getWeb3();
     const privateKey = await this.ethWalletService.getPrivateKey();
-    this.selfSignedEthereumContractExecutorService.init(rinkebyWeb3, ethAddress, privateKey);
-    this.etherSwapService.init(rinkebyWeb3, this.selfSignedEthereumContractExecutorService);
+    const sender = await this.ethWalletService.getAddress();
+    this.selfSignedEthereumContractExecutorService.init(rinkebyWeb3, sender, privateKey);
+    this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
 
     // TODO: Unsubscribe
     this.etherSwapService.onOpen(hash, (err, event) => {
@@ -124,9 +125,9 @@ export class EthereumWalletComponent implements OnInit {
       }
     });
 
-    const cost = await this.etherSwapService.estimateOpenSwap(hash, aero, ethAddress, timestamp);
+    const cost = await this.etherSwapService.estimateOpenSwap(hash, aero, withdrawTrader, timestamp);
     this.logger.logMessage(`Swap cost: ${hash}`, cost);
-    await this.etherSwapService.openSwap(hash, aero, ethAddress, timestamp);
+    await this.etherSwapService.openSwap(hash, aero, withdrawTrader, timestamp);
     this.logger.logMessage(`Swap created: ${hash}`);
     const swap = await this.etherSwapService.checkSwap(hash);
     this.logger.logMessage(`Swap checked: ${hash}`, swap);
@@ -139,15 +140,14 @@ export class EthereumWalletComponent implements OnInit {
     const timeout = 120;
     const timestamp = Math.ceil((new Date().getTime() / 1000) + timeout);
 
-    const web3 = await this.ethereumAuthService.getInjectedWeb3();
-    const accounts = await web3.eth.getAccounts();
-
-    const ethAddress = await accounts[0];
-    this.logger.logMessage(`Secret: ${secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${ethAddress}`);
+    const withdrawTrader = "0xF38eDC62732c418EE18bEbf89CC063B3D1b57e0C";
+    this.logger.logMessage(`Secret: ${secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${withdrawTrader}`);
 
     const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
-    this.injectedWeb3ContractExecutorService.init(injectedWeb3, ethAddress, null);
-    this.etherSwapService.init(injectedWeb3, this.injectedWeb3ContractExecutorService);
+    const accounts = await injectedWeb3.eth.getAccounts();
+    const sender = accounts[0];
+    this.injectedWeb3ContractExecutorService.init(injectedWeb3, sender);
+    this.etherSwapService.useContractExecutor(this.injectedWeb3ContractExecutorService);
 
     // TODO: Unsubscribe
     this.etherSwapService.onOpen(hash, (err, event) => {
@@ -158,9 +158,9 @@ export class EthereumWalletComponent implements OnInit {
       }
     });
 
-    const cost = await this.etherSwapService.estimateOpenSwap(hash, aero, ethAddress, timestamp);
+    const cost = await this.etherSwapService.estimateOpenSwap(hash, aero, withdrawTrader, timestamp);
     this.logger.logMessage(`Swap cost: ${hash}`, cost);
-    await this.etherSwapService.openSwap(hash, aero, ethAddress, timestamp);
+    await this.etherSwapService.openSwap(hash, aero, withdrawTrader, timestamp);
     this.logger.logMessage(`Swap created: ${hash}`);
     const swap = await this.etherSwapService.checkSwap(hash);
     this.logger.logMessage(`Swap checked: ${hash}`, swap);

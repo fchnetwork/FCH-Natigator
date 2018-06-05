@@ -6,4 +6,5 @@ export interface ContractExecutorService {
   call(transaction: TransactionObject<any>): any;
   send(transaction: TransactionObject<any>, options?: { value: string }): Promise<TransactionReceipt>;
   estimateCost(transaction: TransactionObject<any>, options?: { value: string }):  Promise<[number, number, number]>;
+  getWeb3(): Web3;
 }
