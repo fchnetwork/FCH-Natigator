@@ -1,11 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import Web3 from "web3";
-import { Erc20ToErc20SwapService } from './erc20-to-erc20-swap.service';
-import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
-import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
+import { Erc20ToAeroSwapService } from './erc20-to-aero-swap.service';
+import { AuthenticationService } from "../../../authentication/authentication-service/authentication.service";
+import { ContractExecutorService } from "../../../contract/contract-executor-service/contract-executor.service";
 
-describe('Erc20ToErc20SwapService', () => {
+describe('Erc20ToAeroSwapService', () => {
   const authService: Partial<AuthenticationService> = {
     initWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3)
   };
@@ -13,14 +13,14 @@ describe('Erc20ToErc20SwapService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        Erc20ToErc20SwapService,
+        Erc20ToAeroSwapService,
         { provide: AuthenticationService, useValue: authService },
         { provide: ContractExecutorService, useValue: jest.fn() }
       ]
     });
   });
 
-  it('should be created', inject([Erc20ToErc20SwapService], (service: Erc20ToErc20SwapService) => {
+  it('should be created', inject([Erc20ToAeroSwapService], (service: Erc20ToAeroSwapService) => {
     expect(service).toBeTruthy();
   }));
 });

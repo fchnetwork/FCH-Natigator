@@ -1,11 +1,11 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import Web3 from "web3";
-import { ERC20TokenService } from './erc20-token.service';
-import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
+import { EtherSwapService } from './ether-swap.service';
+import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
+import Web3 from "web3";
 
-describe('ERC20TokenService', () => {
+describe('EtherSwapService', () => {
   beforeEach(() => {
     const authService: Partial<AuthenticationService> = {
       initWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3)
@@ -13,14 +13,14 @@ describe('ERC20TokenService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        ERC20TokenService,
+        EtherSwapService,
         { provide: AuthenticationService, useValue: authService },
         { provide: ContractExecutorService, useValue: jest.fn() }
       ]
     });
   });
 
-  it('should be created', inject([ERC20TokenService], (service: ERC20TokenService) => {
+  it('should be created', inject([EtherSwapService], (service: EtherSwapService) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -2,6 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { ExternalTransactionComponent } from '@app/external/external-transaction/external-transaction.component';
+import { EthereumWalletComponent } from "@app/external/ethereum-wallet/ethereum-wallet.component";
 
 const ACCOUNT_ROUTES = [
     {
@@ -16,6 +17,10 @@ const ACCOUNT_ROUTES = [
                 path: 'transaction',
                 component: ExternalTransactionComponent
             },
+            {
+              path: 'wallet',
+              component: EthereumWalletComponent
+            }
         ]
     }
 ];
