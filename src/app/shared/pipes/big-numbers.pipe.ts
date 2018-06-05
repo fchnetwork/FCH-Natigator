@@ -1,48 +1,42 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
   name: 'bignumber'
 })
 export class BigNumbersPipe implements PipeTransform {
   private units = [
-    '',
-    '',
-    'Millions',
-    'Billions',
-    'Trillions',
-    'Quadrillions',
-    'Quintillions'
+    'NO_UNIT',
+    'NO_UNIT',
+    'MILLIONS',
+    'BILLIONS',
+    'TRILLIONS',
+    'QUADRILLIONS',
+    'QUINTILLIONS'
 ];
 
-  constructor(private decimalPipe: DecimalPipe) {
+  constructor ( private decimalPipe: DecimalPipe,
+                private translateService: TranslateService) { }          
 
-  }
-  transform(value: any, decimals:any, digits?: any): any {
-    if (value >= 10**6 && value < 10**9) {
-      return this.decimalPipe.transform(value/(10**6), digits) + ' Millions';
-    } else if (value >= 10**9 && value < 10**12) {
-      return this.decimalPipe.transform(value/(10**9), digits) + ' Billions';
-    } else if (value >= 10**12 && value < 10**15) {
-      return this.decimalPipe.transform(value/(10**12), digits) + ' Trillions';
-    } else if (value >= 10**15) {
-      return this.decimalPipe.transform(value/(10**15), digits) + ' Quadrillions';
-    } else if (value < 1 && value >0) {
-      return this.decimalPipe.transform(value*(10**decimals), digits) + 'e-' + decimals;
+  transform(value: number = 0, digits?: any ) : string { 
+    if (!isFinite( value ) ){ 
+      return '?'; 
+    } 
+    let unit = 0; 
+    while ( value > 100000 ) { 
+      value /= 1000; 
+      unit ++; 
+    }
+    if (value < 1 && value > 0) {
+      while ( value < 1 ) { 
+        value *= 10; 
+        unit ++;
+      }
+      return this.decimalPipe.transform(value, digits) + 'e-' + unit;
     } else {
-      return this.decimalPipe.transform(value, '1.0')
+      return this.decimalPipe.transform(value, digits) + ' ' + this.translateService.instant('BIG_NUMBERS.' + this.units[ unit ]);
     }
   }
-  // transform(value: number = 0, precision?: number ) : string { 
-  //   if (!isFinite( value ) ){ 
-  //     return '?'; 
-  //   } 
-  //   let unit = 0; 
-  //   while ( value >= 1000 ) { 
-  //     value /= 1000; 
-  //     unit ++; 
-  //   }
-  //   return value.toFixed( + precision ) + ' ' + this.units[ unit ];
-  // }
 
 }

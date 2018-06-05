@@ -177,11 +177,19 @@
   "DASHBOARD": {
     "TITLE": "Account Overview"
   },
+  "BIG_NUMBERS": {
+    "NO_UNIT":"",
+    "MILLIONS":"Millions",
+    "BILLIONS":"Billions",
+    "TRILLIONS":"Trillions",
+    "QUADRILLIONS":"Quadrillions",
+    "QUINTILLIONS":"Quintillions"
+  },
   "TRANSACTION_COST": "Txn fee",
   "DASHBOARD_TOKENS": {
     "NAME": "Name",
     "DECIMALS": "Decimals",
-    "OWNED": "Owned"
+    "AMOUNT": "Amount"
   },
   "EXPLORER": {
     "SHOWING_TRANSACTIONS": "Showing transaction in blocks",
