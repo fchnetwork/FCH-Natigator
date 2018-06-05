@@ -12,6 +12,8 @@ import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-servic
 import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
 import { EthWalletService } from "@core/ethereum/eth-wallet-service/eth-wallet.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
+import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
+import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 
 @Component({
   selector: 'app-ethereum-wallet',
@@ -30,7 +32,9 @@ export class EthereumWalletComponent implements OnInit {
     private swapTemplateService: SwapTemplateService,
     private etherSwapService: EtherSwapService,
     private ethWalletService: EthWalletService,
-    private ethereumAuthService: EthereumAuthenticationService
+    private ethereumAuthService: EthereumAuthenticationService,
+    private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
+    private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
   ) { }
 
   ngOnInit() {
@@ -119,12 +123,16 @@ export class EthereumWalletComponent implements OnInit {
     const aero = '0.01';
     const timeout = 120;
     const timestamp = Math.ceil((new Date().getTime() / 1000) + timeout);
-
+    
     const web3 = await this.ethereumAuthService.getInjectedWeb3();
     const accounts = await web3.eth.getAccounts();
 
     const ethAddress = await accounts[0];
     this.logger.logMessage(`Secret: ${secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${ethAddress}`);
+
+    const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
+    this.injectedWeb3ContractExecutorService.init(injectedWeb3, ethAddress, null);
+    this.etherSwapService.init(injectedWeb3, this.injectedWeb3ContractExecutorService);
     const cost = await this.etherSwapService.estimateOpenSwap(hash, aero, ethAddress, timestamp);
     this.logger.logMessage(`Swap cost: ${hash}`, cost);
     await this.etherSwapService.openSwap(hash, aero, ethAddress, timestamp);

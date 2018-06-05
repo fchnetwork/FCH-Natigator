@@ -13,7 +13,7 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 import { CanActivateAccountAuthGuard } from '@app/core/authentication/auth-guards/can-activate-account.guard';
 import { CanActivateViaAuthGuard } from '@app/core/authentication/auth-guards/can-activate-auth.guard';
 import { ContractExecutorService } from '@app/core/contract/contract-executor-service/contract-executor.service';
-import { EthereumContractExecutorService } from "@core/contract/contract-executor-service/ethereum-contract-executor.service";
+import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
@@ -35,7 +35,7 @@ import { AeroSwapService } from "@core/swap/cross-chain/aero-swap-service/aero-s
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { EthWalletService } from "@core/ethereum/eth-wallet-service/eth-wallet.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
-import { InjectedWeb3ContractExecutorService } from "@core/contract/contract-executor-service/injected-web3-contract-executor.service";
+import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 
 @NgModule({
   imports: [
@@ -43,7 +43,7 @@ import { InjectedWeb3ContractExecutorService } from "@core/contract/contract-exe
   ],
   providers: [
     ContractExecutorService,
-    EthereumContractExecutorService,
+    SelfSignedEthereumContractExecutorService,
     EthWalletService,
     EthereumAuthenticationService,
     InjectedWeb3ContractExecutorService,

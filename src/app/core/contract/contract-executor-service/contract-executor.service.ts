@@ -27,9 +27,7 @@ export class ContractExecutorService extends BaseContractExecutorService {
     const keystore = this.authService.getKeystore();
     this.currentWalletAddress = "0x" + keystore.address;
     this.privateKey = this.sessionService.retrieve('private_key');
-
     this.web3 = this.authService.initWeb3();
-
     this.chainId = environment.chainId;
   }
 }

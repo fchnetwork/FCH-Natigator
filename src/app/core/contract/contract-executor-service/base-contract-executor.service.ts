@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import { Tx, TransactionObject, TransactionReceipt } from 'web3/types';
 
+import { retry } from "@shared/helpers/retry";
 import { LoggerService } from '@core/general/logger-service/logger.service';
 
 export abstract class BaseContractExecutorService {
@@ -15,6 +16,8 @@ export abstract class BaseContractExecutorService {
   protected constructor(private logger: LoggerService) { }
 
   async send(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) {
+    this.ensureInitiated();
+
     const tx = await this.createSendTx(transaction, options);
     const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey) as any;
     this.logger.logMessage('Transaction being sent');
@@ -22,7 +25,7 @@ export abstract class BaseContractExecutorService {
     return receipt;
   }
 
-  private sendSignedTransaction(data: string) : Promise<TransactionReceipt> {
+  private sendSignedTransaction(data: string): Promise<TransactionReceipt> {
     let transactionHash: string;
     return new Promise((resolve, reject) => {
       this.web3.eth.sendSignedTransaction(data)
@@ -37,7 +40,7 @@ export abstract class BaseContractExecutorService {
       .on('error', async (error) => {
         // TODO: We do this workaround due to this issue: https://github.com/ethereum/web3.js/issues/1534
         if(error && error.message && error.message.startsWith('Failed to check for transaction receipt:')) {
-          const receipt = await this.retry(() => this.web3.eth.getTransactionReceipt(transactionHash), 40, 1500);
+          const receipt = await retry(() => this.web3.eth.getTransactionReceipt(transactionHash), 40, 1500);
           this.logger.logWarning('Transaction receipt returned:', receipt);
           resolve(receipt);
         } else {
@@ -49,6 +52,8 @@ export abstract class BaseContractExecutorService {
   }
 
   async call(transaction: TransactionObject<any>) {
+    this.ensureInitiated();
+
     const tx = this.createCallTx(transaction);
     const response = await transaction.call(tx);
     return response.valueOf();
@@ -101,6 +106,8 @@ export abstract class BaseContractExecutorService {
   }
 
   async estimateCost(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> {
+    this.ensureInitiated();
+
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
 
     const getGasPrice = this.web3.eth.getGasPrice();
@@ -117,29 +124,17 @@ export abstract class BaseContractExecutorService {
     return [gasPrice, estimatedGas, estimatedGas + this.contractGasThreshold];
   }
 
-  private retry<T>(func: () => Promise<T>, times: number, interval: number) : Promise<T> {
-    return new Promise<T>(async (resolve, reject) => {
-      if(times <= 0) {
-        reject('Cannot retry 0 times');
-        return;
-      }
+  private ensureInitiated() : void {
+    if(!this.web3) {
+      throw new Error("Web3 is not initiated");
+    }
 
-      if(times === 1) {
-        resolve(await func());
-        return;
-      }
+    if(!this.currentWalletAddress) {
+      throw new Error("account address is not initiated");
+    }
 
-      try {
-        const response = await func();
-        resolve(response);
-        return;
-      } catch(e) {
-        console.warn(e.message);
-      }
-
-      setTimeout(async () => {
-        resolve(await this.retry(func, times - 1, interval));
-      }, interval);
-    });
+    if(!this.privateKey) {
+      throw new Error("private key is not initiated");
+    }
   }
 }

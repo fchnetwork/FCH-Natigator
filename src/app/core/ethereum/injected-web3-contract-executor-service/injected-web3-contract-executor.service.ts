@@ -3,30 +3,28 @@ import { Injectable } from "@angular/core";
 import Web3 from 'web3';
 import { Tx, TransactionObject, TransactionReceipt } from 'web3/types';
 
-import { LoggerService } from '@core/general/logger-service/logger.service';
-import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
+import { LoggerService } from "@core/general/logger-service/logger.service";
+import { ContractExecutorService } from "@core/ethereum/contract-executor-service/contract.executor.service";
+
 
 @Injectable()
-export class InjectedWeb3ContractExecutorService {
+export class InjectedWeb3ContractExecutorService implements ContractExecutorService {
 
   private readonly contractGasThreshold = 100 * 1000;
 
   private currentWalletAddress: string;
   private web3: Web3;
 
-  constructor(
-    private logger: LoggerService,
-    private ethereumAuthService: EthereumAuthenticationService
-  ) {
-    ethereumAuthService.getInjectedWeb3().then(async (w3) => {
-      this.web3 = w3;
-      const accounts = await this.web3.eth.getAccounts();
-      this.logger.logMessage("Web3 account: " + accounts[0]);
-      this.currentWalletAddress = accounts[0];
-    });
+  constructor(private logger: LoggerService) { }
+
+  init(web3: Web3, account: string, privateKey: string): void {
+    this.web3 = web3;
+    this.currentWalletAddress = account;
   }
 
-  async send(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<TransactionReceipt> {
+  async send(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }): Promise<TransactionReceipt> {
+    this.ensureInitiated();
+
     const tx = await this.createSendTx(transaction, options);
     this.logger.logMessage('Transaction being sent');
     const receipt = await transaction.send(tx);
@@ -34,12 +32,14 @@ export class InjectedWeb3ContractExecutorService {
   }
 
   async call(transaction: TransactionObject<any>) {
+    this.ensureInitiated();
+
     const tx = this.createCallTx(transaction);
     const response = await transaction.call(tx);
     return response.valueOf();
   }
 
-  private async createSendTx(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<Tx> {
+  private async createSendTx(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }): Promise<Tx> {
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
     const [gasPrice, estimatedGas, transactionsCount] = await this.getSentTxData(transaction, options);
 
@@ -56,7 +56,7 @@ export class InjectedWeb3ContractExecutorService {
     };
   }
 
-  private async getSentTxData(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> {
+  private async getSentTxData(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }): Promise<[number, number, number]> {
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
 
     const getGasPrice = this.web3.eth.getGasPrice();
@@ -73,7 +73,9 @@ export class InjectedWeb3ContractExecutorService {
     return [gasPrice, estimatedGas, transactionsCount];
   }
 
-  async estimateCost(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> {
+  async estimateCost(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }): Promise<[number, number, number]> {
+    this.ensureInitiated();
+
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
 
     const getGasPrice = this.web3.eth.getGasPrice();
@@ -96,5 +98,15 @@ export class InjectedWeb3ContractExecutorService {
       from: this.currentWalletAddress,
       data: transaction.encodeABI()
     };
+  }
+
+  private ensureInitiated() : void {
+    if(!this.web3) {
+      throw new Error("Web3 is not initiated");
+    }
+
+    if(!this.currentWalletAddress) {
+      throw new Error("account address is not initiated");
+    }
   }
 }
