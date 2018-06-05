@@ -6,6 +6,7 @@ import { ExternalTransactionComponent } from "@app/external/external-transaction
 import { AppUIModule } from "@app/app.ui.module";
 import { SharedModule } from "@app/shared/shared.module";
 import { EthereumWalletComponent } from './ethereum-wallet/ethereum-wallet.component';
+import { PaymentGatewayWizardComponent } from './payment-gateway-wizard/payment-gateway-wizard.component';
 
 @NgModule({
     entryComponents: [
@@ -21,6 +22,7 @@ import { EthereumWalletComponent } from './ethereum-wallet/ethereum-wallet.compo
     declarations: [
         ExternalTransactionComponent,
         EthereumWalletComponent,
+        PaymentGatewayWizardComponent,
     ]
 })
 export class ExternalModule { }
