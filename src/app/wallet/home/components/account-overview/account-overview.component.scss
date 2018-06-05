@@ -9,8 +9,8 @@
     color: #2D353D;
     font-size: 25px;
     font-weight: bold;
-    padding-top: 10%;
-    word-wrap: break-word;
+    padding-top: 28px;
+    line-height: 1;
   }
 
   .qr {
@@ -36,8 +36,6 @@
       &:after {
         position: absolute;
         width: 100px;
-        // top: -18px;
-        // right: 31px;
         content: "  (Click to copy)";
         white-space: pre;
         font-size: 10px;
@@ -45,4 +43,15 @@
     }
 
   }
+}
+
+@media only screen and (max-width:480px) {
+  .account-overview {
+  
+    .balance {
+      font-size: 21px;
+      white-space: nowrap;
+    }
+  }
+
 }

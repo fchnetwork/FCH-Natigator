@@ -23,7 +23,9 @@ import { OrderbyPipe } from '@shared/pipes/orderby.pipe';
 import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
 import { HextoAsciiPipe } from '@shared/pipes/hextoAscii.pipe';
 import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
+import { BigNumbersPipe } from '@shared/pipes/big-numbers.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
+import { DecimalPipe } from '@angular/common';
 
 import { AppUIModule } from '@app/app.ui.module';
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
@@ -89,8 +91,10 @@ const modalWindows = [
     ChartComponent,
     CropAddressPipe,
     LoaderComponent,
-    modalWindows
+    modalWindows,
+    BigNumbersPipe
   ],
+  providers: [DecimalPipe],
   exports:[
     I18nComponent,
     DividerComponent,
@@ -115,6 +119,7 @@ const modalWindows = [
     ChartComponent,
     NgxEchartsModule,
     CropAddressPipe,
+    BigNumbersPipe
   ]
 })
 
