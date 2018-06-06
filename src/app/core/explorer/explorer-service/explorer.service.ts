@@ -33,7 +33,7 @@ export class ExplorerService {
     let options = new RequestOptions({ headers: headers });
 
     return this._http
-      .post(environment.WebsocketProvider, this.txpoolContentData, options)
+      .post(environment.rpcApiProvider, this.txpoolContentData, options)
       .map(response => response.json().result.pending);
   }
 

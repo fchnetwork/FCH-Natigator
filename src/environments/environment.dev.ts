@@ -7,6 +7,7 @@ export const environment = {
   production: false,
   configInUse: "environment.dev",
   WebsocketProvider: "ws://52.51.85.249:8546",
+  rpcApiProvider: "http://52.51.85.249:8545",    
   cookiesDomain: "dev.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "http://explore.aerum.net/#/",
