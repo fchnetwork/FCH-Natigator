@@ -1,9 +1,44 @@
 <div class="c-swap-create c-swap-create__table c-swap-create__unlock" *ngIf="active">
-  <h1>Swap Create</h1>
+  <h1>Create Exchange Swap</h1>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
+      <label>Receiving Aerum token:</label>
+      <aer-select [(ngModel)]="selectedToken" dataKey="title" icon="aerumleaf" placeholder="Select your token">
+        <aer-select-option *ngFor="let item of tokens;" [value]="item">
+          <aer-icon>aerumleaf</aer-icon>
+          <span>{{item.title}}</span>
+        </aer-select-option>
+      </aer-select>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
+      <label>Amount of token to receive:</label>
+      <aer-input [(ngModel)]="amount" placeholder="Type amount"></aer-input>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
+      <label>Receiving Aerum token:</label>
+      <aer-select [(ngModel)]="selectedCounterParty" dataKey="name" placeholder="Select your counterparty">
+        <aer-select-option *ngFor="let item of counterParties;" [value]="item">
+          <img class="avatar" [src]="item.address | generateavatar"><span>{{item.name}}</span>
+        </aer-select-option>
+      </aer-select>
+    </div>
+  </div>
   <div class="o-table">
     <div class="o-table__row">
       <div class="o-table__cell o-data--left">
-        Field 2
+        Send Ethereum asset
+      </div>
+      <div class="o-table__cell o-data--right">
+        ETH
+      </div>
+    </div>
+    <div class="o-table__row">
+      <div class="o-table__cell o-data--left">
+        Amount
       </div>
       <div class="o-table__cell o-data--right">
         2
@@ -11,12 +46,23 @@
     </div>
     <div class="o-table__row">
       <div class="o-table__cell o-data--left">
-        Field 1
+        Exchange rate (Aerum token/Eth asset)
       </div>
       <div class="o-table__cell o-data--right">
-        1
+        0.564
       </div>
     </div>
+    <div class="o-table__row">
+      <div class="o-table__cell o-data--left">
+        Secret key
+      </div>
+      <div class="o-table__cell o-data--right">
+        <span class="secret-key">0x90b66549a6f587d...bbe821c2ce</span>
+      </div>
+    </div>
+  </div>
+  <div class="message">
+    Warning! Phasellus rhoncus. Nulla est. Phasellus et lorem id felis nonummy placerat. Integer pellentesque quam vel velit. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat.
   </div>
   <aer-button (buttonFn)="next()" class="blue large full-width">Next</aer-button>
   <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>

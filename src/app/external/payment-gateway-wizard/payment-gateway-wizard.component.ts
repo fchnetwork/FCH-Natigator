@@ -10,7 +10,8 @@ import { SwapCreateComponent } from "@app/external/payment-gateway-wizard-steps/
 })
 export class PaymentGatewayWizardComponent implements OnInit {
 
-  @ViewChild(EthereumWalletComponent) walletStep;
+  // @ViewChild(EthereumWalletComponent) walletStep;
+  @ViewChild(SwapCreateComponent) walletStep;
   @ViewChild(SwapCreateComponent) createSwapStep;
   @ViewChild(SwapConfirmComponent) confirmSwapStep;
 
