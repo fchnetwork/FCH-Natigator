@@ -3,9 +3,8 @@
     <div class="header">{{'CREATE_BACKUP'|translate}}</div>
     <app-divider></app-divider>
     <div class="b-text">{{'BACKUP_PHRASE'|translate}}</div>
-    <div class="button">
-        <aer-button class="large full-width" (buttonFn)="createBackup()">{{'CREATE_BACKUP'|translate}}</aer-button>
-    </div>
+    <app-divider [showLine]="false"></app-divider>
+    <aer-button class="large full-width" (buttonFn)="createBackup()">{{'CREATE_BACKUP'|translate}}</aer-button>
     <app-divider label="{{'OR'|translate}}"></app-divider>
     <div class="link-text">
         <a (click)="skipStep()" routerLink="/wallet/home">{{'SKIP_STEP'|translate}}</a>

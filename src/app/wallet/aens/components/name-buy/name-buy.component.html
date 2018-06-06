@@ -1,17 +1,28 @@
 <aer-card title="{{'ENS.BUY_NAME_TITLE'|translate}}">
   <form [formGroup]="buyForm">
     <div aerRow>
+      <div aerColumn size="sm-12">
+        <div class="input-name fullrow-label">{{'ENS.FIELD_ADDRESS'|translate}}</div>
+      </div>
+    </div>
+
+    <div aerRow>
       <div aerColumn size="sm-6">
-        <div class="input-name">{{'ENS.FIELD_ADDRESS'|translate}}</div>
         <aer-input icon="aerum" [(ngModel)]="address" [ngClass]="{'has-error': hasError(buyForm.controls.address)}" [attr.disabled]="locked" formControlName="address" ngDefaultControl></aer-input>
       </div>
-      <div aerColumn size="sm-6" class="aens__address-info">
+      <div aerColumn size="sm-6">
         {{'ENS.ADDRESS_SET_DESCRIPTION'|translate}}
       </div>
     </div>
+
+    <div aerRow>
+      <div aerColumn size="sm-12">
+        <div class="input-name fullrow-label">{{'ENS.FIELD_NAME'|translate}}</div>
+      </div>
+    </div>
+
     <div aerRow>
       <div aerColumn size="sm-6">
-        <div class="input-name">{{'ENS.FIELD_NAME'|translate}}</div>
         <aer-input [(ngModel)]="name" class="with-button blue" [ngClass]="{'has-error': hasError(buyForm.controls.name)}" readonly="readonly" buttonLabel=".aer" formControlName="name" ngDefaultControl></aer-input>
       </div>
       <div aerColumn size="sm-6" class="aens__price-info">

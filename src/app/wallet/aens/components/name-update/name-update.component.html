@@ -1,27 +1,37 @@
 <aer-card title="{{'ENS.MANAGE_NAME_TITLE'|translate}}">
-  <div aerRow>
-    <form [formGroup]="setAddressForm">
+  <form [formGroup]="setAddressForm">
+    <div aerRow>
+      <div aerColumn size="sm-12">
+        <div class="input-name fullrow-label">{{'ENS.FIELD_ADDRESS'|translate}}</div>
+      </div>
+    </div>
+
+    <div aerRow>
       <div aerColumn size="sm-6">
-        <div class="input-name">{{'ENS.FIELD_ADDRESS'|translate}}</div>
         <aer-input [(ngModel)]="address" class="with-button blue" buttonLabel="{{'ENS.BTN_SET_ADDRESS'|translate}}" [ngClass]="{'has-error': hasError(setAddressForm.controls.address), 'blue': canSetAddress()}" [attr.disabled]="!canSetAddress()" (buttonFn)="setAddress()" formControlName="address" ngDefaultControl></aer-input>
       </div>
-      <div aerColumn size="sm-6" class="aens__address-info">
+      <div aerColumn size="sm-6">
         {{'ENS.ADDRESS_SET_DESCRIPTION'|translate}}
       </div>
-    </form>
-  </div>
-  <div aerRow>
-    <form [formGroup]="transferForm">
+    </div>
+  </form>
+
+  <form [formGroup]="transferForm">
+    <div aerRow>
+      <div aerColumn size="sm-12">
+        <div class="input-name fullrow-label">{{'ENS.FIELD_NEW_OWNER'|translate}}</div>
+      </div>
+    </div>
+    <div aerRow>
       <div aerColumn size="sm-6">
-        <div class="input-name">{{'ENS.FIELD_NEW_OWNER'|translate}}</div>
         <aer-input [(ngModel)]="newOwner" class="with-button blue" buttonLabel="{{'ENS.BTN_TRANSFER_NAME'|translate}}" [ngClass]="{'has-error': hasError(transferForm.controls.address), 'blue': canTransfer()}" [attr.disabled]="!canTransfer()" (buttonFn)="transfer()" formControlName="address" ngDefaultControl></aer-input>
       </div>
-      <div aerColumn size="sm-6" class="aens__address-info">
+      <div aerColumn size="sm-6">
         {{'ENS.ADDRESS_TRANSFER_NAME_DESCRIPTION'|translate}}
       </div>
-    </form>
-  </div>
-  <hr class="aens__separator">
+    </div>
+  </form>
+  <app-divider [showLine]="true" [fullWidth]="true"></app-divider>
   <div aerRow>
     <div aerColumn size="sm-12">
       <aer-button class="aens__btn-release normal" [ngClass]="{'blue': canReleaseName()}" (buttonFn)="releaseName()" [disabled]="!canReleaseName()">{{'ENS.BTN_RELEASE_NAME'|translate}}</aer-button>

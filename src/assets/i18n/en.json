@@ -179,6 +179,7 @@
   },
   "BIG_NUMBERS": {
     "NO_UNIT":"",
+    "THOUSANDS":"Thousands",
     "MILLIONS":"Millions",
     "BILLIONS":"Billions",
     "TRILLIONS":"Trillions",
