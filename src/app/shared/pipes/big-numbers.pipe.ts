@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class BigNumbersPipe implements PipeTransform {
   private units = [
     'NO_UNIT',
-    'NO_UNIT',
+    'THOUSANDS',
     'MILLIONS',
     'BILLIONS',
     'TRILLIONS',
@@ -24,7 +24,7 @@ export class BigNumbersPipe implements PipeTransform {
       return '?'; 
     } 
     let unit = 0; 
-    while ( value > 100000 ) { 
+    while ( value > 1000 ) { 
       value /= 1000; 
       unit ++; 
     }

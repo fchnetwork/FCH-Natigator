@@ -11,9 +11,6 @@
         <div aerColumn size="lg-3 md-3 sm-3 xs-3">
             {{ 'DASHBOARD_TOKENS.NAME' | translate }}
         </div>
-        <!-- <div aerColumn size="lg-2 md-2 sm-2 xs-2" class="right-align">
-            {{ 'DASHBOARD_TOKENS.DECIMALS' | translate }}
-        </div> -->
         <div aerColumn size="lg-7 md-7 sm-7 xs-7" class="right-align">
             {{ 'DASHBOARD_TOKENS.AMOUNT' | translate }}
         </div>
@@ -21,14 +18,10 @@
             
         </div>
     </div>
-
     <div aerRow *ngFor="let token of tokens" class="token-item">
         <div aerColumn size="lg-3 md-3 sm-3 xs-3" class="name">
             <span class="token-img"><aer-icon>generaltoken</aer-icon></span> {{token.symbol}}
         </div>
-        <!-- <div aerColumn size="lg-2 md-2 sm-2 xs-2" class="amount">
-            {{token.decimals}}
-        </div> -->
         <div aerColumn size="lg-7 md-7 sm-7 xs-7" class="amount">
             {{token.balance | bignumber:'1.0-3'}}
         </div>
