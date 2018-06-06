@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PaymentGatewayWizardStep } from "../payment-gateway-wizard-step";
 import { Location } from "@angular/common";
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-swap-create',
@@ -22,11 +23,19 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   ];
   selectedCounterParty = this.counterParties[0];
 
-  constructor(location: Location, public nameService: AerumNameService) {
+  constructor(
+    location: Location,
+    public nameService: AerumNameService,
+    public router: Router
+  ) {
     super(location);
   }
 
   ngOnInit() {
+  }
+
+  cancel() {
+    this.router.navigate(['/wallet/home']);
   }
 
 }
