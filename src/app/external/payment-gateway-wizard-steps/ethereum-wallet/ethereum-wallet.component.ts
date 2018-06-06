@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
+import Web3 from "web3";
+import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { PaymentGatewayWizardStep } from "@app/external/payment-gateway-wizard-steps/payment-gateway-wizard-step";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
-import Web3 from "web3";
-import { EthWalletType } from "@external/models/eth-wallet-type.enum";
-import { Eth } from "web3/types";
+import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
+import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 
 @Component({
   selector: 'app-ethereum-wallet',
@@ -15,6 +16,11 @@ import { Eth } from "web3/types";
 })
 export class EthereumWalletComponent extends PaymentGatewayWizardStep implements OnInit {
 
+  importInProgress = false;
+  addressSelected = false;
+
+  address: string;
+
   walletTypes = EthWalletType;
   selectedWalletType = EthWalletType.Imported;
   injectedWeb3: Web3;
@@ -22,6 +28,8 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   constructor(
     location: Location,
     private logger: LoggerService,
+    private notificationService: InternalNotificationService,
+    private clipboardService: ClipboardService,
     private ethereumAuthenticationService: EthereumAuthenticationService
   ) {
     super(location);
@@ -35,9 +43,12 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
     this.selectedWalletType = event.value;
   }
 
-  // TODO: Remove
-  address = "0xdfddufhdsfdsofjsdofisf";
+  async copyToClipboard() {
+    await this.clipboardService.copy(this.address);
+    this.notificationService.showMessage('Copied to clipboard!', 'Done');
+  }
 
+  // TODO: Remove
   aerlists = [
     {
       id: 1,

@@ -18,27 +18,29 @@
   </div>
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
-      <aer-select [(ngModel)]="selectResult" dataKey="title" icon="key" img="img" placeholder="Select your account">
-        <aer-select-option *ngFor="let item of aerlists;" [value]="item"><img class="avatar" [src]="item.img"><span>{{item.title}}</span></aer-select-option>
+      <aer-select [(ngModel)]="selectResult" dataKey="title" icon="key" img="img" [disabled]="walletTypes.Imported !== selectedWalletType" placeholder="Select your account">
+        <aer-select-option *ngFor="let item of aerlists;" [value]="item">
+          <img class="avatar" [src]="item.img"><span>{{item.title}}</span>
+        </aer-select-option>
       </aer-select>
     </div>
   </div>
-  <div aerRow>
+  <div aerRow *ngIf="importInProgress">
     <div aerColumn size="sm-12" class="cell">
       <aer-input [(ngModel)]="file" class="with-button blue" buttonLabel="Import"></aer-input>
     </div>
   </div>
-  <div aerRow>
+  <div aerRow *ngIf="addressSelected">
     <div aerColumn size="sm-12" class="cell">
       <img [src]="addressQR" alt="">
     </div>
   </div>
-  <div aerRow>
+  <div aerRow *ngIf="addressSelected">
     <div aerColumn size="sm-12" class="cell c-copy__address">
       <a (click)="copyToClipboard()">{{ address }}</a>
     </div>
   </div>
-  <div aerRow>
+  <div aerRow *ngIf="addressSelected">
     <div aerColumn size="sm-6" class="cell cell--left">
       Balance:
     </div>
