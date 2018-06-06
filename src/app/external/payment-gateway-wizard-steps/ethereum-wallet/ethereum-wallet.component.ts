@@ -25,12 +25,14 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   web3: Web3;
   injectedWeb3: Web3;
 
-  importInProgress = false;
+  storedAccounts: EthereumAccount[] = [];
+  selectedStoredAddress: EthereumAccount;
 
-  account: EthereumAccount;
+  address: string;
   addressQR: string;
   balance = 0;
-  storedAccounts: EthereumAccount[] = [];
+
+  importInProgress = false;
 
   constructor(
     location: Location,
@@ -51,12 +53,10 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
     this.storedAccounts = [
       {
         address: '0x56220873fb32f35a27f5e0f6604fda2aef439a5f',
-        avatar: './assets/images/avatar-1.png',
         privateKey: ''
       },
       {
         address: '0xf38edc62732c418ee18bebf89cc063b3d1b57e0c',
-        avatar: './assets/images/avatar-2.png',
         privateKey: ''
       }];
 
@@ -64,19 +64,46 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
     this.injectedWeb3 = await this.ethereumAuthenticationService.getInjectedWeb3();
   }
 
-  onWalletSelect(event: { value: EthWalletType }) {
+  async onWalletSelect(event: { value: EthWalletType }) {
     this.selectedWalletType = event.value;
+    if(this.selectedWalletType === EthWalletType.Injected) {
+      await this.onInjectedWalletSelected();
+    } else {
+      await this.onImportedWalletSelected();
+    }
   }
 
+  private async onInjectedWalletSelected() {
+    const accounts = await this.injectedWeb3.eth.getAccounts();
+    if(!accounts || !accounts.length) {
+      this.address = null;
+      this.notificationService.showMessage('Please login in Mist / Metamask', 'Cannot get accounts from wallet');
+    } else {
+      this.address =  accounts[0];
+      this.reloadAccountData();
+    }
+  }
+
+  private async onImportedWalletSelected() { }
+
   async copyToClipboard() {
-    if(this.account) {
-      await this.clipboardService.copy(this.account.address);
+    if(this.address) {
+      await this.clipboardService.copy(this.address);
       this.notificationService.showMessage('Copied to clipboard!', 'Done');
     }
   }
 
-  onAccountChange() {
-    this.authenticationService.createQRcode(this.account.address).then(qr => this.addressQR = qr);
-    this.web3.eth.getBalance(this.account.address).then(balance => this.balance = balance);
+  onStoredAccountChange() {
+    this.address = this.selectedStoredAddress.address;
+    this.reloadAccountData();
+  }
+
+  private reloadAccountData() {
+    this.authenticationService.createQRcode(this.address).then(qr => this.addressQR = qr);
+    if (this.selectedWalletType === EthWalletType.Injected) {
+      this.injectedWeb3.eth.getBalance(this.address).then(balance => this.balance = balance);
+    } else {
+      this.web3.eth.getBalance(this.address).then(balance => this.balance = balance);
+    }
   }
 }

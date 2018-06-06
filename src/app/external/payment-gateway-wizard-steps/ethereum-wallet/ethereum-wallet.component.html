@@ -18,9 +18,9 @@
   </div>
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
-      <aer-select [(ngModel)]="account" dataKey="address" icon="key" img="avatar" [disabled]="walletTypes.Imported !== selectedWalletType" (ngModelChange)="onAccountChange()" placeholder="Select your account">
+      <aer-select [(ngModel)]="selectedStoredAddress" dataKey="address" icon="key" [disabled]="walletTypes.Imported !== selectedWalletType" (ngModelChange)="onStoredAccountChange()" placeholder="Select your account">
         <aer-select-option *ngFor="let account of storedAccounts;" [value]="account">
-          <img class="avatar" [src]="account.avatar"><span>{{account.address}}</span>
+          <img class="avatar" [src]="account.address | generateavatar"><span>{{account.address}}</span>
         </aer-select-option>
       </aer-select>
     </div>
@@ -30,17 +30,17 @@
       <aer-input [(ngModel)]="file" class="with-button blue" buttonLabel="Import"></aer-input>
     </div>
   </div>
-  <div aerRow *ngIf="account">
+  <div aerRow *ngIf="address">
     <div aerColumn size="sm-12" class="cell">
       <img *ngIf="addressQR" [src]="addressQR" alt="QR Code">
     </div>
   </div>
-  <div aerRow *ngIf="account">
+  <div aerRow *ngIf="address">
     <div aerColumn size="sm-12" class="cell c-copy__address">
-      <a (click)="copyToClipboard()">{{ account.address }}</a>
+      <a (click)="copyToClipboard()">{{ address }}</a>
     </div>
   </div>
-  <div aerRow *ngIf="account">
+  <div aerRow *ngIf="address">
     <div aerColumn size="sm-6" class="cell cell--left">
       Balance:
     </div>
