@@ -17,44 +17,19 @@ export class AccountIdleService {
   private timeout$ = new Subject<boolean>();
   private idle$: Observable<any>;
   private timer$: Observable<any>;
-  /**
-   * Idle value in seconds.
-   * Default equals to 10 minutes.
-   */
-  private idle = 600;
-  /**
-   * Timeout value in seconds.
-   * Default equals to 5 minutes.
-   */
-  private timeout = 300;
-  /**
-   * Ping value in seconds.
-   */
-  private ping = 120;
-  /**
-   * Timeout status.
-   */
-  private isTimeout: boolean;
-  /**
-   * Timer of user's inactivity is in progress.
-   */
-  private isInactivityTimer: boolean;
 
+  private idle = 600; // seconds user is idle before they get kicked out
+  private timeout = 1; // count down to logging out after idle time has passed
+  private isTimeout: boolean;
+  private isInactivityTimer: boolean;
   private idleSubscription: Subscription;
 
   
   constructor() {
-    // if (config) {
-    //   this.idle = config.idle;
-    //   this.timeout = config.timeout;
-    //   this.ping = config.ping;
-    // }
-
     this.activityEvents$ = Observable.merge(
       Observable.fromEvent(window, 'mousemove'),
       Observable.fromEvent(window, 'resize'),
       Observable.fromEvent(document, 'keydown'));
-
     this.idle$ = Observable.from(this.activityEvents$);
   }
 
@@ -62,26 +37,19 @@ export class AccountIdleService {
    * Start watching for user idle and setup timer and ping.
    */
   startWatching() {
-    /**
-     * If any of user events is not active for idle-seconds when start timer.
-     */
     this.idleSubscription = this.idle$
-      .bufferTime(15000)  // Starting point of detecting of user's inactivity
+      .bufferTime(5000)  // Starting point of detecting of user's inactivity
       .filter(arr => !arr.length && !this.isInactivityTimer)
       .switchMap(() => {
-          console.log("isInactivityTimer "+this.isInactivityTimer);
         this.isInactivityTimer = true;
-        return Observable.interval(15000)
-          .takeUntil(Observable.merge(
+        return Observable.interval(15000).takeUntil(Observable.merge(
             this.activityEvents$,
             Observable.timer(this.idle * 1000)
               .do(() => this.timerStart$.next(true))))
           .finally(() => this.isInactivityTimer = false);
       })
       .subscribe();
-
     this.setupTimer(this.timeout);
-    this.setupPing(this.ping);
   }
 
   stopWatching() {
@@ -118,18 +86,11 @@ export class AccountIdleService {
     return this.timeout$
       .filter(timeout => !!timeout)
       .map(() => {
+        console.log(this.isTimeout)
         this.isTimeout = true;
         return true;
       });
   }
-
-//   getConfigValue(): UserIdleServiceConfig {
-//     return {
-//       idle: this.idle,
-//       timeout: this.timeout,
-//       ping: this.ping
-//     };
-//   }
 
   /**
    * Setup timer.
@@ -150,13 +111,5 @@ export class AccountIdleService {
       });
   }
 
-  /**
-   * Setup ping.
-   *
-   * Pings every ping-seconds only if is not timeout.
-   * @param {number} ping
-   */
-  private setupPing(ping: number) {
-    this.ping$ = Observable.interval(ping * 1000).filter(() => !this.isTimeout);
-  }
+
 }
