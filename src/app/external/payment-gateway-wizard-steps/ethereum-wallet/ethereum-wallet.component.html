@@ -1,39 +1,49 @@
-<div class="c-eth-wallet c-eth-wallet__table c-eth-wallet__unlock" *ngIf="active">
+<div class="c-eth-wallet" *ngIf="active">
   <h1>Ethereum Wallet</h1>
-  <div class="o-table">
-    <div class="o-table__row">
-      <div class="o-table__cell o-data--left address-option-label">
-        Select Wallet:
-      </div>
-      <div class="o-table__cell o-data--right">
-        <aer-radio-group class="address-option">
-          <aer-radio-button [value]="1">[ Injected web3 nam/addr ]</aer-radio-button>
-          <aer-radio-button [value]="1">Stored Keys</aer-radio-button>
-        </aer-radio-group>
-      </div>
+  <div aerRow>
+    <div aerColumn size="sm-4" class="cell cell--left">
+      Select Wallet:
     </div>
-    <div class="o-table__row--no-cells">
-        Select Address:
+    <div aerColumn size="sm-8" class="cell cell--left">
+      <aer-radio-group class="address-option">
+        <aer-radio-button [value]="1">[ Injected web3 nam/addr ]</aer-radio-button>
+        <aer-radio-button [value]="1">Stored Keys</aer-radio-button>
+      </aer-radio-group>
     </div>
-    <div class="o-table__row--no-cells">
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell cell--left">
+      Select Address
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
       <aer-select [(ngModel)]="selectResult" dataKey="title" icon="key" img="img" placeholder="Select your account">
         <aer-select-option *ngFor="let item of aerlists;" [value]="item"><img class="avatar" [src]="item.img"><span>{{item.title}}</span></aer-select-option>
       </aer-select>
     </div>
-    <div class="o-table__row--no-cells">
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
       <aer-input [(ngModel)]="file" class="with-button blue" buttonLabel="Import"></aer-input>
-      <img [src]="addressQR" alt="">
-      <div class="c-copy__address">
-        <a (click)="copyToClipboard()">{{ address }}</a>
-      </div>
     </div>
-    <div class="o-table__row">
-      <div class="o-table__cell o-data--left">
-        Balance:
-      </div>
-      <div class="o-table__cell o-data--right">
-        ETH
-      </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
+      <img [src]="addressQR" alt="">
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell c-copy__address">
+      <a (click)="copyToClipboard()">{{ address }}</a>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-6" class="cell cell--left">
+      Balance:
+    </div>
+    <div aerColumn size="sm-6" class="cell cell--right">
+      ETH
     </div>
   </div>
   <aer-button (buttonFn)="next()" class="blue large full-width">Next</aer-button>
