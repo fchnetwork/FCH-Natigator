@@ -15,12 +15,16 @@ export class EthereumAuthenticationService {
   constructor(private logger: LoggerService) {
     this.injectedWeb3 = new Promise((resolve, reject) => {
       window.addEventListener('load', () => {
-        if(!window.web3) {
-          this.logger.logMessage("Web3 is not provided!");
-          reject("Web3 is not provided!");
-        } else {
-          this.logger.logMessage("Web3 is present");
-          resolve(new Web3(window.web3.currentProvider));
+        try {
+          if (!window.web3) {
+            this.logger.logMessage("Web3 is not provided!");
+            resolve(null);
+          } else {
+            this.logger.logMessage("Web3 is present");
+            resolve(new Web3(window.web3.currentProvider));
+          }
+        } catch (e) {
+          reject("Error while loading injected web3");
         }
       });
     });

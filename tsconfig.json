@@ -24,6 +24,7 @@
       "@core/*": ["app/core/*"],
       "@account/*": ["app/account/*"],
       "@shared/*": ["app/shared/*"],
+      "@external/*": ["app/external/*"],
       "@dashboard/*": ["app/wallet/dashboard/*"],
       "@explorer/*": ["app/wallet/explorer/*"],
       "@transaction/*": ["app/wallet/transaction/*"],

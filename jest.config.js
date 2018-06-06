@@ -7,7 +7,7 @@ module.exports = {
     "moduleNameMapper": {
         "^@app/(.*)$": "<rootDir>/src/app/$1",
         "^@core/(.*)$": "<rootDir>/src/app/core/$1",
-        "^@(account|shared)/(.*)$": "<rootDir>/src/app/$1/$2",
+        "^@(account|shared|external)/(.*)$": "<rootDir>/src/app/$1/$2",
         "^@(dashboard|explorer|transaction|diagnostics|aens|swap)/(.*)$": "<rootDir>/src/app/wallet/$1/$2",
         "^@env/(.*)$": "<rootDir>/src/environments/$1"
     },

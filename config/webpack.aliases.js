@@ -5,6 +5,7 @@ module.exports = {
     '@core': path.resolve('src/app/core'),
     '@account': path.resolve('src/app/account'),
     '@shared': path.resolve('src/app/shared'),
+    '@external': path.resolve('src/app/external'),
     '@dashboard': path.resolve('src/app/wallet/dashboard'),
     '@explorer': path.resolve('src/app/wallet/explorer'),
     '@transaction': path.resolve('src/app/wallet/transaction'),
