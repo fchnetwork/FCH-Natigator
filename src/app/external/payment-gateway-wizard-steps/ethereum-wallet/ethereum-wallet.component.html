@@ -48,6 +48,6 @@
       {{balance | convertToEther | number:'1.2-5'}} ETH
     </div>
   </div>
-  <aer-button (buttonFn)="next()" class="blue large full-width">Next</aer-button>
+  <aer-button (buttonFn)="next()" class="large full-width" ngClass="{ 'blue': canMoveNext, 'grey': !canMoveNext }" [disabled]="!canMoveNext">Next</aer-button>
   <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
 </div>

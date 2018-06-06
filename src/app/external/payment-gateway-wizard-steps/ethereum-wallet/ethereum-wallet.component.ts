@@ -32,6 +32,7 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   addressQR: string;
   balance = 0;
 
+  canMoveNext = false;
   importInProgress = false;
 
   constructor(
@@ -60,7 +61,6 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
         privateKey: ''
       }];
 
-
     this.injectedWeb3 = await this.ethereumAuthenticationService.getInjectedWeb3();
   }
 
@@ -80,8 +80,8 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
       this.notificationService.showMessage('Please login in Mist / Metamask', 'Cannot get accounts from wallet');
     } else {
       this.address =  accounts[0];
-      this.reloadAccountData();
     }
+    this.reloadAccountData();
   }
 
   private async onImportedWalletSelected() { }
@@ -99,11 +99,21 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   }
 
   private reloadAccountData() {
+    if (!this.address) {
+      this.canMoveNext = false;
+      return;
+    }
+
     this.authenticationService.createQRcode(this.address).then(qr => this.addressQR = qr);
     if (this.selectedWalletType === EthWalletType.Injected) {
-      this.injectedWeb3.eth.getBalance(this.address).then(balance => this.balance = balance);
+      this.injectedWeb3.eth.getBalance(this.address).then((balance) => this.updateBalance(balance));
     } else {
-      this.web3.eth.getBalance(this.address).then(balance => this.balance = balance);
+      this.web3.eth.getBalance(this.address).then((balance) => this.updateBalance(balance));
     }
+  }
+
+  private updateBalance(balance: number) {
+    this.balance = balance;
+    this.canMoveNext = balance > 0;
   }
 }
