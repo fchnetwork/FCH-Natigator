@@ -2,30 +2,27 @@
   <h1>Create Exchange Swap</h1>
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
-      <span>Receiving Aerum token:</span>
-      <aer-select [(ngModel)]="selectResult" dataKey="title" icon="key" img="img" [disabled]="walletTypes.Imported !== selectedWalletType" placeholder="Select your account">
-        <aer-select-option *ngFor="let item of aerlists;" [value]="item">
-          <img class="avatar" [src]="item.img"><span>{{item.title}}</span>
+      <label>Receiving Aerum token:</label>
+      <aer-select [(ngModel)]="selectedToken" dataKey="title" icon="aerumleaf" placeholder="Select your token">
+        <aer-select-option *ngFor="let item of tokens;" [value]="item">
+          <aer-icon>aerumleaf</aer-icon>
+          <span>{{item.title}}</span>
         </aer-select-option>
       </aer-select>
     </div>
   </div>
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
-      <span>Receiving Aerum token:</span>
-      <aer-select [(ngModel)]="selectResult" dataKey="title" icon="key" img="img" [disabled]="walletTypes.Imported !== selectedWalletType" placeholder="Select your account">
-        <aer-select-option *ngFor="let item of aerlists;" [value]="item">
-          <img class="avatar" [src]="item.img"><span>{{item.title}}</span>
-        </aer-select-option>
-      </aer-select>
+      <label>Amount of token to receive:</label>
+      <aer-input [(ngModel)]="amount" placeholder="Type amount"></aer-input>
     </div>
   </div>
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
-      <span>Receiving Aerum token:</span>
-      <aer-select [(ngModel)]="selectResult" dataKey="title" icon="key" img="img" [disabled]="walletTypes.Imported !== selectedWalletType" placeholder="Select your account">
-        <aer-select-option *ngFor="let item of aerlists;" [value]="item">
-          <img class="avatar" [src]="item.img"><span>{{item.title}}</span>
+      <label>Receiving Aerum token:</label>
+      <aer-select [(ngModel)]="selectedCounterParty" dataKey="name" placeholder="Select your counterparty">
+        <aer-select-option *ngFor="let item of counterParties;" [value]="item">
+          <img class="avatar" [src]="item.address | generateavatar"><span>{{item.name}}</span>
         </aer-select-option>
       </aer-select>
     </div>
@@ -60,7 +57,7 @@
         Secret key
       </div>
       <div class="o-table__cell o-data--right">
-        0x90b66549a6f587d...bbe821c2ce
+        <span class="secret-key">0x90b66549a6f587d...bbe821c2ce</span>
       </div>
     </div>
   </div>
