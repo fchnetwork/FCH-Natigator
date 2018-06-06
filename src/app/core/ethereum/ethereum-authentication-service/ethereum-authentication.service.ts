@@ -2,8 +2,12 @@ import { Injectable } from '@angular/core';
 
 import { environment } from "@env/environment";
 import Web3 from "web3";
+import * as CryptoJS from 'crypto-js';
 
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { Cookie } from "ng2-cookies/ng2-cookies";
+import { SessionStorageService } from "ngx-webstorage";
+import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 
 declare const window: any;
 
@@ -12,7 +16,10 @@ export class EthereumAuthenticationService {
 
   private readonly injectedWeb3: Promise<Web3>;
 
-  constructor(private logger: LoggerService) {
+  constructor(
+    private logger: LoggerService,
+    private sessionStorage: SessionStorageService
+  ) {
     this.injectedWeb3 = new Promise((resolve, reject) => {
       window.addEventListener('load', () => {
         try {
@@ -37,5 +44,13 @@ export class EthereumAuthenticationService {
 
   getInjectedWeb3(): Promise<Web3> {
     return this.injectedWeb3;
+  }
+
+  saveEthereumAccounts(accounts: EthereumAccount[]): void {
+    const password = this.sessionStorage.retrieve('password');
+    const stringAccounts = JSON.stringify(accounts);
+    const encryptedAccounts = CryptoJS.AES.encrypt(stringAccounts, password);
+    Cookie.set('ethereum_accounts', encryptedAccounts, 7, "/", environment.cookiesDomain);
+    this.sessionStorage.store('ethereum_accounts', accounts);
   }
 }

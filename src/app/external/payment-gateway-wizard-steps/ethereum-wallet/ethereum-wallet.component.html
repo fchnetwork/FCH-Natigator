@@ -18,16 +18,19 @@
   </div>
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
-      <aer-select [(ngModel)]="selectedStoredAddress" dataKey="address" icon="key" [disabled]="walletTypes.Imported !== selectedWalletType" (ngModelChange)="onStoredAccountChange()" placeholder="Select your account">
+      <aer-select [(ngModel)]="selectedStoredAccount" dataKey="address" icon="key" [disabled]="walletTypes.Imported !== selectedWalletType" (ngModelChange)="onStoredAccountChange()" placeholder="Select your account">
         <aer-select-option *ngFor="let account of storedAccounts;" [value]="account">
           <img class="avatar" [src]="account.address | generateavatar"><span>{{account.address}}</span>
         </aer-select-option>
+        <aer-select-option><span>+ Add Account</span></aer-select-option>
       </aer-select>
     </div>
   </div>
   <div aerRow *ngIf="importInProgress">
     <div aerColumn size="sm-12" class="cell">
-      <aer-input [(ngModel)]="file" class="with-button blue" buttonLabel="Import"></aer-input>
+      <aer-file-upload class="blue normal" (filesChange)="openSeedFile($event)">Select key file</aer-file-upload>
+      <aer-textarea placeholder="Your seed will be here" [addition]="importedAddress" [(ngModel)]="seedFileText" (ngModelChange)="onSeedChange()" ngDefaultControl>{{seedFileText}}</aer-textarea>
+      <aer-button (buttonFn)="import()" [disabled]="!importedAccount" class="blue normal btn-import">Import Account</aer-button>
     </div>
   </div>
   <div aerRow *ngIf="address">
