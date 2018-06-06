@@ -3,6 +3,10 @@ import { Location } from "@angular/common";
 
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { PaymentGatewayWizardStep } from "@app/external/payment-gateway-wizard-steps/payment-gateway-wizard-step";
+import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
+import Web3 from "web3";
+import { EthWalletType } from "@external/models/eth-wallet-type.enum";
+import { Eth } from "web3/types";
 
 @Component({
   selector: 'app-ethereum-wallet',
@@ -11,15 +15,24 @@ import { PaymentGatewayWizardStep } from "@app/external/payment-gateway-wizard-s
 })
 export class EthereumWalletComponent extends PaymentGatewayWizardStep implements OnInit {
 
+  walletTypes = EthWalletType;
+  selectedWalletType = EthWalletType.Imported;
+  injectedWeb3: Web3;
+
   constructor(
     location: Location,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private ethereumAuthenticationService: EthereumAuthenticationService
   ) {
     super(location);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.injectedWeb3 = await this.ethereumAuthenticationService.getInjectedWeb3();
+  }
 
+  onWalletSelect(event: { value: EthWalletType }) {
+    this.selectedWalletType = event.value;
   }
 
   // TODO: Remove

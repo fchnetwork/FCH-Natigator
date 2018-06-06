@@ -6,8 +6,8 @@
     </div>
     <div aerColumn size="sm-8" class="cell cell--left">
       <aer-radio-group class="address-option">
-        <aer-radio-button [value]="1">[ Injected web3 nam/addr ]</aer-radio-button>
-        <aer-radio-button [value]="1">Stored Keys</aer-radio-button>
+        <aer-radio-button [value]="walletTypes.Injected" [disabled]="!injectedWeb3" (change)="onWalletSelect($event)">[ Injected web3 nam/addr ]</aer-radio-button>
+        <aer-radio-button [value]="walletTypes.Imported" [checked]="true" (change)="onWalletSelect($event)">Stored Keys</aer-radio-button>
       </aer-radio-group>
     </div>
   </div>
