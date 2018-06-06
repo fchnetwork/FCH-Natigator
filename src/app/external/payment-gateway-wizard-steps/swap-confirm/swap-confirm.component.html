@@ -1,23 +1,42 @@
 <div class="c-swap-confirm c-swap-confirm__table c-swap-confirm__unlock" *ngIf="active">
-  <h1>Swap Confirm</h1>
+  <h1>Complete Exchange Swap</h1>
   <div class="o-table">
     <div class="o-table__row">
       <div class="o-table__cell o-data--left">
-        Field 2
+        Your swap was accepted by
       </div>
       <div class="o-table__cell o-data--right">
-        2
+        {{acceptedBy}}
       </div>
     </div>
     <div class="o-table__row">
       <div class="o-table__cell o-data--left">
-        Field 1
+        You will send
       </div>
       <div class="o-table__cell o-data--right">
-        1
+        {{sendValue}} {{sendCurrency}}
+      </div>
+    </div>
+    <div class="o-table__row">
+      <div class="o-table__cell o-data--left">
+        You will receive
+      </div>
+      <div class="o-table__cell o-data--right">
+          {{receiveValue}} {{receiveCurrency}}
       </div>
     </div>
   </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
+      <label>Enter secret key:</label>
+      <aer-input [(ngModel)]="secretKey" placeholder="Type secret key"></aer-input>
+    </div>
+  </div>
+  <div class="message">
+    Warning! Phasellus rhoncus. Nulla est. Phasellus et lorem id felis nonummy placerat. Integer pellentesque quam vel velit. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat.
+  </div>
+  <aer-button (buttonFn)="next()" class="blue large full-width">Complete swap</aer-button>
+  <app-divider label="OR"></app-divider>
   <aer-button (buttonFn)="next()" class="blue large full-width">Next</aer-button>
   <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
 </div>
