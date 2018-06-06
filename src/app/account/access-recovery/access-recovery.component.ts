@@ -39,16 +39,27 @@ export class AccessRecoveryComponent implements OnInit {
 
 
     openSeedFile(event) {
-        const input = event.target;
-        for ( let index = 0; index < input.files.length; index++ ) {
+      const input = event.target;
+      const fileTypes = ['txt','aer'];
+      if (input.files && input.files[0]) {
+        const extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+              allowedFile = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+        if (allowedFile) {
+          for ( let index = 0; index < input.files.length; index++ ) {
             const reader = new FileReader();
             reader.onload = () => {
+              if( reader.result.split(' ').length == 12 ) {
                 this.seedFileText = reader.result;
-                console.log(this.seedFileText);
-                this.recoverForm.controls['seed'].setValue( this.seedFileText );
+                this.recoverForm.controls['seed'].setValue( this.seedFileText );                  
+              }
             };
             reader.readAsText(input.files[index]);
+          }            
         }
+        else {
+        console.log("is not allowed ")
+        }
+      }
     }
 
 
