@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import * as avatars from 'identity-img';
@@ -12,13 +11,10 @@ import { Router } from '@angular/router';
 
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
-const wall    = require("ethereumjs-wallet");
 const bip39   = require("bip39");
 
 import Web3 from 'web3';
 import { environment } from '@env/environment';
-
-declare var window: any;
 
 @Injectable()
 export class AuthenticationService {
@@ -63,13 +59,8 @@ export class AuthenticationService {
     }
 
     generateCryptedAvatar( address: string ) {
-        const avatarCrypt = CryptoJS.SHA256(address);
         const avatar      = avatars.create( address.toString() );
         return avatar;
-    }
-
-    authState() : Observable<any> {
-        return Observable.fromPromise( this.showKeystore() );
     }
 
      // creates an auth cookie
@@ -109,27 +100,33 @@ export class AuthenticationService {
         return new Promise( (resolve, reject) => {
             if(password) {
                 const decryptSeed = CryptoJS.AES.decrypt( Cookie.get('aerum_base'), password );
+
                 const transactions = Cookie.get('transactions');
                 let plainTextTransactions = [];
-                const tokens = Cookie.get('tokens');
-                let plainTextTokens = [];
-
                 if(transactions) {
                     const decryptTransactions = CryptoJS.AES.decrypt( transactions, password );
                     plainTextTransactions = decryptTransactions.toString(CryptoJS.enc.Utf8);
                 }
 
+                const tokens = Cookie.get('tokens');
+                let plainTextTokens = [];
                 if(tokens) {
                     const decryptTokens = CryptoJS.AES.decrypt( tokens, password );
                     plainTextTokens = decryptTokens.toString(CryptoJS.enc.Utf8);
                 }
 
-                const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
+                const encryptedEthereumAccounts = Cookie.get('tokens');
+                let ethereumAccounts = [];
+                if(tokens) {
+                  const decryptEthereumAccounts = CryptoJS.AES.decrypt( encryptedEthereumAccounts, password );
+                  ethereumAccounts = decryptEthereumAccounts.toString(CryptoJS.enc.Utf8);
+                }
 
+                const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
                 if( encryptAccount ) {
                     const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
                     const seed = this.seedCleaner(plaintext);
-                    resolve( { web3: encryptAccount, s:seed, transactions: plainTextTransactions, tokens: plainTextTokens } );
+                    resolve( { web3: encryptAccount, s:seed, transactions: plainTextTransactions, tokens: plainTextTokens, ethereumAccounts } );
                 }
                 else {
                     reject("no keystore found or password incorrect");
@@ -150,6 +147,7 @@ export class AuthenticationService {
                 this.sessionStorage.store('password', password);
                 this.sessionStorage.store('transactions', result.transactions.length ? JSON.parse(result.transactions) : []);
                 this.sessionStorage.store('tokens', result.tokens.length ? JSON.parse(result.tokens) : []);
+                this.sessionStorage.store('ethereum_accounts', result.ethereumAccounts.length ? JSON.parse(result.ethereumAccounts) : []);
                 resolve('success');
             });
         });
@@ -163,6 +161,8 @@ export class AuthenticationService {
         this.sessionStorage.clear('private_key');
         this.sessionStorage.clear('password');
         this.sessionStorage.clear('transactions');
+        this.sessionStorage.clear('tokens');
+        this.sessionStorage.clear('ethereum_accounts');
     }
 
     /**

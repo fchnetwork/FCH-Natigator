@@ -8,6 +8,9 @@ import { PaymentGatewayWizardStep } from "@app/external/payment-gateway-wizard-s
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
+import { SessionStorageService } from "ngx-webstorage";
+import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
+import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 
 @Component({
   selector: 'app-ethereum-wallet',
@@ -16,26 +19,48 @@ import { ClipboardService } from "@core/general/clipboard-service/clipboard.serv
 })
 export class EthereumWalletComponent extends PaymentGatewayWizardStep implements OnInit {
 
-  importInProgress = false;
-  addressSelected = false;
-
-  address: string;
-
   walletTypes = EthWalletType;
   selectedWalletType = EthWalletType.Imported;
+
+  web3: Web3;
   injectedWeb3: Web3;
+
+  importInProgress = false;
+
+  account: EthereumAccount;
+  addressQR: string;
+  balance = 0;
+  storedAccounts: EthereumAccount[] = [];
 
   constructor(
     location: Location,
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private clipboardService: ClipboardService,
+    private sessionStorageService: SessionStorageService,
+    private authenticationService: AuthenticationService,
     private ethereumAuthenticationService: EthereumAuthenticationService
   ) {
     super(location);
   }
 
   async ngOnInit() {
+    this.web3 = this.ethereumAuthenticationService.getWeb3();
+    this.storedAccounts = this.sessionStorageService.retrieve('ethereum_accounts') as EthereumAccount[];
+    // TODO: For testing only
+    this.storedAccounts = [
+      {
+        address: '0x56220873fb32f35a27f5e0f6604fda2aef439a5f',
+        avatar: './assets/images/avatar-1.png',
+        privateKey: ''
+      },
+      {
+        address: '0xf38edc62732c418ee18bebf89cc063b3d1b57e0c',
+        avatar: './assets/images/avatar-2.png',
+        privateKey: ''
+      }];
+
+
     this.injectedWeb3 = await this.ethereumAuthenticationService.getInjectedWeb3();
   }
 
@@ -44,39 +69,14 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   }
 
   async copyToClipboard() {
-    await this.clipboardService.copy(this.address);
-    this.notificationService.showMessage('Copied to clipboard!', 'Done');
+    if(this.account) {
+      await this.clipboardService.copy(this.account.address);
+      this.notificationService.showMessage('Copied to clipboard!', 'Done');
+    }
   }
 
-  // TODO: Remove
-  aerlists = [
-    {
-      id: 1,
-      title: '0x56220873fb32f35a27f5e0f6604fda2aef439a5f',
-      img: './assets/images/avatar-1.png',
-      icon: 'key',
-      disabled: false,
-    },
-    {
-      id: 2,
-      title: '0x34520873fb32f35a3325e0f6604fda2aef43955a',
-      img: './assets/images/avatar-2.png',
-      icon: 'key',
-      disabled: true,
-    },
-    {
-      id: 3,
-      title: '0xfa520873fb32a35a3325e0f6604fda2aef4355fa',
-      img: './assets/images/avatar-3.png',
-      icon: 'key',
-      disabled: false,
-    },
-    {
-      id: 4,
-      title: '0x32faab73fb32a35a3325e0f6604fda2aef43314f',
-      img: './assets/images/avatar-4.png',
-      icon: 'key',
-      disabled: false,
-    }
-  ];
+  onAccountChange() {
+    this.authenticationService.createQRcode(this.account.address).then(qr => this.addressQR = qr);
+    this.web3.eth.getBalance(this.account.address).then(balance => this.balance = balance);
+  }
 }

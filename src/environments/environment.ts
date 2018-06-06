@@ -40,7 +40,7 @@ export const environment = {
     }
   },
   ethereum: {
-    endpoint: "wss://rinkeby.infura.io/ws",
+    endpoint: "https://rinkeby.infura.io/",
     chainId: 4
   },
   gasPrice: "1",

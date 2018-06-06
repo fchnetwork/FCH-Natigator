@@ -1,6 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CoreModule } from "@core/core.module";
 import { ExternalRoutingModule } from "@app/external/external.routes";
 import { AppUIModule } from "@app/app.ui.module";
 import { SharedModule } from "@app/shared/shared.module";
@@ -16,10 +18,13 @@ import { SwapConfirmComponent } from './payment-gateway-wizard-steps/swap-confir
         EthereumWalletComponent
     ],
     imports: [
+        FormsModule,
+        ReactiveFormsModule,
         CommonModule,
         SharedModule,
         ExternalRoutingModule,
         AppUIModule,
+        CoreModule
     ],
     declarations: [
         ExternalTransactionComponent,

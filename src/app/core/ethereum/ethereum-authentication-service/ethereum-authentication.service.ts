@@ -31,24 +31,8 @@ export class EthereumAuthenticationService {
   }
 
   getWeb3(): Web3 {
-    const rinkebyAddress = environment.ethereum.endpoint;
-    let provider = new Web3.providers.WebsocketProvider(rinkebyAddress);
-    const web3 = new Web3(provider);
-
-    provider.on('error', () => this.logger.logError('WS Error'));
-    provider.on('end', () => {
-      this.logger.logMessage('WS closed');
-      this.logger.logMessage('Attempting to reconnect...');
-      provider = new Web3.providers.WebsocketProvider(rinkebyAddress);
-
-      provider.on('connect', () => {
-        this.logger.logMessage('WSS Reconnected');
-      });
-
-      web3.setProvider(provider);
-    });
-
-    return web3;
+    const ethereumEndpoint = environment.ethereum.endpoint;
+    return new Web3(ethereumEndpoint);
   }
 
   getInjectedWeb3(): Promise<Web3> {
