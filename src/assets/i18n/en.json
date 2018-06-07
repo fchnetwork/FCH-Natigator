@@ -179,12 +179,12 @@
   },
   "BIG_NUMBERS": {
     "NO_UNIT":"",
-    "THOUSANDS":"Thousands",
-    "MILLIONS":"Millions",
-    "BILLIONS":"Billions",
-    "TRILLIONS":"Trillions",
-    "QUADRILLIONS":"Quadrillions",
-    "QUINTILLIONS":"Quintillions"
+    "THOUSANDS":"Thousand",
+    "MILLIONS":"Million",
+    "BILLIONS":"Billion",
+    "TRILLIONS":"Trillion",
+    "QUADRILLIONS":"Quadrillion",
+    "QUINTILLIONS":"Quintillion"
   },
   "TRANSACTION_COST": "Txn fee",
   "DASHBOARD_TOKENS": {
