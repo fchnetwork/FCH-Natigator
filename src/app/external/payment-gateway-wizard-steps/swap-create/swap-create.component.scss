@@ -43,10 +43,12 @@
   width: 100%;
   margin: 20px 0 0;
   &__row {
-    display: table-row;
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    justify-content: space-between;
   }
   &__cell {
-    display: table-cell;
+    display: inline-block;
     padding-bottom: 20px;
     &.o-data--left {
       text-align: left;

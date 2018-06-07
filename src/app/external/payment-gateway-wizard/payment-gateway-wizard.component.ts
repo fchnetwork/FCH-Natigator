@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { EthereumWalletComponent } from "@app/external/payment-gateway-wizard-steps/ethereum-wallet/ethereum-wallet.component";
-import { SwapConfirmComponent } from "@app/external/payment-gateway-wizard-steps/swap-confirm/swap-confirm.component";
-import { SwapCreateComponent } from "@app/external/payment-gateway-wizard-steps/swap-create/swap-create.component";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
+import { EthereumWalletComponent } from "@external/payment-gateway-wizard-steps/ethereum-wallet/ethereum-wallet.component";
+import { SwapCreateComponent } from "@external/payment-gateway-wizard-steps/swap-create/swap-create.component";
+import { SwapConfirmComponent } from "@external/payment-gateway-wizard-steps/swap-confirm/swap-confirm.component";
 
 @Component({
   selector: 'app-payment-gateway-wizard',
@@ -19,13 +19,21 @@ export class PaymentGatewayWizardComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
 
   asset: string;
+  amount: number;
 
-  constructor(public route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    this.routeSubscription = this.route.queryParams.subscribe(param => this.asset = param.asset);
+    this.routeSubscription = this.route.queryParams.subscribe(param => {
+      this.asset = param.asset;
+      this.amount = Number(param.amount);
+    });
 
-    this.walletStep.active = true;
+    // TODO: Uncomment later
+    // this.walletStep.activate();
+    this.createSwapStep.activate();
     this.walletStep.setNextStep(this.createSwapStep);
     this.createSwapStep.setNextStep(this.confirmSwapStep);
   }

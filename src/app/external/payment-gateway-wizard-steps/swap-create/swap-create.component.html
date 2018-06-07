@@ -3,10 +3,10 @@
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
       <label>Receiving Aerum token:</label>
-      <aer-select [(ngModel)]="selectedToken" dataKey="title" icon="aerumleaf" placeholder="Select your token">
-        <aer-select-option *ngFor="let item of tokens;" [value]="item">
+      <aer-select [(ngModel)]="selectedToken" dataKey="symbol" icon="aerumleaf" placeholder="Select your token">
+        <aer-select-option *ngFor="let token of tokens;" [value]="token">
           <aer-icon>aerumleaf</aer-icon>
-          <span>{{item.title}}</span>
+          <span>{{token.symbol}}</span>
         </aer-select-option>
       </aer-select>
     </div>
@@ -57,7 +57,7 @@
         Secret key
       </div>
       <div class="o-table__cell o-data--right">
-        <span class="secret-key">0x90b66549a6f587d...bbe821c2ce</span>
+        <span class="secret-key">{{secret}}</span>
       </div>
     </div>
   </div>
