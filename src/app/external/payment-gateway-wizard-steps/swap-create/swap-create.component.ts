@@ -5,6 +5,11 @@ import { Guid } from "@shared/helpers/guid";
 import { PaymentGatewayWizardStep } from "../payment-gateway-wizard-step";
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 import { TokenService } from "@core/transactions/token-service/token.service";
+import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
+import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
+import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
+import { LoggerService } from "@core/general/logger-service/logger.service";
+import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 
 @Component({
   selector: 'app-swap-create',
@@ -19,27 +24,35 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   selectedToken: any;
   secret: string;
 
-  counterParties = [
-    {
-      name: 'radekwallet.aer',
-      // address: await this.nameService.resolveNameOrAddress('radek.aer'),
-      address: '0xb65b8c2376293fea13f6ed7d2a8467f0949c312d',
-    }
-  ];
-  selectedCounterParty = this.counterParties[0];
+  templates: SwapTemplate[] = [];
+  selectedTemplate: SwapTemplate;
+  rate: number;
+  ethAmount: number;
+
+  aerumAccount: string;
 
   constructor(
     location: Location,
+    private logger: LoggerService,
     private nameService: AerumNameService,
     private tokenService: TokenService,
+    private swapTemplateService: SwapTemplateService,
+    private authService: AuthenticationService
   ) {
     super(location);
   }
 
   ngOnInit() {
-    this.secret = Guid.newGuid().replace(/-/g, '')
+    const keystore = this.authService.getKeystore();
+    this.aerumAccount  = "0x" + keystore.address;
+
+    this.secret = Guid.newGuid().replace(/-/g, '');
     this.tokens = this.tokenService.getTokens() || [];
     this.ensureDepositTokenPresent();
+    this.loadSwapTemplates();
+
+    // TODO: Test code to register swap template
+    // this.registerTestSwapTemplate().then(() => console.log('Template registered!'));
   }
 
   private ensureDepositTokenPresent(): void {
@@ -52,6 +65,11 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   }
 
   private loadDepositTokenAndAddToList() {
+    if(!this.asset) {
+      this.logger.logMessage("Deposit asset not specified");
+      return;
+    }
+
     // TODO: Maybe add ANS resolver?
     this.tokenService.getTokensInfo(this.asset).then(token => {
       this.tokens = this.tokens.splice(0, 0, token);
@@ -63,5 +81,49 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
     if(this.tokens.length) {
       this.selectedToken = this.tokens[0];
     }
+  }
+
+  private loadSwapTemplates(): void {
+    if(!this.asset) {
+      this.logger.logMessage("Deposit asset not specified");
+      return;
+    }
+
+    // TODO: We support Aerum for now only
+    this.swapTemplateService.getTemplatesByAsset(this.asset, Chain.Aerum).then(templates => {
+      if(templates) {
+        this.templates = templates.sort((one, two) => Number(one.rate <= two.rate));
+        this.selectedTemplate = this.templates[0];
+        this.recalculateTotals();
+      }
+    });
+  }
+
+  private recalculateTotals() {
+    if(this.selectedTemplate) {
+      this.rate = this.selectedTemplate.rate;
+      this.ethAmount = this.amount / this.selectedTemplate.rate;
+    } else {
+      this.rate = 0;
+      this.ethAmount = 0;
+    }
+  }
+
+  onTemplateChange() {
+    this.recalculateTotals();
+  }
+
+  onAmountChange() {
+    this.recalculateTotals();
+  }
+
+  // TODO: Test code to register swap template
+  async registerTestSwapTemplate() {
+    const id =  Guid.newGuid().replace(/-/g, '');
+    this.logger.logMessage(`Template: ${id}`);
+    await this.swapTemplateService.registerTemplate(id, this.asset, 'sidlovskyy.aer', '0x0', "0xf38edc62732c418ee18bebf89cc063b3d1b57e0c", 500, Chain.Aerum);
+    this.logger.logMessage(`Template created: ${id}`);
+    const template = await this.swapTemplateService.getTemplateById(id);
+    this.logger.logMessage(`Template loaded: ${id}`, template);
   }
 }

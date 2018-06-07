@@ -28,7 +28,7 @@ export class PaymentGatewayWizardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => {
       this.asset = param.asset;
-      this.amount = Number(param.amount);
+      this.amount = Number(param.amount) || 0;
     });
 
     // TODO: Uncomment later
