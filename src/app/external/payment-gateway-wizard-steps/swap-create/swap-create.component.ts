@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { Location } from "@angular/common";
 
-import { sha3 } from 'web3-utils';
+import { sha3, fromWei } from 'web3-utils';
+import Web3 from "web3";
 
 import { Guid } from "@shared/helpers/guid";
 import { PaymentGatewayWizardStep } from "../payment-gateway-wizard-step";
@@ -23,7 +24,7 @@ import { InternalNotificationService } from "@core/general/internal-notification
   templateUrl: './swap-create.component.html',
   styleUrls: ['./swap-create.component.scss']
 })
-export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnInit {
+export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnChanges, OnInit {
   @Input() asset: string;
   @Input() amount: number;
   @Input() account: EthereumAccount;
@@ -38,6 +39,10 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   ethAmount: number;
 
   aerumAccount: string;
+
+  canMoveNext = false;
+
+  ethWeb3: Web3;
 
   constructor(
     location: Location,
@@ -56,8 +61,9 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
 
   ngOnInit() {
     const keystore = this.authService.getKeystore();
-    this.aerumAccount  = "0x" + keystore.address;
+    this.aerumAccount = "0x" + keystore.address;
 
+    this.ethWeb3 = this.ethereumAuthService.getWeb3();
     this.secret = Guid.newGuid().replace(/-/g, '');
     this.tokens = this.tokenService.getTokens() || [];
     this.ensureDepositTokenPresent().then(() => this.loadSwapTemplates());
@@ -65,9 +71,16 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
     // this.registerTestSwapTemplate().then(() => console.log('Template registered!'));
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    const account: SimpleChange = changes.account;
+    if(account.previousValue !== account.currentValue) {
+      this.recalculateTotals();
+    }
+  }
+
   private ensureDepositTokenPresent(): Promise<void> {
     const isPresent = this.tokens.some(token => token.address === this.asset);
-    if(!isPresent) {
+    if (!isPresent) {
       return this.loadDepositTokenAndAddToList();
     } else {
       this.selectDefaultToken();
@@ -76,7 +89,7 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   }
 
   private loadDepositTokenAndAddToList(): Promise<void> {
-    if(!this.asset) {
+    if (!this.asset) {
       this.logger.logMessage("Deposit asset not specified");
       return;
     }
@@ -89,9 +102,9 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   }
 
   private selectDefaultToken() {
-    if(this.tokens.length) {
+    if (this.tokens.length) {
       const assetToken = this.tokens.find(token => token.address === this.asset);
-      if(assetToken) {
+      if (assetToken) {
         this.selectedToken = assetToken;
       } else {
         this.selectedToken = this.tokens[0];
@@ -100,7 +113,7 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   }
 
   private loadSwapTemplates(): void {
-    if(!this.selectedToken) {
+    if (!this.selectedToken) {
       this.logger.logMessage("Token not selected");
       return;
     }
@@ -108,7 +121,7 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
     const selectedAsset = this.selectedToken.address;
     // TODO: We support Aerum for now only
     this.swapTemplateService.getTemplatesByAsset(selectedAsset, Chain.Aerum).then(templates => {
-      if(templates) {
+      if (templates) {
         this.templates = templates.sort((one, two) => Number(one.rate <= two.rate));
         this.selectedTemplate = this.templates[0];
       } else {
@@ -120,12 +133,23 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   }
 
   private recalculateTotals() {
-    if(this.selectedTemplate) {
+    if (this.selectedTemplate) {
       this.rate = this.selectedTemplate.rate;
       this.ethAmount = this.amount / this.selectedTemplate.rate;
+      if (this.account) {
+        this.ethWeb3.eth.getBalance(this.account.address).then(
+          balance => {
+            const ethBalance = Number(fromWei(balance, 'ether'));
+            this.canMoveNext = ethBalance >= this.ethAmount;
+          }
+        );
+      } else {
+        this.canMoveNext = false;
+      }
     } else {
       this.rate = 0;
       this.ethAmount = 0;
+      this.canMoveNext = false;
     }
   }
 
@@ -142,10 +166,11 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   }
 
   async next() {
-    try{
-    if(this.selectedTemplate) {
-      await this.createEthereumSwap();
-    }}
+    try {
+      if (this.selectedTemplate) {
+        await this.createEthereumSwap();
+      }
+    }
     catch (e) {
       this.logger.logError('Error while creating swap', e);
       this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
@@ -163,8 +188,7 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
     const withdrawTrader = this.selectedTemplate.offchainAccount;
     this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${withdrawTrader}. amount: ${ethAmountString}`);
 
-    const ethWeb3 = await this.ethereumAuthService.getWeb3();
-    this.selfSignedEthereumContractExecutorService.init(ethWeb3, this.account.address, this.account.privateKey);
+    this.selfSignedEthereumContractExecutorService.init(this.ethWeb3, this.account.address, this.account.privateKey);
     this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
 
     // TODO: Unsubscribe
@@ -190,7 +214,7 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
 
   // TODO: Test code to register swap template
   async registerTestSwapTemplate() {
-    const id =  Guid.newGuid().replace(/-/g, '');
+    const id = Guid.newGuid().replace(/-/g, '');
     this.logger.logMessage(`Template: ${id}`);
     await this.swapTemplateService.registerTemplate(id, this.asset, 'sidlovskyy.aer', '0x0', "0xf38edc62732c418ee18bebf89cc063b3d1b57e0c", 500, Chain.Aerum);
     this.logger.logMessage(`Template created: ${id}`);
