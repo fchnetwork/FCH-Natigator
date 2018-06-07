@@ -195,7 +195,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
       this.moreOptionsData.data = null;
     }
     this.moreOptionsData.selectedToken = this.selectedToken.symbol;
-    await this.getMaxTransactionFee();
+    this.safeGetMaxTransactionFee();
     this.calculateTransactionData();
   }
 
@@ -270,11 +270,12 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     clearInterval(this.updateInterval);
   }
 
-  calculateTransactionData() {
+  async calculateTransactionData() {
     let data;
+    const resolvedAddress = await this.nameService.safeResolveNameOrAddress(this.receiverAddress);
     if(this.isToken) {
       const tokensContract  = this.transactionService.generateContract(this.selectedToken.address);
-      data = tokensContract.methods.transfer(this.receiverAddress, this.amount).encodeABI();
+      data = tokensContract.methods.transfer(resolvedAddress, this.amount).encodeABI();
       data = this.web3.utils.toHex(data);
       this.includedDataLength = Number(data.length - 2) / 2;
     } else if(this.moreOptionsData.data) {
