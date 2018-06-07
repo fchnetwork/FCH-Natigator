@@ -226,7 +226,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         const amount = this.amount * Math.pow(10, this.selectedToken.decimals);
         const convertedAmount = this.convert(amount.toExponential());
 
-        this.transactionService.sendTokens(address, resolvedAddress, convertedAmount, this.selectedToken.address, false, {}, null).then((res) => {
+        this.transactionService.sendTokens(address, resolvedAddress, convertedAmount, this.selectedToken.address, false, {}, null, this.selectedToken.symbol, this.selectedToken.decimals).then((res) => {
           this.transactionMessage = res;
         });
       }
