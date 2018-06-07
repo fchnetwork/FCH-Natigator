@@ -24,8 +24,6 @@
                 <app-divider [showLine]="false"></app-divider>
                 <aer-button data-cy="continue" class="large full-width" [ngClass]="{'disabled': !recoverForm.valid}" [disabled]="!recoverForm.valid" (click)="onSubmitAddress()">Continue</aer-button>
             </form>
-
-
             <!-- <form [formGroup]="recoverForm" (ngSubmit)="onSubmitAddress()" class="o-login o-loginForm">
                 <div class="o-loginForm__seedBlock">
                     <div class="" minlength="25" required="" aria-invalid="true" aria-required="true">
@@ -33,7 +31,6 @@
                             <textarea formControlName="seed" name="seed" placeholder="{{'KEY_PLACEHOLDER'|translate}}" minlength="25" required="" aria-invalid="true"></textarea>
                         </div>
                     </div> -->
-
             <!-- for future use <adresse> not specified in TYPE
                             <div class="o-loginForm__addressBlock">
                                 <div *ngIf="address; then showAvatar else showAvatarPlaceholder"></div>
@@ -54,7 +51,6 @@
                             </div>
                             -->
             <!-- </div>
-
                 <!-- Passwords-->
             <!-- <input formControlName="password" type="password" name="password" placeholder="Protect Your Account with a New Password">
                 <input formControlName="confirmpassword" type="password" name="confirmpassword" placeholder="Confirm Password">

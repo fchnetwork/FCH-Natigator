@@ -25,9 +25,7 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
    
     this.idle.startWatching();
 
-    this.idle.onTimerStart().subscribe(count => { 
-      // console.log("counter "+count)
-    });
+    this.idle.onTimerStart().subscribe(count => {});
 
     this.idle.onTimeout().subscribe( () => {
       this.idle.stopWatching()

@@ -56,15 +56,10 @@ export class AccessRecoveryComponent implements OnInit {
             reader.readAsText(input.files[index]);
           }            
         }
-        else {
-        console.log("is not allowed ")
-        }
       }
     }
 
-
     ngOnInit() {
-
       this.recoverForm = this.formBuilder.group({
         seed: ["", [Validators.required ] ],
         // password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
@@ -73,26 +68,21 @@ export class AccessRecoveryComponent implements OnInit {
       },{
         validator: this.matchingPasswords('password', 'confirmpassword')
       });
-
       this._processFormData();
-
     }
 
     private _processFormData() {
       const seedControl = this.recoverForm.controls['seed'];
             seedControl.valueChanges.takeUntil( this.componentDestroyed$ ).subscribe( async v => {
               if ( v && v.length > 2 ) {
-
                 let cleanSeed = v.trim(); // trim starting and ending spaces
                     cleanSeed = cleanSeed.replace(/[^\w\s]/gi, ' '); // clean all special characters
                     cleanSeed.replace(/\s\s+/g, ' ');  // remove double spaces
-
                 this.authServ.generateAddressLogin( cleanSeed ).then( async res => {
                     this.address = res.address;
                     this.avatar = res.avatar;
                     this.private = res.private;
                 });
-
               }
           this.address = "";
           this.cd.detectChanges();
@@ -112,8 +102,6 @@ export class AccessRecoveryComponent implements OnInit {
 
     onSubmitAddress() {
       if( this.recoverForm.valid ) {
-        console.log( this.private );
-        console.log( this.recoverForm.value.password );
         this.authServ.saveKeyStore( this.private, this.recoverForm.value.password, this.recoverForm.value.seed );
         this.router.navigate(['/wallet/home']); // improvements need to be made here but for now the auth guard should work just fine
       }
