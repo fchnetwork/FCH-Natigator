@@ -1,5 +1,6 @@
 .c-eth-wallet {
   width: 400px;
+  min-width: 400px;
   color: #83868A;
   font-size: 13px;
   line-height: 1;
@@ -15,6 +16,10 @@
   aer-button {
     margin-top: 20px;
     display: block;
+
+    &.btn-import {
+      margin-top: 0;
+    }
   }
 
   .cell {
@@ -34,12 +39,14 @@
 
   .c-copy__address {
     display: block;
+
     a {
       padding: 5px 12px;
       border: 1px dashed #2a669a;
       display: inline-block;
       position: relative;
       border-radius: 5px;
+
       &::after {
         position: absolute;
         top: -18px;
