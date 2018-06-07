@@ -1,0 +1,53 @@
+<div class="c-eth-wallet" *ngIf="active">
+  <h1>Ethereum Wallet</h1>
+  <div aerRow>
+    <div aerColumn size="sm-4" class="cell cell--left">
+      Select Wallet:
+    </div>
+    <div aerColumn size="sm-8" class="cell cell--left">
+      <aer-radio-group class="address-option">
+        <aer-radio-button [value]="walletTypes.Injected" [disabled]="!injectedWeb3" (change)="onWalletSelect($event)">[ Injected web3 nam/addr ]</aer-radio-button>
+        <aer-radio-button [value]="walletTypes.Imported" [checked]="true" (change)="onWalletSelect($event)">Stored Keys</aer-radio-button>
+      </aer-radio-group>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell cell--left">
+      Select Address
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
+      <aer-select [(ngModel)]="selectResult" dataKey="title" icon="key" img="img" [disabled]="walletTypes.Imported !== selectedWalletType" placeholder="Select your account">
+        <aer-select-option *ngFor="let item of aerlists;" [value]="item">
+          <img class="avatar" [src]="item.img"><span>{{item.title}}</span>
+        </aer-select-option>
+      </aer-select>
+    </div>
+  </div>
+  <div aerRow *ngIf="importInProgress">
+    <div aerColumn size="sm-12" class="cell">
+      <aer-input [(ngModel)]="file" class="with-button blue" buttonLabel="Import"></aer-input>
+    </div>
+  </div>
+  <div aerRow *ngIf="addressSelected">
+    <div aerColumn size="sm-12" class="cell">
+      <img [src]="addressQR" alt="">
+    </div>
+  </div>
+  <div aerRow *ngIf="addressSelected">
+    <div aerColumn size="sm-12" class="cell c-copy__address">
+      <a (click)="copyToClipboard()">{{ address }}</a>
+    </div>
+  </div>
+  <div aerRow *ngIf="addressSelected">
+    <div aerColumn size="sm-6" class="cell cell--left">
+      Balance:
+    </div>
+    <div aerColumn size="sm-6" class="cell cell--right">
+      ETH
+    </div>
+  </div>
+  <aer-button (buttonFn)="next()" class="blue large full-width">Next</aer-button>
+  <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
+</div>

@@ -1,11 +1,11 @@
 const artifacts = require('@core/abi/AtomicSwapERC20ToEther.json');
 
 import { Injectable } from '@angular/core';
-import { environment } from '@env/environment';
+import { environment } from '../../../../../environments/environment';
 
-import { BaseContractService } from '@core/contract/base-contract-service/base-contract.service';
-import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
-import { ContractExecutorService } from '@core/contract/contract-executor-service/contract-executor.service';
+import { BaseContractService } from '../../../contract/base-contract-service/base-contract.service';
+import { AuthenticationService } from '../../../authentication/authentication-service/authentication.service';
+import { ContractExecutorService } from '../../../contract/contract-executor-service/contract-executor.service';
 
 @Injectable()
 export class Erc20ToAeroSwapService extends BaseContractService {
@@ -37,13 +37,13 @@ export class Erc20ToAeroSwapService extends BaseContractService {
 
   async expireSwap(swapId: string) {
     const expireSwap = this.contract.methods.expire(this.web3.utils.fromAscii(swapId));
-    const response = await this.contractExecutorService.send(expireSwap);
-    return response;
+    const receipt = await this.contractExecutorService.send(expireSwap);
+    return receipt;
   }
 
   async checkSwap(swapId: string) {
     const checkSwap = this.contract.methods.check(this.web3.utils.fromAscii(swapId));
-    const receipt = await this.contractExecutorService.call(checkSwap);
-    return receipt;
+    const response = await this.contractExecutorService.call(checkSwap);
+    return response;
   }
 }

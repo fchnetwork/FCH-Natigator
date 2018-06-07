@@ -1,0 +1,52 @@
+.c-eth-wallet {
+  width: 400px;
+  color: #83868A;
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+
+  h1 {
+    font-size: 36px;
+    font-weight: normal;
+    color: #27282A;
+    margin: 0 0 38px;
+  }
+
+  aer-button {
+    margin-top: 20px;
+    display: block;
+  }
+
+  .cell {
+    &--left {
+      text-align: left;
+    }
+
+    &--right {
+      text-align: right;
+    }
+  }
+
+  .address-option {
+    margin-top: -15px;
+    display: block;
+  }
+
+  .c-copy__address {
+    display: block;
+    a {
+      padding: 5px 12px;
+      border: 1px dashed #2a669a;
+      display: inline-block;
+      position: relative;
+      border-radius: 5px;
+      &::after {
+        position: absolute;
+        top: -18px;
+        right: -31px;
+        content: "Click to copy";
+        font-size: 10px;
+      }
+    }
+  }
+}

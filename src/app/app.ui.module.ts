@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 
-// @aerum/UI Framework Modules 
+// @aerum/UI Framework Modules
 import {
    ContentModule,
    CheckboxModule,
@@ -21,11 +21,11 @@ import {
    GridModule,
    ExpandableModule,
    LoaderModule,
-   TableModule
+   TableModule,
+   RadioModule
 } from "@aerum/ui";
 
-
-@NgModule({ 
+@NgModule({
    imports: [
        // UI Framework Modules
        ContentModule,
@@ -47,7 +47,8 @@ import {
        NotificationModule,
        ExpandableModule,
        LoaderModule,
-       TableModule
+       TableModule,
+       RadioModule
    ],
    exports: [
        // UI Framework Modules
@@ -70,7 +71,8 @@ import {
        NotificationModule,
        ExpandableModule,
        LoaderModule,
-       TableModule
+       TableModule,
+       RadioModule
    ]
 })
 export class AppUIModule { }

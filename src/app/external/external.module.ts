@@ -1,22 +1,19 @@
 import { CommonModule } from "@angular/common";
-import { NgModule, ModuleWithProviders } from "@angular/core";
-
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ToastModule } from "ng2-toastr";
-import { TranslateModule } from "@ngx-translate/core";
-import { TranslateLoader } from "@ngx-translate/core";
-import { HttpClient } from "@angular/common/http";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { NgModule } from "@angular/core";
 
 import { ExternalRoutingModule } from "@app/external/external.routes";
-import { ExternalTransactionComponent } from "@app/external/external-transaction/external-transaction.component";
 import { AppUIModule } from "@app/app.ui.module";
 import { SharedModule } from "@app/shared/shared.module";
+import { ExternalTransactionComponent } from "@app/external/external-transaction/external-transaction.component";
+import { PaymentGatewayWizardComponent } from './payment-gateway-wizard/payment-gateway-wizard.component';
+import { EthereumWalletComponent } from './payment-gateway-wizard-steps/ethereum-wallet/ethereum-wallet.component';
+import { SwapCreateComponent } from './payment-gateway-wizard-steps/swap-create/swap-create.component';
+import { SwapConfirmComponent } from './payment-gateway-wizard-steps/swap-confirm/swap-confirm.component';
 
 @NgModule({
     entryComponents: [
         ExternalTransactionComponent,
+        EthereumWalletComponent
     ],
     imports: [
         CommonModule,
@@ -26,6 +23,10 @@ import { SharedModule } from "@app/shared/shared.module";
     ],
     declarations: [
         ExternalTransactionComponent,
+        EthereumWalletComponent,
+        PaymentGatewayWizardComponent,
+        SwapCreateComponent,
+        SwapConfirmComponent,
     ]
 })
 export class ExternalModule { }
