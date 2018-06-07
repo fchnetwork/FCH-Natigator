@@ -35,10 +35,7 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   canMoveNext = false;
 
   importInProgress = false;
-  seedFileText: string;
-
-  importedAddress: string;
-  importedAccount: EthereumAccount;
+  importedPrivateKey: string;
 
   constructor(
     location: Location,
@@ -54,8 +51,24 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
 
   async ngOnInit() {
     this.web3 = this.ethereumAuthenticationService.getWeb3();
-    this.storedAccounts = this.sessionStorageService.retrieve('ethereum_accounts') as EthereumAccount[];
+    this.storedAccounts = this.sessionStorageService.retrieve('ethereum_accounts') as EthereumAccount[] || [];
+    if (!this.storedAccounts.length) {
+      this.generatePredefinedAccount();
+    }
+
     this.injectedWeb3 = await this.ethereumAuthenticationService.getInjectedWeb3();
+  }
+
+  private generatePredefinedAccount(): void {
+    try {
+      const seed = this.sessionStorageService.retrieve('seed');
+      if (seed) {
+        const predefinedAccount = this.ethereumAuthenticationService.generateAddressFromSeed(seed);
+        this.storeNewImportedAccount(predefinedAccount);
+      }
+    } catch (e) {
+      this.logger.logError('Generating predefined account failed', e);
+    }
   }
 
   async onWalletSelect(event: { value: EthWalletType }) {
@@ -105,32 +118,29 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
     }
   }
 
-  openSeedFile(event) {
-    const input = event.target;
-    if (input.files.length) {
-      const reader = new FileReader();
-      reader.onload = () => this.processSeed(reader.result);
-      reader.readAsText(input.files[0]);
-    }
-  }
-
   import() {
-    if (this.importedAccount) {
-      if(this.isAlreadyImported(this.importedAccount)) {
+    if (this.importedPrivateKey) {
+      const importedAddress = this.authenticationService.generateAddressFromPrivateKey(this.importedPrivateKey);
+      if (this.isAlreadyImported(importedAddress)) {
         this.notificationService.showMessage('Account already imported', 'Error');
         return;
       }
-      this.storedAccounts.push(this.importedAccount);
-      this.ethereumAuthenticationService.saveEthereumAccounts(this.storedAccounts);
-
-      this.selectedStoredAccount = this.importedAccount;
-      this.address = this.importedAccount.address;
-      this.reloadAccountData();
+      const importedAccount: EthereumAccount = {address: importedAddress, privateKey: this.importedPrivateKey};
+      this.storeNewImportedAccount(importedAccount);
     }
   }
 
-  private isAlreadyImported(account: EthereumAccount): boolean {
-    return this.storedAccounts.some((acc => acc.address === account.address));
+  private storeNewImportedAccount(importedAccount: EthereumAccount): void {
+    this.storedAccounts.push(importedAccount);
+    this.ethereumAuthenticationService.saveEthereumAccounts(this.storedAccounts);
+
+    this.selectedStoredAccount = importedAccount;
+    this.address = importedAccount.address;
+    this.reloadAccountData();
+  }
+
+  private isAlreadyImported(address: string): boolean {
+    return this.storedAccounts.some((acc => acc.address === address));
   }
 
   private reloadAccountData() {
@@ -153,24 +163,8 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
     this.canMoveNext = balance > 0;
   }
 
-  onSeedChange() {
-    this.processSeed();
-  }
-
-  private processSeed(seed?: string): void {
-    if (seed && (this.seedFileText !== seed)) {
-      this.seedFileText = seed;
-    }
-    this.authenticationService.generateAddressLogin(this.seedFileText).then(res => {
-      this.importedAddress = res.address;
-      this.importedAccount = {address: res.address, privateKey: res.private};
-    });
-  }
-
   private cleanImportingData() {
     this.importInProgress = false;
-    this.importedAddress = null;
-    this.importedAccount = null;
-    this.seedFileText = null;
+    this.importedPrivateKey = null;
   }
 }

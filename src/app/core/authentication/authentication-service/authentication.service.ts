@@ -8,6 +8,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 import QRCode from 'qrcode';
 import { SessionStorageService } from 'ngx-webstorage';
 import { Router } from '@angular/router';
+import { privateToAddress, bufferToHex } from "ethereumjs-util";
 
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
@@ -247,4 +248,17 @@ export class AuthenticationService {
             }
         });
     }
+
+  generateAddressFromPrivateKey(privateKey: string): string {
+      if (!privateKey) {
+        throw new Error("Private key empty");
+      }
+
+      if (!privateKey.startsWith("0x")) {
+        privateKey = "0x" + privateKey;
+      }
+
+      const address = bufferToHex(privateToAddress(privateKey));
+      return address;
+  }
 }
