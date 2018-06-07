@@ -126,8 +126,8 @@ export class ExternalTransactionComponent implements OnInit {
     if(this.isToken) {
     // TODO: add decimals
       const dec = await this.tokenService.getTokensInfo(this.contractAddress);
-      const decimals = 8;
-      this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.contractAddress, this.external, urls, this.orderId).then((res) => {
+      const decimals = dec.decimals;
+      this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.contractAddress, this.external, urls, this.orderId, dec.symbol, decimals).then((res) => {
       });
     } else {
       this.transactionService.transaction(privateKey, this.senderAddress, resolvedAddress, this.amount, null, this.external, urls, this.orderId, {}).then(res => {
