@@ -199,6 +199,17 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     this.calculateTransactionData();
   }
 
+  convert(n){
+    n = n.toString().split(/e|\.|\+/);
+    let result = '';
+    result = result + n[0];
+
+    for(let i = 0; i < n[2]; i++) {
+      result = result + 0;
+    }
+    return result;
+  }
+
   async openTransactionConfirm(message) {
     const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
     const result = await this.modalSrv.openTransactionConfirm(message, false);
@@ -212,7 +223,10 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
           console.log(error);
         });
       } else if (this.selectedToken.address) {
-        this.transactionService.sendTokens(address, resolvedAddress, Number(this.amount * Math.pow(10, this.selectedToken.decimals)), this.selectedToken.address, false, {}, null).then((res) => {
+        const amount = this.amount * Math.pow(10, this.selectedToken.decimals);
+        const convertedAmount = this.convert(amount.toExponential());
+
+        this.transactionService.sendTokens(address, resolvedAddress, convertedAmount, this.selectedToken.address, false, {}, null).then((res) => {
           this.transactionMessage = res;
         });
       }
