@@ -52,7 +52,23 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   async ngOnInit() {
     this.web3 = this.ethereumAuthenticationService.getWeb3();
     this.storedAccounts = this.sessionStorageService.retrieve('ethereum_accounts') as EthereumAccount[] || [];
+    if (!this.storedAccounts.length) {
+      this.generatePredefinedAccount();
+    }
+
     this.injectedWeb3 = await this.ethereumAuthenticationService.getInjectedWeb3();
+  }
+
+  private generatePredefinedAccount(): void {
+    try {
+      const seed = this.sessionStorageService.retrieve('seed');
+      if (seed) {
+        const predefinedAccount = this.ethereumAuthenticationService.generateAddressFromSeed(seed);
+        this.storeNewImportedAccount(predefinedAccount);
+      }
+    } catch (e) {
+      this.logger.logError('Generating predefined account failed', e);
+    }
   }
 
   async onWalletSelect(event: { value: EthWalletType }) {
@@ -105,18 +121,22 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   import() {
     if (this.importedPrivateKey) {
       const importedAddress = this.authenticationService.generateAddressFromPrivateKey(this.importedPrivateKey);
-      if(this.isAlreadyImported(importedAddress)) {
+      if (this.isAlreadyImported(importedAddress)) {
         this.notificationService.showMessage('Account already imported', 'Error');
         return;
       }
-      const importedAccount: EthereumAccount = { address: importedAddress, privateKey: this.importedPrivateKey };
-      this.storedAccounts.push(importedAccount);
-      this.ethereumAuthenticationService.saveEthereumAccounts(this.storedAccounts);
-
-      this.selectedStoredAccount = importedAccount;
-      this.address = importedAddress;
-      this.reloadAccountData();
+      const importedAccount: EthereumAccount = {address: importedAddress, privateKey: this.importedPrivateKey};
+      this.storeNewImportedAccount(importedAccount);
     }
+  }
+
+  private storeNewImportedAccount(importedAccount: EthereumAccount): void {
+    this.storedAccounts.push(importedAccount);
+    this.ethereumAuthenticationService.saveEthereumAccounts(this.storedAccounts);
+
+    this.selectedStoredAccount = importedAccount;
+    this.address = importedAccount.address;
+    this.reloadAccountData();
   }
 
   private isAlreadyImported(address: string): boolean {
