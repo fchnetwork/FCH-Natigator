@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PaymentGatewayWizardStep } from "../payment-gateway-wizard-step";
 import { Location } from "@angular/common";
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./swap-create.component.scss']
 })
 export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnInit {
+  @Input() asset: string;
+
   tokens = [
     {title: 'AERO', icon: 'aerumleaf'}
   ];
