@@ -3,16 +3,15 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';  
 import { iBlocks, iPendingTxn } from '@shared/app.interfaces';  
 import { ModalService } from '@app/core/general/modal-service/modal.service';
-import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
+import { ExplorerService } from '@core/explorer/explorer-service/explorer.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pending-txns',
   templateUrl: './pending-txns.component.html'
 })
-export class PendingTxnsComponent implements OnInit, OnDestroy {
+export class PendingTxnsComponent implements OnInit {
 
-  pendingTransactions: Subscription;
   transactions: Array<iPendingTxn> = [];
   
   constructor( public exploreSrv: ExplorerService,
@@ -26,9 +25,9 @@ export class PendingTxnsComponent implements OnInit, OnDestroy {
 
   getPendingTxPool() {
     const pendingTxnKeys = [];
-    this.pendingTransactions = this.exploreSrv.getPendingTransactions().subscribe( res => {
+    this.exploreSrv.getPendingTransactions().then( res => {
       Object.keys(res).forEach( (key,index) => {
-        pendingTxnKeys.push(key)
+      pendingTxnKeys.push(key)
       });
       pendingTxnKeys.forEach( element => {
           Object.keys(res[element]).forEach( (key,index) => {
@@ -51,9 +50,5 @@ export class PendingTxnsComponent implements OnInit, OnDestroy {
   openTransaction(transaction) {
     this.modal.openTransaction(transaction.hash, transaction, false, null, null).then((result) => {
     }).catch( () => {});
-  }
-
-  ngOnDestroy () {
-    this.pendingTransactions.unsubscribe();
   }
 }

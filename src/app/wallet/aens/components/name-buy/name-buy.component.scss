@@ -1,6 +1,5 @@
 .aens {
     &__price-info {
-        // TODO: This is temporary solution as grid doesn't do columns row the same for row
         display: -webkit-flex; /* Safari */
         display: flex;
         justify-content: space-between;

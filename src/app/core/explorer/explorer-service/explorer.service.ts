@@ -10,7 +10,7 @@ import { environment } from '@env/environment';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { BlockListModel } from '@core/explorer/explorer-service/blocks-list.model';
 import { TransactionListModel } from '@core/explorer/explorer-service/transaction-list.model';
-import { iTransaction } from "@shared/app.interfaces";
+import { iTransaction, iPendingTxn } from "@shared/app.interfaces";
 
 @Injectable()
 export class ExplorerService {
@@ -18,6 +18,19 @@ export class ExplorerService {
   web3: any;
   account: any;
   txpoolContentData = { "jsonrpc": "2.0", "method": "txpool_content", "params": [], "id": 1 };
+  txpoolContent = {
+    property: 'txpool',
+    methods: [{
+      name: 'content',
+      call: 'txpool_content'
+    },{
+      name: 'inspect',
+      call: 'txpool_inspect'
+    },{
+      name: 'status',
+      call: 'txpool_status'
+    }]
+  };
 
   constructor(private _http: Http, _auth: AuthenticationService) {
     this.web3 = _auth.initWeb3();
@@ -28,13 +41,15 @@ export class ExplorerService {
     return this.web3.utils.fromWei(amountInWei.toString(), currency);
   }
 
-  getPendingTransactions() {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+  getPendingTransactions(): Promise<iPendingTxn[]> {
+    this.web3.extend(this.txpoolContent);
 
-    return this._http
-      .post(environment.rpcApiProvider, this.txpoolContentData, options)
-      .map(response => response.json().result.pending);
+    return new Promise<iPendingTxn[]>((resolve, reject) => {
+      this.web3.txpool.content()
+      .then(res => {
+        resolve(res.pending);
+      });
+    });
   }
 
   /**
@@ -54,7 +69,7 @@ export class ExplorerService {
     });
   }
 
-  
+
 
   /**
    * Returns blocks from the blockchain in specified range.
@@ -116,7 +131,7 @@ export class ExplorerService {
             })
           }
         });
-    }); 
+    });
   }
 
   /**
@@ -136,7 +151,7 @@ export class ExplorerService {
           let currentBlock = blockList.blocks[i];
 
           if (currentBlock.transactions.length > 0) {
-            for(let txn of currentBlock.transactions) {
+            for (let txn of currentBlock.transactions) {
               let extendedTxn = Object.assign(txn, { timestamp: currentBlock.timestamp, gasUsedinTxn: currentBlock.gasUsed, block: currentBlock });
             }
 

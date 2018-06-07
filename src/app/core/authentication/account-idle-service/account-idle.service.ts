@@ -86,7 +86,6 @@ export class AccountIdleService {
     return this.timeout$
       .filter(timeout => !!timeout)
       .map(() => {
-        console.log(this.isTimeout)
         this.isTimeout = true;
         return true;
       });
