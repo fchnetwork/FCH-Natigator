@@ -1,0 +1,22 @@
+.o-closeModal {
+    position: relative;
+    &__signTxn {
+        margin-right: 25px;
+    }
+    &__btn {
+        display: inline;
+        position: absolute;
+        top: -58px;
+        right: -29px;
+        cursor: pointer;
+    }       
+}
+    
+.o-closeModal__icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    background: url(/assets/images/close-btn.svg) no-repeat;
+    background-position: center;
+    background-size: cover;            
+}
