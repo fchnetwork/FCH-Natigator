@@ -38,7 +38,7 @@
         </div>
         <div class="tr">
           <div class="name">
-            {{'GAS_USED'|translate}}
+            {{'GAS'|translate}}
           </div>
           <div class="value">
               {{transaction.gasUsedinTxn }}
@@ -70,7 +70,7 @@
         </div>
         <div class="tr" *ngIf="transaction.input.length > 3">
           <div class="name">
-            {{'SEND_DATA'|translate}}
+            {{'SENT_DATA'|translate}}
           </div>
           <div class="value">
               <div *ngIf="!transaction.to; then contractTxn else normalTxn"></div>

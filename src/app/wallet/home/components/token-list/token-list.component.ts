@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';    
-import { ModalService } from '@app/core/general/modal-service/modal.service';
-import { TokenService } from '@app/core/transactions/token-service/token.service';
+import { ModalService } from '@core/general/modal-service/modal.service';
+import { TokenService } from '@core/transactions/token-service/token.service';
+import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
+import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 
 @Component({
   selector: 'app-token-list',
@@ -12,6 +14,8 @@ export class TokenListComponent implements OnInit {
   constructor(
     public modalService: ModalService,
     private tokenService: TokenService,
+    public clipboardService: ClipboardService,
+    public notificationService: InternalNotificationService
   ) { }
 
   ngOnInit() {
@@ -37,6 +41,11 @@ export class TokenListComponent implements OnInit {
 
   deleteToken(token) {
     this.tokenService.deleteToken(token);
+  }
+
+  copyTokenAddress(token) {
+    this.clipboardService.copy(token);
+    this.notificationService.showMessage('Copied to clipboard!', 'Done');
   }
 
 }

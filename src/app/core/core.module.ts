@@ -52,7 +52,6 @@ import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web
     ClipboardService,
     ExplorerService,
     ModalService,
-    InternalNotificationService,
     RouteDataService,
     TokenService,
     TransactionService,
@@ -70,9 +69,7 @@ import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web
     ERC20TokenService,
     PasswordCheckerService,
     LoggerService,
-    ValidateService,
-    NotificationMessagesService,
-    ConnectionCheckerService,
+    ValidateService, 
     EtherSwapService,
     AeroSwapService,
     AerumErc20SwapService,
@@ -84,7 +81,10 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
-        LoaderService
+        LoaderService,
+        ConnectionCheckerService,
+        InternalNotificationService,
+        NotificationMessagesService
       ]
     };
   }

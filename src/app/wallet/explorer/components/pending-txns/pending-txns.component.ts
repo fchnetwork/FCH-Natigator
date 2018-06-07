@@ -27,7 +27,7 @@ export class PendingTxnsComponent implements OnInit {
     const pendingTxnKeys = [];
     this.exploreSrv.getPendingTransactions().then( res => {
       Object.keys(res).forEach( (key,index) => {
-      pendingTxnKeys.push(key)
+        pendingTxnKeys.push(key)
       });
       pendingTxnKeys.forEach( element => {
           Object.keys(res[element]).forEach( (key,index) => {

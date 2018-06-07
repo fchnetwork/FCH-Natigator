@@ -6,7 +6,8 @@
 export const environment = {
   production: false,
   configInUse: "environment.dev",
-  WebsocketProvider: "ws://52.51.85.249:8546",
+  // WebsocketProvider: "ws://52.51.85.249:8546",
+  WebsocketProvider: "ws://127.0.0.1:8546",
   cookiesDomain: "dev.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "http://explore.aerum.net/#/",
