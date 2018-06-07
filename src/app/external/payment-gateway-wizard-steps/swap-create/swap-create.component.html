@@ -3,7 +3,7 @@
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
       <label>Receiving Aerum token:</label>
-      <aer-select [(ngModel)]="selectedToken" dataKey="symbol" icon="aerumleaf" placeholder="Select your token">
+      <aer-select [(ngModel)]="selectedToken" dataKey="symbol" icon="aerumleaf" placeholder="Select your token" (ngModelChange)="onTokenChange()">
         <aer-select-option *ngFor="let token of tokens;" [value]="token">
           <aer-icon>aerumleaf</aer-icon>
           <span>{{token.symbol}}</span>

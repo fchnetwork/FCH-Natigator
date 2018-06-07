@@ -42,13 +42,14 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
     super(location);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const keystore = this.authService.getKeystore();
     this.aerumAccount  = "0x" + keystore.address;
 
     this.secret = Guid.newGuid().replace(/-/g, '');
     this.tokens = this.tokenService.getTokens() || [];
-    this.ensureDepositTokenPresent();
+    await this.ensureDepositTokenPresent();
+
     this.loadSwapTemplates();
 
     // TODO: Test code to register swap template
@@ -84,13 +85,14 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   }
 
   private loadSwapTemplates(): void {
-    if(!this.asset) {
-      this.logger.logMessage("Deposit asset not specified");
+    if(!this.selectedToken) {
+      this.logger.logMessage("Token not selected");
       return;
     }
 
+    const selectedAsset = this.selectedToken.address;
     // TODO: We support Aerum for now only
-    this.swapTemplateService.getTemplatesByAsset(this.asset, Chain.Aerum).then(templates => {
+    this.swapTemplateService.getTemplatesByAsset(selectedAsset, Chain.Aerum).then(templates => {
       if(templates) {
         this.templates = templates.sort((one, two) => Number(one.rate <= two.rate));
         this.selectedTemplate = this.templates[0];
@@ -107,6 +109,10 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
       this.rate = 0;
       this.ethAmount = 0;
     }
+  }
+
+  onTokenChange() {
+    this.loadSwapTemplates();
   }
 
   onTemplateChange() {
