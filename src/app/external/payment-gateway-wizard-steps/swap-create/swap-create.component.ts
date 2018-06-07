@@ -16,6 +16,7 @@ import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ethe
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
+import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 
 @Component({
   selector: 'app-swap-create',
@@ -41,6 +42,7 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   constructor(
     location: Location,
     private logger: LoggerService,
+    private notificationService: InternalNotificationService,
     private nameService: AerumNameService,
     private authService: AuthenticationService,
     private ethereumAuthService: EthereumAuthenticationService,
@@ -140,12 +142,19 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
   }
 
   async next() {
+    try{
     if(this.selectedTemplate) {
       await this.createEthereumSwap();
+    }}
+    catch (e) {
+      this.logger.logError('Error while creating swap', e);
+      this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
     }
   }
 
   async createEthereumSwap() {
+    this.notificationService.showMessage('Creating swap... (please wait 10-15 seconds)', 'In progress');
+
     const hash = sha3(this.secret);
     const ethAmountString = this.ethAmount.toString(10);
     const timeoutInSeconds = 5 * 60;
@@ -175,6 +184,8 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnI
     this.logger.logMessage(`Swap created: ${hash}`);
     const swap = await this.etherSwapService.checkSwap(hash);
     this.logger.logMessage(`Swap checked: ${hash}`, swap);
+
+    this.notificationService.showMessage('Swap created', 'Success');
   }
 
   // TODO: Test code to register swap template
