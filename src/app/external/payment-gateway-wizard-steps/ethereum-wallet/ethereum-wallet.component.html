@@ -28,9 +28,14 @@
   </div>
   <div aerRow *ngIf="importInProgress">
     <div aerColumn size="sm-12" class="cell">
-      <aer-file-upload class="blue normal" (filesChange)="openSeedFile($event)">Select key file</aer-file-upload>
-      <aer-textarea placeholder="Your seed will be here" [addition]="importedAddress" [(ngModel)]="seedFileText" (ngModelChange)="onSeedChange()" ngDefaultControl>{{seedFileText}}</aer-textarea>
-      <aer-button (buttonFn)="import()" [disabled]="!importedAccount" class="blue normal btn-import">Import Account</aer-button>
+      <aer-input (buttonFn)="import()"
+                 [(ngModel)]="importedPrivateKey"
+                 [attr.disabled]="!importedPrivateKey"
+                 class="with-button"
+                 [ngClass]="{ 'blue': importedPrivateKey, 'grey': !importedPrivateKey }"
+                 placeholder="Private key"
+                 buttonLabel="Import">
+      </aer-input>
     </div>
   </div>
   <div aerRow *ngIf="address">
