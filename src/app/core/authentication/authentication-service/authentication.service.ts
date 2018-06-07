@@ -149,6 +149,8 @@ export class AuthenticationService {
                 this.sessionStorage.store('tokens', result.tokens.length ? JSON.parse(result.tokens) : []);
                 this.sessionStorage.store('ethereum_accounts', result.ethereumAccounts.length ? JSON.parse(result.ethereumAccounts) : []);
                 resolve('success');
+            }).catch((err)=>{
+                reject(err);
             });
         });
     }
