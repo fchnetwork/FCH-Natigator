@@ -115,7 +115,7 @@ export class AuthenticationService {
                     plainTextTokens = decryptTokens.toString(CryptoJS.enc.Utf8);
                 }
 
-                const encryptedEthereumAccounts = Cookie.get('tokens');
+                const encryptedEthereumAccounts = Cookie.get('ethereum_accounts');
                 let ethereumAccounts = [];
                 if(tokens) {
                   const decryptEthereumAccounts = CryptoJS.AES.decrypt( encryptedEthereumAccounts, password );
