@@ -4,6 +4,7 @@ import { Subscription } from "rxjs/Subscription";
 import { EthereumWalletComponent } from "@external/payment-gateway-wizard-steps/ethereum-wallet/ethereum-wallet.component";
 import { SwapCreateComponent } from "@external/payment-gateway-wizard-steps/swap-create/swap-create.component";
 import { SwapConfirmComponent } from "@external/payment-gateway-wizard-steps/swap-confirm/swap-confirm.component";
+import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 
 @Component({
   selector: 'app-payment-gateway-wizard',
@@ -21,6 +22,8 @@ export class PaymentGatewayWizardComponent implements OnInit, OnDestroy {
   asset: string;
   amount: number;
 
+  account: EthereumAccount;
+
   constructor(
     private route: ActivatedRoute
   ) { }
@@ -32,8 +35,8 @@ export class PaymentGatewayWizardComponent implements OnInit, OnDestroy {
     });
 
     // TODO: Uncomment later
-    // this.walletStep.activate();
-    this.createSwapStep.activate();
+    this.walletStep.activate();
+    // this.createSwapStep.activate();
     this.walletStep.setNextStep(this.createSwapStep);
     this.createSwapStep.setNextStep(this.confirmSwapStep);
   }
@@ -44,4 +47,7 @@ export class PaymentGatewayWizardComponent implements OnInit, OnDestroy {
     }
   }
 
+  onSelectWalletCompleted(account: EthereumAccount) {
+    this.account = account;
+  }
 }

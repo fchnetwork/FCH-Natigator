@@ -23,15 +23,15 @@ export class EtherSwapService {
     this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.crossChain.address.ethereum.EtherSwap);
   }
 
-  async openSwap(hash: string, aeroValue: string, withdrawTrader: string, timelock: number) {
+  async openSwap(hash: string, ethValue: string, withdrawTrader: string, timelock: number) {
     const openSwap = this.contract.methods.open(hash, withdrawTrader, timelock.toString(10));
-    const receipt = await this.contractExecutorService.send(openSwap, { value: aeroValue });
+    const receipt = await this.contractExecutorService.send(openSwap, { value: ethValue });
     return receipt;
   }
 
-  async estimateOpenSwap(hash: string, aeroValue: string, withdrawTrader: string, timelock: number) {
+  async estimateOpenSwap(hash: string, ethValue: string, withdrawTrader: string, timelock: number) {
     const openSwap = this.contract.methods.open(hash, withdrawTrader, timelock.toString(10));
-    const cost = await this.contractExecutorService.estimateCost(openSwap, { value: aeroValue });
+    const cost = await this.contractExecutorService.estimateCost(openSwap, { value: ethValue });
     return cost;
   }
 

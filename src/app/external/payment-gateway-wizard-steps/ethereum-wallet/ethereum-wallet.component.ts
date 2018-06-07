@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Location } from "@angular/common";
 
 import Web3 from "web3";
@@ -18,6 +18,8 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
   styleUrls: ['./ethereum-wallet.component.scss']
 })
 export class EthereumWalletComponent extends PaymentGatewayWizardStep implements OnInit {
+
+  @Output() onCompleted: EventEmitter<EthereumAccount> = new EventEmitter<EthereumAccount>();
 
   walletTypes = EthWalletType;
   selectedWalletType = EthWalletType.Imported;
@@ -120,6 +122,10 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
 
   import() {
     if (this.importedPrivateKey) {
+      if (!this.importedPrivateKey.startsWith('0x')){
+        this.importedPrivateKey = "0x" + this.importedPrivateKey;
+      }
+
       const importedAddress = this.authenticationService.generateAddressFromPrivateKey(this.importedPrivateKey);
       if (this.isAlreadyImported(importedAddress)) {
         this.notificationService.showMessage('Account already imported', 'Error');
@@ -167,5 +173,10 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   private cleanImportingData() {
     this.importInProgress = false;
     this.importedPrivateKey = null;
+  }
+
+  next() {
+    this.onCompleted.emit(this.selectedStoredAccount);
+    super.next();
   }
 }
