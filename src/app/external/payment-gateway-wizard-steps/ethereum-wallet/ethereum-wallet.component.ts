@@ -127,6 +127,7 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
       }
       const importedAccount: EthereumAccount = {address: importedAddress, privateKey: this.importedPrivateKey};
       this.storeNewImportedAccount(importedAccount);
+      this.notificationService.showMessage(`Account ${importedAccount.address} imported`, 'Done');
     }
   }
 
