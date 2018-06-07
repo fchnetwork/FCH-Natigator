@@ -1,25 +1,53 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { EthereumWalletComponent } from "@app/external/payment-gateway-wizard-steps/ethereum-wallet/ethereum-wallet.component";
-import { SwapConfirmComponent } from "@app/external/payment-gateway-wizard-steps/swap-confirm/swap-confirm.component";
-import { SwapCreateComponent } from "@app/external/payment-gateway-wizard-steps/swap-create/swap-create.component";
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs/Subscription";
+import { EthereumWalletComponent } from "@external/payment-gateway-wizard-steps/ethereum-wallet/ethereum-wallet.component";
+import { SwapCreateComponent } from "@external/payment-gateway-wizard-steps/swap-create/swap-create.component";
+import { SwapConfirmComponent } from "@external/payment-gateway-wizard-steps/swap-confirm/swap-confirm.component";
+import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 
 @Component({
   selector: 'app-payment-gateway-wizard',
   templateUrl: './payment-gateway-wizard.component.html',
   styleUrls: ['./payment-gateway-wizard.component.scss']
 })
-export class PaymentGatewayWizardComponent implements OnInit {
+export class PaymentGatewayWizardComponent implements OnInit, OnDestroy {
 
   @ViewChild(EthereumWalletComponent) walletStep;
   @ViewChild(SwapCreateComponent) createSwapStep;
   @ViewChild(SwapConfirmComponent) confirmSwapStep;
 
-  constructor() { }
+  private routeSubscription: Subscription;
+
+  asset: string;
+  amount: number;
+
+  account: EthereumAccount;
+
+  constructor(
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    this.walletStep.active = true;
+    this.routeSubscription = this.route.queryParams.subscribe(param => {
+      this.asset = param.asset;
+      this.amount = Number(param.amount) || 0;
+    });
+
+    // TODO: Uncomment later
+    this.walletStep.activate();
+    // this.createSwapStep.activate();
     this.walletStep.setNextStep(this.createSwapStep);
     this.createSwapStep.setNextStep(this.confirmSwapStep);
   }
 
+  ngOnDestroy(): void {
+    if(this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
+
+  onSelectWalletCompleted(account: EthereumAccount) {
+    this.account = account;
+  }
 }

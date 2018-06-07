@@ -3,10 +3,10 @@
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
       <label>Receiving Aerum token:</label>
-      <aer-select [(ngModel)]="selectedToken" dataKey="title" icon="aerumleaf" placeholder="Select your token">
-        <aer-select-option *ngFor="let item of tokens;" [value]="item">
+      <aer-select [(ngModel)]="selectedToken" dataKey="symbol" icon="aerumleaf" placeholder="Select your token" (ngModelChange)="onTokenChange()">
+        <aer-select-option *ngFor="let token of tokens;" [value]="token">
           <aer-icon>aerumleaf</aer-icon>
-          <span>{{item.title}}</span>
+          <span>{{token.symbol}}</span>
         </aer-select-option>
       </aer-select>
     </div>
@@ -14,15 +14,15 @@
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
       <label>Amount of token to receive:</label>
-      <aer-input [(ngModel)]="amount" placeholder="Type amount"></aer-input>
+      <aer-input [(ngModel)]="amount" placeholder="Type amount" (ngModelChange)="onAmountChange()"></aer-input>
     </div>
   </div>
   <div aerRow>
     <div aerColumn size="sm-12" class="cell">
-      <label>Receiving Aerum token:</label>
-      <aer-select [(ngModel)]="selectedCounterParty" dataKey="name" placeholder="Select your counterparty">
-        <aer-select-option *ngFor="let item of counterParties;" [value]="item">
-          <img class="avatar" [src]="item.address | generateavatar"><span>{{item.name}}</span>
+      <label>Exchange counterparty:</label>
+      <aer-select [(ngModel)]="selectedTemplate" dataKey="onchainAccount" placeholder="Select your counterparty" (ngModelChange)="onTemplateChange()">
+        <aer-select-option *ngFor="let template of templates;" [value]="template">
+          <img class="avatar" [src]="template.onchainAccount | generateavatar"><span>{{template.onchainAccount}}</span>
         </aer-select-option>
       </aer-select>
     </div>
@@ -41,7 +41,7 @@
         Amount
       </div>
       <div class="o-table__cell o-data--right">
-        2
+        {{ethAmount| number:'1.2-7'}}
       </div>
     </div>
     <div class="o-table__row">
@@ -49,7 +49,7 @@
         Exchange rate (Aerum token/Eth asset)
       </div>
       <div class="o-table__cell o-data--right">
-        0.564
+        {{rate | number:'1.2-5'}}
       </div>
     </div>
     <div class="o-table__row">
@@ -57,7 +57,7 @@
         Secret key
       </div>
       <div class="o-table__cell o-data--right">
-        <span class="secret-key">0x90b66549a6f587d...bbe821c2ce</span>
+        <span class="secret-key">{{secret}}</span>
       </div>
     </div>
   </div>
