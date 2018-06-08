@@ -160,6 +160,7 @@
   },
   "CONNECTION": {
     "CONNECTION_STATUS":"Connection status",
+    "CONNECTING_TO_AERUM": "Connecting to Aerum network...",
     "STATUS_TITLE": {
       "DISCONNECTED": "Disconnected",
       "CONNECTED": "Connected"
