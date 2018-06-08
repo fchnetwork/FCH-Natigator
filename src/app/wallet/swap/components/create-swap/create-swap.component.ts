@@ -142,6 +142,7 @@ export class CreateSwapComponent implements OnInit {
 
   private async confirmAndCreateSwap() {
     this.counterpartyAddress = this.counterpartyAddress.replace(/\s+/g, '');
+    this.counterpartyAddress = await this.aensService.resolveAddressFromName(this.counterpartyAddress);
     const modalResult = await this.modalService.openSwapCreateConfirm({
       swapId: this.swapId,
       token: this.token,
