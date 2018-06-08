@@ -15,6 +15,7 @@ import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap
 import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { ModalService } from '@core/general/modal-service/modal.service';
 import { TokenService } from '@core/transactions/token-service/token.service';
+import { SessionStorageService } from 'ngx-webstorage';
 
 interface SwapCommonOperationsService {
   expireSwap(swapId: string) : Promise<TransactionReceipt>;
@@ -43,7 +44,8 @@ export class LoadSwapComponent implements OnInit {
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
     private erc20TokenService: ERC20TokenService,
     private notificationService: NotificationService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private sessionStorageService: SessionStorageService,
   ) { }
 
   async ngOnInit() {
@@ -219,7 +221,7 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromAeroToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
+    const counterpartyTokenInfo: any = this.getTokensInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.ethValue,
@@ -227,7 +229,7 @@ export class LoadSwapComponent implements OnInit {
       tokenTrader: swap.ethTrader,
       tokenAddress: '',
       counterpartyAmount: swap.erc20Value,
-      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals),
+      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals, swap.erc20ContractAddress),
       counterpartyTrader: swap.erc20Trader,
       counterpartyTokenAddress: swap.erc20ContractAddress,
       counterpartyTokenInfo,
@@ -236,11 +238,11 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromErc20ToAeroSwap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const tokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
+    const tokenInfo: any = this.getTokensInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.erc20Value,
-      tokenAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals),
+      tokenAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals, swap.erc20ContractAddress),
       tokenTrader: swap.erc20Trader,
       tokenAddress: swap.erc20ContractAddress,
       tokenInfo,
@@ -253,17 +255,17 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromErc20ToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const tokenInfo: any = await this.tokenService.getTokensInfo(swap.openContractAddress);
-    const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.closeContractAddress);
+    const tokenInfo: any = this.getTokensInfo(swap.openContractAddress);
+    const counterpartyTokenInfo: any = this.getTokensInfo(swap.closeContractAddress);
     return {
       swapId,
       tokenAmount: swap.openValue,
-      tokenAmountFormatted: this.getDecimalTokenValue(swap.openValue, tokenInfo.decimals),
+      tokenAmountFormatted: this.getDecimalTokenValue(swap.openValue, tokenInfo.decimals, swap.openContractAddress),
       tokenTrader: swap.openTrader,
       tokenAddress: swap.openContractAddress,
       tokenInfo,
       counterpartyAmount: swap.closeValue,
-      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.closeValue, counterpartyTokenInfo.decimals),
+      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.closeValue, counterpartyTokenInfo.decimals, swap.closeContractAddress),
       counterpartyTrader: swap.closeTrader,
       counterpartyTokenAddress: swap.closeContractAddress,
       counterpartyTokenInfo,
@@ -271,7 +273,21 @@ export class LoadSwapComponent implements OnInit {
     };
   }
 
-  private getDecimalTokenValue(value: number, decimals: number) {
+  getTokensInfo(address) {
+    const tokens = this.sessionStorageService.retrieve('tokens');
+    const token = tokens.find((item)=>{
+      return item.address.toLowerCase() === address.toLowerCase();
+    });
+    return token;
+  }
+
+  private getDecimalTokenValue(value: number, decimals: number, address) {
+    if(!decimals) {
+      const token = this.getTokensInfo(address);
+      if(token) {
+        decimals = token.decimals;
+      }
+    }
     return value / Math.pow(10, Number(decimals));
   }
 
