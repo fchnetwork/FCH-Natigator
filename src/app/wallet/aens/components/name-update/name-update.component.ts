@@ -121,7 +121,6 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
 
   async tryTransfer() {
     const newOwnerAddress = await this.aensService.resolveAddressFromName(this.newOwner);
-    console.log(newOwnerAddress);
     const cost = await this.aensService.estimateTransferNameCost(this.fullName);
     this.logger.logMessage(`Transfer name cost: ${cost}`);
 
