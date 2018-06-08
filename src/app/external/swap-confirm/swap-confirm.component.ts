@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
 import { Subscription } from "rxjs/Subscription";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
@@ -20,6 +20,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   private hash;
   private aerumAccount: string;
+  private query: string;
 
   secret: string;
 
@@ -34,6 +35,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   constructor(
     private location: Location,
+    private router: Router,
     private route: ActivatedRoute,
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
@@ -62,6 +64,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       throw new Error('Hash not specified');
     }
     this.hash = param.hash;
+    this.query = param.query;
 
     const localSwap = this.swapLocalStorageService.loadSwapReference(this.hash);
     if(!localSwap) {
@@ -125,7 +128,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.location.back();
+    return this.router.navigate(['external/transaction'], {queryParams: { query: this.query }});
   }
 
   ngOnDestroy(): void {

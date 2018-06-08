@@ -35,7 +35,7 @@ import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-stora
 export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private routeSubscription: Subscription;
-  private params: { asset?: string, amount?: number, wallet?: EthWalletType, account?: string } = {};
+  private params: { asset?: string, amount?: number, wallet?: EthWalletType, account?: string, query?: string } = {};
   private ethWeb3: Web3;
 
   secret: string;
@@ -100,7 +100,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       asset: param.asset,
       amount: Number(param.amount) || 0,
       wallet: param.wallet ? Number(param.wallet) : EthWalletType.Injected,
-      account: param.account
+      account: param.account,
+      query: param.query
     };
     this.amount = this.params.amount;
     this.tokens = this.tokenService.getTokens() || [];
@@ -228,7 +229,12 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.aerumErc20SwapService.onExpire(hash, (err, event) => this.swapEventHandler(hash, err, event));
 
     await this.etherSwapService.openSwap(hash, ethAmountString, counterpartyTrader, timestamp);
-    const localSwap = {hash, secret: this.secret, amount: this.ethAmount, counterparty: this.selectedTemplate.onchainAccount};
+    const localSwap = {
+      hash,
+      secret: this.secret,
+      amount: this.ethAmount,
+      counterparty: this.selectedTemplate.onchainAccount
+    };
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
     // TODO: Test code to create counter swap
@@ -287,12 +293,12 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
     } else {
       this.logger.logMessage(`Create swap success: ${hash}`, event);
-      return this.router.navigate(['external/confirm-swap'], {queryParams: {hash}});
+      return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
     }
   }
 
   cancel() {
-    this.location.back();
+    return this.router.navigate(['external/transaction'], {queryParams: {query: this.params.query}});
   }
 
   ngOnDestroy(): void {

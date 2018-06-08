@@ -43,6 +43,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   currency: string;
   balance: any;
   receiverAddressHex: any;
+  query: string;
 
   constructor(
     public authServ: AuthenticationService,
@@ -67,6 +68,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       .queryParams
       .subscribe(params => {
         if (params.query) {
+          this.query = params.query;
           const parsed = JSON.parse(params.query);
           this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
 
@@ -143,7 +145,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   }
 
   deposit() {
-    this.router.navigate(['/external/eth-wallet/'], { queryParams: { asset: this.contractAddress, amount: this.amount }});
+    this.router.navigate(['/external/eth-wallet/'], { queryParams: { asset: this.contractAddress, amount: this.amount, query: this.query }});
   }
 
   async getMaxTransactionFee(): Promise<void> {

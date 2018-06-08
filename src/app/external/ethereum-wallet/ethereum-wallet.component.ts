@@ -23,7 +23,7 @@ import { Subscription } from "rxjs/Subscription";
 export class EthereumWalletComponent implements OnInit, OnDestroy {
 
   private routeSubscription: Subscription;
-  private params: { asset?: string, amount?: number } = {};
+  private params: { asset?: string, amount?: number, query?: string } = {};
 
   private web3: Web3;
   private injectedWeb3: Web3;
@@ -57,7 +57,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => {
-      this.params = { asset: param.asset, amount: Number(param.amount) || 0 };
+      this.params = { asset: param.asset, amount: Number(param.amount) || 0, query: param.query };
     });
 
     this.web3 = this.ethereumAuthenticationService.getWeb3();

@@ -18,7 +18,7 @@
           <div aerRow>
             <div aerColumn size="sm-12" class="cell">
               <label>Amount of token to receive:</label>
-              <aer-input [(ngModel)]="amount" placeholder="Type amount" (ngModelChange)="onAmountChange()" [disabled]="processing"></aer-input>
+              <aer-input [(ngModel)]="amount" placeholder="Type amount" (ngModelChange)="onAmountChange()" [attr.readonly]="processing"></aer-input>
             </div>
           </div>
           <div aerRow>
