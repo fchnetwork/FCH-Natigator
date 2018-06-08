@@ -33,16 +33,16 @@
           <div aerRow>
             <div aerColumn size="sm-12" class="cell">
               <label>Enter secret key:</label>
-              <aer-input [(ngModel)]="secret" placeholder="Type secret key" [disabled]="processed"></aer-input>
+              <aer-input [(ngModel)]="secret" placeholder="Type secret key" [disabled]="processing"></aer-input>
             </div>
           </div>
           <div class="message">
             Warning! Phasellus rhoncus. Nulla est. Phasellus et lorem id felis nonummy placerat. Integer pellentesque
             quam vel velit. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat.
           </div>
-          <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="!expired" [disabled]="processed">Complete swap</aer-button>
-          <aer-button (buttonFn)="expire()" class="blue large full-width" *ngIf="expired" [disabled]="processed">Expire swap</aer-button>
-          <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
+          <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="!expired" [disabled]="processing">Complete swap</aer-button>
+          <aer-button (buttonFn)="expire()" class="blue large full-width" *ngIf="expired" [disabled]="processing">Expire swap</aer-button>
+          <aer-button (buttonFn)="cancel()" class="large full-width"> {{ done ? "Return" : "Cancel" }}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>

@@ -28,8 +28,9 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   receiveCurrency: string;
   receiveAmount: number;
 
-  processed = false;
+  processing = false;
   expired = false;
+  done = false;
 
   constructor(
     private location: Location,
@@ -93,28 +94,29 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   async complete() {
     try {
-      this.processed = true;
+      this.processing = true;
       this.notificationService.showMessage('Completing swap', 'In Progress...');
       await this.erc20SwapService.closeSwap(this.hash, this.secret);
       this.notificationService.showMessage('Swap Closed', 'Done');
-      this.location.back();
+      this.done = true;
     } catch (e) {
       this.logger.logError('Swap close error', e);
       this.notificationService.showMessage('Swap close error', 'Unhandled error');
-      this.processed = false;
+      this.processing = false;
     }
   }
 
   async expire() {
     try {
-      this.processed = true;
+      this.processing = true;
       this.notificationService.showMessage('Completing swap', 'In Progress...');
       await this.erc20SwapService.expireSwap(this.hash);
       this.notificationService.showMessage('Swap Closed', 'Done');
+      this.done = true;
     } catch (e) {
       this.logger.logError('Swap close error', e);
       this.notificationService.showMessage('Swap close error', 'Unhandled error');
-      this.processed = false;
+      this.processing = false;
     }
   }
 
