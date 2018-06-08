@@ -1,0 +1,79 @@
+<div class="container-modal">
+  <div class="adaptive-dialog">
+    <div class="modal-content">
+      <aer-modal-dialog>
+        <div class="c-swap-create c-swap-create__table c-swap-create__unlock">
+          <h1>Create Exchange Swap</h1>
+          <div aerRow>
+            <div aerColumn size="sm-12" class="cell">
+              <label>Receiving Aerum token:</label>
+              <aer-select [(ngModel)]="selectedToken"dataKey="symbol" icon="aerumleaf" placeholder="Select your token" (ngModelChange)="onTokenChange()" [disabled]="processing">
+                <aer-select-option *ngFor="let token of tokens;" [value]="token">
+                  <aer-icon>aerumleaf</aer-icon>
+                  <span>{{token.symbol}}</span>
+                </aer-select-option>
+              </aer-select>
+            </div>
+          </div>
+          <div aerRow>
+            <div aerColumn size="sm-12" class="cell">
+              <label>Amount of token to receive:</label>
+              <aer-input [(ngModel)]="amount" placeholder="Type amount" (ngModelChange)="onAmountChange()" [attr.readonly]="processing"></aer-input>
+            </div>
+          </div>
+          <div aerRow>
+            <div aerColumn size="sm-12" class="cell">
+              <label>Exchange counterparty:</label>
+              <aer-select [(ngModel)]="selectedTemplate" dataKey="onchainAccount" placeholder="Select your counterparty" (ngModelChange)="onTemplateChange()" [disabled]="processing">
+                <aer-select-option *ngFor="let template of templates;" [value]="template">
+                  <img class="avatar" [src]="template.onchainAccount | generateavatar">
+                  <span>{{template.onchainAccount}}</span>
+                </aer-select-option>
+              </aer-select>
+            </div>
+          </div>
+          <div class="o-table">
+            <div class="o-table__row">
+              <div class="o-table__cell o-data--left">
+                Send Ethereum asset
+              </div>
+              <div class="o-table__cell o-data--right">
+                ETH
+              </div>
+            </div>
+            <div class="o-table__row">
+              <div class="o-table__cell o-data--left">
+                Amount
+              </div>
+              <div class="o-table__cell o-data--right">
+                {{ethAmount| number:'1.2-7'}}
+              </div>
+            </div>
+            <div class="o-table__row">
+              <div class="o-table__cell o-data--left">
+                Exchange rate (Aerum token/Eth asset)
+              </div>
+              <div class="o-table__cell o-data--right">
+                {{rate | number:'1.2-5'}}
+              </div>
+            </div>
+            <div class="o-table__row">
+              <div class="o-table__cell o-data--left">
+                Secret key
+              </div>
+              <div class="o-table__cell o-data--right">
+                <span class="secret-key" (click)="copyToClipboard()">{{secret}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="message">
+            Warning! Phasellus rhoncus. Nulla est. Phasellus et lorem id felis nonummy placerat. Integer pellentesque
+            quam vel velit. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat.
+          </div>
+          <aer-button (buttonFn)="next()" class="blue large full-width" [disabled]="!canMoveNext()" (ngClass)="{ 'blue': canMoveNext(), 'grey': !canMoveNext() }">Next</aer-button>
+          <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
+        </div>
+      </aer-modal-dialog>
+    </div>
+  </div>
+</div>

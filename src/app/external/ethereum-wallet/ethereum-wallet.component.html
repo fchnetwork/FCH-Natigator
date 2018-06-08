@@ -1,0 +1,77 @@
+<div class="container-modal">
+  <div class="adaptive-dialog">
+    <div class="modal-content">
+      <aer-modal-dialog>
+        <div class="c-eth-wallet">
+          <h1>Ethereum Wallet</h1>
+          <div aerRow>
+            <div aerColumn size="sm-4" class="cell cell--left">
+              Select Wallet:
+            </div>
+            <div aerColumn size="sm-8" class="cell cell--left">
+              <aer-radio-group class="address-option">
+                <aer-radio-button [value]="walletTypes.Injected" [disabled]="!injectedWeb3"
+                                  (change)="onWalletSelect($event)">[ Injected web3 nam/addr ]
+                </aer-radio-button>
+                <aer-radio-button [value]="walletTypes.Imported" [checked]="true" (change)="onWalletSelect($event)">
+                  Stored Keys
+                </aer-radio-button>
+              </aer-radio-group>
+            </div>
+          </div>
+          <div aerRow>
+            <div aerColumn size="sm-12" class="cell cell--left">
+              Select Address
+            </div>
+          </div>
+          <div aerRow>
+            <div aerColumn size="sm-12" class="cell">
+              <aer-select [(ngModel)]="selectedStoredAccount" dataKey="address" icon="key"
+                          [disabled]="walletTypes.Imported !== selectedWalletType"
+                          (ngModelChange)="onStoredAccountChange()" placeholder="Select your account">
+                <aer-select-option *ngFor="let account of storedAccounts;" [value]="account">
+                  <img class="avatar" [src]="account.address | generateavatar"><span>{{account.address}}</span>
+                </aer-select-option>
+                <aer-select-option><span>+ Add Account</span></aer-select-option>
+              </aer-select>
+            </div>
+          </div>
+          <div aerRow *ngIf="importInProgress">
+            <div aerColumn size="sm-12" class="cell">
+              <aer-input (buttonFn)="import()"
+                         [(ngModel)]="importedPrivateKey"
+                         [attr.disabled]="!importedPrivateKey"
+                         class="with-button"
+                         [ngClass]="{ 'blue': importedPrivateKey, 'grey': !importedPrivateKey }"
+                         placeholder="Private key"
+                         buttonLabel="Import">
+              </aer-input>
+            </div>
+          </div>
+          <div aerRow *ngIf="address">
+            <div aerColumn size="sm-12" class="cell">
+              <img *ngIf="addressQR" [src]="addressQR" alt="QR Code">
+            </div>
+          </div>
+          <div aerRow *ngIf="address">
+            <div aerColumn size="sm-12" class="cell c-copy__address">
+              <a (click)="copyToClipboard()">{{ address }}</a>
+            </div>
+          </div>
+          <div aerRow *ngIf="address">
+            <div aerColumn size="sm-6" class="cell cell--left">
+              Balance:
+            </div>
+            <div aerColumn size="sm-6" class="cell cell--right">
+              {{balance | convertToEther | number:'1.2-5'}} ETH
+            </div>
+          </div>
+          <aer-button (buttonFn)="next()" class="large full-width"
+                      ngClass="{ 'blue': canMoveNext, 'grey': !canMoveNext }" [disabled]="!canMoveNext">Next
+          </aer-button>
+          <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
+        </div>
+      </aer-modal-dialog>
+    </div>
+  </div>
+</div>

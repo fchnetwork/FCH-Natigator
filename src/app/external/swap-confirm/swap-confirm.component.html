@@ -1,0 +1,50 @@
+<div class="container-modal">
+  <div class="adaptive-dialog">
+    <div class="modal-content">
+      <aer-modal-dialog>
+        <div class="c-swap-confirm c-swap-confirm__table c-swap-confirm__unlock">
+          <h1>Complete Exchange Swap</h1>
+          <div class="o-table">
+            <div class="o-table__row">
+              <div class="o-table__cell o-data--left">
+                Your swap was accepted by
+              </div>
+              <div class="o-table__cell o-data--right">
+                {{acceptedBy | truncate: 16}}
+              </div>
+            </div>
+            <div class="o-table__row">
+              <div class="o-table__cell o-data--left">
+                You will send
+              </div>
+              <div class="o-table__cell o-data--right">
+                {{sendAmount | number:'1.2-5'}} ETH
+              </div>
+            </div>
+            <div class="o-table__row">
+              <div class="o-table__cell o-data--left">
+                You will receive
+              </div>
+              <div class="o-table__cell o-data--right">
+                {{receiveAmount | number:'1.2-7'}} {{receiveCurrency}}
+              </div>
+            </div>
+          </div>
+          <div aerRow>
+            <div aerColumn size="sm-12" class="cell">
+              <label>Enter secret key:</label>
+              <aer-input [(ngModel)]="secret" placeholder="Type secret key" [disabled]="processing"></aer-input>
+            </div>
+          </div>
+          <div class="message">
+            Warning! Phasellus rhoncus. Nulla est. Phasellus et lorem id felis nonummy placerat. Integer pellentesque
+            quam vel velit. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat.
+          </div>
+          <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="!expired" [disabled]="processing">Complete swap</aer-button>
+          <aer-button (buttonFn)="expire()" class="blue large full-width" *ngIf="expired" [disabled]="processing">Expire swap</aer-button>
+          <aer-button (buttonFn)="cancel()" class="large full-width"> {{ done ? "Return" : "Cancel" }}</aer-button>
+        </div>
+      </aer-modal-dialog>
+    </div>
+  </div>
+</div>

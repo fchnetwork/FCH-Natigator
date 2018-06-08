@@ -58,5 +58,4 @@ export class EtherSwapService {
     const receipt = await this.contractExecutorService.call(checkSecretKey);
     return receipt;
   }
-
 }
