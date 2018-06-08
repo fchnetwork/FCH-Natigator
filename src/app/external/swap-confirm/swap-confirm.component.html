@@ -18,7 +18,7 @@
                 You will send
               </div>
               <div class="o-table__cell o-data--right">
-                {{sendAmount}} ETH
+                {{sendAmount | number:'1.2-5'}} ETH
               </div>
             </div>
             <div class="o-table__row">
@@ -26,7 +26,7 @@
                 You will receive
               </div>
               <div class="o-table__cell o-data--right">
-                {{receiveValue}} {{receiveCurrency}}
+                {{receiveAmount | number:'1.2-7'}} {{receiveCurrency}}
               </div>
             </div>
           </div>

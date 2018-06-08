@@ -8,6 +8,7 @@ import { InternalNotificationService } from "@core/general/internal-notification
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
+import { TokenService } from "@core/transactions/token-service/token.service";
 
 @Component({
   selector: 'app-swap-confirm',
@@ -24,8 +25,8 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   acceptedBy: string;
   sendAmount: number;
-  receiveValue = 5;
-  receiveCurrency = 'Aero';
+  receiveCurrency: string;
+  receiveAmount: number;
 
   processed = false;
   expired = false;
@@ -37,6 +38,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private notificationService: InternalNotificationService,
     private authService: AuthenticationService,
     private erc20SwapService: AerumErc20SwapService,
+    private tokenService: TokenService,
     private swapLocalStorageService: SwapLocalStorageService
   ) { }
 
@@ -79,6 +81,14 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     const now = this.now();
     this.expired = now >= Number(swap.timelock);
     this.logger.logMessage('Swap expired?: ' + this.expired);
+
+    const token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
+    if(!token) {
+      throw new Error('Cannot load erc20 token: ' + swap.erc20ContractAddress);
+    }
+
+    this.receiveCurrency = token.symbol;
+    this.receiveAmount = Number(swap.erc20Value) / Math.pow(10, Number(token.decimals));
   }
 
   async complete() {
