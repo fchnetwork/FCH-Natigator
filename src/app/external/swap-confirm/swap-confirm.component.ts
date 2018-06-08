@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
-import { sha3 } from "web3-utils";
-
 import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute } from "@angular/router";
 import { LoggerService } from "@core/general/logger-service/logger.service";
@@ -26,10 +24,11 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   acceptedBy: string;
   sendAmount: number;
-
-
   receiveValue = 5;
   receiveCurrency = 'Aero';
+
+  processed = false;
+  expired = false;
 
   constructor(
     private location: Location,
@@ -39,8 +38,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private erc20SwapService: AerumErc20SwapService,
     private swapLocalStorageService: SwapLocalStorageService
-  ) {
-  }
+  ) { }
 
   async ngOnInit() {
     const keystore = this.authService.getKeystore();
@@ -62,29 +60,56 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
     this.hash = param.hash;
 
-    const swap = this.swapLocalStorageService.loadSwapReference(this.hash);
-    if(!swap) {
+    const localSwap = this.swapLocalStorageService.loadSwapReference(this.hash);
+    if(!localSwap) {
       throw new Error('Cannot load data for local swap: ' + this.hash);
     }
 
-    this.secret = swap.secret;
-    this.sendAmount = swap.amount;
-    this.acceptedBy = swap.counterparty;
+    this.secret = localSwap.secret;
+    this.sendAmount = localSwap.amount;
+    this.acceptedBy = localSwap.counterparty;
+
+    const swap = await this.erc20SwapService.checkSwap(this.hash);
+    if(!swap || !swap.hash) {
+      throw new Error('Cannot load erc20 swap: ' + this.hash);
+    }
+
+    this.logger.logMessage('Swap loaded: ', swap);
+
+    const now = this.now();
+    this.expired = now >= Number(swap.timelock);
+    this.logger.logMessage('Swap expired?: ' + this.expired);
   }
 
-  async next() {
+  async complete() {
     try {
+      this.processed = true;
       this.notificationService.showMessage('Completing swap', 'In Progress...');
-
-      const hash = sha3(this.secret);
-      await this.erc20SwapService.closeSwap(hash, this.secret);
-
+      await this.erc20SwapService.closeSwap(this.hash, this.secret);
       this.notificationService.showMessage('Swap Closed', 'Done');
       this.location.back();
     } catch (e) {
       this.logger.logError('Swap close error', e);
       this.notificationService.showMessage('Swap close error', 'Unhandled error');
+      this.processed = false;
     }
+  }
+
+  async expire() {
+    try {
+      this.processed = true;
+      this.notificationService.showMessage('Completing swap', 'In Progress...');
+      await this.erc20SwapService.expireSwap(this.hash);
+      this.notificationService.showMessage('Swap Closed', 'Done');
+    } catch (e) {
+      this.logger.logError('Swap close error', e);
+      this.notificationService.showMessage('Swap close error', 'Unhandled error');
+      this.processed = false;
+    }
+  }
+
+  private now(): number {
+    return Math.ceil(new Date().getTime() / 1000);
   }
 
   cancel() {
