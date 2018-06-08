@@ -15,6 +15,7 @@ import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap
 import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { ModalService } from '@core/general/modal-service/modal.service';
 import { TokenService } from '@core/transactions/token-service/token.service';
+import { SessionStorageService } from 'ngx-webstorage';
 
 interface SwapCommonOperationsService {
   expireSwap(swapId: string) : Promise<TransactionReceipt>;
@@ -43,7 +44,8 @@ export class LoadSwapComponent implements OnInit {
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
     private erc20TokenService: ERC20TokenService,
     private notificationService: NotificationService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private sessionStorageService: SessionStorageService,
   ) { }
 
   async ngOnInit() {
@@ -240,7 +242,7 @@ export class LoadSwapComponent implements OnInit {
     return {
       swapId,
       tokenAmount: swap.erc20Value,
-      tokenAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals),
+      tokenAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals, swap.erc20ContractAddress),
       tokenTrader: swap.erc20Trader,
       tokenAddress: swap.erc20ContractAddress,
       tokenInfo,
@@ -258,12 +260,12 @@ export class LoadSwapComponent implements OnInit {
     return {
       swapId,
       tokenAmount: swap.openValue,
-      tokenAmountFormatted: this.getDecimalTokenValue(swap.openValue, tokenInfo.decimals),
+      tokenAmountFormatted: this.getDecimalTokenValue(swap.openValue, tokenInfo.decimals, swap.openContractAddress),
       tokenTrader: swap.openTrader,
       tokenAddress: swap.openContractAddress,
       tokenInfo,
       counterpartyAmount: swap.closeValue,
-      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.closeValue, counterpartyTokenInfo.decimals),
+      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.closeValue, counterpartyTokenInfo.decimals, swap.closeContractAddress),
       counterpartyTrader: swap.closeTrader,
       counterpartyTokenAddress: swap.closeContractAddress,
       counterpartyTokenInfo,
@@ -271,7 +273,16 @@ export class LoadSwapComponent implements OnInit {
     };
   }
 
-  private getDecimalTokenValue(value: number, decimals: number) {
+  private getDecimalTokenValue(value: number, decimals: number, address) {
+    if(!address) {
+      decimals = 1;
+    } else if(!decimals) {
+      const tokens = this.sessionStorageService.retrieve('tokens');
+      const token = tokens.find((item)=>{
+        return item.address === address;
+      });
+      decimals = token.decimals;
+    }
     return value / Math.pow(10, Number(decimals));
   }
 
