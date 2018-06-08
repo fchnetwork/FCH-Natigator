@@ -1,3 +1,5 @@
+import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
+
 // The file contents for the current environment will overwrite these during build.
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
@@ -47,5 +49,6 @@ export const environment = {
   },
   gasPrice: "1",
   maxBlockGas: "1",
-  chainId: 418313827693
+  chainId: 418313827693,
+  loglevel: LogLevel.None
 };

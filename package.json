@@ -67,7 +67,7 @@
     "@angular/language-service": "^5.2.9",
     "@ngtools/webpack": "1.10.2",
     "@types/jest": "^22.2.3",
-    "@types/node": "^6.0.109",
+    "@types/node": "^6.0.112",
     "@types/underscore": "^1.8.8",
     "autoprefixer": "^7.2.3",
     "babel-preset-env": "^1.7.0",

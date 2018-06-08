@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     private logger: LoggerService,
     public connectionCheckerService: ConnectionCheckerService
     ) {
-    logger.setLogLevel(LogLevel.All);
+    logger.setLogLevel(environment.loglevel);
   }
 
   ngOnInit() {

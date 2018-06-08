@@ -41,6 +41,7 @@
 },
 "CONNECTION": {
   "CONNECTION_STATUS":"Статус соединения",
+  "CONNECTING_TO_AERUM": "Соединение с сетью Aerum...",
   "STATUS_TITLE": {
     "DISCONNECTED": "Отключено",
     "CONNECTED": "Подключено"

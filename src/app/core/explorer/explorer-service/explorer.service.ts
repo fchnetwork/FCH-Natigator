@@ -17,7 +17,6 @@ export class ExplorerService {
 
   web3: any;
   account: any;
-  txpoolContentData = { "jsonrpc": "2.0", "method": "txpool_content", "params": [], "id": 1 };
   txpoolContent = {
     property: 'txpool',
     methods: [{
@@ -152,7 +151,7 @@ export class ExplorerService {
 
           if (currentBlock.transactions.length > 0) {
             for (let txn of currentBlock.transactions) {
-              let extendedTxn = Object.assign(txn, { timestamp: currentBlock.timestamp, gasUsedinTxn: currentBlock.gasUsed, block: currentBlock });
+              let extendedTxn = Object.assign(txn, { timestamp: currentBlock.timestamp, gasUsedinTxn: txn.gas, block: currentBlock });
             }
 
             completeTransactionList = completeTransactionList.concat(blockList.blocks[i].transactions)

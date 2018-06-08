@@ -51,7 +51,6 @@ import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-stora
     ClipboardService,
     ExplorerService,
     ModalService,
-    InternalNotificationService,
     RouteDataService,
     TokenService,
     TransactionService,
@@ -69,9 +68,7 @@ import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-stora
     ERC20TokenService,
     PasswordCheckerService,
     LoggerService,
-    ValidateService,
-    NotificationMessagesService,
-    ConnectionCheckerService,
+    ValidateService, 
     EtherSwapService,
     AeroSwapService,
     AerumErc20SwapService,
@@ -84,7 +81,10 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
-        LoaderService
+        LoaderService,
+        ConnectionCheckerService,
+        InternalNotificationService,
+        NotificationMessagesService
       ]
     };
   }

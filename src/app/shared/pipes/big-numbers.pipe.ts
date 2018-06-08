@@ -20,9 +20,9 @@ export class BigNumbersPipe implements PipeTransform {
                 private translateService: TranslateService) { }          
 
   transform(value: number = 0, digits?: any ) : string { 
-    if (!isFinite( value ) ){ 
-      return '?'; 
-    } 
+    if (!isFinite( value ) || value == 0 ){ 
+      return ''; 
+    }
     let unit = 0; 
     while ( value > 1000 ) { 
       value /= 1000; 

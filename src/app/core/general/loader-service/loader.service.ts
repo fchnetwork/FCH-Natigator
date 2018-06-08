@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class LoaderService {
-    public loaderShown$ = new BehaviorSubject<boolean>(false);
+    public loaderShown$ = new BehaviorSubject<any>(false);
     private instanceId = Math.random() * 1000;
 
     constructor(public router: Router, private ngZone: NgZone, public logger: LoggerService) {
@@ -18,8 +18,8 @@ export class LoaderService {
         })
     }
 
-    public toggle(visible: boolean) {
-        this.loaderShown$.next(visible);
+    public toggle(visible: boolean, message?:string) {
+        this.loaderShown$.next({visible: visible, message: message});
     }
 
     private interceptNavigation(event: RouterEvent) {

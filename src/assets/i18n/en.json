@@ -104,7 +104,7 @@
   "GAS_USED": "Gas used",
   "GAS_PRICE": "Gas price",
   "GAS": "Gas",
-  "SEND_DATA": "Sent data",
+  "SENT_DATA": "Sent data",
   "HEIGHT": "Height",
   "TXN": "Txn",
   "SIGNER": "Signer",
@@ -160,6 +160,7 @@
   },
   "CONNECTION": {
     "CONNECTION_STATUS":"Connection status",
+    "CONNECTING_TO_AERUM": "Connecting to Aerum network...",
     "STATUS_TITLE": {
       "DISCONNECTED": "Disconnected",
       "CONNECTED": "Connected"
