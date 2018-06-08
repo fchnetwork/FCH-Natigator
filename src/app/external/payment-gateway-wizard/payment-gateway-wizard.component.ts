@@ -5,6 +5,7 @@ import { EthereumWalletComponent } from "@external/payment-gateway-wizard-steps/
 import { SwapCreateComponent } from "@external/payment-gateway-wizard-steps/swap-create/swap-create.component";
 import { SwapConfirmComponent } from "@external/payment-gateway-wizard-steps/swap-confirm/swap-confirm.component";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
+import { Guid } from "@shared/helpers/guid";
 
 @Component({
   selector: 'app-payment-gateway-wizard',
@@ -19,6 +20,8 @@ export class PaymentGatewayWizardComponent implements OnInit, OnDestroy {
 
   private routeSubscription: Subscription;
 
+  secret: string;
+
   asset: string;
   amount: number;
 
@@ -29,6 +32,8 @@ export class PaymentGatewayWizardComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.secret = Guid.newGuid().replace(/-/g, '');
+
     this.routeSubscription = this.route.queryParams.subscribe(param => {
       this.asset = param.asset;
       this.amount = Number(param.amount) || 0;

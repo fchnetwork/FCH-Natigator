@@ -64,6 +64,6 @@
   <div class="message">
     Warning! Phasellus rhoncus. Nulla est. Phasellus et lorem id felis nonummy placerat. Integer pellentesque quam vel velit. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat.
   </div>
-  <aer-button (buttonFn)="next()" class="blue large full-width">Next</aer-button>
+  <aer-button (buttonFn)="next()" class="blue large full-width" [disabled]="!canMoveNext" (ngClass)="{ 'blue': canMoveNext, 'grey': !canMoveNext }">Next</aer-button>
   <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
 </div>

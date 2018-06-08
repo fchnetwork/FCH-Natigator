@@ -4,7 +4,7 @@ import Web3 from 'web3';
 import { Tx, TransactionObject, TransactionReceipt } from 'web3/types';
 
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { ContractExecutorService } from "@core/ethereum/contract-executor-service/contract.executor.service";
+import { ContractExecutorService } from "@core/ethereum/contract-executor-service/contract-executor.service";
 
 
 @Injectable()
