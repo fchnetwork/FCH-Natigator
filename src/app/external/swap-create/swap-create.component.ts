@@ -7,28 +7,28 @@ import { sha3, fromWei } from 'web3-utils';
 import Web3 from "web3";
 
 import { Guid } from "@shared/helpers/guid";
-import { PaymentGatewayWizardStep } from "../payment-gateway-wizard-step";
-import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
-import { TokenService } from "@core/transactions/token-service/token.service";
-import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
+import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
-import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
-import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
-import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
-import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
-import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
+import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
+import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
+import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
+import { TokenService } from "@core/transactions/token-service/token.service";
 import { ERC20TokenService } from "@core/swap/on-chain/erc20-token-service/erc20-token.service";
+import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
+import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
+import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
+import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-swap-create',
   templateUrl: './swap-create.component.html',
   styleUrls: ['./swap-create.component.scss']
 })
-export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnChanges, OnInit {
+export class SwapCreateComponent implements OnChanges, OnInit {
   @Input() asset: string;
   @Input() amount: number;
   @Input() account: EthereumAccount;
@@ -49,7 +49,8 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
   ethWeb3: Web3;
 
   constructor(
-    location: Location,
+    private location: Location,
+    private router: Router,
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private nameService: AerumNameService,
@@ -61,9 +62,7 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
     private etherSwapService: EtherSwapService,
     private aerumErc20SwapService: AerumErc20SwapService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
-  ) {
-    super(location);
-  }
+  ) { }
 
   ngOnInit() {
     const keystore = this.authService.getKeystore();
@@ -202,15 +201,19 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
         this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
       } else {
         this.logger.logMessage(`Create swap success: ${hash}`, event);
-        super.next();
+        this.router.navigate(['external/confirm-swap']);
       }
     });
 
     await this.etherSwapService.openSwap(hash, ethAmountString, withdrawTrader, timestamp);
     this.notificationService.showMessage('Swap created', 'Success');
 
-    // TODO: Test code to create counterswap
+    // TODO: Test code to create counter swap
     // this.testAerumErc20Swap();
+  }
+
+  cancel() {
+    this.location.back();
   }
 
   // TODO: Test code to register swap template

@@ -1,31 +1,36 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
 import Web3 from "web3";
+
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
-import { LoggerService } from "@core/general/logger-service/logger.service";
+
 import { SessionStorageService } from "ngx-webstorage";
+import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
-import { PaymentGatewayWizardStep } from "@app/external/payment-gateway-wizard-steps/payment-gateway-wizard-step";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: 'app-ethereum-wallet',
   templateUrl: './ethereum-wallet.component.html',
   styleUrls: ['./ethereum-wallet.component.scss']
 })
-export class EthereumWalletComponent extends PaymentGatewayWizardStep implements OnInit {
+export class EthereumWalletComponent implements OnInit, OnDestroy {
 
-  @Output() onCompleted: EventEmitter<EthereumAccount> = new EventEmitter<EthereumAccount>();
+  private routeSubscription: Subscription;
+  private paramAsset: string;
+  private paramAmount: number;
+
+  private web3: Web3;
+  private injectedWeb3: Web3;
 
   walletTypes = EthWalletType;
   selectedWalletType = EthWalletType.Imported;
-
-  web3: Web3;
-  injectedWeb3: Web3;
 
   storedAccounts: EthereumAccount[] = [];
   selectedStoredAccount: EthereumAccount;
@@ -40,22 +45,30 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   importedPrivateKey: string;
 
   constructor(
-    location: Location,
+    private location: Location,
+    private router: Router,
+    private route: ActivatedRoute,
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private clipboardService: ClipboardService,
     private sessionStorageService: SessionStorageService,
     private authenticationService: AuthenticationService,
     private ethereumAuthenticationService: EthereumAuthenticationService
-  ) {
-    super(location);
-  }
+  ) { }
 
   async ngOnInit() {
+    this.routeSubscription = this.route.queryParams.subscribe(param => {
+      this.paramAsset = param.asset;
+      this.paramAmount = Number(param.amount) || 0;
+    });
+
     this.web3 = this.ethereumAuthenticationService.getWeb3();
     this.storedAccounts = this.sessionStorageService.retrieve('ethereum_accounts') as EthereumAccount[] || [];
     if (!this.storedAccounts.length) {
       this.generatePredefinedAccount();
+    } else {
+      this.selectAccount(this.storedAccounts[0]);
+      this.reloadAccountData();
     }
 
     this.injectedWeb3 = await this.ethereumAuthenticationService.getInjectedWeb3();
@@ -122,7 +135,7 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
 
   import() {
     if (this.importedPrivateKey) {
-      if (!this.importedPrivateKey.startsWith('0x')){
+      if (!this.importedPrivateKey.startsWith('0x')) {
         this.importedPrivateKey = "0x" + this.importedPrivateKey;
       }
 
@@ -141,9 +154,15 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
     this.storedAccounts.push(importedAccount);
     this.ethereumAuthenticationService.saveEthereumAccounts(this.storedAccounts);
 
-    this.selectedStoredAccount = importedAccount;
-    this.address = importedAccount.address;
+    this.selectAccount(importedAccount);
     this.reloadAccountData();
+  }
+
+  private selectAccount(account: EthereumAccount): void {
+    if(account) {
+      this.selectedStoredAccount = account;
+      this.address = account.address;
+    }
   }
 
   private isAlreadyImported(address: string): boolean {
@@ -176,7 +195,21 @@ export class EthereumWalletComponent extends PaymentGatewayWizardStep implements
   }
 
   next() {
-    this.onCompleted.emit(this.selectedStoredAccount);
-    super.next();
+    return this.router.navigate(['external/create-swap'], {
+      queryParams: {
+        asset: this.paramAsset,
+        amount: this.paramAmount,
+        wallet: this.selectedWalletType,
+        account: this.address
+      }
+    });
+  }
+
+  cancel() {
+    this.location.back();
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 }
