@@ -24,6 +24,7 @@ import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-s
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
+import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 
 @Component({
   selector: 'app-swap-create',
@@ -51,13 +52,15 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   aerumAccount: string;
 
-  canMoveNext = false;
+  processing = false;
+  canCreateSwap = false;
 
   constructor(
     private location: Location,
     private router: Router,
     private route: ActivatedRoute,
     private logger: LoggerService,
+    private clipboardService: ClipboardService,
     private notificationService: InternalNotificationService,
     private nameService: AerumNameService,
     private authService: AuthenticationService,
@@ -164,32 +167,44 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       if (this.params.account) {
         const balance = await this.ethWeb3.eth.getBalance(this.params.account);
         const ethBalance = Number(fromWei(balance, 'ether'));
-        this.canMoveNext = ethBalance >= this.ethAmount;
+        this.canCreateSwap = ethBalance >= this.ethAmount;
       } else {
-        this.canMoveNext = false;
+        this.canCreateSwap = false;
       }
     } else {
       this.rate = 0;
       this.ethAmount = 0;
-      this.canMoveNext = false;
+      this.canCreateSwap = false;
     }
+  }
+
+  async copyToClipboard() {
+    if (this.secret) {
+      await this.clipboardService.copy(this.secret);
+      this.notificationService.showMessage('Copied to clipboard!', 'Done');
+    }
+  }
+
+  canMoveNext(): boolean {
+    return this.canCreateSwap && !this.processing;
   }
 
   async next() {
     try {
-      if (this.selectedTemplate) {
-        await this.createEthereumSwap();
-      }
+      this.processing = true;
+      this.notificationService.showMessage('Creating swap... (please wait 10-15 seconds)', 'In progress');
+      await this.openEthereumSwap();
+      this.notificationService.showMessage('Swap created', 'Success');
     }
     catch (e) {
       this.logger.logError('Error while creating swap', e);
       this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
+    } finally {
+      this.processing = false;
     }
   }
 
-  async createEthereumSwap() {
-    this.notificationService.showMessage('Creating swap... (please wait 10-15 seconds)', 'In progress');
-
+  async openEthereumSwap() {
     const hash = sha3(this.secret);
     const ethAmountString = this.ethAmount.toString(10);
     const timeoutInSeconds = 5 * 60;
@@ -212,7 +227,6 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     });
 
     await this.etherSwapService.openSwap(hash, ethAmountString, withdrawTrader, timestamp);
-    this.notificationService.showMessage('Swap created', 'Success');
 
     // TODO: Test code to create counter swap
     // this.testAerumErc20Swap();
