@@ -221,7 +221,7 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromAeroToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
+    const counterpartyTokenInfo: any = this.getTokensInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.ethValue,
@@ -229,7 +229,7 @@ export class LoadSwapComponent implements OnInit {
       tokenTrader: swap.ethTrader,
       tokenAddress: '',
       counterpartyAmount: swap.erc20Value,
-      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals),
+      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals, swap.erc20ContractAddress),
       counterpartyTrader: swap.erc20Trader,
       counterpartyTokenAddress: swap.erc20ContractAddress,
       counterpartyTokenInfo,
@@ -238,7 +238,7 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromErc20ToAeroSwap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const tokenInfo: any = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
+    const tokenInfo: any = this.getTokensInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.erc20Value,
@@ -255,8 +255,8 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromErc20ToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const tokenInfo: any = await this.tokenService.getTokensInfo(swap.openContractAddress);
-    const counterpartyTokenInfo: any = await this.tokenService.getTokensInfo(swap.closeContractAddress);
+    const tokenInfo: any = this.getTokensInfo(swap.openContractAddress);
+    const counterpartyTokenInfo: any = this.getTokensInfo(swap.closeContractAddress);
     return {
       swapId,
       tokenAmount: swap.openValue,
@@ -273,15 +273,20 @@ export class LoadSwapComponent implements OnInit {
     };
   }
 
+  getTokensInfo(address) {
+    const tokens = this.sessionStorageService.retrieve('tokens');
+    const token = tokens.find((item)=>{
+      return item.address.toLowerCase() === address.toLowerCase();
+    });
+    return token;
+  }
+
   private getDecimalTokenValue(value: number, decimals: number, address) {
-    if(!address) {
-      decimals = 1;
-    } else if(!decimals) {
-      const tokens = this.sessionStorageService.retrieve('tokens');
-      const token = tokens.find((item)=>{
-        return item.address === address;
-      });
-      decimals = token.decimals;
+    if(!decimals) {
+      const token = this.getTokensInfo(address);
+      if(token) {
+        decimals = token.decimals;
+      }
     }
     return value / Math.pow(10, Number(decimals));
   }
