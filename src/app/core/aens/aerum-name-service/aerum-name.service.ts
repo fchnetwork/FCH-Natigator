@@ -59,6 +59,7 @@ export class AerumNameService {
   async resolveAddressFromName(name: string) : Promise<string> {
     this.ensureName(name);
 
+    name = name.toLowerCase();
     const node = hash(name);
     const address = await this.resolverContractService.getAddress(node);
     this.logger.logMessage(`Name ${name} resolved into: ${address}`);
@@ -88,6 +89,7 @@ export class AerumNameService {
       return false;
     }
 
+    name = name.toLowerCase();
     const node = hash(name);
     const owner = await this.registryContractService.getOwner(node);
 
@@ -97,6 +99,7 @@ export class AerumNameService {
   async checkStatus(address: string, name: string) : Promise<CheckStatus> {
     this.ensureName(name);
 
+    name = name.toLowerCase();
     const node = hash(name);
     const owner = await this.registryContractService.getOwner(node);
 
@@ -116,6 +119,7 @@ export class AerumNameService {
       throw new Error('Can only buy not empty names');
     }
 
+    label = label.toLowerCase();
     const name = label + ".aer";
     const node = hash(name);
     const hashedLabel = sha3(label);
@@ -141,6 +145,7 @@ export class AerumNameService {
       throw new Error('Can only buy not empty names');
     }
 
+    label = label.toLowerCase();
     const name = label + ".aer";
     const node = hash(name);
     const hashedLabel = sha3(label);
@@ -160,6 +165,8 @@ export class AerumNameService {
 
   async setResolver(name: string, resolver: string) {
     this.ensureName(name);
+
+    name = name.toLowerCase();
     const node = hash(name);
     await this.registryContractService.setResolver(node, resolver);
   }
@@ -170,6 +177,8 @@ export class AerumNameService {
 
   async setOwner(name: string, owner: string) {
     this.ensureName(name);
+
+    name = name.toLowerCase();
     const node = hash(name);
     await this.registryContractService.setOwner(node, owner);
   }
@@ -180,12 +189,16 @@ export class AerumNameService {
 
   async setAddress(name: string, address: string) {
     this.ensureName(name);
+
+    name = name.toLowerCase();
     const node = hash(name);
     await this.resolverContractService.setAddress(node, address);
   }
 
   async estimateSetAddressCost(name: string, address: string) {
     this.ensureName(name);
+
+    name = name.toLowerCase();
     const node = hash(name);
     return await this.resolverContractService.estimateSetAddressCost(node, address);
   }
