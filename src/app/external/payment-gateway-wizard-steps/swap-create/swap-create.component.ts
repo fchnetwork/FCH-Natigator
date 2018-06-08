@@ -1,6 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { Location } from "@angular/common";
 
+import { environment } from "@env/environment";
+
 import { sha3, fromWei } from 'web3-utils';
 import Web3 from "web3";
 
@@ -18,6 +20,8 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
+import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
+import { ERC20TokenService } from "@core/swap/on-chain/erc20-token-service/erc20-token.service";
 
 @Component({
   selector: 'app-swap-create',
@@ -28,10 +32,10 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
   @Input() asset: string;
   @Input() amount: number;
   @Input() account: EthereumAccount;
+  @Input() secret: string;
 
   tokens = [];
   selectedToken: any;
-  secret: string;
 
   templates: SwapTemplate[] = [];
   selectedTemplate: SwapTemplate;
@@ -52,8 +56,10 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
     private authService: AuthenticationService,
     private ethereumAuthService: EthereumAuthenticationService,
     private tokenService: TokenService,
+    private erc20TokenService: ERC20TokenService,
     private swapTemplateService: SwapTemplateService,
     private etherSwapService: EtherSwapService,
+    private aerumErc20SwapService: AerumErc20SwapService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
   ) {
     super(location);
@@ -64,7 +70,6 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
     this.aerumAccount = "0x" + keystore.address;
 
     this.ethWeb3 = this.ethereumAuthService.getWeb3();
-    this.secret = Guid.newGuid().replace(/-/g, '');
     this.tokens = this.tokenService.getTokens() || [];
     this.ensureDepositTokenPresent().then(() => this.loadSwapTemplates());
     // TODO: Test code to register swap template
@@ -73,7 +78,7 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
 
   ngOnChanges(changes: SimpleChanges) {
     const account: SimpleChange = changes.account;
-    if(account.previousValue !== account.currentValue) {
+    if (account.previousValue !== account.currentValue) {
       this.recalculateTotals();
     }
   }
@@ -191,25 +196,21 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
     this.selfSignedEthereumContractExecutorService.init(this.ethWeb3, this.account.address, this.account.privateKey);
     this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
 
-    // TODO: Unsubscribe
-    /*
-    this.etherSwapService.onOpen(hash, (err, event) => {
+    this.aerumErc20SwapService.onOpen(hash, (err, event) => {
       if(err) {
         this.logger.logError(`Create swap error: ${hash}`, err);
+        this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
       } else {
         this.logger.logMessage(`Create swap success: ${hash}`, event);
+        super.next();
       }
     });
-    */
 
-    const cost = await this.etherSwapService.estimateOpenSwap(hash, ethAmountString, withdrawTrader, timestamp);
-    this.logger.logMessage(`Swap cost: ${hash}`, cost);
     await this.etherSwapService.openSwap(hash, ethAmountString, withdrawTrader, timestamp);
-    this.logger.logMessage(`Swap created: ${hash}`);
-    const swap = await this.etherSwapService.checkSwap(hash);
-    this.logger.logMessage(`Swap checked: ${hash}`, swap);
-
     this.notificationService.showMessage('Swap created', 'Success');
+
+    // TODO: Test code to create counterswap
+    this.testAerumErc20Swap();
   }
 
   // TODO: Test code to register swap template
@@ -220,5 +221,32 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
     this.logger.logMessage(`Template created: ${id}`);
     const template = await this.swapTemplateService.getTemplateById(id);
     this.logger.logMessage(`Template loaded: ${id}`, template);
+  }
+
+  // TODO: Test code to create counter swap
+  async testAerumErc20Swap() {
+    const hash = sha3(this.secret);
+    const amount = (10 * Math.pow(10,18));
+    const tokenAddress = this.selectedToken.address;
+    const timeoutInSeconds = 5 * 60;
+    const timestamp = Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
+
+    const erc20SwapContract = environment.contracts.swap.crossChain.address.aerum.Erc20Swap;
+    await this.ensureAllowance(tokenAddress, erc20SwapContract, amount);
+
+    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${this.aerumAccount}, token: ${tokenAddress}`);
+    await this.aerumErc20SwapService.openSwap(hash, amount.toString(10), tokenAddress, this.aerumAccount, timestamp);
+    this.logger.logMessage(`Swap created: ${hash}`);
+    const swap = await this.aerumErc20SwapService.checkSwap(hash);
+    this.logger.logMessage(`Swap checked: ${hash}`, swap);
+  }
+
+  // TODO: Test code to create counter swap
+  private async ensureAllowance(tokenContractAddress: string, spender: string, amount: number) {
+    const allowance = await this.erc20TokenService.allowance(tokenContractAddress, this.aerumAccount, spender);
+    if (Number(allowance) < amount) {
+      this.logger.logMessage(`Allowance value: ${allowance}. Needed: ${amount}`);
+      await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
+    }
   }
 }
