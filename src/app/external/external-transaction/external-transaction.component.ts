@@ -143,7 +143,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   }
 
   deposit() {
-    this.router.navigate(['/external/deposit/'], { queryParams: { asset: this.contractAddress, amount: this.amount }});
+    this.router.navigate(['/external/eth-wallet/'], { queryParams: { asset: this.contractAddress, amount: this.amount }});
   }
 
   async getMaxTransactionFee(): Promise<void> {

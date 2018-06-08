@@ -23,8 +23,7 @@ import { Subscription } from "rxjs/Subscription";
 export class EthereumWalletComponent implements OnInit, OnDestroy {
 
   private routeSubscription: Subscription;
-  private paramAsset: string;
-  private paramAmount: number;
+  private params: { asset?: string, amount?: number } = {};
 
   private web3: Web3;
   private injectedWeb3: Web3;
@@ -58,8 +57,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => {
-      this.paramAsset = param.asset;
-      this.paramAmount = Number(param.amount) || 0;
+      this.params = { asset: param.asset, amount: Number(param.amount) || 0 };
     });
 
     this.web3 = this.ethereumAuthenticationService.getWeb3();
@@ -197,8 +195,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
   next() {
     return this.router.navigate(['external/create-swap'], {
       queryParams: {
-        asset: this.paramAsset,
-        amount: this.paramAmount,
+        ...this.params,
         wallet: this.selectedWalletType,
         account: this.address
       }
@@ -210,6 +207,8 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.routeSubscription.unsubscribe();
+    if(this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
   }
 }
