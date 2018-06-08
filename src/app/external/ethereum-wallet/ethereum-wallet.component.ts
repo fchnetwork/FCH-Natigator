@@ -26,7 +26,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
   private params: { asset?: string, amount?: number, query?: string } = {};
 
   private web3: Web3;
-  private injectedWeb3: Web3;
+  injectedWeb3: Web3;
 
   walletTypes = EthWalletType;
   selectedWalletType = EthWalletType.Imported;
