@@ -141,6 +141,8 @@ export class CreateSwapComponent implements OnInit {
   }
 
   private async confirmAndCreateSwap() {
+    this.counterpartyAddress = this.counterpartyAddress.replace(/\s+/g, '');
+    this.counterpartyAddress = await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress);
     const modalResult = await this.modalService.openSwapCreateConfirm({
       swapId: this.swapId,
       token: this.token,
@@ -179,7 +181,7 @@ export class CreateSwapComponent implements OnInit {
       this.swapId,
       this.tokenAmount.toString(10),
       counterpartyTokenAmount.toString(10),
-      await this.aensService.resolveNameOrAddress(this.counterpartyAddress),
+      await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress),
       this.counterpartyToken.address
     );
   }
@@ -192,7 +194,7 @@ export class CreateSwapComponent implements OnInit {
       tokenAmount.toString(10),
       this.token.address,
       this.counterpartyTokenAmount.toString(10),
-      await this.aensService.resolveNameOrAddress(this.counterpartyAddress),
+      await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress),
     );
   }
 
@@ -205,7 +207,7 @@ export class CreateSwapComponent implements OnInit {
       tokenAmount.toString(10),
       this.token.address,
       counterpartyTokenAmount.toString(10),
-      await this.aensService.resolveNameOrAddress(this.counterpartyAddress),
+      await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress),
       this.counterpartyToken.address
     );
   }

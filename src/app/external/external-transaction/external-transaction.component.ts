@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SessionStorageService } from 'ngx-webstorage';
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
@@ -12,7 +11,7 @@ import { TokenService } from '@app/core/transactions/token-service/token.service
   templateUrl: './external-transaction.component.html',
   styleUrls: ['./external-transaction.component.scss']
 })
-export class ExternalTransactionComponent implements OnInit {
+export class ExternalTransactionComponent implements OnInit, OnDestroy {
   sub: any;
   isToken: boolean;
   redirectUrl: string;
@@ -48,6 +47,7 @@ export class ExternalTransactionComponent implements OnInit {
   constructor(
     public authServ: AuthenticationService,
     public route: ActivatedRoute,
+    public router: Router,
     public sessionStorageService: SessionStorageService,
     public transactionService: TransactionService,
     public tokenService: TokenService,
@@ -56,7 +56,7 @@ export class ExternalTransactionComponent implements OnInit {
     this.prepareData();
   }
 
-  ngOnInit(){}
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.sub.unsubscribe();
@@ -126,8 +126,8 @@ export class ExternalTransactionComponent implements OnInit {
     if(this.isToken) {
     // TODO: add decimals
       const dec = await this.tokenService.getTokensInfo(this.contractAddress);
-      const decimals = 8;
-      this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.contractAddress, this.external, urls, this.orderId).then((res) => {
+      const decimals = dec.decimals;
+      this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.contractAddress, this.external, urls, this.orderId, dec.symbol, decimals).then((res) => {
       });
     } else {
       this.transactionService.transaction(privateKey, this.senderAddress, resolvedAddress, this.amount, null, this.external, urls, this.orderId, {}).then(res => {
@@ -140,6 +140,10 @@ export class ExternalTransactionComponent implements OnInit {
 
   dismiss() {
     window.location.href = this.returnUrlFailed;
+  }
+
+  deposit() {
+    this.router.navigate(['/external/deposit/'], { queryParams: { asset: this.contractAddress, amount: this.amount }});
   }
 
   async getMaxTransactionFee(): Promise<void> {

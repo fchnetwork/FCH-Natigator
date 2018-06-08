@@ -3,6 +3,7 @@ import { Router, RoutesRecognized, ActivatedRoute, NavigationEnd, Data } from '@
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
 
 @Component({
   selector: 'app-wallet',
@@ -17,9 +18,21 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
   constructor(
     private authService: AuthenticationService,
     public router: Router,
+    private idle: AccountIdleService,    
     public activeRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef
   ) {
+   
+    this.idle.startWatching();
+
+    this.idle.onTimerStart().subscribe(count => {});
+
+    this.idle.onTimeout().subscribe( () => {
+      this.idle.stopWatching()
+      this.logout();
+    });
+        
+    
     this.routeData$ = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .map(() => this.activeRoute)

@@ -2,9 +2,9 @@
   <div class="adaptive-dialog">
     <div class="modal-content">
       <aer-modal-dialog>
-        <app-ethereum-wallet></app-ethereum-wallet>
-        <app-swap-create></app-swap-create>
-        <app-swap-confirm></app-swap-confirm>
+        <app-ethereum-wallet (onCompleted)="onSelectWalletCompleted($event)"></app-ethereum-wallet>
+        <app-swap-create [secret]="secret" [asset]="asset" [amount]="amount" [account]="account"></app-swap-create>
+        <app-swap-confirm [secret]="secret" [account]="account"></app-swap-confirm>
       </aer-modal-dialog>
     </div>
   </div>

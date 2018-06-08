@@ -195,8 +195,19 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
       this.moreOptionsData.data = null;
     }
     this.moreOptionsData.selectedToken = this.selectedToken.symbol;
-    await this.getMaxTransactionFee();
+    this.safeGetMaxTransactionFee();
     this.calculateTransactionData();
+  }
+
+  convert(n){
+    n = n.toString().split(/e|\.|\+/);
+    let result = '';
+    result = result + n[0];
+
+    for(let i = 0; i < n[2]; i++) {
+      result = result + 0;
+    }
+    return result;
   }
 
   async openTransactionConfirm(message) {
@@ -212,7 +223,10 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
           console.log(error);
         });
       } else if (this.selectedToken.address) {
-        this.transactionService.sendTokens(address, resolvedAddress, Number(this.amount * Math.pow(10, this.selectedToken.decimals)), this.selectedToken.address, false, {}, null).then((res) => {
+        const amount = this.amount * Math.pow(10, this.selectedToken.decimals);
+        const convertedAmount = this.convert(amount.toExponential());
+
+        this.transactionService.sendTokens(address, resolvedAddress, convertedAmount, this.selectedToken.address, false, {}, null, this.selectedToken.symbol, this.selectedToken.decimals).then((res) => {
           this.transactionMessage = res;
         });
       }
@@ -270,11 +284,12 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     clearInterval(this.updateInterval);
   }
 
-  calculateTransactionData() {
+  async calculateTransactionData() {
     let data;
+    const resolvedAddress = await this.nameService.safeResolveNameOrAddress(this.receiverAddress);
     if(this.isToken) {
       const tokensContract  = this.transactionService.generateContract(this.selectedToken.address);
-      data = tokensContract.methods.transfer(this.receiverAddress, this.amount).encodeABI();
+      data = tokensContract.methods.transfer(resolvedAddress, this.amount).encodeABI();
       data = this.web3.utils.toHex(data);
       this.includedDataLength = Number(data.length - 2) / 2;
     } else if(this.moreOptionsData.data) {

@@ -6,7 +6,7 @@ export abstract class PaymentGatewayWizardStep {
   private prevStep: PaymentGatewayWizardStep;
   private nextStep: PaymentGatewayWizardStep;
 
-  protected constructor(private location: Location) { }
+  protected constructor(protected location: Location) { }
 
   setNextStep(step: PaymentGatewayWizardStep){
     this.nextStep = step;

@@ -24,7 +24,7 @@
     </div>
     <div aerRow>
       <div aerColumn size="sm-6">
-        <aer-input [(ngModel)]="newOwner" class="with-button blue" buttonLabel="{{'ENS.BTN_TRANSFER_NAME'|translate}}" [ngClass]="{'has-error': hasError(transferForm.controls.address), 'blue': canTransfer()}" [attr.disabled]="!canTransfer()" (buttonFn)="transfer()" formControlName="address" ngDefaultControl></aer-input>
+        <aer-input [(ngModel)]="newOwner" class="with-button blue" buttonLabel="{{'ENS.BTN_TRANSFER_NAME'|translate}}" [ngClass]="{'has-error': hasError(transferForm.controls.address), 'blue': canTransfer()}" [attr.disabled]="!canTransfer()" (buttonFn)="transfer()" formControlName="newAddress" ngDefaultControl></aer-input>
       </div>
       <div aerColumn size="sm-6">
         {{'ENS.ADDRESS_TRANSFER_NAME_DESCRIPTION'|translate}}

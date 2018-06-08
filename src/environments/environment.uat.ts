@@ -9,6 +9,7 @@ export const environment = {
   production: false,
   configInUse: "environment.uat",
   WebsocketProvider: "ws://52.51.85.249:8546",
+  rpcApiProvider: "http://52.51.85.249:8545",    
   cookiesDomain: "uat.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "http://explore.aerum.net/#/",
@@ -42,7 +43,7 @@ export const environment = {
     }
   },
   ethereum: {
-    endpoint: "wss://rinkeby.infura.io/ws",
+    endpoint: "https://rinkeby.infura.io/",
     chainId: 4
   },
   gasPrice: "1",

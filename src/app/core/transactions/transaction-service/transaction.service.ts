@@ -76,9 +76,14 @@ export class TransactionService {
       });
     }
 
-    saveTransaction(from, to, amount, data, hash, type) {
+    saveTransaction(from, to, amount, data, hash, type, tokenName, decimals) {
       const date = new Date();
-      const transaction = { from, to, amount, data, date, hash, type };
+      let transaction;
+      if(tokenName && decimals) {
+        transaction = { from, to, amount, data, date, hash, type, tokenName, decimals };
+      } else {
+        transaction = { from, to, amount, data, date, hash, type };
+      }
       const transactions = this.sessionStorage.retrieve('transactions') || [];
       transactions.push(transaction);
       this.updateStorage(transactions);
@@ -101,9 +106,10 @@ export class TransactionService {
               if(transactions[i].data === 'Contract execution(pending)') {
                 this.notificationMessagesService.transactionMinedNotification(transactions[i].hash);
                 const tokenInfo = await this.tokenService.getTokensInfo(receipt.to);
-                const tokenName = tokenInfo.symbol;
-                transactions[i].data = `Send ${tokenName} tokens`;
-                transactions[i].amount = await this.tokenService.getTokenTransactionValue(receipt.to, receipt.blockNumber);
+                const tokenName = transactions[i].tokenName || tokenInfo.symbol;
+                transactions[i].data = `Sent ${tokenName} tokens`;
+                const value: any = await this.tokenService.getTokenTransactionValue(receipt.to, receipt.blockNumber);
+                transactions[i].amount = Number(value / Math.pow(10, transactions[i].decimals));
                 transactions[i].type = tokenName;
                 this.notificationMessagesService.succefullSentNotification(transactions[i].hash);
               } else if (transactions[i].data === 'Pending transaction') {
@@ -167,7 +173,7 @@ export class TransactionService {
                   tx.sign(privateKey);
             const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
                 transaction.on('transactionHash', hash => {
-                  this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash, 'Aero');
+                  this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash, 'Aero', null, null);
                   this.web3.eth.getTransaction(hash).then((res)=>{
                     res.timestamp = Moment(new Date()).unix();
                     
@@ -190,7 +196,7 @@ export class TransactionService {
       });
     }
 
-    async sendTokens(myAddress, to, amount, contractAddress, external, urls, orderId) {
+    async sendTokens(myAddress, to, amount, contractAddress, external, urls, orderId, tokenName, decimals) {
       const count = await this.web3.eth.getTransactionCount(myAddress);
       const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, { from: myAddress, gas: 4000000});
 
@@ -212,7 +218,7 @@ export class TransactionService {
       const transaction = this.web3.eth.sendSignedTransaction( ethJsUtil.addHexPrefix( tx.serialize().toString('hex') ) );
       transaction.on('transactionHash', hash => {
         this.web3.eth.getTransaction(hash).then((res)=>{
-          this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash, 'token');
+          this.saveTransaction(myAddress, to, 0, 'Contract execution(pending)', hash, 'token', tokenName, decimals);
           this.web3.eth.getTransaction(hash).then((res)=>{
             res.timestamp = Moment(new Date()).unix();
             if(external) {

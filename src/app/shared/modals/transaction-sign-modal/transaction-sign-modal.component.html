@@ -1,5 +1,10 @@
 <aer-modal-dialog >
-  <div class="c-transaction c-transaction__table c-transaction__unlock">
+  <div class="c-transaction c-transaction__table c-transaction__unlock"> 
+    <div class="o-closeModal o-closeModal__signTxn">
+        <div class="o-closeModal__btn" (click)="dismiss()">
+            <span class="o-closeModal__icon"></span>
+        </div>        
+    </div>              
     <h1>{{ title || 'Confirm transaction'}}</h1>
     <ul class="o-txnID u-lreset">
       <li>

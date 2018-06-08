@@ -33,7 +33,6 @@ import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ethe
 import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
 import { AeroSwapService } from "@core/swap/cross-chain/aero-swap-service/aero-swap.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
-import { EthWalletService } from "@core/ethereum/eth-wallet-service/eth-wallet.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 
@@ -44,7 +43,6 @@ import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web
   providers: [
     ContractExecutorService,
     SelfSignedEthereumContractExecutorService,
-    EthWalletService,
     EthereumAuthenticationService,
     InjectedWeb3ContractExecutorService,
     AccountIdleService,

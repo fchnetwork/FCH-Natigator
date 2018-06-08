@@ -5,7 +5,7 @@ import Web3 from 'web3';
 
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { BaseContractExecutorService } from "@core/contract/contract-executor-service/base-contract-executor.service";
-import { ContractExecutorService } from "@core/ethereum/contract-executor-service/contract.executor.service";
+import { ContractExecutorService } from "@core/ethereum/contract-executor-service/contract-executor.service";
 
 @Injectable()
 export class SelfSignedEthereumContractExecutorService extends BaseContractExecutorService implements ContractExecutorService {

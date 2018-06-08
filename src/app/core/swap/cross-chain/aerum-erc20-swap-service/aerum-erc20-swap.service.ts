@@ -1,3 +1,5 @@
+import { Callback } from "web3/types";
+
 const artifacts = require('@core/abi/AtomicSwapERC20.json');
 
 import { Injectable } from '@angular/core';
@@ -50,5 +52,17 @@ export class AerumErc20SwapService extends BaseContractService {
     const checkSecretKey = this.contract.methods.checkSecretKey(hash);
     const receipt = await this.contractExecutorService.call(checkSecretKey);
     return receipt;
+  }
+
+  onOpen(hash: string, callback: Callback<any>) {
+    this.contract.events.Open({ filter: { _hash: hash }, fromBlock: 0 }, callback);
+  }
+
+  onClose(hash: string, callback: Callback<any>) {
+    this.contract.events.Close({ filter: { _hash: hash }, fromBlock: 0 }, callback);
+  }
+
+  onExpire(hash: string, callback: Callback<any>) {
+    this.contract.events.Expire({ filter: { _hash: hash }, fromBlock: 0 }, callback);
   }
 }

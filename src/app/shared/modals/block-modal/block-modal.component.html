@@ -1,11 +1,15 @@
 <aer-modal-dialog>
     <div class="explorer detail-modal" *ngIf="block">
+      <div class="o-closeModal">
+        <div class="o-closeModal__btn" (click)="dismiss()">
+            <span class="o-closeModal__icon"></span>
+        </div>        
+      </div>      
       <div class="title">{{'BLOCK'|translate}}</div>
       <app-divider></app-divider>
       <div class="link" (click)="openBlock(block.number)">{{block.number}}</div>
       <div><p class="aer-small">{{block.timestamp | transactionTimeStamp  }} </p></div>
       <div class="age">({{block.timestamp | transactionTimeAgo  }})</div>
-  
       <div class="transaction-table">
         <div class="tr">
           <div class="name">

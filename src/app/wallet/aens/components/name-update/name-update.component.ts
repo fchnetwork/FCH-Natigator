@@ -40,7 +40,7 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
-    private aensService: AerumNameService
+    private aensService: AerumNameService,
   ) { super(translateService); }
 
   async ngOnInit() {
@@ -51,7 +51,8 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
     });
 
     this.transferForm = this.formBuilder.group({
-      address: [null, [AddressValidator.isAddress]]
+      address: [null, [AddressValidator.isAddress]],
+      newAddress: [null, [AddressValidator.isAddress]]
     });
 
     this.oldAddress = await this.aensService.resolveAddressFromName(this.fullName);
@@ -119,7 +120,7 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
   }
 
   async tryTransfer() {
-    const newOwnerAddress = this.newOwner;
+    const newOwnerAddress = await this.aensService.resolveAddressFromName(this.newOwner);
     const cost = await this.aensService.estimateTransferNameCost(this.fullName);
     this.logger.logMessage(`Transfer name cost: ${cost}`);
 

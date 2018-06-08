@@ -19,19 +19,37 @@
       display: block;
     }
   }
+
+  .message {
+    text-align: left;
+    padding: 0 0 20px;
+  }
+
+  label {
+    text-align: left;
+    width: 100%;
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .secret-key {
+    color: #8CCC67;
+  }
 }
 
 .o-table {
   display: table;
   table-layout: fixed;
   width: 100%;
-  margin: 46px 0 25px;
+  margin: 20px 0 0;
   &__row {
-    display: table-row;
+    display: -webkit-flex; /* Safari */
+    display: flex;
+    justify-content: space-between;
   }
   &__cell {
-    display: table-cell;
-    padding-bottom: 15px;
+    display: inline-block;
+    padding-bottom: 20px;
     &.o-data--left {
       text-align: left;
     }
