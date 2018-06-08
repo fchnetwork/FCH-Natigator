@@ -25,6 +25,7 @@ import { Subscription } from "rxjs/Subscription";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
+import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 
 @Component({
   selector: 'app-swap-create',
@@ -35,7 +36,6 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private routeSubscription: Subscription;
   private params: { asset?: string, amount?: number, wallet?: EthWalletType, account?: string } = {};
-  // TODO: Remove this?
   private ethWeb3: Web3;
 
   secret: string;
@@ -70,9 +70,11 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private swapTemplateService: SwapTemplateService,
     private etherSwapService: EtherSwapService,
     private aerumErc20SwapService: AerumErc20SwapService,
+    private swapLocalStorageService: SwapLocalStorageService,
     private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
@@ -86,6 +88,14 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   async init(param) {
+    try {
+      await this.tryInit(param);
+    } catch (e) {
+      this.logger.logError('Load error', e);
+    }
+  }
+
+  async tryInit(param) {
     this.params = {
       asset: param.asset,
       amount: Number(param.amount) || 0,
@@ -194,7 +204,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.processing = true;
       this.notificationService.showMessage('Creating swap... (please wait 10-15 seconds)', 'In progress');
       await this.openEthereumSwap();
-      this.notificationService.showMessage('Swap created', 'Success');
+      this.notificationService.showMessage('Swap created. Waiting for confirmation...', 'Success');
     }
     catch (e) {
       this.logger.logError('Error while creating swap', e);
@@ -218,14 +228,15 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.aerumErc20SwapService.onExpire(hash, (err, event) => this.swapEventHandler(hash, err, event));
 
     await this.etherSwapService.openSwap(hash, ethAmountString, counterpartyTrader, timestamp);
-    this.etherSwapService.storeSwapReference({ hash, secret: this.secret });
+    const localSwap = {hash, secret: this.secret, amount: this.ethAmount, counterparty: this.selectedTemplate.onchainAccount};
+    this.swapLocalStorageService.storeSwapReference(localSwap);
 
     // TODO: Test code to create counter swap
-    // this.testAerumErc20Swap();
+    this.testAerumErc20Swap();
   }
 
   private async configureSwapService() {
-    if(this.params.wallet === EthWalletType.Injected) {
+    if (this.params.wallet === EthWalletType.Injected) {
       await this.configureInjectedSwapService();
     } else {
       this.configureImportedSwapService();
@@ -234,18 +245,18 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private async configureInjectedSwapService() {
     const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
-    if(!injectedWeb3) {
+    if (!injectedWeb3) {
       this.notificationService.showMessage('Injected web3 not provided', 'Error');
       throw Error('Injected web3 not provided');
     }
 
     const accounts = await injectedWeb3.eth.getAccounts() || [];
-    if(!accounts.length) {
+    if (!accounts.length) {
       this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
       throw Error('Cannot get accounts from selected provider');
     }
 
-    if(accounts[0] !== this.params.account) {
+    if (accounts[0] !== this.params.account) {
       this.notificationService.showMessage(`Please select ${this.params.account} and retry`, 'Error');
       throw Error(`Incorrect Mist / Metamask account selected. Expected ${this.params.account}. Selected ${accounts[0]}`);
     }
@@ -256,7 +267,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private configureImportedSwapService() {
     const importedAccount = this.ethereumAuthService.getEthereumAccount(this.params.account);
-    if(!importedAccount) {
+    if (!importedAccount) {
       this.notificationService.showMessage(`Cannot load imported account ${this.params.account}`, 'Error');
       throw Error(`Cannot load imported account ${this.params.account}`);
     }
@@ -276,7 +287,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
     } else {
       this.logger.logMessage(`Create swap success: ${hash}`, event);
-      return this.router.navigate(['external/confirm-swap'], { queryParams: { hash } });
+      return this.router.navigate(['external/confirm-swap'], {queryParams: {hash}});
     }
   }
 

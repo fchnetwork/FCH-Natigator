@@ -10,7 +10,7 @@
                 Your swap was accepted by
               </div>
               <div class="o-table__cell o-data--right">
-                {{acceptedBy}}
+                {{acceptedBy | truncate: 16}}
               </div>
             </div>
             <div class="o-table__row">
@@ -18,7 +18,7 @@
                 You will send
               </div>
               <div class="o-table__cell o-data--right">
-                {{sendValue}} {{sendCurrency}}
+                {{sendAmount}} ETH
               </div>
             </div>
             <div class="o-table__row">

@@ -1,46 +1,75 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
+
 import { sha3 } from "web3-utils";
 
-import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
-import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
+import { Subscription } from "rxjs/Subscription";
+import { ActivatedRoute } from "@angular/router";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
+import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 
 @Component({
   selector: 'app-swap-confirm',
   templateUrl: './swap-confirm.component.html',
   styleUrls: ['./swap-confirm.component.scss']
 })
-export class SwapConfirmComponent implements OnInit {
+export class SwapConfirmComponent implements OnInit, OnDestroy {
 
-  @Input() secret: string;
-  @Input() token: any;
-  @Input() account: EthereumAccount;
-  @Input() template: SwapTemplate;
+  private routeSubscription: Subscription;
+  private hash;
+  private aerumAccount: string;
 
-  aerumAccount: string;
+  secret: string;
 
-  // TODO: Populate these fields
-  acceptedBy = 'cosmiceye.aer';
-  sendValue = 0.5;
-  sendCurrency = 'ETH';
+  acceptedBy: string;
+  sendAmount: number;
+
+
   receiveValue = 5;
   receiveCurrency = 'Aero';
 
   constructor(
     private location: Location,
+    private route: ActivatedRoute,
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private authService: AuthenticationService,
-    private erc20SwapService: AerumErc20SwapService
-  ) { }
+    private erc20SwapService: AerumErc20SwapService,
+    private swapLocalStorageService: SwapLocalStorageService
+  ) {
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
     const keystore = this.authService.getKeystore();
     this.aerumAccount = "0x" + keystore.address;
+    this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
+  }
+
+  async init(param) {
+    try {
+      await this.tryInit(param);
+    } catch (e) {
+      this.logger.logError('Load error', e);
+    }
+  }
+
+  async tryInit(param) {
+    if (!param.hash) {
+      throw new Error('Hash not specified');
+    }
+    this.hash = param.hash;
+
+    const swap = this.swapLocalStorageService.loadSwapReference(this.hash);
+    if(!swap) {
+      throw new Error('Cannot load data for local swap: ' + this.hash);
+    }
+
+    this.secret = swap.secret;
+    this.sendAmount = swap.amount;
+    this.acceptedBy = swap.counterparty;
   }
 
   async next() {
@@ -60,5 +89,11 @@ export class SwapConfirmComponent implements OnInit {
 
   cancel() {
     this.location.back();
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
   }
 }
