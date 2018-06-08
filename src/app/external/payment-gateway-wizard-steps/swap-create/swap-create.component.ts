@@ -210,7 +210,7 @@ export class SwapCreateComponent extends PaymentGatewayWizardStep implements OnC
     this.notificationService.showMessage('Swap created', 'Success');
 
     // TODO: Test code to create counterswap
-    this.testAerumErc20Swap();
+    // this.testAerumErc20Swap();
   }
 
   // TODO: Test code to register swap template
