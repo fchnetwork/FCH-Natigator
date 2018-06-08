@@ -238,7 +238,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
     // TODO: Test code to create counter swap
-    this.testAerumErc20Swap();
+    // this.testAerumErc20Swap();
   }
 
   private async configureSwapService() {
