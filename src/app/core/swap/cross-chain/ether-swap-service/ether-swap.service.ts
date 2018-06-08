@@ -1,3 +1,5 @@
+import { SessionStorageService } from "ngx-webstorage";
+
 const artifacts = require('@core/abi/AtomicSwapEther.json');
 
 import { Injectable } from '@angular/core';
@@ -7,6 +9,7 @@ import Web3 from "web3";
 import { Contract } from "web3/types";
 
 import { ContractExecutorService } from "@core/ethereum/contract-executor-service/contract-executor.service";
+import { SwapReference } from "@core/swap/cross-chain/ether-swap-service/swap-reference.model";
 
 @Injectable()
 export class EtherSwapService {
@@ -15,7 +18,7 @@ export class EtherSwapService {
   private web3: Web3;
   private contract: Contract;
 
-  constructor() { }
+  constructor(private sessionStorage: SessionStorageService) { }
 
   useContractExecutor(contractExecutorService: ContractExecutorService) {
     this.contractExecutorService = contractExecutorService;
@@ -59,4 +62,24 @@ export class EtherSwapService {
     return receipt;
   }
 
+  storeSwapReference(swap: SwapReference) {
+    if(swap) {
+      const swaps = this.loadAllSwaps();
+      swaps.push(swap);
+      this.sessionStorage.store("cross_chain_swap", swaps);
+    }
+  }
+
+  loadSwapReference(hash: string): SwapReference {
+    if(!hash) {
+      return null;
+    }
+
+    const swaps = this.loadAllSwaps();
+    return swaps.find(swap => swap.hash === hash);
+  }
+
+  private loadAllSwaps(): SwapReference[] {
+    return this.sessionStorage.retrieve("cross_chain_swap") as SwapReference[] || [];
+  }
 }

@@ -8,7 +8,6 @@ import Web3 from "web3";
 
 import { Guid } from "@shared/helpers/guid";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
-import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
@@ -25,6 +24,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
+import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 
 @Component({
   selector: 'app-swap-create',
@@ -70,25 +70,12 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private swapTemplateService: SwapTemplateService,
     private etherSwapService: EtherSwapService,
     private aerumErc20SwapService: AerumErc20SwapService,
+    private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
-    this.routeSubscription = this.route.queryParams.subscribe(async param => {
-      this.params = {
-        asset: param.asset,
-        amount: Number(param.amount) || 0,
-        wallet: param.wallet ? EthWalletType[param.wallet as string] : EthWalletType.Injected,
-        account: param.account
-      };
-
-      this.amount = this.params.amount;
-      this.tokens = this.tokenService.getTokens() || [];
-      await this.ensureTokenPresent(this.params.asset);
-      await this.loadSwapTemplates();
-    });
-
+    this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
     const keystore = this.authService.getKeystore();
     this.aerumAccount = "0x" + keystore.address;
     this.ethWeb3 = this.ethereumAuthService.getWeb3();
@@ -96,6 +83,19 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
     // TODO: Test code to register swap template. Remove after testing
     // this.registerTestSwapTemplate().then(() => console.log('Template registered!'));
+  }
+
+  async init(param) {
+    this.params = {
+      asset: param.asset,
+      amount: Number(param.amount) || 0,
+      wallet: param.wallet ? Number(param.wallet) : EthWalletType.Injected,
+      account: param.account
+    };
+    this.amount = this.params.amount;
+    this.tokens = this.tokenService.getTokens() || [];
+    await this.ensureTokenPresent(this.params.asset);
+    await this.loadSwapTemplates();
   }
 
   onTokenChange() {
@@ -199,42 +199,98 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     catch (e) {
       this.logger.logError('Error while creating swap', e);
       this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
-    } finally {
+      // NOTE: We only allow process next in case there is event
       this.processing = false;
     }
   }
 
   async openEthereumSwap() {
+    await this.configureSwapService();
+
     const hash = sha3(this.secret);
     const ethAmountString = this.ethAmount.toString(10);
-    const timeoutInSeconds = 5 * 60;
-    const timestamp = Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
+    const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
+    const counterpartyTrader = this.selectedTemplate.offchainAccount;
 
-    const withdrawTrader = this.selectedTemplate.offchainAccount;
-    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${withdrawTrader}. amount: ${ethAmountString}`);
+    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${ethAmountString}`);
 
-    // this.selfSignedEthereumContractExecutorService.init(this.ethWeb3, this.account.address, this.account.privateKey);
-    this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
+    this.aerumErc20SwapService.onOpen(hash, (err, event) => this.swapEventHandler(hash, err, event));
+    this.aerumErc20SwapService.onExpire(hash, (err, event) => this.swapEventHandler(hash, err, event));
 
-    this.aerumErc20SwapService.onOpen(hash, (err, event) => {
-      if (err) {
-        this.logger.logError(`Create swap error: ${hash}`, err);
-        this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
-      } else {
-        this.logger.logMessage(`Create swap success: ${hash}`, event);
-        this.router.navigate(['external/confirm-swap']);
-      }
-    });
-
-    await this.etherSwapService.openSwap(hash, ethAmountString, withdrawTrader, timestamp);
+    await this.etherSwapService.openSwap(hash, ethAmountString, counterpartyTrader, timestamp);
+    this.etherSwapService.storeSwapReference({ hash, secret: this.secret });
 
     // TODO: Test code to create counter swap
     // this.testAerumErc20Swap();
   }
 
+  private async configureSwapService() {
+    if(this.params.wallet === EthWalletType.Injected) {
+      await this.configureInjectedSwapService();
+    } else {
+      this.configureImportedSwapService();
+    }
+  }
+
+  private async configureInjectedSwapService() {
+    const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
+    if(!injectedWeb3) {
+      this.notificationService.showMessage('Injected web3 not provided', 'Error');
+      throw Error('Injected web3 not provided');
+    }
+
+    const accounts = await injectedWeb3.eth.getAccounts() || [];
+    if(!accounts.length) {
+      this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
+      throw Error('Cannot get accounts from selected provider');
+    }
+
+    if(accounts[0] !== this.params.account) {
+      this.notificationService.showMessage(`Please select ${this.params.account} and retry`, 'Error');
+      throw Error(`Incorrect Mist / Metamask account selected. Expected ${this.params.account}. Selected ${accounts[0]}`);
+    }
+
+    this.injectedWeb3ContractExecutorService.init(injectedWeb3, accounts[0]);
+    this.etherSwapService.useContractExecutor(this.injectedWeb3ContractExecutorService);
+  }
+
+  private configureImportedSwapService() {
+    const importedAccount = this.ethereumAuthService.getEthereumAccount(this.params.account);
+    if(!importedAccount) {
+      this.notificationService.showMessage(`Cannot load imported account ${this.params.account}`, 'Error');
+      throw Error(`Cannot load imported account ${this.params.account}`);
+    }
+
+    this.selfSignedEthereumContractExecutorService.init(this.ethWeb3, importedAccount.address, importedAccount.privateKey);
+    this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
+  }
+
+  private calculateTimestamp(timeoutInSeconds: number) {
+    return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
+  }
+
+  private swapEventHandler(hash: string, err, event) {
+    this.processing = false;
+    if (err) {
+      this.logger.logError(`Create swap error: ${hash}`, err);
+      this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
+    } else {
+      this.logger.logMessage(`Create swap success: ${hash}`, event);
+      return this.router.navigate(['external/confirm-swap'], { queryParams: { hash } });
+    }
+  }
+
   cancel() {
     this.location.back();
   }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
+
+  //#region Test code to remove
 
   // TODO: Test code to register swap template.
   async registerTestSwapTemplate() {
@@ -273,9 +329,5 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.routeSubscription) {
-      this.routeSubscription.unsubscribe();
-    }
-  }
+  //#endregion
 }

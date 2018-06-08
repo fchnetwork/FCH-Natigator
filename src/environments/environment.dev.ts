@@ -7,7 +7,7 @@ export const environment = {
   production: false,
   configInUse: "environment.dev",
   WebsocketProvider: "ws://52.51.85.249:8546",
-  rpcApiProvider: "http://52.51.85.249:8545",    
+  rpcApiProvider: "http://52.51.85.249:8545",
   cookiesDomain: "dev.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "http://explore.aerum.net/#/",
@@ -29,7 +29,8 @@ export const environment = {
             EtherSwap: "0x886cebd831af48f1bff5943605254037361c1d56",
             Erc20Swap: "0xef0aa2ffc51d039e073ebbb0de3c4b79ec98472c"
           }
-        }
+        },
+        swapExpireTimeoutInSeconds: 10 * 60
       }
     },
     aens: {

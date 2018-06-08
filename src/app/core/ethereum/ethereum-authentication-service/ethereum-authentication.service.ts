@@ -55,6 +55,15 @@ export class EthereumAuthenticationService {
     return this.injectedWeb3;
   }
 
+  getEthereumAccount(address: string): EthereumAccount {
+    if(!address) {
+      return null;
+    }
+
+    const accounts = this.sessionStorage.retrieve('ethereum_accounts') as EthereumAccount[] || [];
+    return accounts.find(account => account.address === address);
+  }
+
   saveEthereumAccounts(accounts: EthereumAccount[]): void {
     const password = this.sessionStorage.retrieve('password');
     const stringAccounts = JSON.stringify(accounts);
