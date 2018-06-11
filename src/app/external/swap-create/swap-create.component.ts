@@ -143,7 +143,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   private loadTokenAndAddToList(address: string): Promise<void> {
-    return this.tokenService.getLocalOrNetworkTokenInfo(address).then(token => {
+    return this.tokenService.getTokensInfo(address).then(token => {
       this.tokens = this.tokens.splice(0, 0, token);
       this.selectDefaultToken();
     });
