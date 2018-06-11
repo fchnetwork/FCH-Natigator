@@ -33,8 +33,7 @@ export class ConnectionCheckerService {
         this.websocket = new WebSocket(environment.WebsocketProvider); 
         this.socket_id = Math.random() * 100; 
         this.websocket.addEventListener('open', ev => this.onOpen(ev));
-        this.websocket.addEventListener('message', ev => this.onMessage(ev));
-        this.websocket.addEventListener('error', ev => this.onError(ev));  
+        this.websocket.addEventListener('error', ev => this.onError(ev)); 
     }
 
     private onOpen(ev: Event) {
@@ -76,10 +75,6 @@ export class ConnectionCheckerService {
         } 
     }
 
-    private onMessage(ev: MessageEvent) {
-        this.logger.logMessage('Message from server ', ev.data);
-    }
-
     private checkHeartbeat(missed_heartbeats, websocket, heartbeat_interval, heartbeat_msg, logger) {
         try {
             missed_heartbeats += 1;
@@ -89,7 +84,6 @@ export class ConnectionCheckerService {
             }
 
             websocket.send(heartbeat_msg);
-            logger.logMessage(websocket);
         } catch (e) {
             clearInterval(heartbeat_interval);
             heartbeat_interval = null;
