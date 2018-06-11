@@ -77,11 +77,11 @@ export class LoadSwapComponent implements OnInit {
       await this.showSwapInModalAndProcess();
     } catch(e) {
       if(e instanceof TokenError) {
+        this.logger.logError('Swap action error. Cannot load token information', e);
         this.notificationService.notify('Error', 'Please configure swap token first', "aerum", 3000);
-        this.logger.logError('Swap action error. Cannot load token information:', e);
       } else {
-        this.notificationService.notify('Error', 'Swap not found or invalid', "aerum", 3000);
         this.logger.logError('Swap action error:', e);
+        this.notificationService.notify('Error', 'Swap not found or invalid', "aerum", 3000);
       }
     }
     finally {

@@ -7,6 +7,7 @@ import { sha3, fromWei } from 'web3-utils';
 import Web3 from "web3";
 
 import { Guid } from "@shared/helpers/guid";
+import { TokenError } from "@core/transactions/token-service/token.error";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
@@ -91,7 +92,13 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     try {
       await this.tryInit(param);
     } catch (e) {
-      this.logger.logError('Load error', e);
+      if(e instanceof TokenError) {
+        this.logger.logError('Cannot load token information', e);
+        this.notificationService.showMessage('Please configure the token first', 'Error');
+      } else {
+        this.logger.logError('Swap data load error', e);
+        this.notificationService.showMessage('Cannot load swap screen', 'Error');
+      }
     }
   }
 
@@ -127,7 +134,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const isPresent = this.tokens.some(token => token.address === address);
+    const isPresent = this.tokens.some(token => token.address.toLowerCase() === address.toLowerCase());
     if (!isPresent) {
       await this.loadTokenAndAddToList(address);
     } else {
@@ -136,7 +143,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   private loadTokenAndAddToList(address: string): Promise<void> {
-    return this.tokenService.getTokensInfo(address).then(token => {
+    return this.tokenService.getLocalOrNetworkTokenInfo(address).then(token => {
       this.tokens = this.tokens.splice(0, 0, token);
       this.selectDefaultToken();
     });
