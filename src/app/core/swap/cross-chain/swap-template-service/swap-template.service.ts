@@ -21,10 +21,10 @@ export class SwapTemplateService extends BaseContractService {
   async registerTemplate(id: string, onchainAsset: string, onchainAccount: string, offchainAsset: string, offchainAccount: string, rate: number, chain: Chain) {
     const register = this.contract.methods.register(
       this.web3.utils.fromAscii(id),
-      onchainAsset,
-      onchainAccount,
-      offchainAsset,
-      offchainAccount,
+      onchainAsset.toLowerCase(),
+      onchainAccount.toLowerCase(),
+      offchainAsset.toLowerCase(),
+      offchainAccount.toLowerCase(),
       // TODO: Move to utils
       Math.ceil(rate * Math.pow(10, 18)).toString(10),
       chain
@@ -44,11 +44,11 @@ export class SwapTemplateService extends BaseContractService {
     const response = await this.contractExecutorService.call(templateById);
     const template = new SwapTemplate();
     template.id = this.web3.utils.toAscii(response[0]);
-    template.owner = response[1];
-    template.onchainAsset = response[2];
-    template.onchainAccount = response[3];
-    template.offchainAsset = response[4];
-    template.offchainAccount = response[5];
+    template.owner = response[1].toLowerCase();
+    template.onchainAsset = response[2].toLowerCase();
+    template.onchainAccount = response[3].toLowerCase();
+    template.offchainAsset = response[4].toLowerCase();
+    template.offchainAccount = response[5].toLowerCase();
     template.rate = Number(response[6]) / Math.pow(10, 18);
     template.chain = Chain[response[7] as string];
     return template;
@@ -61,7 +61,7 @@ export class SwapTemplateService extends BaseContractService {
   }
 
   async getTemplatesIdsByAsset(asset: string, chain: Chain) : Promise<string[]> {
-    const templatesIdsByAsset = this.contract.methods.templatesIdsByAsset(asset, chain);
+    const templatesIdsByAsset = this.contract.methods.templatesIdsByAsset(asset.toLowerCase(), chain);
     const response = await this.contractExecutorService.call(templatesIdsByAsset);
     return response;
   }
@@ -74,7 +74,7 @@ export class SwapTemplateService extends BaseContractService {
   }
 
   async getTemplatesByAsset(asset: string, chain: Chain) : Promise<SwapTemplate[]> {
-    const templatesIds = await this.getTemplatesIdsByAsset(asset, chain);
+    const templatesIds = await this.getTemplatesIdsByAsset(asset.toLowerCase(), chain);
     const promises = templatesIds.map((id) => this.getTemplateById(this.web3.utils.toAscii(id)));
     const templates = await Promise.all(promises);
     return templates;

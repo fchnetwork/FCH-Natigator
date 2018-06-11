@@ -85,7 +85,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
             this.senderAddress = this.sessionStorageService.retrieve('acc_address');
             this.senderAvatar = this.authServ.generateCryptedAvatar(this.senderAddress);
             this.receiverAvatar = this.authServ.generateCryptedAvatar(res);
-            this.amount = parsed.amount ? parsed.amount : this.amount;
+            this.amount = parsed.amount;
             this.isToken = String(parsed.assetAddress) !== "0";
             this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
             this.assetAddress = parsed.assetAddress ? parsed.assetAddress : this.assetAddress;
