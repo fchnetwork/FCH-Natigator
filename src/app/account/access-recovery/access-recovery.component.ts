@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';  
 import { Router } from '@angular/router'
@@ -7,6 +8,7 @@ import { Subject } from 'rxjs/Subject';
 import { Cookie } from 'ng2-cookies/ng2-cookies';   
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
+import { SessionStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'app-access-recovery',
@@ -34,7 +36,8 @@ export class AccessRecoveryComponent implements OnInit {
           private router: Router,
           public formBuilder: FormBuilder,
           public cd: ChangeDetectorRef,
-          public passCheckService: PasswordCheckerService
+          public passCheckService: PasswordCheckerService,
+          public sessionStorage: SessionStorageService,
         ) {}
 
 
@@ -59,7 +62,15 @@ export class AccessRecoveryComponent implements OnInit {
       }
     }
 
+    cleanCookies() {
+      Cookie.set('aerum_base', null, 7, "/", environment.cookiesDomain);
+      Cookie.set('aerum_keyStore', null, 7, "/", environment.cookiesDomain);
+      Cookie.set('tokens', null, 7, "/", environment.cookiesDomain);
+      Cookie.set('transactions', null, 7, "/", environment.cookiesDomain);
+    }
+
     ngOnInit() {
+      this.cleanCookies();
       this.recoverForm = this.formBuilder.group({
         seed: ["", [Validators.required ] ],
         // password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
@@ -102,6 +113,15 @@ export class AccessRecoveryComponent implements OnInit {
 
     onSubmitAddress() {
       if( this.recoverForm.valid ) {
+        this.sessionStorage.store('acc_address', this.address);
+        this.sessionStorage.store('acc_avatar',  this.authServ.generateCryptedAvatar( this.address ) );
+        this.sessionStorage.store('seed', this.recoverForm.value.seed);
+        this.sessionStorage.store('private_key', this.private);
+        this.sessionStorage.store('password', this.recoverForm.value.password);
+        this.sessionStorage.store('transactions', []);
+        this.sessionStorage.store('tokens', []);
+        this.sessionStorage.store('ethereum_accounts', []);
+
         this.authServ.saveKeyStore( this.private, this.recoverForm.value.password, this.recoverForm.value.seed );
         this.router.navigate(['/wallet/home']); // improvements need to be made here but for now the auth guard should work just fine
       }
