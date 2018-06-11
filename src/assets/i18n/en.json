@@ -28,6 +28,10 @@
     "DESCRIPTION": "This password will withstand most sophisticated brute-force attacks. Please ensure that you will remember it.",
     "TITLE": "Very Strong"
   },
+  "SETTINGS": {
+    "SETTINGS": "Settings",
+    "BACKUP": "Backup"
+  },
   "ACCESS_RECOVERY": "Access Recovery",
   "CREATE_BACKUP": "Backup",
   "BACKUP_PHRASE": "You must save the mneumonic seed. It is the only one way to recover access",
