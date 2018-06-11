@@ -36,6 +36,7 @@ import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-servic
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
+import { SettingsBackupService } from '@app/core/settings/settingsBackup.service';
 
 @NgModule({
   imports: [
@@ -68,12 +69,13 @@ import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-stora
     ERC20TokenService,
     PasswordCheckerService,
     LoggerService,
-    ValidateService, 
+    ValidateService,
     EtherSwapService,
     AeroSwapService,
     AerumErc20SwapService,
     SwapTemplateService,
-    SwapLocalStorageService
+    SwapLocalStorageService,
+    SettingsBackupService,
   ]
 })
 export class CoreModule {
