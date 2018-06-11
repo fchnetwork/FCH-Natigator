@@ -13,7 +13,12 @@ export class BigNumbersPipe implements PipeTransform {
     'BILLIONS',
     'TRILLIONS',
     'QUADRILLIONS',
-    'QUINTILLIONS'
+    'QUINTILLIONS',
+    "SEXTILLION",
+    "SEPTILLION",
+    "OCTILLION",
+    "NONILLION",
+    "DECILLION"
 ];
 
   constructor ( private decimalPipe: DecimalPipe,
