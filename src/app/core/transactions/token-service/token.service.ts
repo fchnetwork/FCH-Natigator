@@ -8,10 +8,9 @@ import { tokensABI } from '@app/core/abi/tokens';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { iToken } from '@shared/app.interfaces';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-
-const Tx = require('ethereumjs-tx');
-const ethJsUtil = require('ethereumjs-util');
-
+import { Token } from "@core/transactions/token-service/token.model";
+import { LoggerService } from "@core/general/logger-service/logger.service";
+import { TokenError } from "@core/transactions/token-service/token.error";
 
 @Injectable()
 export class TokenService {
@@ -20,6 +19,7 @@ export class TokenService {
   tokens$: BehaviorSubject<iToken>= new BehaviorSubject(<any>[]);
 
   constructor(
+    private logger: LoggerService,
     private _auth: AuthenticationService,
     private sessionStorage: SessionStorageService,
   ) {
@@ -61,6 +61,16 @@ export class TokenService {
 
   getTokens() {
    return this.sessionStorage.retrieve('tokens');
+  }
+
+  getLocalToken(address: string): Token {
+    if(!address){
+      return null;
+    }
+
+    const tokens = this.getTokens();
+    const token = tokens.find(item => item.address.toLowerCase() === address.toLowerCase());
+    return token;
   }
 
   updateStoredTokens(token) {
@@ -120,6 +130,29 @@ export class TokenService {
         reject('not valid address');
       }
     });
+  }
+
+  async getLocalOrNetworkTokenInfo(address: string): Promise<Token> {
+    let token = this.getLocalToken(address);
+    if(token && token.symbol) {
+      return token;
+    }
+
+    token = await this.getNetworkTokenInfo(address);
+    if(!token || !token.symbol){
+      throw new TokenError(`Error while loading ${address} token info`);
+    }
+
+    return token;
+  }
+
+  private getNetworkTokenInfo(address: string): Promise<Token> {
+    try {
+      return this.getTokensInfo(address);
+    } catch (e) {
+      this.logger.logError(`Error while loading ${address} token info`, e);
+      throw new TokenError(`Error while loading ${address} token info`);
+    }
   }
 
   tokenFallbackCheck(receiver, signature) {
