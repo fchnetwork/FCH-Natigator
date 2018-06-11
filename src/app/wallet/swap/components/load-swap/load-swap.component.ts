@@ -8,6 +8,8 @@ import { fromWei } from 'web3-utils';
 import { TransactionReceipt } from 'web3/types';
 import { SwapMode, LoadedSwap, SwapStatus } from '@swap/models/models';
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { TokenError } from "@core/transactions/token-service/token.error";
+import { Token } from "@core/transactions/token-service/token.model";
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { AeroToErc20SwapService } from '@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
@@ -15,7 +17,6 @@ import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap
 import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { ModalService } from '@core/general/modal-service/modal.service';
 import { TokenService } from '@core/transactions/token-service/token.service';
-import { SessionStorageService } from 'ngx-webstorage';
 
 interface SwapCommonOperationsService {
   expireSwap(swapId: string) : Promise<TransactionReceipt>;
@@ -45,7 +46,6 @@ export class LoadSwapComponent implements OnInit {
     private erc20TokenService: ERC20TokenService,
     private notificationService: NotificationService,
     private tokenService: TokenService,
-    private sessionStorageService: SessionStorageService,
   ) { }
 
   async ngOnInit() {
@@ -76,8 +76,13 @@ export class LoadSwapComponent implements OnInit {
       this.startLoading();
       await this.showSwapInModalAndProcess();
     } catch(e) {
-      this.notificationService.notify('Error', 'Swap not found or invalid', "aerum", 3000);
-      this.logger.logError('Swap action error:', e);
+      if(e instanceof TokenError) {
+        this.logger.logError('Swap action error. Cannot load token information', e);
+        this.notificationService.notify('Error', 'Please configure swap token first', "aerum", 3000);
+      } else {
+        this.logger.logError('Swap action error:', e);
+        this.notificationService.notify('Error', 'Swap not found or invalid', "aerum", 3000);
+      }
     }
     finally {
       this.stopLoading();
@@ -221,7 +226,7 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromAeroToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const counterpartyTokenInfo: any = this.getTokensInfo(swap.erc20ContractAddress);
+    const counterpartyTokenInfo: Token = await this.tokenService.getLocalOrNetworkTokenInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.ethValue,
@@ -229,7 +234,7 @@ export class LoadSwapComponent implements OnInit {
       tokenTrader: swap.ethTrader,
       tokenAddress: '',
       counterpartyAmount: swap.erc20Value,
-      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, counterpartyTokenInfo.decimals, swap.erc20ContractAddress),
+      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, Number(counterpartyTokenInfo.decimals)),
       counterpartyTrader: swap.erc20Trader,
       counterpartyTokenAddress: swap.erc20ContractAddress,
       counterpartyTokenInfo,
@@ -238,11 +243,11 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromErc20ToAeroSwap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const tokenInfo: any = this.getTokensInfo(swap.erc20ContractAddress);
+    const tokenInfo: Token = await this.tokenService.getLocalOrNetworkTokenInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.erc20Value,
-      tokenAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, tokenInfo.decimals, swap.erc20ContractAddress),
+      tokenAmountFormatted: this.getDecimalTokenValue(swap.erc20Value, Number(tokenInfo.decimals)),
       tokenTrader: swap.erc20Trader,
       tokenAddress: swap.erc20ContractAddress,
       tokenInfo,
@@ -255,17 +260,19 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromErc20ToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const tokenInfo: any = this.getTokensInfo(swap.openContractAddress);
-    const counterpartyTokenInfo: any = this.getTokensInfo(swap.closeContractAddress);
+    const [tokenInfo, counterpartyTokenInfo]: [Token, Token] = await Promise.all([
+      this.tokenService.getLocalOrNetworkTokenInfo(swap.openContractAddress),
+      this.tokenService.getLocalOrNetworkTokenInfo(swap.closeContractAddress)
+    ]);
     return {
       swapId,
       tokenAmount: swap.openValue,
-      tokenAmountFormatted: this.getDecimalTokenValue(swap.openValue, tokenInfo.decimals, swap.openContractAddress),
+      tokenAmountFormatted: this.getDecimalTokenValue(swap.openValue, Number(tokenInfo.decimals)),
       tokenTrader: swap.openTrader,
       tokenAddress: swap.openContractAddress,
       tokenInfo,
       counterpartyAmount: swap.closeValue,
-      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.closeValue, counterpartyTokenInfo.decimals, swap.closeContractAddress),
+      counterpartyAmountFormatted: this.getDecimalTokenValue(swap.closeValue, Number(counterpartyTokenInfo.decimals)),
       counterpartyTrader: swap.closeTrader,
       counterpartyTokenAddress: swap.closeContractAddress,
       counterpartyTokenInfo,
@@ -273,22 +280,11 @@ export class LoadSwapComponent implements OnInit {
     };
   }
 
-  getTokensInfo(address) {
-    const tokens = this.sessionStorageService.retrieve('tokens');
-    const token = tokens.find((item)=>{
-      return item.address.toLowerCase() === address.toLowerCase();
-    });
-    return token;
-  }
-
-  private getDecimalTokenValue(value: number, decimals: number, address) {
+  private getDecimalTokenValue(value: number, decimals: number) {
     if(!decimals) {
-      const token = this.getTokensInfo(address);
-      if(token) {
-        decimals = token.decimals;
-      }
+      return value;
     }
-    return value / Math.pow(10, Number(decimals));
+    return value / Math.pow(10, decimals);
   }
 
   private mapSwapStatus(status: string) : SwapStatus {

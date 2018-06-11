@@ -3,6 +3,8 @@ import { Location } from "@angular/common";
 
 import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute, Router } from "@angular/router";
+
+import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
@@ -55,7 +57,13 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     try {
       await this.tryInit(param);
     } catch (e) {
-      this.logger.logError('Load error', e);
+      if(e instanceof TokenError) {
+        this.logger.logError('Cannot load token information', e);
+        this.notificationService.showMessage('Please configure the token first', 'Error');
+      } else {
+        this.logger.logError('Swap load error', e);
+        this.notificationService.showMessage('Cannot load swap', 'Error');
+      }
     }
   }
 
@@ -86,7 +94,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.expired = now >= Number(swap.timelock);
     this.logger.logMessage('Swap expired?: ' + this.expired);
 
-    const token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
+    const token = await this.tokenService.getLocalOrNetworkTokenInfo(swap.erc20ContractAddress);
     if(!token) {
       throw new Error('Cannot load erc20 token: ' + swap.erc20ContractAddress);
     }

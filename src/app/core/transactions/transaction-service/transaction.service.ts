@@ -12,7 +12,6 @@ import { NotificationMessagesService } from '@core/general/notification-messages
 
 const Tx = require('ethereumjs-tx');
 const ethJsUtil = require('ethereumjs-util');
-const Web3 = require('web3');
 
 @Injectable()
 export class TransactionService {
@@ -176,7 +175,7 @@ export class TransactionService {
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash, 'Aero', null, null);
                   this.web3.eth.getTransaction(hash).then((res)=>{
                     res.timestamp = Moment(new Date()).unix();
-                    
+
                     if(external) {
                       this.modalService.openTransaction(hash, res, external, urls, orderId);
                     } else {
@@ -249,5 +248,5 @@ export class TransactionService {
       });
     }
 
-    
+
 }
