@@ -1,10 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionStorageService } from 'ngx-webstorage';
+
+import { Token } from "@core/transactions/token-service/token.model";
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
+import { LoggerService } from "@core/general/logger-service/logger.service";
+import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 
 @Component({
   selector: 'app-external-transaction',
@@ -33,7 +37,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   checkbox = false;
   checked = false;
   title: string;
-  text:string;
+  text: string;
   external = true;
   pin: number;
   maxTransactionFee: any;
@@ -46,18 +50,20 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   query: string;
 
   constructor(
-    public authServ: AuthenticationService,
-    public route: ActivatedRoute,
-    public router: Router,
-    public sessionStorageService: SessionStorageService,
-    public transactionService: TransactionService,
-    public tokenService: TokenService,
-    public nameService: AerumNameService,
+    private logger: LoggerService,
+    private notificationService: InternalNotificationService,
+    private authServ: AuthenticationService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private sessionStorageService: SessionStorageService,
+    private transactionService: TransactionService,
+    private tokenService: TokenService,
+    private nameService: AerumNameService,
   ) {
     this.prepareData();
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
@@ -72,13 +78,13 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
           const parsed = JSON.parse(params.query);
           this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
 
-          this.nameService.resolveNameOrAddress(this.receiverAddress).then((res)=>{
+          this.nameService.resolveNameOrAddress(this.receiverAddress).then((res) => {
             this.receiverAddressHex = res;
             this.receiverAddressShort = this.cropAddress(res);
             this.senderAddressShort = this.cropAddress(this.sessionStorageService.retrieve('acc_address'));
             this.senderAddress = this.sessionStorageService.retrieve('acc_address');
-            this.senderAvatar = this.authServ.generateCryptedAvatar( this.senderAddress );
-            this.receiverAvatar = this.authServ.generateCryptedAvatar( res );
+            this.senderAvatar = this.authServ.generateCryptedAvatar(this.senderAddress);
+            this.receiverAvatar = this.authServ.generateCryptedAvatar(res);
             this.amount = parsed.amount ? parsed.amount : this.amount;
             this.isToken = String(parsed.assetAddress) !== "0";
             this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
@@ -88,7 +94,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
             this.contractAddress = parsed.contractAddress ? parsed.contractAddress : this.contractAddress;
             this.prepareMessages();
             this.getBalance();
-            if(this.isToken) {
+            if (this.isToken) {
               this.getTokenInfo();
             } else {
               this.currency = 'Aero';
@@ -113,23 +119,22 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       }
     }
   }
-  cropAddress(address:string) {
-     return address.substr(0, 6) + "..."+  address.substr(-4);
-   }
 
-  async accept(){
+  cropAddress(address: string) {
+    return address.substr(0, 6) + "..." + address.substr(-4);
+  }
+
+  async accept() {
     const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
     const privateKey = this.sessionStorageService.retrieve('private_key');
-    const address = this.sessionStorageService.retrieve('acc_address');
     const urls = {
       failed: this.returnUrlFailed,
       success: this.redirectUrl,
     };
-    if(this.isToken) {
-    // TODO: add decimals
-      const dec = await this.tokenService.getTokensInfo(this.contractAddress);
-      const decimals = dec.decimals;
-      this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.contractAddress, this.external, urls, this.orderId, dec.symbol, decimals).then((res) => {
+    if (this.isToken) {
+      const token: Token = await this.tokenService.getTokensInfo(this.contractAddress);
+      const decimals = token.decimals;
+      this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.contractAddress, this.external, urls, this.orderId, token.symbol, decimals).then((res) => {
       });
     } else {
       this.transactionService.transaction(privateKey, this.senderAddress, resolvedAddress, this.amount, null, this.external, urls, this.orderId, {}).then(res => {
@@ -145,7 +150,13 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   }
 
   deposit() {
-    this.router.navigate(['/external/eth-wallet/'], { queryParams: { asset: this.contractAddress, amount: this.amount, query: this.query }});
+    this.router.navigate(['/external/eth-wallet/'], {
+      queryParams: {
+        asset: this.contractAddress,
+        amount: this.amount,
+        query: this.query
+      }
+    });
   }
 
   async getMaxTransactionFee(): Promise<void> {
@@ -171,17 +182,23 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       this.totalAmount = 0;
     }
   }
+
   getTokenInfo() {
-    const tokenInfo = this.tokenService.getTokensInfo(this.contractAddress).then((res: any) => {
-      this.currency = res.symbol;
-      this.tokenDecimals = res.decimals;
-      this.balance = res.balance;
-      this.getMaxTransactionFee();
-    });
+    this.tokenService.getTokensInfo(this.contractAddress)
+      .then((res: Token) => {
+        this.currency = res.symbol;
+        this.tokenDecimals = res.decimals;
+        this.balance = res.balance;
+        this.getMaxTransactionFee();
+      })
+      .catch((e) => {
+        this.logger.logError(`Error while ${this.contractAddress} token loading`, e);
+        this.notificationService.showMessage('Please configure the token first', 'Error');
+      });
   }
 
-  getBalance(){
-    this.transactionService.checkBalance(this.senderAddress).then((res)=>{
+  getBalance() {
+    this.transactionService.checkBalance(this.senderAddress).then((res) => {
       this.balance = res;
     });
   }

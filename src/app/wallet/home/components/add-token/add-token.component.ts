@@ -1,4 +1,4 @@
-import { DialogRef } from 'ngx-modialog'; 
+import { DialogRef } from 'ngx-modialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalComponent } from 'ngx-modialog';
 import { Component, OnInit } from '@angular/core';
@@ -92,7 +92,7 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
         return;
       }
 
-      const res = await this.tokenService.getTokensInfo(resolvedAddress);
+      const res = await this.tokenService.getNetworkTokenInfo(resolvedAddress);
       this.fillTokenData(res);
     } catch (e) {
       this.clearTokenData();

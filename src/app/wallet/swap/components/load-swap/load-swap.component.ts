@@ -226,7 +226,7 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromAeroToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const counterpartyTokenInfo: Token = await this.tokenService.getLocalOrNetworkTokenInfo(swap.erc20ContractAddress);
+    const counterpartyTokenInfo: Token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.ethValue,
@@ -243,7 +243,7 @@ export class LoadSwapComponent implements OnInit {
   }
 
   private async mapToLoadedSwapFromErc20ToAeroSwap(swapId: string, swap: any) : Promise<LoadedSwap> {
-    const tokenInfo: Token = await this.tokenService.getLocalOrNetworkTokenInfo(swap.erc20ContractAddress);
+    const tokenInfo: Token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
     return {
       swapId,
       tokenAmount: swap.erc20Value,
@@ -261,8 +261,8 @@ export class LoadSwapComponent implements OnInit {
 
   private async mapToLoadedSwapFromErc20ToErc20Swap(swapId: string, swap: any) : Promise<LoadedSwap> {
     const [tokenInfo, counterpartyTokenInfo]: [Token, Token] = await Promise.all([
-      this.tokenService.getLocalOrNetworkTokenInfo(swap.openContractAddress),
-      this.tokenService.getLocalOrNetworkTokenInfo(swap.closeContractAddress)
+      this.tokenService.getTokensInfo(swap.openContractAddress),
+      this.tokenService.getTokensInfo(swap.closeContractAddress)
     ]);
     return {
       swapId,

@@ -94,7 +94,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.expired = now >= Number(swap.timelock);
     this.logger.logMessage('Swap expired?: ' + this.expired);
 
-    const token = await this.tokenService.getLocalOrNetworkTokenInfo(swap.erc20ContractAddress);
+    const token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
     if(!token) {
       throw new Error('Cannot load erc20 token: ' + swap.erc20ContractAddress);
     }
