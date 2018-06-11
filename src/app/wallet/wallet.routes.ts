@@ -33,6 +33,10 @@ export const WALLET_ROUTES = [
             {
                 path: 'aens',
                 loadChildren: 'app/wallet/aens/aens.module#AensModule'
+            },
+            {
+                path: 'settings',
+                loadChildren: 'app/wallet/settings/settings.module#SettingsModule'
             }
         ]
     }
