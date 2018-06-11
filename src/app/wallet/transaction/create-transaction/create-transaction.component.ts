@@ -202,10 +202,14 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   convert(n){
     n = n.toString().split(/e|\.|\+/);
     let result = '';
-    result = result + n[0];
-
-    for(let i = 0; i < n[2]; i++) {
-      result = result + 0;
+    for(let i = 0; i < n.length; i++) {
+      if(i === n.length -1) {
+        for(let j = 0; j < Number(n[i] - n[1].length); j++) {
+          result = result + 0;
+        }
+      } else {
+        result = result + n[i];
+      }
     }
     return result;
   }
