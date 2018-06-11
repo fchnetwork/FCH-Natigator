@@ -185,7 +185,12 @@
     "BILLIONS":"Billion",
     "TRILLIONS":"Trillion",
     "QUADRILLIONS":"Quadrillion",
-    "QUINTILLIONS":"Quintillion"
+    "QUINTILLIONS":"Quintillion",
+    "SEXTILLION":"Sextillion",
+    "SEPTILLION":"Septillion",
+    "OCTILLION":"Octillion",
+    "NONILLION":"Nonillion",
+    "DECILLION":"Decillion"
   },
   "TRANSACTION_COST": "Txn fee",
   "DASHBOARD_TOKENS": {
