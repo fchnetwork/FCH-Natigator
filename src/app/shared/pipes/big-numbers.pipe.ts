@@ -21,7 +21,7 @@ export class BigNumbersPipe implements PipeTransform {
 
   transform(value: number = 0, digits?: any ) : string { 
     if (!isFinite( value ) || value == 0 ){ 
-      return ''; 
+      return '0'; 
     }
     let unit = 0; 
     while ( value > 1000 ) { 
