@@ -153,7 +153,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private selectDefaultToken() {
     if (this.tokens.length) {
-      const assetToken = this.tokens.find(token => token.address === this.params.asset);
+      const assetToken = this.tokens.find(token => token.address.toLowerCase() === this.params.asset.toLowerCase());
       if (assetToken) {
         this.selectedToken = assetToken;
       } else {
@@ -249,7 +249,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.logger.logMessage(`Swap ${hash} created`);
 
     return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
-    
+
     // TODO: Test code to create counter swap
     // this.testAerumErc20Swap();
   }
