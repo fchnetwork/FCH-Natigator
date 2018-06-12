@@ -14,6 +14,12 @@ import { AuthenticationService } from "@core/authentication/authentication-servi
 import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
+import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
+import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
+import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
+import { EthWalletType } from "@external/models/eth-wallet-type.enum";
+import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 
 @Component({
   selector: 'app-swap-confirm',
@@ -26,6 +32,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   private hash;
   private aerumAccount: string;
   private query: string;
+  private localSwap: SwapReference;
 
   secret: string;
 
@@ -50,7 +57,11 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private aerumErc20SwapService: AerumErc20SwapService,
     private tokenService: TokenService,
-    private swapLocalStorageService: SwapLocalStorageService
+    private swapLocalStorageService: SwapLocalStorageService,
+    private ethereumAuthService: EthereumAuthenticationService,
+    private etherSwapService: EtherSwapService,
+    private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
+    private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
   ) { }
 
   async ngOnInit() {
@@ -87,10 +98,17 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     setInterval(() => {
       const now = this.now();
-      const timeoutInMilliseconds = (localSwap.timelock - now) * 1000;
+      let timeoutInMilliseconds = (localSwap.timelock - now) * 1000;
+      if (timeoutInMilliseconds < 0) {
+        this.expired = true;
+        this.swapCreated = false;
+        timeoutInMilliseconds = 0;
+      }
+
       this.timer = moment.duration(timeoutInMilliseconds);
     }, 1000);
 
+    this.localSwap = localSwap;
     this.secret = localSwap.secret;
     this.sendAmount = localSwap.amount;
     this.acceptedBy = localSwap.counterparty;
@@ -113,9 +131,9 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.logger.logMessage('Swap loaded: ', swap);
 
     const now = this.now();
-    this.expired = now >= Number(swap.timelock);
-    this.logger.logMessage('Swap expired?: ' + this.expired);
-    if (this.expired) {
+    const counterpartyExpired = now >= Number(swap.timelock);
+    this.logger.logMessage('Counter swap expired?: ' + counterpartyExpired);
+    if (counterpartyExpired) {
       this.swapCreated = false;
       return;
     }
@@ -136,7 +154,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       this.processing = true;
       this.notificationService.showMessage('Completing swap', 'In Progress...');
       await this.aerumErc20SwapService.closeSwap(this.hash, this.secret);
-      this.notificationService.showMessage('Swap Closed', 'Done');
+      this.notificationService.showMessage('Swap closed', 'Done');
       this.done = true;
     } catch (e) {
       this.logger.logError('Swap close error', e);
@@ -148,13 +166,14 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   async expire() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Completing swap', 'In Progress...');
-      await this.aerumErc20SwapService.expireSwap(this.hash);
-      this.notificationService.showMessage('Swap Closed', 'Done');
+      this.notificationService.showMessage('Expiring swap', 'In Progress...');
+      await this.configureSwapService();
+      await this.etherSwapService.expireSwap(this.hash);
+      this.notificationService.showMessage('Swap expired', 'Done');
       this.done = true;
     } catch (e) {
-      this.logger.logError('Swap close error', e);
-      this.notificationService.showMessage('Swap close error', 'Unhandled error');
+      this.logger.logError('Swap expire error', e);
+      this.notificationService.showMessage('Swap expire error', 'Unhandled error');
       this.processing = false;
     }
   }
@@ -181,6 +200,51 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       this.logger.logMessage(`Create counter swap success: ${hash}`, event);
     }
     this.swapCreated = false;
+  }
+
+  // TODO: Duplication with create swap service. Remove later
+  private async configureSwapService() {
+    if (this.localSwap.walletType === EthWalletType.Injected) {
+      await this.configureInjectedSwapService();
+    } else {
+      this.configureImportedSwapService();
+    }
+  }
+
+  private async configureInjectedSwapService() {
+    const account = this.localSwap.account;
+    const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
+    if (!injectedWeb3) {
+      this.notificationService.showMessage('Injected web3 not provided', 'Error');
+      throw Error('Injected web3 not provided');
+    }
+
+    const accounts = await injectedWeb3.eth.getAccounts() || [];
+    if (!accounts.length) {
+      this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
+      throw Error('Cannot get accounts from selected provider');
+    }
+
+    if (accounts[0] !== account) {
+      this.notificationService.showMessage(`Please select ${account} and retry`, 'Error');
+      throw Error(`Incorrect Mist / Metamask account selected. Expected ${account}. Selected ${accounts[0]}`);
+    }
+
+    this.injectedWeb3ContractExecutorService.init(injectedWeb3, accounts[0]);
+    this.etherSwapService.useContractExecutor(this.injectedWeb3ContractExecutorService);
+  }
+
+  private configureImportedSwapService() {
+    const account = this.localSwap.account;
+    const ethWeb3 = this.ethereumAuthService.getWeb3();
+    const importedAccount = this.ethereumAuthService.getEthereumAccount(account);
+    if (!importedAccount) {
+      this.notificationService.showMessage(`Cannot load imported account ${account}`, 'Error');
+      throw Error(`Cannot load imported account ${account}`);
+    }
+
+    this.selfSignedEthereumContractExecutorService.init(ethWeb3, importedAccount.address, importedAccount.privateKey);
+    this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
   }
 
   cancel() {
