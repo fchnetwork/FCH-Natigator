@@ -8,6 +8,7 @@ import Web3 from "web3";
 
 import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
+import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
@@ -237,11 +238,13 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.aerumErc20SwapService.onExpire(hash, (err, event) => this.swapEventHandler(hash, err, event));
 
     await this.etherSwapService.openSwap(hash, ethAmountString, counterpartyTrader, timestamp);
-    const localSwap = {
+    const localSwap: SwapReference = {
       hash,
       secret: this.secret,
       amount: this.ethAmount,
-      counterparty: this.selectedTemplate.onchainAccount
+      counterparty: this.selectedTemplate.onchainAccount,
+      account: this.params.account,
+      walletType: this.params.wallet
     };
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
