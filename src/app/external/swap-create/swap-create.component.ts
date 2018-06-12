@@ -55,6 +55,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   processing = false;
   canCreateSwap = false;
+  swapCreated = false;
 
   constructor(
     private location: Location,
@@ -244,6 +245,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     };
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
+    this.swapCreated = true;
+
     // TODO: Test code to create counter swap
     // this.testAerumErc20Swap();
   }
@@ -305,7 +308,10 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    return this.router.navigate(['external/transaction'], {queryParams: {query: this.params.query}});
+    if(this.swapCreated) {
+      return this.router.navigate(['external/transaction'], {queryParams: {query: this.params.query}});
+    }
+    this.location.back();
   }
 
   ngOnDestroy(): void {
