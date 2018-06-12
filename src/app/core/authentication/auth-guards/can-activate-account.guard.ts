@@ -15,8 +15,7 @@ export class CanActivateAccountAuthGuard implements CanActivate {
             return new Promise((resolve) => {
                 const registered = Cookie.get('aerum_keyStore');
                 const loggedIn = this.sessionStorageService.retrieve('acc_address');
-                
-                if(!registered) {
+                if(!registered || registered === 'null') {
                     this.router.navigate(['/account/register']);
                     resolve(false);
                 }

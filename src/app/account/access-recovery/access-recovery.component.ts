@@ -70,7 +70,6 @@ export class AccessRecoveryComponent implements OnInit {
     }
 
     ngOnInit() {
-      this.cleanCookies();
       this.recoverForm = this.formBuilder.group({
         seed: ["", [Validators.required ] ],
         // password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
@@ -113,6 +112,7 @@ export class AccessRecoveryComponent implements OnInit {
 
     onSubmitAddress() {
       if( this.recoverForm.valid ) {
+        this.cleanCookies();
         this.sessionStorage.store('acc_address', this.address);
         this.sessionStorage.store('acc_avatar',  this.authServ.generateCryptedAvatar( this.address ) );
         this.sessionStorage.store('seed', this.recoverForm.value.seed);
