@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
+import * as moment from "moment";
+import { Duration } from "moment";
+
 import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute, Router } from "@angular/router";
 
@@ -33,7 +36,10 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   processing = false;
   expired = false;
+  swapCreated = false;
   done = false;
+
+  timer: Duration;
 
   constructor(
     private location: Location,
@@ -78,6 +84,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     if(!localSwap) {
       throw new Error('Cannot load data for local swap: ' + this.hash);
     }
+
+    setInterval(() => {
+      const now = this.now();
+      const timeoutInMilliseconds = (localSwap.timelock - now) * 1000;
+      this.timer = moment.duration(timeoutInMilliseconds);
+    }, 1000);
 
     this.secret = localSwap.secret;
     this.sendAmount = localSwap.amount;

@@ -7,4 +7,5 @@ export interface SwapReference {
   counterparty: string;
   account: string;
   walletType: EthWalletType;
+  timelock: number;
 }

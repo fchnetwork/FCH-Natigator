@@ -241,7 +241,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       amount: this.ethAmount,
       counterparty: this.selectedTemplate.onchainAccount,
       account: this.params.account,
-      walletType: this.params.wallet
+      walletType: this.params.wallet,
+      timelock: timestamp
     };
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
