@@ -72,6 +72,16 @@ export class TokenService {
     this.saveTokens(updatedTokens);
   }
 
+  getTokenBalance(tokenAddress) {
+    return new Promise((resolve)=>{
+      const address = this.sessionStorage.retrieve('acc_address');
+      this.tokensContract = new this.web3.eth.Contract(tokensABI, tokenAddress);
+      this.tokensContract.methods.balanceOf(address).call({}).then((res) => {
+        resolve(res);
+      });
+    });
+  }
+
   updateTokensBalance() {
     const tokens = this.sessionStorage.retrieve('tokens');
     const address = this.sessionStorage.retrieve('acc_address');

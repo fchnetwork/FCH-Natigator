@@ -186,7 +186,6 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       .then((res: Token) => {
         this.currency = res.symbol;
         this.tokenDecimals = res.decimals;
-        this.balance = res.balance;
         this.getMaxTransactionFee();
       })
       .catch((e) => {
@@ -196,9 +195,18 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   }
 
   getBalance() {
-    this.transactionService.checkBalance(this.senderAddress).then((res) => {
-      this.balance = res;
-    });
+    if(!this.isToken) {
+      this.transactionService.checkBalance(this.senderAddress).then((res) => {
+        console.log('is not token, balance: ', res);
+        this.balance = res;
+      });
+    } else {
+      this.tokenService.getTokenBalance(this.contractAddress).then((res)=>{
+        console.log('is token, balance: ', res);
+        this.balance = res;
+      });
+    }
+
   }
 
 }
