@@ -234,9 +234,6 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
     this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${ethAmountString}`);
 
-    this.aerumErc20SwapService.onOpen(hash, (err, event) => this.swapEventHandler(hash, err, event));
-    this.aerumErc20SwapService.onExpire(hash, (err, event) => this.swapEventHandler(hash, err, event));
-
     await this.etherSwapService.openSwap(hash, ethAmountString, counterpartyTrader, timestamp);
     const localSwap: SwapReference = {
       hash,
@@ -249,7 +246,10 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
     this.swapCreated = true;
+    this.logger.logMessage(`Swap ${hash} created`);
 
+    return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
+    
     // TODO: Test code to create counter swap
     // this.testAerumErc20Swap();
   }
@@ -297,17 +297,6 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private calculateTimestamp(timeoutInSeconds: number) {
     return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
-  }
-
-  private swapEventHandler(hash: string, err, event) {
-    this.processing = false;
-    if (err) {
-      this.logger.logError(`Create swap error: ${hash}`, err);
-      this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
-    } else {
-      this.logger.logMessage(`Create swap success: ${hash}`, event);
-      return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
-    }
   }
 
   cancel() {
