@@ -104,7 +104,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   async tryInit(param) {
     this.params = {
-      asset: param.asset,
+      asset: await this.nameService.safeResolveNameOrAddress(param.asset),
       amount: Number(param.amount) || 0,
       wallet: param.wallet ? Number(param.wallet) : EthWalletType.Injected,
       account: param.account,

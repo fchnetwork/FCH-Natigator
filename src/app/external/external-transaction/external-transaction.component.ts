@@ -39,7 +39,6 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   title: string;
   text: string;
   external = true;
-  pin: number;
   maxTransactionFee: any;
   maxTransactionFeeEth: any;
   totalAmount: any;
@@ -52,7 +51,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   constructor(
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
-    private authServ: AuthenticationService,
+    private authService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router,
     private sessionStorageService: SessionStorageService,
@@ -72,35 +71,34 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   prepareData() {
     this.sub = this.route
       .queryParams
-      .subscribe(params => {
+      .subscribe(async params => {
         if (params.query) {
           this.query = params.query;
           const parsed = JSON.parse(params.query);
           this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
-
-          this.nameService.resolveNameOrAddress(this.receiverAddress).then((res) => {
-            this.receiverAddressHex = res;
-            this.receiverAddressShort = this.cropAddress(res);
-            this.senderAddressShort = this.cropAddress(this.sessionStorageService.retrieve('acc_address'));
-            this.senderAddress = this.sessionStorageService.retrieve('acc_address');
-            this.senderAvatar = this.authServ.generateCryptedAvatar(this.senderAddress);
-            this.receiverAvatar = this.authServ.generateCryptedAvatar(res);
-            this.amount = parsed.amount;
-            this.isToken = String(parsed.assetAddress) !== "0";
-            this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
-            this.assetAddress = parsed.assetAddress ? parsed.assetAddress : this.assetAddress;
-            this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
-            this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
-            this.contractAddress = parsed.contractAddress ? parsed.contractAddress : this.contractAddress;
-            this.prepareMessages();
-            this.getBalance();
-            if (this.isToken) {
-              this.getTokenInfo();
-            } else {
-              this.currency = 'Aero';
-              this.getMaxTransactionFee();
-            }
-          });
+          [this.receiverAddressHex, this.contractAddress] = await Promise.all([
+            this.nameService.safeResolveNameOrAddress(this.receiverAddress),
+            this.nameService.safeResolveNameOrAddress(parsed.contractAddress ? parsed.contractAddress : this.contractAddress)
+          ]);
+          this.receiverAddressShort = this.cropAddress(this.receiverAddressHex);
+          this.senderAddressShort = this.cropAddress(this.sessionStorageService.retrieve('acc_address'));
+          this.senderAddress = this.sessionStorageService.retrieve('acc_address');
+          this.senderAvatar = this.authService.generateCryptedAvatar(this.senderAddress);
+          this.receiverAvatar = this.authService.generateCryptedAvatar(this.receiverAddressHex);
+          this.amount = parsed.amount;
+          this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
+          this.assetAddress = parsed.assetAddress ? parsed.assetAddress : this.assetAddress;
+          this.isToken = String(this.assetAddress) !== "0";
+          this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
+          this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
+          await this.prepareMessages();
+          this.getBalance();
+          if (this.isToken) {
+            this.getTokenInfo();
+          } else {
+            this.currency = 'Aero';
+            await this.getMaxTransactionFee();
+          }
         }
       });
   }
