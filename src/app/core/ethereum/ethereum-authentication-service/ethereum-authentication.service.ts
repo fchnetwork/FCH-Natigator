@@ -9,6 +9,7 @@ import { toChecksumAddress, addHexPrefix } from "ethereumjs-util";
 const hdkey = require("ethereumjs-wallet/hdkey");
 const bip39 = require("bip39");
 
+import { getCurrentProvider } from "@shared/helpers/web3-providers";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { SessionStorageService } from "ngx-webstorage";
@@ -30,6 +31,13 @@ export class EthereumAuthenticationService {
 
   private loadInjectedWeb3(): Promise<Web3> {
     return new Promise((resolve, reject) => {
+
+      if (window.web3) {
+        this.logger.logMessage("Web3 is present");
+        resolve(new Web3(window.web3.currentProvider));
+        return;
+      }
+
       window.addEventListener('load', () => {
         try {
           if (!window.web3) {
@@ -55,8 +63,13 @@ export class EthereumAuthenticationService {
     return this.injectedWeb3;
   }
 
+  async getInjectedProviderName(): Promise<string> {
+    await this.getInjectedWeb3();
+    return getCurrentProvider();
+  }
+
   getEthereumAccount(address: string): EthereumAccount {
-    if(!address) {
+    if (!address) {
       return null;
     }
 
@@ -83,7 +96,7 @@ export class EthereumAuthenticationService {
     if (!address || !privateKey) {
       throw new Error("Cannot generate address from seed");
     }
-    return { address, privateKey };
+    return {address, privateKey};
   }
 
   private cleanSeed(seed: string): string {

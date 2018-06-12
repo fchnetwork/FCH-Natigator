@@ -26,14 +26,16 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
   private params: { asset?: string, amount?: number, query?: string } = {};
 
   private web3: Web3;
+
   injectedWeb3: Web3;
+  injectedWeb3Name: string;
 
   walletTypes = EthWalletType;
   selectedWalletType = EthWalletType.Imported;
 
   storedAccounts: EthereumAccount[] = [];
-  selectedStoredAccount: EthereumAccount;
 
+  addresses: string[] = [];
   address: string;
   addressQR: string;
   balance = 0;
@@ -53,11 +55,12 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     private sessionStorageService: SessionStorageService,
     private authenticationService: AuthenticationService,
     private ethereumAuthenticationService: EthereumAuthenticationService
-  ) { }
+  ) {
+  }
 
   async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => {
-      this.params = { asset: param.asset, amount: Number(param.amount) || 0, query: param.query };
+      this.params = {asset: param.asset, amount: Number(param.amount) || 0, query: param.query};
     });
 
     this.web3 = this.ethereumAuthenticationService.getWeb3();
@@ -65,11 +68,13 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     if (!this.storedAccounts.length) {
       this.generatePredefinedAccount();
     } else {
-      this.selectAccount(this.storedAccounts[0]);
-      this.reloadAccountData();
+      this.onImportedWalledSelected();
     }
 
-    this.injectedWeb3 = await this.ethereumAuthenticationService.getInjectedWeb3();
+    [this.injectedWeb3, this.injectedWeb3Name] = await Promise.all([
+      this.ethereumAuthenticationService.getInjectedWeb3(),
+      this.ethereumAuthenticationService.getInjectedProviderName()
+    ]);
   }
 
   private generatePredefinedAccount(): void {
@@ -77,7 +82,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
       const seed = this.sessionStorageService.retrieve('seed');
       if (seed) {
         const predefinedAccount = this.ethereumAuthenticationService.generateAddressFromSeed(seed);
-        this.storeNewImportedAccount(predefinedAccount);
+        this.storeAndSelectNewImportedAccount(predefinedAccount);
       }
     } catch (e) {
       this.logger.logError('Generating predefined account failed', e);
@@ -85,32 +90,38 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
   }
 
   async onWalletSelect(event: { value: EthWalletType }) {
-    this.selectedWalletType = event.value;
-    if (this.selectedWalletType === EthWalletType.Injected) {
-      await this.onInjectedWalletSelected();
-    } else {
-      this.onImportedWalledSelected();
+    try {
+      this.selectedWalletType = event.value;
+      if (this.selectedWalletType === EthWalletType.Injected) {
+        await this.onInjectedWalletSelected();
+      } else {
+        this.onImportedWalledSelected();
+      }
+    } catch (e) {
+      this.logger.logError('Error while selecting ethereum account provider', e);
+      this.notificationService.showMessage('Unhandled error occurred', 'Error');
     }
-    this.reloadAccountData();
   }
 
   private async onInjectedWalletSelected() {
     const accounts = await this.injectedWeb3.eth.getAccounts();
     if (!accounts || !accounts.length) {
+      this.addresses = [];
       this.address = null;
       this.notificationService.showMessage('Please login in Mist / Metamask', 'Cannot get accounts from wallet');
     } else {
+      this.addresses = accounts;
       this.address = accounts[0];
     }
+    this.reloadAccountData();
   }
 
   private onImportedWalledSelected() {
-    if (this.selectedStoredAccount) {
-      this.address = this.selectedStoredAccount.address;
+    this.addresses = this.storedAccounts.map(acc => acc.address);
+    if (this.addresses.length) {
+      this.address = this.addresses[0];
     }
-    else {
-      this.address = null;
-    }
+    this.reloadAccountData();
   }
 
   async copyToClipboard() {
@@ -120,10 +131,9 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     }
   }
 
-  onStoredAccountChange() {
-    // NOTE: If no address selected we import new one
-    if (this.selectedStoredAccount) {
-      this.address = this.selectedStoredAccount.address;
+  onAddressChange() {
+    // NOTE: If address is empty we import new one
+    if (this.address) {
       this.reloadAccountData();
     } else {
       this.importInProgress = true;
@@ -143,24 +153,18 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
         return;
       }
       const importedAccount: EthereumAccount = {address: importedAddress, privateKey: this.importedPrivateKey};
-      this.storeNewImportedAccount(importedAccount);
+      this.storeAndSelectNewImportedAccount(importedAccount);
       this.notificationService.showMessage(`Account ${importedAccount.address} imported`, 'Done');
     }
   }
 
-  private storeNewImportedAccount(importedAccount: EthereumAccount): void {
+  private storeAndSelectNewImportedAccount(importedAccount: EthereumAccount): void {
     this.storedAccounts.push(importedAccount);
+    this.addresses.push(importedAccount.address);
     this.ethereumAuthenticationService.saveEthereumAccounts(this.storedAccounts);
 
-    this.selectAccount(importedAccount);
+    this.address = importedAccount.address;
     this.reloadAccountData();
-  }
-
-  private selectAccount(account: EthereumAccount): void {
-    if(account) {
-      this.selectedStoredAccount = account;
-      this.address = account.address;
-    }
   }
 
   private isAlreadyImported(address: string): boolean {
@@ -207,7 +211,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this.routeSubscription) {
+    if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
   }
