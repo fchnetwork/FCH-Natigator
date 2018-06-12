@@ -48,7 +48,6 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cleanCookies();
     this.registerForm = this.formBuilder.group({
       // password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower]],
       password: [ null, [Validators.required, Validators.minLength(5)]],
@@ -61,6 +60,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
+      this.cleanCookies();
       const data = new RegistrationRouteData();
 
       this.sessionStorage.store('acc_address', this.registerForm.value.avatar.address);
