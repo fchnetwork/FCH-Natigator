@@ -48,7 +48,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private authService: AuthenticationService,
-    private erc20SwapService: AerumErc20SwapService,
+    private aerumErc20SwapService: AerumErc20SwapService,
     private tokenService: TokenService,
     private swapLocalStorageService: SwapLocalStorageService
   ) { }
@@ -95,9 +95,19 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.sendAmount = localSwap.amount;
     this.acceptedBy = localSwap.counterparty;
 
-    const swap = await this.erc20SwapService.checkSwap(this.hash);
+    this.aerumErc20SwapService.onOpen(this.hash, (err, event) => this.onOpenSwapHandler(this.hash, err, event));
+    this.aerumErc20SwapService.onExpire(this.hash, (err, event) => this.onExpiredSwapHandler(this.hash, err, event));
+
+    // NOTE: To not read previous events - try load swap
+    await this.loadAerumSwap();
+  }
+
+  private async loadAerumSwap() {
+    const swap = await this.aerumErc20SwapService.checkSwap(this.hash);
     if(!swap || !swap.hash) {
-      throw new Error('Cannot load erc20 swap: ' + this.hash);
+      this.logger.logMessage('Cannot load erc20 swap: ' + this.hash);
+      this.swapCreated = false;
+      return;
     }
 
     this.logger.logMessage('Swap loaded: ', swap);
@@ -105,6 +115,10 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     const now = this.now();
     this.expired = now >= Number(swap.timelock);
     this.logger.logMessage('Swap expired?: ' + this.expired);
+    if (this.expired) {
+      this.swapCreated = false;
+      return;
+    }
 
     const token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
     if(!token) {
@@ -113,13 +127,15 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.receiveCurrency = token.symbol;
     this.receiveAmount = Number(swap.erc20Value) / Math.pow(10, Number(token.decimals));
+
+    this.swapCreated = true;
   }
 
   async complete() {
     try {
       this.processing = true;
       this.notificationService.showMessage('Completing swap', 'In Progress...');
-      await this.erc20SwapService.closeSwap(this.hash, this.secret);
+      await this.aerumErc20SwapService.closeSwap(this.hash, this.secret);
       this.notificationService.showMessage('Swap Closed', 'Done');
       this.done = true;
     } catch (e) {
@@ -133,7 +149,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     try {
       this.processing = true;
       this.notificationService.showMessage('Completing swap', 'In Progress...');
-      await this.erc20SwapService.expireSwap(this.hash);
+      await this.aerumErc20SwapService.expireSwap(this.hash);
       this.notificationService.showMessage('Swap Closed', 'Done');
       this.done = true;
     } catch (e) {
@@ -145,6 +161,26 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private now(): number {
     return Math.ceil(new Date().getTime() / 1000);
+  }
+
+  private async onOpenSwapHandler(hash: string, err, event) {
+    if (err) {
+      this.logger.logError(`Create counter swap error: ${hash}`, err);
+      this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
+    } else {
+      this.logger.logMessage(`Create counter swap success: ${hash}`, event);
+      await this.loadAerumSwap();
+    }
+  }
+
+  private onExpiredSwapHandler(hash: string, err, event) {
+    if (err) {
+      this.logger.logError(`Create counter swap error: ${hash}`, err);
+      this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
+    } else {
+      this.logger.logMessage(`Create counter swap success: ${hash}`, event);
+    }
+    this.swapCreated = false;
   }
 
   cancel() {
