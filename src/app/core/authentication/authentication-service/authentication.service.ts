@@ -31,6 +31,10 @@ export class AuthenticationService {
     }
 
     initWeb3() {
+        return new Web3( new Web3.providers.HttpProvider(environment.rpcApiProvider));
+    }
+
+    initWSWeb3() {
         return new Web3( new Web3.providers.WebsocketProvider(environment.WebsocketProvider));
     }
 
