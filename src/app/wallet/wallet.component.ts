@@ -32,7 +32,7 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
       this.logout();
     });
         
-    
+    // Expand correct sidebar group based on url
     this.routeData$ = this.router.events
       .filter(event => event instanceof NavigationEnd)
       .map(() => this.activeRoute)
@@ -49,6 +49,12 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
           });
         }
       });
+
+      this.router.events.subscribe(event => {
+        if(event instanceof NavigationEnd && this.sidebar.isToggled) {
+          this.sidebar.toggleSidebar();
+        }
+      })
   }
 
   logout() {
