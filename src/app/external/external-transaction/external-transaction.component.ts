@@ -92,11 +92,11 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
           this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
           this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
           await this.prepareMessages();
+          this.getBalance();
           if (this.isToken) {
             this.getTokenInfo();
           } else {
             this.currency = 'Aero';
-            this.getAeroBalance();
             await this.getMaxTransactionFee();
           }
         }
@@ -195,7 +195,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       });
   }
 
-  getAeroBalance() {
+  getBalance() {
     this.transactionService.checkBalance(this.senderAddress).then((res) => {
       this.balance = res;
     });
