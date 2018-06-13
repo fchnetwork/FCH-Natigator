@@ -44,6 +44,16 @@
       border-bottom: 1px solid;
     }
   }
+
+  .cell {
+    &--left {
+      text-align: left;
+    }
+
+    &--right {
+      text-align: right;
+    }
+  }
 }
 
 .o-table {

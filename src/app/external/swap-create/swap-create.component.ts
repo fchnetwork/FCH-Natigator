@@ -8,6 +8,7 @@ import Web3 from "web3";
 
 import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
+import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
@@ -152,7 +153,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private selectDefaultToken() {
     if (this.tokens.length) {
-      const assetToken = this.tokens.find(token => token.address === this.params.asset);
+      const assetToken = this.tokens.find(token => token.address.toLowerCase() === this.params.asset.toLowerCase());
       if (assetToken) {
         this.selectedToken = assetToken;
       } else {
@@ -233,19 +234,22 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
     this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${ethAmountString}`);
 
-    this.aerumErc20SwapService.onOpen(hash, (err, event) => this.swapEventHandler(hash, err, event));
-    this.aerumErc20SwapService.onExpire(hash, (err, event) => this.swapEventHandler(hash, err, event));
-
     await this.etherSwapService.openSwap(hash, ethAmountString, counterpartyTrader, timestamp);
-    const localSwap = {
+    const localSwap: SwapReference = {
       hash,
       secret: this.secret,
       amount: this.ethAmount,
-      counterparty: this.selectedTemplate.onchainAccount
+      counterparty: this.selectedTemplate.onchainAccount,
+      account: this.params.account,
+      walletType: this.params.wallet,
+      timelock: timestamp
     };
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
     this.swapCreated = true;
+    this.logger.logMessage(`Swap ${hash} created`);
+
+    return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
 
     // TODO: Test code to create counter swap
     // this.testAerumErc20Swap();
@@ -294,17 +298,6 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private calculateTimestamp(timeoutInSeconds: number) {
     return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
-  }
-
-  private swapEventHandler(hash: string, err, event) {
-    this.processing = false;
-    if (err) {
-      this.logger.logError(`Create swap error: ${hash}`, err);
-      this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
-    } else {
-      this.logger.logMessage(`Create swap success: ${hash}`, event);
-      return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
-    }
   }
 
   cancel() {
