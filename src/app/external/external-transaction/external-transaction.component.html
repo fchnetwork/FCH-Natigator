@@ -55,9 +55,12 @@
                     <div class="o-table__cell o-data--left">
                       {{ 'AMOUNT' | translate }}
                     </div>
-                    <div class="o-table__cell o-data--right">
-                      {{ totalAmount }} {{ token }}
+                    <div *ngIf="isToken" class="o-table__cell o-data--right">
+                      {{ amount }} {{ token }}
                     </div>
+                    <div *ngIf="!isToken" class="o-table__cell o-data--right">
+                        {{ totalAmount }} {{ token }}
+                      </div>
                 </div>
                 <div class="o-table__row">
                     <div class="o-table__cell o-data--left">

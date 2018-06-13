@@ -23,7 +23,7 @@ export class TokenService {
     private _auth: AuthenticationService,
     private sessionStorage: SessionStorageService,
   ) {
-    this.web3 = _auth.initWeb3();
+    this.web3 = _auth.initWSWeb3();
   }
 
   addToken(tokenData) {
@@ -70,6 +70,16 @@ export class TokenService {
     });
     updatedTokens.push(token);
     this.saveTokens(updatedTokens);
+  }
+
+  getTokenBalance(tokenAddress) {
+    return new Promise((resolve)=>{
+      const address = this.sessionStorage.retrieve('acc_address');
+      this.tokensContract = new this.web3.eth.Contract(tokensABI, tokenAddress);
+      this.tokensContract.methods.balanceOf(address).call({}).then((res) => {
+        resolve(res);
+      });
+    });
   }
 
   updateTokensBalance() {
