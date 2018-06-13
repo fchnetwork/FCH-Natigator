@@ -24,7 +24,6 @@
                 <aer-input [ngClass]="{'has-error':!txnForm.controls['amount'].valid && txnForm.controls['amount'].touched}" formControlName="amount" [(ngModel)]="amount" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
                 <!-- <input id="sendEverything" type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{selectedToken.symbol}})</label> -->
                 <aer-checkbox ([ngModel])="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()">{{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{selectedToken.symbol}})</aer-checkbox>
-                <app-divider [showLine]="false"></app-divider>
               </div>
               <div aerColumn size="sm-6" class="tokensSelect">
                     <aer-select formControlName="selectedToken" [(ngModel)]="selectedToken" (ngModelChange)="handleSelectChange()" dataKey="symbol" icon="aerum" placeholder="Select your token">

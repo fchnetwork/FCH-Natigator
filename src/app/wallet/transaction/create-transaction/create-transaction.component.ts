@@ -12,7 +12,6 @@ import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.servi
 import { AddressValidator } from "@shared/validators/address.validator";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { ValidateService } from '@app/core/validation/validate.service';
-import { DecimalPipe } from '@angular/common';
 import Web3 from "web3";
 
 declare var window: any;
@@ -71,8 +70,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
     private route: ActivatedRoute,
     private nameService: AerumNameService,
-    private validateService: ValidateService,
-    private decimalPipe: DecimalPipe
+    private validateService: ValidateService
   ) {
 
     this.loadUserData().catch((e) => this.logger.logError(e));
@@ -101,6 +99,24 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     });
   }
 
+  private toFixed(x) {
+    if (Math.abs(x) < 1.0) {
+      var e = parseInt(x.toString().split('e-')[1]);
+      if (e) {
+          x *= Math.pow(10,e-1);
+          x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+      }
+    } else {
+      var e = parseInt(x.toString().split('+')[1]);
+      if (e > 20) {
+          e -= 20;
+          x /= Math.pow(10,e);
+          x += (new Array(e+1)).join('0');
+      }
+    }
+    return x;
+  }
+
 
   async updateTokensBalance(): Promise<void> {
     this.tokens = await this.tokenService.updateTokensBalance();
@@ -116,8 +132,9 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
 
   setSendEverything(event) {
     if (event) {
-      this.amount = Number(this.walletBalance) - Number(this.maxTransactionFeeEth);
-      console.log();
+      this.amount = this.toFixed(Number(this.walletBalance) - Number(this.maxTransactionFeeEth));
+      
+      console.log(this.amount);
     }
     this.sendEverything = event;
   }
@@ -146,7 +163,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
       const data = this.selectedToken.symbol === 'AERO'
         ? (this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : '')
         : { type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10, this.selectedToken.decimals)) };
-
       try {
         const res = await this.transactionService.maxTransactionFee(resolvedAddress, data);
         this.maxTransactionFee = res[0];
