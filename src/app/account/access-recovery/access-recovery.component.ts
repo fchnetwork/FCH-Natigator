@@ -41,7 +41,7 @@ export class AccessRecoveryComponent implements OnInit {
         ) {}
 
 
-    openSeedFile(event) {
+    openBackupFile(event, type) {
       const input = event.target;
       const fileTypes = ['txt','aer'];
       if (input.files && input.files[0]) {
@@ -49,12 +49,23 @@ export class AccessRecoveryComponent implements OnInit {
               allowedFile = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
         if (allowedFile) {
           for ( let index = 0; index < input.files.length; index++ ) {
-            const reader = new FileReader();
+            const reader: any = new FileReader();
             reader.onload = () => {
-              if( reader.result.split(' ').length == 12 ) {
-                this.seedFileText = reader.result;
-                this.recoverForm.controls['seed'].setValue( this.seedFileText );                  
+              if(type === 'seed') {
+                if( reader.result.split(' ').length === 12 ) {
+                  this.seedFileText = reader.result;
+                  this.recoverForm.controls['seed'].setValue( this.seedFileText );                  
+                }
+              } else if (type === 'full') {
+                const results = JSON.parse(reader.result);
+                this.cleanCookies();
+                Cookie.set('aerum_base', results.aerumBase, 7, "/", environment.cookiesDomain);
+                Cookie.set('aerum_keyStore', results.aerumKeyStore, 7, "/", environment.cookiesDomain);
+                Cookie.set('tokens', results.tokens, 7, "/", environment.cookiesDomain);
+                Cookie.set('transactions', results.transactions, 7, "/", environment.cookiesDomain);
+                this.router.navigate(['/account/unlock']);
               }
+
             };
             reader.readAsText(input.files[index]);
           }            
