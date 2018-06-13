@@ -50,7 +50,7 @@
           </div>
           <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="swapCreated" [disabled]="processing">Complete swap</aer-button>
           <aer-button (buttonFn)="expire()" class="blue large full-width" *ngIf="expired" [disabled]="processing">Expire swap</aer-button>
-          <aer-button (buttonFn)="cancel()" class="large full-width"> {{ done ? "Close" : "Cancel" }}</aer-button>
+          <aer-button (buttonFn)="cancel()" class="large full-width"> {{ (done || expired) ? "Close" : "Cancel" }}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>
