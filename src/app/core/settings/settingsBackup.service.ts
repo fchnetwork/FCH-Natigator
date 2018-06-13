@@ -9,13 +9,13 @@ export class SettingsBackupService {
     private sessionStorageService: SessionStorageService
   ) { }
 
-  generateFile(data, fileName) {
-    const stringifiedData = JSON.stringify(data);
-    const blob = new Blob([stringifiedData], {type: "application/json"});
+  generateFile(data, fileName, type) {
+    const stringifiedData = type === 'seed' ? data.seed : JSON.stringify(data);
+    const blob = new Blob([stringifiedData], {type: "text/plain"});
     const url = URL.createObjectURL(blob);
 
     const link: any = document.createElement('A');
-    link.download = `${fileName}.json`;
+    link.download = `${fileName}.txt`;
     link.href = url;
 
     document.body.appendChild(link);
@@ -26,7 +26,7 @@ export class SettingsBackupService {
     const preparedData = {
       seed: data
     };
-    this.generateFile(preparedData, 'seed_backup');
+    this.generateFile(preparedData, 'seed_backup', 'seed');
   }
   fullBackup() {
     const aerumBase = Cookie.get('aerum_base');
@@ -39,6 +39,6 @@ export class SettingsBackupService {
       tokens,
       transactions,
     };
-    this.generateFile(preparedData, 'full_backup');
+    this.generateFile(preparedData, 'full_backup', 'full');
   }
 }
