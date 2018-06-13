@@ -136,7 +136,7 @@ export class TokenService {
       this.safePromise(this.tokensContract.methods.symbol().call({from: myAddress}), null),
       this.safePromise(this.tokensContract.methods.decimals().call({from: myAddress}), 0),
       this.safePromise(this.tokensContract.methods.totalSupply().call({from: myAddress}), 0),
-      this.safePromise(this.web3.eth.getBalance(myAddress), 0)
+      this.safePromise(this.tokensContract.methods.balanceOf(myAddress).call({from: myAddress}), 0)
     ]);
 
     const decimalsNumber = Number(decimals) || 0;
