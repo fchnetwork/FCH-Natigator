@@ -150,8 +150,11 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         this.maxTransactionFeeEth = res[1];
         this.moreOptionsData.price = res[2];
         this.moreOptionsData.limit = res[3];
+        if(this.sendEverything && this.selectedToken.symbol === 'AERO') {
+          this.setSendEverything(true);
+        }
         this.totalAmount = this.selectedToken.symbol === 'AERO'
-          ? (this.sendEverything ? Number(this.amount) - Number(this.maxTransactionFeeEth) : Number(this.amount) + Number(this.maxTransactionFeeEth))
+          ? Number(this.amount) + Number(this.maxTransactionFeeEth)
           : Number(this.maxTransactionFeeEth);
       } catch (e) {
         // TODO: Leave previous catch here
