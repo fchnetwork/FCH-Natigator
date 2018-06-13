@@ -8,7 +8,9 @@
                 <a [routerLink]="['/account/register']"> {{'ACCESS_REC_HINT_SUFF'|translate}}</a>
             </p>
             <app-divider></app-divider>
-            <aer-file-upload class="medium blue" (filesChange)="openSeedFile($event)">{{'SEL_KEY'|translate}}</aer-file-upload>
+            <aer-file-upload class="medium blue" (filesChange)="openBackupFile($event, 'seed')">{{'SEL_KEY'|translate}}</aer-file-upload>
+            <app-divider></app-divider>
+            <aer-file-upload class="medium blue" (filesChange)="openBackupFile($event, 'full')">{{'SEL_BAC'|translate}}</aer-file-upload>
             <app-divider label="OR"></app-divider>
             <form [formGroup]="recoverForm">
                 <aer-textarea   icon="aerumleaf"
