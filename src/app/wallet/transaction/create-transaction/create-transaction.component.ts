@@ -12,6 +12,7 @@ import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.servi
 import { AddressValidator } from "@shared/validators/address.validator";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { ValidateService } from '@app/core/validation/validate.service';
+import { DecimalPipe } from '@angular/common';
 import Web3 from "web3";
 
 declare var window: any;
@@ -71,6 +72,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private nameService: AerumNameService,
     private validateService: ValidateService,
+    private decimalPipe: DecimalPipe
   ) {
 
     this.loadUserData().catch((e) => this.logger.logError(e));
@@ -115,6 +117,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   setSendEverything(event) {
     if (event) {
       this.amount = Number(this.walletBalance) - Number(this.maxTransactionFeeEth);
+      console.log();
     }
     this.sendEverything = event;
   }

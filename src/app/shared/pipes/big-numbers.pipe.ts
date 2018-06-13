@@ -24,7 +24,10 @@ export class BigNumbersPipe implements PipeTransform {
   constructor ( private decimalPipe: DecimalPipe,
                 private translateService: TranslateService) { }          
 
-  transform(value: number = 0, digits?: any ) : string { 
+  transform(value: number = 0, digits?: any ) : string {
+    if (value > 1e33) {
+      return value.toPrecision(3);
+    }
     if (!isFinite( value ) || value == 0 ){ 
       return '0'; 
     }
