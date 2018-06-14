@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
+import Timer = NodeJS.Timer;
 import * as moment from "moment";
 import { Duration } from "moment";
 
@@ -46,6 +47,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   swapCreated = false;
   done = false;
 
+  timerInterval: Timer;
   timer: Duration;
 
   constructor(
@@ -65,8 +67,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-    const keystore = this.authService.getKeystore();
-    this.aerumAccount = "0x" + keystore.address;
+    this.aerumAccount = this.authService.getAddress();
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
   }
 
@@ -88,6 +89,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     if (!param.hash) {
       throw new Error('Hash not specified');
     }
+
     this.hash = param.hash;
     this.query = param.query;
 
@@ -96,9 +98,21 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       throw new Error('Cannot load data for local swap: ' + this.hash);
     }
 
-    setInterval(() => {
+    this.localSwap = localSwap;
+    this.secret = localSwap.secret;
+    this.sendAmount = localSwap.amount;
+    this.acceptedBy = localSwap.counterparty;
+
+    this.setupTimer();
+
+    this.aerumErc20SwapService.onOpen(this.hash, (err, event) => this.onOpenSwapHandler(this.hash, err, event));
+    this.aerumErc20SwapService.onExpire(this.hash, (err, event) => this.onExpiredSwapHandler(this.hash, err, event));
+  }
+
+  private setupTimer(): void {
+    this.timerInterval = setInterval(() => {
       const now = this.now();
-      let timeoutInMilliseconds = (localSwap.timelock - now) * 1000;
+      let timeoutInMilliseconds = (this.localSwap.timelock - now) * 1000;
       if (timeoutInMilliseconds < 0) {
         this.expired = true;
         this.swapCreated = false;
@@ -107,17 +121,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
       this.timer = moment.duration(timeoutInMilliseconds);
     }, 1000);
-
-    this.localSwap = localSwap;
-    this.secret = localSwap.secret;
-    this.sendAmount = localSwap.amount;
-    this.acceptedBy = localSwap.counterparty;
-
-    this.aerumErc20SwapService.onOpen(this.hash, (err, event) => this.onOpenSwapHandler(this.hash, err, event));
-    this.aerumErc20SwapService.onExpire(this.hash, (err, event) => this.onExpiredSwapHandler(this.hash, err, event));
-
-    // NOTE: To not read previous events - try load swap
-    await this.loadAerumSwap();
   }
 
   private async loadAerumSwap() {
@@ -178,10 +181,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
   }
 
-  private now(): number {
-    return Math.ceil(new Date().getTime() / 1000);
-  }
-
   private async onOpenSwapHandler(hash: string, err, event) {
     if (err) {
       this.logger.logError(`Create counter swap error: ${hash}`, err);
@@ -202,7 +201,11 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.swapCreated = false;
   }
 
-  // TODO: Duplication with create swap service. Remove later
+  private now(): number {
+    return Math.ceil(new Date().getTime() / 1000);
+  }
+
+  // TODO: Duplication with create swap service. Possibly there is way to make this better
   private async configureSwapService() {
     if (this.localSwap.walletType === EthWalletType.Injected) {
       await this.configureInjectedSwapService();
@@ -225,12 +228,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       throw Error('Cannot get accounts from selected provider');
     }
 
-    if (accounts[0] !== account) {
+    if (accounts.every(acc => acc !== account)) {
       this.notificationService.showMessage(`Please select ${account} and retry`, 'Error');
-      throw Error(`Incorrect Mist / Metamask account selected. Expected ${account}. Selected ${accounts[0]}`);
+      throw Error(`Incorrect Mist / Metamask account selected. Expected ${account}`);
     }
 
-    this.injectedWeb3ContractExecutorService.init(injectedWeb3, accounts[0]);
+    this.injectedWeb3ContractExecutorService.init(injectedWeb3, account);
     this.etherSwapService.useContractExecutor(this.injectedWeb3ContractExecutorService);
   }
 
@@ -254,6 +257,9 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
+    }
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
     }
   }
 }

@@ -73,8 +73,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private swapLocalStorageService: SwapLocalStorageService,
     private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
@@ -97,6 +96,11 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   async tryInit(param) {
+    if (!param.account) {
+      this.logger.logError('Ethereum account is required but not provided');
+      throw new Error('Ethereum account is required but not provided');
+    }
+
     this.params = {
       asset: await this.nameService.safeResolveNameOrAddress(param.asset),
       amount: Number(param.amount) || 0,
@@ -104,6 +108,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       account: param.account,
       query: param.query
     };
+
     this.amount = this.params.amount;
     this.tokens = this.tokenService.getTokens() || [];
     await this.ensureTokenPresent(this.params.asset);
@@ -270,18 +275,19 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       throw new InjectedWeb3Error('Injected web3 not provided');
     }
 
+    const account = this.params.account;
     const accounts = await injectedWeb3.eth.getAccounts() || [];
     if (!accounts.length) {
       this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
       throw new InjectedWeb3Error('Cannot get accounts from selected provider');
     }
 
-    if (accounts[0] !== this.params.account) {
-      this.notificationService.showMessage(`Please select ${this.params.account} and retry`, 'Error');
-      throw new InjectedWeb3Error(`Incorrect Mist / Metamask account selected. Expected ${this.params.account}. Selected ${accounts[0]}`);
+    if (accounts.every(acc => acc !== account)) {
+      this.notificationService.showMessage(`Please select ${account} and retry`, 'Error');
+      throw new InjectedWeb3Error(`Incorrect Mist / Metamask account selected. Expected ${account}`);
     }
 
-    this.injectedWeb3ContractExecutorService.init(injectedWeb3, accounts[0]);
+    this.injectedWeb3ContractExecutorService.init(injectedWeb3, account);
     this.etherSwapService.useContractExecutor(this.injectedWeb3ContractExecutorService);
   }
 

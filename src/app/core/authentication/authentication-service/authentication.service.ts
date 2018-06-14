@@ -90,6 +90,10 @@ export class AuthenticationService {
         });
     }
 
+    getAddress(): string {
+      return this.sessionStorage.retrieve('acc_address');
+    }
+
     getKeystore() {
         const keystore = Cookie.get('aerum_keyStore');
         if(!keystore) {
