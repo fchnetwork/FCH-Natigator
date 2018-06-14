@@ -55,12 +55,9 @@
                     <div class="o-table__cell o-data--left">
                       {{ 'AMOUNT' | translate }}
                     </div>
-                    <div *ngIf="isToken" class="o-table__cell o-data--right">
+                    <div class="o-table__cell o-data--right">
                       {{ amount }} {{ token }}
                     </div>
-                    <div *ngIf="!isToken" class="o-table__cell o-data--right">
-                        {{ totalAmount }} {{ token }}
-                      </div>
                 </div>
                 <div class="o-table__row">
                     <div class="o-table__cell o-data--left">
@@ -81,7 +78,7 @@
                 </div>
             </div>
             <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">I acknowledge risks.</aer-checkbox>
-            <aer-button [disabled]="checkbox && !checked || proceed" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue large full-width">Proceed</aer-button>
+            <aer-button [disabled]="checkbox && !checked || !proceedAvailable" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue large full-width">Proceed</aer-button>
             <aer-button (buttonFn)="dismiss()" class="large full-width">{{proceed ? 'Close':'Cancel'}}</aer-button>
         </div>
       </aer-modal-dialog>

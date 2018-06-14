@@ -176,7 +176,7 @@ export class TransactionService {
                   this.web3.eth.getTransaction(hash).then((res)=>{
                     res.timestamp = Moment(new Date()).unix();
                     if(external) {
-                      // this.modalService.openTransaction(hash, res, external, urls, orderId);
+                      window.location.href = urls.success;
                     } else {
                       this.notificationMessagesService.pendingTransactionNotification(hash);
                     }
@@ -184,7 +184,7 @@ export class TransactionService {
                 }).catch( error => {
                   console.log(error);
                   if(external) {
-                    // window.location.href=urls.failed;
+                    window.location.href=urls.failed;
                   } else {
                     this.notificationMessagesService.failedTransactionNotification();
                   }
@@ -220,7 +220,7 @@ export class TransactionService {
           this.web3.eth.getTransaction(hash).then((res)=>{
             res.timestamp = Moment(new Date()).unix();
             if(external) {
-              // this.modalService.openTransaction(hash, res, external, urls, orderId);
+              window.location.href = urls.success;
             } else {
               this.notificationMessagesService.pendingTransactionNotification(hash);
             }
@@ -229,7 +229,7 @@ export class TransactionService {
       }).catch( error => {
         console.log(error);
         if(external) {
-          // window.location.href = urls.failed;
+          window.location.href = urls.failed;
         } else {
           this.notificationMessagesService.failedTransactionNotification();
         }
