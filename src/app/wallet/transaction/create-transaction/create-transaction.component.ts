@@ -131,10 +131,10 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   }
 
   setSendEverything(event) {
-    if (event) {
+    if (event && this.selectedToken.symbol === 'AERO') {
       this.amount = this.toFixed(Number(this.walletBalance) - Number(this.maxTransactionFeeEth));
-      
-      console.log(this.amount);
+    } else {
+      this.amount = this.toFixed(Number(this.walletBalance));
     }
     this.sendEverything = event;
   }

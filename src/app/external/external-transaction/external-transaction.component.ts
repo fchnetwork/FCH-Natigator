@@ -22,7 +22,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   returnUrlFailed: string;
   assetAddress: string;
   orderId: string;
-  contractAddress: string;
+  tokenAddress: string;
 
   senderAddress: string;
   receiverAddress: string;
@@ -41,12 +41,12 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   external = true;
   maxTransactionFee: any;
   maxTransactionFeeEth: any;
-  totalAmount: any;
   tokenDecimals: any;
   currency: string;
-  balance: any;
+  balance: number;
   receiverAddressHex: any;
   query: string;
+  proceedAvailable: boolean = false;
 
   constructor(
     private logger: LoggerService,
@@ -76,9 +76,9 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
           this.query = params.query;
           const parsed = JSON.parse(params.query);
           this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
-          [this.receiverAddressHex, this.contractAddress] = await Promise.all([
+          [this.receiverAddressHex, this.tokenAddress] = await Promise.all([
             this.nameService.safeResolveNameOrAddress(this.receiverAddress),
-            this.nameService.safeResolveNameOrAddress(parsed.contractAddress ? parsed.contractAddress : this.contractAddress)
+            this.nameService.safeResolveNameOrAddress(parsed.tokenAddress ? parsed.tokenAddress : this.tokenAddress)
           ]);
           this.receiverAddressShort = this.cropAddress(this.receiverAddressHex);
           this.senderAddressShort = this.cropAddress(this.sessionStorageService.retrieve('acc_address'));
@@ -87,18 +87,20 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
           this.receiverAvatar = this.authService.generateCryptedAvatar(this.receiverAddressHex);
           this.amount = parsed.amount;
           this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
-          this.assetAddress = parsed.assetAddress ? parsed.assetAddress : this.assetAddress;
-          this.isToken = String(this.assetAddress) !== "0";
+
+          this.isToken = (!parsed.tokenAddress || parsed.tokenAddress === "0x0") ? false : true;
+
           this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
           this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
           await this.prepareMessages();
-          this.getBalance();
+          
           if (this.isToken) {
             this.getTokenInfo();
           } else {
             this.currency = 'Aero';
             await this.getMaxTransactionFee();
           }
+          this.getBalance();
         }
       });
   }
@@ -130,16 +132,13 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       success: this.redirectUrl,
     };
     if (this.isToken) {
-      const token: Token = await this.tokenService.getTokensInfo(this.contractAddress);
+      const token: Token = await this.tokenService.getTokensInfo(this.tokenAddress);
       const decimals = token.decimals;
-      this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.contractAddress, this.external, urls, this.orderId, token.symbol, decimals).then((res) => {
-      });
+      this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.tokenAddress, this.external, urls, this.orderId, token.symbol, decimals);
+      this.proceedAvailable = false;
     } else {
-      this.transactionService.transaction(privateKey, this.senderAddress, resolvedAddress, this.amount, null, this.external, urls, this.orderId, {}).then(res => {
-      }).catch((error) => {
-        console.log(error);
-        window.location.href = this.returnUrlFailed;
-      });
+      this.transactionService.transaction(privateKey, this.senderAddress, resolvedAddress, this.amount, null, this.external, urls, this.orderId, {});
+      this.proceedAvailable = false;
     }
   }
 
@@ -150,7 +149,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   deposit() {
     this.router.navigate(['/external/eth-wallet/'], {
       queryParams: {
-        asset: this.contractAddress,
+        asset: this.assetAddress,
         amount: this.amount,
         query: this.query
       }
@@ -162,34 +161,31 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     if (resolvedAddress) {
       const data = !this.isToken
         ? ''
-        : { type: 'token', contractAddress: this.contractAddress, amount: Number(this.amount * Math.pow(10, this.tokenDecimals)) };
+        : { type: 'token', contractAddress: this.tokenAddress, amount: Number(this.amount * Math.pow(10, this.tokenDecimals)) };
 
       try {
         const res = await this.transactionService.maxTransactionFee(resolvedAddress, data);
         this.maxTransactionFee = res[0];
         this.maxTransactionFeeEth = res[1];
-        this.totalAmount = !this.isToken
-          ? Number(this.amount) + Number(this.maxTransactionFeeEth)
-          : Number(this.maxTransactionFeeEth);
       } catch (e) {
         // TODO: Leave previous catch here
         console.log(e);
       }
     } else {
       this.maxTransactionFee = 0.000;
-      this.totalAmount = 0;
     }
   }
 
   getTokenInfo() {
-    this.tokenService.getTokensInfo(this.contractAddress)
+    this.tokenService.getTokensInfo(this.tokenAddress)
       .then((res: Token) => {
         this.currency = res.symbol;
         this.tokenDecimals = res.decimals;
         this.getMaxTransactionFee();
       })
       .catch((e) => {
-        this.logger.logError(`Error while ${this.contractAddress} token loading`, e);
+        this.proceedAvailable = false;
+        this.logger.logError(`Error while ${this.tokenAddress} token loading`, e);
         this.notificationService.showMessage('Please configure the token first', 'Error');
       });
   }
@@ -199,11 +195,13 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       this.transactionService.checkBalance(this.senderAddress).then((res) => {
         console.log('is not token, balance: ', res);
         this.balance = res;
+        this.proceedAvailable = (this.balance <= this.amount) ? false : true;
       });
     } else {
-      this.tokenService.getTokenBalance(this.contractAddress).then((res)=>{
+      this.tokenService.getTokenBalance(this.tokenAddress).then((res)=>{
         console.log('is token, balance: ', res);
-        this.balance = res;
+        this.balance = Number(res) / Math.pow(10, this.tokenDecimals);
+        this.proceedAvailable = (this.balance <= this.amount) ? false : true;
       });
     }
 

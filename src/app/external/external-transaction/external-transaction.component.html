@@ -3,7 +3,7 @@
     <div class="modal-content">
       <aer-modal-dialog >
         <div class="c-transaction c-transaction__table c-transaction__unlock">
-          <h1>{{ title || 'Confirm transaction'}}</h1>
+          <h1>{{ title || 'Confirm payment'}}</h1>
           <ul class="o-txnID u-lreset">
             <li>
               <ul class="o-txnID__person u-lreset">
@@ -55,12 +55,9 @@
                     <div class="o-table__cell o-data--left">
                       {{ 'AMOUNT' | translate }}
                     </div>
-                    <div *ngIf="isToken" class="o-table__cell o-data--right">
+                    <div class="o-table__cell o-data--right">
                       {{ amount }} {{ token }}
                     </div>
-                    <div *ngIf="!isToken" class="o-table__cell o-data--right">
-                        {{ totalAmount }} {{ token }}
-                      </div>
                 </div>
                 <div class="o-table__row">
                     <div class="o-table__cell o-data--left">
@@ -81,8 +78,8 @@
                 </div>
             </div>
             <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">I acknowledge risks.</aer-checkbox>
-            <aer-button [disabled]="checkbox && !checked" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue large full-width">Send transaction</aer-button>
-            <aer-button (buttonFn)="dismiss()" class="large full-width">Cancel</aer-button>
+            <aer-button [disabled]="checkbox && !checked || !proceedAvailable" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue large full-width">Proceed</aer-button>
+            <aer-button (buttonFn)="dismiss()" class="large full-width">{{proceed ? 'Close':'Cancel'}}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>
