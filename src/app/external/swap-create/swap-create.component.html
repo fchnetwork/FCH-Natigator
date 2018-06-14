@@ -65,6 +65,14 @@
                 <span class="secret-key" (click)="copyToClipboard()">{{secret}}</span>
               </div>
             </div>
+            <div  class="o-table__row">
+              <div class="o-table__cell o-data--left">
+                <a href="{{openSwapTransactionExplorerUrl}}" target="_blank">{{openSwapTransactionExplorerUrl | truncate: 40}}</a>
+              </div>
+              <div class="o-table__cell o-data--right">
+                <img src="assets/images/loading.svg" alt="loading"/>
+              </div>
+            </div>
           </div>
           <div class="message">
             Warning! Phasellus rhoncus. Nulla est. Phasellus et lorem id felis nonummy placerat. Integer pellentesque

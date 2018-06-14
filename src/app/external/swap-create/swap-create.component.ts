@@ -26,6 +26,7 @@ import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
+import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 
 @Component({
   selector: 'app-swap-create',
@@ -49,6 +50,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   rate: number;
   ethAmount: number;
+  openSwapTransactionExplorerUrl: string = 'https://rinkeby.etherscan.io/tx/0x132eb8466e426503249ee4950b99228c4bb417cfb6c5bf91f53cc17ac0df3a22';
 
   processing = false;
   canCreateSwap = false;
@@ -206,8 +208,11 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.notificationService.showMessage('Swap created. Waiting for confirmation...', 'Success');
     }
     catch (e) {
-      this.logger.logError('Error while creating swap', e);
-      this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
+      // NOTE: We show more detailed errors for injected web3 in called functions
+      if(!(e instanceof InjectedWeb3Error)) {
+        this.logger.logError('Error while creating swap', e);
+        this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
+      }
       // NOTE: We only allow process next in case there is event
       this.processing = false;
     }
@@ -223,7 +228,14 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
     this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${ethAmountString}`);
 
-    await this.etherSwapService.openSwap(hash, ethAmountString, counterpartyTrader, timestamp);
+    await this.etherSwapService.openSwap(
+      hash,
+      ethAmountString,
+      counterpartyTrader,
+      timestamp,
+      (txHash) => this.onOpenSwapHashReceived(txHash)
+    );
+
     const localSwap: SwapReference = {
       hash,
       secret: this.secret,
@@ -253,18 +265,18 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
     if (!injectedWeb3) {
       this.notificationService.showMessage('Injected web3 not provided', 'Error');
-      throw Error('Injected web3 not provided');
+      throw new InjectedWeb3Error('Injected web3 not provided');
     }
 
     const accounts = await injectedWeb3.eth.getAccounts() || [];
     if (!accounts.length) {
       this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
-      throw Error('Cannot get accounts from selected provider');
+      throw new InjectedWeb3Error('Cannot get accounts from selected provider');
     }
 
     if (accounts[0] !== this.params.account) {
       this.notificationService.showMessage(`Please select ${this.params.account} and retry`, 'Error');
-      throw Error(`Incorrect Mist / Metamask account selected. Expected ${this.params.account}. Selected ${accounts[0]}`);
+      throw new InjectedWeb3Error(`Incorrect Mist / Metamask account selected. Expected ${this.params.account}. Selected ${accounts[0]}`);
     }
 
     this.injectedWeb3ContractExecutorService.init(injectedWeb3, accounts[0]);
@@ -284,6 +296,12 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private calculateTimestamp(timeoutInSeconds: number) {
     return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
+  }
+
+  private onOpenSwapHashReceived(hash: string): void {
+    if (hash) {
+      this.openSwapTransactionExplorerUrl = "https://rinkeby.etherscan.io/tx/" + hash;
+    }
   }
 
   cancel() {
