@@ -43,7 +43,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   maxTransactionFeeEth: any;
   tokenDecimals: any;
   currency: string;
-  balance: any;
+  balance: number;
   receiverAddressHex: any;
   query: string;
   proceedAvailable: boolean = false;
@@ -200,7 +200,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     } else {
       this.tokenService.getTokenBalance(this.tokenAddress).then((res)=>{
         console.log('is token, balance: ', res);
-        this.balance = res / Math.pow(10, this.tokenDecimals);
+        this.balance = Number(res) / Math.pow(10, this.tokenDecimals);
         this.proceedAvailable = (this.balance <= this.amount) ? false : true;
       });
     }
