@@ -175,9 +175,8 @@ export class TransactionService {
                   this.saveTransaction(activeUser, to, amount, 'Pending transaction', hash, 'Aero', null, null);
                   this.web3.eth.getTransaction(hash).then((res)=>{
                     res.timestamp = Moment(new Date()).unix();
-
                     if(external) {
-                      this.modalService.openTransaction(hash, res, external, urls, orderId);
+                      // this.modalService.openTransaction(hash, res, external, urls, orderId);
                     } else {
                       this.notificationMessagesService.pendingTransactionNotification(hash);
                     }
@@ -221,7 +220,7 @@ export class TransactionService {
           this.web3.eth.getTransaction(hash).then((res)=>{
             res.timestamp = Moment(new Date()).unix();
             if(external) {
-              this.modalService.openTransaction(hash, res, external, urls, orderId);
+              // this.modalService.openTransaction(hash, res, external, urls, orderId);
             } else {
               this.notificationMessagesService.pendingTransactionNotification(hash);
             }

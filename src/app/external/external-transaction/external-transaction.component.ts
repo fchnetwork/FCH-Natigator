@@ -47,6 +47,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   balance: any;
   receiverAddressHex: any;
   query: string;
+  proceed: boolean = false;
 
   constructor(
     private logger: LoggerService,
@@ -123,6 +124,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   }
 
   async accept() {
+    this.proceed = true;
     const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
     const privateKey = this.sessionStorageService.retrieve('private_key');
     const urls = {
@@ -133,11 +135,14 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       const token: Token = await this.tokenService.getTokensInfo(this.contractAddress);
       const decimals = token.decimals;
       this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.contractAddress, this.external, urls, this.orderId, token.symbol, decimals).then((res) => {
+      }).catch((error) => {
+        this.proceed = false;
       });
     } else {
       this.transactionService.transaction(privateKey, this.senderAddress, resolvedAddress, this.amount, null, this.external, urls, this.orderId, {}).then(res => {
       }).catch((error) => {
         console.log(error);
+        this.proceed = true;
         window.location.href = this.returnUrlFailed;
       });
     }
