@@ -24,7 +24,7 @@ export const environment = {
         address: {
           aerum: {
             AeroSwap: "0xd7a2fdeedbb6495cdffa6d13f624c771de15a9ca",
-            Erc20Swap: "0x709cebb3bc1d07747cbc84213af09be227ba2ace",
+            Erc20Swap: "0xa4d35cc7da4468ebe7be2ceb2bd05c3f12c2b4fd",
             TemplatesRegistry: "0x6ce0143a06476a3b1051df548cc096eb5ebb770e"
           },
           ethereum: {

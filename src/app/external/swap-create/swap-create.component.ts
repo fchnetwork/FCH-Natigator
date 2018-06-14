@@ -248,7 +248,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
     this.swapCreated = true;
     this.logger.logMessage(`Swap ${hash} created`);
-
+    
     return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
 
     // TODO: Test code to create counter swap
@@ -336,8 +336,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     const erc20SwapContract = environment.contracts.swap.crossChain.address.aerum.Erc20Swap;
     await this.ensureAllowance(tokenAddress, erc20SwapContract, amount);
 
-    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${this.aerumAccount}, token: ${tokenAddress}`);
-    await this.aerumErc20SwapService.openSwap(hash, amount.toString(10), tokenAddress, this.aerumAccount, timestamp);
+    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, token: ${tokenAddress}`);
+    await this.aerumErc20SwapService.openSwap(hash, amount.toString(10), tokenAddress, timestamp);
     this.logger.logMessage(`Swap created: ${hash}`);
     const swap = await this.aerumErc20SwapService.checkSwap(hash);
     this.logger.logMessage(`Swap checked: ${hash}`, swap);
