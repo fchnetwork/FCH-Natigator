@@ -30,4 +30,4 @@ pipelines:
             - tar -czvf ./dist.tar.gz ./build/dist
             - apt-get update && apt-get install -y rsync
             - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/
-            - ssh -p 22 root@dev.aerum.net "bash builder.sh"
+            - ssh -p 22 root@dev.aerum.net "bash /home/vsftpd/docker/builder-dev.sh"
