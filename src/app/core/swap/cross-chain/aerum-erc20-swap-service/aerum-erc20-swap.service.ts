@@ -18,12 +18,11 @@ export class AerumErc20SwapService extends BaseContractService {
     super(artifacts.abi, environment.contracts.swap.crossChain.address.aerum.Erc20Swap, authenticationService, contractExecutorService);
   }
 
-  async openSwap(hash: string, erc20Value: string, erc20ContractAddress: string, withdrawTrader: string, timelock: number) {
+  async openSwap(hash: string, erc20Value: string, erc20ContractAddress: string, timelock: number) {
     const openSwap = this.contract.methods.open(
       hash,
       erc20Value,
       erc20ContractAddress,
-      withdrawTrader,
       timelock.toString(10)
     );
     const receipt = await this.contractExecutorService.send(openSwap);
