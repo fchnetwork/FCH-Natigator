@@ -23,9 +23,9 @@ export class EtherSwapService {
     this.contract = new this.web3.eth.Contract(artifacts.abi, environment.contracts.swap.crossChain.address.ethereum.EtherSwap);
   }
 
-  async openSwap(hash: string, ethValue: string, withdrawTrader: string, timelock: number) {
+  async openSwap(hash: string, ethValue: string, withdrawTrader: string, timelock: number, hashCallback?: (hash: string) => void ) {
     const openSwap = this.contract.methods.open(hash, withdrawTrader, timelock.toString(10));
-    const receipt = await this.contractExecutorService.send(openSwap, { value: ethValue });
+    const receipt = await this.contractExecutorService.send(openSwap, { value: ethValue, hashReceivedCallback: hashCallback });
     return receipt;
   }
 

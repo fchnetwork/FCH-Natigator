@@ -14,13 +14,11 @@ import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
-import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { ERC20TokenService } from "@core/swap/on-chain/erc20-token-service/erc20-token.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
-import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
 import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
@@ -28,6 +26,7 @@ import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
+import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 
 @Component({
   selector: 'app-swap-create',
@@ -52,7 +51,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   rate: number;
   ethAmount: number;
 
-  aerumAccount: string;
+  openSwapTransactionExplorerUrl: string;
 
   processing = false;
   canCreateSwap = false;
@@ -66,13 +65,11 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private clipboardService: ClipboardService,
     private notificationService: InternalNotificationService,
     private nameService: AerumNameService,
-    private authService: AuthenticationService,
     private ethereumAuthService: EthereumAuthenticationService,
     private tokenService: TokenService,
     private erc20TokenService: ERC20TokenService,
     private swapTemplateService: SwapTemplateService,
     private etherSwapService: EtherSwapService,
-    private aerumErc20SwapService: AerumErc20SwapService,
     private swapLocalStorageService: SwapLocalStorageService,
     private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
@@ -81,13 +78,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
-    const keystore = this.authService.getKeystore();
-    this.aerumAccount = "0x" + keystore.address;
     this.ethWeb3 = this.ethereumAuthService.getWeb3();
     this.secret = Guid.newGuid().replace(/-/g, '');
-
-    // TODO: Test code to register swap template. Remove after testing
-    // this.registerTestSwapTemplate().then(() => console.log('Template registered!'));
   }
 
   async init(param) {
@@ -217,10 +209,14 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.notificationService.showMessage('Swap created. Waiting for confirmation...', 'Success');
     }
     catch (e) {
-      this.logger.logError('Error while creating swap', e);
-      this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
+      // NOTE: We show more detailed errors for injected web3 in called functions
+      if(!(e instanceof InjectedWeb3Error)) {
+        this.logger.logError('Error while creating swap', e);
+        this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
+      }
       // NOTE: We only allow process next in case there is event
       this.processing = false;
+      this.openSwapTransactionExplorerUrl = null;
     }
   }
 
@@ -234,7 +230,14 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
     this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${ethAmountString}`);
 
-    await this.etherSwapService.openSwap(hash, ethAmountString, counterpartyTrader, timestamp);
+    await this.etherSwapService.openSwap(
+      hash,
+      ethAmountString,
+      counterpartyTrader,
+      timestamp,
+      (txHash) => this.onOpenSwapHashReceived(txHash)
+    );
+
     const localSwap: SwapReference = {
       hash,
       secret: this.secret,
@@ -248,11 +251,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
     this.swapCreated = true;
     this.logger.logMessage(`Swap ${hash} created`);
-    
-    return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
 
-    // TODO: Test code to create counter swap
-    // this.testAerumErc20Swap();
+    return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
   }
 
   private async configureSwapService() {
@@ -267,18 +267,18 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
     if (!injectedWeb3) {
       this.notificationService.showMessage('Injected web3 not provided', 'Error');
-      throw Error('Injected web3 not provided');
+      throw new InjectedWeb3Error('Injected web3 not provided');
     }
 
     const accounts = await injectedWeb3.eth.getAccounts() || [];
     if (!accounts.length) {
       this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
-      throw Error('Cannot get accounts from selected provider');
+      throw new InjectedWeb3Error('Cannot get accounts from selected provider');
     }
 
     if (accounts[0] !== this.params.account) {
       this.notificationService.showMessage(`Please select ${this.params.account} and retry`, 'Error');
-      throw Error(`Incorrect Mist / Metamask account selected. Expected ${this.params.account}. Selected ${accounts[0]}`);
+      throw new InjectedWeb3Error(`Incorrect Mist / Metamask account selected. Expected ${this.params.account}. Selected ${accounts[0]}`);
     }
 
     this.injectedWeb3ContractExecutorService.init(injectedWeb3, accounts[0]);
@@ -300,6 +300,12 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
   }
 
+  private onOpenSwapHashReceived(hash: string): void {
+    if (hash) {
+      this.openSwapTransactionExplorerUrl = environment.ethereum.explorerUrl + hash;
+    }
+  }
+
   cancel() {
     if(this.swapCreated) {
       return this.router.navigate(['external/transaction'], {queryParams: {query: this.params.query}});
@@ -312,45 +318,4 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.routeSubscription.unsubscribe();
     }
   }
-
-  //#region Test code to remove
-
-  // TODO: Test code to register swap template.
-  async registerTestSwapTemplate() {
-    const id = Guid.newGuid().replace(/-/g, '');
-    this.logger.logMessage(`Template: ${id}`);
-    await this.swapTemplateService.registerTemplate(id, this.selectedToken.address, 'sidlovskyy.aer', '0x0', "0xf38edc62732c418ee18bebf89cc063b3d1b57e0c", 500, Chain.Aerum);
-    this.logger.logMessage(`Template created: ${id}`);
-    const template = await this.swapTemplateService.getTemplateById(id);
-    this.logger.logMessage(`Template loaded: ${id}`, template);
-  }
-
-  // TODO: Test code to create counter swap
-  async testAerumErc20Swap() {
-    const hash = sha3(this.secret);
-    const amount = (10 * Math.pow(10, 18));
-    const tokenAddress = this.selectedToken.address;
-    const timeoutInSeconds = 5 * 60;
-    const timestamp = Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
-
-    const erc20SwapContract = environment.contracts.swap.crossChain.address.aerum.Erc20Swap;
-    await this.ensureAllowance(tokenAddress, erc20SwapContract, amount);
-
-    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, token: ${tokenAddress}`);
-    await this.aerumErc20SwapService.openSwap(hash, amount.toString(10), tokenAddress, timestamp);
-    this.logger.logMessage(`Swap created: ${hash}`);
-    const swap = await this.aerumErc20SwapService.checkSwap(hash);
-    this.logger.logMessage(`Swap checked: ${hash}`, swap);
-  }
-
-  // TODO: Test code to create counter swap
-  private async ensureAllowance(tokenContractAddress: string, spender: string, amount: number) {
-    const allowance = await this.erc20TokenService.allowance(tokenContractAddress, this.aerumAccount, spender);
-    if (Number(allowance) < amount) {
-      this.logger.logMessage(`Allowance value: ${allowance}. Needed: ${amount}`);
-      await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
-    }
-  }
-
-  //#endregion
 }

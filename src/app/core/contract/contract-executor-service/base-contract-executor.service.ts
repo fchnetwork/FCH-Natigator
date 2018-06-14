@@ -2,6 +2,7 @@ import Web3 from 'web3';
 import { Tx, TransactionObject, TransactionReceipt } from 'web3/types';
 
 import { retry } from "@shared/helpers/retry";
+import { TransactionOptions } from "./transaction-options.model";
 import { LoggerService } from '@core/general/logger-service/logger.service';
 
 export abstract class BaseContractExecutorService {
@@ -15,23 +16,26 @@ export abstract class BaseContractExecutorService {
 
   protected constructor(private logger: LoggerService) { }
 
-  async send(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) {
+  async send(transaction: TransactionObject<any>, options: TransactionOptions = { value: '0' }) {
     this.ensureInitiated();
 
     const tx = await this.createSendTx(transaction, options);
     const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey) as any;
     this.logger.logMessage('Transaction being sent');
-    const receipt = await this.sendSignedTransaction(signedTransaction.rawTransaction);
+    const receipt = await this.sendSignedTransaction(signedTransaction.rawTransaction, options);
     return receipt;
   }
 
-  private sendSignedTransaction(data: string): Promise<TransactionReceipt> {
+  private sendSignedTransaction(data: string, options: TransactionOptions): Promise<TransactionReceipt> {
     let transactionHash: string;
     return new Promise((resolve, reject) => {
       this.web3.eth.sendSignedTransaction(data)
       .on('transactionHash', (hash) => {
         this.logger.logMessage(`Transaction hash: ${hash}`);
         transactionHash = hash;
+        if(options.hashReceivedCallback) {
+          options.hashReceivedCallback(hash);
+        }
       })
       .on('receipt', (receipt) => {
         this.logger.logMessage('Transaction receipt returned:', receipt);
@@ -69,7 +73,7 @@ export abstract class BaseContractExecutorService {
     };
   }
 
-  private async createSendTx(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<Tx> {
+  private async createSendTx(transaction: TransactionObject<any>, options: TransactionOptions) : Promise<Tx> {
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
     const [gasPrice, estimatedGas, transactionsCount] = await this.getSentTxData(transaction, options);
 
@@ -87,7 +91,7 @@ export abstract class BaseContractExecutorService {
     };
   }
 
-  private async getSentTxData(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> {
+  private async getSentTxData(transaction: TransactionObject<any>, options: TransactionOptions) : Promise<[number, number, number]> {
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
 
     const getGasPrice = this.web3.eth.getGasPrice();
@@ -105,7 +109,7 @@ export abstract class BaseContractExecutorService {
     return [gasPrice, estimatedGas, transactionsCount];
   }
 
-  async estimateCost(transaction: TransactionObject<any>, options: { value: string } = { value: '0' }) : Promise<[number, number, number]> {
+  async estimateCost(transaction: TransactionObject<any>, options: TransactionOptions = { value: '0' }) : Promise<[number, number, number]> {
     this.ensureInitiated();
 
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
