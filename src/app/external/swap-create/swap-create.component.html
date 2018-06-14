@@ -65,12 +65,12 @@
                 <span class="secret-key" (click)="copyToClipboard()">{{secret}}</span>
               </div>
             </div>
-            <div  class="o-table__row">
+            <div *ngIf="openSwapTransactionExplorerUrl" class="o-table__row">
               <div class="o-table__cell o-data--left">
-                <a href="{{openSwapTransactionExplorerUrl}}" target="_blank">{{openSwapTransactionExplorerUrl | truncate: 40}}</a>
+                <a href="{{openSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{openSwapTransactionExplorerUrl | truncate: 40}}</a>
               </div>
               <div class="o-table__cell o-data--right">
-                <img src="assets/images/loading.svg" alt="loading"/>
+                <img *ngIf="!swapCreated" src="assets/images/loading.svg" alt="loading"/>
               </div>
             </div>
           </div>

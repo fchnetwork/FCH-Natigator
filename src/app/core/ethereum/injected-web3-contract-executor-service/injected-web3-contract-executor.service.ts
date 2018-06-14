@@ -31,7 +31,14 @@ export class InjectedWeb3ContractExecutorService implements ContractExecutorServ
 
     const tx = await this.createSendTx(transaction, options);
     this.logger.logMessage('Transaction being sent');
-    const receipt = await transaction.send(tx);
+    const receipt = await transaction.send(tx)
+      .on('transactionHash', (hash) => {
+        this.logger.logMessage(`Transaction hash: ${hash}`);
+        if(options.hashReceivedCallback) {
+          options.hashReceivedCallback(hash);
+        }
+      });
+
     return receipt;
   }
 

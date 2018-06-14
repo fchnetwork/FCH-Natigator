@@ -50,7 +50,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   rate: number;
   ethAmount: number;
-  openSwapTransactionExplorerUrl: string = 'https://rinkeby.etherscan.io/tx/0x132eb8466e426503249ee4950b99228c4bb417cfb6c5bf91f53cc17ac0df3a22';
+
+  openSwapTransactionExplorerUrl: string;
 
   processing = false;
   canCreateSwap = false;
@@ -215,6 +216,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       }
       // NOTE: We only allow process next in case there is event
       this.processing = false;
+      this.openSwapTransactionExplorerUrl = null;
     }
   }
 
@@ -300,7 +302,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   private onOpenSwapHashReceived(hash: string): void {
     if (hash) {
-      this.openSwapTransactionExplorerUrl = "https://rinkeby.etherscan.io/tx/" + hash;
+      this.openSwapTransactionExplorerUrl = environment.ethereum.explorerUrl + hash;
     }
   }
 

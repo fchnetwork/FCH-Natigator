@@ -45,10 +45,11 @@ export const environment = {
   },
   ethereum: {
     endpoint: "https://rinkeby.infura.io/",
-    chainId: 4
+    chainId: 4,
+    explorerUrl: "https://rinkeby.etherscan.io/tx/"
   },
   gasPrice: "1",
   maxBlockGas: "1",
   chainId: 418313827693,
-  loglevel: LogLevel.All
+  loglevel: LogLevel.All,
 };
