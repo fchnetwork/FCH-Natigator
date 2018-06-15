@@ -1,12 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
+import { environment } from "@env/environment";
+
+import Timer = NodeJS.Timer;
 import * as moment from "moment";
 import { Duration } from "moment";
 
 import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute, Router } from "@angular/router";
 
+import { SwapState } from "@core/swap/cross-chain/aerum-erc20-swap-service/swap-state.enum";
+import { Erc20Swap } from "@core/swap/cross-chain/aerum-erc20-swap-service/erc20-swap.model";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
@@ -35,18 +40,25 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   private localSwap: SwapReference;
 
   secret: string;
-
   acceptedBy: string;
   sendAmount: number;
   receiveCurrency: string;
   receiveAmount: number;
 
-  processing = false;
-  expired = false;
-  swapCreated = false;
-  done = false;
+  canCloseSwap = false;
 
+  swapClosed = false;
+  swapExpired = false;
+  swapCancelled = false;
+
+  processing = false;
+
+  expireSwapTransactionExplorerUrl: string;
+
+  timerInterval: Timer;
   timer: Duration;
+
+  errors: string[] =[];
 
   constructor(
     private location: Location,
@@ -65,8 +77,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-    const keystore = this.authService.getKeystore();
-    this.aerumAccount = "0x" + keystore.address;
+    this.aerumAccount = this.authService.getAddress();
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
   }
 
@@ -88,6 +99,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     if (!param.hash) {
       throw new Error('Hash not specified');
     }
+
     this.hash = param.hash;
     this.query = param.query;
 
@@ -96,45 +108,70 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       throw new Error('Cannot load data for local swap: ' + this.hash);
     }
 
-    setInterval(() => {
-      const now = this.now();
-      let timeoutInMilliseconds = (localSwap.timelock - now) * 1000;
-      if (timeoutInMilliseconds < 0) {
-        this.expired = true;
-        this.swapCreated = false;
-        timeoutInMilliseconds = 0;
-      }
-
-      this.timer = moment.duration(timeoutInMilliseconds);
-    }, 1000);
-
     this.localSwap = localSwap;
     this.secret = localSwap.secret;
-    this.sendAmount = localSwap.amount;
+    this.sendAmount = localSwap.ethAmount;
     this.acceptedBy = localSwap.counterparty;
+
+    this.setupTimer();
 
     this.aerumErc20SwapService.onOpen(this.hash, (err, event) => this.onOpenSwapHandler(this.hash, err, event));
     this.aerumErc20SwapService.onExpire(this.hash, (err, event) => this.onExpiredSwapHandler(this.hash, err, event));
 
-    // NOTE: To not read previous events - try load swap
     await this.loadAerumSwap();
   }
 
+  private setupTimer(): void {
+    this.timerInterval = setInterval(() => {
+      const now = this.now();
+      const timeoutInMilliseconds = (this.localSwap.timelock - now) * 1000;
+      if (timeoutInMilliseconds < 0) {
+        this.onSwapExpired();
+        return;
+      }
+      this.timer = moment.duration(timeoutInMilliseconds);
+    }, 1000);
+  }
+
+  private onSwapExpired(): void {
+    this.swapExpired = true;
+    this.canCloseSwap = false;
+    this.timer = moment.duration(0);
+    clearInterval(this.timerInterval);
+    this.cleanErrors();
+    this.showError('Your swap timed out. Please expire it');
+  }
+
   private async loadAerumSwap() {
-    const swap = await this.aerumErc20SwapService.checkSwap(this.hash);
-    if(!swap || !swap.hash) {
-      this.logger.logMessage('Cannot load erc20 swap: ' + this.hash);
-      this.swapCreated = false;
+    if (this.swapExpired) {
+      this.logger.logMessage('Swap already expired. No sense to load counter swap');
       return;
     }
 
+    this.cleanErrors();
+
+    const swap: Erc20Swap = await this.aerumErc20SwapService.checkSwap(this.hash);
     this.logger.logMessage('Swap loaded: ', swap);
 
+    if(!swap || (swap.state === SwapState.Invalid)) {
+      this.logger.logMessage('Cannot load erc20 swap: ' + this.hash);
+      this.canCloseSwap = false;
+      this.showError('Counter swap not created yet');
+      return;
+    }
+
+    if (swap.state === SwapState.Closed) {
+      this.logger.logMessage('Counter swap already closed');
+      this.canCloseSwap = false;
+      this.showError('Counter swap already closed');
+      return;
+    }
+
     const now = this.now();
-    const counterpartyExpired = now >= Number(swap.timelock);
-    this.logger.logMessage('Counter swap expired?: ' + counterpartyExpired);
-    if (counterpartyExpired) {
-      this.swapCreated = false;
+    if ((now >= swap.timelock) || (swap.state === SwapState.Expired)) {
+      this.logger.logMessage('Counter swap expired');
+      this.canCloseSwap = false;
+      this.showError('Counter swap expired');
       return;
     }
 
@@ -144,42 +181,60 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
 
     this.receiveCurrency = token.symbol;
-    this.receiveAmount = Number(swap.erc20Value) / Math.pow(10, Number(token.decimals));
+    if (token.address.toLowerCase() !== this.localSwap.token) {
+      this.showError('Counter swap currency is not the same as requested');
+    }
 
-    this.swapCreated = true;
+    this.receiveAmount = Number(swap.erc20Value) / Math.pow(10, Number(token.decimals));
+    if (this.receiveAmount !== this.localSwap.tokenAmount) {
+      this.showError('Counter swap amount / rate is not the same as requested');
+    }
+
+    this.canCloseSwap = true;
   }
 
   async complete() {
     try {
       this.processing = true;
       this.notificationService.showMessage('Completing swap', 'In Progress...');
-      await this.aerumErc20SwapService.closeSwap(this.hash, this.secret);
+      await this.closeSwap();
       this.notificationService.showMessage('Swap closed', 'Done');
-      this.done = true;
     } catch (e) {
       this.logger.logError('Swap close error', e);
       this.notificationService.showMessage('Swap close error', 'Unhandled error');
+    } finally {
       this.processing = false;
     }
+  }
+
+  private async closeSwap(): Promise<void> {
+    this.expireSwapTransactionExplorerUrl = null;
+    await this.aerumErc20SwapService.closeSwap(this.hash, this.secret);
+    this.canCloseSwap = false;
+    this.swapClosed = true;
+    this.cleanErrors();
   }
 
   async expire() {
     try {
       this.processing = true;
       this.notificationService.showMessage('Expiring swap', 'In Progress...');
-      await this.configureSwapService();
-      await this.etherSwapService.expireSwap(this.hash);
+      await this.expireSwap();
       this.notificationService.showMessage('Swap expired', 'Done');
-      this.done = true;
     } catch (e) {
       this.logger.logError('Swap expire error', e);
       this.notificationService.showMessage('Swap expire error', 'Unhandled error');
+    } finally {
       this.processing = false;
     }
   }
 
-  private now(): number {
-    return Math.ceil(new Date().getTime() / 1000);
+  private async expireSwap(): Promise<void> {
+    await this.configureSwapService();
+    this.expireSwapTransactionExplorerUrl = null;
+    await this.etherSwapService.expireSwap(this.hash, (hash) => this.onExpireSwapHashReceived(hash));
+    this.swapCancelled = true;
+    this.cleanErrors();
   }
 
   private async onOpenSwapHandler(hash: string, err, event) {
@@ -188,21 +243,31 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
     } else {
       this.logger.logMessage(`Create counter swap success: ${hash}`, event);
-      await this.loadAerumSwap();
     }
+    await this.loadAerumSwap();
   }
 
-  private onExpiredSwapHandler(hash: string, err, event) {
+  private async onExpiredSwapHandler(hash: string, err, event) {
     if (err) {
       this.logger.logError(`Create counter swap error: ${hash}`, err);
       this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
     } else {
       this.logger.logMessage(`Create counter swap success: ${hash}`, event);
     }
-    this.swapCreated = false;
+    await this.loadAerumSwap();
   }
 
-  // TODO: Duplication with create swap service. Remove later
+  private now(): number {
+    return Math.ceil(new Date().getTime() / 1000);
+  }
+
+  private onExpireSwapHashReceived(hash: string): void {
+    if (hash) {
+      this.expireSwapTransactionExplorerUrl = environment.ethereum.explorerUrl + hash;
+    }
+  }
+
+  // TODO: Duplication with create swap service. Possibly there is way to make this better
   private async configureSwapService() {
     if (this.localSwap.walletType === EthWalletType.Injected) {
       await this.configureInjectedSwapService();
@@ -225,12 +290,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       throw Error('Cannot get accounts from selected provider');
     }
 
-    if (accounts[0] !== account) {
+    if (accounts.every(acc => acc !== account)) {
       this.notificationService.showMessage(`Please select ${account} and retry`, 'Error');
-      throw Error(`Incorrect Mist / Metamask account selected. Expected ${account}. Selected ${accounts[0]}`);
+      throw Error(`Incorrect Mist / Metamask account selected. Expected ${account}`);
     }
 
-    this.injectedWeb3ContractExecutorService.init(injectedWeb3, accounts[0]);
+    this.injectedWeb3ContractExecutorService.init(injectedWeb3, account);
     this.etherSwapService.useContractExecutor(this.injectedWeb3ContractExecutorService);
   }
 
@@ -251,9 +316,20 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     return this.router.navigate(['external/transaction'], {queryParams: { query: this.query }});
   }
 
+  private showError(message: string): void {
+    this.errors.push(message);
+  }
+
+  private cleanErrors(): void {
+    this.errors = [];
+  }
+
   ngOnDestroy(): void {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
+    }
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
     }
   }
 }

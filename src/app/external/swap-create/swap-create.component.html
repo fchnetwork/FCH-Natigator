@@ -70,7 +70,7 @@
                 <a href="{{openSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{openSwapTransactionExplorerUrl | truncate: 40}}</a>
               </div>
               <div class="o-table__cell o-data--right">
-                <img *ngIf="!swapCreated" src="assets/images/loading.svg" alt="loading"/>
+                <img *ngIf="processing" src="assets/images/loading.svg" alt="loading"/>
               </div>
             </div>
           </div>
@@ -79,7 +79,7 @@
             quam vel velit. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat.
           </div>
           <aer-button (buttonFn)="next()" class="blue large full-width" [disabled]="!canMoveNext()" (ngClass)="{ 'blue': canMoveNext(), 'grey': !canMoveNext() }">Next</aer-button>
-          <aer-button (buttonFn)="cancel()" class="large full-width">{{swapCreated ? "Close" : "Back"}}</aer-button>
+          <aer-button (buttonFn)="cancel()" class="blue large full-width" [disabled]="processing" (ngClass)="{ 'blue': !processing, 'grey': processing }">{{swapCreated ? "Close" : "Back"}}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>
