@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage';
 import Web3 from 'web3';
+import { Contract } from "web3/types";
 import { tokensABI } from '@app/core/abi/tokens';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { iToken } from '@shared/app.interfaces';
@@ -14,16 +15,20 @@ import { TokenError } from "@core/transactions/token-service/token.error";
 
 @Injectable()
 export class TokenService {
+
   web3: Web3;
-  tokensContract: any;
+  wsWeb3: Web3;
+
+  tokensContract: Contract;
   tokens$: BehaviorSubject<iToken> = new BehaviorSubject(<any>[]);
 
   constructor(
     private logger: LoggerService,
-    private _auth: AuthenticationService,
+    private authService: AuthenticationService,
     private sessionStorage: SessionStorageService,
   ) {
-    this.web3 = _auth.getWSWeb3();
+    this.web3 = authService.getWeb3();
+    this.wsWeb3 = authService.getWSWeb3();
   }
 
   addToken(tokenData) {
@@ -182,8 +187,8 @@ export class TokenService {
 
   getTokenTransactionValue(contractAddress, blockNumber) {
     return new Promise((resolve, reject) => {
-      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress);
-      tokensContract.events.Transfer({fromBlock: blockNumber}, (contractEventsErr, eventsRes) => {
+      const wsTokensContract = new this.wsWeb3.eth.Contract(tokensABI, contractAddress);
+      wsTokensContract.events.Transfer({fromBlock: blockNumber}, (contractEventsErr, eventsRes) => {
         if (contractEventsErr) {
           reject(contractEventsErr);
         } else {
