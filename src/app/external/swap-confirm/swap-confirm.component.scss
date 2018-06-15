@@ -4,20 +4,27 @@
   }
 
   &__table {
-    color: #83868A;
+    color: #83868a;
     font-size: 13px;
     line-height: 1;
     text-align: center;
+
     h1 {
       font-size: 36px;
       font-weight: normal;
       color: #27282A;
       margin: 0 0 38px;
     }
+
     aer-button {
       margin-bottom: 20px;
       display: block;
     }
+  }
+
+  &__explorer-link {
+    display: block;
+    margin-top: 10px;
   }
 
   .message {
@@ -65,15 +72,19 @@
   table-layout: fixed;
   width: 100%;
   margin: 15px 0 0;
+
   &__row {
     display: table-row;
   }
+
   &__cell {
     display: table-cell;
     padding-bottom: 15px;
+
     &.o-data--left {
       text-align: left;
     }
+
     &.o-data--right {
       text-align: right;
     }

@@ -47,11 +47,11 @@
               <aer-input [(ngModel)]="secret" placeholder="Type secret key" [attr.readonly]="processing"></aer-input>
             </div>
           </div>
-          <div *ngIf="expireSwapTransactionExplorerUrl" class="o-table__row">
-            <div class="o-table__cell o-data--left">
-              <a href="{{expireSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{expireSwapTransactionExplorerUrl | truncate: 40}}</a>
+          <div aerRow *ngIf="expireSwapTransactionExplorerUrl">
+            <div aerColumn size="sm-9" class="cell cell--left">
+              <a href="{{expireSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-confirm__explorer-link">{{expireSwapTransactionExplorerUrl | truncate: 40}}</a>
             </div>
-            <div class="o-table__cell o-data--right">
+            <div aerColumn size="sm-3" class="cell cell--right" *ngIf="timer">
               <img *ngIf="processing" src="assets/images/loading.svg" alt="loading"/>
             </div>
           </div>
