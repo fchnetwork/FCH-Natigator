@@ -1,13 +1,14 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { LoaderService } from './loader.service';
 import { LoggerService } from "@app/core/general/logger-service/logger.service";
 import { Router } from "@angular/router";
-import { NgZone } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { Event } from "@angular/router/src/events";
 
 describe('Service: Loader', () => {
   beforeEach(() => {
     const router: Partial<Router> = {
-      events: { subscribe: () => {} }
+      events: new Observable<Event>()
     };
     TestBed.configureTestingModule({
       providers: [
