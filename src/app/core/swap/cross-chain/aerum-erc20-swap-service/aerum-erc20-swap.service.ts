@@ -1,4 +1,4 @@
-import { Callback } from "web3/types";
+import { BlockType, Callback, EventEmitter, EventLog } from "web3/types";
 
 const artifacts = require('@core/abi/AtomicSwapERC20.json');
 
@@ -9,6 +9,8 @@ import { Erc20Swap } from "@core/swap/cross-chain/aerum-erc20-swap-service/erc20
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
+
+type ContractEvent = (options?: { filter?: object, fromBlock?: BlockType, topics?: string[] }, cb?: Callback<EventLog>) => EventEmitter;
 
 @Injectable()
 export class AerumErc20SwapService extends BaseContractService {
@@ -62,15 +64,20 @@ export class AerumErc20SwapService extends BaseContractService {
     return response;
   }
 
-  onOpen(hash: string, callback: Callback<any>) {
-    this.contract.events.Open({ filter: { _hash: hash }, fromBlock: 0 }, callback);
+  onOpen(hash: string, callback: Callback<any>): void {
+    this.handleEvent("Open", hash, callback);
   }
 
-  onClose(hash: string, callback: Callback<any>) {
-    this.contract.events.Close({ filter: { _hash: hash }, fromBlock: 0 }, callback);
+  onClose(hash: string, callback: Callback<any>): void {
+    this.handleEvent("Close", hash, callback);
   }
 
-  onExpire(hash: string, callback: Callback<any>) {
-    this.contract.events.Expire({ filter: { _hash: hash }, fromBlock: 0 }, callback);
+  onExpire(hash: string, callback: Callback<any>): void {
+    this.handleEvent("Expire", hash, callback);
+  }
+
+  private handleEvent(eventName: string, hash: string, callback: Callback<any>): void {
+    const contract = this.createEventsSupportingContract();
+    contract.events[eventName]({ filter: { _hash: hash }, fromBlock: 0 }, callback);
   }
 }
