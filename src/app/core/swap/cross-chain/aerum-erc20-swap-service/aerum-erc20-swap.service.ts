@@ -5,6 +5,8 @@ const artifacts = require('@core/abi/AtomicSwapERC20.json');
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
+import { SwapState } from "@core/swap/cross-chain/aerum-erc20-swap-service/swap-state.enum";
+import { Erc20Swap } from "@core/swap/cross-chain/aerum-erc20-swap-service/erc20-swap.model";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
@@ -37,20 +39,28 @@ export class AerumErc20SwapService extends BaseContractService {
 
   async expireSwap(hash: string) {
     const expireSwap = this.contract.methods.expire(hash);
-    const response = await this.contractExecutorService.send(expireSwap);
-    return response;
+    const receipt = await this.contractExecutorService.send(expireSwap);
+    return receipt;
   }
 
-  async checkSwap(hash: string) {
+  async checkSwap(hash: string): Promise<Erc20Swap> {
     const checkSwap = this.contract.methods.check(hash);
-    const receipt = await this.contractExecutorService.call(checkSwap);
-    return receipt;
+    const response = await this.contractExecutorService.call(checkSwap);
+    const swap: Erc20Swap = {
+      hash: response.hash,
+      erc20ContractAddress: response.erc20ContractAddress,
+      erc20Value: response.erc20Value,
+      state: Number(response.state),
+      timelock: Number(response.timelock)
+    };
+
+    return swap;
   }
 
   async checkSecretKey(hash: string) {
     const checkSecretKey = this.contract.methods.checkSecretKey(hash);
-    const receipt = await this.contractExecutorService.call(checkSecretKey);
-    return receipt;
+    const response = await this.contractExecutorService.call(checkSecretKey);
+    return response;
   }
 
   onOpen(hash: string, callback: Callback<any>) {
