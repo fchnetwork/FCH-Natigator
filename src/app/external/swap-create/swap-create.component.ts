@@ -203,7 +203,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   canMoveNext(): boolean {
-    return this.canCreateSwap && !this.swapCreated && !this.processing;
+    return this.canCreateSwap && !this.swapCreated && !this.processing && (this.amount > 0);
   }
 
   async next() {
@@ -247,10 +247,11 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     const localSwap: SwapReference = {
       hash,
       secret: this.secret,
-      amount: this.ethAmount,
       counterparty: this.selectedTemplate.onchainAccount,
       account: this.params.account,
+      ethAmount: this.ethAmount,
       token: this.selectedToken.address,
+      tokenAmount: this.amount,
       walletType: this.params.wallet,
       timelock: timestamp
     };

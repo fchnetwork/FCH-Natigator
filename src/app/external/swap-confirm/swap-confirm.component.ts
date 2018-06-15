@@ -110,7 +110,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.localSwap = localSwap;
     this.secret = localSwap.secret;
-    this.sendAmount = localSwap.amount;
+    this.sendAmount = localSwap.ethAmount;
     this.acceptedBy = localSwap.counterparty;
 
     this.setupTimer();
@@ -186,7 +186,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
 
     this.receiveAmount = Number(swap.erc20Value) / Math.pow(10, Number(token.decimals));
-    if (this.receiveAmount !== this.localSwap.amount) {
+    if (this.receiveAmount !== this.localSwap.tokenAmount) {
       this.showError('Counter swap amount / rate is not the same as requested');
     }
 
