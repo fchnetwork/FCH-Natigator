@@ -45,10 +45,8 @@ import { SettingsBackupService } from '@app/core/settings/settingsBackup.service
   providers: [
     ContractExecutorService,
     SelfSignedEthereumContractExecutorService,
-    EthereumAuthenticationService,
     InjectedWeb3ContractExecutorService,
     AccountIdleService,
-    AuthenticationService,
     ClipboardService,
     ExplorerService,
     ModalService,
@@ -86,7 +84,9 @@ export class CoreModule {
         LoaderService,
         ConnectionCheckerService,
         InternalNotificationService,
-        NotificationMessagesService
+        NotificationMessagesService,
+        AuthenticationService,
+        EthereumAuthenticationService
       ]
     };
   }

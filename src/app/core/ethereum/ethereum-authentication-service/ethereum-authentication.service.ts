@@ -20,12 +20,14 @@ declare const window: any;
 @Injectable()
 export class EthereumAuthenticationService {
 
+  private readonly web3: Web3;
   private readonly injectedWeb3: Promise<Web3>;
 
   constructor(
     private logger: LoggerService,
     private sessionStorage: SessionStorageService
   ) {
+    this.web3 = new Web3(environment.ethereum.endpoint);
     this.injectedWeb3 = this.loadInjectedWeb3();
   }
 
@@ -55,8 +57,7 @@ export class EthereumAuthenticationService {
   }
 
   getWeb3(): Web3 {
-    const ethereumEndpoint = environment.ethereum.endpoint;
-    return new Web3(ethereumEndpoint);
+    return this.web3;
   }
 
   getInjectedWeb3(): Promise<Web3> {

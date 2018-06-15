@@ -32,7 +32,7 @@ export class AerumNameService {
     private registrarContractService: AensFixedPriceRegistrarContractService,
     private resolverContractService: AensPublicResolverContractService
   ) {
-    this.web3 = this.authService.initWeb3();
+    this.web3 = this.authService.getWeb3();
   }
 
   async safeResolveNameOrAddress(nameOrAddress: string) {

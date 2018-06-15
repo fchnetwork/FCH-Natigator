@@ -26,7 +26,7 @@ export class TransactionService {
       private tokenService: TokenService,
       private notificationMessagesService: NotificationMessagesService
      ) {
-      this.web3 = _auth.initWeb3();
+      this.web3 = _auth.getWeb3();
     }
 
     /**

@@ -8,7 +8,7 @@ import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
 export const environment = {
   production: false,
   configInUse: "environment.local",
-  WebsocketProvider: "ws://52.51.85.249:8546",
+  WebsocketProvider: "ws://marge.aerum.net/wss",
   rpcApiProvider: "http://52.51.85.249:8545",
   cookiesDomain: "localhost",
   webSocketStatServer: "ws://localhost:3000/primus",

@@ -14,7 +14,7 @@ export class ERC20TokenService {
     private authenticationService: AuthenticationService,
     private contractExecutorService: ContractExecutorService
   ) {
-    this.web3 = this.authenticationService.initWeb3();
+    this.web3 = this.authenticationService.getWeb3();
   }
 
   async approve(erc20ContractAddress: string, address: string, amount: string) {

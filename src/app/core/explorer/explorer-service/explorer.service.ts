@@ -32,7 +32,7 @@ export class ExplorerService {
   };
 
   constructor(private _http: Http, _auth: AuthenticationService) {
-    this.web3 = _auth.initWeb3();
+    this.web3 = _auth.getWeb3();
     this.account = JSON.parse(Cookie.get('account'));
   }
 

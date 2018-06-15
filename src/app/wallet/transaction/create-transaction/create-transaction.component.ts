@@ -80,7 +80,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
       await this.updateTokensBalance();
     }, 3000);
 
-    this.web3 = this.authService.initWeb3();
+    this.web3 = this.authService.getWeb3();
   }
 
   async ngOnInit() {
