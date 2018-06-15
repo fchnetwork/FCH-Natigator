@@ -123,6 +123,11 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private setupTimer(): void {
     this.timerInterval = setInterval(() => {
+      if (this.swapClosed || this.swapCancelled) {
+        this.stopTimer();
+        return;
+      }
+
       const now = this.now();
       const timeoutInMilliseconds = (this.localSwap.timelock - now) * 1000;
       if (timeoutInMilliseconds < 0) {
@@ -137,9 +142,13 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.swapExpired = true;
     this.canCloseSwap = false;
     this.timer = moment.duration(0);
-    clearInterval(this.timerInterval);
+    this.stopTimer();
     this.cleanErrors();
     this.showError('Your swap timed out. Please expire it');
+  }
+
+  private stopTimer(): void {
+    clearInterval(this.timerInterval);
   }
 
   private async loadAerumSwap() {
