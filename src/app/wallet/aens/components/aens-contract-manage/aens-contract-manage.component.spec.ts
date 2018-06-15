@@ -20,7 +20,7 @@ describe('ManageAensContractComponent', () => {
   let component: AensContractManageComponent;
   let fixture: ComponentFixture<AensContractManageComponent>;
   const authService: Partial<AuthenticationService> = {
-    initWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3),
+    getWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3),
     getKeystore: () => ({ address: "test_keystroke" })
   };
   const ansService: Partial<AerumNameService> = {

@@ -5,7 +5,6 @@ const artifacts = require('@core/abi/AtomicSwapERC20.json');
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
-import { SwapState } from "@core/swap/cross-chain/aerum-erc20-swap-service/swap-state.enum";
 import { Erc20Swap } from "@core/swap/cross-chain/aerum-erc20-swap-service/erc20-swap.model";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";

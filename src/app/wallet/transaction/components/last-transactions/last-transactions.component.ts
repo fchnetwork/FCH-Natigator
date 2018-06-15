@@ -1,6 +1,5 @@
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { Component, OnInit } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';  
+import { SessionStorageService } from 'ngx-webstorage';
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { iTransaction } from '@shared/app.interfaces';

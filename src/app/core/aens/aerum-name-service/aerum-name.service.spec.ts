@@ -10,7 +10,7 @@ import { LoggerService } from "@core/general/logger-service/logger.service";
 
 describe('AerumNameService', () => {
   const authService: Partial<AuthenticationService> = {
-    initWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3)
+    getWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3)
   };
 
   beforeEach(() => {

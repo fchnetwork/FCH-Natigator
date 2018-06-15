@@ -14,7 +14,7 @@ class TestableAuthenticationService extends AuthenticationService {
 describe('Service: Authentication', () => {
 
   beforeEach(() => {
-    jest.spyOn(AuthenticationService.prototype, "initWeb3").mockImplementation(() => ({} as any as Web3));
+    jest.spyOn(AuthenticationService.prototype, "getWeb3").mockImplementation(() => ({} as any as Web3));
     TestBed.configureTestingModule({
       providers: [
         AuthenticationService,

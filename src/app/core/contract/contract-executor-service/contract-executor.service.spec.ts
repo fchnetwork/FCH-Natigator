@@ -8,7 +8,7 @@ import { LoggerService } from "@core/general/logger-service/logger.service";
 
 describe('ContractExecutorService', () => {
   const authService: Partial<AuthenticationService> = {
-    initWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3),
+    getWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3),
     getKeystore: () => ({ address: "test_keystroke" })
   };
   const sessionService: Partial<SessionStorageService> = {

@@ -20,22 +20,25 @@ import { environment } from '@env/environment';
 @Injectable()
 export class AuthenticationService {
 
-    web3: Web3;
+    private readonly web3: Web3;
+    private readonly wsWeb3: Web3;
 
     constructor(
         private sessionStorage: SessionStorageService,
         public router: Router,
     ) {
-        this.web3 = this.initWeb3();
+        this.web3 = new Web3(new Web3.providers.HttpProvider(environment.rpcApiProvider));
+        this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(environment.WebsocketProvider));
+
         avatars.config({ size: 67 * 3, bgColor: '#fff' });
     }
 
-    initWeb3() {
-        return new Web3( new Web3.providers.HttpProvider(environment.rpcApiProvider));
+    getWeb3() {
+        return this.web3;
     }
 
-    initWSWeb3() {
-        return new Web3( new Web3.providers.WebsocketProvider(environment.WebsocketProvider));
+    getWSWeb3() {
+        return this.wsWeb3;
     }
 
     avatarsGenerator() {

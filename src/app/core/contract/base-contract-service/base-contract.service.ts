@@ -14,7 +14,7 @@ export abstract class BaseContractService {
       protected authenticationService: AuthenticationService,
       protected contractExecutorService: ContractExecutorService
     ) {
-      this.web3 = this.authenticationService.initWSWeb3();
+      this.web3 = this.authenticationService.getWSWeb3();
       this.contract = new this.web3.eth.Contract(abi, address);
     }
 }

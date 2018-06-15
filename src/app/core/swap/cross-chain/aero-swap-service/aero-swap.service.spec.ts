@@ -7,7 +7,7 @@ import Web3 from "web3";
 
 describe('AeroSwapService', () => {
   const authService: Partial<AuthenticationService> = {
-    initWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3)
+    getWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3)
   };
 
   beforeEach(() => {

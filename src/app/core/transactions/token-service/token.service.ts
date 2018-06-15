@@ -23,7 +23,7 @@ export class TokenService {
     private _auth: AuthenticationService,
     private sessionStorage: SessionStorageService,
   ) {
-    this.web3 = _auth.initWSWeb3();
+    this.web3 = _auth.getWSWeb3();
   }
 
   addToken(tokenData) {

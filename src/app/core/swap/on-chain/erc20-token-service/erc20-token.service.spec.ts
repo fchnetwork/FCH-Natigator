@@ -8,7 +8,7 @@ import { ContractExecutorService } from "../../../contract/contract-executor-ser
 describe('ERC20TokenService', () => {
   beforeEach(() => {
     const authService: Partial<AuthenticationService> = {
-      initWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3)
+      getWeb3: () => ({ eth: { Contract: () => { } } } as any as Web3)
     };
 
     TestBed.configureTestingModule({
