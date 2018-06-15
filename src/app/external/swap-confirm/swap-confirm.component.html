@@ -4,7 +4,18 @@
       <aer-modal-dialog>
         <div class="c-swap-confirm c-swap-confirm__table c-swap-confirm__unlock">
           <h1>Complete Exchange Swap</h1>
-          <div class="o-table" *ngIf="swapCreated">
+          <div *ngFor="let error of errors" aerRow>
+            <div aerColumn size="sm-12" class="cell cell--left error">{{error}}</div>
+          </div>
+          <div aerRow>
+            <div aerColumn size="sm-6" class="cell cell--left">
+              Your swap will expire in:
+            </div>
+            <div aerColumn size="sm-6" class="cell cell--right" *ngIf="timer">
+              {{timer.hours() | number:'2.0'}}:{{timer.minutes() | number:'2.0'}}:{{timer.seconds() | number:'2.0'}}
+            </div>
+          </div>
+          <div class="o-table" *ngIf="canCloseSwap">
             <div class="o-table__row">
               <div class="o-table__cell o-data--left">
                 Your swap was accepted by
@@ -30,27 +41,27 @@
               </div>
             </div>
           </div>
-          <div aerRow *ngIf="!swapCreated">
-            <div aerColumn size="sm-6" class="cell cell--left">
-              Your swap will expire in:
-            </div>
-            <div aerColumn size="sm-6" class="cell cell--right" *ngIf="timer">
-              {{timer.hours() | number:'2.0'}}:{{timer.minutes() | number:'2.0'}}:{{timer.seconds() | number:'2.0'}}
-            </div>
-          </div>
-          <div aerRow>
+          <div aerRow *ngIf="canCloseSwap">
             <div aerColumn size="sm-12" class="cell">
               <label>Enter secret key:</label>
-              <aer-input [(ngModel)]="secret" placeholder="Type secret key" [disabled]="processing"></aer-input>
+              <aer-input [(ngModel)]="secret" placeholder="Type secret key" [attr.readonly]="processing"></aer-input>
+            </div>
+          </div>
+          <div *ngIf="expireSwapTransactionExplorerUrl" class="o-table__row">
+            <div class="o-table__cell o-data--left">
+              <a href="{{expireSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{expireSwapTransactionExplorerUrl | truncate: 40}}</a>
+            </div>
+            <div class="o-table__cell o-data--right">
+              <img *ngIf="processing" src="assets/images/loading.svg" alt="loading"/>
             </div>
           </div>
           <div class="message">
             Warning! Phasellus rhoncus. Nulla est. Phasellus et lorem id felis nonummy placerat. Integer pellentesque
             quam vel velit. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat.
           </div>
-          <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="swapCreated" [disabled]="processing">Complete swap</aer-button>
-          <aer-button (buttonFn)="expire()" class="blue large full-width" *ngIf="expired" [disabled]="processing">Expire swap</aer-button>
-          <aer-button (buttonFn)="cancel()" class="large full-width"> {{ (done || expired) ? "Close" : "Cancel" }}</aer-button>
+          <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="canCloseSwap" [disabled]="processing">Complete swap</aer-button>
+          <aer-button (buttonFn)="expire()" class="blue large full-width" *ngIf="swapExpired && !swapCancelled" [disabled]="processing">Expire swap</aer-button>
+          <aer-button (buttonFn)="cancel()" class="large full-width"> {{ (swapClosed || swapExpired) ? "Close" : "Cancel" }}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>

@@ -45,14 +45,11 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   receiveCurrency: string;
   receiveAmount: number;
 
-  counterSwapState = SwapState.Invalid;
+  canCloseSwap = false;
 
   swapClosed = false;
   swapExpired = false;
   swapCancelled = false;
-
-  swapAmountNotValid = false;
-  swapCurrencyNotValid = false;
 
   processing = false;
 
@@ -60,6 +57,8 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   timerInterval: Timer;
   timer: Duration;
+
+  errors: string[] =[];
 
   constructor(
     private location: Location,
@@ -136,30 +135,43 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private onSwapExpired(): void {
     this.swapExpired = true;
+    this.canCloseSwap = false;
     this.timer = moment.duration(0);
     clearInterval(this.timerInterval);
+    this.cleanErrors();
+    this.showError('Your swap timed out. Please expire it');
   }
 
   private async loadAerumSwap() {
+    if (this.swapExpired) {
+      this.logger.logMessage('Swap already expired. No sense to load counter swap');
+      return;
+    }
+
+    this.cleanErrors();
+
     const swap: Erc20Swap = await this.aerumErc20SwapService.checkSwap(this.hash);
     this.logger.logMessage('Swap loaded: ', swap);
 
     if(!swap || (swap.state === SwapState.Invalid)) {
       this.logger.logMessage('Cannot load erc20 swap: ' + this.hash);
-      this.counterSwapState = SwapState.Invalid;
+      this.canCloseSwap = false;
+      this.showError('Counter swap not created yet');
       return;
     }
 
     if (swap.state === SwapState.Closed) {
       this.logger.logMessage('Counter swap already closed');
-      this.counterSwapState = SwapState.Closed;
+      this.canCloseSwap = false;
+      this.showError('Counter swap already closed');
       return;
     }
 
     const now = this.now();
     if ((now >= swap.timelock) || (swap.state === SwapState.Expired)) {
       this.logger.logMessage('Counter swap expired');
-      this.counterSwapState = SwapState.Expired;
+      this.canCloseSwap = false;
+      this.showError('Counter swap expired');
       return;
     }
 
@@ -169,21 +181,24 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
 
     this.receiveCurrency = token.symbol;
-    this.swapCurrencyNotValid = (this.receiveCurrency.toLowerCase() !== this.localSwap.token);
+    if (token.address.toLowerCase() !== this.localSwap.token) {
+      this.showError('Counter swap currency is not the same as requested');
+    }
 
     this.receiveAmount = Number(swap.erc20Value) / Math.pow(10, Number(token.decimals));
-    this.swapAmountNotValid = (this.receiveAmount !== this.localSwap.amount);
+    if (this.receiveAmount !== this.localSwap.amount) {
+      this.showError('Counter swap amount / rate is not the same as requested');
+    }
 
-    this.counterSwapState = SwapState.Open;
+    this.canCloseSwap = true;
   }
 
   async complete() {
     try {
       this.processing = true;
       this.notificationService.showMessage('Completing swap', 'In Progress...');
-      await this.aerumErc20SwapService.closeSwap(this.hash, this.secret);
+      await this.closeSwap();
       this.notificationService.showMessage('Swap closed', 'Done');
-      this.swapClosed = true;
     } catch (e) {
       this.logger.logError('Swap close error', e);
       this.notificationService.showMessage('Swap close error', 'Unhandled error');
@@ -192,20 +207,32 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
   }
 
+  private async closeSwap(): Promise<void> {
+    this.expireSwapTransactionExplorerUrl = null;
+    await this.aerumErc20SwapService.closeSwap(this.hash, this.secret);
+    this.canCloseSwap = false;
+    this.swapClosed = true;
+  }
+
   async expire() {
     try {
       this.processing = true;
       this.notificationService.showMessage('Expiring swap', 'In Progress...');
-      await this.configureSwapService();
-      await this.etherSwapService.expireSwap(this.hash, (hash) => this.onExpireSwapHashReceived(hash));
+      await this.expireSwap();
       this.notificationService.showMessage('Swap expired', 'Done');
-      this.swapCancelled = true;
     } catch (e) {
       this.logger.logError('Swap expire error', e);
       this.notificationService.showMessage('Swap expire error', 'Unhandled error');
     } finally {
       this.processing = false;
     }
+  }
+
+  private async expireSwap(): Promise<void> {
+    await this.configureSwapService();
+    this.expireSwapTransactionExplorerUrl = null;
+    await this.etherSwapService.expireSwap(this.hash, (hash) => this.onExpireSwapHashReceived(hash));
+    this.swapCancelled = true;
   }
 
   private async onOpenSwapHandler(hash: string, err, event) {
@@ -285,6 +312,14 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   cancel() {
     return this.router.navigate(['external/transaction'], {queryParams: { query: this.query }});
+  }
+
+  private showError(message: string): void {
+    this.errors.push(message);
+  }
+
+  private cleanErrors(): void {
+    this.errors = [];
   }
 
   ngOnDestroy(): void {

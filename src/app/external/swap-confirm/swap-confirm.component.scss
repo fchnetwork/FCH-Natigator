@@ -54,13 +54,17 @@
       text-align: right;
     }
   }
+
+  .error {
+    color: #c94545;
+  }
 }
 
 .o-table {
   display: table;
   table-layout: fixed;
   width: 100%;
-  margin: 46px 0 0;
+  margin: 15px 0 0;
   &__row {
     display: table-row;
   }

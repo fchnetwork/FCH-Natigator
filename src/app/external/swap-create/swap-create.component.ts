@@ -203,7 +203,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   canMoveNext(): boolean {
-    return this.canCreateSwap && !this.processing;
+    return this.canCreateSwap && !this.swapCreated && !this.processing;
   }
 
   async next() {
@@ -219,14 +219,15 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
         this.logger.logError('Error while creating swap', e);
         this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
       }
-      // NOTE: We only allow process next in case there is event
+    } finally {
       this.processing = false;
-      this.openSwapTransactionExplorerUrl = null;
     }
   }
 
   async openEthereumSwap() {
     await this.configureSwapService();
+
+    this.openSwapTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
     const ethAmountString = this.ethAmount.toString(10);
