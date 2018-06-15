@@ -123,7 +123,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     return this.recalculateTotals();
   }
 
-  onAmountChange() {
+  onAmountChange(amount: string) {
+    this.amount = Number(amount) || 0;
     return this.recalculateTotals();
   }
 

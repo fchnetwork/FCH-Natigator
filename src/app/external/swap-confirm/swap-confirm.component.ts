@@ -190,7 +190,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
 
     this.receiveCurrency = token.symbol;
-    if (token.address.toLowerCase() !== this.localSwap.token) {
+    if (token.address.toLowerCase() !== this.localSwap.token.toLowerCase()) {
       this.showError('Counter swap currency is not the same as requested');
     }
 
