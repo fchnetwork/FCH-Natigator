@@ -18,7 +18,7 @@
           <div aerRow>
             <div aerColumn size="sm-12" class="cell">
               <label>Amount of token to receive:</label>
-              <aer-input [ngModel]="amount" placeholder="Type amount" (ngModelChange)="onAmountChange($event)" [attr.readonly]="processing"></aer-input>
+              <aer-input [ngModel]="amount | number" placeholder="Type amount" (ngModelChange)="onAmountChange($event)" [attr.readonly]="processing"></aer-input>
             </div>
           </div>
           <div aerRow>
@@ -46,7 +46,7 @@
                 Amount
               </div>
               <div class="o-table__cell o-data--right">
-                {{ethAmount| number:'1.2-7'}}
+                {{ethAmount| number:'1.2-18'}}
               </div>
             </div>
             <div class="o-table__row">
@@ -54,7 +54,7 @@
                 Exchange rate (Aerum token/Eth asset)
               </div>
               <div class="o-table__cell o-data--right">
-                {{rate | number:'1.2-5'}}
+                {{rate | number:'1.2-18'}}
               </div>
             </div>
             <div class="o-table__row">

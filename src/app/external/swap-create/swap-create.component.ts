@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
+import { BigNumber } from 'bignumber.js';
 
 import { environment } from "@env/environment";
 
@@ -231,7 +232,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.openSwapTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
-    const ethAmountString = this.ethAmount.toString(10);
+    const ethAmountString = new BigNumber(this.ethAmount, 10).toString(10);
     const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
     const counterpartyTrader = this.selectedTemplate.offchainAccount;
 
