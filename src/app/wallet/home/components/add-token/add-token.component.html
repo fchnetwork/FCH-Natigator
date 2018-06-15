@@ -3,14 +3,17 @@
     <h3 class="header">Add token</h3>
     <app-divider></app-divider>
     <form [formGroup]="addTokenForm" (ngSubmit)="onSubmit()">
-        <span class="input-title">Token Contract Address</span>
-        <aer-input placeholder="0x000000000..." type="tokenAddress" formControlName="tokenAddress" [(ngModel)]="tokenAddress" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
-        <span class="input-title">Token Symbol</span>
-        <aer-input placeholder="Token" type="tokenSymbol" formControlName="tokenSymbol" [(ngModel)]="tokenSymbol" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
-        <span class="input-title">Token Decimals of Precision</span>
-        <aer-input placeholder="18" type="decimals" formControlName="decimals" [(ngModel)]="decimals" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
         <app-divider [showLine]="false" ></app-divider>
-        <aer-button class="large full-width" [ngClass]="{'disabled': !addTokenForm.valid}" type="submit" [disabled]="!addTokenForm.valid">Add</aer-button> 
+        <aer-input placeholder="Token contract address" type="tokenAddress" formControlName="tokenAddress" [(ngModel)]="tokenAddress" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
+        <app-divider [showLine]="false" ></app-divider>
+        <aer-input placeholder="Token symbol" type="tokenSymbol" formControlName="tokenSymbol" [(ngModel)]="tokenSymbol" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
+        <app-divider [showLine]="false" ></app-divider>
+        <aer-input placeholder="Decimals of precision" type="decimals" formControlName="decimals" [(ngModel)]="decimals" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
+        <app-divider [showLine]="false" ></app-divider>
+        <app-divider [showLine]="false" ></app-divider>
+        <aer-button class="large blue full-width" [ngClass]="{'disabled': !addTokenForm.valid}" type="submit" [disabled]="!addTokenForm.valid">Add</aer-button>
+        <app-divider [showLine]="false"></app-divider>
+        <aer-button class="large full-width" (buttonFn)="dismiss()">Close</aer-button>
     </form>
   </div>
 </aer-modal-dialog>

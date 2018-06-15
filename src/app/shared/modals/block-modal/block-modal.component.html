@@ -1,10 +1,5 @@
 <aer-modal-dialog>
-    <div class="explorer detail-modal" *ngIf="block">
-      <div class="o-closeModal">
-        <div class="o-closeModal__btn" (click)="dismiss()">
-            <span class="o-closeModal__icon"></span>
-        </div>        
-      </div>      
+    <div class="explorer detail-modal" *ngIf="block">    
       <div class="title">{{'BLOCK'|translate}}</div>
       <app-divider></app-divider>
       <div class="link" (click)="openBlock(block.number)">{{block.number}}</div>
