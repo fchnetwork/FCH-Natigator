@@ -8,7 +8,7 @@ export const environment = {
   production: false,
   configInUse: "environment.default",
   WebsocketProvider: "wss://marge.aerum.net/wss",
-  rpcApiProvider: "https://marge.aerum.net//eth",
+  rpcApiProvider: "https://marge.aerum.net/eth",
   cookiesDomain: "localhost",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "http://explore.aerum.net/#/",
