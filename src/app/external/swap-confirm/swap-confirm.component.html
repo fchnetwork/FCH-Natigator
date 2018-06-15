@@ -7,7 +7,17 @@
           <div *ngFor="let error of errors" aerRow>
             <div aerColumn size="sm-12" class="cell cell--left error">{{error}}</div>
           </div>
-          <div aerRow>
+          <div aerRow *ngIf="swapClosed">
+            <div aerColumn size="sm-12" class="cell cell--left">
+              Swap closed successfully
+            </div>
+          </div>
+          <div aerRow *ngIf="swapCancelled">
+            <div aerColumn size="sm-12" class="cell cell--left">
+              Swap cancelled successfully
+            </div>
+          </div>
+          <div aerRow *ngIf="!swapClosed && !swapCancelled">
             <div aerColumn size="sm-6" class="cell cell--left">
               Your swap will expire in:
             </div>
@@ -61,7 +71,7 @@
           </div>
           <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="canCloseSwap" [disabled]="processing">Complete swap</aer-button>
           <aer-button (buttonFn)="expire()" class="blue large full-width" *ngIf="swapExpired && !swapCancelled" [disabled]="processing">Expire swap</aer-button>
-          <aer-button (buttonFn)="cancel()" class="large full-width"> {{ (swapClosed || swapExpired) ? "Close" : "Cancel" }}</aer-button>
+          <aer-button (buttonFn)="cancel()" class="blue large full-width" [disabled]="processing" (ngClass)="{ 'blue': !processing, 'grey': processing }"> {{ (swapClosed || swapExpired) ? "Close" : "Cancel" }}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>

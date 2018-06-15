@@ -212,6 +212,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     await this.aerumErc20SwapService.closeSwap(this.hash, this.secret);
     this.canCloseSwap = false;
     this.swapClosed = true;
+    this.cleanErrors();
   }
 
   async expire() {
@@ -233,6 +234,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.expireSwapTransactionExplorerUrl = null;
     await this.etherSwapService.expireSwap(this.hash, (hash) => this.onExpireSwapHashReceived(hash));
     this.swapCancelled = true;
+    this.cleanErrors();
   }
 
   private async onOpenSwapHandler(hash: string, err, event) {
