@@ -109,9 +109,13 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
 
   private clearTokenData() {
     this.tokenSymbol = '';
-    this.decimals = 0;
+    this.decimals = null;
     this.balance = 0;
     this.totalSupply = 0;
+  }
+
+  dismiss() {
+    this.dialog.close();
   }
 
 }

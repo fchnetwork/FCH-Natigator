@@ -1,10 +1,5 @@
 <aer-modal-dialog>
-    <div class="explorer detail-modal" *ngIf="transaction">
-      <div class="o-closeModal">
-          <div class="o-closeModal__btn" (click)="dismiss()">
-              <span class="o-closeModal__icon"></span>
-          </div>        
-      </div>          
+    <div class="explorer detail-modal" *ngIf="transaction">        
       <div class="title">{{'TRANSACTION'|translate}}</div>
       <app-divider></app-divider>
       <div class="link copy" (click)="openTxn(transaction.hash)">{{transaction.hash | slice:0:20}}...{{transaction.hash | slice:-18}}</div> 

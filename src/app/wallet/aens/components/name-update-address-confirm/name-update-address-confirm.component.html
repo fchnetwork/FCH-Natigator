@@ -31,23 +31,7 @@
           {{ 'ENS.ESTIMATED_FEE' | translate }}
         </div>
         <div class="o-table__cell o-data--right">
-          {{ estimatedFeeInWei | convertToEther | number:'1.0-18' }} aero ({{ param.estimatedFeeInGas | number:'1.0-10' }} gas)
-        </div>
-      </div>
-      <div class="o-table__row">
-        <div class="o-table__cell o-data--left">
-          {{ 'ENS.MAX_FEE' | translate }}
-        </div>
-        <div class="o-table__cell o-data--right">
-          {{ maximumFeeInWei | convertToEther | number:'1.0-18' }} aero ({{ param.maximumFeeInGas | number:'1.0-10' }} gas)
-        </div>
-      </div>
-      <div class="o-table__row">
-        <div class="o-table__cell o-data--left">
-          {{ 'ENS.GAS_PRICE' | translate }}
-        </div>
-        <div class="o-table__cell o-data--right">
-          {{ param.gasPrice | number:'1.0-10' }}
+          {{ estimatedFeeInWei | convertToEther | number:'1.0-18' }} Aero
         </div>
       </div>
     </div>

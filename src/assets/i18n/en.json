@@ -287,7 +287,7 @@
     "CONFIRM_BUY_TITLE":"Buy Name",
     "CONFIRM_SET_ADDRESS_TITLE":"Change Address",
     "MANAGE_TITLE":"Manage ANS Contract",
-    "ESTIMATED_FEE":"Estimated fee consumption",
+    "ESTIMATED_FEE":"Estimated fee",
     "MAX_FEE":"Provide maximum fee",
     "GAS_PRICE":"Gas Price",
     "BTN_MODAL_BUY":"Buy",
