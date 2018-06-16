@@ -209,6 +209,7 @@
   },
   "SWAP": {
     "MAIN_MENU_ITEM_NAME":"Swap",
+    "SUB_MENU_LIST_SWAPs_ITEM_NAME":"Swap List",
     "SUB_MENU_CREATE_SWAP_ITEM_NAME":"Create Atomic Swap",
     "SUB_MENU_LOAD_SWAP_ITEM_NAME":"Load Atomic Swap",
     "AERO_TO_TOKEN":"Aero > Token",

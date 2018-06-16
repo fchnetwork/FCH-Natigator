@@ -37,6 +37,7 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { SettingsBackupService } from '@app/core/settings/settingsBackup.service';
+import { OnChainSwapLocalStorageService } from "@core/swap/on-chain/swap-local-storage-service/on-chain-swap-local-storage.service";
 
 @NgModule({
   imports: [
@@ -74,6 +75,7 @@ import { SettingsBackupService } from '@app/core/settings/settingsBackup.service
     SwapTemplateService,
     SwapLocalStorageService,
     SettingsBackupService,
+    OnChainSwapLocalStorageService
   ]
 })
 export class CoreModule {
