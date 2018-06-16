@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppUIModule } from '@app/app.ui.module';
-import { SharedModule } from '@app/shared/shared.module'; 
+import { SharedModule } from '@app/shared/shared.module';
 
 import { CreateSwapComponent } from './components/create-swap/create-swap.component';
 import { LoadSwapComponent } from './components/load-swap/load-swap.component';
@@ -12,11 +12,15 @@ import { LoadSwapConfirmComponent } from './components/load-swap/load-swap-confi
 import { SwapTokensListComponent } from './components/create-swap/swap-tokens-list/swap-tokens-list.component';
 import { SwapRoutingModule } from '@app/wallet/swap/swap.routes';
 import { CoreModule } from '@app/core/core.module';
- 
+import { SwapDashboardComponent } from './components/swap-dashboard/swap-dashboard.component';
+import { OnChainSwapListComponent } from './components/on-chain-swap-list/on-chain-swap-list.component';
+import { CrossChainSwapListComponent } from './components/cross-chain-swap-list/cross-chain-swap-list.component';
+
 @NgModule({
   entryComponents: [
     CreateSwapConfirmComponent,
-    LoadSwapConfirmComponent
+    LoadSwapConfirmComponent,
+    SwapDashboardComponent
   ],
   imports: [
     FormsModule,
@@ -32,8 +36,11 @@ import { CoreModule } from '@app/core/core.module';
     LoadSwapComponent,
     CreateSwapConfirmComponent,
     LoadSwapConfirmComponent,
-    SwapTokensListComponent
-  ], 
+    SwapTokensListComponent,
+    SwapDashboardComponent,
+    OnChainSwapListComponent,
+    CrossChainSwapListComponent
+  ],
   exports: [
     CreateSwapConfirmComponent,
     LoadSwapConfirmComponent
