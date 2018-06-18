@@ -47,7 +47,7 @@ export class AuthenticationService {
             const newSeed            = bip39.generateMnemonic();
             const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed );
             const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
-            const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet();
+            const wallet             = hdwallet.derivePath( "m/44'/312'/0'/0/0" ).getWallet();
             const getAddress         = wallet.getAddress().toString("hex");
             const getPriv            = wallet.getPrivateKeyString().toString("hex");
             const getPublic          = wallet.getPublicKeyString().toString("hex");
@@ -205,7 +205,7 @@ export class AuthenticationService {
             const privExtend      = hdwallet.privateExtendedKey();
             const pubExtend       = hdwallet.publicExtendedKey();
              for( let i = 0; i <= amount; i++) {
-                const derivationPath  = hdwallet.derivePath( "m/44'/60'/0'/0/" + i );
+                const derivationPath  = hdwallet.derivePath( "m/44'/312'/0'/0/" + i );
                 const initWallet      = derivationPath.getWallet();
                 const address         = initWallet.getAddress().toString("hex");
                 const checkSumAddress = ethUtil.toChecksumAddress( address );
@@ -245,7 +245,7 @@ export class AuthenticationService {
             const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
             const privExtend         = hdwallet.privateExtendedKey();
             const pubExtend          = hdwallet.publicExtendedKey();
-            const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet(); // use the ethereumjs lib now
+            const wallet             = hdwallet.derivePath( "m/44'/312'/0'/0/0" ).getWallet(); // use the ethereumjs lib now
             const getAddress         = wallet.getAddress().toString("hex");
             const getPriv            = wallet.getPrivateKeyString().toString("hex");
             const getPublic          = wallet.getPublicKeyString().toString("hex");

@@ -57,7 +57,7 @@ export class SidebarAccountSelectComponent  {
       const privExtend      = hdwallet.privateExtendedKey();
       const pubExtend       = hdwallet.publicExtendedKey();   
 
-      const derivationPath  = hdwallet.derivePath( "m/44'/60'/0'/0/" + this.existingAccounts.length );
+      const derivationPath  = hdwallet.derivePath( "m/44'/312'/0'/0/" + this.existingAccounts.length );
       const initWallet      = derivationPath.getWallet();
       const address         = initWallet.getAddress().toString("hex");
       const checkSumAddress = ethUtil.toChecksumAddress( address );

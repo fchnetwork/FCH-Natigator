@@ -89,7 +89,7 @@ export class EthereumAuthenticationService {
   generateAddressFromSeed(seed: string): EthereumAccount {
     const mnemonicToSeed = bip39.mnemonicToSeed(this.cleanSeed(seed));
     const hdWallet = hdkey.fromMasterSeed(mnemonicToSeed);
-    const wallet = hdWallet.derivePath("m/44'/60'/0'/0/0").getWallet();
+    const wallet = hdWallet.derivePath("m/44'/312'/0'/0/0").getWallet();
     const getAddress = wallet.getAddress().toString("hex");
     const getChecksumAddress = toChecksumAddress(getAddress);
     const privateKey = wallet.getPrivateKeyString().toString("hex");
