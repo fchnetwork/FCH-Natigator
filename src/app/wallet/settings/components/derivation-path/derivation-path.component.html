@@ -1,0 +1,7 @@
+<p>
+  derivation-path works!
+</p>
+ 
+  <aer-select [(ngModel)]="selectResult" (ngModelChange)="derivationChanged($event)" dataKey="derivation" placeholder="Select a derivation path">
+      <aer-select-option *ngFor="let item of derivationPaths;" [value]="item" selected><span>{{item.derivation}}</span></aer-select-option>
+  </aer-select>

@@ -22,14 +22,19 @@ export class AuthenticationService {
 
     private readonly web3: Web3;
     private readonly wsWeb3: Web3;
-
+    private activeDerivation: string;
+    
     constructor(
         private sessionStorage: SessionStorageService,
         public router: Router,
-    ) {
+ ) {
         this.web3 = new Web3(new Web3.providers.HttpProvider(environment.rpcApiProvider));
         this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(environment.WebsocketProvider));
 
+        let dp = this.sessionStorage.retrieve('derivation');
+        
+        this.activeDerivation = (dp != null || dp != undefined) ? dp :  "m/44'/60'/0'/0/0"
+        
         avatars.config({ size: 67 * 3, bgColor: '#fff' });
     }
 
@@ -47,7 +52,7 @@ export class AuthenticationService {
             const newSeed            = bip39.generateMnemonic();
             const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed );
             const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
-            const wallet             = hdwallet.derivePath( "m/44'/312'/0'/0/0" ).getWallet();
+            const wallet             = hdwallet.derivePath( this.activeDerivation ).getWallet();
             const getAddress         = wallet.getAddress().toString("hex");
             const getPriv            = wallet.getPrivateKeyString().toString("hex");
             const getPublic          = wallet.getPublicKeyString().toString("hex");
@@ -177,6 +182,7 @@ export class AuthenticationService {
         this.sessionStorage.clear('transactions');
         this.sessionStorage.clear('tokens');
         this.sessionStorage.clear('ethereum_accounts');
+        this.sessionStorage.clear('derivation');
     }
 
     /**
@@ -204,8 +210,9 @@ export class AuthenticationService {
             const hdwallet        = hdkey.fromMasterSeed( mnemonicToSeed );
             const privExtend      = hdwallet.privateExtendedKey();
             const pubExtend       = hdwallet.publicExtendedKey();
+            const currentDerivation = this.activeDerivation.slice(0, -1)
              for( let i = 0; i <= amount; i++) {
-                const derivationPath  = hdwallet.derivePath( "m/44'/312'/0'/0/" + i );
+                const derivationPath  = hdwallet.derivePath( currentDerivation + i );
                 const initWallet      = derivationPath.getWallet();
                 const address         = initWallet.getAddress().toString("hex");
                 const checkSumAddress = ethUtil.toChecksumAddress( address );
@@ -245,7 +252,7 @@ export class AuthenticationService {
             const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
             const privExtend         = hdwallet.privateExtendedKey();
             const pubExtend          = hdwallet.publicExtendedKey();
-            const wallet             = hdwallet.derivePath( "m/44'/312'/0'/0/0" ).getWallet(); // use the ethereumjs lib now
+            const wallet             = hdwallet.derivePath( this.activeDerivation ).getWallet(); // use the ethereumjs lib now
             const getAddress         = wallet.getAddress().toString("hex");
             const getPriv            = wallet.getPrivateKeyString().toString("hex");
             const getPublic          = wallet.getPublicKeyString().toString("hex");
