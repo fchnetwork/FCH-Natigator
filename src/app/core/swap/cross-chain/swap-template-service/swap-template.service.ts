@@ -43,7 +43,7 @@ export class SwapTemplateService extends BaseContractService {
     const templateById = this.contract.methods.templateById(this.web3.utils.fromAscii(id));
     const response = await this.contractExecutorService.call(templateById);
     const template = new SwapTemplate();
-    template.id = this.web3.utils.toAscii(response[0]);
+    template.id = response[0];
     template.owner = response[1].toLowerCase();
     template.onchainAsset = response[2].toLowerCase();
     template.onchainAccount = response[3].toLowerCase();
