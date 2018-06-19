@@ -15,7 +15,7 @@ import { SettingsComponent } from "@app/wallet/settings/components/settings/sett
 import { SettingsRoutingModule } from "@app/wallet/settings/settings.routes";
 import { FullBackupComponent } from "@app/wallet/settings/components/fullBackup/fullBackup.component";
 import { SimpleBackupComponent } from "@app/wallet/settings/components/simpleBackup/simpleBackup.component";
-
+import { DerivationPathComponent } from "@app/wallet/settings/components/derivation-path/derivation-path.component";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -37,6 +37,7 @@ export function createTranslateLoader(http: HttpClient) {
         SettingsBackupComponent,
         FullBackupComponent,
         SimpleBackupComponent,
+        DerivationPathComponent,
     ]
 })
 

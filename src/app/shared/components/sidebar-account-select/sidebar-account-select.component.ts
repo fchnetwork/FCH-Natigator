@@ -34,9 +34,9 @@ export class SidebarAccountSelectComponent  {
   seed: string;
   existingAccounts: Array<iDerivedAccounts> = [];
   selectResult:any;
-
-
-  constructor( 
+  private activeDerivation: string;
+    
+  constructor(
     private _authSrv: AuthenticationService,
     private sessionStorage: SessionStorageService ) {
 
@@ -47,21 +47,23 @@ export class SidebarAccountSelectComponent  {
      const acc_avatar = this.sessionStorage.retrieve('acc_avatar') || "";
 
      this.existingAccounts.push({ id:0, title: acc_address, img: acc_avatar,icon: 'key', disabled: false, });
-     
+     let dp = this.sessionStorage.retrieve('derivation');
+        
+     this.activeDerivation = (dp != null || dp != undefined) ? dp :  "m/44'/60'/0'/0/0"
    }
 
 
   addAddress() {
-      const mnemonicToSeed  = bip39.mnemonicToSeed( this.seed );
-      const hdwallet        = hdkey.fromMasterSeed( mnemonicToSeed ); 
-      const privExtend      = hdwallet.privateExtendedKey();
-      const pubExtend       = hdwallet.publicExtendedKey();   
-
-      const derivationPath  = hdwallet.derivePath( "m/44'/60'/0'/0/" + this.existingAccounts.length );
-      const initWallet      = derivationPath.getWallet();
-      const address         = initWallet.getAddress().toString("hex");
-      const checkSumAddress = ethUtil.toChecksumAddress( address );
-      const finalAddress    = ethUtil.addHexPrefix( checkSumAddress );
+      const mnemonicToSeed    = bip39.mnemonicToSeed( this.seed );
+      const hdwallet          = hdkey.fromMasterSeed( mnemonicToSeed ); 
+      const privExtend        = hdwallet.privateExtendedKey();
+      const pubExtend         = hdwallet.publicExtendedKey();   
+      const currentDerivation = this.activeDerivation.slice(0, -1)
+      const derivationPath    = hdwallet.derivePath( currentDerivation + this.existingAccounts.length );
+      const initWallet        = derivationPath.getWallet();
+      const address           = initWallet.getAddress().toString("hex");
+      const checkSumAddress   = ethUtil.toChecksumAddress( address );
+      const finalAddress      = ethUtil.addHexPrefix( checkSumAddress );
 
       this.existingAccounts.push({  id:this.existingAccounts.length, title: finalAddress, img: this._authSrv.generateCryptedAvatar(finalAddress),icon: 'key', disabled: false });
 
