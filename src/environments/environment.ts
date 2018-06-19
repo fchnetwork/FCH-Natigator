@@ -15,9 +15,9 @@ export const environment = {
   contracts: {
     swap: {
       address: {
-        AeroToErc20: "0xb5b8a711e5abae1940e1b92ad45d4ec86215ce82",
-        Erc20ToAero: "0x52ac5cf9c2823ea9891d347f94f74dfa8258db1c",
-        Erc20ToErc20: "0xf0b36c5e2ab2e66e2c0baeaf5f2cfdfedbaf757a"
+        AeroToErc20: "0xeaf029f0c7f45778868a715a84485c6a9f6f7583",
+        Erc20ToAero: "0x4a7d95f025f225d1a3b2724f5e394d60af141f68",
+        Erc20ToErc20: "0x90f7f3e9c2a9937d547896a984d8a60e62a7a733"
       },
       crossChain: {
         address: {
