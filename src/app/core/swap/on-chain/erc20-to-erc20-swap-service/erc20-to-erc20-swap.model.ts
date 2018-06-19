@@ -1,13 +1,14 @@
 import { SwapState } from "@core/swap/cross-chain/aerum-erc20-swap-service/swap-state.enum";
+import { Token } from "@core/transactions/token-service/token.model";
 
 export interface Erc20ToErc20Swap {
   id: string;
   openTrader: string;
   openValue: number;
-  openContractAddress: string;
+  openToken: Token;
   closeTrader: string;
   closeValue: number;
-  closeContractAddress: string;
+  closeToken: Token;
   openedOn: Date;
   state: SwapState;
 }
