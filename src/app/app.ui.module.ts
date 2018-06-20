@@ -22,7 +22,8 @@ import {
    ExpandableModule,
    LoaderModule,
    TableModule,
-   RadioModule
+   RadioModule,
+   LayoutModule
 } from "@aerum/ui";
 
 @NgModule({
@@ -48,7 +49,8 @@ import {
        ExpandableModule,
        LoaderModule,
        TableModule,
-       RadioModule
+       RadioModule,
+       LayoutModule
    ],
    exports: [
        // UI Framework Modules
@@ -72,7 +74,8 @@ import {
        ExpandableModule,
        LoaderModule,
        TableModule,
-       RadioModule
+       RadioModule,
+       LayoutModule
    ]
 })
 export class AppUIModule { }

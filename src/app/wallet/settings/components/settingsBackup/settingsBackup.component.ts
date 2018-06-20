@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SettingsBackupService } from '@app/core/settings/settingsBackup.service';
 
 @Component({
   selector: 'app-settingsBackup',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsBackupComponent implements OnInit {
 
-  constructor() { }
+  constructor(private settingsBackupService: SettingsBackupService) { }
 
   ngOnInit() {
+  }
+
+  simpleBackup() {
+    this.settingsBackupService.simpleBackup();
+  }
+
+  fullBackup() {
+    this.settingsBackupService.fullBackup();
   }
 
 }

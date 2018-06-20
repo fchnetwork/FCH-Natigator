@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private router : Router) {
+    // route.queryParams.subscribe(
+    //   params => console.log('queryParams', params));
+   }
 
   ngOnInit() {
+    
   }
 
 }

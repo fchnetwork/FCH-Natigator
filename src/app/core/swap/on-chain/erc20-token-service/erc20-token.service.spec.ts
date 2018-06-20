@@ -2,8 +2,10 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import Web3 from "web3";
 import { ERC20TokenService } from './erc20-token.service';
-import { AuthenticationService } from "../../../authentication/authentication-service/authentication.service";
-import { ContractExecutorService } from "../../../contract/contract-executor-service/contract-executor.service";
+
+import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
+import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
+
 
 describe('ERC20TokenService', () => {
   beforeEach(() => {

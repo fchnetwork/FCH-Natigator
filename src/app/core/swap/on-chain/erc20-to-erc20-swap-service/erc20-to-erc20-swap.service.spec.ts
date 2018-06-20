@@ -2,8 +2,8 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import Web3 from "web3";
 import { Erc20ToErc20SwapService } from './erc20-to-erc20-swap.service';
-import { AuthenticationService } from "../../../authentication/authentication-service/authentication.service";
-import { ContractExecutorService } from "../../../contract/contract-executor-service/contract-executor.service";
+import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
+import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
 
 describe('Erc20ToErc20SwapService', () => {
   const authService: Partial<AuthenticationService> = {

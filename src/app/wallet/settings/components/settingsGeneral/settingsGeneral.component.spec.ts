@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { FullBackupComponent } from './fullBackup.component';
+import { SettingsGeneralComponent } from './settingsGeneral.component';
 
-describe('FullBackupComponent', () => {
-  let component: FullBackupComponent;
-  let fixture: ComponentFixture<FullBackupComponent>;
+describe('SettingsGeneralComponent', () => {
+  let component: SettingsGeneralComponent;
+  let fixture: ComponentFixture<SettingsGeneralComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FullBackupComponent ]
+      declarations: [ SettingsGeneralComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FullBackupComponent);
+    fixture = TestBed.createComponent(SettingsGeneralComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -38,11 +38,8 @@ import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/
 import { GetBlockModalComponent } from '@app/shared/modals/get-block-modal/get-block-modal.component';
 import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
 import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
-
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
-}
-
+import { FormsModule } from '@angular/forms';
+ 
 const modalWindows = [
   TransactionModalComponent,
   GetBlockModalComponent,
@@ -59,14 +56,9 @@ const modalWindows = [
     ModalModule.forRoot(),
     AppUIModule,
     BootstrapModalModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
+    FormsModule, 
     NgxEchartsModule,
+    TranslateModule
   ],
   declarations: [
     I18nComponent,
@@ -123,18 +115,5 @@ const modalWindows = [
   ]
 })
 
-export class SharedModule {
-  /**
-   * Creates an instance of SharedModule.
-   * @param  {TranslateService} translate
-   * @memberof SharedModule
-   */
-  constructor(private translate: TranslateService) {
-    this.translate.setDefaultLang('en');
-    if (this.translate.getBrowserLang() !== undefined) {
-      this.translate.use(this.translate.getBrowserLang());
-    } else {
-      this.translate.use('en'); // Set your language here
-    }
-  }
+export class SharedModule { 
 }
