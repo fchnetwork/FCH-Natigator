@@ -1,8 +1,7 @@
 import { environment } from '@env/environment';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { testAccount } from '../../shared/helpers/data.mock';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms'; 
 import { PasswordValidator } from '../../shared/helpers/validator.password';
 import { RegistrationRouteData } from '../models/RegistrationRouteData';
 import { Router } from '@angular/router';  
@@ -18,8 +17,7 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  registerForm: FormGroup = this.formBuilder.group({});
-  testAccount = testAccount;
+  registerForm: FormGroup = this.formBuilder.group({}); 
   password: string;
   confirmPassword: string;
   avatar: string;
