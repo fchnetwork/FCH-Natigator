@@ -73,4 +73,14 @@ constructor(private notificationService: NotificationService,
           10000
         );
       }
+
+      //CONNECTED to AERUM network
+      public langageChanged(language) {
+        this.notificationService.notify(
+          `${this.translate('SETTINGS.LANGUAGE.NOTIFICATION_TITLE_CHANGE_LANGUAGE')}`, 
+          `${this.translate('SETTINGS.LANGUAGE.NOTIFICATION_BODY_CHANGE_LANGUAGE')} ${language}`,
+          'translation', 
+          10000
+        );
+      }
 }
