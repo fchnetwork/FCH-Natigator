@@ -5,7 +5,6 @@
       <th id="id">Swap ID</th>
       <th id="counterparty">Counterparty</th>
       <th sortable id="currency">Send</th>
-      <th sortable id="counterpartyCurrency">Receive</th>
       <th sortable id="createdOn">Date</th>
       <th sortable id="status">Status</th>
     </ng-template>
@@ -14,7 +13,6 @@
         <td class="link">{{swap.id}}</td>
         <td>{{swap.counterparty | truncate: 16}}</td>
         <td>{{swap.currency}}</td>
-        <td>{{swap.counterpartyCurrency}}</td>
         <td>{{swap.createdOn | date: 'dd MMM, yyyy, h:mm a'}}</td>
         <td>{{swap.status}}</td>
       </tr>

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { SwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
+import { SwapListItem } from "@core/swap/models/swap-list-item.model";
+import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 
-import { OnChainSwapLocalStorageService } from "@core/swap/on-chain/swap-local-storage-service/on-chain-swap-local-storage.service";
-import { OnChainSwap } from "@core/swap/on-chain/swap-local-storage-service/on-chain-swap.model";
 
 @Component({
   selector: 'app-on-chain-swap-list',
@@ -10,12 +11,16 @@ import { OnChainSwap } from "@core/swap/on-chain/swap-local-storage-service/on-c
 })
 export class OnChainSwapListComponent implements OnInit {
 
-  swaps: OnChainSwap[] = [];
+  swaps: SwapListItem[] = [];
 
-  constructor(private swapService: OnChainSwapLocalStorageService) { }
+  constructor(
+    private authService: AuthenticationService,
+    private swapListService: SwapListService
+  ) { }
 
-  ngOnInit() {
-    this.swaps = this.swapService.getSwaps();
+  async ngOnInit() {
+    const account = this.authService.getAddress();
+    this.swaps = await this.swapListService.getSwapsByAccount(account);
   }
 
 }

@@ -12,7 +12,6 @@ import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20
 import { AeroToErc20SwapService } from '@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
-import { OnChainSwapLocalStorageService } from "@core/swap/on-chain/swap-local-storage-service/on-chain-swap-local-storage.service";
 
 @Component({
   selector: 'create-swap',
@@ -44,8 +43,7 @@ export class CreateSwapComponent implements OnInit {
     private aeroToErc20SwapService: AeroToErc20SwapService,
     private erc20ToAeroSwapService: Erc20ToAeroSwapService,
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
-    private aensService: AerumNameService,
-    private swapLocalStorage: OnChainSwapLocalStorageService
+    private aensService: AerumNameService
   ) { }
 
   async ngOnInit() {
@@ -162,7 +160,6 @@ export class CreateSwapComponent implements OnInit {
 
     this.notificationService.notify('Swap creation in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
     await this.createSwapBasedOnMode();
-    this.storeSwapLocally();
     this.notificationService.notify('Swap created', `Swap ID: ${this.swapId}`, "aerum");
   }
 
@@ -229,16 +226,6 @@ export class CreateSwapComponent implements OnInit {
       this.logger.logMessage(`Allowance value: ${allowance}. Needed: ${amount}`);
       await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
     }
-  }
-
-  private storeSwapLocally(): void {
-    this.swapLocalStorage.saveSwap({
-      id: this.swapId,
-      counterparty: this.counterpartyAddress,
-      currency: this.token.symbol,
-      counterpartyCurrency: this.counterpartyToken.symbol,
-      createdOn: new Date()
-    });
   }
 
   private updateSwapMode() {
