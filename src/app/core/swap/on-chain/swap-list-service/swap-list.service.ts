@@ -38,7 +38,7 @@ export class SwapListService {
     return {
       id: swap.id,
       counterparty: this.getCounterparty(swap.ethTrader, swap.erc20Trader, account),
-      openAsset: 'Aero',
+      openAsset: 'AER',
       openValue: swap.ethValue,
       closeAsset: swap.erc20Token.symbol,
       closeValue: swap.erc20Value,
@@ -59,7 +59,7 @@ export class SwapListService {
       counterparty: this.getCounterparty(swap.ethTrader, swap.erc20Trader, account),
       openAsset: swap.erc20Token.symbol,
       openValue: swap.erc20Value,
-      closeAsset: 'Aero',
+      closeAsset: 'AER',
       closeValue: swap.ethValue,
       createdOn: swap.openedOn,
       state: swap.state
