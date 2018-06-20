@@ -29,8 +29,12 @@
     "TITLE": "Very Strong"
   },
   "SETTINGS": {
-    "SETTINGS": "Settings",
-    "BACKUP": "Backup"
+    "TITLE": "Settings",
+    "BACKUP": "Backup",
+    "LANGUAGE": {
+      "NOTIFICATION_TITLE_CHANGE_LANGUAGE": "Language change",
+      "NOTIFICATION_BODY_CHANGE_LANGUAGE":"Language has been changed to: "
+    }
   },
   "ACCESS_RECOVERY": "Access Recovery",
   "CREATE_BACKUP": "Backup",
