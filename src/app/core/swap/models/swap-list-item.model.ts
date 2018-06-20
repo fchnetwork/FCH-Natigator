@@ -1,4 +1,4 @@
-import { SwapState } from "@core/swap/cross-chain/aerum-erc20-swap-service/swap-state.enum";
+import { SwapState } from "./swap-state.enum";
 
 export interface SwapListItem {
   id: string;

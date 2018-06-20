@@ -10,7 +10,7 @@ import { Duration } from "moment";
 import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute, Router } from "@angular/router";
 
-import { SwapState } from "@core/swap/cross-chain/aerum-erc20-swap-service/swap-state.enum";
+import { SwapState } from "@core/swap/models/swap-state.enum";
 import { Erc20Swap } from "@core/swap/cross-chain/aerum-erc20-swap-service/erc20-swap.model";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";

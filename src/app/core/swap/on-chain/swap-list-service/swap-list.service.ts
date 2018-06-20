@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { SwapListItem } from "@core/swap/on-chain/swap-list-service/swap-list-item.model";
+import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { AeroToErc20Swap } from "@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.model";
 import { Erc20ToAeroSwap } from "@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.model";
 import { Erc20ToErc20Swap } from "@core/swap/on-chain/erc20-to-erc20-swap-service/erc20-to-erc20-swap.model";

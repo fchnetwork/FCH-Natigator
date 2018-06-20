@@ -10,8 +10,6 @@ import { BaseContractService } from "@core/contract/base-contract-service/base-c
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
 
-type ContractEvent = (options?: { filter?: object, fromBlock?: BlockType, topics?: string[] }, cb?: Callback<EventLog>) => EventEmitter;
-
 @Injectable()
 export class AerumErc20SwapService extends BaseContractService {
 
