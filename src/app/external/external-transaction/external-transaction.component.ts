@@ -8,7 +8,6 @@ import { TransactionService } from '@app/core/transactions/transaction-service/t
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 
 @Component({
@@ -54,7 +53,6 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
 
   constructor(
     private logger: LoggerService,
-    private notificationService: InternalNotificationService,
     private authService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router,
