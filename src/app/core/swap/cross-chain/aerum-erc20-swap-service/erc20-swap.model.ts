@@ -1,4 +1,4 @@
-import { SwapState } from "./swap-state.enum";
+import { SwapState } from "@core/swap/models/swap-state.enum";
 
 export interface Erc20Swap {
   hash: string;

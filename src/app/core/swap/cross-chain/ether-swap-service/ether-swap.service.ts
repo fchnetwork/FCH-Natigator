@@ -6,6 +6,10 @@ import { environment } from "@env/environment";
 import Web3 from "web3";
 import { Contract } from "web3/types";
 
+import { fromWei } from "web3-utils";
+import { secondsToDate } from "@shared/helpers/date-util";
+
+import { EtherSwap } from "@core/swap/cross-chain/ether-swap-service/ether-swap.model";
 import { ContractExecutorService } from "@core/ethereum/contract-executor-service/contract-executor.service";
 
 @Injectable()
@@ -43,19 +47,34 @@ export class EtherSwapService {
 
   async expireSwap(hash: string, hashCallback?: (hash: string) => void) {
     const expireSwap = this.contract.methods.expire(hash);
-    const response = await this.contractExecutorService.send(expireSwap, { value: '0', hashReceivedCallback: hashCallback });
-    return response;
+    const receipt = await this.contractExecutorService.send(expireSwap, { value: '0', hashReceivedCallback: hashCallback });
+    return receipt;
   }
 
-  async checkSwap(hash: string) {
+  async checkSwap(hash: string): Promise<EtherSwap> {
     const checkSwap = this.contract.methods.check(hash);
-    const receipt = await this.contractExecutorService.call(checkSwap);
-    return receipt;
+    const response = await this.contractExecutorService.call(checkSwap);
+    const swap: EtherSwap = {
+      hash,
+      openTrader: response.openTrader,
+      withdrawTrader: response.withdrawTrader,
+      value: fromWei(response.ethValue, 'ether'),
+      timelock: Number(response.timelock),
+      openedOn: secondsToDate(Number(response.openedOn)),
+      state: Number(response.state)
+    };
+    return swap;
   }
 
   async checkSecretKey(hash: string) {
     const checkSecretKey = this.contract.methods.checkSecretKey(hash);
-    const receipt = await this.contractExecutorService.call(checkSecretKey);
-    return receipt;
+    const response = await this.contractExecutorService.call(checkSecretKey);
+    return response;
+  }
+
+  async getAccountSwapIds(address: string): Promise<string[]> {
+    const getAccountSwaps = this.contract.methods.getAccountSwaps(address);
+    const swapIds = await this.contractExecutorService.call(getAccountSwaps);
+    return swapIds;
   }
 }

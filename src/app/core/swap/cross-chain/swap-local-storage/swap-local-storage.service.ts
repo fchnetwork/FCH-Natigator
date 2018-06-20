@@ -24,7 +24,14 @@ export class SwapLocalStorageService {
     return swaps.find(swap => swap.hash === hash);
   }
 
-  private loadAllSwaps(): SwapReference[] {
+  loadAllSwaps(): SwapReference[] {
     return this.sessionStorage.retrieve("cross_chain_swap") as SwapReference[] || [];
+  }
+
+  loadAllSwapAccounts(): string[] {
+    const swaps = this.loadAllSwaps();
+    const accounts = swaps.map(swap => swap.account);
+    const uniqueAccounts = Array.from(new Set(accounts));
+    return uniqueAccounts;
   }
 }
