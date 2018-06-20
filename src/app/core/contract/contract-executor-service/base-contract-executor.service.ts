@@ -137,8 +137,6 @@ export abstract class BaseContractExecutorService {
       throw new Error("account address is not initiated");
     }
 
-    if(!this.privateKey) {
-      throw new Error("private key is not initiated");
-    }
+    // NOTE: Private key is required only for send
   }
 }

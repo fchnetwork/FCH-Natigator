@@ -79,7 +79,7 @@
             </div>
             <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">I acknowledge risks.</aer-checkbox>
             <aer-button [disabled]="checkbox && !checked || !proceedAvailable" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue large full-width">Proceed</aer-button>
-            <aer-button (buttonFn)="dismiss()" class="large full-width">{{proceed ? 'Close':'Cancel'}}</aer-button>
+            <aer-button (buttonFn)="dismiss()" class="large full-width">{{proceedAvailable ? 'Close':'Cancel'}}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>
