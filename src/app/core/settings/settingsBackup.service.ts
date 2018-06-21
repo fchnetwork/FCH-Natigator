@@ -33,11 +33,15 @@ export class SettingsBackupService {
     const aerumKeyStore = Cookie.get('aerum_keyStore');
     const tokens = Cookie.get('tokens');
     const transactions = Cookie.get('transactions');
+    const ethereumAccounts = Cookie.get('ethereum_accounts');
+    const crossChainSwaps = Cookie.get('cross_chain_swaps');
     const preparedData = {
       aerumBase,
       aerumKeyStore,
       tokens,
       transactions,
+      ethereumAccounts,
+      crossChainSwaps
     };
     this.generateFile(preparedData, 'full_backup', 'full');
   }
