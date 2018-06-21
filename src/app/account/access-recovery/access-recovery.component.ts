@@ -21,6 +21,7 @@ export class AccessRecoveryComponent implements OnInit, OnDestroy {
   private: string;
   recoverForm: FormGroup;
   componentDestroyed$: Subject<boolean> = new Subject();
+  step = 'step_1';
   seedFileText: string;
   passwordStrength = {
     strength: '',
