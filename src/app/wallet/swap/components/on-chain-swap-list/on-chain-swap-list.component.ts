@@ -63,7 +63,7 @@ export class OnChainSwapListComponent implements OnInit {
   }
 
   openSwap(swapId: string) {
-    return this.router.navigate(['wallet/swap/load'], {queryParams: { id: swapId }});
+    return this.router.navigate(['wallet/swap/load', { id: swapId }]);
   }
 
 }

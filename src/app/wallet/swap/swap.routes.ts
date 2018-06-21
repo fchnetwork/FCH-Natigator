@@ -18,6 +18,10 @@ const SWAP_ROUTES: Routes = [{
     {
       path: 'load',
       component: LoadSwapComponent,
+    },
+    {
+      path: 'load/:id',
+      component: LoadSwapComponent,
     }
   ]
 }];
