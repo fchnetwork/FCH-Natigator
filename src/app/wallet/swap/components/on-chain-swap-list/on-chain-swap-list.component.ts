@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
-
+import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 
 @Component({
   selector: 'app-on-chain-swap-list',
@@ -11,16 +11,48 @@ import { AuthenticationService } from "@core/authentication/authentication-servi
 })
 export class OnChainSwapListComponent implements OnInit {
 
+  private readonly itemsPerPage = 5;
+  private page = 0;
+  private account: string;
+
+  loading = false;
+  canShowMore = true;
   swaps: SwapListItem[] = [];
 
   constructor(
     private authService: AuthenticationService,
+    private notificationService: InternalNotificationService,
     private swapListService: SwapListService
   ) { }
 
   async ngOnInit() {
-    const account = this.authService.getAddress();
-    this.swaps = await this.swapListService.getSwapsByAccount(account);
+    this.account = this.authService.getAddress();
+    await this.loadSwaps();
+  }
+
+  private async loadSwaps() {
+    try {
+      this.loading = true;
+      this.swaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
+      this.canShowMore = this.swaps.length === this.itemsPerPage;
+    }
+    catch (e) {
+      this.notificationService.showMessage('Error loading swaps', 'Error');
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async showMore() {
+    try {
+      this.page++;
+      const pageSwaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
+      this.canShowMore = pageSwaps.length === this.itemsPerPage;
+      this.swaps = this.swaps.concat(pageSwaps);
+    }
+    catch (e) {
+      this.notificationService.showMessage('Error loading swaps', 'Error');
+    }
   }
 
 }

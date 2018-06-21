@@ -1,6 +1,13 @@
-<h3>Aerum Swaps</h3>
+<div aerRow>
+  <div aerColumn size="lg-2 md-3 sm-4 sm-4 xs-12">
+    <h3>Aerum Swaps</h3>
+  </div>
+  <div aerColumn size="lg-2 md-3 sm-4 xs-12" class="col-lg-offset-8 col-md-offset-6 col-sm-offset-4">
+    <aer-button (buttonFn)="showMore()" class="full-width" style="margin: 0 10px;">New Swap</aer-button>
+  </div>
+</div>
 <aer-card>
-  <aer-table [data]="swaps" [paginator]="true">
+  <aer-table [data]="swaps" [loading]="loading">
     <ng-template aerTemplate="header">
       <th id="id">Swap ID</th>
       <th id="counterparty">Counterparty</th>
@@ -22,4 +29,6 @@
       </tr>
     </ng-template>
   </aer-table>
+  <app-divider [showLine]="false"></app-divider>
+  <aer-button  class="full-width blue" (buttonFn)="showMore()" [disabled]="!canShowMore">{{'SHOW_MORE'|translate}}</aer-button>
 </aer-card>
