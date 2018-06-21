@@ -50,7 +50,11 @@ export class SwapListService {
       this.erc20ToErc20SwapService.getAccountSwapIds(account)
     ]);
 
-    [aeroToErc20SwapIds, erc20ToAeroSwapIds, erc20ToErc20SwapIds] = multiSlice([aeroToErc20SwapIds, erc20ToAeroSwapIds, erc20ToErc20SwapIds], take, skip);
+    // NOTE: We reverse so that latest go first
+    [aeroToErc20SwapIds, erc20ToAeroSwapIds, erc20ToErc20SwapIds] = multiSlice(
+      [aeroToErc20SwapIds.reverse(), erc20ToAeroSwapIds.reverse(), erc20ToErc20SwapIds.reverse()],
+      take, skip
+    );
     return [aeroToErc20SwapIds, erc20ToAeroSwapIds, erc20ToErc20SwapIds];
   }
 

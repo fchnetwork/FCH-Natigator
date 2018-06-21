@@ -40,8 +40,7 @@ export class CrossChainSwapListComponent implements OnInit {
   private async loadSwaps() {
     try {
       this.loading = true;
-      // this.swaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
-      this.swaps = await this.swapListService.getSwapsByAccount(this.account);
+      this.swaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
       this.canShowMore = this.swaps.length === this.itemsPerPage;
     }
     catch (e) {
@@ -55,8 +54,7 @@ export class CrossChainSwapListComponent implements OnInit {
   async showMore() {
     try {
       this.page++;
-      // const pageSwaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
-      const pageSwaps = await this.swapListService.getSwapsByAccount(this.account);
+      const pageSwaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
       this.canShowMore = pageSwaps.length === this.itemsPerPage;
       this.swaps = this.swaps.concat(pageSwaps);
     }
