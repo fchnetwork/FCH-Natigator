@@ -49,4 +49,13 @@ export class SwapLocalStorageService {
     const uniqueAccounts = Array.from(new Set(accounts));
     return uniqueAccounts;
   }
+
+  filterOutUnknown(swapIds: string[]): string[] {
+    if (!swapIds){
+      return [];
+    }
+
+    const swaps = this.loadAllSwaps();
+    return swapIds.filter(id => swaps.some(swap => swap.hash === id));
+  }
 }

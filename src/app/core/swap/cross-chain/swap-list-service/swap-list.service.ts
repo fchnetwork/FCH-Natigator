@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 
+import { multiSlice } from "@shared/helpers/array-utils";
+
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
+import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
-import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { multiSlice } from "@shared/helpers/array-utils";
 
 @Injectable()
 export class SwapListService {
@@ -39,6 +40,11 @@ export class SwapListService {
       this.loadEtherSwapIds(),
       this.loadErc20SwapIds(account)
     ]);
+
+    // NOTE: We filter out unknown swaps from list because we cannot cancel them
+    //       because we don't have locally stored account which opened these swaps
+    //       However, we may allow in future showing them so that other account of the same user may cancel swap & return funds back
+    etherSwapIds = this.localSwapStorage.filterOutUnknown(etherSwapIds);
 
     [etherSwapIds, erc20SwapIds] = multiSlice([etherSwapIds, erc20SwapIds], take, skip);
     return [etherSwapIds, erc20SwapIds];
