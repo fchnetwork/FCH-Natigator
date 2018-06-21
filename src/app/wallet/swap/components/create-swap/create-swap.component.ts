@@ -5,13 +5,13 @@ import { NotificationService } from "@aerum/ui";
 import { environment } from '@env/environment';
 import { SwapToken, SwapMode } from '@swap/models/models';
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { ModalService } from '@core/general/modal-service/modal.service';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { AerumNameService } from '@core/aens/aerum-name-service/aerum-name.service';
 import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { AeroToErc20SwapService } from '@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
-import { ModalService } from '@core/general/modal-service/modal.service';
 
 @Component({
   selector: 'create-swap',
@@ -176,7 +176,7 @@ export class CreateSwapComponent implements OnInit {
   }
 
   private async createAeroToErc20Swap() {
-    const counterpartyTokenAmount = this.getCounterpartyTokenAmountInclusingDecimals();
+    const counterpartyTokenAmount = this.getCounterpartyTokenAmountIncludingDecimals();
     await this.aeroToErc20SwapService.openSwap(
       this.swapId,
       this.tokenAmount.toString(10),
@@ -187,7 +187,7 @@ export class CreateSwapComponent implements OnInit {
   }
 
   private async createErc20ToAeroSwap() {
-    const tokenAmount = this.getTokenAmountInclusingDecimals();
+    const tokenAmount = this.getTokenAmountIncludingDecimals();
     await this.ensureAllowance(this.token.address, environment.contracts.swap.address.Erc20ToAero, tokenAmount);
     await this.erc20ToAeroSwapService.openSwap(
       this.swapId,
@@ -199,8 +199,8 @@ export class CreateSwapComponent implements OnInit {
   }
 
   private async createErc20ToErc20Swap() {
-    const tokenAmount = this.getTokenAmountInclusingDecimals();
-    const counterpartyTokenAmount = this.getCounterpartyTokenAmountInclusingDecimals();
+    const tokenAmount = this.getTokenAmountIncludingDecimals();
+    const counterpartyTokenAmount = this.getCounterpartyTokenAmountIncludingDecimals();
     await this.ensureAllowance(this.token.address, environment.contracts.swap.address.Erc20ToErc20, tokenAmount);
     await this.erc20ToErc20SwapService.openSwap(
       this.swapId,
@@ -212,11 +212,11 @@ export class CreateSwapComponent implements OnInit {
     );
   }
 
-  private getTokenAmountInclusingDecimals() {
+  private getTokenAmountIncludingDecimals() {
     return Number(this.tokenAmount) * Math.pow(10, Number(this.token.decimals));
   }
 
-  private getCounterpartyTokenAmountInclusingDecimals() {
+  private getCounterpartyTokenAmountIncludingDecimals() {
     return Number(this.counterpartyTokenAmount) * Math.pow(10, Number(this.counterpartyToken.decimals));
   }
 

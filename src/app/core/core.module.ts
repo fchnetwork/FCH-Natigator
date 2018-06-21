@@ -38,6 +38,8 @@ import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { SettingsBackupService } from '@app/core/settings/settingsBackup.service';
 import { TranslateService } from '@ngx-translate/core';
+import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
+import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
 
 @NgModule({
   imports: [
@@ -75,6 +77,8 @@ import { TranslateService } from '@ngx-translate/core';
     SwapTemplateService,
     SwapLocalStorageService,
     SettingsBackupService,
+    OnChainSwapListService,
+    CrossChainSwapListService
   ]
 })
 export class CoreModule {

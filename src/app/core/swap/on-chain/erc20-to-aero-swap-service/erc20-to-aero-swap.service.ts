@@ -66,7 +66,7 @@ export class Erc20ToAeroSwapService extends BaseContractService {
       erc20Value: toNumber(response.erc20Value, token.decimals),
       erc20Token: token,
       ethTrader: response.ethTrader,
-      ethValue: fromWei(response.value, 'ether'),
+      ethValue: fromWei(response.ethValue, 'ether'),
       openedOn: secondsToDate(Number(response.openedOn)),
       state: Number(response.state)
     };
@@ -76,6 +76,6 @@ export class Erc20ToAeroSwapService extends BaseContractService {
   async getAccountSwapIds(address: string): Promise<string[]> {
     const getAccountSwaps = this.contract.methods.getAccountSwaps(address);
     const swapIds = await this.contractExecutorService.call(getAccountSwaps);
-    return swapIds;
+    return swapIds.map(id => this.web3.utils.toAscii(id));
   }
 }
