@@ -43,7 +43,9 @@ export class SwapListService {
     this.ethereumContractExecutorService.init(web3, ethAccounts[0], null);
     this.etherSwapService.useContractExecutor(this.ethereumContractExecutorService);
 
-    const swapGroups = await Promise.all(ethAccounts.map(this.getEtherSwapsByAccount));
+    const swapGroups = await Promise.all(ethAccounts.map(ethAccount => this.getEtherSwapsByAccount(ethAccount)));
+    const swaps = swapGroups.reduce((all: SwapListItem[], accountSwaps: SwapListItem[]) => all.concat(accountSwaps),[]);
+    return swaps;
   }
 
   private async getEtherSwapsByAccount(account: string): Promise<SwapListItem[]> {

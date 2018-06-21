@@ -58,7 +58,7 @@ export class OpenEtherSwapService {
       hash,
       openTrader: response.openTrader,
       withdrawTrader: response.withdrawTrader,
-      value: fromWei(response.ethValue, 'ether'),
+      value: fromWei(response.value, 'ether'),
       timelock: Number(response.timelock),
       openedOn: secondsToDate(Number(response.openedOn)),
       state: Number(response.state)
