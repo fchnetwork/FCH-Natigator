@@ -129,14 +129,9 @@ export abstract class BaseContractExecutorService {
   }
 
   private ensureInitiated() : void {
+    // NOTE: Private key & account are required only for send (not call)
     if(!this.web3) {
       throw new Error("Web3 is not initiated");
     }
-
-    if(!this.currentWalletAddress) {
-      throw new Error("account address is not initiated");
-    }
-
-    // NOTE: Private key is required only for send
   }
 }

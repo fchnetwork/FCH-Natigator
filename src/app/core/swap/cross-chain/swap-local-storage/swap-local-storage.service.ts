@@ -5,14 +5,14 @@ import * as CryptoJS from 'crypto-js';
 
 import { environment } from "@env/environment";
 import { SessionStorageService } from "ngx-webstorage";
-import { SwapReference } from "./swap-reference.model";
+import { EtherSwapReference } from "./swap-reference.model";
 
 @Injectable()
 export class SwapLocalStorageService {
 
   constructor(private sessionStorage: SessionStorageService) { }
 
-  storeSwapReference(swap: SwapReference): void {
+  storeSwapReference(swap: EtherSwapReference): void {
     if(!swap) {
       return;
     }
@@ -23,14 +23,14 @@ export class SwapLocalStorageService {
     this.storeSwapsInCookies(swaps);
   }
 
-  private storeSwapsInCookies(swaps: SwapReference[]): void {
+  private storeSwapsInCookies(swaps: EtherSwapReference[]): void {
     const password = this.sessionStorage.retrieve('password');
     const stringSwaps = JSON.stringify(swaps);
     const encryptedSwaps = CryptoJS.AES.encrypt(stringSwaps, password);
     Cookie.set('cross_chain_swaps', encryptedSwaps, 7, "/", environment.cookiesDomain);
   }
 
-  loadSwapReference(hash: string): SwapReference {
+  loadSwapReference(hash: string): EtherSwapReference {
     if(!hash) {
       return null;
     }
@@ -39,8 +39,8 @@ export class SwapLocalStorageService {
     return swaps.find(swap => swap.hash === hash);
   }
 
-  loadAllSwaps(): SwapReference[] {
-    return this.sessionStorage.retrieve("cross_chain_swaps") as SwapReference[] || [];
+  loadAllSwaps(): EtherSwapReference[] {
+    return this.sessionStorage.retrieve("cross_chain_swaps") as EtherSwapReference[] || [];
   }
 
   loadAllSwapAccounts(): string[] {

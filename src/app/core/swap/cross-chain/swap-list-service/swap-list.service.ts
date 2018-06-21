@@ -53,7 +53,7 @@ export class SwapListService {
 
     // NOTE: To have paging working we always should return swap ids in the same order
     // that's why we order them by account first
-    this.configureEtherSwapServices(ethAccounts);
+    this.configureEtherSwapServices(ethAccounts[0]);
     const swapIdGroups = await Promise.all(ethAccounts.map(ethAccount => this.getEtherSwapsIdsByAccount(ethAccount)));
     const swapIdPairs = swapIdGroups.reduce((all, accountSwaps) => all.concat(accountSwaps),[]);
     const sortedSwapIds = swapIdPairs.sort((one, two) => one.account.localeCompare(two.account));
@@ -96,10 +96,10 @@ export class SwapListService {
     };
   }
 
-  private configureEtherSwapServices(ethAccounts) {
+  private configureEtherSwapServices(account: string) {
     // NOTE: We may get any account here as we just do queries & we don't need private key
     const web3 = this.ethereumAuthenticationService.getWeb3();
-    this.ethereumContractExecutorService.init(web3, ethAccounts[0], null);
+    this.ethereumContractExecutorService.init(web3, account, null);
     this.etherSwapService.useContractExecutor(this.ethereumContractExecutorService);
   }
 

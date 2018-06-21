@@ -9,7 +9,7 @@ import Web3 from "web3";
 
 import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
-import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
@@ -246,16 +246,13 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       (txHash) => this.onOpenSwapHashReceived(txHash)
     );
 
-    const localSwap: SwapReference = {
+    const localSwap: EtherSwapReference = {
       hash,
       secret: this.secret,
-      counterparty: this.selectedTemplate.onchainAccount,
       account: this.params.account,
-      ethAmount: this.ethAmount,
-      token: this.selectedToken.address,
-      tokenAmount: this.amount,
       walletType: this.params.wallet,
-      timelock: timestamp
+      token: this.selectedToken.address,
+      tokenAmount: this.amount
     };
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
