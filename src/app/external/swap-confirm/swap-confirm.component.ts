@@ -11,16 +11,16 @@ import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { SwapState } from "@core/swap/models/swap-state.enum";
-import { Erc20Swap } from "@core/swap/cross-chain/aerum-erc20-swap-service/erc20-swap.model";
+import { CounterErc20Swap } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-erc20-swap.model";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
-import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
+import { CounterAerumErc20SwapService } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-aerum-erc20-swap.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
-import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
+import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
@@ -68,11 +68,11 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private authService: AuthenticationService,
-    private aerumErc20SwapService: AerumErc20SwapService,
+    private aerumErc20SwapService: CounterAerumErc20SwapService,
     private tokenService: TokenService,
     private swapLocalStorageService: SwapLocalStorageService,
     private ethereumAuthService: EthereumAuthenticationService,
-    private etherSwapService: EtherSwapService,
+    private etherSwapService: OpenEtherSwapService,
     private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
   ) { }
@@ -178,7 +178,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.cleanErrors();
 
-    const swap: Erc20Swap = await this.aerumErc20SwapService.checkSwap(this.hash);
+    const swap: CounterErc20Swap = await this.aerumErc20SwapService.checkSwap(this.hash);
     this.logger.logMessage('Swap loaded: ', swap);
 
     if(!swap || (swap.state === SwapState.Invalid)) {

@@ -4,8 +4,8 @@ import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
-import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
-import { EtherSwap } from "@core/swap/cross-chain/ether-swap-service/ether-swap.model";
+import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
+import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { SwapState } from "@core/swap/models/swap-state.enum";
 
@@ -17,7 +17,7 @@ export class SwapListService {
     private localSwapStorage: SwapLocalStorageService,
     private ethereumAuthenticationService: EthereumAuthenticationService,
     private ethereumContractExecutorService: SelfSignedEthereumContractExecutorService,
-    private etherSwapService: EtherSwapService
+    private etherSwapService: OpenEtherSwapService
   ) { }
 
   async getSwapsByAccount(account: string): Promise<SwapListItem[]> {
@@ -54,7 +54,7 @@ export class SwapListService {
     return swaps.map(swap => this.mapEtherSwap(account, swap));
   }
 
-  private mapEtherSwap(account: string, swap: EtherSwap): SwapListItem {
+  private mapEtherSwap(account: string, swap: OpenEtherSwap): SwapListItem {
     return {
       id: swap.hash,
       counterparty: this.getCounterparty(swap.openTrader, swap.withdrawTrader, account),

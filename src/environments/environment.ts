@@ -22,13 +22,17 @@ export const environment = {
       crossChain: {
         address: {
           aerum: {
-            AeroSwap: "0xd7a2fdeedbb6495cdffa6d13f624c771de15a9ca",
-            Erc20Swap: "0xa4d35cc7da4468ebe7be2ceb2bd05c3f12c2b4fd",
-            TemplatesRegistry: "0x6ce0143a06476a3b1051df548cc096eb5ebb770e"
+            OpenAeroSwap: "0x7ff74f1a5f55d632902587ed4e961e426c0103dc",
+            OpenErc20Swap: "0xd7efba4122c670a563fd19fe28fb95a1ee48e04f",
+            CounterAeroSwap: "0x898c0615ff8a1f18b9af8b721bb4aeae20a1f877",
+            CounterErc20Swap: "0x9f38dccb3b784606a30e0b43fe7b97d15e91ceae",
+            TemplatesRegistry: "0x1b1ff05ebe506d8c07e4354b316b1fb5b3b08d2a"
           },
           ethereum: {
-            EtherSwap: "0x886cebd831af48f1bff5943605254037361c1d56",
-            Erc20Swap: "0xef0aa2ffc51d039e073ebbb0de3c4b79ec98472c"
+            OpenEtherSwap: "0x99c92b41a4194014a1d6649c52c2684b325590b6",
+            OpenErc20Swap: "0x4aaf1190442c85c99b9fcf9003bc9ee138ecee70",
+            CounterEtherSwap: "0xe51f118ac3cb8d54fc0168d1021c1fddcd860243",
+            CounterErc20Swap: "0xc7f35bbbad6ef915ad292da05a61e8decf07cf55"
           }
         },
         swapExpireTimeoutInSeconds: 10 * 60

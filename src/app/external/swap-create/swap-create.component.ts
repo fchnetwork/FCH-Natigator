@@ -19,7 +19,7 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { ERC20TokenService } from "@core/swap/on-chain/erc20-token-service/erc20-token.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
-import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
+import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
 import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
@@ -70,7 +70,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
     private erc20TokenService: ERC20TokenService,
     private swapTemplateService: SwapTemplateService,
-    private etherSwapService: EtherSwapService,
+    private etherSwapService: OpenEtherSwapService,
     private swapLocalStorageService: SwapLocalStorageService,
     private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
