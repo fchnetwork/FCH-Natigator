@@ -107,12 +107,13 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.hash = param.hash;
     this.query = param.query;
 
+    this.loadLocalSwap();
+    
     await this.loadEthereumSwap();
     if (this.etherSwapFinishedOrExpired()) {
       return;
     }
 
-    this.loadLocalSwap();
     this.setupTimer();
 
     this.aerumErc20SwapService.onOpen(this.hash, (err, event) => this.onOpenSwapHandler(this.hash, err, event));
@@ -189,7 +190,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
         return;
       }
       this.timer = moment.duration(timeoutInMilliseconds);
-    }, 1000);
+    }, 500);
   }
 
   private onSwapExpired(): void {
