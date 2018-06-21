@@ -3,7 +3,7 @@
     <h3>Aerum Swaps</h3>
   </div>
   <div aerColumn size="lg-2 md-3 sm-4 xs-12" class="col-lg-offset-8 col-md-offset-6 col-sm-offset-4">
-    <aer-button (buttonFn)="showMore()" class="full-width" style="margin: 0 10px;">New Swap</aer-button>
+    <aer-button (buttonFn)="createSwap()" class="full-width btn-create-swap">New Swap</aer-button>
   </div>
 </div>
 <aer-card>
@@ -17,7 +17,7 @@
     </ng-template>
     <ng-template aerTemplate="body" let-swap>
       <tr>
-        <td class="link">{{swap.id}}</td>
+        <td class="link" (click)="openSwap(swap.id)">{{swap.id}}</td>
         <td>{{swap.counterparty | truncate: 16}}</td>
         <td>{{swap.openValue}} {{swap.openAsset}} <aer-icon class="icon">angle-right</aer-icon> {{swap.closeValue}} {{swap.closeAsset}}</td>
         <td>{{swap.createdOn | date: 'dd MMM, yyyy, h:mm a'}}</td>

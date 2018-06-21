@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+
 import { SwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
@@ -20,6 +22,7 @@ export class OnChainSwapListComponent implements OnInit {
   swaps: SwapListItem[] = [];
 
   constructor(
+    private router: Router,
     private authService: AuthenticationService,
     private notificationService: InternalNotificationService,
     private swapListService: SwapListService
@@ -53,6 +56,14 @@ export class OnChainSwapListComponent implements OnInit {
     catch (e) {
       this.notificationService.showMessage('Error loading swaps', 'Error');
     }
+  }
+
+  createSwap() {
+    return this.router.navigate(['wallet/swap/create']);
+  }
+
+  openSwap(swapId: string) {
+    return this.router.navigate(['wallet/swap/load'], {queryParams: { id: swapId }});
   }
 
 }
