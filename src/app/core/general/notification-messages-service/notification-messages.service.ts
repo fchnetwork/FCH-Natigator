@@ -74,12 +74,32 @@ constructor(private notificationService: NotificationService,
         );
       }
 
-      //CONNECTED to AERUM network
-      public langageChanged(language) {
+      //Change the language
+      public langugeChanged(language) {
         this.notificationService.notify(
           `${this.translate('SETTINGS.LANGUAGE.NOTIFICATION_TITLE_CHANGE_LANGUAGE')}`, 
           `${this.translate('SETTINGS.LANGUAGE.NOTIFICATION_BODY_CHANGE_LANGUAGE')} ${language}`,
           'translation', 
+          10000
+        );
+      }
+
+      //Shows if token is not in the cookies
+      public tokenNotInTheCookies() {
+        this.notificationService.notify(
+          `${this.translate('EXTERNAL_TRANSACTION.NOTIFICATION_TITLE_TOKEN_NOT_IN_WALLET')}`, 
+          `${this.translate('EXTERNAL_TRANSACTION.NOTIFICATION_BODY_TOKEN_NOT_IN_WALLET')}`,
+          'info', 
+          10000
+        );
+      }
+
+      //Shows if token is not configured
+      public tokenNotConfigured() {
+        this.notificationService.notify(
+          `${this.translate('EXTERNAL_TRANSACTION.NOTIFICATION_TITLE_TOKEN_NOT_CONFIGURED')}`, 
+          `${this.translate('EXTERNAL_TRANSACTION.NOTIFICATION_BODY_TOKEN_NOT_CONFIGURED')}`,
+          'exclamation-triangle', 
           10000
         );
       }

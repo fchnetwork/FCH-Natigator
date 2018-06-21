@@ -333,5 +333,11 @@
     "NOT_ENOUGH_FUNDS":"Get more Aero to buy name",
     "CONFIRM_RELEASE_NAME_TITLE":"Release Name",
     "CONFIRM_TRANSFER_NAME_TITLE":"Transfer Name Ownership"
+  },
+  "EXTERNAL_TRANSACTION": {
+    "NOTIFICATION_BODY_TOKEN_NOT_IN_WALLET":"Token is not yet added to the wallet",
+    "NOTIFICATION_TITLE_TOKEN_NOT_IN_WALLET":"Notification",
+    "NOTIFICATION_BODY_TOKEN_NOT_CONFIGURED":"Please configure the token first",
+    "NOTIFICATION_TITLE_TOKEN_NOT_CONFIGURED":"Warning!"
   }
 }

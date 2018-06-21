@@ -21,7 +21,7 @@ export class I18nComponent {
   langChanged(event: iLanguage) {
     this.translate.use( event.lang.substring(0, 2).toLowerCase() );
     this.activeLanguage = event;
-    this.notificationMessagesService.langageChanged(event.lang);
+    this.notificationMessagesService.langugeChanged(event.lang);
   }
 
 }

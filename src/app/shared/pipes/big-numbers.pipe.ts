@@ -36,13 +36,16 @@ export class BigNumbersPipe implements PipeTransform {
       value /= 1000; 
       unit ++; 
     }
-    if (value < 1 && value > 0) {
-      while ( value < 1 ) { 
+    if (value < 1 && value >= 0.000001) {
+      return this.decimalPipe.transform(value, '.7');
+    } else if (value < 1 && value > 0) {
+      while ( value < 1) { 
         value *= 10; 
         unit ++;
       }
       return this.decimalPipe.transform(value, digits) + 'e-' + unit;
-    } else {
+    } 
+    else {
       return this.decimalPipe.transform(value, digits) + ' ' + this.translateService.instant('BIG_NUMBERS.' + this.units[ unit ]);
     }
   }
