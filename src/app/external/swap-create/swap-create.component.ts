@@ -318,7 +318,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    if(this.swapCreated) {
+    if(this.swapCreated && this.params.query) {
       return this.router.navigate(['external/transaction'], {queryParams: {query: this.params.query}});
     }
     this.location.back();

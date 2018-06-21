@@ -340,7 +340,10 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    return this.router.navigate(['external/transaction'], {queryParams: { query: this.query }});
+    if(this.query) {
+      return this.router.navigate(['external/transaction'], {queryParams: {query: this.query}});
+    }
+    this.location.back();
   }
 
   private showError(message: string): void {
