@@ -17,7 +17,7 @@
               Swap cancelled successfully
             </div>
           </div>
-          <div aerRow *ngIf="!swapClosed && !swapCancelled">
+          <div aerRow *ngIf="!loadingEthereumSwap && !swapClosed && !swapCancelled">
             <div aerColumn size="sm-6" class="cell cell--left">
               Your swap will expire in:
             </div>

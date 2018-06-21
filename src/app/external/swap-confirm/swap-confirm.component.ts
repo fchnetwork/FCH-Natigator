@@ -54,6 +54,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   swapCancelled = false;
 
   processing = false;
+  loadingEthereumSwap = false;
   loadingCounterSwap = false;
 
   expireSwapTransactionExplorerUrl: string;
@@ -106,13 +107,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.hash = param.hash;
     this.query = param.query;
 
-    this.loadLocalSwap();
-
     await this.loadEthereumSwap();
     if (this.etherSwapFinishedOrExpired()) {
       return;
     }
 
+    this.loadLocalSwap();
     this.setupTimer();
 
     this.aerumErc20SwapService.onOpen(this.hash, (err, event) => this.onOpenSwapHandler(this.hash, err, event));
@@ -122,6 +122,19 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   private async loadEthereumSwap() {
+    this.loadingEthereumSwap = true;
+    try {
+      await this.tryLoadEthereumSwap();
+    } catch(e) {
+      this.logger.logError(`Ethereum swap ${this.hash} loading failed`, e);
+      throw e;
+    }
+    finally {
+      this.loadingEthereumSwap = false;
+    }
+  }
+
+  private async tryLoadEthereumSwap() {
     this.etherSwap = await this.getEthereumSwapFromNetwork();
     if (!this.etherSwap || (this.etherSwap.state === SwapState.Invalid)) {
       throw new Error('Cannot load ether swap: ' + this.hash);
