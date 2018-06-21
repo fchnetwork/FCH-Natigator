@@ -8,7 +8,7 @@ const SWAP_ROUTES: Routes = [{
   path: '',
   children: [
     {
-      path: 'list',
+      path: '',
       component: SwapDashboardComponent,
     },
     {
