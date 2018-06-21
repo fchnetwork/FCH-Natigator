@@ -1,19 +1,19 @@
 <div aerRow>
   <div aerColumn size="lg-2 md-3 sm-4 sm-4 xs-12">
-    <h3>Aerum Swaps</h3>
+    <h3>{{'SWAP.LIST.ONCHAIN_TITLE'|translate}}</h3>
   </div>
   <div aerColumn size="lg-2 md-3 sm-4 xs-12" class="col-lg-offset-8 col-md-offset-6 col-sm-offset-4">
-    <aer-button (buttonFn)="createSwap()" class="full-width btn-create-swap">New Swap</aer-button>
+    <aer-button (buttonFn)="createSwap()" class="full-width btn-create-swap">{{'SWAP.LIST.ONCHAIN_BTN_CREATE'|translate}}</aer-button>
   </div>
 </div>
 <aer-card>
   <aer-table [data]="swaps" [loading]="loading">
     <ng-template aerTemplate="header">
-      <th id="id">Swap ID</th>
-      <th id="counterparty">Counterparty</th>
-      <th sortable id="currency">Amounts</th>
-      <th sortable id="createdOn">Date</th>
-      <th sortable id="status">Status</th>
+      <th id="id">{{'SWAP.LIST.TITLE_SWAP_ID'|translate}}</th>
+      <th id="counterparty">{{'SWAP.LIST.TITLE_COUNTERPARTY'|translate}}</th>
+      <th id="currency">{{'SWAP.LIST.TITLE_AMOUNTS'|translate}}</th>
+      <th id="createdOn">{{'SWAP.LIST.TITLE_DATE'|translate}}</th>
+      <th id="status">{{'SWAP.LIST.TITLE_STATUS'|translate}}</th>
     </ng-template>
     <ng-template aerTemplate="body" let-swap>
       <tr>
@@ -22,9 +22,9 @@
         <td>{{swap.openValue}} {{swap.openAsset}} <aer-icon class="icon">angle-right</aer-icon> {{swap.closeValue}} {{swap.closeAsset}}</td>
         <td>{{swap.createdOn | date: 'dd MMM, yyyy, h:mm a'}}</td>
         <td>
-          <span *ngIf="swap.state === 1" class="pending"><aer-icon class="icon">pending</aer-icon> Pending</span>
-          <span *ngIf="swap.state === 2" class="closed"><aer-icon class="icon">check-square-o</aer-icon> Completed</span>
-          <span *ngIf="swap.state === 3" class="cancelled"><aer-icon class="icon">exclamation-triangle</aer-icon> Cancelled</span>
+          <span *ngIf="swap.state === 1" class="pending"><aer-icon class="icon">pending</aer-icon> {{'SWAP.LIST.STATUS_PENDING'|translate}}</span>
+          <span *ngIf="swap.state === 2" class="closed"><aer-icon class="icon">check-square-o</aer-icon> {{'SWAP.LIST.STATUS_COMPLETED'|translate}}</span>
+          <span *ngIf="swap.state === 3" class="cancelled"><aer-icon class="icon">exclamation-triangle</aer-icon> {{'SWAP.LIST.STATUS_CANCELLED'|translate}}</span>
         </td>
       </tr>
     </ng-template>

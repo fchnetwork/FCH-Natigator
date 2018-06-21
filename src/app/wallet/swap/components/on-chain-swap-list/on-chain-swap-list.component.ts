@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 
-import { SwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
+import { SwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 
@@ -23,6 +24,7 @@ export class OnChainSwapListComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private translateService: TranslateService,
     private authService: AuthenticationService,
     private notificationService: InternalNotificationService,
     private swapListService: SwapListService
@@ -40,7 +42,7 @@ export class OnChainSwapListComponent implements OnInit {
       this.canShowMore = this.swaps.length === this.itemsPerPage;
     }
     catch (e) {
-      this.notificationService.showMessage('Error loading swaps', 'Error');
+      this.notificationService.showMessage(this.translate("SWAP.LIST.ERROR_LOAD_SWAPS"), this.translate("ERROR"));
     } finally {
       this.loading = false;
     }
@@ -54,7 +56,7 @@ export class OnChainSwapListComponent implements OnInit {
       this.swaps = this.swaps.concat(pageSwaps);
     }
     catch (e) {
-      this.notificationService.showMessage('Error loading swaps', 'Error');
+      this.notificationService.showMessage(this.translate("SWAP.LIST.ERROR_LOAD_SWAPS"), this.translate("ERROR"));
     }
   }
 
@@ -66,4 +68,7 @@ export class OnChainSwapListComponent implements OnInit {
     return this.router.navigate(['wallet/swap/load', { id: swapId }]);
   }
 
+  private translate(key: string): string {
+    return this.translateService.instant(key);
+  }
 }

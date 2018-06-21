@@ -151,6 +151,7 @@
   "RECEIVE_TO": "Receive",
   "TRANSACTIONS": "Transactions",
   "BASIC_TRANSACTION": "Basic Transaction",
+  "ERROR": "Error",
   "SEND_RECEIVE": {
     "MAIN_MENU_ITEM_NAME": "Send & Receive",
     "MAIN_TITLE":"Send & Receive Crypto",
@@ -217,6 +218,19 @@
     "AERO_TO_AERO":"Aero > Aero",
     "TOKEN_TO_AERO":"Token > Aero",
     "TOKEN_TO_TOKEN":"Token > Token",
+    "LIST": {
+      "ONCHAIN_TITLE":"Aerum Swaps",
+      "ONCHAIN_BTN_CREATE":"New Swap",
+      "TITLE_SWAP_ID":"Swap ID",
+      "TITLE_COUNTERPARTY":"Counterparty",
+      "TITLE_AMOUNTS":"Amounts",
+      "TITLE_DATE":"Date",
+      "TITLE_STATUS":"Status",
+      "STATUS_PENDING":"Pending",
+      "STATUS_COMPLETED":"Completed",
+      "STATUS_CANCELLED":"Cancelled",
+      "ERROR_LOAD_SWAPS":"Error loading swaps"
+    },
     "CREATE": {
       "TITLE":"Create Atomic Swap",
       "FIELD_SWAP_ID":"Swap ID",
