@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { WalletComponent } from './wallet.component'; 
+import { WalletComponent } from './wallet.component';
 
-export const WALLET_ROUTES = [ 
+export const WALLET_ROUTES = [
     {
         path: '',
         component: WalletComponent,
@@ -43,7 +43,7 @@ export const WALLET_ROUTES = [
 ]
 
 @NgModule({
-    imports: [RouterModule.forChild(WALLET_ROUTES)], 
+    imports: [RouterModule.forChild(WALLET_ROUTES)],
     exports: [RouterModule]
   })
   export class WalletRoutingModule { }
