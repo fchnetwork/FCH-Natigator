@@ -65,7 +65,7 @@ export class TokenService {
   }
 
   getTokens() {
-    return this.sessionStorage.retrieve('tokens');
+    return this.sessionStorage.retrieve('tokens') || [];
   }
 
   updateStoredTokens(token) {
@@ -115,6 +115,20 @@ export class TokenService {
     // NOTE: We don't support not detailed tokens which are not stored locally so throw error here
     if (!token || !token.symbol) {
       throw new TokenError(`Error while loading ${contractAddress} token info`);
+    }
+
+    return token;
+  }
+
+  async getSaveTokensInfo(contractAddress): Promise<Token> {
+    let token = this.getLocalTokenInfo(contractAddress);
+    if (token && token.symbol) {
+      return token;
+    }
+
+    token = await this.getNetworkTokenInfo(contractAddress);
+    if (!token.symbol) {
+      token.symbol = contractAddress;
     }
 
     return token;
