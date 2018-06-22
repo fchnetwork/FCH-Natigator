@@ -45,7 +45,7 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
   }
 
   validateTokens() {
-    const tokens = this.sessionStorage.retrieve('tokens');
+    const tokens = this.sessionStorage.retrieve('tokens') || [];
     if(tokens.length) {
       // TODO: handle errors in any styled component
       for(let i = 0; i < tokens.length; i++) {
