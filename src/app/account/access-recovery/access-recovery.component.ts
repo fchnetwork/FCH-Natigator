@@ -59,20 +59,13 @@ export class AccessRecoveryComponent implements OnInit, OnDestroy {
               } else if (type === 'full') {
                 const results = JSON.parse(reader.result);
                 this.cleanCookies();
-<<<<<<< HEAD
                 this.storageService.setCookie('aerum_base', results.aerumBase, false, 7);
                 this.storageService.setCookie('aerum_keyStore', results.aerumKeyStore, false, 7);
                 this.storageService.setCookie('tokens', results.tokens, false, 7);
                 this.storageService.setCookie('transactions', results.transactions, false, 7);
                 this.storageService.setCookie('settings', results.settings, false, 3650);
-=======
-                Cookie.set('aerum_base', results.aerumBase, 7, "/", environment.cookiesDomain);
-                Cookie.set('aerum_keyStore', results.aerumKeyStore, 7, "/", environment.cookiesDomain);
-                Cookie.set('tokens', results.tokens, 7, "/", environment.cookiesDomain);
-                Cookie.set('transactions', results.transactions, 7, "/", environment.cookiesDomain);
-                Cookie.set('ethereum_accounts', results.ethereumAccounts, 7, "/", environment.cookiesDomain);
-                Cookie.set('cross_chain_swaps', results.crossChainSwaps, 7, "/", environment.cookiesDomain);
->>>>>>> 6735fa10dfd0fee217e22fb94c34018d8e7fc41f
+                this.storageService.setCookie('ethereum_accounts', results.ethereumAccounts, false, 7);
+                this.storageService.setCookie('cross_chain_swaps', results.crossChainSwaps, false, 7);
                 this.router.navigate(['/account/unlock']);
               }
 
@@ -84,20 +77,13 @@ export class AccessRecoveryComponent implements OnInit, OnDestroy {
     }
 
     cleanCookies() {
-<<<<<<< HEAD
       this.storageService.setCookie('aerum_base', null, false, 7);
       this.storageService.setCookie('aerum_keyStore', null, false, 7);
       this.storageService.setCookie('tokens', null, false, 7);
       this.storageService.setCookie('transactions', null, false, 7);
       this.storageService.setCookie('settings', null, false, 7);
-=======
-      Cookie.set('aerum_base', null, 7, "/", environment.cookiesDomain);
-      Cookie.set('aerum_keyStore', null, 7, "/", environment.cookiesDomain);
-      Cookie.set('tokens', null, 7, "/", environment.cookiesDomain);
-      Cookie.set('transactions', null, 7, "/", environment.cookiesDomain);
-      Cookie.set('ethereum_accounts', null, 7, "/", environment.cookiesDomain);
-      Cookie.set('cross_chain_swaps', null, 7, "/", environment.cookiesDomain);
->>>>>>> 6735fa10dfd0fee217e22fb94c34018d8e7fc41f
+      this.storageService.setCookie('ethereum_accounts', null, false, 7);
+      this.storageService.setCookie('cross_chain_swaps', null, false, 7);
     }
 
     ngOnInit() {
@@ -144,7 +130,6 @@ export class AccessRecoveryComponent implements OnInit, OnDestroy {
     onSubmitAddress() {
       if( this.recoverForm.valid ) {
         this.cleanCookies();
-<<<<<<< HEAD
 
         this.storageService.setSessionData('acc_address', this.address);
         this.storageService.setSessionData('acc_avatar',  this.authServ.generateCryptedAvatar( this.address ));
@@ -154,17 +139,7 @@ export class AccessRecoveryComponent implements OnInit, OnDestroy {
         this.storageService.setSessionData('transactions', []);
         this.storageService.setSessionData('tokens', []);
         this.storageService.setSessionData('ethereum_accounts', []);
-=======
-        this.sessionStorage.store('acc_address', this.address);
-        this.sessionStorage.store('acc_avatar',  this.authServ.generateCryptedAvatar( this.address ) );
-        this.sessionStorage.store('seed', this.recoverForm.value.seed);
-        this.sessionStorage.store('private_key', this.private);
-        this.sessionStorage.store('password', this.recoverForm.value.password);
-        this.sessionStorage.store('transactions', []);
-        this.sessionStorage.store('tokens', []);
-        this.sessionStorage.store('ethereum_accounts', []);
-        this.sessionStorage.store('cross_chain_swaps', []);
->>>>>>> 6735fa10dfd0fee217e22fb94c34018d8e7fc41f
+        this.storageService.setSessionData('cross_chain_swaps', []);
 
         this.authServ.saveKeyStore( this.private, this.recoverForm.value.password, this.recoverForm.value.seed );
         this.router.navigate(['/wallet/home']); // improvements need to be made here but for now the auth guard should work just fine
