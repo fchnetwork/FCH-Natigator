@@ -26,7 +26,7 @@ export const environment = {
             OpenErc20Swap: "0xd7efba4122c670a563fd19fe28fb95a1ee48e04f",
             CounterAeroSwap: "0x898c0615ff8a1f18b9af8b721bb4aeae20a1f877",
             CounterErc20Swap: "0x9f38dccb3b784606a30e0b43fe7b97d15e91ceae",
-            TemplatesRegistry: "0x6ce0143a06476a3b1051df548cc096eb5ebb770e"
+            TemplatesRegistry: "0x1b1ff05ebe506d8c07e4354b316b1fb5b3b08d2a"
           },
           ethereum: {
             OpenEtherSwap: "0x99c92b41a4194014a1d6649c52c2684b325590b6",
