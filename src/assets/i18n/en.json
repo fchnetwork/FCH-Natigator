@@ -213,7 +213,7 @@
     "SCAN_MORE": "Scan more blocks"
   },
   "SWAP": {
-    "MAIN_MENU_ITEM_NAME":"Atomic Swap",
+    "MAIN_MENU_ITEM_NAME":"Swap",
     "AERO_TO_TOKEN":"Aero > Token",
     "AERO_TO_AERO":"Aero > Aero",
     "TOKEN_TO_AERO":"Token > Aero",
