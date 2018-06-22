@@ -106,9 +106,9 @@
   "VALUE": "Value",
   "AGE": "Age",
   "BLOCKCHAIN_EXPLORER": "Blockchain Explorer",
-  "INFORMATION": "Information",
+  "INFORMATION": "Blockchain",
   "PENDING_TXNS": "Pending Tx",
-  "AETH": "Aeth",
+  "AETH": "Aero",
   "FEE": "Fee",
   "GAS_USED": "Gas used",
   "GAS_PRICE": "Gas price",
@@ -213,17 +213,17 @@
     "SCAN_MORE": "Scan more blocks"
   },
   "SWAP": {
-    "MAIN_MENU_ITEM_NAME":"Swap",
+    "MAIN_MENU_ITEM_NAME":"My Swaps",
     "AERO_TO_TOKEN":"Aero > Token",
     "AERO_TO_AERO":"Aero > Aero",
     "TOKEN_TO_AERO":"Token > Aero",
     "TOKEN_TO_TOKEN":"Token > Token",
     "LIST": {
-      "ONCHAIN_TITLE":"Aerum Swaps",
+      "ONCHAIN_TITLE":"Subatomic Swaps",
       "CROSS_CHAIN_TITLE":"Ethereum Swaps",
-      "BTN_CREATE":"New Swap",
-      "BTN_DEPOSIT":"Deposit",
-      "BTN_WITHDRAW":"Withdraw",
+      "BTN_CREATE":"New Subatomic Swap",
+      "BTN_DEPOSIT":"New Deposit Swap",
+      "BTN_WITHDRAW":"New Withdraw Swap",
       "TITLE_SWAP_ID":"Swap ID",
       "TITLE_COUNTERPARTY":"Counterparty",
       "TITLE_AMOUNTS":"Amounts",
@@ -235,7 +235,7 @@
       "ERROR_LOAD_SWAPS":"Error loading swaps"
     },
     "CREATE": {
-      "TITLE":"Create Atomic Swap",
+      "TITLE":"Create Subatomic Swap",
       "FIELD_SWAP_ID":"Swap ID",
       "FIELD_YOUR_TOKEN_OR_AERO":"Your Token / Aero",
       "FIELD_COUNTERPARTY":"Counterparty",
@@ -245,7 +245,7 @@
       "PLACEHOLDER_SELECT_TOKEN_OR_AERO": "Select Aero / Token",
       "BTN_GENERATE_SWAP_ID":"Generate",
       "BTN_CREATE":"Create",
-      "BTN_CANCEL":"Cancel"
+      "BTN_CANCEL":"Close"
     },
     "LOAD": {
       "TITLE":"Load Atomic Swap",
@@ -253,7 +253,7 @@
       "BTN_LOAD":"Load",
       "BTN_CONFIRM":"Confirm",
       "BTN_REJECT":"Reject",
-      "BTN_CANCEL":"Cancel",
+      "BTN_CANCEL":"Close",
       "FIELD_COUNTERPARTY":"Counterparty",
       "FIELD_STATUS":"Status",
       "CONFIRM_TITLE":"Confirm / Reject Atomic Swap"
