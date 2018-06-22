@@ -18,11 +18,11 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
   constructor(
     private authService: AuthenticationService,
     public router: Router,
-    private idle: AccountIdleService,    
+    private idle: AccountIdleService,
     public activeRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef
   ) {
-   
+
     this.idle.startWatching();
 
     this.idle.onTimerStart().subscribe(count => {});
@@ -31,7 +31,7 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
       this.idle.stopWatching()
       this.logout();
     });
-        
+
     // Expand correct sidebar group based on url
     this.routeData$ = this.router.events
       .filter(event => event instanceof NavigationEnd)
@@ -42,19 +42,13 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
       })
       .mergeMap(route => route.data)
       .subscribe(currentData => {
-        if (currentData && currentData.sidebarGroup) { 
+        if (currentData && currentData.sidebarGroup) {
           this.viewLoaded$.subscribe(w => {
-            this.sidebar.toggleGroup(currentData.sidebarGroup); 
+            this.sidebar.toggleGroup(currentData.sidebarGroup);
             this.viewLoaded$.complete();
           });
         }
       });
-
-      this.router.events.subscribe(event => {
-        if(event instanceof NavigationEnd && this.sidebar.isToggled) {
-          this.sidebar.toggleSidebar();
-        }
-      })
   }
 
   logout() {
@@ -69,12 +63,16 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
     this.router.navigate(['/wallet/settings']);
   }
 
+  refresh() {
+    this.router.navigate([this.router.url]);
+  }
+
   ngAfterViewChecked() {
     // Preventing Angular ExpressionChangedAfterItHasBeenCheckedError.
     this.changeDetector.detectChanges();
 
     if (this.sidebarLoaded$ == null) {
-      this.sidebarLoaded$ = this.sidebar.sidebarLoaded.subscribe(w => { 
+      this.sidebarLoaded$ = this.sidebar.sidebarLoaded.subscribe(w => {
         this.viewLoaded$.emit();
         this.sidebarLoaded$.complete();
       });
