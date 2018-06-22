@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { NotificationService } from "@aerum/ui";
+import { Subscription } from "rxjs/Subscription";
 
 import { environment } from '@env/environment';
 
@@ -28,7 +30,9 @@ interface SwapCommonOperationsService {
   templateUrl: './load-swap.component.html',
   styleUrls: ['./load-swap.component.scss']
 })
-export class LoadSwapComponent implements OnInit {
+export class LoadSwapComponent implements OnInit, OnDestroy {
+
+  private routeSubscription: Subscription;
 
   currentAddress: string;
   swapId: string;
@@ -38,6 +42,7 @@ export class LoadSwapComponent implements OnInit {
 
   constructor(
     private logger: LoggerService,
+    private route: ActivatedRoute,
     private authService: AuthenticationService,
     private modalService: ModalService,
     private aeroToErc20SwapService: AeroToErc20SwapService,
@@ -49,11 +54,21 @@ export class LoadSwapComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    const keystore = await this.authService.showKeystore();
-    this.currentAddress = "0x" + keystore.address;
-
+    this.currentAddress = this.authService.getAddress();
     this.mode = 'aero_to_erc20';
     this.updateTitle();
+
+    this.routeSubscription = this.route.params.subscribe(param => this.init(param));
+  }
+
+  private async init(params) {
+    const id = params["id"];
+    if (id) {
+      this.logger.logMessage(`Swap id found in query: ${id}`);
+      this.swapId = id;
+      this.onSwapIdChange();
+      await this.loadSwap();
+    }
   }
 
   onSwapIdChange() {
@@ -302,5 +317,11 @@ export class LoadSwapComponent implements OnInit {
 
   private stopLoading() {
     this.processing = false;
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
   }
 }

@@ -39,12 +39,17 @@ export class SettingsBackupService {
     const transactions = this.storageService.getCookie('transactions');
     const settings = this.storageService.getCookie('settings');
     
+
+    const ethereumAccounts = this.storageService.getCookie('ethereum_accounts');
+    const crossChainSwaps = this.storageService.getCookie('cross_chain_swaps');
     const preparedData = {
       aerumBase,
       aerumKeyStore,
       tokens,
       transactions,
-      settings
+      settings,
+      ethereumAccounts,
+      crossChainSwaps
     };
     this.generateFile(preparedData, 'full_backup', 'full');
     this.notificationMessagesService.fullBackup();

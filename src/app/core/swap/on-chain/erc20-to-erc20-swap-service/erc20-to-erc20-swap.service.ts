@@ -80,6 +80,6 @@ export class Erc20ToErc20SwapService extends BaseContractService {
   async getAccountSwapIds(address: string): Promise<string[]> {
     const getAccountSwaps = this.contract.methods.getAccountSwaps(address);
     const swapIds = await this.contractExecutorService.call(getAccountSwaps);
-    return swapIds;
+    return swapIds.map(id => this.web3.utils.toAscii(id));
   }
 }

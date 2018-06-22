@@ -1,13 +1,10 @@
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 
-export interface SwapReference {
+export interface EtherSwapReference {
   hash: string;
   secret: string;
-  counterparty: string;
   account: string;
-  ethAmount: number;
+  walletType: EthWalletType;
   token: string;
   tokenAmount: number;
-  walletType: EthWalletType;
-  timelock: number;
 }

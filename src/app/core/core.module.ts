@@ -29,9 +29,8 @@ import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { ValidateService } from '@app/core/validation/validate.service';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { ConnectionCheckerService } from '@core/general/connection-checker-service/connection-checker.service';
-import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
-import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
-import { AeroSwapService } from "@core/swap/cross-chain/aero-swap-service/aero-swap.service";
+import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
+import { CounterAerumErc20SwapService } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-aerum-erc20-swap.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
@@ -40,6 +39,8 @@ import { SettingsBackupService } from '@app/core/settings/settingsBackup.service
 import { SettingsService } from '@app/core/settings/settings.service';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from "@core/general/storage-service/storage.service";
+import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
+import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
 
 @NgModule({
   imports: [
@@ -71,14 +72,15 @@ import { StorageService } from "@core/general/storage-service/storage.service";
     PasswordCheckerService,
     LoggerService,
     ValidateService,
-    EtherSwapService,
-    AeroSwapService,
-    AerumErc20SwapService,
+    OpenEtherSwapService,
+    CounterAerumErc20SwapService,
     SwapTemplateService,
     SwapLocalStorageService,
     SettingsBackupService,
     SettingsBackupService,
-    SettingsService
+    SettingsService,
+    OnChainSwapListService,
+    CrossChainSwapListService
   ]
 })
 export class CoreModule {

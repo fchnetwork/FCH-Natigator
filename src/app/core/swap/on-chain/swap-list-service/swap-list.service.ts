@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { multiSlice } from "@shared/helpers/array-utils";
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { AeroToErc20Swap } from "@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.model";
 import { Erc20ToAeroSwap } from "@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.model";
@@ -28,8 +29,41 @@ export class SwapListService {
     return [...aeroToErc20Swaps, ...erc20ToAeroSwaps, ...erc20ToErc20Swaps];
   }
 
+  async getSwapsByAccountPaged(account: string, take: number, page: number): Promise<SwapListItem[]> {
+    account = account.toLowerCase();
+    const skip = take * page;
+    const [aeroToErc20SwapIds, erc20ToAeroSwapIds, erc20ToErc20SwapIds] = await this.getSwapIdsByAccount(account, take, skip);
+
+    const [aeroToErc20Swaps, erc20ToAeroSwaps, erc20ToErc20Swaps] = await Promise.all([
+      this.getAeroToErc20SwapsByIds(aeroToErc20SwapIds, account),
+      this.getErc20ToAeroSwapsByIds(erc20ToAeroSwapIds, account),
+      this.getErc20ToErc20SwapsByIds(erc20ToErc20SwapIds, account)
+    ]);
+
+    return [...aeroToErc20Swaps, ...erc20ToAeroSwaps, ...erc20ToErc20Swaps];
+  }
+
+  private async getSwapIdsByAccount(account: string, take: number, skip: number): Promise<[string[], string[], string[]]> {
+    let [aeroToErc20SwapIds, erc20ToAeroSwapIds, erc20ToErc20SwapIds] = await Promise.all([
+      this.aeroToErc20SwapService.getAccountSwapIds(account),
+      this.erc20ToAeroSwapService.getAccountSwapIds(account),
+      this.erc20ToErc20SwapService.getAccountSwapIds(account)
+    ]);
+
+    // NOTE: We reverse so that latest go first
+    [aeroToErc20SwapIds, erc20ToAeroSwapIds, erc20ToErc20SwapIds] = multiSlice(
+      [aeroToErc20SwapIds.reverse(), erc20ToAeroSwapIds.reverse(), erc20ToErc20SwapIds.reverse()],
+      take, skip
+    );
+    return [aeroToErc20SwapIds, erc20ToAeroSwapIds, erc20ToErc20SwapIds];
+  }
+
   private async getAeroToErc20Swaps(account: string): Promise<SwapListItem[]> {
     const swapIds = await this.aeroToErc20SwapService.getAccountSwapIds(account);
+    return await this.getAeroToErc20SwapsByIds(swapIds, account);
+  }
+
+  private async getAeroToErc20SwapsByIds(swapIds: string[], account: string) {
     const swaps = await Promise.all(swapIds.map(id => this.aeroToErc20SwapService.checkSwapDetailed(id)));
     return swaps.map(swap => this.mapAeroToErc20Swap(account, swap));
   }
@@ -49,6 +83,10 @@ export class SwapListService {
 
   private async getErc20ToAeroSwaps(account: string): Promise<SwapListItem[]> {
     const swapIds = await this.erc20ToAeroSwapService.getAccountSwapIds(account);
+    return await this.getErc20ToAeroSwapsByIds(swapIds, account);
+  }
+
+  private async getErc20ToAeroSwapsByIds(swapIds: string[], account: string) {
     const swaps = await Promise.all(swapIds.map(id => this.erc20ToAeroSwapService.checkSwapDetailed(id)));
     return swaps.map(swap => this.mapErc20ToAeroSwap(account, swap));
   }
@@ -68,6 +106,10 @@ export class SwapListService {
 
   private async getErc20ToErc20Swaps(account: string): Promise<SwapListItem[]> {
     const swapIds = await this.erc20ToErc20SwapService.getAccountSwapIds(account);
+    return await this.getErc20ToErc20SwapsByIds(swapIds, account);
+  }
+
+  private async getErc20ToErc20SwapsByIds(swapIds: string[], account: string) {
     const swaps = await Promise.all(swapIds.map(id => this.erc20ToErc20SwapService.checkSwapDetailed(id)));
     return swaps.map(swap => this.mapErc20ToErc20Swap(account, swap));
   }
