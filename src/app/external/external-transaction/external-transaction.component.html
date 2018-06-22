@@ -3,7 +3,7 @@
     <div class="modal-content">
       <aer-modal-dialog >
         <div class="c-transaction c-transaction__table c-transaction__unlock">
-          <h1>{{ title || 'Confirm payment'}}</h1>
+          <h1>{{(title || 'EXTERNAL-SWAP.TRANSACTION.TITLE')|translate}}</h1>
           <ul class="o-txnID u-lreset">
             <li>
               <ul class="o-txnID__person u-lreset">
@@ -36,7 +36,7 @@
                 <div class="o-table__row">
                     <div class="o-table__cell o-data--left">
                         <!-- {{ 'AMOUNT' | translate }} -->
-                        Payment to
+                        {{'EXTERNAL-SWAP.TRANSACTION.FIELD_PAYMENT_TO'|translate}}
                     </div>
                     <div class="o-table__cell o-data--right">
                         {{ receiverAddress }}
@@ -45,7 +45,7 @@
                 <div class="o-table__row">
                     <div class="o-table__cell o-data--left">
                         <!-- {{ 'AMOUNT' | translate }} -->
-                        Payment in
+                        {{'EXTERNAL-SWAP.TRANSACTION.FIELD_PAYMENT_IN'|translate}}
                     </div>
                     <div class="o-table__cell o-data--right">
                         {{ currency }}
@@ -70,16 +70,16 @@
                 <div class="o-table__row">
                     <div class="o-table__cell o-data--left">
                         <!-- {{ 'AMOUNT' | translate }} -->
-                        Amount available
+                        {{'EXTERNAL-SWAP.TRANSACTION.FIELD_AMOUNT_AVAILABLE'|translate}}
                     </div>
                     <div class="o-table__cell o-data--right deposit-more">
-                        <span>{{ balance | bignumber:'1.0-3' }}</span> <aer-button class="small blue" (buttonFn)="deposit()">Deposit more</aer-button>
+                        <span>{{ balance | bignumber:'1.0-3' }}</span> <aer-button class="small blue" (buttonFn)="deposit()">{{'EXTERNAL-SWAP.TRANSACTION.BTN_DEPOSIT_MORE'|translate}}</aer-button>
                     </div>
                 </div>
             </div>
-            <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">I acknowledge risks.</aer-checkbox>
-            <aer-button [disabled]="checkbox && !checked || !proceedAvailable" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue large full-width">Proceed</aer-button>
-            <aer-button (buttonFn)="dismiss()" class="large full-width">{{proceedAvailable ? 'Close':'Cancel'}}</aer-button>
+            <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">{{'EXTERNAL-SWAP.TRANSACTION.FIELD_I_ACKNOWLEDGE_RISKS'|translate}}</aer-checkbox>
+            <aer-button [disabled]="checkbox && !checked || !proceedAvailable" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue large full-width">{{'EXTERNAL-SWAP.TRANSACTION.BTN_PROCEED'|translate}}</aer-button>
+            <aer-button (buttonFn)="dismiss()" class="large full-width">{{(proceedAvailable ? 'EXTERNAL-SWAP.TRANSACTION.BTN_CLOSE':'EXTERNAL-SWAP.TRANSACTION.BTN_CANCEL'|translate)}}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>

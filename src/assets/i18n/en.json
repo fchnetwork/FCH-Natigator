@@ -267,6 +267,66 @@
       "CONFIRM_TITLE":"Confirm / Reject Atomic Swap"
     }
   },
+  "EXTERNAL-SWAP": {
+    "WALLET": {
+      "TITLE": "Ethereum Wallet",
+      "FIELD_SELECT_WALLET": "Select Wallet:",
+      "FIELD_STORED_KEYS": "Stored Keys",
+      "FIELD_SELECT_ADDRESS": "Select Address",
+      "FIELD_SELECT_YOUR_ACCOUNT": "Select your account",
+      "BTN_ADD_ACCOUNT": "+ Add Account",
+      "FIELD_BALANCE": "Balance:",
+      "FIELD_MESSAGE": "*Attention: please, make sure you have sufficient amount of ether in your wallet to cover transaction fee (up to 0.002 Eth)",
+      "BTN_NEXT": "Next",
+      "BTN_CANCEL": "Cancel"
+    },
+    "CREATE": {
+      "TITLE": "Create Exchange Swap",
+      "FIELD_RECEIVING_AERUM_TOKEN": "Receiving Aerum token:",
+      "FIELD_SELECT_YOUR_TOKEN": "Select your token",
+      "FIELD_AMOUNT_OF_TOKEN_TO_RECEIVE": "Amount of token to receive:",
+      "FIELD_TYPE_AMOUNT": "Type amount",
+      "FIELD_EXCHANGE_COUNTERPARTY": "Exchange counterparty:",
+      "FIELD_SELECT_YOUR_COUNTERPARTY": "Select your counterparty",
+      "FIELD_SEND_ETHEREUM_ASSET": "Send Ethereum asset",
+      "FIELD_AMOUNT": "Amount",
+      "FIELD_EXCHANGE_RATE": "Exchange rate (Aerum token/Eth asset)",
+      "FIELD_SECRET_KEY": "Secret key",
+      "FIELD_MESSAGE": "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "BTN_NEXT": "Next",
+      "BTN_CLOSE": "Close",
+      "BTN_BACK": "Back"
+    },
+    "CONFIRM": {
+      "TITLE_CANCEL_SWAP": "Cancel Swap",
+      "TITLE_COMPLETE_SWAP": "Complete Swap",
+      "TITLE_WAITING_COUNTERPARTY": "Waiting Counterparty",
+      "FIELD_SWAP_CLOSED_SUCCESSFULLY": "Swap closed successfully",
+      "FIELD_SWAP_CANCELLED_SUCCESSFULLY": "Swap cancelled successfully",
+      "FIELD_YOUR_SWAP_WILL_EXPIRE_IN": "Your swap will expire in:",
+      "FIELD_YOUR_SWAP_WAS_ACCEPTED_BY": "Your swap was accepted by",
+      "FIELD_YOU_WILL_SEND": "You will send",
+      "FIELD_YOU_WILL_RECEIVE": "You will receive",
+      "FIELD_ENTER_SECRET_KEY": "Enter secret key:",
+      "FIELD_TYPE_SECRET_KEY": "Type secret key",
+      "FIELD_MESSAGE": "Attention! You need to complete the swap before it expires. If swap expires before completion, you can cancel it and withdraw the funds.",
+      "BTN_COMPLETE_SWAP": "Complete swap",
+      "BTN_CANCEL_SWAP": "Cancel swap",
+      "BTN_CLOSE": "Close",
+      "BTN_CANCEL": "Back"
+    },
+    "TRANSACTION": {
+      "TITLE": "Confirm payment",
+      "FIELD_PAYMENT_TO": "Payment to",
+      "FIELD_PAYMENT_IN": "Payment in",
+      "FIELD_AMOUNT_AVAILABLE": "Amount available",
+      "BTN_DEPOSIT_MORE": "Deposit more",
+      "FIELD_I_ACKNOWLEDGE_RISKS": "I acknowledge risks.",
+      "BTN_PROCEED": "Proceed",
+      "BTN_CLOSE": "Close",
+      "BTN_CANCEL": "Cancel"
+    }
+  },
   "ENS": {
     "MAIN_MENU_ITEM_NAME":"Aerum Name Service",
     "MAIN_TITLE":"Aerum Name Service",
