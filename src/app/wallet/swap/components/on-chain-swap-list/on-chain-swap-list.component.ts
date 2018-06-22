@@ -6,6 +6,7 @@ import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { SwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
+import { LoggerService } from "@core/general/logger-service/logger.service";
 
 @Component({
   selector: 'app-on-chain-swap-list',
@@ -23,6 +24,7 @@ export class OnChainSwapListComponent implements OnInit {
   swaps: SwapListItem[] = [];
 
   constructor(
+    private logger: LoggerService,
     private router: Router,
     private translateService: TranslateService,
     private authService: AuthenticationService,
@@ -42,6 +44,7 @@ export class OnChainSwapListComponent implements OnInit {
       this.canShowMore = this.swaps.length === this.itemsPerPage;
     }
     catch (e) {
+      this.logger.logError('Error loading swaps', e);
       this.notificationService.showMessage(this.translate("SWAP.LIST.ERROR_LOAD_SWAPS"), this.translate("ERROR"));
     } finally {
       this.loading = false;
@@ -56,6 +59,7 @@ export class OnChainSwapListComponent implements OnInit {
       this.swaps = this.swaps.concat(pageSwaps);
     }
     catch (e) {
+      this.logger.logError('Error loading swaps', e);
       this.notificationService.showMessage(this.translate("SWAP.LIST.ERROR_LOAD_SWAPS"), this.translate("ERROR"));
     }
   }

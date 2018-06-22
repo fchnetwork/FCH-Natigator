@@ -11,19 +11,20 @@ import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { SwapState } from "@core/swap/models/swap-state.enum";
-import { Erc20Swap } from "@core/swap/cross-chain/aerum-erc20-swap-service/erc20-swap.model";
+import { EthWalletType } from "@external/models/eth-wallet-type.enum";
+import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
+import { CounterErc20Swap } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-erc20-swap.model";
+import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
-import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
+import { CounterAerumErc20SwapService } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-aerum-erc20-swap.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
-import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
-import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
+import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
-import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 
 @Component({
@@ -37,7 +38,8 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   private hash;
   private aerumAccount: string;
   private query: string;
-  private localSwap: SwapReference;
+  private localSwap: EtherSwapReference;
+  private etherSwap: OpenEtherSwap;
 
   secret: string;
   acceptedBy: string;
@@ -52,6 +54,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   swapCancelled = false;
 
   processing = false;
+  loadingEthereumSwap = false;
   loadingCounterSwap = false;
 
   expireSwapTransactionExplorerUrl: string;
@@ -68,11 +71,11 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private authService: AuthenticationService,
-    private aerumErc20SwapService: AerumErc20SwapService,
+    private aerumErc20SwapService: CounterAerumErc20SwapService,
     private tokenService: TokenService,
     private swapLocalStorageService: SwapLocalStorageService,
     private ethereumAuthService: EthereumAuthenticationService,
-    private etherSwapService: EtherSwapService,
+    private etherSwapService: OpenEtherSwapService,
     private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
   ) { }
@@ -104,15 +107,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.hash = param.hash;
     this.query = param.query;
 
-    const localSwap = this.swapLocalStorageService.loadSwapReference(this.hash);
-    if(!localSwap) {
-      throw new Error('Cannot load data for local swap: ' + this.hash);
+    this.loadLocalSwap();
+    
+    await this.loadEthereumSwap();
+    if (this.etherSwapFinishedOrExpired()) {
+      return;
     }
-
-    this.localSwap = localSwap;
-    this.secret = localSwap.secret;
-    this.sendAmount = localSwap.ethAmount;
-    this.acceptedBy = localSwap.counterparty;
 
     this.setupTimer();
 
@@ -120,6 +120,60 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.aerumErc20SwapService.onExpire(this.hash, (err, event) => this.onExpiredSwapHandler(this.hash, err, event));
 
     await this.loadAerumSwap();
+  }
+
+  private async loadEthereumSwap() {
+    this.loadingEthereumSwap = true;
+    try {
+      await this.tryLoadEthereumSwap();
+    } catch(e) {
+      this.logger.logError(`Ethereum swap ${this.hash} loading failed`, e);
+      throw e;
+    }
+    finally {
+      this.loadingEthereumSwap = false;
+    }
+  }
+
+  private async tryLoadEthereumSwap() {
+    this.etherSwap = await this.getEthereumSwapFromNetwork();
+    if (!this.etherSwap || (this.etherSwap.state === SwapState.Invalid)) {
+      throw new Error('Cannot load ether swap: ' + this.hash);
+    }
+
+    this.sendAmount = this.etherSwap.value;
+    this.acceptedBy = this.etherSwap.withdrawTrader;
+
+    if (this.etherSwap.state === SwapState.Closed) {
+      this.swapClosed = true;
+      this.logger.logMessage('Opening swap already closed:' + this.hash);
+      return;
+    }
+
+    if (this.etherSwap.state === SwapState.Expired) {
+      this.swapCancelled = true;
+      this.logger.logMessage('Opening swap already cancelled:' + this.hash);
+      return;
+    }
+
+    const now = this.now();
+    if (now >= this.etherSwap.timelock) {
+      this.onSwapExpired();
+      this.logger.logMessage('Opening swap expired but not cancelled:' + this.hash);
+      return;
+    }
+  }
+
+  private etherSwapFinishedOrExpired(): boolean {
+    return this.swapClosed || this.swapCancelled || this.swapExpired;
+  }
+
+  private loadLocalSwap() {
+    this.localSwap = this.swapLocalStorageService.loadSwapReference(this.hash);
+    if (!this.localSwap) {
+      throw new Error('Cannot load data for local swap: ' + this.hash);
+    }
+    this.secret = this.localSwap.secret;
   }
 
   private setupTimer(): void {
@@ -130,13 +184,13 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       }
 
       const now = this.now();
-      const timeoutInMilliseconds = (this.localSwap.timelock - now) * 1000;
+      const timeoutInMilliseconds = (this.etherSwap.timelock - now) * 1000;
       if (timeoutInMilliseconds < 0) {
         this.onSwapExpired();
         return;
       }
       this.timer = moment.duration(timeoutInMilliseconds);
-    }, 1000);
+    }, 500);
   }
 
   private onSwapExpired(): void {
@@ -178,7 +232,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.cleanErrors();
 
-    const swap: Erc20Swap = await this.aerumErc20SwapService.checkSwap(this.hash);
+    const swap: CounterErc20Swap = await this.aerumErc20SwapService.checkSwap(this.hash);
     this.logger.logMessage('Swap loaded: ', swap);
 
     if(!swap || (swap.state === SwapState.Invalid)) {
@@ -339,8 +393,21 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
   }
 
+  private async getEthereumSwapFromNetwork(): Promise<OpenEtherSwap> {
+    // NOTE: We may get any account here as we just do queries & we don't need private key
+    const web3 = this.ethereumAuthService.getWeb3();
+    this.selfSignedEthereumContractExecutorService.init(web3, null, null);
+    this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
+
+    const swap = await this.etherSwapService.checkSwap(this.hash);
+    return swap;
+  }
+
   close() {
-    return this.router.navigate(['external/transaction'], {queryParams: { query: this.query }});
+    if(this.query) {
+      return this.router.navigate(['external/transaction'], {queryParams: {query: this.query}});
+    }
+    this.location.back();
   }
 
   private showError(message: string): void {

@@ -220,7 +220,10 @@
     "TOKEN_TO_TOKEN":"Token > Token",
     "LIST": {
       "ONCHAIN_TITLE":"Aerum Swaps",
-      "ONCHAIN_BTN_CREATE":"New Swap",
+      "CROSS_CHAIN_TITLE":"Ethereum Swaps",
+      "BTN_CREATE":"New Swap",
+      "BTN_DEPOSIT":"Deposit",
+      "BTN_WITHDRAW":"Withdraw",
       "TITLE_SWAP_ID":"Swap ID",
       "TITLE_COUNTERPARTY":"Counterparty",
       "TITLE_AMOUNTS":"Amounts",

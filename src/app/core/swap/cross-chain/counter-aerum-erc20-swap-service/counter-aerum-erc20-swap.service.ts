@@ -1,22 +1,21 @@
-import { BlockType, Callback, EventEmitter, EventLog } from "web3/types";
-
-const artifacts = require('@core/abi/AtomicSwapERC20.json');
+const artifacts = require('@core/abi/CounterAtomicSwapERC20.json');
 
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
+import { Callback } from "web3/types";
 
-import { Erc20Swap } from "@core/swap/cross-chain/aerum-erc20-swap-service/erc20-swap.model";
+import { CounterErc20Swap } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-erc20-swap.model";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
 
 @Injectable()
-export class AerumErc20SwapService extends BaseContractService {
+export class CounterAerumErc20SwapService extends BaseContractService {
 
   constructor(
     authenticationService: AuthenticationService,
     contractExecutorService: ContractExecutorService) {
-    super(artifacts.abi, environment.contracts.swap.crossChain.address.aerum.Erc20Swap, authenticationService, contractExecutorService);
+    super(artifacts.abi, environment.contracts.swap.crossChain.address.aerum.CounterErc20Swap, authenticationService, contractExecutorService);
   }
 
   async openSwap(hash: string, erc20Value: string, erc20ContractAddress: string, timelock: number) {
@@ -42,10 +41,10 @@ export class AerumErc20SwapService extends BaseContractService {
     return receipt;
   }
 
-  async checkSwap(hash: string): Promise<Erc20Swap> {
+  async checkSwap(hash: string): Promise<CounterErc20Swap> {
     const checkSwap = this.contract.methods.check(hash);
     const response = await this.contractExecutorService.call(checkSwap);
-    const swap: Erc20Swap = {
+    const swap: CounterErc20Swap = {
       hash: response.hash,
       erc20ContractAddress: response.erc20ContractAddress,
       erc20Value: response.erc20Value,

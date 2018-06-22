@@ -9,7 +9,7 @@ import Web3 from "web3";
 
 import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
-import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
@@ -19,7 +19,7 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { ERC20TokenService } from "@core/swap/on-chain/erc20-token-service/erc20-token.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
-import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
+import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
 import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
@@ -70,7 +70,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
     private erc20TokenService: ERC20TokenService,
     private swapTemplateService: SwapTemplateService,
-    private etherSwapService: EtherSwapService,
+    private etherSwapService: OpenEtherSwapService,
     private swapLocalStorageService: SwapLocalStorageService,
     private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
     private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
@@ -246,16 +246,13 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       (txHash) => this.onOpenSwapHashReceived(txHash)
     );
 
-    const localSwap: SwapReference = {
+    const localSwap: EtherSwapReference = {
       hash,
       secret: this.secret,
-      counterparty: this.selectedTemplate.onchainAccount,
       account: this.params.account,
-      ethAmount: this.ethAmount,
-      token: this.selectedToken.address,
-      tokenAmount: this.amount,
       walletType: this.params.wallet,
-      timelock: timestamp
+      token: this.selectedToken.address,
+      tokenAmount: this.amount
     };
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
@@ -318,7 +315,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    if(this.swapCreated) {
+    if(this.swapCreated && this.params.query) {
       return this.router.navigate(['external/transaction'], {queryParams: {query: this.params.query}});
     }
     this.location.back();
