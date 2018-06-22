@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
+import { SettingsService } from '@core/settings/settings.service';
 
 @Component({
   selector: 'app-wallet',
@@ -20,7 +21,8 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
     public router: Router,
     private idle: AccountIdleService,    
     public activeRoute: ActivatedRoute,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    public settingsService: SettingsService
   ) {
    
     this.idle.startWatching();
