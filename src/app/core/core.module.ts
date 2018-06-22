@@ -36,7 +36,9 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { SettingsBackupService } from '@app/core/settings/settingsBackup.service';
+import { SettingsService } from '@app/core/settings/settings.service';
 import { TranslateService } from '@ngx-translate/core';
+import { StorageService } from "@core/general/storage-service/storage.service";
 import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
 
@@ -75,6 +77,8 @@ import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-c
     SwapTemplateService,
     SwapLocalStorageService,
     SettingsBackupService,
+    SettingsBackupService,
+    SettingsService,
     OnChainSwapListService,
     CrossChainSwapListService
   ]
@@ -90,7 +94,8 @@ export class CoreModule {
         NotificationMessagesService,
         AuthenticationService,
         EthereumAuthenticationService,
-        TranslateService
+        TranslateService,
+        StorageService
       ]
     };
   }

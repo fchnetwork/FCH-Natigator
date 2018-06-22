@@ -30,7 +30,15 @@
   },
   "SETTINGS": {
     "TITLE": "Settings",
-    "BACKUP": "Backup",
+    "BACKUP": {
+      "TAB_TITLE": "Backup",
+      "NOTIFICATION_TITLE_SAVE_FULL_BACKUP": "Notification",
+      "NOTIFICATION_BODY_SAVE_FULL_BACKUP": "Full Backup file has been succesfully downloaded",
+      "NOTIFICATION_TITLE_SAVE_SIMPLE_BACKUP": "Notification",
+      "NOTIFICATION_BODY_SAVE_SIMPLE_BACKUP": "Seed file has been succesfully downloaded"
+    },
+    "NOTIFICATION_TITLE_SAVE_SETTINGS": "Notification",
+    "NOTIFICATION_BODY_SAVE_SETTINGS": "Changes has been succesfully saved",
     "LANGUAGE": {
       "NOTIFICATION_TITLE_CHANGE_LANGUAGE": "Language change",
       "NOTIFICATION_BODY_CHANGE_LANGUAGE":"Language has been changed to: "

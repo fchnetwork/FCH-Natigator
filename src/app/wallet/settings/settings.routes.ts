@@ -4,6 +4,8 @@ import { SettingsBackupComponent } from '@app/wallet/settings/components/setting
 import { SettingsGeneralComponent } from "@app/wallet/settings/components/settingsGeneral/settingsGeneral.component";
 import { SettingsComponent } from '@app/wallet/settings/settings.component';
 import { SettingsTokenComponent } from "@app/wallet/settings/components/settingsToken/settingsToken.component";
+import { SettingsTransactionsComponent } from "@app/wallet/settings/components/settingsTransactions/settingsTransactions.component";
+import { SettingsSystemComponent } from "@app/wallet/settings/components/settingsSystem/settingsSystem.component";
 
 export const DIAGNOSTICS_ROUTES: Routes = [
   {
@@ -26,6 +28,14 @@ export const DIAGNOSTICS_ROUTES: Routes = [
       {
         path: 'backup',
         component: SettingsBackupComponent
+      },
+      {
+        path: 'transactions',
+        component: SettingsTransactionsComponent
+      },
+      {
+        path: 'system',
+        component: SettingsSystemComponent
       }
     ]
   }

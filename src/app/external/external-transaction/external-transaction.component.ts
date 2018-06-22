@@ -23,7 +23,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   assetAddress: string;
   orderId: string;
   tokenAddress: string;
-  isInCookie: boolean = false;
+  tokenInfo: any;
 
   senderAddress: string;
   receiverAddress: string;
@@ -42,7 +42,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   external = true;
   maxTransactionFee: any;
   maxTransactionFeeEth: any;
-  tokenDecimals: number = 0;
+  tokenDecimals: number;
   currency: string;
   balance: number;
   receiverAddressHex: any;
@@ -167,7 +167,6 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       const data = !this.isToken
         ? ''
         : { type: 'token', contractAddress: this.tokenAddress, amount: Number(this.amount * Math.pow(10, this.tokenDecimals)) };
-
       try {
         const res = await this.transactionService.maxTransactionFee(resolvedAddress, data);
         this.maxTransactionFee = res[0];
@@ -181,32 +180,32 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     }
   }
 
-  getTokenInfo() {
-    for (let token of this.tokens) {
-      if (token.address === this.tokenAddress) {
-        this.currency = token.symbol;
-        this.tokenDecimals = token.decimals;
-        this.getMaxTransactionFee();
-        this.isInCookie = true;
-        break;
+
+  checkTokenCookies(targetToken): any {
+    for (let cookieToken of this.tokens) {
+      console.log(cookieToken);
+      if (cookieToken.address === targetToken) {
+        return cookieToken;
       }
     }
-
-    if (!this.isInCookie) {
-      this.tokenService.getTokensInfo(this.tokenAddress)
-      .then((res: Token) => {
-        this.currency = res.symbol;
-        this.tokenDecimals = res.decimals;
-        this.getMaxTransactionFee();
-        this.isInCookie = false;
+    return false;
+  }
+  
+  async getTokenInfo() {
+    this.tokenInfo = this.checkTokenCookies(this.tokenAddress);
+    if (!this.tokenInfo) {
+      try {
+        this.tokenInfo = await this.tokenService.getTokensInfo(this.tokenAddress);
         this.notificationMessagesService.tokenNotInTheCookies();
-      })
-      .catch((e) => {
+      } catch (e) {
         this.proceedAvailable = false;
         this.logger.logError(`Error while ${this.tokenAddress} token loading`, e);
         this.notificationMessagesService.tokenNotConfigured();
-      });
+      }
     }
+    this.currency = this.tokenInfo.symbol;
+    this.tokenDecimals = this.tokenInfo.decimals;
+    this.getMaxTransactionFee();
   }
 
   getBalance() {
@@ -216,7 +215,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
         this.proceedAvailable = (this.balance <= this.amount) ? false : true;
       });
     } else {
-      this.tokenService.getTokenBalance(this.tokenAddress).then((res)=>{
+      this.tokenService.getTokenBalance(this.tokenAddress).then((res) => {
         this.balance = Number(res) / Math.pow(10, this.tokenDecimals);
         this.proceedAvailable = (this.balance < this.amount || !this.currency) ? false : true;
       });

@@ -16,6 +16,8 @@ import { DerivationPathComponent } from "@app/wallet/settings/components/derivat
 import { SettingsBackupComponent } from "@app/wallet/settings/components/settingsBackup/settingsBackup.component";
 import { SettingsGeneralComponent } from "@app/wallet/settings/components/settingsGeneral/settingsGeneral.component";
 import { SettingsTokenComponent } from "@app/wallet/settings/components/settingsToken/settingsToken.component";
+import { SettingsTransactionsComponent } from "@app/wallet/settings/components/settingsTransactions/settingsTransactions.component";
+import { SettingsSystemComponent } from "@app/wallet/settings/components/settingsSystem/settingsSystem.component";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -37,7 +39,9 @@ export function createTranslateLoader(http: HttpClient) {
         SettingsBackupComponent,
         DerivationPathComponent,
         SettingsGeneralComponent,
-        SettingsTokenComponent
+        SettingsTokenComponent,
+        SettingsTransactionsComponent,
+        SettingsSystemComponent
     ]
 })
 

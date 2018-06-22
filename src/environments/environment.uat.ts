@@ -52,6 +52,8 @@ export const environment = {
     explorerUrl: "https://rinkeby.etherscan.io/tx/"
   },
   gasPrice: "1",
+  maxTransactionGas: "4000000",
+  lastTransactionsNumber: "10",
   maxBlockGas: "1",
   chainId: 418313827693,
   loglevel: LogLevel.None
