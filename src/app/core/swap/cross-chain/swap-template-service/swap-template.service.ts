@@ -3,6 +3,7 @@ const artifacts = require('@core/abi/SwapTemplateRegistry.json');
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
+import { unique } from "@shared/helpers/array-utils";
 import { Chain } from "./chain.enum";
 import { SwapTemplate } from "./swap-template.model";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
@@ -55,15 +56,21 @@ export class SwapTemplateService extends BaseContractService {
   }
 
   async getTemplatesIds(chain: Chain) : Promise<string[]> {
-    const templatesIds = this.contract.methods.templatesIds(chain);
-    const response = await this.contractExecutorService.call(templatesIds);
-    return response;
+    const templatesIdsMethod = this.contract.methods.templatesIds(chain);
+    const templateIds: string[] = await this.contractExecutorService.call(templatesIdsMethod);
+    // NOTE: We get unique template ids due to next bug in contract:
+    // If you delete template & add with the same id two will be returned back
+    const uniqueTemplateIds = unique(templateIds);
+    return uniqueTemplateIds;
   }
 
   async getTemplatesIdsByAsset(asset: string, chain: Chain) : Promise<string[]> {
     const templatesIdsByAsset = this.contract.methods.templatesIdsByAsset(asset.toLowerCase(), chain);
-    const response = await this.contractExecutorService.call(templatesIdsByAsset);
-    return response;
+    const templateIds: string[] = await this.contractExecutorService.call(templatesIdsByAsset);
+    // NOTE: We get unique template ids due to next bug in contract:
+    // If you delete template & add with the same id two will be returned back
+    const uniqueTemplateIds = unique(templateIds);
+    return uniqueTemplateIds;
   }
 
   async getTemplates(chain: Chain) : Promise<SwapTemplate[]> {
