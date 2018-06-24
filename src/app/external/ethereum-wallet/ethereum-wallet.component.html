@@ -3,31 +3,31 @@
     <div class="modal-content">
       <aer-modal-dialog>
         <div class="c-eth-wallet">
-          <h1>Ethereum Wallet</h1>
+          <h1>{{'EXTERNAL-SWAP.WALLET.TITLE'|translate}}</h1>
           <div aerRow *ngIf="injectedWeb3">
             <div aerColumn size="sm-4" class="cell cell--left">
-              Select Wallet:
+              {{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_WALLET'|translate}}
             </div>
             <div aerColumn size="sm-8" class="cell cell--left">
               <aer-radio-group class="address-option">
                 <aer-radio-button [value]="walletTypes.Injected" (change)="onWalletSelect($event)">{{injectedWeb3Name}}</aer-radio-button>
-                <aer-radio-button [value]="walletTypes.Imported" (change)="onWalletSelect($event)" [checked]="true">Stored Keys</aer-radio-button>
+                <aer-radio-button [value]="walletTypes.Imported" (change)="onWalletSelect($event)" [checked]="true">{{'EXTERNAL-SWAP.WALLET.FIELD_STORED_KEYS'|translate}}</aer-radio-button>
               </aer-radio-group>
             </div>
           </div>
           <div aerRow>
             <div aerColumn size="sm-12" class="cell cell--left">
-              Select Address
+              {{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_ADDRESS'|translate}}
             </div>
           </div>
           <div aerRow>
             <div aerColumn size="sm-12" class="cell">
               <aer-select [(ngModel)]="address" icon="key"
-                          (ngModelChange)="onAddressChange()" placeholder="Select your account">
+                          (ngModelChange)="onAddressChange()" placeholder="{{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_YOUR_ACCOUNT'|translate}}">
                 <aer-select-option *ngFor="let item of addresses;" [value]="item">
                   <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
                 </aer-select-option>
-                <aer-select-option *ngIf="walletTypes.Imported === selectedWalletType"><span>+ Add Account</span></aer-select-option>
+                <aer-select-option *ngIf="walletTypes.Imported === selectedWalletType"><span>{{'EXTERNAL-SWAP.WALLET.BTN_ADD_ACCOUNT'|translate}}</span></aer-select-option>
               </aer-select>
             </div>
           </div>
@@ -55,16 +55,19 @@
           </div>
           <div aerRow *ngIf="address">
             <div aerColumn size="sm-6" class="cell cell--left">
-              Balance:
+              {{'EXTERNAL-SWAP.WALLET.FIELD_BALANCE'|translate}}
             </div>
             <div aerColumn size="sm-6" class="cell cell--right">
               {{balance | convertToEther | number:'1.2-5'}} ETH
             </div>
           </div>
+          <div class="message">
+            {{'EXTERNAL-SWAP.WALLET.FIELD_MESSAGE'|translate}}
+          </div>
           <aer-button (buttonFn)="next()" class="large full-width"
-                      ngClass="{ 'blue': canMoveNext, 'grey': !canMoveNext }" [disabled]="!canMoveNext">Next
+                      ngClass="{ 'blue': canMoveNext, 'grey': !canMoveNext }" [disabled]="!canMoveNext">{{'EXTERNAL-SWAP.WALLET.BTN_NEXT'|translate}}
           </aer-button>
-          <aer-button (buttonFn)="cancel()" class="large full-width">Cancel</aer-button>
+          <aer-button (buttonFn)="cancel()" class="large full-width">{{'EXTERNAL-SWAP.WALLET.BTN_CANCEL'|translate}}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>
