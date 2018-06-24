@@ -11,7 +11,6 @@ import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { SwapState } from "@core/swap/models/swap-state.enum";
-import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
 import { CounterErc20Swap } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-erc20-swap.model";
 import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
@@ -23,8 +22,6 @@ import { CounterAerumErc20SwapService } from "@core/swap/cross-chain/counter-aer
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
-import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
-import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 
 @Component({
@@ -75,9 +72,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
     private swapLocalStorageService: SwapLocalStorageService,
     private ethereumAuthService: EthereumAuthenticationService,
-    private etherSwapService: OpenEtherSwapService,
-    private injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
-    private selfSignedEthereumContractExecutorService: SelfSignedEthereumContractExecutorService
+    private etherSwapService: OpenEtherSwapService
   ) { }
 
   async ngOnInit() {
@@ -108,7 +103,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.query = param.query;
 
     this.loadLocalSwap();
-    
+
     await this.loadEthereumSwap();
     if (this.etherSwapFinishedOrExpired()) {
       return;
@@ -136,7 +131,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   private async tryLoadEthereumSwap() {
-    this.etherSwap = await this.getEthereumSwapFromNetwork();
+    this.etherSwap = await this.etherSwapService.checkSwap(this.hash);
     if (!this.etherSwap || (this.etherSwap.state === SwapState.Invalid)) {
       throw new Error('Cannot load ether swap: ' + this.hash);
     }
@@ -311,9 +306,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   private async cancelSwap(): Promise<void> {
-    await this.configureSwapService();
     this.expireSwapTransactionExplorerUrl = null;
-    await this.etherSwapService.expireSwap(this.hash, (hash) => this.onExpireSwapHashReceived(hash));
+    await this.etherSwapService.expireSwap(this.hash, {
+      hashCallback: (hash) => this.onExpireSwapHashReceived(hash),
+      account: this.localSwap.account,
+      wallet: this.localSwap.walletType
+    });
     this.swapCancelled = true;
     this.cleanErrors();
   }
@@ -346,61 +344,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     if (hash) {
       this.expireSwapTransactionExplorerUrl = environment.ethereum.explorerUrl + hash;
     }
-  }
-
-  // TODO: Duplication with create swap service. Possibly there is way to make this better
-  private async configureSwapService() {
-    if (this.localSwap.walletType === EthWalletType.Injected) {
-      await this.configureInjectedSwapService();
-    } else {
-      this.configureImportedSwapService();
-    }
-  }
-
-  private async configureInjectedSwapService() {
-    const account = this.localSwap.account;
-    const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
-    if (!injectedWeb3) {
-      this.notificationService.showMessage('Injected web3 not provided', 'Error');
-      throw Error('Injected web3 not provided');
-    }
-
-    const accounts = await injectedWeb3.eth.getAccounts() || [];
-    if (!accounts.length) {
-      this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
-      throw Error('Cannot get accounts from selected provider');
-    }
-
-    if (accounts.every(acc => acc !== account)) {
-      this.notificationService.showMessage(`Please select ${account} and retry`, 'Error');
-      throw Error(`Incorrect Mist / Metamask account selected. Expected ${account}`);
-    }
-
-    this.injectedWeb3ContractExecutorService.init(injectedWeb3, account);
-    this.etherSwapService.useContractExecutor(this.injectedWeb3ContractExecutorService);
-  }
-
-  private configureImportedSwapService() {
-    const account = this.localSwap.account;
-    const ethWeb3 = this.ethereumAuthService.getWeb3();
-    const importedAccount = this.ethereumAuthService.getEthereumAccount(account);
-    if (!importedAccount) {
-      this.notificationService.showMessage(`Cannot load imported account ${account}`, 'Error');
-      throw Error(`Cannot load imported account ${account}`);
-    }
-
-    this.selfSignedEthereumContractExecutorService.init(ethWeb3, importedAccount.address, importedAccount.privateKey);
-    this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
-  }
-
-  private async getEthereumSwapFromNetwork(): Promise<OpenEtherSwap> {
-    // NOTE: We may get any account here as we just do queries & we don't need private key
-    const web3 = this.ethereumAuthService.getWeb3();
-    this.selfSignedEthereumContractExecutorService.init(web3, null, null);
-    this.etherSwapService.useContractExecutor(this.selfSignedEthereumContractExecutorService);
-
-    const swap = await this.etherSwapService.checkSwap(this.hash);
-    return swap;
   }
 
   close() {

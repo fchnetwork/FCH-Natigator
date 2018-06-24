@@ -3,7 +3,6 @@ const artifacts = require('@core/abi/AtomicSwapERC20ToERC20.json');
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
-import { fromWei } from "web3-utils";
 import { toNumber } from "@shared/helpers/number-utils";
 import { secondsToDate } from "@shared/helpers/date-util";
 

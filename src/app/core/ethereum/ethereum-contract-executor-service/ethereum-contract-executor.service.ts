@@ -1,46 +1,40 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 
 import { environment } from "@env/environment";
-
-import { retry } from "@shared/helpers/retry";
 import Web3 from 'web3';
 import { TransactionObject, TransactionReceipt, Tx } from "web3/types";
 
-import { TransactionOptions } from "./transaction-options.model";
-import { LoggerService } from '@core/general/logger-service/logger.service';
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { retry } from "@shared/helpers/retry";
+import { EthereumTransactionOptions } from "@core/ethereum/ethereum-contract-executor-service/ethereum-transaction-options.model";
+import { LoggerService } from "@core/general/logger-service/logger.service";
+import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 
+// NOTE: This service is similar to aerum contract executor but works with dynamic accoiunts
 @Injectable()
-export class ContractExecutorService {
+export class EthereumContractExecutorService {
 
   private readonly contractGasThreshold = 100 * 1000;
-  private readonly address: string;
-  private readonly privateKey: string;
   private readonly web3: Web3;
   private readonly chainId: number;
 
   constructor(
     private logger: LoggerService,
-    private authService: AuthenticationService,
-    private sessionService: SessionStorageService
+    private etherAuthService: EthereumAuthenticationService
   ) {
-    this.address = this.authService.getAddress();
-    this.privateKey = this.sessionService.retrieve('private_key');
-    this.web3 = this.authService.getWeb3();
-    this.chainId = environment.chainId;
+    this.web3 = this.etherAuthService.getWeb3();
+    this.chainId = environment.ethereum.chainId;
   }
 
-  async send(transaction: TransactionObject<any>, options?: TransactionOptions) {
-    options = this.ensureOptions(options);
+  async send(transaction: TransactionObject<any>, options: EthereumTransactionOptions) {
+    this.ensureOptions(options);
     const tx = await this.createSendTx(transaction, options);
-    const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey) as any;
+    const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, options.privateKey) as any;
     this.logger.logMessage('Transaction being sent');
     const receipt = await this.sendSignedTransaction(signedTransaction.rawTransaction, options);
     return receipt;
   }
 
-  private sendSignedTransaction(data: string, options: TransactionOptions): Promise<TransactionReceipt> {
+  private sendSignedTransaction(data: string, options: EthereumTransactionOptions): Promise<TransactionReceipt> {
     let transactionHash: string;
     return new Promise((resolve, reject) => {
       this.web3.eth.sendSignedTransaction(data)
@@ -69,23 +63,23 @@ export class ContractExecutorService {
     });
   }
 
-  async call(transaction: TransactionObject<any>) {
-    const tx = this.createCallTx(transaction);
+  async call(transaction: TransactionObject<any>, account?: string) {
+    const tx = this.createCallTx(transaction, account);
     const response = await transaction.call(tx);
     return response.valueOf();
   }
 
-  private createCallTx(transaction: TransactionObject<any>) : Tx {
+  private createCallTx(transaction: TransactionObject<any>, account?: string) : Tx {
     return {
       chainId: this.chainId,
       // NOTE: Accessing private members is not the best way to do this but no need for another parameter
       to: (transaction as any)._parent._address,
-      from: this.address,
+      from: account,
       data: transaction.encodeABI()
     };
   }
 
-  private async createSendTx(transaction: TransactionObject<any>, options: TransactionOptions) : Promise<Tx> {
+  private async createSendTx(transaction: TransactionObject<any>, options: EthereumTransactionOptions) : Promise<Tx> {
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
     const [gasPrice, estimatedGas, transactionsCount] = await this.getSentTxData(transaction, options);
 
@@ -94,7 +88,7 @@ export class ContractExecutorService {
       chainId: this.chainId,
       // NOTE: Accessing private members is not the best way to do this but no need for another parameter
       to: (transaction as any)._parent._address,
-      from: this.address,
+      from: options.account,
       value: this.web3.utils.toHex(aeroValueInWei),
       gasPrice: this.web3.utils.toHex(gasPrice),
       gas: this.web3.utils.toHex(estimatedGas + this.contractGasThreshold),
@@ -103,16 +97,16 @@ export class ContractExecutorService {
     };
   }
 
-  private async getSentTxData(transaction: TransactionObject<any>, options: TransactionOptions) : Promise<[number, number, number]> {
+  private async getSentTxData(transaction: TransactionObject<any>, options: EthereumTransactionOptions) : Promise<[number, number, number]> {
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
 
     const getGasPrice = this.web3.eth.getGasPrice();
-    const getTransactionsCount = this.web3.eth.getTransactionCount(this.address);
+    const getTransactionsCount = this.web3.eth.getTransactionCount(options.account);
     const getEstimatedGas = transaction.estimateGas({
       chainId: this.chainId,
       // NOTE: Accessing private members is not the best way to do this but no need for another parameter
       to: (transaction as any)._parent._address,
-      from: this.address,
+      from: options.account,
       value: this.web3.utils.toHex(aeroValueInWei),
       data: transaction.encodeABI()
     });
@@ -121,8 +115,8 @@ export class ContractExecutorService {
     return [gasPrice, estimatedGas, transactionsCount];
   }
 
-  async estimateCost(transaction: TransactionObject<any>, options?: TransactionOptions) : Promise<[number, number, number]> {
-    options = this.ensureOptions(options);
+  async estimateCost(transaction: TransactionObject<any>, options: EthereumTransactionOptions) : Promise<[number, number, number]> {
+    this.ensureOptions(options);
     const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
 
     const getGasPrice = this.web3.eth.getGasPrice();
@@ -130,7 +124,7 @@ export class ContractExecutorService {
       chainId: this.chainId,
       // NOTE: Accessing private members is not the best way to do this but no need for another parameter
       to: (transaction as any)._parent._address,
-      from: this.address,
+      from: options.account,
       value: this.web3.utils.toHex(aeroValueInWei),
       data: transaction.encodeABI()
     });
@@ -139,15 +133,21 @@ export class ContractExecutorService {
     return [gasPrice, estimatedGas, estimatedGas + this.contractGasThreshold];
   }
 
-  private ensureOptions(options: TransactionOptions): TransactionOptions {
+  private ensureOptions(options: EthereumTransactionOptions): void {
     if (!options) {
-      options = {};
+      throw new Error('Transaction options are not specified');
+    }
+
+    if (!options.account) {
+      throw new Error('Transaction account is not specified');
+    }
+
+    if (!options.privateKey) {
+      throw new Error('Transaction private key is not specified');
     }
 
     if (!options.value) {
       options.value = '0';
     }
-
-    return options;
   }
 }

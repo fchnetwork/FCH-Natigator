@@ -5,8 +5,6 @@ import { multiSlice } from "@shared/helpers/array-utils";
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
-import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
-import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 
@@ -16,8 +14,6 @@ export class SwapListService {
   constructor(
     private logger: LoggerService,
     private localSwapStorage: SwapLocalStorageService,
-    private ethereumAuthenticationService: EthereumAuthenticationService,
-    private ethereumContractExecutorService: SelfSignedEthereumContractExecutorService,
     private etherSwapService: OpenEtherSwapService
   ) { }
 
@@ -59,7 +55,6 @@ export class SwapListService {
 
     // NOTE: To have paging working we always should return swap ids in the same order
     // that's why we order them by account first
-    this.configureEtherSwapServices(ethAccounts[0]);
     const swapIdGroups = await Promise.all(ethAccounts.map(ethAccount => this.getEtherSwapsIdsByAccount(ethAccount)));
     const swapIdPairs = swapIdGroups.reduce((all, accountSwaps) => all.concat(accountSwaps),[]);
     const sortedSwapIds = swapIdPairs.sort((one, two) => one.account.localeCompare(two.account));
@@ -100,13 +95,6 @@ export class SwapListService {
       createdOn: swap.openedOn,
       state: swap.state
     };
-  }
-
-  private configureEtherSwapServices(account: string) {
-    // NOTE: We may get any account here as we just do queries & we don't need private key
-    const web3 = this.ethereumAuthenticationService.getWeb3();
-    this.ethereumContractExecutorService.init(web3, account, null);
-    this.etherSwapService.useContractExecutor(this.ethereumContractExecutorService);
   }
 
   private getCounterparty(one: string, two: string, account: string): string {
