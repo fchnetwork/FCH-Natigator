@@ -5,7 +5,7 @@ import Web3 from 'web3';
 import { TransactionObject, TransactionReceipt, Tx } from "web3/types";
 
 import { retry } from "@shared/helpers/retry";
-import { EthereumTransactionOptions } from "@core/ethereum/ethereum-contract-executor-service/ethereum-transaction-options.model";
+import { EthereumTransactionOptions } from "./ethereum-transaction-options.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 

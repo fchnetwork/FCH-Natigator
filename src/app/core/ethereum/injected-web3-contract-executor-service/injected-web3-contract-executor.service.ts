@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Tx, TransactionObject, TransactionReceipt } from 'web3/types';
 import { toHex, toWei } from "web3-utils";
 
-import { InjectedTransactionOptions } from "@core/ethereum/injected-web3-contract-executor-service/injected-transaction-options.model";
+import { InjectedWeb3TransactionOptions } from "./injected-web3-transaction-options.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 
@@ -17,7 +17,7 @@ export class InjectedWeb3ContractExecutorService {
     private etherAuthService: EthereumAuthenticationService
   ) { }
 
-  async send(transaction: TransactionObject<any>, options: InjectedTransactionOptions): Promise<TransactionReceipt> {
+  async send(transaction: TransactionObject<any>, options: InjectedWeb3TransactionOptions): Promise<TransactionReceipt> {
     this.ensureOptions(options);
     const tx = await this.createSendTx(transaction, options);
     this.logger.logMessage('Transaction being sent');
@@ -47,7 +47,7 @@ export class InjectedWeb3ContractExecutorService {
     };
   }
 
-  private async createSendTx(transaction: TransactionObject<any>, options: InjectedTransactionOptions): Promise<Tx> {
+  private async createSendTx(transaction: TransactionObject<any>, options: InjectedWeb3TransactionOptions): Promise<Tx> {
     const aeroValueInWei = toWei(options.value, 'ether');
     const [gasPrice, estimatedGas, transactionsCount] = await this.getSentTxData(transaction, options);
 
@@ -64,7 +64,7 @@ export class InjectedWeb3ContractExecutorService {
     };
   }
 
-  private async getSentTxData(transaction: TransactionObject<any>, options: InjectedTransactionOptions): Promise<[number, number, number]> {
+  private async getSentTxData(transaction: TransactionObject<any>, options: InjectedWeb3TransactionOptions): Promise<[number, number, number]> {
     const web3 = await this.etherAuthService.getInjectedWeb3();
     const aeroValueInWei = toWei(options.value, 'ether');
 
@@ -82,7 +82,7 @@ export class InjectedWeb3ContractExecutorService {
     return [gasPrice, estimatedGas, transactionsCount];
   }
 
-  async estimateCost(transaction: TransactionObject<any>, options: InjectedTransactionOptions): Promise<[number, number, number]> {
+  async estimateCost(transaction: TransactionObject<any>, options: InjectedWeb3TransactionOptions): Promise<[number, number, number]> {
     this.ensureOptions(options);
     const web3 = await this.etherAuthService.getInjectedWeb3();
     const aeroValueInWei = toWei(options.value, 'ether');
@@ -100,7 +100,7 @@ export class InjectedWeb3ContractExecutorService {
     return [gasPrice, estimatedGas, estimatedGas + this.contractGasThreshold];
   }
 
-  private ensureOptions(options: InjectedTransactionOptions): void {
+  private ensureOptions(options: InjectedWeb3TransactionOptions): void {
     if (!options) {
       throw new Error('Transaction options are not specified');
     }
