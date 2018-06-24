@@ -9,7 +9,7 @@ export function fromSolidityDecimalString(value: string, decimals: number): numb
     return Number(value);
   }
 
-  return Number(value) / Math.pow(10, Number(decimals));
+  return new BigNumber(value, 10).div(Math.pow(10, Number(decimals))).toNumber();
 }
 
 export function toBigNumberString(value: number): string {

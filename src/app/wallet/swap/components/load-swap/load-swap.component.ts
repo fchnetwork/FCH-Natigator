@@ -8,7 +8,7 @@ import { environment } from '@env/environment';
 import { fromWei } from 'web3-utils';
 import { TransactionReceipt } from 'web3/types';
 
-import { toBigNumberString } from "@shared/helpers/number-utils";
+import { fromSolidityDecimalString, toBigNumberString } from "@shared/helpers/number-utils";
 import { SwapMode, LoadedSwap, SwapStatus } from '@swap/models/models';
 import { Token } from "@core/transactions/token-service/token.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
@@ -296,11 +296,8 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
     };
   }
 
-  private getDecimalTokenValue(value: number, decimals: number) {
-    if(!decimals) {
-      return value;
-    }
-    return value / Math.pow(10, decimals);
+  private getDecimalTokenValue(value: string, decimals: number) {
+    return fromSolidityDecimalString(value, decimals);
   }
 
   private mapSwapStatus(status: string) : SwapStatus {
