@@ -1,5 +1,3 @@
-import { InjectedWeb3Error } from "@external/models/injected-web3.error";
-
 const artifacts = require('@core/abi/OpenAtomicSwapEther.json');
 
 import { Injectable } from '@angular/core';
@@ -7,11 +5,12 @@ import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 import Web3 from "web3";
 import { Contract, TransactionObject } from "web3/types";
-
 import { fromWei, fromAscii } from "web3-utils";
-import { secondsToDate } from "@shared/helpers/date-util";
 
+import { secondsToDate } from "@shared/helpers/date-util";
+import { toBigNumberString } from "@shared/helpers/number-utils";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
+import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 import { TransactionOptions } from "@core/swap/cross-chain/open-ether-swap-service/execution-options.model";
 import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
@@ -32,7 +31,7 @@ export class OpenEtherSwapService {
 
   async openSwap(hash: string, ethValue: string, withdrawTrader: string, timelock: number, options: TransactionOptions) {
     const contract = await this.createContract(options.wallet);
-    const openSwap = contract.methods.open(hash, withdrawTrader, timelock.toString(10));
+    const openSwap = contract.methods.open(hash, withdrawTrader, toBigNumberString(timelock));
     const receipt = await this.send(openSwap, options, ethValue);
     return receipt;
   }

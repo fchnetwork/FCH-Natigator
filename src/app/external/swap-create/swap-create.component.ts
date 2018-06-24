@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
-import { BigNumber } from 'bignumber.js';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
@@ -9,6 +8,7 @@ import { environment } from "@env/environment";
 import { sha3, fromWei } from 'web3-utils';
 import Web3 from "web3";
 
+import { toBigNumberString } from "@shared/helpers/number-utils";
 import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { InjectedWeb3Error } from "@external/models/injected-web3.error";
@@ -227,7 +227,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.openSwapTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
-    const ethAmountString = new BigNumber(this.ethAmount, 10).toString(10);
+    const ethAmountString = toBigNumberString(this.ethAmount);
     const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
     const counterpartyTrader = this.selectedTemplate.offchainAccount;
 
