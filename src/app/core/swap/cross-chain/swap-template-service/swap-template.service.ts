@@ -79,4 +79,9 @@ export class SwapTemplateService extends BaseContractService {
     const templates = await Promise.all(promises);
     return templates;
   }
+
+  async getTemplatesByOffchainAsset(asset: string, chain: Chain) : Promise<SwapTemplate[]> {
+    const templates = await this.getTemplates(chain);
+    return templates.filter(t => t.offchainAsset === asset.toLowerCase());
+  }
 }
