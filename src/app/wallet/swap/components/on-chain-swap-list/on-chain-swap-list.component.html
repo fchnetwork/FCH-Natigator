@@ -1,14 +1,17 @@
 <div aerRow>
   <div aerColumn size="col-md-12">
-    <aer-card title="{{'SWAP.LIST.ONCHAIN_TITLE'|translate}}">
-      <div aerRow>
-        <div aerColumn size="md-9"></div>
-        <div aerColumn size="md-3">
-          <aer-button (buttonFn)="createSwap()" class="full-width">{{'SWAP.LIST.BTN_CREATE'|translate}}</aer-button>
+
+    <div aerRow>
+      <div aerColumn size="md-12">
+        <div class="swap__header-buttons">
+          <h3>{{'SWAP.LIST.ONCHAIN_TITLE'|translate}}</h3>
+          <aer-button (buttonFn)="createSwap()" class="white medium">{{'SWAP.LIST.BTN_CREATE'|translate}}</aer-button>
         </div>
       </div>
-      <div aerRow>
-        <div aerColumn size="md-12">
+    </div>
+    <div aerRow>
+      <div aerColumn size="md-12">
+        <aer-card>
           <aer-table [data]="swaps" [loading]="loading">
             <ng-template aerTemplate="header">
               <th id="id">{{'SWAP.LIST.TITLE_SWAP_ID'|translate}}</th>
@@ -37,8 +40,8 @@
           </aer-table>
           <app-divider [showLine]="false"></app-divider>
           <aer-button class="full-width blue" (buttonFn)="showMore()" [disabled]="!canShowMore">{{'SHOW_MORE'|translate}}</aer-button>
-        </div>
+        </aer-card>
       </div>
-    </aer-card>
+    </div>
   </div>
 </div>

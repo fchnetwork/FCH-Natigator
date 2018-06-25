@@ -1,17 +1,19 @@
 <div aerRow>
   <div aerColumn size="md-12">
-    <aer-card title="{{'SWAP.LIST.CROSS_CHAIN_TITLE'|translate}}">
-      <div aerRow>
-        <div aerColumn size="md-3">
-          <aer-button (buttonFn)="deposit()" class="full-width">{{'SWAP.LIST.BTN_DEPOSIT'|translate}}</aer-button>
+    <div aerRow>
+      <div aerColumn size="md-12">
+        <div class="swap__header-buttons">
+          <h3>
+            {{'SWAP.LIST.CROSS_CHAIN_TITLE'|translate}}
+          </h3>
+          <aer-button (buttonFn)="deposit()" class="medium white">{{'SWAP.LIST.BTN_DEPOSIT'|translate}}</aer-button>
+          <aer-button (buttonFn)="withdraw()" class="medium white">{{'SWAP.LIST.BTN_WITHDRAW'|translate}}</aer-button>
         </div>
-        <div aerColumn size="md-3">
-          <aer-button (buttonFn)="withdraw()" class="full-width">{{'SWAP.LIST.BTN_WITHDRAW'|translate}}</aer-button>
-        </div>
-        <div aerColumn size="md-6"></div>
       </div>
-      <div aerRow>
-        <div aerColumn="md-12">
+    </div>
+    <div aerRow>
+      <div aerColumn="md-12">
+        <aer-card>
           <aer-table [data]="swaps" [loading]="loading">
             <ng-template aerTemplate="header">
               <th id="id">{{'SWAP.LIST.TITLE_SWAP_ID'|translate}}</th>
@@ -39,8 +41,8 @@
           </aer-table>
           <app-divider [showLine]="false"></app-divider>
           <aer-button class="full-width blue" (buttonFn)="showMore()" [disabled]="!canShowMore">{{'SHOW_MORE'|translate}}</aer-button>
-        </div>
+        </aer-card>
       </div>
-    </aer-card>
+    </div>
   </div>
 </div>
