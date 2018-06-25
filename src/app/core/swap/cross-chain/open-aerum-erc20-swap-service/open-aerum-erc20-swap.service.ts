@@ -1,6 +1,6 @@
 const artifacts = require('@core/abi/OpenAtomicSwapERC20.json');
 const erc20ABI = require('@core/abi/tokens.ts');
-import { BigNumber } from 'bignumber.js';
+import { toBigNumberString } from "@shared/helpers/number-utils";
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
@@ -13,17 +13,22 @@ export class OpenAerumErc20SwapService extends BaseContractService {
   constructor(
     authenticationService: AuthenticationService,
     contractExecutorService: ContractExecutorService) {
-    super(artifacts.abi, environment.contracts.swap.crossChain.address.aerum.OpenErc20Swap, authenticationService, contractExecutorService);
+    super(
+      artifacts.abi,
+      environment.contracts.swap.crossChain.address.aerum.OpenErc20Swap,
+      authenticationService,
+      contractExecutorService
+    );
   }
 
-  async openSwap(hash: string, erc20Address: string, value: BigNumber, withdrawTrader: string, timelock: number, hashCallback?: (hash: string) => void) {
+  async openSwap(hash: string, erc20Address: string, value: string, withdrawTrader: string, timelock: number, hashCallback?: (hash: string) => void) {
     await this.tokenApprove(erc20Address, value);
-    const openSwap = this.contract.methods.open(hash, value, erc20Address, withdrawTrader, timelock.toString(10));
+    const openSwap = this.contract.methods.open(hash, value, erc20Address, withdrawTrader, toBigNumberString(timelock));
     const receipt = await this.contractExecutorService.send(openSwap, { value: '0', hashReceivedCallback: hashCallback });
     return receipt;
   }
 
-  private async tokenApprove(erc20Address: string, value: BigNumber) {
+  private async tokenApprove(erc20Address: string, value: string) {
     const openErc20Swap = environment.contracts.swap.crossChain.address.aerum.OpenErc20Swap as string;
     const tokenContract = new this.web3.eth.Contract(erc20ABI.tokensABI, erc20Address);
     const approve = tokenContract.methods.approve(openErc20Swap, value);

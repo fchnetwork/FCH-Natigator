@@ -1,7 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
-import { BigNumber } from 'bignumber.js';
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs/Subscription";
+
 import { environment } from "@env/environment";
+
+import { toBigNumberString } from "@shared/helpers/number-utils";
 import { sha3 } from 'web3-utils';
 import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
@@ -12,11 +16,10 @@ import { InternalNotificationService } from "@core/general/internal-notification
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
+import { Token } from "@core/transactions/token-service/token.model";
 import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription } from "rxjs/Subscription";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
@@ -35,7 +38,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   amount: number;
 
   tokens = [];
-  selectedToken: any;
+  selectedToken: Token;
 
   templates: SwapTemplate[] = [];
   selectedTemplate: SwapTemplate;
@@ -210,11 +213,10 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
 
   async openERC20Swap() {
     await this.loadEthAccount();
-
     this.openSwapTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
-    const amount = new BigNumber(this.amount);
+    const amount = toBigNumberString(this.amount);
     const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
     const withdrawTrader = this.params.account;
 
@@ -225,7 +227,11 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       amount,
       withdrawTrader,
       timestamp,
-      (txHash) => this.onOpenSwapHashReceived(txHash)
+      {
+        hashCallback: (txHash) => this.onOpenSwapHashReceived(txHash),
+        account: this.params.account,
+        wallet: this.params.wallet
+      }
     );
 
     const localSwap: EtherSwapReference = {
