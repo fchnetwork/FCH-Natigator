@@ -6,12 +6,13 @@ import { Subscription } from "rxjs/Subscription";
 import { environment } from '@env/environment';
 
 import { fromWei } from 'web3-utils';
-
 import { TransactionReceipt } from 'web3/types';
+
+import { fromSolidityDecimalString, toBigNumberString } from "@shared/helpers/number-utils";
 import { SwapMode, LoadedSwap, SwapStatus } from '@swap/models/models';
+import { Token } from "@core/transactions/token-service/token.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { TokenError } from "@core/transactions/token-service/token.error";
-import { Token } from "@core/transactions/token-service/token.model";
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { AeroToErc20SwapService } from '@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
@@ -167,7 +168,7 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
     const allowance = await this.erc20TokenService.allowance(tokenContractAddress, this.currentAddress, spender);
     if (Number(allowance) < amount) {
       this.logger.logMessage(`Allowance value: ${allowance}. Needed: ${amount}`);
-      await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
+      await this.erc20TokenService.approve(tokenContractAddress, spender, toBigNumberString(amount));
     }
   }
 
@@ -295,11 +296,8 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
     };
   }
 
-  private getDecimalTokenValue(value: number, decimals: number) {
-    if(!decimals) {
-      return value;
-    }
-    return value / Math.pow(10, decimals);
+  private getDecimalTokenValue(value: string, decimals: number) {
+    return fromSolidityDecimalString(value, decimals);
   }
 
   private mapSwapStatus(status: string) : SwapStatus {

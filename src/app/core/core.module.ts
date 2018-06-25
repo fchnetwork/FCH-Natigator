@@ -13,7 +13,7 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 import { CanActivateAccountAuthGuard } from '@app/core/authentication/auth-guards/can-activate-account.guard';
 import { CanActivateViaAuthGuard } from '@app/core/authentication/auth-guards/can-activate-auth.guard';
 import { ContractExecutorService } from '@app/core/contract/contract-executor-service/contract-executor.service';
-import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
+import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contract-executor-service/ethereum-contract-executor.service";
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
@@ -49,7 +49,7 @@ import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-c
   ],
   providers: [
     ContractExecutorService,
-    SelfSignedEthereumContractExecutorService,
+    EthereumContractExecutorService,
     InjectedWeb3ContractExecutorService,
     AccountIdleService,
     ClipboardService,

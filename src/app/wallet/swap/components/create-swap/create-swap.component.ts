@@ -3,6 +3,8 @@ import { Guid } from "@shared/helpers/guid";
 import { NotificationService } from "@aerum/ui";
 
 import { environment } from '@env/environment';
+
+import { toBigNumberString } from "@shared/helpers/number-utils";
 import { SwapToken, SwapMode } from '@swap/models/models';
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { ModalService } from '@core/general/modal-service/modal.service';
@@ -179,8 +181,8 @@ export class CreateSwapComponent implements OnInit {
     const counterpartyTokenAmount = this.getCounterpartyTokenAmountIncludingDecimals();
     await this.aeroToErc20SwapService.openSwap(
       this.swapId,
-      this.tokenAmount.toString(10),
-      counterpartyTokenAmount.toString(10),
+      toBigNumberString(this.tokenAmount),
+      toBigNumberString(counterpartyTokenAmount),
       await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress),
       this.counterpartyToken.address
     );
@@ -191,9 +193,9 @@ export class CreateSwapComponent implements OnInit {
     await this.ensureAllowance(this.token.address, environment.contracts.swap.address.Erc20ToAero, tokenAmount);
     await this.erc20ToAeroSwapService.openSwap(
       this.swapId,
-      tokenAmount.toString(10),
+      toBigNumberString(tokenAmount),
       this.token.address,
-      this.counterpartyTokenAmount.toString(10),
+      toBigNumberString(this.counterpartyTokenAmount),
       await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress),
     );
   }
@@ -204,9 +206,9 @@ export class CreateSwapComponent implements OnInit {
     await this.ensureAllowance(this.token.address, environment.contracts.swap.address.Erc20ToErc20, tokenAmount);
     await this.erc20ToErc20SwapService.openSwap(
       this.swapId,
-      tokenAmount.toString(10),
+      toBigNumberString(tokenAmount),
       this.token.address,
-      counterpartyTokenAmount.toString(10),
+      toBigNumberString(counterpartyTokenAmount),
       await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress),
       this.counterpartyToken.address
     );
@@ -224,7 +226,7 @@ export class CreateSwapComponent implements OnInit {
     const allowance = await this.erc20TokenService.allowance(tokenContractAddress, this.currentAddress, spender);
     if (Number(allowance) < amount) {
       this.logger.logMessage(`Allowance value: ${allowance}. Needed: ${amount}`);
-      await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
+      await this.erc20TokenService.approve(tokenContractAddress, spender, toBigNumberString(amount));
     }
   }
 

@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { environment } from '@env/environment';
 
+import { toBigNumberString } from "@shared/helpers/number-utils";
 import { AddressValidator } from "@shared/validators/address.validator";
 import { NameBuyConfirmRequest } from '@aens/models/nameBuyConfirmRequest';
 import { ConfirmResponse } from '@aens/models/confirmResponse';
@@ -83,7 +84,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
     const fullName = label + ".aer";
     const nameAddress = this.address;
 
-    const cost = await this.aensService.estimateBuyNameAndSetAddressCost(label, this.account, this.address, this.price.toString(10));
+    const cost = await this.aensService.estimateBuyNameAndSetAddressCost(label, this.account, this.address, toBigNumberString(this.price));
     this.logger.logMessage(`Buy name cost: ${cost}`);
 
     const buyRequest: NameBuyConfirmRequest = {
@@ -103,7 +104,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
     }
 
     this.notificationService.notify(this.multiContractsExecutionNotificationTitle(1, 3), `${this.translate('ENS.NOTIFICATION_BODY_BUY_NAME')}: ${fullName}`, 'aerum', 5000);
-    await this.aensService.buyName(label, this.account, this.price.toString(10));
+    await this.aensService.buyName(label, this.account, toBigNumberString(this.price));
     this.notificationService.notify(this.multiContractsExecutionNotificationTitle(2, 3), this.translate('ENS.NOTIFICATION_BODY_SET_RESOLVER'), 'aerum', 5000);
     await this.aensService.setFixedPriceResolver(fullName);
     this.notificationService.notify(this.multiContractsExecutionNotificationTitle(3, 3), `${this.translate('ENS.NOTIFICATION_BODY_SET_ADDRESS')}: ${nameAddress}`, 'aerum', 5000);
