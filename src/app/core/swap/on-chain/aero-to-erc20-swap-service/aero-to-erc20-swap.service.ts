@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
 import { fromWei } from "web3-utils";
-import { toNumber } from "@shared/helpers/number-utils";
+import { fromSolidityDecimalString } from "@shared/helpers/number-utils";
 import { secondsToDate } from "@shared/helpers/date-util";
 
 import { TokenService } from "@core/transactions/token-service/token.service";
@@ -62,7 +62,7 @@ export class AeroToErc20SwapService extends BaseContractService {
     const swap: AeroToErc20Swap = {
       id: swapId,
       erc20Trader: response.erc20Trader,
-      erc20Value: toNumber(response.erc20Value, token.decimals),
+      erc20Value: fromSolidityDecimalString(response.erc20Value, token.decimals),
       erc20Token: token,
       ethTrader: response.ethTrader,
       ethValue: fromWei(response.ethValue, 'ether'),

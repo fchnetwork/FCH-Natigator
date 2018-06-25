@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { toWei } from 'web3-utils';
 
+import { toBigNumberString } from "@shared/helpers/number-utils";
 import { AddressValidator } from "@shared/validators/address.validator";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { AerumNameService } from '@core/aens/aerum-name-service/aerum-name.service';
@@ -77,7 +78,7 @@ export class AensContractManageComponent extends AensBaseComponent implements On
   }
 
   async trySetPrice() {
-    const newPrice = toWei(this.price.toString(10), 'ether');
+    const newPrice = toWei(toBigNumberString(this.price), 'ether');
     await this.aensService.setPrice(newPrice);
     this.priceChange.emit(newPrice);
   }
@@ -128,7 +129,7 @@ export class AensContractManageComponent extends AensBaseComponent implements On
 
   async tryWithdraw() {
     // NOTE: Transfer all balance
-    await this.aensService.withdraw(this.withdrawTo, this.balanceInWei.toString(10));
+    await this.aensService.withdraw(this.withdrawTo, toBigNumberString(this.balanceInWei));
     await this.refreshBalance();
   }
 

@@ -3,6 +3,7 @@ const artifacts = require('@core/abi/SwapTemplateRegistry.json');
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
+import { toSolidityDecimalString } from "@shared/helpers/number-utils";
 import { unique } from "@shared/helpers/array-utils";
 import { Chain } from "./chain.enum";
 import { SwapTemplate } from "./swap-template.model";
@@ -26,8 +27,7 @@ export class SwapTemplateService extends BaseContractService {
       onchainAccount.toLowerCase(),
       offchainAsset.toLowerCase(),
       offchainAccount.toLowerCase(),
-      // TODO: Move to utils
-      Math.ceil(rate * Math.pow(10, 18)).toString(10),
+      toSolidityDecimalString(rate),
       chain
     );
     const receipt = await this.contractExecutorService.send(register);
