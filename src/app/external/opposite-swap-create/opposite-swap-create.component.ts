@@ -227,11 +227,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       amount,
       withdrawTrader,
       timestamp,
-      {
-        hashCallback: (txHash) => this.onOpenSwapHashReceived(txHash),
-        account: this.params.account,
-        wallet: this.params.wallet
-      }
+      (txHash) => this.onOpenSwapHashReceived(txHash)
     );
 
     const localSwap: EtherSwapReference = {
