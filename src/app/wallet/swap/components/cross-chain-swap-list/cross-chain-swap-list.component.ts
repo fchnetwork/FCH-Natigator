@@ -69,7 +69,7 @@ export class CrossChainSwapListComponent implements OnInit {
   }
 
   withdraw() {
-    // TODO: implement later
+    return this.router.navigate(['external/eth-wallet'], { queryParams: { direction: 'opposite' }});
   }
 
   openSwap(swapId: string) {
