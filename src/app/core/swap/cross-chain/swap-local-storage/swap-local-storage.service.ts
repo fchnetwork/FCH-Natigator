@@ -3,6 +3,7 @@ import { Cookie } from "ng2-cookies/ng2-cookies";
 
 import * as CryptoJS from 'crypto-js';
 
+import { unique } from "@shared/helpers/array-utils";
 import { environment } from "@env/environment";
 import { SessionStorageService } from "ngx-webstorage";
 import { EtherSwapReference } from "./swap-reference.model";
@@ -46,7 +47,7 @@ export class SwapLocalStorageService {
   loadAllSwapAccounts(): string[] {
     const swaps = this.loadAllSwaps();
     const accounts = swaps.map(swap => swap.account);
-    const uniqueAccounts = Array.from(new Set(accounts));
+    const uniqueAccounts = unique(accounts);
     return uniqueAccounts;
   }
 

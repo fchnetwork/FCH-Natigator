@@ -17,3 +17,11 @@ export function multiSlice<T>(array: T[][], take: number, skip: number): T[][] {
 
   return result;
 }
+
+export function unique<T>(array: T[]): T[] {
+  if(!array) {
+    return array;
+  }
+
+  return Array.from<T>(new Set(array));
+}
