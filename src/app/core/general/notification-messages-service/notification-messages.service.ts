@@ -183,4 +183,18 @@ constructor(private notificationService: NotificationService,
           10000
         );
       }
+
+      /**
+       *Shows notification when seed phrase has been downloaded
+       *
+       * @memberof NotificationMessagesService
+       */
+      public lostPrecision() {
+        this.notificationService.notify(
+          `${this.translate('SEND_RECEIVE.NOTIFICATION_TITLE_ATTENTION')}`, 
+          `${this.translate('SEND_RECEIVE.NOTIFICATION_LOOSING_PRECISION')}`,
+          'exclamation-triangle', 
+          10000
+        );
+      }
 }

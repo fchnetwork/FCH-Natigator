@@ -13,6 +13,8 @@ import { AddressValidator } from "@shared/validators/address.validator";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { ValidateService } from '@app/core/validation/validate.service';
 import Web3 from "web3";
+import { repeat } from 'rxjs/operators';
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 
 declare var window: any;
 
@@ -41,7 +43,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   totalAmount = 0;
   tokens: any;
   selectedToken = {
-    symbol: 'AERO',
+    symbol: 'Aero',
     address: null,
     balance: 0,
     decimals: null,
@@ -53,7 +55,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     data: '',
     limit: '',
     price: '',
-    selectedToken: 'AERO',
+    selectedToken: 'Aero',
   };
   showedMore = false;
   updateInterval: any;
@@ -70,7 +72,8 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
     private route: ActivatedRoute,
     private nameService: AerumNameService,
-    private validateService: ValidateService
+    private validateService: ValidateService,
+    private notificationMessagesService: NotificationMessagesService
   ) {
 
     this.loadUserData().catch((e) => this.logger.logError(e));
@@ -131,7 +134,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   }
 
   setSendEverything(event) {
-    if (event && this.selectedToken.symbol === 'AERO') {
+    if (event && this.selectedToken.symbol === 'Aero') {
       this.amount = this.toFixed(Number(this.walletBalance) - Number(this.maxTransactionFeeEth));
     } else {
       this.amount = this.toFixed(Number(this.walletBalance));
@@ -150,7 +153,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     const getQR = this.authService.createQRcode("0x" + keystore.address);
     const [accBalance, qrCode] = await Promise.all([getBalance, getQR]);
     this.senderAddress = "0x" + keystore.address;
-    if (this.selectedToken.symbol === 'AERO') {
+    if (this.selectedToken.symbol === 'Aero') {
       this.walletBalance = accBalance;
     }
     this.aeroBalance = accBalance;
@@ -160,7 +163,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   async getMaxTransactionFee(): Promise<void> {
     const resolvedAddress = await this.nameService.safeResolveNameOrAddress(this.receiverAddress);
     if (resolvedAddress) {
-      const data = this.selectedToken.symbol === 'AERO'
+      const data = this.selectedToken.symbol === 'Aero'
         ? (this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : '')
         : { type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10, this.selectedToken.decimals)) };
       try {
@@ -169,10 +172,10 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         this.maxTransactionFeeEth = res[1];
         this.moreOptionsData.price = res[2];
         this.moreOptionsData.limit = res[3];
-        if(this.sendEverything && this.selectedToken.symbol === 'AERO') {
+        if(this.sendEverything && this.selectedToken.symbol === 'Aero') {
           this.setSendEverything(true);
         }
-        this.totalAmount = this.selectedToken.symbol === 'AERO'
+        this.totalAmount = this.selectedToken.symbol === 'Aero'
           ? Number(this.amount) + Number(this.maxTransactionFeeEth)
           : Number(this.maxTransactionFeeEth);
       } catch (e) {
@@ -208,7 +211,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   }
 
   async handleSelectChange() {
-    if (this.selectedToken.symbol === 'AERO') {
+    if (this.selectedToken.symbol === 'Aero') {
       this.isToken = false;
       this.walletBalance = this.aeroBalance;
     } else {
@@ -236,13 +239,20 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     return result;
   }
 
+  jsPrecision(amount, precision) {
+    const amountWithDecimals = amount * Math.pow(10, precision);
+    const convertedAmount = this.toFixed(amountWithDecimals);
+    const decimals = amount.toString().length;
+    return convertedAmount.toString().substring(0, decimals);
+  }
+
   async openTransactionConfirm(message) {
     const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
     const result = await this.modalSrv.openTransactionConfirm(message, false);
     if (result.result === true) {
       const privateKey = this.sessionStorageService.retrieve('private_key');
       const address = this.sessionStorageService.retrieve('acc_address');
-      if (this.selectedToken.symbol === 'AERO' && !this.isToken) {
+      if (this.selectedToken.symbol === 'Aero' && !this.isToken) {
         this.transactionService.transaction(privateKey, address, resolvedAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, false, {}, null, this.moreOptionsData).then(res => {
           this.transactionMessage = res;
         }).catch((error) => {
@@ -251,6 +261,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
       } else if (this.selectedToken.address) {
         const amount = this.amount * Math.pow(10, this.selectedToken.decimals);
         const convertedAmount = this.convert(amount.toExponential());
+
 
         this.transactionService.sendTokens(address, resolvedAddress, convertedAmount, this.selectedToken.address, false, {}, null, this.selectedToken.symbol, this.selectedToken.decimals).then((res) => {
           this.transactionMessage = res;
@@ -269,17 +280,24 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         return;
       } else {
         const res: any = await this.transactionService.checkAddressCode(resolvedAddress);
+        this.jsPrecision(this.amount, this.selectedToken.decimals);
+        const amount = this.amount * Math.pow(10, this.selectedToken.decimals);
+        const convertedAmount = this.convert(amount.toExponential());
+        console.log(convertedAmount);
         const message = {
           title: null,
           text: null,
           checkbox: false,
           sender: this.senderAddress,
           recipient: resolvedAddress,
-          amount: this.amount,
+          amount: this.jsPrecision(this.amount, this.selectedToken.decimals),
           fee: this.maxTransactionFeeEth,
           maxFee: this.maxTransactionFee,
           token: this.selectedToken.symbol
         };
+        if (this.amount > Math.pow(2, 53)) {
+          this.notificationMessagesService.lostPrecision();
+        }
 
         if (res.length > 3) {
           message.title = 'WARNING!';
@@ -295,7 +313,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         }
       }
     }
-
   }
 
   async moreOptionsChange(event) {

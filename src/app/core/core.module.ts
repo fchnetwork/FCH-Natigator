@@ -77,7 +77,6 @@ import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-c
     SwapTemplateService,
     SwapLocalStorageService,
     SettingsBackupService,
-    SettingsBackupService,
     SettingsService,
     OnChainSwapListService,
     CrossChainSwapListService
