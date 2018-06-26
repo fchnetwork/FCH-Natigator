@@ -31,7 +31,7 @@ export const environment = {
           ethereum: {
             OpenEtherSwap: "0x99c92b41a4194014a1d6649c52c2684b325590b6",
             OpenErc20Swap: "0x4aaf1190442c85c99b9fcf9003bc9ee138ecee70",
-            CounterEtherSwap: "0xe51f118ac3cb8d54fc0168d1021c1fddcd860243",
+            CounterEtherSwap: "0xe65f747898a854622b7b026149d9bf17df7a68be",
             CounterErc20Swap: "0xc7f35bbbad6ef915ad292da05a61e8decf07cf55"
           }
         },
