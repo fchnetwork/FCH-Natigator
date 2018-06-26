@@ -37,8 +37,16 @@
               <div class="o-table__cell o-data--left">
                 {{'EXTERNAL-SWAP.CREATE-OPPOSITE.FIELD_SENDING_AERUM_ASSET'|translate}}
               </div>
-              <div class="o-table__cell o-data--right">
-                {{ selectedToken ? selectedToken.symbol : '' }}
+              <div class="o-table__cell o-data--right" *ngIf="selectedToken">
+                {{ selectedToken.symbol }}
+              </div>
+            </div>
+            <div class="o-table__row">
+              <div class="o-table__cell o-data--left">
+                {{'EXTERNAL-SWAP.CREATE-OPPOSITE.FIELD_BALANCE'|translate}}
+              </div>
+              <div class="o-table__cell o-data--right" *ngIf="selectedToken">
+                {{selectedToken.balance | number:'1.2-5'}}
               </div>
             </div>
             <div class="o-table__row">
