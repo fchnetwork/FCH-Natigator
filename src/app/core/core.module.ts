@@ -32,6 +32,7 @@ import { ConnectionCheckerService } from '@core/general/connection-checker-servi
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
 import { CounterAerumErc20SwapService } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-aerum-erc20-swap.service";
+import { CounterEtherSwapService } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
@@ -79,6 +80,7 @@ import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-
     OpenEtherSwapService,
     OpenAerumErc20SwapService,
     CounterAerumErc20SwapService,
+    CounterEtherSwapService,
     SwapTemplateService,
     SwapLocalStorageService,
     SettingsBackupService,

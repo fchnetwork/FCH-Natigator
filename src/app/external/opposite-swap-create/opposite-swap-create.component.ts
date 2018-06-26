@@ -216,7 +216,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     this.openSwapTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
-    const amount = toBigNumberString(this.amount);
+    const amount = toBigNumberString(this.amount * Math.pow(10, Number(this.selectedToken.decimals)));
     const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
     const withdrawTrader = this.params.account;
 
@@ -236,13 +236,13 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       account: this.params.account,
       walletType: this.params.wallet,
       token: this.selectedToken.address,
-      tokenAmount: this.amount
+      tokenAmount: this.amount,
+      ethAmount: this.ethAmount
     };
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
     this.swapCreated = true;
     this.logger.logMessage(`Opposite swap ${hash} created`);
-
     return this.router.navigate(['external/confirm-opposite-swap'], {queryParams: {hash, query: this.params.query}});
   }
 
@@ -288,7 +288,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
 
   private onOpenSwapHashReceived(hash: string): void {
     if (hash) {
-      this.openSwapTransactionExplorerUrl = environment.ethereum.explorerUrl + hash;
+      this.openSwapTransactionExplorerUrl = `${environment.externalBlockExplorer}transaction/${hash}`;
     }
   }
 

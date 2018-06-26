@@ -7,4 +7,5 @@ export interface EtherSwapReference {
   walletType: EthWalletType;
   token: string;
   tokenAmount: number;
+  ethAmount?: number;
 }

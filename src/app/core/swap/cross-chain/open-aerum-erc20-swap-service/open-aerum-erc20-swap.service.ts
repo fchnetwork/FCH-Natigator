@@ -6,6 +6,7 @@ import { environment } from "@env/environment";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
+import { OpenErc20Swap } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-erc20-swap.model";
 
 @Injectable()
 export class OpenAerumErc20SwapService extends BaseContractService {
@@ -48,6 +49,28 @@ export class OpenAerumErc20SwapService extends BaseContractService {
     const approve = tokenContract.methods.approve(openErc20Swap, value);
     const cost = await this.contractExecutorService.estimateCost(approve);
     return cost;
+  }
+
+  async expireSwap(hash: string, hashCallback?: (hash: string) => void) {
+    const expireSwap = this.contract.methods.expire(hash);
+    const receipt = await this.contractExecutorService.send(expireSwap, { value: '0', hashReceivedCallback: hashCallback });
+    return receipt;
+  }
+
+  async checkSwap(hash: string): Promise<OpenErc20Swap> {
+    const checkSwap = this.contract.methods.check(hash);
+    const response = await this.contractExecutorService.call(checkSwap);
+    const swap: OpenErc20Swap = {
+      hash,
+      openTrader: response.openTrader,
+      withdrawTrader: response.withdrawTrader,
+      erc20Value: response.erc20Value,
+      erc20ContractAddress: response.erc20ContractAddress,
+      timelock: response.timelock,
+      openedOn: response.openedOn,
+      state: Number(response.state)
+    };
+    return swap;
   }
 
   async checkSecretKey(hash: string) {
