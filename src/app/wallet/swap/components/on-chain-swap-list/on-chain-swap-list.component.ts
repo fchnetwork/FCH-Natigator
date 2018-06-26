@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
-import { toBigNumberString } from "@shared/helpers/number-utils";
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { SwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
