@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 import { Callback } from "web3/types";
 
+import { toBigNumberString } from "@shared/helpers/number-utils";
 import { CounterErc20Swap } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-erc20-swap.model";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
@@ -23,7 +24,7 @@ export class CounterAerumErc20SwapService extends BaseContractService {
       hash,
       erc20Value,
       erc20ContractAddress,
-      timelock.toString(10)
+      toBigNumberString(timelock)
     );
     const receipt = await this.contractExecutorService.send(openSwap);
     return receipt;

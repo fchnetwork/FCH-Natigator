@@ -299,6 +299,23 @@
       "BTN_CLOSE": "Close",
       "BTN_BACK": "Back"
     },
+    "CREATE-OPPOSITE": {
+      "TITLE": "Create Exchange Swap",
+      "FIELD_SENDING_AERUM_ASSET_": "Sending Aerum asset:",
+      "FIELD_SELECT_YOUR_TOKEN": "Select your token",
+      "FIELD_AMOUNT_TO_SEND": "Amount to send:",
+      "FIELD_TYPE_AMOUNT": "Type amount",
+      "FIELD_EXCHANGE_COUNTERPARTY": "Exchange counterparty:",
+      "FIELD_SELECT_YOUR_COUNTERPARTY": "Select your counterparty",
+      "FIELD_SENDING_AERUM_ASSET": "Sending Aerum asset",
+      "FIELD_AMOUNT": "Amount",
+      "FIELD_EXCHANGE_RATE": "Exchange rate (Aerum asset/Ethereum asset)",
+      "FIELD_SECRET_KEY": "Secret key",
+      "FIELD_MESSAGE": "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "BTN_NEXT": "Next",
+      "BTN_CLOSE": "Close",
+      "BTN_BACK": "Back"
+    },
     "CONFIRM": {
       "TITLE_CANCEL_SWAP": "Cancel Swap",
       "TITLE_COMPLETE_SWAP": "Complete Swap",

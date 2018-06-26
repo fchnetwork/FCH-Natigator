@@ -1,34 +1,24 @@
 import { Injectable } from "@angular/core";
 
-import Web3 from 'web3';
 import { Tx, TransactionObject, TransactionReceipt } from 'web3/types';
+import { toHex, toWei } from "web3-utils";
 
-import { TransactionOptions } from "@core/contract/contract-executor-service/transaction-options.model";
+import { InjectedWeb3TransactionOptions } from "./injected-web3-transaction-options.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { ContractExecutorService } from "@core/ethereum/contract-executor-service/contract-executor.service";
+import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 
 @Injectable()
-export class InjectedWeb3ContractExecutorService implements ContractExecutorService {
+export class InjectedWeb3ContractExecutorService {
 
   private readonly contractGasThreshold = 100 * 1000;
 
-  private currentWalletAddress: string;
-  private web3: Web3;
+  constructor(
+    private logger: LoggerService,
+    private etherAuthService: EthereumAuthenticationService
+  ) { }
 
-  constructor(private logger: LoggerService) { }
-
-  init(web3: Web3, account: string): void {
-    this.web3 = web3;
-    this.currentWalletAddress = account;
-  }
-
-  getWeb3() {
-    return this.web3;
-  }
-
-  async send(transaction: TransactionObject<any>, options: TransactionOptions = { value: '0' }): Promise<TransactionReceipt> {
-    this.ensureInitiated();
-
+  async send(transaction: TransactionObject<any>, options: InjectedWeb3TransactionOptions): Promise<TransactionReceipt> {
+    this.ensureOptions(options);
     const tx = await this.createSendTx(transaction, options);
     this.logger.logMessage('Transaction being sent');
     const receipt = await transaction.send(tx)
@@ -42,41 +32,49 @@ export class InjectedWeb3ContractExecutorService implements ContractExecutorServ
     return receipt;
   }
 
-  async call(transaction: TransactionObject<any>) {
-    this.ensureInitiated();
-
-    const tx = this.createCallTx(transaction);
+  async call(transaction: TransactionObject<any>, account?: string) {
+    const tx = this.createCallTx(transaction, account);
     const response = await transaction.call(tx);
     return response.valueOf();
   }
 
-  private async createSendTx(transaction: TransactionObject<any>, options: TransactionOptions): Promise<Tx> {
-    const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
+  private createCallTx(transaction: TransactionObject<any>, account?: string) : Tx {
+    return {
+      // NOTE: Accessing private members is not the best way to do this but no need for another parameter
+      to: (transaction as any)._parent._address,
+      from: account,
+      data: transaction.encodeABI()
+    };
+  }
+
+  private async createSendTx(transaction: TransactionObject<any>, options: InjectedWeb3TransactionOptions): Promise<Tx> {
+    const aeroValueInWei = toWei(options.value, 'ether');
     const [gasPrice, estimatedGas, transactionsCount] = await this.getSentTxData(transaction, options);
 
     this.logger.logMessage(`Transaction estimated gas: ${estimatedGas}`);
     return {
       // NOTE: Accessing private members is not the best way to do this but no need for another parameter
       to: (transaction as any)._parent._address,
-      from: this.currentWalletAddress,
-      value: this.web3.utils.toHex(aeroValueInWei),
-      gasPrice: this.web3.utils.toHex(gasPrice),
-      gas: this.web3.utils.toHex(estimatedGas + this.contractGasThreshold),
-      nonce: this.web3.utils.toHex(transactionsCount),
+      from: options.account,
+      value: toHex(aeroValueInWei),
+      gasPrice: toHex(gasPrice),
+      gas: toHex(estimatedGas + this.contractGasThreshold),
+      nonce: toHex(transactionsCount),
       data: transaction.encodeABI()
     };
   }
 
-  private async getSentTxData(transaction: TransactionObject<any>, options: TransactionOptions): Promise<[number, number, number]> {
-    const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
+  private async getSentTxData(transaction: TransactionObject<any>, options: InjectedWeb3TransactionOptions): Promise<[number, number, number]> {
+    const web3 = await this.etherAuthService.getInjectedWeb3();
+    const aeroValueInWei = toWei(options.value, 'ether');
 
-    const getGasPrice = this.web3.eth.getGasPrice();
-    const getTransactionsCount = this.web3.eth.getTransactionCount(this.currentWalletAddress);
+    const getGasPrice = web3.eth.getGasPrice();
+    const getTransactionsCount = web3.eth.getTransactionCount(options.account);
     const getEstimatedGas = transaction.estimateGas({
       // NOTE: Accessing private members is not the best way to do this but no need for another parameter
       to: (transaction as any)._parent._address,
-      from: this.currentWalletAddress,
-      value: this.web3.utils.toHex(aeroValueInWei),
+      from: options.account,
+      value: toHex(aeroValueInWei),
       data: transaction.encodeABI()
     });
 
@@ -84,17 +82,17 @@ export class InjectedWeb3ContractExecutorService implements ContractExecutorServ
     return [gasPrice, estimatedGas, transactionsCount];
   }
 
-  async estimateCost(transaction: TransactionObject<any>, options: TransactionOptions = { value: '0' }): Promise<[number, number, number]> {
-    this.ensureInitiated();
+  async estimateCost(transaction: TransactionObject<any>, options: InjectedWeb3TransactionOptions): Promise<[number, number, number]> {
+    this.ensureOptions(options);
+    const web3 = await this.etherAuthService.getInjectedWeb3();
+    const aeroValueInWei = toWei(options.value, 'ether');
 
-    const aeroValueInWei = this.web3.utils.toWei(options.value, 'ether');
-
-    const getGasPrice = this.web3.eth.getGasPrice();
+    const getGasPrice = web3.eth.getGasPrice();
     const getEstimatedGas = transaction.estimateGas({
       // NOTE: Accessing private members is not the best way to do this but no need for another parameter
       to: (transaction as any)._parent._address,
-      from: this.currentWalletAddress,
-      value: this.web3.utils.toHex(aeroValueInWei),
+      from: options.account,
+      value: toHex(aeroValueInWei),
       data: transaction.encodeABI()
     });
 
@@ -102,22 +100,17 @@ export class InjectedWeb3ContractExecutorService implements ContractExecutorServ
     return [gasPrice, estimatedGas, estimatedGas + this.contractGasThreshold];
   }
 
-  private createCallTx(transaction: TransactionObject<any>) : Tx {
-    return {
-      // NOTE: Accessing private members is not the best way to do this but no need for another parameter
-      to: (transaction as any)._parent._address,
-      from: this.currentWalletAddress,
-      data: transaction.encodeABI()
-    };
-  }
-
-  private ensureInitiated() : void {
-    if(!this.web3) {
-      throw new Error("Web3 is not initiated");
+  private ensureOptions(options: InjectedWeb3TransactionOptions): void {
+    if (!options) {
+      throw new Error('Transaction options are not specified');
     }
 
-    if(!this.currentWalletAddress) {
-      throw new Error("account address is not initiated");
+    if(!options.account) {
+      throw new Error('Transaction account is not specified');
+    }
+
+    if (!options.value) {
+      options.value = '0';
     }
   }
 }

@@ -18,6 +18,7 @@ import { CrossChainSwapListComponent } from './components/cross-chain-swap-list/
 
 @NgModule({
   entryComponents: [
+    CreateSwapComponent,
     CreateSwapConfirmComponent,
     LoadSwapConfirmComponent,
     SwapDashboardComponent
@@ -42,6 +43,7 @@ import { CrossChainSwapListComponent } from './components/cross-chain-swap-list/
     CrossChainSwapListComponent
   ],
   exports: [
+    CreateSwapComponent,
     CreateSwapConfirmComponent,
     LoadSwapConfirmComponent
   ]

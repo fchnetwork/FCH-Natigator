@@ -5,39 +5,34 @@ import { Subscription } from "rxjs/Subscription";
 
 import { environment } from "@env/environment";
 
-import { sha3, fromWei } from 'web3-utils';
-import Web3 from "web3";
-
 import { toBigNumberString } from "@shared/helpers/number-utils";
+import { sha3 } from 'web3-utils';
 import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
-import { InjectedWeb3Error } from "@external/models/injected-web3.error";
-import { EthWalletType } from "@external/models/eth-wallet-type.enum";
-import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
-import { Token } from "@core/transactions/token-service/token.model";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
-import { ERC20TokenService } from "@core/swap/on-chain/erc20-token-service/erc20-token.service";
+import { Token } from "@core/transactions/token-service/token.model";
+import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
-import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
+import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
+import { EthWalletType } from "@external/models/eth-wallet-type.enum";
+import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
+import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 
 @Component({
-  selector: 'app-swap-create',
-  templateUrl: './swap-create.component.html',
-  styleUrls: ['./swap-create.component.scss']
+  selector: 'app-opposite-swap-create',
+  templateUrl: './opposite-swap-create.component.html',
+  styleUrls: ['./opposite-swap-create.component.scss']
 })
-export class SwapCreateComponent implements OnInit, OnDestroy {
-
+export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   private params: { asset?: string, amount?: number, wallet?: EthWalletType, account?: string, query?: string } = {};
-  private ethWeb3: Web3;
 
   secret: string;
   amount: number;
@@ -57,8 +52,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   canCreateSwap = false;
   swapCreated = false;
 
-  constructor(
-    private location: Location,
+  constructor(private location: Location,
     private router: Router,
     private route: ActivatedRoute,
     private logger: LoggerService,
@@ -67,15 +61,12 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private nameService: AerumNameService,
     private ethereumAuthService: EthereumAuthenticationService,
     private tokenService: TokenService,
-    private erc20TokenService: ERC20TokenService,
     private swapTemplateService: SwapTemplateService,
-    private etherSwapService: OpenEtherSwapService,
-    private swapLocalStorageService: SwapLocalStorageService
-  ) { }
+    private erc20SwapService: OpenAerumErc20SwapService,
+    private swapLocalStorageService: SwapLocalStorageService) { }
 
   ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
-    this.ethWeb3 = this.ethereumAuthService.getWeb3();
     this.secret = Guid.newGuid().replace(/-/g, '');
   }
 
@@ -87,8 +78,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
         this.logger.logError('Cannot load token information', e);
         this.notificationService.showMessage('Please configure the token first', 'Error');
       } else {
-        this.logger.logError('Swap data load error', e);
-        this.notificationService.showMessage('Cannot load swap screen', 'Error');
+        this.logger.logError('Opposite swap data load error', e);
+        this.notificationService.showMessage('Cannot load opposite swap screen', 'Error');
       }
     }
   }
@@ -123,6 +114,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   onAmountChange(amount: string) {
     this.amount = Number(amount) || 0;
+
     return this.recalculateTotals();
   }
 
@@ -163,9 +155,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.logger.logMessage("Token not selected");
       return;
     }
-
-    // TODO: We support Eth -> Aerum (ERC20) for now only
-    const templates = await this.swapTemplateService.getTemplatesByAsset(this.selectedToken.address, Chain.Aerum);
+    const templates = await this.swapTemplateService.getTemplatesByOffchainAsset(this.selectedToken.address, Chain.Ethereum);
     if (templates) {
       this.templates = templates.sort((one, two) => Number(one.rate <= two.rate));
       this.selectedTemplate = this.templates[0];
@@ -179,11 +169,9 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   private async recalculateTotals() {
     if (this.selectedTemplate) {
       this.rate = this.selectedTemplate.rate;
-      this.ethAmount = this.amount / this.selectedTemplate.rate;
-      if (this.params.account) {
-        const balance = await this.ethWeb3.eth.getBalance(this.params.account);
-        const ethBalance = Number(fromWei(balance, 'ether'));
-        this.canCreateSwap = ethBalance >= this.ethAmount;
+      this.ethAmount = this.amount * this.selectedTemplate.rate;
+      if (this.selectedToken) {
+        this.canCreateSwap = this.selectedToken.balance >= this.amount;
       } else {
         this.canCreateSwap = false;
       }
@@ -208,41 +196,38 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   async next() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Creating swap... (please wait 10-15 seconds)', 'In progress');
-      await this.openEthereumSwap();
-      this.notificationService.showMessage('Swap created. Waiting for confirmation...', 'Success');
+      this.notificationService.showMessage('Creating opposite swap... (please wait 10-15 seconds)', 'In progress');
+      await this.openERC20Swap();
+      this.notificationService.showMessage('Opposite swap created. Waiting for confirmation...', 'Success');
     }
     catch (e) {
       // NOTE: We show more detailed errors for injected web3 in called functions
       if(!(e instanceof InjectedWeb3Error)) {
-        this.logger.logError('Error while creating swap', e);
-        this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
+        this.logger.logError('Error while creating opposite swap', e);
+        this.notificationService.showMessage('Error while creating opposite swap', 'Unhandled error');
       }
     } finally {
       this.processing = false;
     }
   }
 
-  async openEthereumSwap() {
+  async openERC20Swap() {
+    await this.loadEthAccount();
     this.openSwapTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
-    const ethAmountString = toBigNumberString(this.ethAmount);
+    const amount = toBigNumberString(this.amount);
     const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
-    const counterpartyTrader = this.selectedTemplate.offchainAccount;
+    const withdrawTrader = this.params.account;
 
-    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${ethAmountString}`);
-
-    await this.etherSwapService.openSwap(
+    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${withdrawTrader}. amount: ${amount}`);
+    await this.erc20SwapService.openSwap(
       hash,
-      ethAmountString,
-      counterpartyTrader,
+      this.selectedToken.address,
+      amount,
+      withdrawTrader,
       timestamp,
-      {
-        hashCallback: (txHash) => this.onOpenSwapHashReceived(txHash),
-        account: this.params.account,
-        wallet: this.params.wallet
-      }
+      (txHash) => this.onOpenSwapHashReceived(txHash)
     );
 
     const localSwap: EtherSwapReference = {
@@ -256,9 +241,45 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
     this.swapCreated = true;
-    this.logger.logMessage(`Swap ${hash} created`);
+    this.logger.logMessage(`Opposite swap ${hash} created`);
 
-    return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
+    return this.router.navigate(['external/confirm-opposite-swap'], {queryParams: {hash, query: this.params.query}});
+  }
+
+  private async loadEthAccount() {
+    if (this.params.wallet === EthWalletType.Injected) {
+      await this.loadInjectedEthAccount();
+    } else {
+      this.loadImportedEthAccount();
+    }
+  }
+
+  private async loadInjectedEthAccount() {
+    const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
+    if (!injectedWeb3) {
+      this.notificationService.showMessage('Injected web3 not provided', 'Error');
+      throw new InjectedWeb3Error('Injected web3 not provided');
+    }
+
+    const account = this.params.account;
+    const accounts = await injectedWeb3.eth.getAccounts() || [];
+    if (!accounts.length) {
+      this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
+      throw new InjectedWeb3Error('Cannot get accounts from selected provider');
+    }
+
+    if (accounts.every(acc => acc !== account)) {
+      this.notificationService.showMessage(`Please select ${account} and retry`, 'Error');
+      throw new InjectedWeb3Error(`Incorrect Mist / Metamask account selected. Expected ${account}`);
+    }
+  }
+
+  private loadImportedEthAccount() {
+    const importedAccount = this.ethereumAuthService.getEthereumAccount(this.params.account);
+    if (!importedAccount) {
+      this.notificationService.showMessage(`Cannot load imported account ${this.params.account}`, 'Error');
+      throw Error(`Cannot load imported account ${this.params.account}`);
+    }
   }
 
   private calculateTimestamp(timeoutInSeconds: number) {

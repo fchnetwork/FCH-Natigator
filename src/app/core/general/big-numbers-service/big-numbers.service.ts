@@ -65,6 +65,14 @@ export class BigNumbersService {
         return bigInt(operand).pow(power);
     }
 
+    /**
+     * Performs integer division, disregarding the remainder.
+     *
+     * @param {*} firstOperand first operand of division. Can be big number.
+     * @param {*} secondOperand second operand of division. Can be big number.
+     * @returns
+     * @memberof BigNumbersService
+     */
     divide(firstOperand, secondOperand) {
         return bigInt(firstOperand).divide(bigInt(secondOperand));
     }

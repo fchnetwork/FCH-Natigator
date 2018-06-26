@@ -5,6 +5,8 @@ import { ExternalTransactionComponent } from '@app/external/external-transaction
 import { EthereumWalletComponent } from "@external/ethereum-wallet/ethereum-wallet.component";
 import { SwapCreateComponent } from "@external/swap-create/swap-create.component";
 import { SwapConfirmComponent } from "@external/swap-confirm/swap-confirm.component";
+import { OppositeSwapCreateComponent } from "@external/opposite-swap-create/opposite-swap-create.component";
+import { OppositeSwapConfirmComponent } from './opposite-swap-confirm/opposite-swap-confirm.component';
 
 const ACCOUNT_ROUTES = [
   {
@@ -30,7 +32,15 @@ const ACCOUNT_ROUTES = [
       {
         path: 'confirm-swap',
         component: SwapConfirmComponent
-      }
+      },
+      {
+        path: 'create-opposite-swap',
+        component: OppositeSwapCreateComponent
+      },
+      {
+        path: 'confirm-opposite-swap',
+        component: OppositeSwapConfirmComponent
+      },
     ]
   }
 ];
