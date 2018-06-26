@@ -42,6 +42,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
+import { BigNumbersService } from "@core/general/big-numbers-service/big-numbers.service";
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
 
@@ -81,7 +82,6 @@ import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-
     SwapTemplateService,
     SwapLocalStorageService,
     SettingsBackupService,
-    SettingsBackupService,
     SettingsService,
     OnChainSwapListService,
     CrossChainSwapListService,
@@ -101,7 +101,8 @@ export class CoreModule {
         AuthenticationService,
         EthereumAuthenticationService,
         TranslateService,
-        StorageService
+        StorageService,
+        BigNumbersService
       ]
     };
   }
