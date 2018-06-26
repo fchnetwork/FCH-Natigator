@@ -42,12 +42,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
-<<<<<<< HEAD
 import { BigNumbersService } from "@core/general/big-numbers-service/big-numbers.service";
-=======
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
->>>>>>> a94aaa61083d12f94cff61ac4e2818e4a168c5a5
 
 @NgModule({
   imports: [
