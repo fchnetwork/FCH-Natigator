@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { BigNumbersService } from "@core/general/big-numbers-service/big-numbers.service";
 
 @Pipe({
   name: 'bignumber'
@@ -22,11 +23,16 @@ export class BigNumbersPipe implements PipeTransform {
 ];
 
   constructor ( private decimalPipe: DecimalPipe,
-                private translateService: TranslateService) { }          
+                private translateService: TranslateService,
+                private bigNumbersService: BigNumbersService) { } 
+              
+  isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
+  }          
 
   transform(value: number = 0, digits?: any ) : string {
     if (value > 1e33) {
-      return value.toPrecision(3);
+      return this.bigNumbersService.toJSNumber(value).toPrecision(3);
     }
     if (!isFinite( value ) || value == 0 ){ 
       return '0'; 

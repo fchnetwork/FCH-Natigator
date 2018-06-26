@@ -15,6 +15,7 @@ import { ValidateService } from '@app/core/validation/validate.service';
 import Web3 from "web3";
 import { repeat } from 'rxjs/operators';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
+import { BigNumbersService } from "@core/general/big-numbers-service/big-numbers.service";
 
 declare var window: any;
 
@@ -30,10 +31,10 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
 
   senderAddress: string;
   receiverAddress: string;
-  amount = 0;
+  amount: any = 0;
   transactions: any[];
   includedDataLength: number;
-  walletBalance: number;
+  walletBalance: any;
   aeroBalance: number;
   sendEverything: boolean;
   transactionMessage: any;
@@ -73,7 +74,8 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private nameService: AerumNameService,
     private validateService: ValidateService,
-    private notificationMessagesService: NotificationMessagesService
+    private notificationMessagesService: NotificationMessagesService,
+    private bigNumbersService: BigNumbersService
   ) {
 
     this.loadUserData().catch((e) => this.logger.logError(e));
@@ -135,9 +137,9 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
 
   setSendEverything(event) {
     if (event && this.selectedToken.symbol === 'Aero') {
-      this.amount = this.toFixed(Number(this.walletBalance) - Number(this.maxTransactionFeeEth));
+      this.amount = Number(this.walletBalance) - Number(this.maxTransactionFeeEth);
     } else {
-      this.amount = this.toFixed(Number(this.walletBalance));
+      this.amount = this.walletBalance;
     }
     this.sendEverything = event;
   }
@@ -201,7 +203,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   }
 
   showTransactions() { }
-
+  
   handleInputsChange() {
     this.safeGetMaxTransactionFee();
   }
@@ -224,28 +226,6 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     this.calculateTransactionData();
   }
 
-  convert(n){
-    n = n.toString().split(/e|\.|\+/);
-    let result = '';
-    for(let i = 0; i < n.length; i++) {
-      if(i === n.length -1) {
-        for(let j = 0; j < Number(n[i] - n[1].length); j++) {
-          result = result + 0;
-        }
-      } else {
-        result = result + n[i];
-      }
-    }
-    return result;
-  }
-
-  jsPrecision(amount, precision) {
-    const amountWithDecimals = amount * Math.pow(10, precision);
-    const convertedAmount = this.toFixed(amountWithDecimals);
-    const decimals = amount.toString().length;
-    return convertedAmount.toString().substring(0, decimals);
-  }
-
   async openTransactionConfirm(message) {
     const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
     const result = await this.modalSrv.openTransactionConfirm(message, false);
@@ -259,9 +239,9 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
           console.log(error);
         });
       } else if (this.selectedToken.address) {
-        const amount = this.amount * Math.pow(10, this.selectedToken.decimals);
-        const convertedAmount = this.convert(amount.toExponential());
-
+        const decimals = this.bigNumbersService.pow(10, this.selectedToken.decimals);
+        const amount = this.bigNumbersService.multiply(this.amount, decimals);
+        const convertedAmount = "0x" + this.bigNumbersService.toString(amount, 16);
 
         this.transactionService.sendTokens(address, resolvedAddress, convertedAmount, this.selectedToken.address, false, {}, null, this.selectedToken.symbol, this.selectedToken.decimals).then((res) => {
           this.transactionMessage = res;
@@ -280,24 +260,18 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         return;
       } else {
         const res: any = await this.transactionService.checkAddressCode(resolvedAddress);
-        this.jsPrecision(this.amount, this.selectedToken.decimals);
-        const amount = this.amount * Math.pow(10, this.selectedToken.decimals);
-        const convertedAmount = this.convert(amount.toExponential());
-        console.log(convertedAmount);
+        
         const message = {
           title: null,
           text: null,
           checkbox: false,
           sender: this.senderAddress,
           recipient: resolvedAddress,
-          amount: this.jsPrecision(this.amount, this.selectedToken.decimals),
+          amount: this.amount,
           fee: this.maxTransactionFeeEth,
           maxFee: this.maxTransactionFee,
           token: this.selectedToken.symbol
         };
-        if (this.amount > Math.pow(2, 53)) {
-          this.notificationMessagesService.lostPrecision();
-        }
 
         if (res.length > 3) {
           message.title = 'WARNING!';

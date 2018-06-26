@@ -41,6 +41,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
 import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
+import { BigNumbersService } from "@core/general/big-numbers-service/big-numbers.service";
 
 @NgModule({
   imports: [
@@ -94,7 +95,8 @@ export class CoreModule {
         AuthenticationService,
         EthereumAuthenticationService,
         TranslateService,
-        StorageService
+        StorageService,
+        BigNumbersService
       ]
     };
   }

@@ -22,7 +22,7 @@
             <div aerRow>
               <div aerColumn size="sm-6">
                 <aer-input [ngClass]="{'has-error':!txnForm.controls['amount'].valid && txnForm.controls['amount'].touched}" formControlName="amount" [(ngModel)]="amount" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
-                <aer-checkbox ([ngModel])="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()">{{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{selectedToken.symbol}})</aer-checkbox>
+                <aer-checkbox ([ngModel])="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()">{{'SEND_EVERYTHING'|translate}} ({{walletBalance | bignumber:'0.0-4'}} {{selectedToken.symbol}})</aer-checkbox>
               </div>
               <div aerColumn size="sm-6" class="tokensSelect">
                     <aer-select formControlName="selectedToken" [(ngModel)]="selectedToken" (ngModelChange)="handleSelectChange()" dataKey="symbol" icon="aerum" placeholder="Select your token">
@@ -31,7 +31,7 @@
                     </aer-select>
                     <div class="account-status-line">
                         <aer-icon>aerum</aer-icon>
-                        <div class="float-left">{{walletBalance}} {{selectedToken.symbol}}</div>
+                        <div class="float-left">{{walletBalance | bignumber:'0.0-4'}} {{selectedToken.symbol}}</div>
                     </div>
               </div>
           </div>
