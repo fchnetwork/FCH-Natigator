@@ -7,7 +7,6 @@ import { environment } from '@env/environment';
 
 import { fromWei } from 'web3-utils';
 import { TransactionReceipt } from 'web3/types';
-
 import { fromSolidityDecimalString, toBigNumberString } from "@shared/helpers/number-utils";
 import { SwapMode, LoadedSwap, SwapStatus } from '@swap/models/models';
 import { Token } from "@core/transactions/token-service/token.model";

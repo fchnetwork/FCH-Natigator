@@ -21,15 +21,17 @@ export class SettingsService {
         }
     };
 
+    private expiration = environment.settings.settingsExpiration;
+
     constructor(private storageService: StorageService,
                 private notificationMessagesService: NotificationMessagesService) {
         this.getSettings();
     }
 
     /**
-     *Get settings from a cookie of if there are no settings in cookies, then stores them there 
+     *Get settings from a cookie if there are no settings in cookies, then stores them there 
      *
-     * @returns {iSettings} Settings
+     * @returns {iSettings} Settings object
      * @memberof SettingsService
      */
     getSettings(): iSettings { 
@@ -42,13 +44,19 @@ export class SettingsService {
         }
     }
 
+    /**
+     * Set default settings from environment file
+     *
+     * @returns {iSettings} Settings object
+     * @memberof SettingsService
+     */
     setDefaultSettings(): iSettings {
         const settings = {
             //set default transaction settings
             transactionSettings: {
-                gasPrice: environment.gasPrice,
-                maxTransactionGas: environment.maxTransactionGas,
-                lastTransactionsNumber: environment.lastTransactionsNumber
+                gasPrice: environment.settings.gasPrice,
+                maxTransactionGas: environment.settings.maxTransactionGas,
+                lastTransactionsNumber: environment.settings.lastTransactionsNumber
             },
             //set default system settings
             systemSettings: {
@@ -58,15 +66,22 @@ export class SettingsService {
             }
         };
         const stringSettings = JSON.stringify(settings);
-        this.storageService.setCookie("settings", stringSettings, true, 3650);
+        this.storageService.setCookie("settings", stringSettings, true, this.expiration);
         return settings;
     }
-
+    
+    /**
+     * Save settings to cookie
+     *
+     * @param {string} key Name of the settings group
+     * @param {*} settingsObj Object contains group of setings
+     * @memberof SettingsService
+     */
     saveSettings(key: string, settingsObj: any) {
         this.settings = this.getSettings();
         this.settings[key] = settingsObj;
         const stringSettings = JSON.stringify(this.settings);
-        this.storageService.setCookie("settings", stringSettings, true, 3650);
+        this.storageService.setCookie("settings", stringSettings, true, this.expiration);
         this.notificationMessagesService.saveSettings();
     }
 }

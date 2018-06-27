@@ -16,9 +16,7 @@ export class SettingsTransactionsComponent implements OnInit {
     lastTransactionsNumber: ""
   };
 
-  constructor( private settingsService: SettingsService ) {
-    
-  }
+  constructor( private settingsService: SettingsService ) {}
 
   ngOnInit() {
     this.getTransactionSettings();
