@@ -15,7 +15,7 @@ import { Token } from "@core/transactions/token-service/token.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { TokenError } from "@core/transactions/token-service/token.error";
 
-import { BigNumbersService } from "@core/general/big-numbers-service/big-numbers.service";
+import { bigNumbersPow, bigNumbersDivide, bigNumberToString } from "@shared/helpers/number-utils";
 
 @Injectable()
 export class TokenService {
@@ -29,8 +29,7 @@ export class TokenService {
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
-    private sessionStorage: SessionStorageService,
-    private bigNumbersService: BigNumbersService
+    private sessionStorage: SessionStorageService
   ) {
     this.web3 = authService.getWeb3();
     this.wsWeb3 = authService.getWSWeb3();
@@ -99,8 +98,8 @@ export class TokenService {
       for (let i = 0; i < tokens.length; i++) {
         this.tokensContract = new this.web3.eth.Contract(tokensABI, tokens[i].address);
         this.tokensContract.methods.balanceOf(address).call({}).then((res) => {
-          const balance = this.bigNumbersService.divide(res, this.bigNumbersService.pow(10, tokens[i].decimals));
-          tokens[i].balance = this.bigNumbersService.toString(balance);
+          const balance = bigNumbersDivide(res, bigNumbersPow(10, tokens[i].decimals));
+          tokens[i].balance = bigNumberToString(balance);
           this.updateStoredTokens(tokens[i]);
           if (i === Number(tokens.length - 1)) {
             const tokens = this.sessionStorage.retrieve('tokens');

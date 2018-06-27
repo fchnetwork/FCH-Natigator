@@ -15,7 +15,8 @@ import { ValidateService } from '@app/core/validation/validate.service';
 import Web3 from "web3";
 import { repeat } from 'rxjs/operators';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
-import { BigNumbersService } from "@core/general/big-numbers-service/big-numbers.service";
+
+import { bigNumbersPow, bigNumbersMultiply, bigNumberToString } from "@shared/helpers/number-utils";
 
 declare var window: any;
 
@@ -74,8 +75,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private nameService: AerumNameService,
     private validateService: ValidateService,
-    private notificationMessagesService: NotificationMessagesService,
-    private bigNumbersService: BigNumbersService
+    private notificationMessagesService: NotificationMessagesService
   ) {
 
     this.loadUserData().catch((e) => this.logger.logError(e));
@@ -220,9 +220,9 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
           console.log(error);
         });
       } else if (this.selectedToken.address) {
-        const decimals = this.bigNumbersService.pow(10, this.selectedToken.decimals);
-        const amount = this.bigNumbersService.multiply(this.amount, decimals);
-        const convertedAmount = "0x" + this.bigNumbersService.toString(amount, 16);
+        const decimals = bigNumbersPow(10, this.selectedToken.decimals);
+        const amount = bigNumbersMultiply(this.amount, decimals);
+        const convertedAmount = "0x" + bigNumberToString(amount, 16);
 
         this.transactionService.sendTokens(address, resolvedAddress, convertedAmount, this.selectedToken.address, false, {}, null, this.selectedToken.symbol, this.selectedToken.decimals).then((res) => {
           this.transactionMessage = res;

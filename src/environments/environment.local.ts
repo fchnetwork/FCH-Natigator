@@ -51,6 +51,13 @@ export const environment = {
     chainId: 4,
     explorerUrl: "https://rinkeby.etherscan.io/tx/"
   },
+  settings: {
+    settingsExpiration: 3650,
+    gasPrice: "1",
+    maxTransactionGas: "4000000",
+    lastTransactionsNumber: "10",
+    maxBlockGas: "1"
+  },
   gasPrice: "1",
   maxTransactionGas: "4000000",
   lastTransactionsNumber: "10",
