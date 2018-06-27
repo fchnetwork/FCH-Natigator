@@ -1,12 +1,13 @@
 import { SessionStorageService } from 'ngx-webstorage';
 import { Injectable } from '@angular/core';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { StorageService } from "@core/general/storage-service/storage.service";
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 
 @Injectable()
 export class SettingsBackupService {
 
-  constructor(
-    private sessionStorageService: SessionStorageService
+  constructor(private storageService: StorageService,
+              private notificationMessagesService: NotificationMessagesService
   ) { }
 
   generateFile(data, fileName, type) {
@@ -21,24 +22,36 @@ export class SettingsBackupService {
     document.body.appendChild(link);
     link.click();
   }
+
   simpleBackup() {
-    const data = this.sessionStorageService.retrieve('seed');
+    const data = this.storageService.getSessionData('seed');
     const preparedData = {
       seed: data
     };
     this.generateFile(preparedData, 'seed_backup', 'seed');
+    this.notificationMessagesService.simpleBackup();
   }
+
   fullBackup() {
-    const aerumBase = Cookie.get('aerum_base');
-    const aerumKeyStore = Cookie.get('aerum_keyStore');
-    const tokens = Cookie.get('tokens');
-    const transactions = Cookie.get('transactions');
+    const aerumBase = this.storageService.getCookie('aerum_base');
+    const aerumKeyStore = this.storageService.getCookie('aerum_keyStore');
+    const tokens = this.storageService.getCookie('tokens');
+    const transactions = this.storageService.getCookie('transactions');
+    const settings = this.storageService.getCookie('settings');
+    
+
+    const ethereumAccounts = this.storageService.getCookie('ethereum_accounts');
+    const crossChainSwaps = this.storageService.getCookie('cross_chain_swaps');
     const preparedData = {
       aerumBase,
       aerumKeyStore,
       tokens,
       transactions,
+      settings,
+      ethereumAccounts,
+      crossChainSwaps
     };
     this.generateFile(preparedData, 'full_backup', 'full');
+    this.notificationMessagesService.fullBackup();
   }
 }

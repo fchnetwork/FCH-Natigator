@@ -1,8 +1,10 @@
 import * as CryptoJS from 'crypto-js';
 import { environment } from '@app/../environments/environment';
 import { Injectable } from '@angular/core';
+
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage';
+
 import Web3 from 'web3';
 import { Contract } from "web3/types";
 import { tokensABI } from '@app/core/abi/tokens';
@@ -12,6 +14,8 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 import { Token } from "@core/transactions/token-service/token.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { TokenError } from "@core/transactions/token-service/token.error";
+
+import { bigNumbersPow, bigNumbersDivide, bigNumberToString } from "@shared/helpers/number-utils";
 
 @Injectable()
 export class TokenService {
@@ -25,7 +29,7 @@ export class TokenService {
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
-    private sessionStorage: SessionStorageService,
+    private sessionStorage: SessionStorageService
   ) {
     this.web3 = authService.getWeb3();
     this.wsWeb3 = authService.getWSWeb3();
@@ -65,7 +69,7 @@ export class TokenService {
   }
 
   getTokens() {
-    return this.sessionStorage.retrieve('tokens');
+    return this.sessionStorage.retrieve('tokens') || [];
   }
 
   updateStoredTokens(token) {
@@ -94,7 +98,8 @@ export class TokenService {
       for (let i = 0; i < tokens.length; i++) {
         this.tokensContract = new this.web3.eth.Contract(tokensABI, tokens[i].address);
         this.tokensContract.methods.balanceOf(address).call({}).then((res) => {
-          tokens[i].balance = res / Math.pow(10, tokens[i].decimals);
+          const balance = bigNumbersDivide(res, bigNumbersPow(10, tokens[i].decimals));
+          tokens[i].balance = bigNumberToString(balance);
           this.updateStoredTokens(tokens[i]);
           if (i === Number(tokens.length - 1)) {
             const tokens = this.sessionStorage.retrieve('tokens');
@@ -115,6 +120,20 @@ export class TokenService {
     // NOTE: We don't support not detailed tokens which are not stored locally so throw error here
     if (!token || !token.symbol) {
       throw new TokenError(`Error while loading ${contractAddress} token info`);
+    }
+
+    return token;
+  }
+
+  async getSaveTokensInfo(contractAddress): Promise<Token> {
+    let token = this.getLocalTokenInfo(contractAddress);
+    if (token && token.symbol) {
+      return token;
+    }
+
+    token = await this.getNetworkTokenInfo(contractAddress);
+    if (!token.symbol) {
+      token.symbol = contractAddress;
     }
 
     return token;

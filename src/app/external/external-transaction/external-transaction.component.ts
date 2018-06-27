@@ -8,7 +8,7 @@ import { TransactionService } from '@app/core/transactions/transaction-service/t
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 
 @Component({
   selector: 'app-external-transaction',
@@ -23,6 +23,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   assetAddress: string;
   orderId: string;
   tokenAddress: string;
+  tokenInfo: any;
 
   senderAddress: string;
   receiverAddress: string;
@@ -41,16 +42,17 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   external = true;
   maxTransactionFee: any;
   maxTransactionFeeEth: any;
-  tokenDecimals: any;
+  tokenDecimals: number;
   currency: string;
   balance: number;
   receiverAddressHex: any;
   query: string;
   proceedAvailable: boolean = false;
 
+  tokens: any;
+
   constructor(
     private logger: LoggerService,
-    private notificationService: InternalNotificationService,
     private authService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router,
@@ -58,11 +60,14 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     private transactionService: TransactionService,
     private tokenService: TokenService,
     private nameService: AerumNameService,
+    private notificationMessagesService: NotificationMessagesService,
   ) {
     this.prepareData();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.tokens = this.tokenService.getTokens();
+  }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
@@ -162,7 +167,6 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       const data = !this.isToken
         ? ''
         : { type: 'token', contractAddress: this.tokenAddress, amount: Number(this.amount * Math.pow(10, this.tokenDecimals)) };
-
       try {
         const res = await this.transactionService.maxTransactionFee(resolvedAddress, data);
         this.maxTransactionFee = res[0];
@@ -176,32 +180,44 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     }
   }
 
-  getTokenInfo() {
-    this.tokenService.getTokensInfo(this.tokenAddress)
-      .then((res: Token) => {
-        this.currency = res.symbol;
-        this.tokenDecimals = res.decimals;
-        this.getMaxTransactionFee();
-      })
-      .catch((e) => {
+
+  checkTokenCookies(targetToken): any {
+    for (let cookieToken of this.tokens) {
+      console.log(cookieToken);
+      if (cookieToken.address === targetToken) {
+        return cookieToken;
+      }
+    }
+    return false;
+  }
+  
+  async getTokenInfo() {
+    this.tokenInfo = this.checkTokenCookies(this.tokenAddress);
+    if (!this.tokenInfo) {
+      try {
+        this.tokenInfo = await this.tokenService.getTokensInfo(this.tokenAddress);
+        this.notificationMessagesService.tokenNotInTheCookies();
+      } catch (e) {
         this.proceedAvailable = false;
         this.logger.logError(`Error while ${this.tokenAddress} token loading`, e);
-        this.notificationService.showMessage('Please configure the token first', 'Error');
-      });
+        this.notificationMessagesService.tokenNotConfigured();
+      }
+    }
+    this.currency = this.tokenInfo.symbol;
+    this.tokenDecimals = this.tokenInfo.decimals;
+    this.getMaxTransactionFee();
   }
 
   getBalance() {
     if(!this.isToken) {
       this.transactionService.checkBalance(this.senderAddress).then((res) => {
-        console.log('is not token, balance: ', res);
         this.balance = res;
         this.proceedAvailable = (this.balance <= this.amount) ? false : true;
       });
     } else {
-      this.tokenService.getTokenBalance(this.tokenAddress).then((res)=>{
-        console.log('is token, balance: ', res);
+      this.tokenService.getTokenBalance(this.tokenAddress).then((res) => {
         this.balance = Number(res) / Math.pow(10, this.tokenDecimals);
-        this.proceedAvailable = (this.balance <= this.amount) ? false : true;
+        this.proceedAvailable = (this.balance < this.amount || !this.currency) ? false : true;
       });
     }
 

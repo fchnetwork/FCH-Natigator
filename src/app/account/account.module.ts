@@ -4,7 +4,6 @@ import { NgModule } from "@angular/core";
 import { AppUIModule } from "../app.ui.module";
 import { AvatarSelectComponent } from "./components/avatar-select/avatar-select.component";
 import { PasswordLinesComponent } from "./components/password-lines/password-lines.component";
-
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
 import { RegisterComponent } from './register/register.component';

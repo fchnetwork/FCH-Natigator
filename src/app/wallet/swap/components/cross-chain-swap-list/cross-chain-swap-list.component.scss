@@ -1,0 +1,36 @@
+.icon {
+  vertical-align: middle;
+}
+
+.pending {
+  color: #458cc9;
+}
+
+.closed {
+  color: #8ccc67;
+}
+
+.cancelled {
+  color: #c9af45;
+}
+
+.btn-create-swap {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.swap__header-buttons { 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & > h3 {
+    padding: 0;
+    margin: 0;
+  }
+
+  & > aer-button {
+    margin-left: 20px;
+  }
+}

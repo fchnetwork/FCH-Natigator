@@ -1,30 +1,29 @@
-import { environment } from './../../../environments/environment';
-import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';  
-import { Router } from '@angular/router'
-import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs/Subject'; 
+import { environment } from '@env/environment';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs/Subject';
 
-import { Cookie } from 'ng2-cookies/ng2-cookies';   
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
 import { SessionStorageService } from 'ngx-webstorage';
+import { StorageService } from "@core/general/storage-service/storage.service";
+
 
 @Component({
   selector: 'app-access-recovery',
   templateUrl: './access-recovery.component.html',
   styleUrls: ['./access-recovery.component.scss']
 })
-export class AccessRecoveryComponent implements OnInit {
+export class AccessRecoveryComponent implements OnInit, OnDestroy {
 
   address = "";
   avatar: string;
   private: string;
   recoverForm: FormGroup;
-  loginFormGetKey: FormGroup;
   componentDestroyed$: Subject<boolean> = new Subject();
-	step = 'step_1';
-  accountPayload = { address: "", password: "" };
+  step = 'step_1';
   seedFileText: string;
   passwordStrength = {
     strength: '',
@@ -38,6 +37,7 @@ export class AccessRecoveryComponent implements OnInit {
           public cd: ChangeDetectorRef,
           public passCheckService: PasswordCheckerService,
           public sessionStorage: SessionStorageService,
+          private storageService: StorageService
         ) {}
 
 
@@ -54,30 +54,36 @@ export class AccessRecoveryComponent implements OnInit {
               if(type === 'seed') {
                 if( reader.result.split(' ').length === 12 ) {
                   this.seedFileText = reader.result;
-                  this.recoverForm.controls['seed'].setValue( this.seedFileText );                  
+                  this.recoverForm.controls['seed'].setValue( this.seedFileText );
                 }
               } else if (type === 'full') {
                 const results = JSON.parse(reader.result);
                 this.cleanCookies();
-                Cookie.set('aerum_base', results.aerumBase, 7, "/", environment.cookiesDomain);
-                Cookie.set('aerum_keyStore', results.aerumKeyStore, 7, "/", environment.cookiesDomain);
-                Cookie.set('tokens', results.tokens, 7, "/", environment.cookiesDomain);
-                Cookie.set('transactions', results.transactions, 7, "/", environment.cookiesDomain);
+                this.storageService.setCookie('aerum_base', results.aerumBase, false, 7);
+                this.storageService.setCookie('aerum_keyStore', results.aerumKeyStore, false, 7);
+                this.storageService.setCookie('tokens', results.tokens, false, 7);
+                this.storageService.setCookie('transactions', results.transactions, false, 7);
+                this.storageService.setCookie('settings', results.settings, false, 3650);
+                this.storageService.setCookie('ethereum_accounts', results.ethereumAccounts, false, 7);
+                this.storageService.setCookie('cross_chain_swaps', results.crossChainSwaps, false, 7);
                 this.router.navigate(['/account/unlock']);
               }
 
             };
             reader.readAsText(input.files[index]);
-          }            
+          }
         }
       }
     }
 
     cleanCookies() {
-      Cookie.set('aerum_base', null, 7, "/", environment.cookiesDomain);
-      Cookie.set('aerum_keyStore', null, 7, "/", environment.cookiesDomain);
-      Cookie.set('tokens', null, 7, "/", environment.cookiesDomain);
-      Cookie.set('transactions', null, 7, "/", environment.cookiesDomain);
+      this.storageService.setCookie('aerum_base', null, false, 7);
+      this.storageService.setCookie('aerum_keyStore', null, false, 7);
+      this.storageService.setCookie('tokens', null, false, 7);
+      this.storageService.setCookie('transactions', null, false, 7);
+      this.storageService.setCookie('settings', null, false, 7);
+      this.storageService.setCookie('ethereum_accounts', null, false, 7);
+      this.storageService.setCookie('cross_chain_swaps', null, false, 7);
     }
 
     ngOnInit() {
@@ -124,14 +130,16 @@ export class AccessRecoveryComponent implements OnInit {
     onSubmitAddress() {
       if( this.recoverForm.valid ) {
         this.cleanCookies();
-        this.sessionStorage.store('acc_address', this.address);
-        this.sessionStorage.store('acc_avatar',  this.authServ.generateCryptedAvatar( this.address ) );
-        this.sessionStorage.store('seed', this.recoverForm.value.seed);
-        this.sessionStorage.store('private_key', this.private);
-        this.sessionStorage.store('password', this.recoverForm.value.password);
-        this.sessionStorage.store('transactions', []);
-        this.sessionStorage.store('tokens', []);
-        this.sessionStorage.store('ethereum_accounts', []);
+
+        this.storageService.setSessionData('acc_address', this.address);
+        this.storageService.setSessionData('acc_avatar',  this.authServ.generateCryptedAvatar( this.address ));
+        this.storageService.setSessionData('seed', this.recoverForm.value.seed);
+        this.storageService.setSessionData('private_key', this.private);
+        this.storageService.setSessionData('password', this.recoverForm.value.password);
+        this.storageService.setSessionData('transactions', []);
+        this.storageService.setSessionData('tokens', []);
+        this.storageService.setSessionData('ethereum_accounts', []);
+        this.storageService.setSessionData('cross_chain_swaps', []);
 
         this.authServ.saveKeyStore( this.private, this.recoverForm.value.password, this.recoverForm.value.seed );
         this.router.navigate(['/wallet/home']); // improvements need to be made here but for now the auth guard should work just fine

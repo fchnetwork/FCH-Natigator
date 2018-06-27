@@ -1,3 +1,4 @@
-<h1>Backup</h1>
-<app-simpleBackup></app-simpleBackup>
-<app-fullBackup></app-fullBackup>
+<h3>Backup</h3>
+<app-divider [fullWidth]="true"></app-divider>
+<aer-button class="blue" (buttonFn)="simpleBackup()">Save seed</aer-button>
+<aer-button class="blue" (buttonFn)="fullBackup()">Full backup</aer-button>

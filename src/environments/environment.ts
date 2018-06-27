@@ -15,20 +15,24 @@ export const environment = {
   contracts: {
     swap: {
       address: {
-        AeroToErc20: "0xb5b8a711e5abae1940e1b92ad45d4ec86215ce82",
-        Erc20ToAero: "0x52ac5cf9c2823ea9891d347f94f74dfa8258db1c",
-        Erc20ToErc20: "0xf0b36c5e2ab2e66e2c0baeaf5f2cfdfedbaf757a"
+        AeroToErc20: "0x537c9e85fb2bf55e83b0631e85b3227f05411d3e",
+        Erc20ToAero: "0x1af3aadfe5e2f8d9799e2ccb011906023ea01922",
+        Erc20ToErc20: "0x20bf6e06b57e6384a5ac41c324edf894f7d59323"
       },
       crossChain: {
         address: {
           aerum: {
-            AeroSwap: "0xd7a2fdeedbb6495cdffa6d13f624c771de15a9ca",
-            Erc20Swap: "0xa4d35cc7da4468ebe7be2ceb2bd05c3f12c2b4fd",
-            TemplatesRegistry: "0x6ce0143a06476a3b1051df548cc096eb5ebb770e"
+            OpenAeroSwap: "0xc26a824f59e315a3ebc7f45d4a53b5c87b743bf7",
+            OpenErc20Swap: "0x223a8f2b11602f10931fc4bc852c057f3d1bc5e3",
+            CounterAeroSwap: "0x39d6969f9f0b528efef7e13b932d2b912bfd9486",
+            CounterErc20Swap: "0xc0b995d7e0300e5f5e459911ad5d63c0f9a1b3b1",
+            TemplatesRegistry: "0x1b1ff05ebe506d8c07e4354b316b1fb5b3b08d2a"
           },
           ethereum: {
-            EtherSwap: "0x886cebd831af48f1bff5943605254037361c1d56",
-            Erc20Swap: "0xef0aa2ffc51d039e073ebbb0de3c4b79ec98472c"
+            OpenEtherSwap: "0x44fcb81f812a69b6c4a4a52569937284bba0df6a",
+            OpenErc20Swap: "0xa687217b52139ea26f52114e8188ed2f7b94a679",
+            CounterEtherSwap: "0x014604c83715377c7ee381400932ba7c2a691bbe",
+            CounterErc20Swap: "0xc6ef31905ab863242dc6ed5d6fd6930f4f97f0ac"
           }
         },
         swapExpireTimeoutInSeconds: 10 * 60
@@ -47,7 +51,16 @@ export const environment = {
     chainId: 4,
     explorerUrl: "https://rinkeby.etherscan.io/tx/"
   },
+  settings: {
+    settingsExpiration: 3650,
+    gasPrice: "1",
+    maxTransactionGas: "4000000",
+    lastTransactionsNumber: "10",
+    maxBlockGas: "1"
+  },
   gasPrice: "1",
+  maxTransactionGas: "4000000",
+  lastTransactionsNumber: "10",
   maxBlockGas: "1",
   chainId: 418313827693,
   loglevel: LogLevel.All,

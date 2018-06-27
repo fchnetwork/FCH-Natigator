@@ -12,6 +12,7 @@ import { NameReleaseConfirmComponent } from "@aens/components/name-release-confi
 import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
 import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/transaction-modal.component';
 import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
+import { CreateSwapComponent } from '@app/wallet/swap/components/create-swap/create-swap.component';
 
 @Injectable()
 export class ModalService {
@@ -56,6 +57,10 @@ export class ModalService {
 
   openTransaction(hash: any = null, transaction: any, external, urls, orderId): Promise<any> {
     return this.openModal(TransactionModalComponent, { isBlocking: false, dialogClass: 'adaptive-dialog', hash, transaction, external, urls, orderId });
+  }
+
+  openSwapCreate(data?: any): Promise<any> {
+    return this.openModal(CreateSwapComponent, {isBlocking: false, dialogClass: 'adaptive-dialog', param: data});
   }
 
   openSwapCreateConfirm(data?: any): Promise<any> {
