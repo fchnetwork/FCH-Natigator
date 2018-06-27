@@ -37,7 +37,8 @@ export class AerumNameService {
 
   async safeResolveNameOrAddress(nameOrAddress: string) {
     try {
-      return await this.resolveNameOrAddress(nameOrAddress);
+      const address = await this.resolveNameOrAddress(nameOrAddress);
+      return address ? address.toLowerCase() : address;
     } catch (e) {
       this.logger.logMessage(`Resolve ${nameOrAddress} failed silently: ${e.message}`);
       return null;

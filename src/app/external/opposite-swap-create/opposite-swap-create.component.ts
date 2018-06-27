@@ -218,14 +218,14 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     const hash = sha3(this.secret);
     const amount = toBigNumberString(this.amount * Math.pow(10, Number(this.selectedToken.decimals)));
     const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
-    const withdrawTrader = this.params.account;
+    const counterpartyTrader = await this.nameService.safeResolveNameOrAddress(this.selectedTemplate.offchainAccount);
 
-    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${withdrawTrader}. amount: ${amount}`);
+    this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${amount}`);
     await this.erc20SwapService.openSwap(
       hash,
       this.selectedToken.address,
       amount,
-      withdrawTrader,
+      counterpartyTrader,
       timestamp,
       (txHash) => this.onOpenSwapHashReceived(txHash)
     );

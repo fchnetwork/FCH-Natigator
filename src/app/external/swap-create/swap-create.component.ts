@@ -163,7 +163,6 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.logger.logMessage("Token not selected");
       return;
     }
-
     // TODO: We support Eth -> Aerum (ERC20) for now only
     const templates = await this.swapTemplateService.getTemplatesByAsset(this.selectedToken.address, Chain.Aerum);
     if (templates) {
@@ -229,8 +228,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     const hash = sha3(this.secret);
     const ethAmountString = toBigNumberString(this.ethAmount);
     const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
-    const counterpartyTrader = this.selectedTemplate.offchainAccount;
-
+    const counterpartyTrader =  await this.nameService.safeResolveNameOrAddress(this.selectedTemplate.offchainAccount);
     this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${ethAmountString}`);
 
     await this.etherSwapService.openSwap(
