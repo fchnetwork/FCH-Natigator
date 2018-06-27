@@ -6,7 +6,11 @@ import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
+import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { OpenErc20Swap } from '@app/core/swap/cross-chain/open-aerum-erc20-swap-service/open-erc20-swap.model';
+import { TokenService } from "@core/transactions/token-service/token.service";
+
 
 @Injectable()
 export class SwapListService {
@@ -14,7 +18,9 @@ export class SwapListService {
   constructor(
     private logger: LoggerService,
     private localSwapStorage: SwapLocalStorageService,
-    private etherSwapService: OpenEtherSwapService
+    private etherSwapService: OpenEtherSwapService,
+    private erc20SwapService: OpenAerumErc20SwapService,
+    private tokenService: TokenService,
   ) { }
 
   async getSwapsByAccountPaged(account: string, take: number, page: number): Promise<SwapListItem[]> {
@@ -70,8 +76,18 @@ export class SwapListService {
   }
 
   private async loadErc20SwapIds(account: string): Promise<string[]> {
-    // TODO: Implement later
-    return Promise.resolve([]);
+    const swapIdGroups = await this.getErc20SwapsIdsByAccount(account);
+    const swapIdPairs = swapIdGroups.reduce((all, accountSwaps) => all.concat(accountSwaps),[]);
+    const sortedSwapIds = swapIdPairs.sort((one, two) => one.account.localeCompare(two.account));
+    return sortedSwapIds.map(pair => pair.swapId);
+  }
+
+  private async getErc20SwapsIdsByAccount(account: string): Promise<Array<{account: string, swapId: string}>> {
+    account = account.toLowerCase();
+
+    const swapIds = await this.erc20SwapService.getAccountSwapIds(account);
+    // NOTE: We reverse so that latest go first
+    return swapIds.reverse().map(id => ({ account, swapId: id }));
   }
 
   private async getEtherSwapsByIds(swapIds: string[], account: string): Promise<SwapListItem[]> {
@@ -79,9 +95,10 @@ export class SwapListService {
     return swaps.map(swap => this.mapEtherSwap(account, swap));
   }
 
-  private getErc20SwapsByIds(swapIds: string[], account: string): Promise<SwapListItem[]> {
-    // TODO: Should be implemented later
-    return Promise.resolve([]);
+  private async getErc20SwapsByIds(swapIds: string[], account: string): Promise<SwapListItem[]> {
+    const swaps = await Promise.all(swapIds.map(id => this.erc20SwapService.checkSwap(id)));
+    const result = await Promise.all(swaps.map(swap => this.mapErc20Swap(account, swap)));
+    return result;
   }
 
   private mapEtherSwap(account: string, swap: OpenEtherSwap): SwapListItem {
@@ -91,6 +108,20 @@ export class SwapListService {
       openAsset: 'ETH',
       openValue: swap.value,
       closeAsset: null,
+      closeValue: 0,
+      createdOn: swap.openedOn,
+      state: swap.state
+    };
+  }
+
+  private async mapErc20Swap(account: string, swap: OpenErc20Swap): Promise<SwapListItem> {
+    const token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
+    return {
+      id: swap.hash,
+      counterparty: this.getCounterparty(swap.openTrader, swap.withdrawTrader, account),
+      openAsset: token.symbol,
+      openValue: swap.erc20Value / Math.pow(10, token.decimals),
+      closeAsset: 'ETH',
       closeValue: 0,
       createdOn: swap.openedOn,
       state: swap.state
