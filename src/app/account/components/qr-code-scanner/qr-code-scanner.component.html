@@ -1,0 +1,8 @@
+<div *ngIf="!hasCameras">
+  No cameras have been found on your device.
+</div>
+<div *ngIf="hasCameras && !hasPermission">
+  You need to grant AERUM permission to access your camera.
+</div>
+<zxing-scanner #scanner class="test-class" start="true" [device]="selectedDevice" (scanSuccess)="handleQrCodeResult($event)">
+</zxing-scanner>
