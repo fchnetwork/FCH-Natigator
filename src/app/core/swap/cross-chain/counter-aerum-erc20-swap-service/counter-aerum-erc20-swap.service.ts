@@ -30,9 +30,9 @@ export class CounterAerumErc20SwapService extends BaseContractService {
     return receipt;
   }
 
-  async closeSwap(hash: string, secretKey: string) {
+  async closeSwap(hash: string, secretKey: string, hashCallback?: (hash: string) => void) {
     const closeSwap = this.contract.methods.close(hash, this.web3.utils.fromAscii(secretKey));
-    const receipt = await this.contractExecutorService.send(closeSwap);
+    const receipt = await this.contractExecutorService.send(closeSwap, { value: '0', hashReceivedCallback: hashCallback });
     return receipt;
   }
 

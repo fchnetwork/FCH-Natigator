@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
-import { environment } from "@env/environment";
-
 import Timer = NodeJS.Timer;
 import * as moment from "moment";
 import { Duration } from "moment";
 
 import { Subscription } from "rxjs/Subscription";
 import { ActivatedRoute, Router } from "@angular/router";
+import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 
 import { SwapState } from "@core/swap/models/swap-state.enum";
+import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { OpenErc20Swap } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-erc20-swap.model";
 import { CounterEtherSwap } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.model";
 import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
@@ -52,7 +52,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   loadingEthereumSwap = false;
   loadingCounterSwap = false;
 
-  expireSwapTransactionExplorerUrl: string;
+  swapTransactionExplorerUrl: string;
 
   swapLoadTimerInterval: Timer;
   swapExpireTimerInterval: Timer;
@@ -276,8 +276,12 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   private async closeSwap(): Promise<void> {
-    this.expireSwapTransactionExplorerUrl = null;
-    await this.counterEtherSwapService.closeSwap(this.hash, this.secret, { wallet: this.localSwap.walletType, account: this.localSwap.account });
+    this.swapTransactionExplorerUrl = null;
+    await this.counterEtherSwapService.closeSwap(this.hash, this.secret, {
+      wallet: this.localSwap.walletType,
+      account: this.localSwap.account,
+      hashCallback: (txHash) => this.onSwapHashReceived(txHash, Chain.Ethereum)
+    });
     this.canCloseSwap = false;
     this.swapClosed = true;
     this.cleanErrors();
@@ -298,8 +302,8 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   private async cancelSwap(): Promise<void> {
-    this.expireSwapTransactionExplorerUrl = null;
-    await this.openAerumErc20SwapService.expireSwap(this.hash, (hash) => this.onExpireSwapHashReceived(hash));
+    this.swapTransactionExplorerUrl = null;
+    await this.openAerumErc20SwapService.expireSwap(this.hash, (hash) => this.onSwapHashReceived(hash, Chain.Aerum));
     this.swapCancelled = true;
     this.cleanErrors();
   }
@@ -308,10 +312,8 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     return Math.ceil(new Date().getTime() / 1000);
   }
 
-  private onExpireSwapHashReceived(hash: string): void {
-    if (hash) {
-      this.expireSwapTransactionExplorerUrl = `${environment.externalBlockExplorer}transaction/${hash}`;
-    }
+  private onSwapHashReceived(hash: string, chain: Chain): void {
+    this.swapTransactionExplorerUrl = genTransactionExplorerUrl(hash, chain);
   }
 
   close() {

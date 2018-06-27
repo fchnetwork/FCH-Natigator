@@ -8,6 +8,7 @@ import { environment } from "@env/environment";
 import { sha3, fromWei } from 'web3-utils';
 import Web3 from "web3";
 
+import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
@@ -264,9 +265,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   private onOpenSwapHashReceived(hash: string): void {
-    if (hash) {
-      this.openSwapTransactionExplorerUrl = environment.ethereum.explorerUrl + hash;
-    }
+    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(hash, Chain.Ethereum);
   }
 
   cancel() {
