@@ -1,6 +1,6 @@
 {
   "name": "@aerum/wallet",
-  "version": "0.2.0",
+  "version": "0.3.2",
   "license": "MIT",
   "scripts": {
     "build": "webpack --config config/webpack.config.local.js",
