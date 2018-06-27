@@ -35,7 +35,6 @@ export class CounterEtherSwapService extends BaseContractService {
   async closeSwap(hash: string, secretKey: string, options: TransactionOptions) {
     const contract = await this.createContract(options.wallet);
     const closeSwap = contract.methods.close(hash, fromAscii(secretKey));
-    debugger;
     const receipt = await this.send(closeSwap, options);
     return receipt;
   }
