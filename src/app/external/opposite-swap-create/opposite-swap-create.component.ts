@@ -6,6 +6,7 @@ import { Subscription } from "rxjs/Subscription";
 import { environment } from "@env/environment";
 
 import { toBigNumberString } from "@shared/helpers/number-utils";
+import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 import { sha3 } from 'web3-utils';
 import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
@@ -287,9 +288,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   }
 
   private onOpenSwapHashReceived(hash: string): void {
-    if (hash) {
-      this.openSwapTransactionExplorerUrl = `${environment.externalBlockExplorer}transaction/${hash}`;
-    }
+    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(hash, Chain.Aerum);
   }
 
   cancel() {
