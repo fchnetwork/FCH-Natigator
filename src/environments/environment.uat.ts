@@ -56,12 +56,10 @@ export const environment = {
     gasPrice: "1",
     maxTransactionGas: "4000000",
     lastTransactionsNumber: "10",
-    maxBlockGas: "1"
+    maxBlockGas: "1",
+    derivationPath: "m/44'/60'/0'/0/0",
+    laguage: "en"
   },
-  gasPrice: "1",
-  maxTransactionGas: "4000000",
-  lastTransactionsNumber: "10",
-  maxBlockGas: "1",
   chainId: 418313827693,
   loglevel: LogLevel.None
 };
