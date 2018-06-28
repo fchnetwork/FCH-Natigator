@@ -24,7 +24,19 @@
       }
     }
   }
+
+  &__qr-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    & > app-qr-code-scanner {
+      flex-grow: 2;
+    }
+  }
 }
+
+
 
 @media only screen and (max-width: 480px) {
   .account__button-list {

@@ -1,4 +1,3 @@
-import { environment } from "@env/environment";
 import {
   Component,
   OnInit,
@@ -8,33 +7,25 @@ import {
   trigger,
   state,
   transition,
-  animate
+  animate,
+  ViewChild
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Subject } from "rxjs/Subject";
-
-import { Cookie } from "ng2-cookies/ng2-cookies";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { PasswordCheckerService } from "@app/core/authentication/password-checker-service/password-checker.service";
 import { SessionStorageService } from "ngx-webstorage";
 import { StorageService } from "@core/general/storage-service/storage.service";
+import { RouteDataService } from "@app/core/general/route-data-service/route-data.service";
+import { QrRouteData } from "@app/account/qr-scan/qr-route-data.model";
 
 @Component({
-  selector: "app-access-recovery",
-  templateUrl: "./access-recovery.component.html",
-  styleUrls: ["./access-recovery.component.scss"],
-  animations: [
-    trigger("slide", [
-      state("left", style({ transform: "translateX(0)" })),
-      state("right", style({ transform: "translateX(-50%)" })),
-      transition("* => *", animate(300))
-    ])
-  ]
+  selector: "app-restore-account",
+  templateUrl: "./restore-account.component.html",
+  styleUrls: ["./restore-account.component.scss"]
 })
-export class AccessRecoveryComponent implements OnInit, OnDestroy {
-  activePane = 'left';
-  isScanMode = false;
+export class RestoreAccountComponent implements OnInit, OnDestroy {
   address = "";
   avatar: string;
   private: string;
@@ -54,8 +45,14 @@ export class AccessRecoveryComponent implements OnInit, OnDestroy {
     public cd: ChangeDetectorRef,
     public passCheckService: PasswordCheckerService,
     public sessionStorage: SessionStorageService,
-    private storageService: StorageService
-  ) {}
+    private storageService: StorageService,
+    public routeDataSerice: RouteDataService<QrRouteData>
+  ) {
+    if(this.routeDataSerice.hasData()) {
+      this.seedFileText = this.routeDataSerice.routeData.qrCode;
+      this.routeDataSerice.clear();
+    }
+  }
 
   openBackupFile(event, type) {
 
@@ -220,12 +217,7 @@ export class AccessRecoveryComponent implements OnInit, OnDestroy {
     this.passwordStrength = this.passCheckService.checkPassword(event);
   }
 
-  togglePanels() {
-    this.activePane = this.activePane === 'left' ? 'right' : 'left';
-
-    if(this.activePane === 'right') {
-      // Init camera
-
-    }
+  scanQr() {
+    this.router.navigate(['/account/restore/qr-code']);
   }
 }

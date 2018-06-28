@@ -1,3 +1,5 @@
+import { RestoreAccountComponent } from '@app/account/restore-account/restore-account.component';
+import { QrScanComponent } from './qr-scan/qr-scan.component';
 import { QrCodeScannerComponent } from './components/qr-code-scanner/qr-code-scanner.component';
 import { AccountRoutingModule } from "./account.routes";
 import { CommonModule } from "@angular/common";
@@ -12,7 +14,6 @@ import { BackupCreateComponent } from './backup-create/backup-create.component';
 import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component';
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
-import { AccessRecoveryComponent } from "./access-recovery/access-recovery.component";
 import { CoreModule } from "@app/core/core.module";
 import { UnlockComponent } from "@app/account/unlock/unlock.component";
 import { ZXingScannerModule } from "@zxing/ngx-scanner";
@@ -26,7 +27,6 @@ import { ZXingScannerModule } from "@zxing/ngx-scanner";
         BackupConfirmComponent,
         BackupPromptComponent,
         BackupDisclamerComponent,
-        AccessRecoveryComponent,
         PasswordLinesComponent
     ],
     imports: [
@@ -47,9 +47,10 @@ import { ZXingScannerModule } from "@zxing/ngx-scanner";
         BackupConfirmComponent,
         BackupPromptComponent,
         BackupDisclamerComponent,
-        AccessRecoveryComponent,
         PasswordLinesComponent,
-        QrCodeScannerComponent
+        QrCodeScannerComponent,
+        RestoreAccountComponent,
+        QrScanComponent
     ]
 })
 export class AccountModule { }

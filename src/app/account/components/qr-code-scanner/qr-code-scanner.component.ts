@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
+import { RouteDataService } from "@app/core/general/route-data-service/route-data.service";
 
 @Component({
   selector: "app-qr-code-scanner",
@@ -9,8 +10,10 @@ export class QrCodeScannerComponent implements OnInit {
   @ViewChild("scanner") scanner: any;
   hasCameras = false;
   hasPermission = false;
+  isValidSeedQr = true;
   availableDevices: MediaDeviceInfo[];
   selectedDevice: MediaDeviceInfo;
+
   @Output() codeScanned = new EventEmitter<string>();
 
   constructor() {}
@@ -43,11 +46,11 @@ export class QrCodeScannerComponent implements OnInit {
   }
 
   handleQrCodeResult(resultString: string) {
-    this.codeScanned.emit(resultString);
-  }
+    if(resultString && resultString.split(' ').length !== 12) {
+      this.isValidSeedQr = false;
+      return;
+    }
 
-  onDeviceSelectChange(selectedValue: string) {
-    // console.log("Selection changed: ", selectedValue);
-    // this.selectedDevice = this.scanner.getDeviceById(selectedValue);
+    this.codeScanned.emit(resultString);
   }
 }

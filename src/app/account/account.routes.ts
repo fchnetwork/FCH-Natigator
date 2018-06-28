@@ -1,21 +1,22 @@
+import { QrScanComponent } from './qr-scan/qr-scan.component';
 import { RouterModule } from "@angular/router";
-import { NgModule } from "@angular/core";  
+import { NgModule } from "@angular/core";
 import { RegisterComponent } from "./register/register.component";
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
-import { BackupCreateComponent } from "./backup-create/backup-create.component"; 
+import { BackupCreateComponent } from "./backup-create/backup-create.component";
 import { RegistrationRouteData } from "./models/RegistrationRouteData";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
-import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component"; 
-import { AccessRecoveryComponent } from "./access-recovery/access-recovery.component"; 
-import { UnlockComponent } from "@app/account/unlock/unlock.component"; 
+import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component";
+import { UnlockComponent } from "@app/account/unlock/unlock.component";
 import { CanActivateAccountAuthGuard } from "@app/core/authentication/auth-guards/can-activate-account.guard";
+import { RestoreAccountComponent } from "@app/account/restore-account/restore-account.component";
 
 const ACCOUNT_ROUTES = [
     {
         path: '',
         children: [
             {
-                path: '', 
+                path: '',
                 redirectTo: 'unlock',
                 pathMatch: 'full'
             },
@@ -30,7 +31,7 @@ const ACCOUNT_ROUTES = [
             {
                 path: 'backup/create',
                 component: BackupCreateComponent
-            }, 
+            },
             {
                 path: 'backup/confirm',
                 component: BackupConfirmComponent
@@ -42,14 +43,18 @@ const ACCOUNT_ROUTES = [
             },
             {
                 path: 'restore',
-                component: AccessRecoveryComponent
-            }
-        ] 
+                component: RestoreAccountComponent
+            },
+            {
+              path: 'restore/qr-code',
+              component: QrScanComponent
+            },
+        ]
     }
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(ACCOUNT_ROUTES)], 
+    imports: [RouterModule.forChild(ACCOUNT_ROUTES)],
     exports: [RouterModule]
 })
 export class AccountRoutingModule { }
