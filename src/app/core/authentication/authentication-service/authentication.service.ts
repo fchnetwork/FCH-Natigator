@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 import { privateToAddress, bufferToHex } from "ethereumjs-util";
 import { SettingsService } from '@app/core/settings/settings.service';
 
+import { StorageService } from "@core/general/storage-service/storage.service";
+
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
 const bip39   = require("bip39");
@@ -27,14 +29,13 @@ export class AuthenticationService {
 
     constructor(private sessionStorage: SessionStorageService,
                 public router: Router,
-                public settingsService: SettingsService
+                public settingsService: SettingsService,
+                private storageService: StorageService
     ) {
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.settingsService.settings.systemSettings.aerumNodeRpcURI));
         this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.settingsService.settings.systemSettings.aerumNodeWsURI));
 
-        let dp = this.sessionStorage.retrieve('derivation');
-
-        this.activeDerivation = (dp != null || dp != undefined) ? dp :  "m/44'/60'/0'/0/0";
+        this.activeDerivation = this.settingsService.settings.generalSettings.derivationPath;
 
         avatars.config({ size: 67 * 3, bgColor: '#fff' });
     }
@@ -50,15 +51,15 @@ export class AuthenticationService {
     avatarsGenerator() {
         const seeds = [];
         for( let i = 0; i <=4; i++ ) {
-            const newSeed            = bip39.generateMnemonic();
-            const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed );
-            const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
-            const wallet             = hdwallet.derivePath( this.activeDerivation ).getWallet();
-            const getAddress         = wallet.getAddress().toString("hex");
-            const getPriv            = wallet.getPrivateKeyString().toString("hex");
-            const getPublic          = wallet.getPublicKeyString().toString("hex");
+            const newSeed = bip39.generateMnemonic();
+            const mnemonicToSeed = bip39.mnemonicToSeed( newSeed );
+            const hdwallet = hdkey.fromMasterSeed( mnemonicToSeed );
+            const wallet = hdwallet.derivePath( this.activeDerivation ).getWallet();
+            const getAddress = wallet.getAddress().toString("hex");
+            const getPriv = wallet.getPrivateKeyString().toString("hex");
+            const getPublic = wallet.getPublicKeyString().toString("hex");
             const getChecksumAddress = ethUtil.toChecksumAddress( getAddress );
-            const address            = ethUtil.addHexPrefix( getChecksumAddress );
+            const address = ethUtil.addHexPrefix( getChecksumAddress );
 
             seeds.push({
                 id: i,
@@ -73,7 +74,7 @@ export class AuthenticationService {
     }
 
     generateCryptedAvatar( address: string ) {
-        const avatar      = avatars.create( address.toString() );
+        const avatar = avatars.create( address.toString() );
         return avatar;
     }
 
@@ -100,7 +101,7 @@ export class AuthenticationService {
     }
 
     getAddress(): string {
-      return this.sessionStorage.retrieve('acc_address');
+      return this.storageService.getSessionData('acc_address');
     }
 
     getKeystore() {

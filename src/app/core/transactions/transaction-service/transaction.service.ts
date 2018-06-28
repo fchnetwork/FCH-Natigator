@@ -56,7 +56,7 @@ export class TransactionService {
         const tokensContract = this.generateContract(data.contractAddress);
         data = tokensContract.methods.transfer(to, data.amount).encodeABI();
       }
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => { 
         const sendTo = ethJsUtil.toChecksumAddress( to );
         const txData = this.web3.utils.asciiToHex( data );
         const estimateGas = this.web3.eth.estimateGas({to:sendTo, data:txData});
@@ -201,8 +201,10 @@ export class TransactionService {
       const rawTransaction = {
         "from": myAddress,
         "nonce": this.web3.utils.toHex( count ),
-        "gasPrice": this.web3.utils.toHex(gasPrice) || "0x003B9ACA00",
-        "gasLimit": "0x250CA",
+        "gasPrice": 
+          this.web3.utils.toHex(gasPrice) || 
+          this.web3.utils.toHex( this.web3.utils.toWei( this.settingsService.settings.transactionSettings.gasPrice, 'gwei')),
+        "gasLimit": this.settingsService.settings.transactionSettings.maxTransactionGas,
         "to": contractAddress,
         "value": "0x0",
         "data": tokensContract.methods.transfer(to, amount).encodeABI(),

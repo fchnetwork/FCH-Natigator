@@ -9,6 +9,10 @@ import { NotificationMessagesService } from '@core/general/notification-messages
 export class SettingsService {
 
     public settings: iSettings = {
+        generalSettings: {
+            language: "",
+            derivationPath: ""
+        },
         transactionSettings: {
             gasPrice: "",
             maxTransactionGas: "",
@@ -52,6 +56,10 @@ export class SettingsService {
      */
     setDefaultSettings(): iSettings {
         const settings = {
+            generalSettings: {
+                language: environment.settings.laguage,
+                derivationPath: environment.settings.derivationPath
+            },
             //set default transaction settings
             transactionSettings: {
                 gasPrice: environment.settings.gasPrice,

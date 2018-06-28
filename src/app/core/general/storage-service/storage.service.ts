@@ -61,4 +61,14 @@ export class StorageService {
     setSessionData(key: string, data: any) {
         this.sessionStorageService.store(key, data);
     }
+
+    /**
+     * Clear data from session storage by specified key
+     *
+     * @param {string} key Key of the entry in the session storage
+     * @memberof StorageService
+     */
+    clearSessionData(key: string) {
+        this.sessionStorageService.clear(key);
+    }
 }
