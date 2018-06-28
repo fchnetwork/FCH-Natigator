@@ -9,6 +9,10 @@ import { NotificationMessagesService } from '@core/general/notification-messages
 export class SettingsService {
 
     public settings: iSettings = {
+        generalSettings: {
+            language: "",
+            derivationPath: ""
+        },
         transactionSettings: {
             gasPrice: "",
             maxTransactionGas: "",
@@ -35,13 +39,13 @@ export class SettingsService {
      * @memberof SettingsService
      */
     getSettings(): iSettings { 
-        const cookieSettings = this.storageService.getCookie("settings", true); 
-        if ( cookieSettings ) { 
-            return JSON.parse(cookieSettings);
+        const cookieSettings = this.storageService.getCookie("settings", false); 
+        if ( cookieSettings ) {
+            this.settings = JSON.parse(cookieSettings);
         } else {
-            const settings = this.setDefaultSettings();
-            return settings;
+            this.settings = this.setDefaultSettings(); 
         }
+        return this.settings;
     }
 
     /**
@@ -52,6 +56,10 @@ export class SettingsService {
      */
     setDefaultSettings(): iSettings {
         const settings = {
+            generalSettings: {
+                language: environment.settings.laguage,
+                derivationPath: environment.settings.derivationPath
+            },
             //set default transaction settings
             transactionSettings: {
                 gasPrice: environment.settings.gasPrice,
@@ -60,13 +68,13 @@ export class SettingsService {
             },
             //set default system settings
             systemSettings: {
-                aerumNodeWsURI: environment.rpcApiProvider,
-                aerumNodeRpcURI: environment.WebsocketProvider,
+                aerumNodeWsURI: environment.WebsocketProvider,
+                aerumNodeRpcURI: environment.rpcApiProvider,
                 ethereumNodeURI: environment.ethereum.endpoint
             }
         };
         const stringSettings = JSON.stringify(settings);
-        this.storageService.setCookie("settings", stringSettings, true, this.expiration);
+        this.storageService.setCookie("settings", stringSettings, false, this.expiration);
         return settings;
     }
     
@@ -81,7 +89,7 @@ export class SettingsService {
         this.settings = this.getSettings();
         this.settings[key] = settingsObj;
         const stringSettings = JSON.stringify(this.settings);
-        this.storageService.setCookie("settings", stringSettings, true, this.expiration);
+        this.storageService.setCookie("settings", stringSettings, false, this.expiration);
         this.notificationMessagesService.saveSettings();
     }
 }

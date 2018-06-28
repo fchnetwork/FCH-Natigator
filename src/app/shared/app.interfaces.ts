@@ -72,8 +72,14 @@ export interface iBlocks {
   }
 
   export interface iSettings {
+    generalSettings: iGeneralSettings,
     transactionSettings: iTransactionSettings,
     systemSettings: iSystemSettings
+  }
+
+  export interface iGeneralSettings {
+    language: string;
+    derivationPath: string;
   }
 
   export interface iTransactionSettings {

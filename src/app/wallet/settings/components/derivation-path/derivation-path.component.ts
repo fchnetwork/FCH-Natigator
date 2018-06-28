@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { SettingsService } from '@app/core/settings/settings.service';
+import { iGeneralSettings, iSettings } from '@shared/app.interfaces';
 
 export interface iDerivationPaths {
   id: number;
@@ -17,6 +18,11 @@ export class DerivationPathComponent {
 
   selectResult: any;
   activeDerivation: string;
+
+  generalSettings: iGeneralSettings = {
+    language: "",
+    derivationPath: ""
+  }
   
   derivationPaths: Array<iDerivationPaths> = [{
     id: 1,
@@ -28,25 +34,33 @@ export class DerivationPathComponent {
     disabled: true,
   }]  
   
-    constructor(
-      private sessionStorage: SessionStorageService,
-      private notificationService: InternalNotificationService ) {
-        let storedDerivation = this.sessionStorage.retrieve('derivation');
-        let activeDerivation = (storedDerivation != null || storedDerivation != undefined) 
-                                ? storedDerivation 
-                                : (this.derivationPaths[0].derivation, this.sessionStorage.store('derivation', this.derivationPaths[0].derivation) )
+  constructor(
+      private notificationService: InternalNotificationService,
+      private settingsService: SettingsService ) 
+  {
+    this.getGeneralSettings();
+    let activeDerivation = this.generalSettings.derivationPath;
                                  
-          this.derivationPaths.forEach( (path, i) => {
-            if (path.derivation == activeDerivation ) {
-              this.selectResult = this.derivationPaths[i];
-            }
-          });  
-    }
-
-    
+    this.derivationPaths.forEach( (path, i) => {
+      if (path.derivation == activeDerivation ) {
+        this.selectResult = this.derivationPaths[i];
+      }
+    });  
+  }
+ 
   derivationChanged(evt){
-    this.sessionStorage.store('derivation', evt.derivation )
+    const generalSettings: iGeneralSettings = {
+      language: this.generalSettings.language,
+      derivationPath: evt.derivation,
+    };
+    this.settingsService.saveSettings("generalSettings", generalSettings);
     this.notificationService.showMessage(`Derivation path is now ${evt.derivation}`, 'YOUR DERIVATION PATH HAS BEEN MODIFIED');
   }
+
+  getGeneralSettings() {
+    let settings: iSettings = this.settingsService.getSettings();
+    this.generalSettings.language = settings.generalSettings.language;
+    this.generalSettings.derivationPath = settings.generalSettings.derivationPath;
+  }  
 
 }
