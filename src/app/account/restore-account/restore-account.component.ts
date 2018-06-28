@@ -19,6 +19,7 @@ import { SessionStorageService } from "ngx-webstorage";
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { RouteDataService } from "@app/core/general/route-data-service/route-data.service";
 import { QrRouteData } from "@app/account/qr-scan/qr-route-data.model";
+import { SettingsService } from "@core/settings/settings.service";
 
 @Component({
   selector: "app-restore-account",
@@ -46,7 +47,8 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     public passCheckService: PasswordCheckerService,
     public sessionStorage: SessionStorageService,
     private storageService: StorageService,
-    public routeDataSerice: RouteDataService<QrRouteData>
+    public routeDataSerice: RouteDataService<QrRouteData>,
+    private settingsService: SettingsService
   ) {
     if(this.routeDataSerice.hasData()) {
       this.seedFileText = this.routeDataSerice.routeData.qrCode;
@@ -76,7 +78,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
               }
             } else if (type === "full") {
               const results = JSON.parse(reader.result);
-              this.cleanCookies();
+              this.cleanOrSetDefaultCookies();
               this.storageService.setCookie(
                 "aerum_base",
                 results.aerumBase,
@@ -123,14 +125,14 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     }
   }
 
-  cleanCookies() {
+  cleanOrSetDefaultCookies() {
     this.storageService.setCookie("aerum_base", null, false, 7);
     this.storageService.setCookie("aerum_keyStore", null, false, 7);
     this.storageService.setCookie("tokens", null, false, 7);
     this.storageService.setCookie("transactions", null, false, 7);
-    this.storageService.setCookie("settings", null, false, 7);
     this.storageService.setCookie("ethereum_accounts", null, false, 7);
     this.storageService.setCookie("cross_chain_swaps", null, false, 7);
+    this.settingsService.setDefaultSettings();
   }
 
   ngOnInit() {
@@ -181,7 +183,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
 
   onSubmitAddress() {
     if (this.recoverForm.valid) {
-      this.cleanCookies();
+      this.cleanOrSetDefaultCookies();
 
       this.storageService.setSessionData("acc_address", this.address);
       this.storageService.setSessionData(
