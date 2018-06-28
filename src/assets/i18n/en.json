@@ -28,6 +28,31 @@
     "DESCRIPTION": "This password will withstand most sophisticated brute-force attacks. Please ensure that you will remember it.",
     "TITLE": "Very Strong"
   },
+  "BUTTONS": {
+    "BACK": "Back",
+    "CONTINUE": "Continue",
+    "CANCEL": "Cancel",
+    "CLOSE": "Close"
+  },
+  "ACCOUNT": {
+    "RESTORE": {
+      "TITLE": "Access Recovery",
+      "SUBTITLE": "Please provide your previously exported Seed Words or",
+      "SUBTITLE_HINT": "create new account",
+      "SELECT_SEED": "Select seed file",
+      "SELECT_BACKUP_FILE": "Select backup file",
+      "SEED_WORD_PLACEHOLDER": "Your seed is 12 words you saved when creating your account",
+      "CREATE_PWD_PLACEHOLDER": "Create new password",
+      "CONFIRM_PWD_PLACEHOLDER": "Confirm new password"
+    },
+    "QR_SCAN": {
+      "TITLE": "Scan QR Code",
+      "SUBTITLE": "Please scan the QR code of your seed. The QR code can be found in the Settings > Backup page of wallet.",
+      "NO_CAMERAS": "No cameras have been detected.",
+      "NO_PERMISSIONS": "You need to grant AERUM a permission to access your camera.",
+      "QR_ERROR": "QR code doesn't contain a valid seed phrase."
+    }
+  },
   "SETTINGS": {
     "TITLE": "Settings",
     "BACKUP": {
@@ -93,8 +118,6 @@
   "PASSWORD": "Password",
   "ACCESS_REC_HINT": "Please provide your previously exported Seed Words or",
   "ACCESS_REC_HINT_SUFF": " create new account.",
-  "SEL_KEY": "Select seed file",
-  "SEL_BAC": "Select backup file",
   "KEY_PLACEHOLDER": "Your seed is the 15 words you saved when creating your account",
   "CONTINUE": "Continue",
   "ERR_LOGIN_LOW": "Your password should contain at least one lowercase letter.",

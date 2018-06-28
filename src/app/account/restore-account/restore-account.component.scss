@@ -1,0 +1,49 @@
+.account {
+  &__button-list {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    & > * {
+      margin: 0 5px;
+    }
+  }
+
+  &__slide-panel {
+    display: block;
+    overflow: hidden;
+
+    &__container {
+      width: 200%;
+      display: flex;
+
+      div {
+        flex: 1;
+      }
+    }
+  }
+
+  &__qr-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+
+    & > app-qr-code-scanner {
+      flex-grow: 2;
+    }
+  }
+}
+
+
+
+@media only screen and (max-width: 480px) {
+  .account__button-list {
+    flex-direction: column;
+
+    & > * {
+      margin: 5px 0;
+    }
+  }
+}

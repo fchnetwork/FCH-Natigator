@@ -2,3 +2,8 @@
 <app-divider [fullWidth]="true"></app-divider>
 <aer-button class="blue" (buttonFn)="simpleBackup()">Save seed</aer-button>
 <aer-button class="blue" (buttonFn)="fullBackup()">Full backup</aer-button>
+<app-divider [showLine]="false"></app-divider>
+<h3>QR Restore</h3>
+<app-divider [fullWidth]="true"></app-divider>
+<p class="aer-small">You can scan following QR code during account restore process on another device (like mobile).</p>
+<img [src]="mnemonicQr" alt="">
