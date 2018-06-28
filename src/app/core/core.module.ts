@@ -36,6 +36,7 @@ import { CounterEtherSwapService } from "@core/swap/cross-chain/counter-ether-sw
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
+import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { SettingsBackupService } from '@app/core/settings/settingsBackup.service';
 import { SettingsService } from '@app/core/settings/settings.service';
@@ -101,6 +102,7 @@ export class CoreModule {
         NotificationMessagesService,
         AuthenticationService,
         EthereumAuthenticationService,
+        EthereumTokenService,
         TranslateService,
         StorageService
       ]

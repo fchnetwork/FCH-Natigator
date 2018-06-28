@@ -93,6 +93,11 @@ export abstract class BaseContractService {
     return new web3.eth.Contract(this.abi, this.address);
   }
 
+  protected async createContractByAddress(wallet = EthWalletType.Imported, address: string): Promise<Contract> {
+    const web3 = await this.createWeb3(wallet);
+    return new web3.eth.Contract(this.abi, address);
+  }
+
   protected async createWeb3(wallet: EthWalletType): Promise<Web3> {
     if (wallet === EthWalletType.Imported) {
       return this.ethereumAuthService.getWeb3();
