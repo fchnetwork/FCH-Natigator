@@ -9,6 +9,7 @@ import QRCode from 'qrcode';
 import { SessionStorageService } from 'ngx-webstorage';
 import { Router } from '@angular/router';
 import { privateToAddress, bufferToHex } from "ethereumjs-util";
+import { SettingsService } from '@app/core/settings/settings.service';
 
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
@@ -24,12 +25,12 @@ export class AuthenticationService {
     private readonly wsWeb3: Web3;
     private activeDerivation: string;
 
-    constructor(
-        private sessionStorage: SessionStorageService,
-        public router: Router,
- ) {
-        this.web3 = new Web3(new Web3.providers.HttpProvider(environment.rpcApiProvider));
-        this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(environment.WebsocketProvider));
+    constructor(private sessionStorage: SessionStorageService,
+                public router: Router,
+                public settingsService: SettingsService
+    ) {
+        this.web3 = new Web3(new Web3.providers.HttpProvider(this.settingsService.settings.systemSettings.aerumNodeRpcURI));
+        this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.settingsService.settings.systemSettings.aerumNodeWsURI));
 
         let dp = this.sessionStorage.retrieve('derivation');
 

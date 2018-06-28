@@ -33,7 +33,6 @@ export class StorageService {
      */
     getCookie(name: string, decrypt: boolean = false): any { 
         let data = Cookie.get(name);
-
         if (decrypt && data && data != null) {
             data = CryptoJS.AES.decrypt(Cookie.get(name), this.getSessionData('password')).toString(CryptoJS.enc.Utf8);
         }

@@ -35,13 +35,13 @@ export class SettingsService {
      * @memberof SettingsService
      */
     getSettings(): iSettings { 
-        const cookieSettings = this.storageService.getCookie("settings", true); 
-        if ( cookieSettings ) { 
-            return JSON.parse(cookieSettings);
+        const cookieSettings = this.storageService.getCookie("settings", false); 
+        if ( cookieSettings ) {
+            this.settings = JSON.parse(cookieSettings);
         } else {
-            const settings = this.setDefaultSettings();
-            return settings;
+            this.settings = this.setDefaultSettings(); 
         }
+        return this.settings;
     }
 
     /**
@@ -60,13 +60,13 @@ export class SettingsService {
             },
             //set default system settings
             systemSettings: {
-                aerumNodeWsURI: environment.rpcApiProvider,
-                aerumNodeRpcURI: environment.WebsocketProvider,
+                aerumNodeWsURI: environment.WebsocketProvider,
+                aerumNodeRpcURI: environment.rpcApiProvider,
                 ethereumNodeURI: environment.ethereum.endpoint
             }
         };
         const stringSettings = JSON.stringify(settings);
-        this.storageService.setCookie("settings", stringSettings, true, this.expiration);
+        this.storageService.setCookie("settings", stringSettings, false, this.expiration);
         return settings;
     }
     
@@ -81,7 +81,7 @@ export class SettingsService {
         this.settings = this.getSettings();
         this.settings[key] = settingsObj;
         const stringSettings = JSON.stringify(this.settings);
-        this.storageService.setCookie("settings", stringSettings, true, this.expiration);
+        this.storageService.setCookie("settings", stringSettings, false, this.expiration);
         this.notificationMessagesService.saveSettings();
     }
 }
