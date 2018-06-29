@@ -4,6 +4,7 @@ import * as CryptoJS from 'crypto-js';
 import { iSettings } from '@shared/app.interfaces';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
+import { TranslateService } from "@ngx-translate/core";
 
 @Injectable()
 export class SettingsService {
@@ -28,7 +29,8 @@ export class SettingsService {
     private expiration = environment.settings.settingsExpiration;
 
     constructor(private storageService: StorageService,
-                private notificationMessagesService: NotificationMessagesService) {
+                private notificationMessagesService: NotificationMessagesService,
+                public translate: TranslateService) {
         this.getSettings();
     }
 
@@ -55,9 +57,13 @@ export class SettingsService {
      * @memberof SettingsService
      */
     setDefaultSettings(): iSettings {
+        this.translate.setDefaultLang(environment.settings.laguage);
+        const defaultLanguage = this.translate.getBrowserLang() ? this.translate.getBrowserLang() : environment.settings.laguage;
+        this.translate.use(defaultLanguage);
+
         const settings = {
             generalSettings: {
-                language: environment.settings.laguage,
+                language: defaultLanguage,
                 derivationPath: environment.settings.derivationPath
             },
             //set default transaction settings
