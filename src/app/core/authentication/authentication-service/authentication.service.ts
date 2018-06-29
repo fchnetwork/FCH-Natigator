@@ -9,6 +9,9 @@ import QRCode from 'qrcode';
 import { SessionStorageService } from 'ngx-webstorage';
 import { Router } from '@angular/router';
 import { privateToAddress, bufferToHex } from "ethereumjs-util";
+import { SettingsService } from '@app/core/settings/settings.service';
+
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
@@ -22,13 +25,17 @@ export class AuthenticationService {
 
     private readonly web3: Web3;
     private readonly wsWeb3: Web3;
+    private activeDerivation: string;
 
-    constructor(
-        private sessionStorage: SessionStorageService,
-        public router: Router,
+    constructor(private sessionStorage: SessionStorageService,
+                public router: Router,
+                public settingsService: SettingsService,
+                private storageService: StorageService
     ) {
-        this.web3 = new Web3(new Web3.providers.HttpProvider(environment.rpcApiProvider));
-        this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(environment.WebsocketProvider));
+        this.web3 = new Web3(new Web3.providers.HttpProvider(this.settingsService.settings.systemSettings.aerumNodeRpcURI));
+        this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.settingsService.settings.systemSettings.aerumNodeWsURI));
+
+        this.activeDerivation = this.settingsService.settings.generalSettings.derivationPath;
 
         avatars.config({ size: 67 * 3, bgColor: '#fff' });
     }
@@ -43,16 +50,16 @@ export class AuthenticationService {
 
     avatarsGenerator() {
         const seeds = [];
-        for( let i =0; i <=4; i++ ) {
-            const newSeed            = bip39.generateMnemonic();
-            const mnemonicToSeed     = bip39.mnemonicToSeed( newSeed );
-            const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
-            const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet();
-            const getAddress         = wallet.getAddress().toString("hex");
-            const getPriv            = wallet.getPrivateKeyString().toString("hex");
-            const getPublic          = wallet.getPublicKeyString().toString("hex");
+        for( let i = 0; i <=4; i++ ) {
+            const newSeed = bip39.generateMnemonic();
+            const mnemonicToSeed = bip39.mnemonicToSeed( newSeed );
+            const hdwallet = hdkey.fromMasterSeed( mnemonicToSeed );
+            const wallet = hdwallet.derivePath( this.activeDerivation ).getWallet();
+            const getAddress = wallet.getAddress().toString("hex");
+            const getPriv = wallet.getPrivateKeyString().toString("hex");
+            const getPublic = wallet.getPublicKeyString().toString("hex");
             const getChecksumAddress = ethUtil.toChecksumAddress( getAddress );
-            const address            = ethUtil.addHexPrefix( getChecksumAddress );
+            const address = ethUtil.addHexPrefix( getChecksumAddress );
 
             seeds.push({
                 id: i,
@@ -67,7 +74,7 @@ export class AuthenticationService {
     }
 
     generateCryptedAvatar( address: string ) {
-        const avatar      = avatars.create( address.toString() );
+        const avatar = avatars.create( address.toString() );
         return avatar;
     }
 
@@ -94,7 +101,7 @@ export class AuthenticationService {
     }
 
     getAddress(): string {
-      return this.sessionStorage.retrieve('acc_address');
+      return this.storageService.getSessionData('acc_address');
     }
 
     getKeystore() {
@@ -113,32 +120,16 @@ export class AuthenticationService {
             if(password) {
                 const decryptSeed = CryptoJS.AES.decrypt( Cookie.get('aerum_base'), password );
 
-                const transactions = Cookie.get('transactions');
-                let plainTextTransactions = [];
-                if(transactions) {
-                    const decryptTransactions = CryptoJS.AES.decrypt( transactions, password );
-                    plainTextTransactions = decryptTransactions.toString(CryptoJS.enc.Utf8);
-                }
-
-                const tokens = Cookie.get('tokens');
-                let plainTextTokens = [];
-                if(tokens) {
-                    const decryptTokens = CryptoJS.AES.decrypt( tokens, password );
-                    plainTextTokens = decryptTokens.toString(CryptoJS.enc.Utf8);
-                }
-
-                const encryptedEthereumAccounts = Cookie.get('ethereum_accounts');
-                let ethereumAccounts = [];
-                if(encryptedEthereumAccounts) {
-                  const decryptEthereumAccounts = CryptoJS.AES.decrypt( encryptedEthereumAccounts, password );
-                  ethereumAccounts = decryptEthereumAccounts.toString(CryptoJS.enc.Utf8);
-                }
+                const transactions = this.decryptCookieToArray('transactions', password);
+                const tokens = this.decryptCookieToArray('tokens', password);
+                const ethereumAccounts = this.decryptCookieToArray('ethereum_accounts', password);
+                const crossChainSwaps = this.decryptCookieToArray('cross_chain_swaps', password);
 
                 const encryptAccount = this.web3.eth.accounts.decrypt( JSON.parse( Cookie.get('aerum_keyStore') ), password);
                 if( encryptAccount ) {
                     const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
                     const seed = this.seedCleaner(plaintext);
-                    resolve( { web3: encryptAccount, s:seed, transactions: plainTextTransactions, tokens: plainTextTokens, ethereumAccounts } );
+                    resolve( { web3: encryptAccount, s:seed, transactions, tokens, ethereumAccounts, crossChainSwaps } );
                 }
                 else {
                     reject("no keystore found or password incorrect");
@@ -147,6 +138,17 @@ export class AuthenticationService {
                 reject("no keystore found or password incorrect");
             }
         });
+    }
+
+    private decryptCookieToArray(cookieName: string, password: string) {
+      const cookie = Cookie.get(cookieName);
+      if(!cookie) {
+        return [];
+      }
+
+      const decryptArray = CryptoJS.AES.decrypt(cookie, password);
+      const array = decryptArray.toString(CryptoJS.enc.Utf8);
+      return array;
     }
 
     login(password) {
@@ -160,6 +162,7 @@ export class AuthenticationService {
                 this.sessionStorage.store('transactions', result.transactions.length ? JSON.parse(result.transactions) : []);
                 this.sessionStorage.store('tokens', result.tokens.length ? JSON.parse(result.tokens) : []);
                 this.sessionStorage.store('ethereum_accounts', result.ethereumAccounts.length ? JSON.parse(result.ethereumAccounts) : []);
+                this.sessionStorage.store('cross_chain_swaps', result.crossChainSwaps.length ? JSON.parse(result.crossChainSwaps) : []);
                 resolve('success');
             }).catch((err)=>{
                 reject(err);
@@ -177,6 +180,8 @@ export class AuthenticationService {
         this.sessionStorage.clear('transactions');
         this.sessionStorage.clear('tokens');
         this.sessionStorage.clear('ethereum_accounts');
+        this.sessionStorage.clear('cross_chain_swaps');
+        this.sessionStorage.clear('derivation');
     }
 
     /**
@@ -204,8 +209,9 @@ export class AuthenticationService {
             const hdwallet        = hdkey.fromMasterSeed( mnemonicToSeed );
             const privExtend      = hdwallet.privateExtendedKey();
             const pubExtend       = hdwallet.publicExtendedKey();
+            const currentDerivation = this.activeDerivation.slice(0, -1)
              for( let i = 0; i <= amount; i++) {
-                const derivationPath  = hdwallet.derivePath( "m/44'/60'/0'/0/" + i );
+                const derivationPath  = hdwallet.derivePath( currentDerivation + i );
                 const initWallet      = derivationPath.getWallet();
                 const address         = initWallet.getAddress().toString("hex");
                 const checkSumAddress = ethUtil.toChecksumAddress( address );
@@ -245,7 +251,7 @@ export class AuthenticationService {
             const hdwallet           = hdkey.fromMasterSeed( mnemonicToSeed );
             const privExtend         = hdwallet.privateExtendedKey();
             const pubExtend          = hdwallet.publicExtendedKey();
-            const wallet             = hdwallet.derivePath( "m/44'/60'/0'/0/0" ).getWallet(); // use the ethereumjs lib now
+            const wallet             = hdwallet.derivePath( this.activeDerivation ).getWallet(); // use the ethereumjs lib now
             const getAddress         = wallet.getAddress().toString("hex");
             const getPriv            = wallet.getPrivateKeyString().toString("hex");
             const getPublic          = wallet.getPublicKeyString().toString("hex");

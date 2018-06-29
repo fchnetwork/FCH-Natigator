@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { NotificationService } from "@aerum/ui";
+import { Subscription } from "rxjs/Subscription";
 
 import { environment } from '@env/environment';
 
 import { fromWei } from 'web3-utils';
-
 import { TransactionReceipt } from 'web3/types';
+import { fromSolidityDecimalString, toBigNumberString } from "@shared/helpers/number-utils";
 import { SwapMode, LoadedSwap, SwapStatus } from '@swap/models/models';
+import { Token } from "@core/transactions/token-service/token.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { TokenError } from "@core/transactions/token-service/token.error";
-import { Token } from "@core/transactions/token-service/token.model";
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { AeroToErc20SwapService } from '@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
@@ -28,7 +30,9 @@ interface SwapCommonOperationsService {
   templateUrl: './load-swap.component.html',
   styleUrls: ['./load-swap.component.scss']
 })
-export class LoadSwapComponent implements OnInit {
+export class LoadSwapComponent implements OnInit, OnDestroy {
+
+  private routeSubscription: Subscription;
 
   currentAddress: string;
   swapId: string;
@@ -38,6 +42,7 @@ export class LoadSwapComponent implements OnInit {
 
   constructor(
     private logger: LoggerService,
+    private route: ActivatedRoute,
     private authService: AuthenticationService,
     private modalService: ModalService,
     private aeroToErc20SwapService: AeroToErc20SwapService,
@@ -49,11 +54,21 @@ export class LoadSwapComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    const keystore = await this.authService.showKeystore();
-    this.currentAddress = "0x" + keystore.address;
-
+    this.currentAddress = this.authService.getAddress();
     this.mode = 'aero_to_erc20';
     this.updateTitle();
+
+    this.routeSubscription = this.route.params.subscribe(param => this.init(param));
+  }
+
+  private async init(params) {
+    const id = params["id"];
+    if (id) {
+      this.logger.logMessage(`Swap id found in query: ${id}`);
+      this.swapId = id;
+      this.onSwapIdChange();
+      await this.loadSwap();
+    }
   }
 
   onSwapIdChange() {
@@ -152,7 +167,7 @@ export class LoadSwapComponent implements OnInit {
     const allowance = await this.erc20TokenService.allowance(tokenContractAddress, this.currentAddress, spender);
     if (Number(allowance) < amount) {
       this.logger.logMessage(`Allowance value: ${allowance}. Needed: ${amount}`);
-      await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
+      await this.erc20TokenService.approve(tokenContractAddress, spender, toBigNumberString(amount));
     }
   }
 
@@ -280,11 +295,8 @@ export class LoadSwapComponent implements OnInit {
     };
   }
 
-  private getDecimalTokenValue(value: number, decimals: number) {
-    if(!decimals) {
-      return value;
-    }
-    return value / Math.pow(10, decimals);
+  private getDecimalTokenValue(value: string, decimals: number) {
+    return fromSolidityDecimalString(value, decimals);
   }
 
   private mapSwapStatus(status: string) : SwapStatus {
@@ -302,5 +314,11 @@ export class LoadSwapComponent implements OnInit {
 
   private stopLoading() {
     this.processing = false;
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
   }
 }

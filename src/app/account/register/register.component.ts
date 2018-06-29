@@ -2,14 +2,11 @@ import { environment } from '@env/environment';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { testAccount } from '../../shared/helpers/data.mock';
-import { PasswordValidator } from '../../shared/helpers/validator.password';
 import { RegistrationRouteData } from '../models/RegistrationRouteData';
-import { Router } from '@angular/router';  
+import { Router } from '@angular/router';
 import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
 import { SessionStorageService } from 'ngx-webstorage';
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
@@ -19,11 +16,10 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup = this.formBuilder.group({});
-  testAccount = testAccount;
   password: string;
   confirmPassword: string;
   avatar: string;
-  
+
   passwordStrength = {
     strength: '',
     class: '',
@@ -35,8 +31,7 @@ export class RegisterComponent implements OnInit {
     public router: Router,
     private routeDataService: RouteDataService<RegistrationRouteData>,
     public passCheckService: PasswordCheckerService,
-    public sessionStorage: SessionStorageService,
-    public authServ: AuthenticationService,
+    public sessionStorage: SessionStorageService
   ) { }
 
   // TODO: export somewhere to lib to avoid double code
@@ -45,6 +40,8 @@ export class RegisterComponent implements OnInit {
     Cookie.set('aerum_keyStore', null, 7, "/", environment.cookiesDomain);
     Cookie.set('tokens', null, 7, "/", environment.cookiesDomain);
     Cookie.set('transactions', null, 7, "/", environment.cookiesDomain);
+    Cookie.set('ethereum_accounts', null, 7, "/", environment.cookiesDomain);
+    Cookie.set('cross_chain_swaps', null, 7, "/", environment.cookiesDomain);
   }
 
   ngOnInit() {
@@ -71,6 +68,7 @@ export class RegisterComponent implements OnInit {
       this.sessionStorage.store('transactions', []);
       this.sessionStorage.store('tokens', []);
       this.sessionStorage.store('ethereum_accounts', []);
+      this.sessionStorage.store('cross_chain_swaps', []);
 
       data.avatar = this.registerForm.value.avatar.avatar;
       data.password = this.registerForm.value.password;

@@ -70,3 +70,26 @@ export interface iBlocks {
     "decimals": string,
     "balance": string
   }
+
+  export interface iSettings {
+    generalSettings: iGeneralSettings,
+    transactionSettings: iTransactionSettings,
+    systemSettings: iSystemSettings
+  }
+
+  export interface iGeneralSettings {
+    language: string;
+    derivationPath: string;
+  }
+
+  export interface iTransactionSettings {
+    gasPrice: string;
+    maxTransactionGas:string;
+    lastTransactionsNumber: string;
+  }
+
+  export interface iSystemSettings {
+    aerumNodeWsURI: string;
+    aerumNodeRpcURI: string;
+    ethereumNodeURI: string;
+  }

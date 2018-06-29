@@ -10,13 +10,17 @@ import { ExternalTransactionComponent } from "@app/external/external-transaction
 import { EthereumWalletComponent } from './ethereum-wallet/ethereum-wallet.component';
 import { SwapCreateComponent } from './swap-create/swap-create.component';
 import { SwapConfirmComponent } from './swap-confirm/swap-confirm.component';
+import { OppositeSwapCreateComponent } from './opposite-swap-create/opposite-swap-create.component';
+import { OppositeSwapConfirmComponent } from './opposite-swap-confirm/opposite-swap-confirm.component';
 
 @NgModule({
   entryComponents: [
     ExternalTransactionComponent,
     EthereumWalletComponent,
     SwapCreateComponent,
-    SwapConfirmComponent
+    SwapConfirmComponent,
+    OppositeSwapCreateComponent,
+    OppositeSwapConfirmComponent
   ],
   imports: [
     FormsModule,
@@ -32,6 +36,8 @@ import { SwapConfirmComponent } from './swap-confirm/swap-confirm.component';
     EthereumWalletComponent,
     SwapCreateComponent,
     SwapConfirmComponent,
+    OppositeSwapCreateComponent,
+    OppositeSwapConfirmComponent,
   ]
 })
 export class ExternalModule {

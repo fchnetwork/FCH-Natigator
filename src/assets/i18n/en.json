@@ -28,9 +28,46 @@
     "DESCRIPTION": "This password will withstand most sophisticated brute-force attacks. Please ensure that you will remember it.",
     "TITLE": "Very Strong"
   },
+  "BUTTONS": {
+    "BACK": "Back",
+    "CONTINUE": "Continue",
+    "CANCEL": "Cancel",
+    "CLOSE": "Close"
+  },
+  "ACCOUNT": {
+    "RESTORE": {
+      "TITLE": "Access Recovery",
+      "SUBTITLE": "Please provide your previously exported Seed Words or",
+      "SUBTITLE_HINT": "create new account",
+      "SELECT_SEED": "Select seed file",
+      "SELECT_BACKUP_FILE": "Select backup file",
+      "SEED_WORD_PLACEHOLDER": "Your seed is 12 words you saved when creating your account",
+      "CREATE_PWD_PLACEHOLDER": "Create new password",
+      "CONFIRM_PWD_PLACEHOLDER": "Confirm new password"
+    },
+    "QR_SCAN": {
+      "TITLE": "Scan QR Code",
+      "SUBTITLE": "Please scan the QR code of your seed. The QR code can be found in the Settings > Backup page of wallet.",
+      "NO_CAMERAS": "No cameras have been detected.",
+      "NO_PERMISSIONS": "You need to grant AERUM a permission to access your camera.",
+      "QR_ERROR": "QR code doesn't contain a valid seed phrase."
+    }
+  },
   "SETTINGS": {
-    "SETTINGS": "Settings",
-    "BACKUP": "Backup"
+    "TITLE": "Settings",
+    "BACKUP": {
+      "TAB_TITLE": "Backup",
+      "NOTIFICATION_TITLE_SAVE_FULL_BACKUP": "Notification",
+      "NOTIFICATION_BODY_SAVE_FULL_BACKUP": "Full Backup file has been succesfully downloaded",
+      "NOTIFICATION_TITLE_SAVE_SIMPLE_BACKUP": "Notification",
+      "NOTIFICATION_BODY_SAVE_SIMPLE_BACKUP": "Seed file has been succesfully downloaded"
+    },
+    "NOTIFICATION_TITLE_SAVE_SETTINGS": "Notification",
+    "NOTIFICATION_BODY_SAVE_SETTINGS": "Changes has been succesfully saved",
+    "LANGUAGE": {
+      "NOTIFICATION_TITLE_CHANGE_LANGUAGE": "Language change",
+      "NOTIFICATION_BODY_CHANGE_LANGUAGE":"Language has been changed to: "
+    }
   },
   "ACCESS_RECOVERY": "Access Recovery",
   "CREATE_BACKUP": "Backup",
@@ -53,7 +90,7 @@
   "AMOUNT": "Amount",
   "SEND_EVERYTHING": "Send everything",
   "AERUM": "Aerum",
-  "AERO": "aero",
+  "AERO": "Aero",
   "SHOW_MORE_OPTIONS": "Show more options",
   "MAX_TRANSACTION_FEE": "Max gas",
   "APP_TRANSACTION_FEE": "Approx. transaction fee",
@@ -81,8 +118,6 @@
   "PASSWORD": "Password",
   "ACCESS_REC_HINT": "Please provide your previously exported Seed Words or",
   "ACCESS_REC_HINT_SUFF": " create new account.",
-  "SEL_KEY": "Select seed file",
-  "SEL_BAC": "Select backup file",
   "KEY_PLACEHOLDER": "Your seed is the 15 words you saved when creating your account",
   "CONTINUE": "Continue",
   "ERR_LOGIN_LOW": "Your password should contain at least one lowercase letter.",
@@ -102,9 +137,9 @@
   "VALUE": "Value",
   "AGE": "Age",
   "BLOCKCHAIN_EXPLORER": "Blockchain Explorer",
-  "INFORMATION": "Information",
+  "INFORMATION": "Blockchain",
   "PENDING_TXNS": "Pending Tx",
-  "AETH": "Aeth",
+  "AETH": "Aero",
   "FEE": "Fee",
   "GAS_USED": "Gas used",
   "GAS_PRICE": "Gas price",
@@ -147,11 +182,14 @@
   "RECEIVE_TO": "Receive",
   "TRANSACTIONS": "Transactions",
   "BASIC_TRANSACTION": "Basic Transaction",
+  "ERROR": "Error",
   "SEND_RECEIVE": {
     "MAIN_MENU_ITEM_NAME": "Send & Receive",
     "MAIN_TITLE":"Send & Receive Crypto",
     "NOTIFICATION_TITLE_TRANSACTION_STATUS": "Transaction Status",
     "NOTIFICATION_BODY_SUCCES_TRANSACTION":"You have successfully sent",
+    "NOTIFICATION_TITLE_ATTENTION": "Attention!",
+    "NOTIFICATION_LOOSING_PRECISION":"You want to send too big amount of tokens! Number will be rounded to 16 digits",
     "TO_ADDRESS":"to address",
     "TRANSACTION":"Transaction",
     "HAS_BEEN":"has been",
@@ -218,15 +256,29 @@
     "SCAN_MORE": "Scan more blocks"
   },
   "SWAP": {
-    "MAIN_MENU_ITEM_NAME":"Swap",
-    "SUB_MENU_CREATE_SWAP_ITEM_NAME":"Create Atomic Swap",
-    "SUB_MENU_LOAD_SWAP_ITEM_NAME":"Load Atomic Swap",
+    "MAIN_MENU_ITEM_NAME":"My Swaps",
     "AERO_TO_TOKEN":"Aero > Token",
     "AERO_TO_AERO":"Aero > Aero",
     "TOKEN_TO_AERO":"Token > Aero",
     "TOKEN_TO_TOKEN":"Token > Token",
+    "LIST": {
+      "ONCHAIN_TITLE":"Subatomic Swaps",
+      "CROSS_CHAIN_TITLE":"Ethereum Swaps",
+      "BTN_CREATE":"New Subatomic Swap",
+      "BTN_DEPOSIT":"New Deposit Swap",
+      "BTN_WITHDRAW":"New Withdraw Swap",
+      "TITLE_SWAP_ID":"Swap ID",
+      "TITLE_COUNTERPARTY":"Counterparty",
+      "TITLE_AMOUNTS":"Amounts",
+      "TITLE_DATE":"Date",
+      "TITLE_STATUS":"Status",
+      "STATUS_PENDING":"Pending",
+      "STATUS_COMPLETED":"Completed",
+      "STATUS_CANCELLED":"Cancelled",
+      "ERROR_LOAD_SWAPS":"Error loading swaps"
+    },
     "CREATE": {
-      "TITLE":"Create Atomic Swap",
+      "TITLE":"Create Subatomic Swap",
       "FIELD_SWAP_ID":"Swap ID",
       "FIELD_YOUR_TOKEN_OR_AERO":"Your Token / Aero",
       "FIELD_COUNTERPARTY":"Counterparty",
@@ -236,7 +288,7 @@
       "PLACEHOLDER_SELECT_TOKEN_OR_AERO": "Select Aero / Token",
       "BTN_GENERATE_SWAP_ID":"Generate",
       "BTN_CREATE":"Create",
-      "BTN_CANCEL":"Cancel"
+      "BTN_CANCEL":"Close"
     },
     "LOAD": {
       "TITLE":"Load Atomic Swap",
@@ -244,10 +296,88 @@
       "BTN_LOAD":"Load",
       "BTN_CONFIRM":"Confirm",
       "BTN_REJECT":"Reject",
-      "BTN_CANCEL":"Cancel",
+      "BTN_CANCEL":"Close",
       "FIELD_COUNTERPARTY":"Counterparty",
       "FIELD_STATUS":"Status",
       "CONFIRM_TITLE":"Confirm / Reject Atomic Swap"
+    }
+  },
+  "EXTERNAL-SWAP": {
+    "WALLET": {
+      "TITLE": "Ethereum Wallet",
+      "FIELD_SELECT_WALLET": "Select Wallet:",
+      "FIELD_STORED_KEYS": "Stored Keys",
+      "FIELD_SELECT_ADDRESS": "Select Address",
+      "FIELD_SELECT_YOUR_ACCOUNT": "Select your account",
+      "BTN_ADD_ACCOUNT": "+ Add Account",
+      "FIELD_BALANCE": "Balance:",
+      "FIELD_MESSAGE": "*Attention: please, make sure you have sufficient amount of ether in your wallet to cover transaction fee (up to 0.002 Eth)",
+      "BTN_NEXT": "Next",
+      "BTN_CANCEL": "Cancel"
+    },
+    "CREATE": {
+      "TITLE": "Create Exchange Swap",
+      "FIELD_RECEIVING_AERUM_TOKEN": "Receiving Aerum token:",
+      "FIELD_SELECT_YOUR_TOKEN": "Select your token",
+      "FIELD_AMOUNT_OF_TOKEN_TO_RECEIVE": "Amount of token to receive:",
+      "FIELD_TYPE_AMOUNT": "Type amount",
+      "FIELD_EXCHANGE_COUNTERPARTY": "Exchange counterparty:",
+      "FIELD_SELECT_YOUR_COUNTERPARTY": "Select your counterparty",
+      "FIELD_SEND_ETHEREUM_ASSET": "Send Ethereum asset",
+      "FIELD_AMOUNT": "Amount",
+      "FIELD_EXCHANGE_RATE": "Exchange rate (Aerum token/Eth asset)",
+      "FIELD_SECRET_KEY": "Secret key",
+      "FIELD_MESSAGE": "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "BTN_NEXT": "Next",
+      "BTN_CLOSE": "Close",
+      "BTN_BACK": "Back"
+    },
+    "CREATE-OPPOSITE": {
+      "TITLE": "Create Exchange Swap",
+      "FIELD_SENDING_AERUM_ASSET_": "Sending Aerum asset:",
+      "FIELD_SELECT_YOUR_TOKEN": "Select your token",
+      "FIELD_AMOUNT_TO_SEND": "Amount to send:",
+      "FIELD_TYPE_AMOUNT": "Type amount",
+      "FIELD_EXCHANGE_COUNTERPARTY": "Exchange counterparty:",
+      "FIELD_SELECT_YOUR_COUNTERPARTY": "Select your counterparty",
+      "FIELD_SENDING_AERUM_ASSET": "Sending Aerum asset",
+      "FIELD_AMOUNT": "Amount to receive",
+      "FIELD_BALANCE": "Balance",
+      "FIELD_EXCHANGE_RATE": "Exchange rate (Aerum asset/Ethereum asset)",
+      "FIELD_SECRET_KEY": "Secret key",
+      "FIELD_MESSAGE": "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "BTN_NEXT": "Next",
+      "BTN_CLOSE": "Close",
+      "BTN_BACK": "Back"
+    },
+    "CONFIRM": {
+      "TITLE_CANCEL_SWAP": "Cancel Swap",
+      "TITLE_COMPLETE_SWAP": "Complete Swap",
+      "TITLE_WAITING_COUNTERPARTY": "Waiting Counterparty",
+      "FIELD_SWAP_CLOSED_SUCCESSFULLY": "Swap closed successfully",
+      "FIELD_SWAP_CANCELLED_SUCCESSFULLY": "Swap cancelled successfully",
+      "FIELD_YOUR_SWAP_WILL_EXPIRE_IN": "Your swap will expire in:",
+      "FIELD_YOUR_SWAP_WAS_ACCEPTED_BY": "Your swap was accepted by",
+      "FIELD_YOU_WILL_SEND": "You will send",
+      "FIELD_YOU_WILL_RECEIVE": "You will receive",
+      "FIELD_ENTER_SECRET_KEY": "Enter secret key:",
+      "FIELD_TYPE_SECRET_KEY": "Type secret key",
+      "FIELD_MESSAGE": "Attention! You need to complete the swap before it expires. If swap expires before completion, you can cancel it and withdraw the funds.",
+      "BTN_COMPLETE_SWAP": "Complete swap",
+      "BTN_CANCEL_SWAP": "Cancel swap",
+      "BTN_CLOSE": "Close",
+      "BTN_CANCEL": "Back"
+    },
+    "TRANSACTION": {
+      "TITLE": "Confirm payment",
+      "FIELD_PAYMENT_TO": "Payment to",
+      "FIELD_PAYMENT_IN": "Payment in",
+      "FIELD_AMOUNT_AVAILABLE": "Amount available",
+      "BTN_DEPOSIT_MORE": "Deposit more",
+      "FIELD_I_ACKNOWLEDGE_RISKS": "I acknowledge risks.",
+      "BTN_PROCEED": "Proceed",
+      "BTN_CLOSE": "Close",
+      "BTN_CANCEL": "Cancel"
     }
   },
   "ENS": {
@@ -327,5 +457,11 @@
     "NOT_ENOUGH_FUNDS":"Get more Aero to buy name",
     "CONFIRM_RELEASE_NAME_TITLE":"Release Name",
     "CONFIRM_TRANSFER_NAME_TITLE":"Transfer Name Ownership"
+  },
+  "EXTERNAL_TRANSACTION": {
+    "NOTIFICATION_BODY_TOKEN_NOT_IN_WALLET":"Token is not yet added to the wallet",
+    "NOTIFICATION_TITLE_TOKEN_NOT_IN_WALLET":"Notification",
+    "NOTIFICATION_BODY_TOKEN_NOT_CONFIGURED":"Please configure the token first",
+    "NOTIFICATION_TITLE_TOKEN_NOT_CONFIGURED":"Warning!"
   }
 }

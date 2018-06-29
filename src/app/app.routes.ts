@@ -1,5 +1,5 @@
 import { RouterModule, PreloadAllModules } from "@angular/router";
-import { NgModule } from "@angular/core";   
+import { NgModule } from "@angular/core";
 import { CanActivateViaAuthGuard } from "@app/core/authentication/auth-guards/can-activate-auth.guard";
 
 const ROUTES = [
@@ -23,14 +23,16 @@ const ROUTES = [
     canActivate: [CanActivateViaAuthGuard],
     loadChildren: 'app/external/external.module#ExternalModule'
   },
-  { 
+  {
     path: '**',
     redirectTo: '/not-found'
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(ROUTES)], 
+  imports: [RouterModule.forRoot(ROUTES
+    , {onSameUrlNavigation: 'reload', enableTracing: false}
+  )],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

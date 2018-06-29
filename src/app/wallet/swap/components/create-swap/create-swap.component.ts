@@ -3,22 +3,38 @@ import { Guid } from "@shared/helpers/guid";
 import { NotificationService } from "@aerum/ui";
 
 import { environment } from '@env/environment';
+
+import { toBigNumberString } from "@shared/helpers/number-utils";
 import { SwapToken, SwapMode } from '@swap/models/models';
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { ModalService } from '@core/general/modal-service/modal.service';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { AerumNameService } from '@core/aens/aerum-name-service/aerum-name.service';
 import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { AeroToErc20SwapService } from '@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
-import { ModalService } from '@core/general/modal-service/modal.service';
+import { ModalComponent, DialogRef } from 'ngx-modialog';
+import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
+
+export class CreateSwapModalContext {
+  swapId: string;
+  token: SwapToken
+  tokenAmount: number;
+  counterpartyAddress: string;
+  counterpartyToken: SwapToken;
+  counterpartyTokenAmount: number;
+  rate: number;
+  mode: SwapMode;
+  currentAddress: string;
+}
 
 @Component({
   selector: 'create-swap',
   templateUrl: './create-swap.component.html',
   styleUrls: ['./create-swap.component.scss']
 })
-export class CreateSwapComponent implements OnInit {
+export class CreateSwapComponent implements ModalComponent<DefaultModalContext>, OnInit {
 
   currentAddress: string;
 
@@ -35,9 +51,9 @@ export class CreateSwapComponent implements OnInit {
   processing = false;
 
   constructor(
+    public dialog: DialogRef<DefaultModalContext>,
     private logger: LoggerService,
     private authService: AuthenticationService,
-    private modalService: ModalService,
     private notificationService: NotificationService,
     private erc20TokenService: ERC20TokenService,
     private aeroToErc20SwapService: AeroToErc20SwapService,
@@ -72,7 +88,7 @@ export class CreateSwapComponent implements OnInit {
 
   recalculateTokenRate() {
     const counterpartyTokenAmount = Number(this.counterpartyTokenAmount);
-    if(!counterpartyTokenAmount || counterpartyTokenAmount <= 0) {
+    if (!counterpartyTokenAmount || counterpartyTokenAmount <= 0) {
       return;
     }
     this.rate = Number(this.tokenAmount) / counterpartyTokenAmount;
@@ -80,7 +96,7 @@ export class CreateSwapComponent implements OnInit {
 
   recalculateCounterpartyTokenAmount() {
     const rate = Number(this.rate);
-    if(!rate || rate <= 0) {
+    if (!rate || rate <= 0) {
       return;
     }
     this.counterpartyTokenAmount = Number(this.tokenAmount) / rate;
@@ -91,7 +107,7 @@ export class CreateSwapComponent implements OnInit {
     this.token = token;
     this.updateSwapMode();
     this.updateTitle();
-    if(oldMode !== this.mode) {
+    if (oldMode !== this.mode) {
       this.generateSwapId();
     }
   }
@@ -101,7 +117,7 @@ export class CreateSwapComponent implements OnInit {
     this.counterpartyToken = token;
     this.updateSwapMode();
     this.updateTitle();
-    if(oldMode !== this.mode) {
+    if (oldMode !== this.mode) {
       this.generateSwapId();
     }
   }
@@ -111,20 +127,20 @@ export class CreateSwapComponent implements OnInit {
     const counterpartyTokenAmountParsed = Number(this.counterpartyTokenAmount);
     const rateParsed = Number(this.rate);
 
-    if((!tokenAmountParsed || tokenAmountParsed <= 0) ||
-       (!counterpartyTokenAmountParsed || counterpartyTokenAmountParsed <= 0) ||
-       (!rateParsed || rateParsed <= 0)) {
+    if ((!tokenAmountParsed || tokenAmountParsed <= 0) ||
+      (!counterpartyTokenAmountParsed || counterpartyTokenAmountParsed <= 0) ||
+      (!rateParsed || rateParsed <= 0)) {
       this.notificationService.notify('Error', 'Swap amount or rate not valid', "aerum", 3000);
       return;
     }
 
-    if(this.mode === 'aero_to_aero') {
+    if (this.mode === 'aero_to_aero') {
       this.notificationService.notify('Error', 'Aero > Aero swaps are not supported', "aerum", 3000);
       return;
     }
 
     // TODO: Replace with better validation
-    if(!this.counterpartyToken) {
+    if (!this.counterpartyToken) {
       this.notificationService.notify('Error', 'Please select counterparty token', "aerum", 3000);
       return;
     }
@@ -143,89 +159,26 @@ export class CreateSwapComponent implements OnInit {
   private async confirmAndCreateSwap() {
     this.counterpartyAddress = this.counterpartyAddress.replace(/\s+/g, '');
     this.counterpartyAddress = await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress);
-    const modalResult = await this.modalService.openSwapCreateConfirm({
+    this.dialog.close({
       swapId: this.swapId,
       token: this.token,
       tokenAmount: this.tokenAmount,
       counterpartyAddress: this.counterpartyAddress,
       counterpartyToken: this.counterpartyToken,
       counterpartyTokenAmount: this.counterpartyTokenAmount,
-      rate: this.rate
+      rate: this.rate,
+      mode: this.mode,
+      currentAddress: this.currentAddress
     });
-
-    if(!modalResult.confirmed) {
-      this.logger.logMessage('Swap creation canceled');
-      return;
-    }
-
-    this.notificationService.notify('Swap creation in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
-    await this.createSwapBasedOnMode();
-    this.notificationService.notify('Swap created', `Swap ID: ${this.swapId}`, "aerum");
-  }
-
-  private async createSwapBasedOnMode() {
-    if(this.mode === 'aero_to_erc20') {
-      await this.createAeroToErc20Swap();
-    } else if (this.mode === 'erc20_to_aero') {
-      await this.createErc20ToAeroSwap();
-    } else if (this.mode === 'erc20_to_erc20') {
-      await this.createErc20ToErc20Swap();
-    } else {
-      throw new Error(`Unknown swap mode: ${this.mode}`);
-    }
-  }
-
-  private async createAeroToErc20Swap() {
-    const counterpartyTokenAmount = this.getCounterpartyTokenAmountInclusingDecimals();
-    await this.aeroToErc20SwapService.openSwap(
-      this.swapId,
-      this.tokenAmount.toString(10),
-      counterpartyTokenAmount.toString(10),
-      await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress),
-      this.counterpartyToken.address
-    );
-  }
-
-  private async createErc20ToAeroSwap() {
-    const tokenAmount = this.getTokenAmountInclusingDecimals();
-    await this.ensureAllowance(this.token.address, environment.contracts.swap.address.Erc20ToAero, tokenAmount);
-    await this.erc20ToAeroSwapService.openSwap(
-      this.swapId,
-      tokenAmount.toString(10),
-      this.token.address,
-      this.counterpartyTokenAmount.toString(10),
-      await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress),
-    );
-  }
-
-  private async createErc20ToErc20Swap() {
-    const tokenAmount = this.getTokenAmountInclusingDecimals();
-    const counterpartyTokenAmount = this.getCounterpartyTokenAmountInclusingDecimals();
-    await this.ensureAllowance(this.token.address, environment.contracts.swap.address.Erc20ToErc20, tokenAmount);
-    await this.erc20ToErc20SwapService.openSwap(
-      this.swapId,
-      tokenAmount.toString(10),
-      this.token.address,
-      counterpartyTokenAmount.toString(10),
-      await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress),
-      this.counterpartyToken.address
-    );
-  }
-
-  private getTokenAmountInclusingDecimals() {
-    return Number(this.tokenAmount) * Math.pow(10, Number(this.token.decimals));
-  }
-
-  private getCounterpartyTokenAmountInclusingDecimals() {
-    return Number(this.counterpartyTokenAmount) * Math.pow(10, Number(this.counterpartyToken.decimals));
-  }
-
-  private async ensureAllowance(tokenContractAddress: string, spender: string, amount: number) {
-    const allowance = await this.erc20TokenService.allowance(tokenContractAddress, this.currentAddress, spender);
-    if (Number(allowance) < amount) {
-      this.logger.logMessage(`Allowance value: ${allowance}. Needed: ${amount}`);
-      await this.erc20TokenService.approve(tokenContractAddress, spender, amount.toString(10));
-    }
+    // const modalResult = await this.modalService.openSwapCreateConfirm({
+    //   swapId: this.swapId,
+    //   token: this.token,
+    //   tokenAmount: this.tokenAmount,
+    //   counterpartyAddress: this.counterpartyAddress,
+    //   counterpartyToken: this.counterpartyToken,
+    //   counterpartyTokenAmount: this.counterpartyTokenAmount,
+    //   rate: this.rate
+    // });
   }
 
   private updateSwapMode() {
@@ -233,15 +186,15 @@ export class CreateSwapComponent implements OnInit {
   }
 
   private recalculateSwapMode(): SwapMode {
-    if(this.isAeroInOpenSelected()) {
-      if(this.isAeroInCounterpartySelected()) {
+    if (this.isAeroInOpenSelected()) {
+      if (this.isAeroInCounterpartySelected()) {
         // NOTE: not supported swap mode aero to aero
         return 'aero_to_aero';
       } else {
         return 'aero_to_erc20';
       }
     } else {
-      if(this.isAeroInCounterpartySelected()) {
+      if (this.isAeroInCounterpartySelected()) {
         return 'erc20_to_aero';
       } else {
         return 'erc20_to_erc20';
@@ -262,7 +215,7 @@ export class CreateSwapComponent implements OnInit {
   }
 
   private updateTitle() {
-    switch(this.mode) {
+    switch (this.mode) {
       case 'aero_to_erc20': {
         this.title = 'SWAP.AERO_TO_TOKEN';
         break;
@@ -279,12 +232,12 @@ export class CreateSwapComponent implements OnInit {
         this.title = 'SWAP.AERO_TO_AERO';
         break;
       }
-      default: {}
+      default: { }
     }
   }
 
   private getSwapIdPrefix() {
-    switch(this.mode) {
+    switch (this.mode) {
       case 'aero_to_erc20': return 'a2e';
       case 'erc20_to_aero': return 'e2a';
       case 'erc20_to_erc20': return 'e2e';
@@ -299,5 +252,9 @@ export class CreateSwapComponent implements OnInit {
 
   private stopLoading() {
     this.processing = false;
+  }
+
+  private close() {
+    this.dialog.dismiss();
   }
 }

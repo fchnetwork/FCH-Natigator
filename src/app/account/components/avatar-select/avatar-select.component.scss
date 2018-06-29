@@ -7,7 +7,7 @@
   .c-avatar__item {
     border-radius: 100%;
     cursor: pointer;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: transform 300ms ease-in-out, border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;       
@@ -15,10 +15,15 @@
     box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.75);
     width: 42px;
     height: 42px;
+    transform: scale(1.0);
         
     &.activeAvtr {
       cursor: default;
+      transform: scale(1.1);
+      transition: transform 300ms ease-in-out;
       box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.75), 0 0 6px rgba(0, 93, 255, 0.8);         
     }
   }
 }
+
+

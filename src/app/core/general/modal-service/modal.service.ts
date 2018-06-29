@@ -109,6 +109,10 @@ export class ModalService {
     });
   }
 
+  openSwapCreate(data?: any): Promise<any> {
+    return this.openModal(CreateSwapComponent, {isBlocking: false, dialogClass: 'adaptive-dialog', param: data});
+  }
+
   openSwapCreateConfirm(data?: any): Promise<any> {
     return this.openModal(CreateSwapConfirmComponent, {
       isBlocking: false,

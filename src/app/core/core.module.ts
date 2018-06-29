@@ -13,7 +13,7 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 import { CanActivateAccountAuthGuard } from '@app/core/authentication/auth-guards/can-activate-account.guard';
 import { CanActivateViaAuthGuard } from '@app/core/authentication/auth-guards/can-activate-auth.guard';
 import { ContractExecutorService } from '@app/core/contract/contract-executor-service/contract-executor.service';
-import { SelfSignedEthereumContractExecutorService } from "@core/ethereum/self-signed-ethereum-contract-executor-service/self-signed-ethereum-contract-executor.service";
+import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contract-executor-service/ethereum-contract-executor.service";
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
@@ -29,14 +29,23 @@ import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { ValidateService } from '@app/core/validation/validate.service';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { ConnectionCheckerService } from '@core/general/connection-checker-service/connection-checker.service';
-import { EtherSwapService } from "@core/swap/cross-chain/ether-swap-service/ether-swap.service";
-import { AerumErc20SwapService } from "@core/swap/cross-chain/aerum-erc20-swap-service/aerum-erc20-swap.service";
-import { AeroSwapService } from "@core/swap/cross-chain/aero-swap-service/aero-swap.service";
+import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
+import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
+import { CounterAerumErc20SwapService } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-aerum-erc20-swap.service";
+import { CounterEtherSwapService } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
+import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { SettingsBackupService } from '@app/core/settings/settingsBackup.service';
+import { SettingsService } from '@app/core/settings/settings.service';
+import { TranslateService } from '@ngx-translate/core';
+import { StorageService } from "@core/general/storage-service/storage.service";
+import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
+import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
+import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
+import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
 
 @NgModule({
   imports: [
@@ -44,7 +53,7 @@ import { SettingsBackupService } from '@app/core/settings/settingsBackup.service
   ],
   providers: [
     ContractExecutorService,
-    SelfSignedEthereumContractExecutorService,
+    EthereumContractExecutorService,
     InjectedWeb3ContractExecutorService,
     AccountIdleService,
     ClipboardService,
@@ -68,12 +77,18 @@ import { SettingsBackupService } from '@app/core/settings/settingsBackup.service
     PasswordCheckerService,
     LoggerService,
     ValidateService,
-    EtherSwapService,
-    AeroSwapService,
-    AerumErc20SwapService,
+    OpenEtherSwapService,
+    OpenAerumErc20SwapService,
+    CounterAerumErc20SwapService,
+    CounterEtherSwapService,
     SwapTemplateService,
     SwapLocalStorageService,
     SettingsBackupService,
+    SettingsService,
+    OnChainSwapListService,
+    CrossChainSwapListService,
+    CreateSwapService,
+    LoadSwapService
   ]
 })
 export class CoreModule {
@@ -86,7 +101,10 @@ export class CoreModule {
         InternalNotificationService,
         NotificationMessagesService,
         AuthenticationService,
-        EthereumAuthenticationService
+        EthereumAuthenticationService,
+        EthereumTokenService,
+        TranslateService,
+        StorageService
       ]
     };
   }

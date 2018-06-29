@@ -3,18 +3,23 @@ const artifacts = require('@core/abi/SwapTemplateRegistry.json');
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
+import { toSolidityDecimalString } from "@shared/helpers/number-utils";
+import { filterAsync } from "@shared/helpers/array-utils";
+import { unique } from "@shared/helpers/array-utils";
 import { Chain } from "./chain.enum";
 import { SwapTemplate } from "./swap-template.model";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
+import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
 
 @Injectable()
 export class SwapTemplateService extends BaseContractService {
 
   constructor(
     authenticationService: AuthenticationService,
-    contractExecutorService: ContractExecutorService) {
+    contractExecutorService: ContractExecutorService,
+    private nameService: AerumNameService) {
     super(artifacts.abi, environment.contracts.swap.crossChain.address.aerum.TemplatesRegistry, authenticationService, contractExecutorService);
   }
 
@@ -25,8 +30,7 @@ export class SwapTemplateService extends BaseContractService {
       onchainAccount.toLowerCase(),
       offchainAsset.toLowerCase(),
       offchainAccount.toLowerCase(),
-      // TODO: Move to utils
-      Math.ceil(rate * Math.pow(10, 18)).toString(10),
+      toSolidityDecimalString(rate),
       chain
     );
     const receipt = await this.contractExecutorService.send(register);
@@ -43,7 +47,7 @@ export class SwapTemplateService extends BaseContractService {
     const templateById = this.contract.methods.templateById(this.web3.utils.fromAscii(id));
     const response = await this.contractExecutorService.call(templateById);
     const template = new SwapTemplate();
-    template.id = this.web3.utils.toAscii(response[0]);
+    template.id = response[0];
     template.owner = response[1].toLowerCase();
     template.onchainAsset = response[2].toLowerCase();
     template.onchainAccount = response[3].toLowerCase();
@@ -55,15 +59,21 @@ export class SwapTemplateService extends BaseContractService {
   }
 
   async getTemplatesIds(chain: Chain) : Promise<string[]> {
-    const templatesIds = this.contract.methods.templatesIds(chain);
-    const response = await this.contractExecutorService.call(templatesIds);
-    return response;
+    const templatesIdsMethod = this.contract.methods.templatesIds(chain);
+    const templateIds: string[] = await this.contractExecutorService.call(templatesIdsMethod);
+    // NOTE: We get unique template ids due to next bug in contract:
+    // If you delete template & add with the same id two will be returned back
+    const uniqueTemplateIds = unique(templateIds);
+    return uniqueTemplateIds;
   }
 
   async getTemplatesIdsByAsset(asset: string, chain: Chain) : Promise<string[]> {
     const templatesIdsByAsset = this.contract.methods.templatesIdsByAsset(asset.toLowerCase(), chain);
-    const response = await this.contractExecutorService.call(templatesIdsByAsset);
-    return response;
+    const templateIds: string[] = await this.contractExecutorService.call(templatesIdsByAsset);
+    // NOTE: We get unique template ids due to next bug in contract:
+    // If you delete template & add with the same id two will be returned back
+    const uniqueTemplateIds = unique(templateIds);
+    return uniqueTemplateIds;
   }
 
   async getTemplates(chain: Chain) : Promise<SwapTemplate[]> {
@@ -74,9 +84,24 @@ export class SwapTemplateService extends BaseContractService {
   }
 
   async getTemplatesByAsset(asset: string, chain: Chain) : Promise<SwapTemplate[]> {
-    const templatesIds = await this.getTemplatesIdsByAsset(asset.toLowerCase(), chain);
-    const promises = templatesIds.map((id) => this.getTemplateById(this.web3.utils.toAscii(id)));
-    const templates = await Promise.all(promises);
-    return templates;
+    const templates = await this.getTemplates(chain);
+    const swapTemplates =  (
+      await filterAsync(templates, async t => {
+        const result = await this.nameService.safeResolveNameOrAddress(t.onchainAsset);
+        return result === asset.toLowerCase();
+      })
+    ).map(r => r as SwapTemplate);
+    return swapTemplates;
+  }
+
+  async getTemplatesByOffchainAsset(asset: string, chain: Chain) : Promise<SwapTemplate[]> {
+    const templates = await this.getTemplates(chain);
+    const swapTemplates =  (
+      await filterAsync(templates, async t => {
+        const result = await this.nameService.safeResolveNameOrAddress(t.offchainAsset);
+        return result === asset.toLowerCase();
+      })
+    ).map(r => r as SwapTemplate);
+    return swapTemplates;
   }
 }

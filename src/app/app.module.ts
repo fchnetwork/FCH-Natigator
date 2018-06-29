@@ -10,11 +10,24 @@ import { AccountModule } from "./account/account.module";
 import { SharedModule } from "./shared/shared.module";
 import { AppUIModule } from "./app.ui.module"; 
 import { CoreModule } from "@app/core/core.module";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
+}
 
 @NgModule({
   imports: [
     CommonModule,
     CoreModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
     BrowserAnimationsModule,
     Ng2Webstorage,
     HttpClientModule,

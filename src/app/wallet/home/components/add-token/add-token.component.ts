@@ -44,7 +44,7 @@ export class AddTokenComponent implements ModalViewComponent<any, any>, OnInit {
   }
 
   validateTokens() {
-    const tokens = this.sessionStorage.retrieve('tokens');
+    const tokens = this.sessionStorage.retrieve('tokens') || [];
     if(tokens.length) {
       // TODO: handle errors in any styled component
       for(let i = 0; i < tokens.length; i++) {

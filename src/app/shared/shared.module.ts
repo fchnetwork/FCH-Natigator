@@ -9,7 +9,6 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
 import { EqualValidator } from './directives/equal-validator.directive';
 import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
 import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
@@ -26,7 +25,6 @@ import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 import { BigNumbersPipe } from '@shared/pipes/big-numbers.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
 import { DecimalPipe } from '@angular/common';
-
 import { AppUIModule } from '@app/app.ui.module';
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
 import { ChartComponent } from '@app/shared/components/chart/chart.component';
@@ -41,6 +39,8 @@ import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
 }
+
+import { FormsModule } from '@angular/forms';
 
 const modalWindows = [
   TransactionModalComponent,
@@ -57,14 +57,9 @@ const modalWindows = [
     ModalModule.forRoot(),
     AppUIModule,
     BootstrapModalModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
+    FormsModule,
     NgxEchartsModule,
+    TranslateModule
   ],
   declarations: [
     I18nComponent,
@@ -122,17 +117,4 @@ const modalWindows = [
 })
 
 export class SharedModule {
-  /**
-   * Creates an instance of SharedModule.
-   * @param  {TranslateService} translate
-   * @memberof SharedModule
-   */
-  constructor(private translate: TranslateService) {
-    this.translate.setDefaultLang('en');
-    if (this.translate.getBrowserLang() !== undefined) {
-      this.translate.use(this.translate.getBrowserLang());
-    } else {
-      this.translate.use('en'); // Set your language here
-    }
-  }
 }

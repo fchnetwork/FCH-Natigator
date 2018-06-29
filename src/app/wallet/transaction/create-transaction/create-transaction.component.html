@@ -22,35 +22,21 @@
             <div aerRow>
               <div aerColumn size="sm-6">
                 <aer-input [ngClass]="{'has-error':!txnForm.controls['amount'].valid && txnForm.controls['amount'].touched}" formControlName="amount" [(ngModel)]="amount" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
-                <!-- <input id="sendEverything" type="checkbox" [ngModelOptions]="{standalone: true}" [ngModel]="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()"><label for="sendEverything"> {{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{selectedToken.symbol}})</label> -->
-                <aer-checkbox ([ngModel])="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()">{{'SEND_EVERYTHING'|translate}} ({{walletBalance}} {{selectedToken.symbol}})</aer-checkbox>
+                <aer-checkbox ([ngModel])="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()">{{'SEND_EVERYTHING'|translate}} ({{walletBalance | bignumber:'0.0-4'}} {{selectedToken.symbol}})</aer-checkbox>
               </div>
               <div aerColumn size="sm-6" class="tokensSelect">
                     <aer-select formControlName="selectedToken" [(ngModel)]="selectedToken" (ngModelChange)="handleSelectChange()" dataKey="symbol" icon="aerum" placeholder="Select your token">
-                        <aer-select-option [value]="{symbol: 'AERO'}">AERO</aer-select-option>
+                        <aer-select-option [value]="{symbol: 'Aero'}">{{ 'AERO' | translate}}</aer-select-option>
                         <aer-select-option *ngFor="let item of tokens;" [value]="item">{{item.symbol}}</aer-select-option>
                     </aer-select>
                     <div class="account-status-line">
                         <aer-icon>aerum</aer-icon>
-                        <div class="float-left">{{walletBalance}} {{selectedToken.symbol}}</div>
+                        <div class="float-left">{{walletBalance | bignumber:'0.0-4'}} {{selectedToken.symbol}}</div>
                     </div>
               </div>
           </div>
-
-          <!-- <span *ngIf="txnForm.controls['senderAddress'].hasError('required') && txnForm.controls['senderAddress'].touched" class="login-error">You must include a sender address.</span>
-          <span *ngIf="txnForm.controls['senderAddress'].hasError('minlength') && txnForm.controls['senderAddress'].touched" class="login-error">Your sender address must be at least 42 characters in length and be prefixed with '0x'.</span>
-          <span *ngIf="txnForm.controls['senderAddress'].hasError('maxlength') && txnForm.controls['senderAddress'].touched" class="login-error">Your sender address cannot exceed 42 characters in length and be prefixed with '0x'.</span>
-          <span *ngIf="txnForm.controls['senderAddress'].hasError('pattern') && txnForm.controls['senderAddress'].touched" class="login-error">sender address needs to be a hex string</span>
-
-          <span *ngIf="txnForm.controls['receiverAddress'].hasError('required') && txnForm.controls['receiverAddress'].touched" class="login-error">You must include a receiverAddress.</span>
-          <span *ngIf="txnForm.controls['receiverAddress'].hasError('minlength') && txnForm.controls['receiverAddress'].touched" class="login-error">Your receiver address must be at least 42 characters in length and be prefixed with '0x'.</span>
-          <span *ngIf="txnForm.controls['receiverAddress'].hasError('maxlength') && txnForm.controls['receiverAddress'].touched" class="login-error">Your receiver address cannot exceed 42 characters in length and be prefixed with '0x'.</span>
-          <span *ngIf="txnForm.controls['receiverAddress'].hasError('pattern') && txnForm.controls['senderAddress'].touched" class="login-error">receiver address needs to be a hex string</span>
-
-          <span *ngIf="txnForm.controls['amount'].hasError('required') && txnForm.controls['amount'].touched" class="login-error">You must specify an amount for the transaction</span>
-          <span *ngIf="txnForm.controls['amount'].hasError('pattern')" class="login-error">must be an integer or decimal.</span> -->
         </form>
-        <div class="show-more-button" *ngIf="selectedToken.symbol === 'AERO'">
+        <div class="show-more-button" *ngIf="selectedToken.symbol === 'Aero'">
               <div aerRow>
                   <div aerColumn size="sm-12">
                     <aer-button *ngIf="!showedMore" class="medium blue" (buttonFn)="showMore()">{{'SHOW_MORE_OPTIONS'|translate}}</aer-button>
@@ -71,12 +57,12 @@
           <div aerRow>
             <div aerColumn size="sm-12">
               <div class="input-name">{{'TOTAL'|translate}}</div>
-              <div *ngIf="selectedToken.symbol !== 'AERO'" class="amount-total">
+              <div *ngIf="selectedToken.symbol !== 'Aero'" class="amount-total">
                   {{amount}} {{selectedToken.symbol}}
               </div>
-              <div *ngIf="selectedToken.symbol !== 'AERO'" class="input-name">Gas cost</div>
+              <div *ngIf="selectedToken.symbol !== 'Aero'" class="input-name">Gas cost</div>
               <div class="amount-total">
-                {{totalAmount}} AERO
+                {{totalAmount}} {{ 'AERO' | translate}}
               </div>
               <div class="note">
                   {{'DATA_INCLUDED'|translate}}: {{includedDataLength}} {{'BYTES'|translate}}
