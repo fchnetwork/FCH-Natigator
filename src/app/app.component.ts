@@ -5,6 +5,7 @@ import { LoggerService } from "@app/core/general/logger-service/logger.service";
 import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
 import { ConnectionCheckerService } from "@core/general/connection-checker-service/connection-checker.service";
 import { TranslateService } from "@ngx-translate/core";
+import { SettingsService } from '@core/settings/settings.service';
 
 @Component({
   selector: "app-root",
@@ -19,18 +20,14 @@ export class AppComponent implements OnInit {
     private router: Router,
     private logger: LoggerService,
     public connectionCheckerService: ConnectionCheckerService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public settingsService: SettingsService
   ) {
     // Initialize the logger service
     logger.setLogLevel(environment.loglevel);
 
     // Configure the translation service.
-    this.translate.setDefaultLang("en");
-    if (this.translate.getBrowserLang() !== undefined) {
-      this.translate.use(this.translate.getBrowserLang());
-    } else {
-      this.translate.use("en"); // Set your language here
-    }
+    this.translate.use(this.settingsService.settings.generalSettings.language);
 
     router.routeReuseStrategy.shouldReuseRoute = () => {
       return false;

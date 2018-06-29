@@ -1,9 +1,9 @@
-<h3>Backup</h3>
+<h3>{{'SETTINGS.BACKUP.TAB_TITLE'|translate}}</h3>
 <app-divider [fullWidth]="true"></app-divider>
-<aer-button class="blue" (buttonFn)="simpleBackup()">Save seed</aer-button>
-<aer-button class="blue" (buttonFn)="fullBackup()">Full backup</aer-button>
+<aer-button class="blue" (buttonFn)="simpleBackup()">{{'SETTINGS.BACKUP.SAVE_SEED_BUTTON'|translate}}</aer-button>
+<aer-button class="blue" (buttonFn)="fullBackup()">{{'SETTINGS.BACKUP.FULL_BACKUP_BUTTON'|translate}}</aer-button>
 <app-divider [showLine]="false"></app-divider>
-<h3>QR Restore</h3>
+<h3>{{'SETTINGS.BACKUP.QR_RESTORE_TITLE'|translate}}</h3>
 <app-divider [fullWidth]="true"></app-divider>
-<p class="aer-small">You can scan following QR code during account restore process on another device (like mobile).</p>
+<p class="aer-small">{{'SETTINGS.BACKUP.QR_RESTORE_DESCRIPTION'|translate}}</p>
 <img [src]="mnemonicQr" alt="">

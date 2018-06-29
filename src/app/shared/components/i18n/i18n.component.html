@@ -1,5 +1,5 @@
 <p>
-    Language
+    {{'SETTINGS.GENERAL.LANGUAGE_LABEL'|translate}}
 </p>
 <aer-select [(ngModel)]="activeLanguage" (ngModelChange)="langChanged($event)" dataKey="lang" img="img" placeholder="Select language">
     <aer-select-option *ngFor="let item of languages;" [value]="item" selected>

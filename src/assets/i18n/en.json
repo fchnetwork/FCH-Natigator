@@ -66,22 +66,71 @@
       "TITLE": ""
     }
   },
+
   "SETTINGS": {
     "TITLE": "Settings",
     "BACKUP": {
       "TAB_TITLE": "Backup",
-      "NOTIFICATION_TITLE_SAVE_FULL_BACKUP": "Notification",
-      "NOTIFICATION_BODY_SAVE_FULL_BACKUP": "Full Backup file has been succesfully downloaded",
-      "NOTIFICATION_TITLE_SAVE_SIMPLE_BACKUP": "Notification",
-      "NOTIFICATION_BODY_SAVE_SIMPLE_BACKUP": "Seed file has been succesfully downloaded"
+      "SAVE_SEED_BUTTON": "Save seed",
+      "FULL_BACKUP_BUTTON": "Full backup",
+      "QR_RESTORE_TITLE": "QR Restore",
+      "QR_RESTORE_DESCRIPTION": "You can scan following QR code during account restore process on another device (like mobile).",
+      "NOTIFICATIONS": {
+        "SAVE_FULL_BACKUP": {
+          "TITLE": "Notification",
+          "BODY": "Full Backup file has been succesfully downloaded"
+        },
+        "SAVE_SIMPLE_BACKUP": {
+          "TITLE": "Notification",
+          "BODY": "Seed file has been succesfully downloaded"
+        }
+      }
     },
-    "NOTIFICATION_TITLE_SAVE_SETTINGS": "Notification",
-    "NOTIFICATION_BODY_SAVE_SETTINGS": "Changes has been succesfully saved",
-    "LANGUAGE": {
-      "NOTIFICATION_TITLE_CHANGE_LANGUAGE": "Language change",
-      "NOTIFICATION_BODY_CHANGE_LANGUAGE":"Language has been changed to: "
+    "TRANSACTIONS":{
+      "TAB_TITLE": "Transactions",
+      "DEFAULT_GAS_PRICE_LABEL":"Default gas price",
+      "MAX_GAS_PRICE_LABEL": "Maximum gas price",
+      "LAST_TRANSACTIONS_LABEL": "Number of last transactions to show"
+    },
+    "GENERAL": {
+      "TAB_TITLE": "General",
+      "DERIVATION_PATH_LABEL": "Switch your Derivation Path",
+      "LANGUAGE_LABEL": "Language",
+      "NOTIFICATIONS": {
+        "CHANGE_LANGUAGE": {
+          "TITLE": "Language has been changed",
+          "BODY": "Language of Aerum has been changed to "
+        },
+        "CHANGE_DERIVATION": {
+          "TITLE": "Your derivation path has been modified",
+          "BODY": "Derivation path is now "
+        }
+      }
+    },
+    "SYSTEM": {
+      "TAB_TITLE": "System",
+      "AERUM_WEBSOCKET_URL": "Aerum Node Websocket URL",
+      "AERUM_RPC_URL": "Aerum Node RPC URL",
+      "ETHEREUM_NODE_URL": "Ethereum Node URL"
+    },
+    "COMMON": {
+      "NOTIFICATIONS": {
+        "SAVE_SETTINGS": {
+          "TITLE": "Notification",
+          "BODY": "Changes has been succesfully saved"
+        }
+      }
     }
   },
+
+  "COMMON" : {
+      "BUTTONS": {
+        "CANCEL": "Cancel",
+        "CLOSE": "Close",
+        "SAVE": "Save"
+    }
+  },
+
   "ACCESS_RECOVERY": "Access Recovery",
   "CREATE_BACKUP": "Backup",
   "BACKUP_PHRASE": "You must save the mneumonic seed. It is the only one way to recover access",
