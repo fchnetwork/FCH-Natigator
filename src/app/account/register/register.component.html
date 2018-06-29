@@ -1,22 +1,39 @@
 <aer-modal-container>
     <div class="account register">
-        <div class="header">{{ 'CREATE_NEW_ACCOUNT' | translate }}</div>
+        <div class="header">{{ 'ACCOUNT.REGISTER.TITLE' | translate }}</div>
         <app-divider></app-divider>
         <p class="aer-small paragraph">
-            {{ 'SIGNED_UP_PREFIX' | translate }}
-            <a data-cy="restore" routerLink="/account/restore">{{ 'SIGNED_UP_LINK' | translate }}</a> {{ 'SIGNED_UP_SUFFIX' | translate }}
+            {{ 'ACCOUNT.REGISTER.SUBTITLE_1' | translate }}
+            <a data-cy="restore" routerLink="/account/restore">{{ 'ACCOUNT.REGISTER.RESTORE_LINK' | translate }}</a>
+            {{ 'ACCOUNT.REGISTER.SUBTITLE_2' | translate }}
         </p>
         <app-divider></app-divider>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <p class="paragraph--small">{{ 'CHOOSE_AVATAR' | translate }}</p>
+            <p class="paragraph--small">{{ 'ACCOUNT.REGISTER.AVATAR_CHOOSE' | translate }}</p>
             <app-avatar-select formControlName="avatar"></app-avatar-select>
-            <p class="paragraph--small">{{ 'UNIQUE_AVATAR' | translate }}</p>
-            <aer-input icon="key" data-cy="password" placeholder="Choose your password" type="password" [ngClass]="{'with-button': passwordStrength.strength}" class="{{passwordStrength.class}}" buttonLabel="{{ passwordStrength.strength ? (passwordStrength.strength + '.TITLE' | translate) : '' }}"  formControlName="password" [(ngModel)]="password" ngDefaultControl equalValidator="confirmPassword" reverse="true" (keyup)="onKey($event)"></aer-input>
+            <p class="paragraph--small">{{ 'ACCOUNT.REGISTER.AVATAR_UNIQUE' | translate }}</p>
+            <aer-input icon="key"
+                       [placeholder]="'ACCOUNT.REGISTER.CREATE_PWD_PLACEHOLDER' | translate"
+                       type="password"
+                       [ngClass]="{'with-button': passwordStrength.strength}"
+                       class="{{passwordStrength.class}}"
+                       buttonLabel="{{ passwordStrength.strength ? ('ACCOUNT.COMMON.PASSWORD_CHECKER.' + passwordStrength.strength + '.TITLE' | translate) : '' }}"
+                       formControlName="password"
+                       [(ngModel)]="password"
+                       ngDefaultControl equalValidator="confirmPassword"
+                       reverse="true"
+                       (keyup)="onKey($event)"></aer-input>
             <app-password-lines passClass='{{passwordStrength.strength | lowercase}}' class="element-wrapper"></app-password-lines>
-            <p *ngIf="passwordStrength.strength" class="paragraph--helper">{{ passwordStrength.strength + '.DESCRIPTION' | translate }}</p>
-            <aer-input icon="key" data-cy="repeat_password" placeholder="Repeat password" type="password" formControlName="confirmPassword" [(ngModel)]="confirmPassword" ngDefaultControl equalValidator="password" class="element-wrapper"></aer-input>
+            <p *ngIf="passwordStrength.strength" class="paragraph--helper">{{ 'ACCOUNT.COMMON.PASSWORD_CHECKER.' + passwordStrength.strength + '.DESCRIPTION' | translate }}</p>
+            <aer-input icon="key"
+                       [placeholder]="'ACCOUNT.REGISTER.CONFIRM_PWD_PLACEHOLDER' | translate"
+                       type="password"
+                       formControlName="confirmPassword"
+                       [(ngModel)]="confirmPassword"
+                       ngDefaultControl equalValidator="password"
+                       class="element-wrapper"></aer-input>
             <app-divider [showLine]="false"></app-divider>
-            <aer-button data-cy="continue" class="large full-width" [ngClass]="{'disabled': !registerForm.valid}" [disabled]="!registerForm.valid" (click)="onSubmit()">Continue</aer-button> 
+            <aer-button data-cy="continue" class="large full-width" [ngClass]="{'disabled': !registerForm.valid}" [disabled]="!registerForm.valid" (click)="onSubmit()">{{'COMMON.BUTTONS.CONTINUE' | translate}}</aer-button>
         </form>
     </div>
 </aer-modal-container>
