@@ -213,6 +213,11 @@
       "CONNECTED": "Connected to AERUM Network"
     }
   },
+  "BUTTONS" : {
+    "ADD": "Add",
+    "CLOSE": "Close",
+    "CANCEL": "Cancel"
+  },
   "DIAGNOSTICS": "Diagnostics",
   "OVERVIEW": "Overview",
   "UNLOCK": {
@@ -236,6 +241,11 @@
     "DECILLION":"Decillion"
   },
   "TRANSACTION_COST": "Txn fee",
+  "HOME": {
+    "ADD_TOKEN": "Add token",
+    "ADD_BUTTON": "Add",
+    "CLOSE_BUTTON": "Cancel"
+  },
   "DASHBOARD_TOKENS": {
     "NAME": "Name",
     "DECIMALS": "Decimals",

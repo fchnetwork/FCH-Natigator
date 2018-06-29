@@ -5,11 +5,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { I18nComponent } from './components/i18n/i18n.component';
 import { ModalModule } from 'ngx-modialog';
-import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap'; 
+import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
 import { EqualValidator } from './directives/equal-validator.directive';
 import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
 import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
@@ -26,7 +25,6 @@ import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 import { BigNumbersPipe } from '@shared/pipes/big-numbers.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
 import { DecimalPipe } from '@angular/common';
-
 import { AppUIModule } from '@app/app.ui.module';
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
 import { ChartComponent } from '@app/shared/components/chart/chart.component';
@@ -34,17 +32,20 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { WeiToGweiPipe } from '@app/shared/pipes/wei-to-gwei.pipe';
 import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe';
 import { LoaderComponent } from '@app/shared/components/loader/loader.component';
-import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/transaction-modal.component';
-import { GetBlockModalComponent } from '@app/shared/modals/get-block-modal/get-block-modal.component';
 import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
 import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
+import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/transaction-modal.component';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
+}
+
 import { FormsModule } from '@angular/forms';
- 
+
 const modalWindows = [
   TransactionModalComponent,
-  GetBlockModalComponent,
   BlockModalComponent,
-  TransactionSignModalComponent  
+  //TransactionSignModalComponent
 ];
 
 @NgModule({
@@ -56,7 +57,7 @@ const modalWindows = [
     ModalModule.forRoot(),
     AppUIModule,
     BootstrapModalModule,
-    FormsModule, 
+    FormsModule,
     NgxEchartsModule,
     TranslateModule
   ],
@@ -115,5 +116,5 @@ const modalWindows = [
   ]
 })
 
-export class SharedModule { 
+export class SharedModule {
 }

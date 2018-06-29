@@ -4,6 +4,7 @@ import { TransactionService } from '@app/core/transactions/transaction-service/t
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { iTransaction } from '@shared/app.interfaces';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
+import { TransactionModalData } from '@app/shared/modals/models/transaction-modal-data.model';
 
 @Component({
   selector: 'app-last-transactions',
@@ -51,12 +52,17 @@ export class LastTransactionsComponent implements OnInit {
 
   ngOnInit() { }
 
-  openTransaction(transaction) {
-    this.explorerService.getTransactionByHash(transaction.hash)
-      .then(response => {
-        this.modalService.openTransaction(transaction.hash, response, false, null, null).then((result) => {
-        }).catch(() => { });
-      });
+  async openTransaction(transaction) {
+    const response = await this.explorerService.getTransactionByHash(transaction.hash);
+    const data: TransactionModalData = {
+      hash: transaction.hash,
+      transaction: response,
+      external: false,
+      orderId: null,
+      urls: null
+    };
+
+    await this.modalService.openTransaction(data);
   }
 
 }
