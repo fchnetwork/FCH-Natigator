@@ -265,9 +265,6 @@
       "STATUS_PENDING":"Pending",
       "STATUS_COMPLETED":"Completed",
       "STATUS_CANCELLED":"Cancelled",
-      "TYPE": "Type",
-      "TYPE_DEPOSIT":"Deposit",
-      "TYPE_WITHDRAWAL":"Withdrawal",
       "ERROR_LOAD_SWAPS":"Error loading swaps"
     },
     "CREATE": {
