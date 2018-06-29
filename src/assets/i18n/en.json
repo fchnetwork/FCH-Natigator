@@ -51,6 +51,19 @@
       "NO_CAMERAS": "No cameras have been detected.",
       "NO_PERMISSIONS": "You need to grant AERUM a permission to access your camera.",
       "QR_ERROR": "QR code doesn't contain a valid seed phrase."
+    },
+    "REGISTER": {
+      "TITLE": "Create new account",
+      "SUBTITLE_1": "Sign up for a free account below or",
+      "SUBTITLE_2": "from a previous backup",
+      "RESTORE_LINK": "restore an account",
+      "AVATAR_CHOOSE": "Choose your address avatar:",
+      "AVATAR_UNIQUE": "THis avatar is unique. You cannot change it later.",
+      "CREATE_PWD_PLACEHOLDER": "Choose your password",
+      "CONFIRM_PWD_PLACEHOLDER": "Confirm password"
+    },
+    "BACKUP": {
+      "TITLE": ""
     }
   },
   "SETTINGS": {
