@@ -1,16 +1,16 @@
 <aer-modal-container>
     <div class="account backup-confirm">
-      <div class="header">{{'CONFIRM_BACKUP'|translate}}</div>
+      <div class="header">{{'ACCOUNT.BACKUP_CONFIRM.TITLE'|translate}}</div>
       <app-divider></app-divider>
-      <div class="b-text">{{'CONFIRM_BACKUP_TEXT'|translate}} <a routerLink="/account/backup/create">{{'CONFIRM_BACKUP_GO_BACK'|translate}}</a></div>
+      <div class="b-text">{{'ACCOUNT.BACKUP_CONFIRM.SUBTITLE'|translate}} <a routerLink="/account/backup/create">{{'ACCOUNT.BACKUP_CONFIRM.GO_BACK_LINK'|translate}}</a></div>
       <div class="mnemonic-original-box">
-        <div *ngFor="let item of shuffledSeed" class="mnemonic-tag u-full" [class.u-removeSeed]="item.selected" (click)="selectSeed(item)">{{item.name}}</div> 
+        <div *ngFor="let item of shuffledSeed" class="mnemonic-tag u-full" [class.u-removeSeed]="item.selected" (click)="selectSeed(item)">{{item.name}}</div>
       </div>
       <div class="mnemonic-box">
           <div *ngFor="let item of selectedSeeds; let i = index" class="mnemonic-tag u-full" (click)="deselectSeed(item, i)">{{item.name}}</div>
       </div>
-      <aer-button [ngClass]="{'disabled': !isEqual}" [disabled]="!isEqual" (buttonFn)="confirm()" class="large full-width">{{'CONFIRM'|translate}}</aer-button>
+      <aer-button [ngClass]="{'disabled': !isEqual}" [disabled]="!isEqual" (buttonFn)="confirm()" class="large full-width">{{'ACCOUNT.BACKUP_CONFIRM.ACKNOWLEDGE_BTN'|translate}}</aer-button>
       <app-divider label="{{'OR'|translate}}"></app-divider>
-      <aer-button class="medium blue" (buttonFn)="clear()" >{{'CLEAR'|translate}}</aer-button>
+      <aer-button class="medium blue" (buttonFn)="clear()" >{{'ACCOUNT.BACKUP_CONFIRM.CLEAR_BTN'|translate}}</aer-button>
     </div>
   </aer-modal-container>

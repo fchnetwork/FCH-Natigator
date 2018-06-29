@@ -1,56 +1,101 @@
 {
-  "BACK_BUTTON_TEXT": "Back",
-  "NAME": "Name",
-  "WELCOME": "Get Started with Blockchain en",
-  "CREATE_NEW_ACCOUNT": "Create New Account",
-  "SIGNED_UP_PREFIX": "Sign up for a free account below or",
-  "SIGNED_UP_LINK": "restore an account",
-  "SIGNED_UP_SUFFIX": "from a previous backup",
-  "CHOOSE_AVATAR": "Choose your address avatar:",
-  "UNIQUE_AVATAR": "This avatar is unique. You cannot change it later.",
-  "VERY_WEAK": {
-    "DESCRIPTION": "Your password is easily guessed. Combine uppercase & lowercase letters. Add special characters.",
-    "TITLE": "Very Weak"
-  },
-  "WEAK": {
-    "DESCRIPTION": "Your password is easily guessed. Combine uppercase & lowercase letters. Add special characters.",
-    "TITLE": "Weak"
-  },
-  "REASONABLE": {
-    "DESCRIPTION": "Your password is good enough to proceed, but it is recommended to strengthen your password further.",
-    "TITLE": "Good"
-  },
-  "STRONG": {
-    "DESCRIPTION": "Your password is good enough to proceed, but it is recommended to strengthen your password further.",
-    "TITLE": "Strong"
-  },
-  "VERY_STRONG": {
-    "DESCRIPTION": "This password will withstand most sophisticated brute-force attacks. Please ensure that you will remember it.",
-    "TITLE": "Very Strong"
-  },
-  "BUTTONS": {
-    "BACK": "Back",
-    "CONTINUE": "Continue",
-    "CANCEL": "Cancel",
-    "CLOSE": "Close"
-  },
   "ACCOUNT": {
+    "UNLOCK": {
+      "TITLE": "Unlock",
+      "SUBTITLE": "The session was automatically terminated. Sign in again or ",
+      "REGISTER_LINK": "create a new account",
+      "PWD_PLACEHOLDER": "Password",
+      "RESTORE_LINK": "Restore account ",
+      "RESTORE_LINK_DESC": "from backup",
+      "UNLOCK_BTN": "Unlock"
+    },
     "RESTORE": {
       "TITLE": "Access Recovery",
       "SUBTITLE": "Please provide your previously exported Seed Words or",
       "SUBTITLE_HINT": "create new account",
       "SELECT_SEED": "Select seed file",
       "SELECT_BACKUP_FILE": "Select backup file",
-      "SEED_WORD_PLACEHOLDER": "Your seed is 12 words you saved when creating your account",
+      "SEED_WORD_PLACEHOLDER":
+        "Your seed is 12 words you saved when creating your account",
       "CREATE_PWD_PLACEHOLDER": "Create new password",
       "CONFIRM_PWD_PLACEHOLDER": "Confirm new password"
     },
     "QR_SCAN": {
       "TITLE": "Scan QR Code",
-      "SUBTITLE": "Please scan the QR code of your seed. The QR code can be found in the Settings > Backup page of wallet.",
+      "SUBTITLE":
+        "Please scan the QR code of your seed. The QR code can be found in the Settings > Backup page of wallet.",
       "NO_CAMERAS": "No cameras have been detected.",
-      "NO_PERMISSIONS": "You need to grant AERUM a permission to access your camera.",
+      "NO_PERMISSIONS":
+        "You need to grant AERUM a permission to access your camera.",
       "QR_ERROR": "QR code doesn't contain a valid seed phrase."
+    },
+    "REGISTER": {
+      "TITLE": "Create new account",
+      "SUBTITLE_1": "Sign up for a free account below or",
+      "SUBTITLE_2": "from a previous backup",
+      "RESTORE_LINK": "restore an account",
+      "AVATAR_CHOOSE": "Choose your address avatar:",
+      "AVATAR_UNIQUE": "THis avatar is unique. You cannot change it later.",
+      "CREATE_PWD_PLACEHOLDER": "Choose your password",
+      "CONFIRM_PWD_PLACEHOLDER": "Confirm password"
+    },
+    "BACKUP_PROMPT": {
+      "TITLE": "Backup",
+      "SUBTITLE": "You must save the mnemonic seed. It is the only one way to recover access",
+      "SKIP_STEP": "Skip this step",
+      "BACKUP_BTN": "Backup"
+    },
+    "BACKUP_DISCLAIMER": {
+      "TITLE": "Warning!",
+      "WARNING_1": "You should ONLY use the official Aerum client. ",
+      "WARNING_2": "Seed Words is the only one way to recover access to your account, treat it with care. ",
+      "WARNING_3": "Please be careful and never input your SEED into fake 'clients'. Otherwise your account will be compromised and you will lose all of your funds. ",
+      "SAVE_FILE_BTN": "Save file",
+      "ACKNOWLEDGE_BTN": "I understand"
+    },
+    "BACKUP_CREATE" : {
+      "TITLE": "Save mnemonic seed",
+      "SUBTITLE": "Your AERUM account depends only on you and your mnemonic phrase. It's important to back it up.",
+      "WRITE_DOWN": "Please carefully write down these 12 words or ",
+      "COPY_LINK": "copy them.",
+      "SAVE_FILE_BTN": "Save file",
+      "ACKNOWLEDGE_BTN": "I've saved it"
+    },
+    "BACKUP_CONFIRM": {
+      "TITLE": "Confirm backup",
+      "SUBTITLE": "Please, tap each word in the correct order or ",
+      "GO_BACK_LINK": "go back",
+      "ACKNOWLEDGE_BTN": "Confirm",
+      "CLEAR_BTN": "Clear"
+    },
+    "COMMON": {
+      "PASSWORD_CHECKER": {
+        "VERY_WEAK": {
+          "DESCRIPTION":
+            "Your password is easily guessed. Combine uppercase & lowercase letters. Add special characters.",
+          "TITLE": "Very Weak"
+        },
+        "WEAK": {
+          "DESCRIPTION":
+            "Your password is easily guessed. Combine uppercase & lowercase letters. Add special characters.",
+          "TITLE": "Weak"
+        },
+        "REASONABLE": {
+          "DESCRIPTION":
+            "Your password is good enough to proceed, but it is recommended to strengthen your password further.",
+          "TITLE": "Good"
+        },
+        "STRONG": {
+          "DESCRIPTION":
+            "Your password is good enough to proceed, but it is recommended to strengthen your password further.",
+          "TITLE": "Strong"
+        },
+        "VERY_STRONG": {
+          "DESCRIPTION":
+            "This password will withstand most sophisticated brute-force attacks. Please ensure that you will remember it.",
+          "TITLE": "Very Strong"
+        }
+      }
     }
   },
 
@@ -61,7 +106,8 @@
       "SAVE_SEED_BUTTON": "Save seed",
       "FULL_BACKUP_BUTTON": "Full backup",
       "QR_RESTORE_TITLE": "QR Restore",
-      "QR_RESTORE_DESCRIPTION": "You can scan following QR code during account restore process on another device (like mobile).",
+      "QR_RESTORE_DESCRIPTION":
+        "You can scan following QR code during account restore process on another device (like mobile).",
       "NOTIFICATIONS": {
         "SAVE_FULL_BACKUP": {
           "TITLE": "Notification",
@@ -73,9 +119,9 @@
         }
       }
     },
-    "TRANSACTIONS":{
+    "TRANSACTIONS": {
       "TAB_TITLE": "Transactions",
-      "DEFAULT_GAS_PRICE_LABEL":"Default gas price",
+      "DEFAULT_GAS_PRICE_LABEL": "Default gas price",
       "MAX_GAS_PRICE_LABEL": "Maximum gas price",
       "LAST_TRANSACTIONS_LABEL": "Number of last transactions to show"
     },
@@ -110,21 +156,24 @@
     }
   },
 
-  "COMMON" : {
-      "BUTTONS": {
-        "CANCEL": "Cancel",
-        "CLOSE": "Close",
-        "SAVE": "Save"
+  "COMMON": {
+    "BUTTONS": {
+      "BACK": "Back",
+      "CONTINUE": "Continue",
+      "CANCEL": "Cancel",
+      "CLOSE": "Close"
     }
   },
 
   "ACCESS_RECOVERY": "Access Recovery",
   "CREATE_BACKUP": "Backup",
-  "BACKUP_PHRASE": "You must save the mneumonic seed. It is the only one way to recover access",
+  "BACKUP_PHRASE":
+    "You must save the mneumonic seed. It is the only one way to recover access",
   "OR": "or",
   "SKIP_STEP": "Skip this step",
   "SAVE_PHRASE": "Save Mneumonic Seed",
-  "SAVE_PHRASE_TEXT": "Your aero depend only on you, so you'll need to save this phrase.",
+  "SAVE_PHRASE_TEXT":
+    "Your aero depend only on you, so you'll need to save this phrase.",
   "SAVE_FILE": "Save file",
   "WRITE_SEED": "Please carefully write down these 12 words or",
   "WRITE_SEED_COPY": "copy them.",
@@ -143,7 +192,8 @@
   "SHOW_MORE_OPTIONS": "Show more options",
   "MAX_TRANSACTION_FEE": "Max gas",
   "APP_TRANSACTION_FEE": "Approx. transaction fee",
-  "MAX_TRANS_FEE_WARNING": "This is the most amount of aero that might be used to process this transaction.",
+  "MAX_TRANS_FEE_WARNING":
+    "This is the most amount of aero that might be used to process this transaction.",
   "TOTAL": "Total",
   "DATA_INCLUDED": "Data included",
   "BYTES": "bytes",
@@ -155,8 +205,10 @@
   "I_UNDERSTAND": "I understand",
   "WARNING": "Warning!",
   "REGISTRATION_WARNING_TXT1": "You should ONLY use the official Aerum client.",
-  "REGISTRATION_WARNING_TXT2": "Seed Words is the only one way to recover access to your account, treat it with care.",
-  "REGISTRATION_WARNING_TXT3": "Please be careful and never input your SEED into fake 'clients'. Otherwise your account will be compromised and you will lose all of your funds.",
+  "REGISTRATION_WARNING_TXT2":
+    "Seed Words is the only one way to recover access to your account, treat it with care.",
+  "REGISTRATION_WARNING_TXT3":
+    "Please be careful and never input your SEED into fake 'clients'. Otherwise your account will be compromised and you will lose all of your funds.",
   "LOGIN": "Unlock",
   "LOGIN_TEXT1": "The session was automatically terminated.",
   "LOGIN_TEXT2": "Sign in again or",
@@ -167,14 +219,18 @@
   "PASSWORD": "Password",
   "ACCESS_REC_HINT": "Please provide your previously exported Seed Words or",
   "ACCESS_REC_HINT_SUFF": " create new account.",
-  "KEY_PLACEHOLDER": "Your seed is the 15 words you saved when creating your account",
+  "KEY_PLACEHOLDER":
+    "Your seed is the 15 words you saved when creating your account",
   "CONTINUE": "Continue",
-  "ERR_LOGIN_LOW": "Your password should contain at least one lowercase letter.",
-  "ERR_LOGIN_UPP": "Your password should contain at least one uppercase letter.",
+  "ERR_LOGIN_LOW":
+    "Your password should contain at least one lowercase letter.",
+  "ERR_LOGIN_UPP":
+    "Your password should contain at least one uppercase letter.",
   "ERR_LOGIN_NUM": "Your password should contain at least one number.",
   "ERR_LOGIN_EXIST": "You must include a password.",
   "ERR_LOGIN_LENGHT": "Your password must be at least 10 characters long.",
-  "ERR_LOGIN_NOTEQ": "Your password and confirm password phrase does not match.",
+  "ERR_LOGIN_NOTEQ":
+    "Your password and confirm password phrase does not match.",
   "CRT_PASS": "Create your new password.",
   "CONF_PASS": "Confirm password",
   "TRANSACTIONS_SHORT": "Txns",
@@ -208,7 +264,8 @@
   "BLOCK_REWARD": "Block reward",
   "EXTRA_DATA": "Extra data",
   "LAST_SEEN": "Last seen",
-  "SHOWING_BLOCK": "Showing Block (#{{lowestBlockNumber}} to #{{highestBlockNumber}}) out of {{blocksCount}} total blocks",
+  "SHOWING_BLOCK":
+    "Showing Block (#{{lowestBlockNumber}} to #{{highestBlockNumber}}) out of {{blocksCount}} total blocks",
   "MINUTE_AGO": "minute ago",
   "MINUTES_AGO": "minutes ago",
   "SECOND_AGO": "second ago",
@@ -219,7 +276,8 @@
   "DAYS_AGO": "days ago",
   "MONTH_AGO": "month ago",
   "MONTHS_AGO": "months ago",
-  "TOTAL_OF_PENDING_TXNS": "A total of {{transactionsCount}} Pending txns found",
+  "TOTAL_OF_PENDING_TXNS":
+    "A total of {{transactionsCount}} Pending txns found",
   "GWEI": "Gwei",
   "TRANSACTIONS_FOUND_COUNT": "{{transactionsCount}} transactions found",
   "SHOWING_THE_LAST": "showing the last {{value}}k records",
@@ -234,14 +292,15 @@
   "ERROR": "Error",
   "SEND_RECEIVE": {
     "MAIN_MENU_ITEM_NAME": "Send & Receive",
-    "MAIN_TITLE":"Send & Receive Crypto",
+    "MAIN_TITLE": "Send & Receive Crypto",
     "NOTIFICATION_TITLE_TRANSACTION_STATUS": "Transaction Status",
-    "NOTIFICATION_BODY_SUCCES_TRANSACTION":"You have successfully sent",
+    "NOTIFICATION_BODY_SUCCES_TRANSACTION": "You have successfully sent",
     "NOTIFICATION_TITLE_ATTENTION": "Attention!",
-    "NOTIFICATION_LOOSING_PRECISION":"You want to send too big amount of tokens! Number will be rounded to 16 digits",
-    "TO_ADDRESS":"to address",
-    "TRANSACTION":"Transaction",
-    "HAS_BEEN":"has been",
+    "NOTIFICATION_LOOSING_PRECISION":
+      "You want to send too big amount of tokens! Number will be rounded to 16 digits",
+    "TO_ADDRESS": "to address",
+    "TRANSACTION": "Transaction",
+    "HAS_BEEN": "has been",
     "IS": "is",
     "STATUSES": {
       "PENDING": "Pending",
@@ -251,7 +310,7 @@
     }
   },
   "CONNECTION": {
-    "CONNECTION_STATUS":"Connection status",
+    "CONNECTION_STATUS": "Connection status",
     "CONNECTING_TO_AERUM": "Connecting to Aerum network...",
     "STATUS_TITLE": {
       "DISCONNECTED": "Disconnected",
@@ -271,18 +330,18 @@
     "TITLE": "Account Overview"
   },
   "BIG_NUMBERS": {
-    "NO_UNIT":"",
-    "THOUSANDS":"Thousand",
-    "MILLIONS":"Million",
-    "BILLIONS":"Billion",
-    "TRILLIONS":"Trillion",
-    "QUADRILLIONS":"Quadrillion",
-    "QUINTILLIONS":"Quintillion",
-    "SEXTILLION":"Sextillion",
-    "SEPTILLION":"Septillion",
-    "OCTILLION":"Octillion",
-    "NONILLION":"Nonillion",
-    "DECILLION":"Decillion"
+    "NO_UNIT": "",
+    "THOUSANDS": "Thousand",
+    "MILLIONS": "Million",
+    "BILLIONS": "Billion",
+    "TRILLIONS": "Trillion",
+    "QUADRILLIONS": "Quadrillion",
+    "QUINTILLIONS": "Quintillion",
+    "SEXTILLION": "Sextillion",
+    "SEPTILLION": "Septillion",
+    "OCTILLION": "Octillion",
+    "NONILLION": "Nonillion",
+    "DECILLION": "Decillion"
   },
   "TRANSACTION_COST": "Txn fee",
   "DASHBOARD_TOKENS": {
@@ -295,50 +354,50 @@
     "SCAN_MORE": "Scan more blocks"
   },
   "SWAP": {
-    "MAIN_MENU_ITEM_NAME":"My Swaps",
-    "AERO_TO_TOKEN":"Aero > Token",
-    "AERO_TO_AERO":"Aero > Aero",
-    "TOKEN_TO_AERO":"Token > Aero",
-    "TOKEN_TO_TOKEN":"Token > Token",
+    "MAIN_MENU_ITEM_NAME": "My Swaps",
+    "AERO_TO_TOKEN": "Aero > Token",
+    "AERO_TO_AERO": "Aero > Aero",
+    "TOKEN_TO_AERO": "Token > Aero",
+    "TOKEN_TO_TOKEN": "Token > Token",
     "LIST": {
-      "ONCHAIN_TITLE":"Subatomic Swaps",
-      "CROSS_CHAIN_TITLE":"Ethereum Swaps",
-      "BTN_CREATE":"New Subatomic Swap",
-      "BTN_DEPOSIT":"New Deposit Swap",
-      "BTN_WITHDRAW":"New Withdraw Swap",
-      "TITLE_SWAP_ID":"Swap ID",
-      "TITLE_COUNTERPARTY":"Counterparty",
-      "TITLE_AMOUNTS":"Amounts",
-      "TITLE_DATE":"Date",
-      "TITLE_STATUS":"Status",
-      "STATUS_PENDING":"Pending",
-      "STATUS_COMPLETED":"Completed",
-      "STATUS_CANCELLED":"Cancelled",
-      "ERROR_LOAD_SWAPS":"Error loading swaps"
+      "ONCHAIN_TITLE": "Subatomic Swaps",
+      "CROSS_CHAIN_TITLE": "Ethereum Swaps",
+      "BTN_CREATE": "New Subatomic Swap",
+      "BTN_DEPOSIT": "New Deposit Swap",
+      "BTN_WITHDRAW": "New Withdraw Swap",
+      "TITLE_SWAP_ID": "Swap ID",
+      "TITLE_COUNTERPARTY": "Counterparty",
+      "TITLE_AMOUNTS": "Amounts",
+      "TITLE_DATE": "Date",
+      "TITLE_STATUS": "Status",
+      "STATUS_PENDING": "Pending",
+      "STATUS_COMPLETED": "Completed",
+      "STATUS_CANCELLED": "Cancelled",
+      "ERROR_LOAD_SWAPS": "Error loading swaps"
     },
     "CREATE": {
-      "TITLE":"Create Subatomic Swap",
-      "FIELD_SWAP_ID":"Swap ID",
-      "FIELD_YOUR_TOKEN_OR_AERO":"Your Token / Aero",
-      "FIELD_COUNTERPARTY":"Counterparty",
-      "FIELD_COUNTERPARTY_TOKEN_OR_AERO":"Counterparty Token / Aero",
+      "TITLE": "Create Subatomic Swap",
+      "FIELD_SWAP_ID": "Swap ID",
+      "FIELD_YOUR_TOKEN_OR_AERO": "Your Token / Aero",
+      "FIELD_COUNTERPARTY": "Counterparty",
+      "FIELD_COUNTERPARTY_TOKEN_OR_AERO": "Counterparty Token / Aero",
       "FIELD_AMOUNT": "Amount",
       "FIELD_RATE": "Rate",
       "PLACEHOLDER_SELECT_TOKEN_OR_AERO": "Select Aero / Token",
-      "BTN_GENERATE_SWAP_ID":"Generate",
-      "BTN_CREATE":"Create",
-      "BTN_CANCEL":"Close"
+      "BTN_GENERATE_SWAP_ID": "Generate",
+      "BTN_CREATE": "Create",
+      "BTN_CANCEL": "Close"
     },
     "LOAD": {
-      "TITLE":"Load Atomic Swap",
-      "FIELD_SWAP_ID":"Swap ID",
-      "BTN_LOAD":"Load",
-      "BTN_CONFIRM":"Confirm",
-      "BTN_REJECT":"Reject",
-      "BTN_CANCEL":"Close",
-      "FIELD_COUNTERPARTY":"Counterparty",
-      "FIELD_STATUS":"Status",
-      "CONFIRM_TITLE":"Confirm / Reject Atomic Swap"
+      "TITLE": "Load Atomic Swap",
+      "FIELD_SWAP_ID": "Swap ID",
+      "BTN_LOAD": "Load",
+      "BTN_CONFIRM": "Confirm",
+      "BTN_REJECT": "Reject",
+      "BTN_CANCEL": "Close",
+      "FIELD_COUNTERPARTY": "Counterparty",
+      "FIELD_STATUS": "Status",
+      "CONFIRM_TITLE": "Confirm / Reject Atomic Swap"
     }
   },
   "EXTERNAL-SWAP": {
@@ -350,7 +409,8 @@
       "FIELD_SELECT_YOUR_ACCOUNT": "Select your account",
       "BTN_ADD_ACCOUNT": "+ Add Account",
       "FIELD_BALANCE": "Balance:",
-      "FIELD_MESSAGE": "*Attention: please, make sure you have sufficient amount of ether in your wallet to cover transaction fee (up to 0.002 Eth)",
+      "FIELD_MESSAGE":
+        "*Attention: please, make sure you have sufficient amount of ether in your wallet to cover transaction fee (up to 0.002 Eth)",
       "BTN_NEXT": "Next",
       "BTN_CANCEL": "Cancel"
     },
@@ -366,7 +426,8 @@
       "FIELD_AMOUNT": "Amount",
       "FIELD_EXCHANGE_RATE": "Exchange rate (Aerum token/Eth asset)",
       "FIELD_SECRET_KEY": "Secret key",
-      "FIELD_MESSAGE": "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "FIELD_MESSAGE":
+        "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
       "BTN_NEXT": "Next",
       "BTN_CLOSE": "Close",
       "BTN_BACK": "Back"
@@ -384,7 +445,8 @@
       "FIELD_BALANCE": "Balance",
       "FIELD_EXCHANGE_RATE": "Exchange rate (Aerum asset/Ethereum asset)",
       "FIELD_SECRET_KEY": "Secret key",
-      "FIELD_MESSAGE": "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "FIELD_MESSAGE":
+        "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
       "BTN_NEXT": "Next",
       "BTN_CLOSE": "Close",
       "BTN_BACK": "Back"
@@ -401,7 +463,8 @@
       "FIELD_YOU_WILL_RECEIVE": "You will receive",
       "FIELD_ENTER_SECRET_KEY": "Enter secret key:",
       "FIELD_TYPE_SECRET_KEY": "Type secret key",
-      "FIELD_MESSAGE": "Attention! You need to complete the swap before it expires. If swap expires before completion, you can cancel it and withdraw the funds.",
+      "FIELD_MESSAGE":
+        "Attention! You need to complete the swap before it expires. If swap expires before completion, you can cancel it and withdraw the funds.",
       "BTN_COMPLETE_SWAP": "Complete swap",
       "BTN_CANCEL_SWAP": "Cancel swap",
       "BTN_CLOSE": "Close",
@@ -420,87 +483,92 @@
     }
   },
   "ENS": {
-    "MAIN_MENU_ITEM_NAME":"Aerum Name Service",
-    "MAIN_TITLE":"Aerum Name Service",
-    "CHECK_NAME_TITLE":"Check Name",
-    "BUY_NAME_TITLE":"Buy Name",
-    "MANAGE_NAME_TITLE":"Manage Name",
-    "FIELD_NAME":"Name",
-    "FIELD_PRICE":"Price",
-    "FIELD_NEW_PRICE":"New Name Price",
-    "FIELD_TRANSFER_TO":"Transfer Ownership To",
-    "FIELD_WITHDRAW_TO":"Withdraw To",
-    "FIELD_BALANCE":"Balance",
-    "FIELD_OLD_ADDRESS":"Old address",
-    "FIELD_NEW_ADDRESS":"New address",
-    "FIELD_ACCOUNT":"Account",
-    "FIELD_ADDRESS":"Address",
-    "FIELD_NEW_OWNER":"New owner",
-    "BTN_CHECK_NAME":"Check ANS Name",
-    "BTN_BUY_NAME":"Buy Name",
-    "BTN_SET_ADDRESS":"Update",
-    "BTN_RELEASE_NAME":"Release",
-    "BTN_SET_PRICE":"Set Price",
-    "BTN_TRANSFER":"Transfer",
-    "BTN_WITHDRAW_TO":"Withdraw",
-    "BTN_TRANSFER_NAME":"Transfer",
-    "AVAILABLE":"free",
-    "NOT_AVAILABLE":"not available",
-    "OWNER":"already own",
-    "NAME_IS":"Name is",
-    "LONG_DESCRIPTION":"The Aerum Name Service is a distributed, open, and extensible naming system based on the Aerum blockchain. Once you have a name, you can tell your friends to send AERO or tokens to yourname.aer instead of 0x7cB57B5A97eAbe942.....",
-    "UNHANDLED_ERROR":"Unknown error occurred",
-    "CHECK_NAME_ERROR":"Error while checking name",
-    "BUY_NAME_ERROR":"Error while buying name",
-    "SET_PRICE_ERROR":"Error setting new name price",
-    "SET_OWNER_ERROR":"Error setting new ANS owner",
-    "TRANSFER_NAME_ERROR":"Error transferring name",
-    "RELEASE_NAME_ERROR":"Error releasing name",
-    "CHANGE_ADDRESS_ERROR":"Error changing name address",
-    "ADDRESS_SET_DESCRIPTION":"This is address which you want to set for a name",
-    "ADDRESS_TRANSFER_NAME_DESCRIPTION":"This is address of new owner of the name",
-    "NAME_BUY_SUCCESS_TITLE":"Success",
-    "NAME_BUY_SUCCESS":"You bought name",
-    "CHANGE_ADDRESS_SUCCESS_TITLE":"Success",
-    "CHANGE_ADDRESS_SUCCESS":"You changed address of",
-    "CONFIRM_BUY_TITLE":"Buy Name",
-    "CONFIRM_SET_ADDRESS_TITLE":"Change Address",
-    "MANAGE_TITLE":"Manage ANS Contract",
-    "ESTIMATED_FEE":"Estimated fee",
-    "MAX_FEE":"Provide maximum fee",
-    "GAS_PRICE":"Gas Price",
-    "BTN_MODAL_BUY":"Buy",
-    "BTN_MODAL_CANCEL":"Cancel",
-    "BTN_MODAL_UPDATE":"Update",
-    "SUCCESS_TITLE":"Success",
-    "SET_PRICE_SUCCESS":"New name price",
-    "SET_OWNER_SUCCESS":"ANS transferred to",
-    "WITHDRAW_SUCCESS":"Funds sent to",
-    "OPERATION_STARTED_TITLE":"Started",
-    "OPERATION_IN_PROGRESS":"Operation in progress...",
-    "EXECUTING_CONTRACT":"Executing contract",
-    "N_OF":"of",
-    "NOTIFICATION_BODY_BUY_NAME":"Buying name",
-    "NOTIFICATION_BODY_SET_RESOLVER":"Setting resolver",
-    "NOTIFICATION_BODY_SET_ADDRESS":"Setting address",
-    "NOTIFICATION_BODY_CLEAN_ADDRESS":"Cleaning address",
-    "NOTIFICATION_BODY_CLEAN_RESOLVER":"Cleaning resolver",
-    "NOTIFICATION_BODY_RELEASE_NAME":"Releasing name",
-    "NAME_RELEASE_SUCCESS_TITLE":"Success",
-    "NAME_RELEASE_SUCCESS":"You released name",
-    "NOTIFICATION_SET_ADDRESS":"Setting address",
-    "NOTIFICATION_SET_OWNER":"Setting owner",
-    "NAME_TRANSFER_SUCCESS_TITLE":"Success",
-    "NAME_TRANSFER_SUCCESS":"You transferred name",
-    "NOT_ENOUGH_FUNDS_TITLE":"Not enough Aero",
-    "NOT_ENOUGH_FUNDS":"Get more Aero to buy name",
-    "CONFIRM_RELEASE_NAME_TITLE":"Release Name",
-    "CONFIRM_TRANSFER_NAME_TITLE":"Transfer Name Ownership"
+    "MAIN_MENU_ITEM_NAME": "Aerum Name Service",
+    "MAIN_TITLE": "Aerum Name Service",
+    "CHECK_NAME_TITLE": "Check Name",
+    "BUY_NAME_TITLE": "Buy Name",
+    "MANAGE_NAME_TITLE": "Manage Name",
+    "FIELD_NAME": "Name",
+    "FIELD_PRICE": "Price",
+    "FIELD_NEW_PRICE": "New Name Price",
+    "FIELD_TRANSFER_TO": "Transfer Ownership To",
+    "FIELD_WITHDRAW_TO": "Withdraw To",
+    "FIELD_BALANCE": "Balance",
+    "FIELD_OLD_ADDRESS": "Old address",
+    "FIELD_NEW_ADDRESS": "New address",
+    "FIELD_ACCOUNT": "Account",
+    "FIELD_ADDRESS": "Address",
+    "FIELD_NEW_OWNER": "New owner",
+    "BTN_CHECK_NAME": "Check ANS Name",
+    "BTN_BUY_NAME": "Buy Name",
+    "BTN_SET_ADDRESS": "Update",
+    "BTN_RELEASE_NAME": "Release",
+    "BTN_SET_PRICE": "Set Price",
+    "BTN_TRANSFER": "Transfer",
+    "BTN_WITHDRAW_TO": "Withdraw",
+    "BTN_TRANSFER_NAME": "Transfer",
+    "AVAILABLE": "free",
+    "NOT_AVAILABLE": "not available",
+    "OWNER": "already own",
+    "NAME_IS": "Name is",
+    "LONG_DESCRIPTION":
+      "The Aerum Name Service is a distributed, open, and extensible naming system based on the Aerum blockchain. Once you have a name, you can tell your friends to send AERO or tokens to yourname.aer instead of 0x7cB57B5A97eAbe942.....",
+    "UNHANDLED_ERROR": "Unknown error occurred",
+    "CHECK_NAME_ERROR": "Error while checking name",
+    "BUY_NAME_ERROR": "Error while buying name",
+    "SET_PRICE_ERROR": "Error setting new name price",
+    "SET_OWNER_ERROR": "Error setting new ANS owner",
+    "TRANSFER_NAME_ERROR": "Error transferring name",
+    "RELEASE_NAME_ERROR": "Error releasing name",
+    "CHANGE_ADDRESS_ERROR": "Error changing name address",
+    "ADDRESS_SET_DESCRIPTION":
+      "This is address which you want to set for a name",
+    "ADDRESS_TRANSFER_NAME_DESCRIPTION":
+      "This is address of new owner of the name",
+    "NAME_BUY_SUCCESS_TITLE": "Success",
+    "NAME_BUY_SUCCESS": "You bought name",
+    "CHANGE_ADDRESS_SUCCESS_TITLE": "Success",
+    "CHANGE_ADDRESS_SUCCESS": "You changed address of",
+    "CONFIRM_BUY_TITLE": "Buy Name",
+    "CONFIRM_SET_ADDRESS_TITLE": "Change Address",
+    "MANAGE_TITLE": "Manage ANS Contract",
+    "ESTIMATED_FEE": "Estimated fee",
+    "MAX_FEE": "Provide maximum fee",
+    "GAS_PRICE": "Gas Price",
+    "BTN_MODAL_BUY": "Buy",
+    "BTN_MODAL_CANCEL": "Cancel",
+    "BTN_MODAL_UPDATE": "Update",
+    "SUCCESS_TITLE": "Success",
+    "SET_PRICE_SUCCESS": "New name price",
+    "SET_OWNER_SUCCESS": "ANS transferred to",
+    "WITHDRAW_SUCCESS": "Funds sent to",
+    "OPERATION_STARTED_TITLE": "Started",
+    "OPERATION_IN_PROGRESS": "Operation in progress...",
+    "EXECUTING_CONTRACT": "Executing contract",
+    "N_OF": "of",
+    "NOTIFICATION_BODY_BUY_NAME": "Buying name",
+    "NOTIFICATION_BODY_SET_RESOLVER": "Setting resolver",
+    "NOTIFICATION_BODY_SET_ADDRESS": "Setting address",
+    "NOTIFICATION_BODY_CLEAN_ADDRESS": "Cleaning address",
+    "NOTIFICATION_BODY_CLEAN_RESOLVER": "Cleaning resolver",
+    "NOTIFICATION_BODY_RELEASE_NAME": "Releasing name",
+    "NAME_RELEASE_SUCCESS_TITLE": "Success",
+    "NAME_RELEASE_SUCCESS": "You released name",
+    "NOTIFICATION_SET_ADDRESS": "Setting address",
+    "NOTIFICATION_SET_OWNER": "Setting owner",
+    "NAME_TRANSFER_SUCCESS_TITLE": "Success",
+    "NAME_TRANSFER_SUCCESS": "You transferred name",
+    "NOT_ENOUGH_FUNDS_TITLE": "Not enough Aero",
+    "NOT_ENOUGH_FUNDS": "Get more Aero to buy name",
+    "CONFIRM_RELEASE_NAME_TITLE": "Release Name",
+    "CONFIRM_TRANSFER_NAME_TITLE": "Transfer Name Ownership"
   },
   "EXTERNAL_TRANSACTION": {
-    "NOTIFICATION_BODY_TOKEN_NOT_IN_WALLET":"Token is not yet added to the wallet",
-    "NOTIFICATION_TITLE_TOKEN_NOT_IN_WALLET":"Notification",
-    "NOTIFICATION_BODY_TOKEN_NOT_CONFIGURED":"Please configure the token first",
-    "NOTIFICATION_TITLE_TOKEN_NOT_CONFIGURED":"Warning!"
+    "NOTIFICATION_BODY_TOKEN_NOT_IN_WALLET":
+      "Token is not yet added to the wallet",
+    "NOTIFICATION_TITLE_TOKEN_NOT_IN_WALLET": "Notification",
+    "NOTIFICATION_BODY_TOKEN_NOT_CONFIGURED":
+      "Please configure the token first",
+    "NOTIFICATION_TITLE_TOKEN_NOT_CONFIGURED": "Warning!"
   }
 }
