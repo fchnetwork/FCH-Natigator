@@ -1,53 +1,39 @@
+import { TransactionModalData } from '@shared/modals/models/transaction-modal-data.model';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ModalComponent, DialogRef } from 'ngx-modialog';
 import { iTransaction } from '@shared/app.interfaces';
 import { environment } from '@env/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { TransactionModalContext } from '@app/shared/modals/models/transaction-modal-context.model';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { ModalViewComponent, DialogRef } from '@aerum/ui';
 
 @Component({
   selector: 'app-transaction-modal',
   templateUrl: './transaction-modal.component.html',
   styleUrls: ['./transaction-modal.component.scss']
 })
-export class TransactionModalComponent implements OnInit, ModalComponent<TransactionModalContext> {
+export class TransactionModalComponent implements OnInit, ModalViewComponent<TransactionModalData, any> {
 
   hash: string;
   orderId: string;
   transaction: iTransaction;
-  showHexData: boolean = true;
+  showHexData = true;
   @Output() toText: EventEmitter<any> = new EventEmitter();
   @Output() toHex: EventEmitter<any> = new EventEmitter();
   setBtnTxt$ = new BehaviorSubject("Convert to UTF-8");
   btnText: string;
 
-    constructor(public dialog: DialogRef<any>,
+    constructor(public dialogRef: DialogRef<TransactionModalData, any>,
                 public clipboardService: ClipboardService,
                 public notificationService: InternalNotificationService) {
-      if(dialog.context.orderId) {
-        this.orderId = dialog.context.orderId;
-      }
-      if(dialog.context.hash) {
-        this.hash = dialog.context.hash;
-      }
-      if(dialog.context.transaction) {
-        this.transaction = dialog.context.transaction;
-        this.transaction.data = dialog.context.transaction.data;
-      }
-      else {
-        // GET TRANSACTION via HASH or id or define it
-      }
-
       this.setBtnTxt$.subscribe((value) => {
         this.btnText = value;
       });
-
    }
 
   ngOnInit() {
-  }
+    this.transaction = this.dialogRef.data.transaction;
+   }
 
   openBlock(blockNumber) {
     window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
@@ -57,26 +43,15 @@ export class TransactionModalComponent implements OnInit, ModalComponent<Transac
     window.open( environment.externalBlockExplorer + 'transaction/' + txnHash, "_blank");
   }
 
-  dismiss(): void {
-    this.dialog.dismiss();
-    this.redirectExternal();
-  }
-
-  close(): void {
-    this.dialog.close();
-    this.redirectExternal();
-  }
-
   redirectExternal(){
-    if(this.dialog.context.external) {
-      console.log(this.dialog.context);
+    if(this.dialogRef.data.external) {
       const query = {
-        orderId: this.dialog.context.orderId,
-        txHash: this.dialog.context.transaction.hash,
-        from: this.dialog.context.transaction.from,
-        to: this.dialog.context.transaction.to
+        orderId: this.dialogRef.data.orderId,
+        txHash: this.dialogRef.data.transaction.hash,
+        from: this.dialogRef.data.transaction.from,
+        to: this.dialogRef.data.transaction.to
       };
-      window.location.href=`${this.dialog.context.urls.success}?query=${JSON.stringify(query)}`;
+      window.location.href=`${this.dialogRef.data.urls.success}?query=${JSON.stringify(query)}`;
     }
   }
 

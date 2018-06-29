@@ -1,41 +1,46 @@
-<aer-modal-dialog>
-    <div class="explorer detail-modal" *ngIf="block">    
-      <div class="title">{{'BLOCK'|translate}}</div>
-      <app-divider></app-divider>
-      <div class="link" (click)="openBlock(block.number)">{{block.number}}</div>
-      <div><p class="aer-small">{{block.timestamp | transactionTimeStamp  }} </p></div>
-      <div class="age">({{block.timestamp | transactionTimeAgo  }})</div>
+<div class="explorer detail-modal" *ngIf="dialogRef.data.block">
+  <div aerRow>
+    <div aerColumn size="md-12">
+      <div class="link" (click)="openBlock(dialogRef.data.block.number)">{{dialogRef.data.block.number}}</div>
+      <div>
+        <p class="aer-small">{{dialogRef.data.block.timestamp | transactionTimeStamp }} </p>
+      </div>
+      <div class="age">({{dialogRef.data.block.timestamp | transactionTimeAgo }})</div>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="md-12">
       <div class="transaction-table">
         <div class="tr">
           <div class="name">
             {{'TXNS'|translate}}
           </div>
           <div class="value">
-            {{block.transactions.length}}
+            {{dialogRef.data.block.transactions.length}}
           </div>
         </div>
         <div class="tr">
           <div class="name">
             {{'HASH'|translate}}
           </div>
-          <div class="value copy" (click)="copyToClipboard(block.hash)">
-            {{block.hash | slice:0:8}}...{{block.hash | slice:-6}}
+          <div class="value copy" (click)="copyToClipboard(dialogRef.data.block.hash)">
+            {{dialogRef.data.block.hash | slice:0:8}}...{{dialogRef.data.block.hash | slice:-6}}
           </div>
         </div>
         <div class="tr">
-            <div class="name">
-              {{'PARENT_HASH'|translate}}
-            </div>
-            <div class="value copy" (click)="copyToClipboard(block.parentHash)">
-                {{block.parentHash | slice:0:8}}...{{block.parentHash | slice:-6}}
-            </div>
+          <div class="name">
+            {{'PARENT_HASH'|translate}}
+          </div>
+          <div class="value copy" (click)="copyToClipboard(dialogRef.data.block.parentHash)">
+            {{dialogRef.data.block.parentHash | slice:0:8}}...{{dialogRef.data.block.parentHash | slice:-6}}
+          </div>
         </div>
         <div class="tr">
           <div class="name">
             {{'SIZE'|translate}}
           </div>
           <div class="value">
-              {{block.size}}
+            {{dialogRef.data.block.size}}
           </div>
         </div>
         <div class="tr">
@@ -43,7 +48,7 @@
             {{'GAS_USED'|translate}}
           </div>
           <div class="value">
-              {{block.gasUsed }}
+            {{dialogRef.data.block.gasUsed }}
           </div>
         </div>
         <div class="tr">
@@ -51,7 +56,7 @@
             {{'GAS_LIMIT'|translate}}
           </div>
           <div class="value">
-              {{block.gasLimit }}
+            {{dialogRef.data.block.gasLimit }}
           </div>
         </div>
         <div class="tr">
@@ -59,23 +64,19 @@
             {{'NONCE'|translate}}
           </div>
           <div class="value">
-              {{block.nonce}}
+            {{dialogRef.data.block.nonce}}
           </div>
         </div>
         <div class="tr">
-            <div class="name">
-              {{'EXTRA_DATA'|translate}}
-            </div>
-            <div class="value copy" (click)="copyToClipboard(block.extraData)">
-                {{block.extraData  | hextoAscii  }}
-            </div>
+          <div class="name">
+            {{'EXTRA_DATA'|translate}}
+          </div>
+          <div class="value copy" (click)="copyToClipboard(dialogRef.data.block.extraData)">
+            {{dialogRef.data.block.extraData | hextoAscii }}
+          </div>
         </div>
       </div>
     </div>
-    <div *ngIf="!block">
-      <div class="title">{{'BLOCK'|translate}}</div>
-      <p>{{blockNumber}}</p>
-    </div>
-    <app-divider [showLine]="false"></app-divider>
-    <aer-button (click)="close()" class="large full-width">Close</aer-button>
-  </aer-modal-dialog>
+  </div>
+</div>
+<aer-modal-button (buttonFn)="dialogRef.dismiss()">{{'BUTTONS.CLOSE' | translate}}</aer-modal-button>

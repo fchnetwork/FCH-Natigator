@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
-import { LogLevel } from '@app/core/general/logger-service/log-level.enum';
 import { ConnectionCheckerService } from '@core/general/connection-checker-service/connection-checker.service';
 
 @Component({
@@ -11,7 +10,7 @@ import { ConnectionCheckerService } from '@core/general/connection-checker-servi
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'app'; 
+  title = 'app';
 
   constructor
     (

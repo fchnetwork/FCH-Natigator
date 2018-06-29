@@ -44,7 +44,6 @@
     "identity-img": "^1.0.0",
     "moment": "^2.22.1",
     "ng2-cookies": "^1.0.12",
-    "ng2-toastr": "^4.1.2",
     "ngx-echarts": "^2.1.0",
     "ngx-modialog": "^5.0.0",
     "ngx-webstorage": "^2.0.1",
