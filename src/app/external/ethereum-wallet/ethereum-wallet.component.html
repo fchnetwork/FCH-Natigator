@@ -53,12 +53,34 @@
               <a (click)="copyToClipboard()">{{ address }}</a>
             </div>
           </div>
+          <div aerRow>
+            <div aerColumn size="sm-12" class="cell cell--left">
+              {{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_TOKEN'|translate}}
+            </div>
+          </div>
+          <div aerRow *ngIf="address">
+            <div aerColumn size="sm-12" class="cell">
+              <aer-select [(ngModel)]="token"
+                          dataKey="symbol"
+                          (ngModelChange)="onTokenChange()" placeholder="{{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_YOUR_TOKEN'|translate}}">
+                <aer-select-option class="token-select-option" *ngFor="let token of tokens;" [value]="token">
+                  <span>
+                    <aer-icon>{{token.symbol.toLowerCase()}}</aer-icon> {{token.symbol}}</span>
+                </aer-select-option>
+                <aer-select-option><span>{{'EXTERNAL-SWAP.WALLET.BTN_ADD_TOKEN'|translate}}</span></aer-select-option>
+              </aer-select>
+            </div>
+          </div>
+          <app-add-token *ngIf="address && importTokenInProgress" [wallet]="selectedWalletType" [account]="address" (tokenAdded)="onTokenAdded($event)"></app-add-token>
           <div aerRow *ngIf="address">
             <div aerColumn size="sm-6" class="cell cell--left">
               {{'EXTERNAL-SWAP.WALLET.FIELD_BALANCE'|translate}}
             </div>
-            <div aerColumn size="sm-6" class="cell cell--right">
+            <div aerColumn size="sm-6" class="cell cell--right" *ngIf="tokenSymbol === 'ETH'">
               {{balance | convertToEther | number:'1.2-5'}} ETH
+            </div>
+            <div aerColumn size="sm-6" class="cell cell--right" *ngIf="tokenSymbol !== 'ETH'">
+              {{balance | number:'1.2-5'}} {{ tokenSymbol }}
             </div>
           </div>
           <div class="message">
