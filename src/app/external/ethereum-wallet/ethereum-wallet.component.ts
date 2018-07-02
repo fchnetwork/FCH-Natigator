@@ -10,7 +10,6 @@ import { Token } from "@core/transactions/token-service/token.model";
 import { SessionStorageService } from "ngx-webstorage";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
-import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
@@ -60,7 +59,6 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
-    private clipboardService: ClipboardService,
     private sessionStorageService: SessionStorageService,
     private authenticationService: AuthenticationService,
     private ethereumAuthenticationService: EthereumAuthenticationService,
@@ -149,13 +147,6 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
       this.setAddress(null);
     } else {
       this.setAddress(this.addresses[0]);
-    }
-  }
-
-  async copyToClipboard() {
-    if (this.address) {
-      await this.clipboardService.copy(this.address);
-      this.notificationService.showMessage('Copied to clipboard!', 'Done');
     }
   }
 

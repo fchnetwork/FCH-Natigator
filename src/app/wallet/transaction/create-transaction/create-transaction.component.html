@@ -83,12 +83,12 @@
       <div aerRow>
         <div aerColumn size="sm-12">
           <aer-card title="{{'RECEIVE_TO'|translate }}">
-              {{ transactionMessage }}
-              <img [src]="addressQR" alt="">
-              <div class="c-copy__address" >
-                <a (click)="copyToClipboard()">{{ senderAddress }}</a>
-              </div>
-            </aer-card>
+            <div class="qr__adress">
+                {{ transactionMessage }}
+                <img [src]="addressQR" alt="">
+                <app-address-clipboard address="{{ senderAddress }}" short="true"></app-address-clipboard>
+            </div>
+          </aer-card>
         </div>
       </div>
       <div aerRow>

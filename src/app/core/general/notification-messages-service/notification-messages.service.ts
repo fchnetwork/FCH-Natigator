@@ -183,4 +183,18 @@ constructor(private notificationService: NotificationService,
           10000
         );
       }
+
+      /**
+       *Shows notification when something copied to clipboard
+       *
+       * @memberof NotificationMessagesService
+       */
+      public valueCopiedToClipboard() {
+        this.notificationService.notify(
+          `Notification`, 
+          `Value has been copied to clipboard`,
+          'clipboard', 
+          5000
+        );
+      }
 }

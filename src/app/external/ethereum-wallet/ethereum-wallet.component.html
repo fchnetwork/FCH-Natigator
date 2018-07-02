@@ -49,9 +49,7 @@
             </div>
           </div>
           <div aerRow *ngIf="address">
-            <div aerColumn size="sm-12" class="cell c-copy__address">
-              <a (click)="copyToClipboard()">{{ address }}</a>
-            </div>
+            <app-address-clipboard [address]="{{ address }}" [short]="true" [centered]="true"></app-address-clipboard>
           </div>
           <div aerRow>
             <div aerColumn size="sm-12" class="cell cell--left">
