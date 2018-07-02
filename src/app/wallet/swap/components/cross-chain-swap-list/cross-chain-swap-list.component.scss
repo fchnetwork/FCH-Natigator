@@ -1,12 +1,18 @@
 .icon {
   vertical-align: middle;
+  &.deposit {
+    color: #458cc9;
+  }
+  &.withdrawal {
+    color: #8ccc67;
+  }
 }
 
-.pending {
+.pending{
   color: #458cc9;
 }
 
-.closed {
+.closed{
   color: #8ccc67;
 }
 

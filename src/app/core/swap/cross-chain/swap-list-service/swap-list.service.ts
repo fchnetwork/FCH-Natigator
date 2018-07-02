@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { multiSlice } from "@shared/helpers/array-utils";
 
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
+import { SwapType } from "@core/swap/models/swap-type.enum";
 import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
@@ -110,7 +111,8 @@ export class SwapListService {
       closeAsset: null,
       closeValue: 0,
       createdOn: swap.openedOn,
-      state: swap.state
+      state: swap.state,
+      type: SwapType.Deposit
     };
   }
 
@@ -124,7 +126,8 @@ export class SwapListService {
       closeAsset: 'ETH',
       closeValue: 0,
       createdOn: swap.openedOn,
-      state: swap.state
+      state: swap.state,
+      type: SwapType.Withdrawal
     };
   }
 
