@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core'; 
 import { SessionStorageService } from 'ngx-webstorage';    
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service'; 
-import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 
@@ -18,7 +17,6 @@ export class AccountOverviewComponent implements OnInit {
   constructor(
     private authServ: AuthenticationService,
     private txnServ: TransactionService,
-    public clipboardService: ClipboardService,
     public notificationService: InternalNotificationService
   ) { }
 
@@ -42,10 +40,4 @@ export class AccountOverviewComponent implements OnInit {
   ngOnInit() {
     this.userData();
   }
-
-  copyToClipboard() {
-    this.clipboardService.copy(`0x${this.address}`);
-    this.notificationService.showMessage('Copied to clipboard!', 'Done');
-  }
-
 }
