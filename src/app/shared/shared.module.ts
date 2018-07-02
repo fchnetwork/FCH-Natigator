@@ -9,6 +9,7 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AddressClipboardComponent } from './components/address-clipboard/address-clipboard.component';
 
 import { EqualValidator } from './directives/equal-validator.directive';
 import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
@@ -84,7 +85,8 @@ const modalWindows = [
     CropAddressPipe,
     LoaderComponent,
     modalWindows,
-    BigNumbersPipe
+    BigNumbersPipe,
+    AddressClipboardComponent
   ],
   providers: [DecimalPipe],
   exports:[
@@ -111,7 +113,8 @@ const modalWindows = [
     ChartComponent,
     NgxEchartsModule,
     CropAddressPipe,
-    BigNumbersPipe
+    BigNumbersPipe,
+    AddressClipboardComponent
   ]
 })
 

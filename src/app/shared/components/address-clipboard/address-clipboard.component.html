@@ -1,0 +1,5 @@
+<div (click)="copyToClipboard()" class="c-copy__address" [ngClass]="{'centered': centered}">
+  <span *ngIf="short" >{{address | slice:0:7}}...{{address | slice:-5}}</span>
+  <span *ngIf="!short">{{address}}</span>
+  <aer-icon *ngIf="icon">{{icon}}</aer-icon>
+</div>
