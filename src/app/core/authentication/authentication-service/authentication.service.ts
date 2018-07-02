@@ -32,6 +32,9 @@ export class AuthenticationService {
                 public settingsService: SettingsService,
                 private storageService: StorageService
     ) {
+
+        
+        
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.settingsService.settings.systemSettings.aerumNodeRpcURI));
         this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.settingsService.settings.systemSettings.aerumNodeWsURI));
 
