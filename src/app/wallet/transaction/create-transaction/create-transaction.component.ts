@@ -15,6 +15,7 @@ import { ValidateService } from '@app/core/validation/validate.service';
 import Web3 from "web3";
 import { repeat } from 'rxjs/operators';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
+import { toBigNumberString } from "@shared/helpers/number-utils";
 
 import { bigNumbersPow, bigNumbersMultiply, bigNumberToString } from "@shared/helpers/number-utils";
 
@@ -186,6 +187,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   showTransactions() { }
   
   handleInputsChange() {
+    this.amount = toBigNumberString(this.amount);
     this.safeGetMaxTransactionFee();
   }
 
