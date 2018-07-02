@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, ViewEncapsulation, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
 import Web3 from "web3";
 
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
+import { Token } from "@core/transactions/token-service/token.model";
 
 import { SessionStorageService } from "ngx-webstorage";
 import { LoggerService } from "@core/general/logger-service/logger.service";
@@ -12,13 +13,15 @@ import { InternalNotificationService } from "@core/general/internal-notification
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
+import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
   selector: 'app-ethereum-wallet',
   templateUrl: './ethereum-wallet.component.html',
-  styleUrls: ['./ethereum-wallet.component.scss']
+  styleUrls: ['./ethereum-wallet.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class EthereumWalletComponent implements OnInit, OnDestroy {
 
@@ -36,14 +39,20 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
   storedAccounts: EthereumAccount[] = [];
 
   addresses: string[] = [];
+  tokens: Token[] = [];
   address: string;
   addressQR: string;
+  token: Token;
+  tokenSymbol: string;
+  ethBalance = 0;
   balance = 0;
 
   canMoveNext = false;
 
   importInProgress = false;
   importedPrivateKey: string;
+
+  importTokenInProgress = false;
 
   constructor(
     private location: Location,
@@ -54,7 +63,8 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     private clipboardService: ClipboardService,
     private sessionStorageService: SessionStorageService,
     private authenticationService: AuthenticationService,
-    private ethereumAuthenticationService: EthereumAuthenticationService
+    private ethereumAuthenticationService: EthereumAuthenticationService,
+    private ethereumTokenService: EthereumTokenService
   ) {
   }
 
@@ -63,6 +73,18 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
       this.params = {asset: param.asset, amount: Number(param.amount) || 0, query: param.query, direction: param.direction || 'direct'};
     });
 
+    this.initPredefinedTokens();
+    await this.initPredefinedAccount();
+  }
+
+  private initPredefinedTokens() {
+    this.tokens = this.ethereumTokenService.getTokens(true);
+    if(this.tokens.length){
+      this.token = this.tokens[0];
+    }
+  }
+
+  private async initPredefinedAccount() {
     this.web3 = this.ethereumAuthenticationService.getWeb3();
     this.storedAccounts = this.sessionStorageService.retrieve('ethereum_accounts') as EthereumAccount[] || [];
     if (!this.storedAccounts.length) {
@@ -89,6 +111,12 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     }
   }
 
+  private setAddress(address: string){
+    this.address = address;
+    this.reloadAccountData();
+    this.reloadTokenData();
+  }
+
   async onWalletSelect(event: { value: EthWalletType }) {
     try {
       this.selectedWalletType = event.value;
@@ -107,21 +135,21 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     const accounts = await this.injectedWeb3.eth.getAccounts();
     if (!accounts || !accounts.length) {
       this.addresses = [];
-      this.address = null;
+      this.setAddress(null);
       this.notificationService.showMessage('Please login in Mist / Metamask', 'Cannot get accounts from wallet');
     } else {
       this.addresses = accounts;
-      this.address = accounts[0];
+      this.setAddress(accounts[0]);
     }
-    this.reloadAccountData();
   }
 
   private onImportedWalledSelected() {
     this.addresses = this.storedAccounts.map(acc => acc.address);
-    if (this.addresses.length) {
-      this.address = this.addresses[0];
+    if (!this.addresses || !this.addresses.length) {
+      this.setAddress(null);
+    } else {
+      this.setAddress(this.addresses[0]);
     }
-    this.reloadAccountData();
   }
 
   async copyToClipboard() {
@@ -131,13 +159,32 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     }
   }
 
+  onTokenAdded(token: Token) {
+    this.importTokenInProgress = false;
+    this.token = token;
+    this.tokens = this.ethereumTokenService.getTokens(true);
+    this.reloadTokenData();
+  }
+
   onAddressChange() {
     // NOTE: If address is empty we import new one
     if (this.address) {
       this.reloadAccountData();
+      this.reloadTokenData();
     } else {
       this.importInProgress = true;
-      this.address = null;
+      this.setAddress(null);
+    }
+  }
+
+  onTokenChange() {
+    // NOTE: If token is empty we import new one
+    if (this.token) {
+      this.importTokenInProgress = false;
+      this.reloadTokenData();
+    } else {
+      this.importTokenInProgress = true;
+      this.token = null;
     }
   }
 
@@ -162,9 +209,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     this.storedAccounts.push(importedAccount);
     this.addresses.push(importedAccount.address);
     this.ethereumAuthenticationService.saveEthereumAccounts(this.storedAccounts);
-
-    this.address = importedAccount.address;
-    this.reloadAccountData();
+    this.setAddress(importedAccount.address);
   }
 
   private isAlreadyImported(address: string): boolean {
@@ -176,14 +221,31 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
       this.canMoveNext = false;
       return;
     }
-
     this.cleanImportingData();
     this.authenticationService.createQRcode(this.address).then(qr => this.addressQR = qr);
-    if (this.selectedWalletType === EthWalletType.Injected) {
-      this.injectedWeb3.eth.getBalance(this.address).then((balance) => this.updateBalance(balance));
-    } else {
-      this.web3.eth.getBalance(this.address).then((balance) => this.updateBalance(balance));
+  }
+
+  private reloadTokenData() {
+    if(!this.token) {
+      return;  
     }
+    this.tokenSymbol = this.token.symbol;
+    if (this.selectedWalletType === EthWalletType.Injected) {
+      this.injectedWeb3.eth.getBalance(this.address).then((balance) => this.updateEthBalance(balance));
+    } else {
+      this.web3.eth.getBalance(this.address).then((balance) => this.updateEthBalance(balance));
+    }
+    if(this.tokenSymbol !== 'ETH') {
+      this.ethereumTokenService.getBalance(this.selectedWalletType, this.token.address, this.address).then(balance => this.updateBalance(balance));
+    }
+  }
+
+  private updateEthBalance(balance: number) {
+    if(this.tokenSymbol === 'ETH') {
+      this.balance = balance;
+    }
+    this.ethBalance = balance;
+    this.canMoveNext = balance > 0;
   }
 
   private updateBalance(balance: number) {
@@ -207,7 +269,12 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     });
   }
 
-  cancel() {
+  async cancel() {
+    if(this.importInProgress){
+      await this.initPredefinedAccount();
+      this.cleanImportingData();
+      return;
+    }
     this.location.back();
   }
 

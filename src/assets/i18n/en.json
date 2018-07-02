@@ -298,12 +298,23 @@
       "FIELD_SELECT_WALLET": "Select Wallet:",
       "FIELD_STORED_KEYS": "Stored Keys",
       "FIELD_SELECT_ADDRESS": "Select Address",
+      "FIELD_SELECT_TOKEN": "Select Token",
       "FIELD_SELECT_YOUR_ACCOUNT": "Select your account",
+      "FIELD_SELECT_YOUR_TOKEN": "Select your token",
       "BTN_ADD_ACCOUNT": "+ Add Account",
+      "BTN_ADD_TOKEN": "+ Add Token",
       "FIELD_BALANCE": "Balance:",
       "FIELD_MESSAGE": "*Attention: please, make sure you have sufficient amount of ether in your wallet to cover transaction fee (up to 0.002 Eth)",
       "BTN_NEXT": "Next",
-      "BTN_CANCEL": "Cancel"
+      "BTN_CANCEL": "Cancel",
+      "ADD_TOKEN": {
+        "FIELD_TOKEN_ADDRESS": "Token Address",
+        "FIELD_TYPE_TOKEN_ADDRESS": "Type token address",
+        "FIELD_TOKEN_SYMBOL": "Token Symbol",
+        "FIELD_TYPE_TOKEN_SYMBOL": "Type token symbol",
+        "FIELD_DECIMALS": "Decimals",
+        "FIELD_TYPE_DECIMALS": "Type decimals"
+      }
     },
     "CREATE": {
       "TITLE": "Create Exchange Swap",
