@@ -65,10 +65,6 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
     this.router.navigate(['/wallet/settings']);
   }
 
-  refresh() {
-    this.router.navigate([this.router.url]);
-  }
-
   ngAfterViewChecked() {
     // Preventing Angular ExpressionChangedAfterItHasBeenCheckedError.
     this.changeDetector.detectChanges();
