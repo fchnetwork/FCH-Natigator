@@ -31,10 +31,6 @@ export class AppComponent implements OnInit {
     } else {
       this.translate.use("en"); // Set your language here
     }
-
-    router.routeReuseStrategy.shouldReuseRoute = () => {
-      return false;
-    };
   }
 
   ngOnInit() {
