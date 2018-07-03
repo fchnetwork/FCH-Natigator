@@ -59,9 +59,11 @@
     padding-bottom: 20px;
     &.o-data--left {
       text-align: left;
+      margin-right: 10px;
     }
     &.o-data--right {
       text-align: right;
+      word-break: break-all;
     }
   }
 }
