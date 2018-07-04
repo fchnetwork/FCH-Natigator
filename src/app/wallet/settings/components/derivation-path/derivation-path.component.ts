@@ -21,7 +21,8 @@ export class DerivationPathComponent {
 
   generalSettings: iGeneralSettings = {
     language: "",
-    derivationPath: ""
+    derivationPath: "",
+    numberOfBlocks: 0
   }
   
   derivationPaths: Array<iDerivationPaths> = [{
@@ -52,6 +53,7 @@ export class DerivationPathComponent {
     const generalSettings: iGeneralSettings = {
       language: this.generalSettings.language,
       derivationPath: evt.derivation,
+      numberOfBlocks: this.generalSettings.numberOfBlocks
     };
     this.settingsService.saveSettings("generalSettings", generalSettings);
     this.notificationService.showMessage(`Derivation path is now ${evt.derivation}`, 'YOUR DERIVATION PATH HAS BEEN MODIFIED');
@@ -61,6 +63,7 @@ export class DerivationPathComponent {
     let settings: iSettings = this.settingsService.getSettings();
     this.generalSettings.language = settings.generalSettings.language;
     this.generalSettings.derivationPath = settings.generalSettings.derivationPath;
+    this.generalSettings.numberOfBlocks = settings.generalSettings.numberOfBlocks;
   }  
 
 }

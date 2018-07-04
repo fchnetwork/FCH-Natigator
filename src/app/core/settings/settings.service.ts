@@ -11,7 +11,8 @@ export class SettingsService {
     public settings: iSettings = {
         generalSettings: {
             language: "",
-            derivationPath: ""
+            derivationPath: "",
+            numberOfBlocks: 0
         },
         transactionSettings: {
             gasPrice: "",
@@ -58,7 +59,8 @@ export class SettingsService {
         const settings = {
             generalSettings: {
                 language: environment.settings.laguage,
-                derivationPath: environment.settings.derivationPath
+                derivationPath: environment.settings.derivationPath,
+                numberOfBlocks: environment.settings.numberOfBlocks
             },
             //set default transaction settings
             transactionSettings: {

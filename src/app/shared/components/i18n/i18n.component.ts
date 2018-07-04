@@ -18,7 +18,8 @@ export class I18nComponent {
 
   generalSettings: iGeneralSettings = {
     language: "",
-    derivationPath: ""
+    derivationPath: "",
+    numberOfBlocks: 0
   }
     
   constructor( 
@@ -40,7 +41,8 @@ export class I18nComponent {
     this.translate.use( event.lang.substring(0, 2).toLowerCase() );
     const generalSettings: iGeneralSettings = {
       language: event.lang.substring(0, 2).toLowerCase(),
-      derivationPath: this.generalSettings.derivationPath
+      derivationPath: this.generalSettings.derivationPath,
+      numberOfBlocks: this.generalSettings.numberOfBlocks
     };
     this.settingsService.saveSettings("generalSettings", generalSettings);
     this.notificationMessagesService.langugeChanged(event.lang);
@@ -50,6 +52,7 @@ export class I18nComponent {
     let settings: iSettings = this.settingsService.getSettings();
     this.generalSettings.language = settings.generalSettings.language;
     this.generalSettings.derivationPath = settings.generalSettings.derivationPath;
+    this.generalSettings.numberOfBlocks = settings.generalSettings.numberOfBlocks;
   } 
 
 }
