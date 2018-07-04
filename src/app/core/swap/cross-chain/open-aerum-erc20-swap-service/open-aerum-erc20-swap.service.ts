@@ -9,7 +9,7 @@ import { secondsToDate } from "@shared/helpers/date-util";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";
-import { OpenErc20Swap } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-erc20-swap.model";
+import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
 
 @Injectable()
 export class OpenAerumErc20SwapService extends BaseContractService {

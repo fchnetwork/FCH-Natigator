@@ -11,7 +11,7 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contract-executor-service/ethereum-contract-executor.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
-import { CounterEtherSwap } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.model";
+import { CounterEtherSwap } from "@core/swap/models/counter-ether-swap.model";
 
 @Injectable()
 export class CounterEtherSwapService extends BaseContractService {

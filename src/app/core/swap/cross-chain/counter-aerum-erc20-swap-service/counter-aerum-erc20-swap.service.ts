@@ -5,7 +5,7 @@ import { environment } from "@env/environment";
 import { Callback } from "web3/types";
 
 import { toBigNumberString } from "@shared/helpers/number-utils";
-import { CounterErc20Swap } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-erc20-swap.model";
+import { CounterErc20Swap } from "@core/swap/models/counter-erc20-swap.model";
 import { BaseContractService } from "@core/contract/base-contract-service/base-contract.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { ContractExecutorService } from "@core/contract/contract-executor-service/contract-executor.service";

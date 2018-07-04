@@ -11,8 +11,8 @@ import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 
 import { SwapState } from "@core/swap/models/swap-state.enum";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
-import { OpenErc20Swap } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-erc20-swap.model";
-import { CounterEtherSwap } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.model";
+import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
+import { CounterEtherSwap } from "@core/swap/models/counter-ether-swap.model";
 import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";

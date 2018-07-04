@@ -11,18 +11,19 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { SwapState } from "@core/swap/models/swap-state.enum";
-import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
-import { CounterErc20Swap } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-erc20-swap.model";
+import { OpenEtherSwap } from "@core/swap/models/open-ether-swap.model";
+import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
+import { CounterErc20Swap } from "@core/swap/models/counter-erc20-swap.model";
 import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
-import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { CounterAerumErc20SwapService } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-aerum-erc20-swap.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
+import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
-import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
+import { OpenErc20SwapService } from "@core/swap/cross-chain/open-erc20-swap-service/open-erc20-swap.service";
 
 @Component({
   selector: 'app-swap-confirm',
@@ -33,14 +34,21 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private routeSubscription: Subscription;
   private hash;
-  private aerumAccount: string;
+  private walletTokenAddress;
+  private walletTokenSymbol;
   private query: string;
+
   private localSwap: EtherSwapReference;
   private etherSwap: OpenEtherSwap;
+  private erc20Swap: OpenErc20Swap;
+
+  private ethAddress = '0x0';
 
   secret: string;
   acceptedBy: string;
   sendAmount: number;
+  timelock: number;
+  swapState: SwapState;
   receiveCurrency: string;
   receiveAmount: number;
 
@@ -52,6 +60,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   processing = false;
   loadingEthereumSwap = false;
+  loadingErc20Swap = false;
   loadingCounterSwap = false;
 
   swapTransactionExplorerUrl: string;
@@ -67,16 +76,15 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
-    private authService: AuthenticationService,
     private aerumErc20SwapService: CounterAerumErc20SwapService,
     private tokenService: TokenService,
+    private ethereumTokenService: EthereumTokenService,
     private swapLocalStorageService: SwapLocalStorageService,
-    private ethereumAuthService: EthereumAuthenticationService,
-    private etherSwapService: OpenEtherSwapService
+    private etherSwapService: OpenEtherSwapService,
+    private erc20SwapService: OpenErc20SwapService
   ) { }
 
   async ngOnInit() {
-    this.aerumAccount = this.authService.getAddress();
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
   }
 
@@ -101,11 +109,18 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.hash = param.hash;
     this.query = param.query;
+    this.walletTokenAddress = param.token;
+    this.walletTokenSymbol = param.symbol;
 
     this.loadLocalSwap();
 
-    await this.loadEthereumSwap();
-    if (this.etherSwapFinishedOrExpired()) {
+    if(this.walletTokenAddress === this.ethAddress){
+      await this.loadEthereumSwap();
+    }else{
+      await this.loadErc20Swap();
+    }
+    
+    if (this.swapFinishedOrExpired()) {
       return;
     }
 
@@ -138,28 +153,60 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.sendAmount = this.etherSwap.value;
     this.acceptedBy = this.etherSwap.withdrawTrader;
+    this.timelock = this.etherSwap.timelock;
+    this.swapState = this.etherSwap.state;
+    this.validateSwapState();
+  }
 
-    if (this.etherSwap.state === SwapState.Closed) {
+  private async loadErc20Swap() {
+    this.loadingErc20Swap = true;
+    try {
+      await this.tryLoadErc20Swap();
+    } catch(e) {
+      this.logger.logError(`ERC20 swap ${this.hash} loading failed`, e);
+      throw e;
+    }
+    finally {
+      this.loadingErc20Swap = false;
+    }
+  }
+
+  private async tryLoadErc20Swap() {
+    this.erc20Swap = await this.erc20SwapService.checkSwap(this.hash);
+    if (!this.erc20Swap || (this.erc20Swap.state === SwapState.Invalid)) {
+      throw new Error('Cannot load erc20 swap: ' + this.hash);
+    }
+
+    const token = this.ethereumTokenService.getTokens().find(t => t.address === this.walletTokenAddress);
+    this.sendAmount = this.erc20Swap.erc20Value / Math.pow(10, token.decimals);
+    this.acceptedBy = this.erc20Swap.withdrawTrader;
+    this.timelock = this.erc20Swap.timelock;
+    this.swapState = this.erc20Swap.state;
+    this.validateSwapState();
+  }
+
+  private validateSwapState(){
+    if (this.swapState === SwapState.Closed) {
       this.swapClosed = true;
       this.logger.logMessage('Opening swap already closed:' + this.hash);
       return;
     }
 
-    if (this.etherSwap.state === SwapState.Expired) {
+    if (this.swapState === SwapState.Expired) {
       this.swapCancelled = true;
       this.logger.logMessage('Opening swap already cancelled:' + this.hash);
       return;
     }
 
     const now = this.now();
-    if (now >= this.etherSwap.timelock) {
+    if (now >= this.timelock) {
       this.onSwapExpired();
       this.logger.logMessage('Opening swap expired but not cancelled:' + this.hash);
       return;
     }
   }
 
-  private etherSwapFinishedOrExpired(): boolean {
+  private swapFinishedOrExpired(): boolean {
     return this.swapClosed || this.swapCancelled || this.swapExpired;
   }
 
@@ -179,7 +226,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       }
 
       const now = this.now();
-      const timeoutInMilliseconds = (this.etherSwap.timelock - now) * 1000;
+      const timeoutInMilliseconds = (this.timelock - now) * 1000;
       if (timeoutInMilliseconds < 0) {
         this.onSwapExpired();
         return;
@@ -307,11 +354,21 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private async cancelSwap(): Promise<void> {
     this.swapTransactionExplorerUrl = null;
-    await this.etherSwapService.expireSwap(this.hash, {
-      hashCallback: (hash) => this.onSwapHashReceived(hash, Chain.Ethereum),
-      account: this.localSwap.account,
-      wallet: this.localSwap.walletType
-    });
+
+    if(this.walletTokenAddress === this.ethAddress){
+      await this.etherSwapService.expireSwap(this.hash, {
+        hashCallback: (hash) => this.onSwapHashReceived(hash, Chain.Ethereum),
+        account: this.localSwap.account,
+        wallet: this.localSwap.walletType
+      });
+    }else{
+      await this.erc20SwapService.expireSwap(this.hash, {
+        hashCallback: (hash) => this.onSwapHashReceived(hash, Chain.Ethereum),
+        account: this.localSwap.account,
+        wallet: this.localSwap.walletType
+      });
+    }
+
     this.swapCancelled = true;
     this.cleanErrors();
   }
