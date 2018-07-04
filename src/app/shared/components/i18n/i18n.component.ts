@@ -4,7 +4,6 @@ import { languages as lang, iLanguage, languages } from '../../helpers/data.mock
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 
 import { SettingsService } from '@app/core/settings/settings.service';
-import { iGeneralSettings, iSettings } from '@shared/app.interfaces';
 
  
 @Component({
@@ -15,12 +14,6 @@ import { iGeneralSettings, iSettings } from '@shared/app.interfaces';
 export class I18nComponent {
   languages: Array<iLanguage> = lang;
   activeLanguage: iLanguage;
-
-  generalSettings: iGeneralSettings = {
-    language: "",
-    derivationPath: "",
-    numberOfBlocks: 0
-  }
     
   constructor( 
     public translate: TranslateService, 
@@ -28,8 +21,7 @@ export class I18nComponent {
     private settingsService: SettingsService
   ) 
   {
-    this.getGeneralSettings();
-    let activeLanguage = this.generalSettings.language;                           
+    let activeLanguage = this.settingsService.settings.generalSettings.language;                        
     this.languages.forEach( (language, i) => {
       if (language.lang.substring(0, 2).toLowerCase() == activeLanguage ) {
         this.activeLanguage = this.languages[i];
@@ -37,22 +29,16 @@ export class I18nComponent {
     });
   }
 
+  /**
+   * Save language to cookie when language selected from dropdown
+   *
+   * @param {iLanguage} event
+   * @memberof I18nComponent
+   */
   langChanged(event: iLanguage) {
     this.translate.use( event.lang.substring(0, 2).toLowerCase() );
-    const generalSettings: iGeneralSettings = {
-      language: event.lang.substring(0, 2).toLowerCase(),
-      derivationPath: this.generalSettings.derivationPath,
-      numberOfBlocks: this.generalSettings.numberOfBlocks
-    };
-    this.settingsService.saveSettings("generalSettings", generalSettings);
+    this.settingsService.saveSetting("generalSettings", "language", event.lang.substring(0, 2).toLowerCase());
     this.notificationMessagesService.langugeChanged(event.lang);
   }
-
-  getGeneralSettings() {
-    let settings: iSettings = this.settingsService.getSettings();
-    this.generalSettings.language = settings.generalSettings.language;
-    this.generalSettings.derivationPath = settings.generalSettings.derivationPath;
-    this.generalSettings.numberOfBlocks = settings.generalSettings.numberOfBlocks;
-  } 
 
 }
