@@ -4,9 +4,9 @@ import { SettingsService } from '@app/core/settings/settings.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 
 @Component({
-  selector: 'app-settingsGeneral',
-  templateUrl: './settingsGeneral.component.html',
-  styleUrls: ['./settingsGeneral.component.scss']
+  selector: 'app-settings-general',
+  templateUrl: './settings-general.component.html',
+  styleUrls: ['./settings-general.component.scss']
 })
 export class SettingsGeneralComponent implements OnInit {
 

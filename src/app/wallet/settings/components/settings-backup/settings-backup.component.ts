@@ -5,9 +5,9 @@ import { StorageService } from '@app/core/general/storage-service/storage.servic
 import QRCode from 'qrcode';
 
 @Component({
-  selector: 'app-settingsBackup',
-  templateUrl: './settingsBackup.component.html',
-  styleUrls: ['./settingsBackup.component.scss']
+  selector: 'app-settings-backup',
+  templateUrl: './settings-backup.component.html',
+  styleUrls: ['./settings-backup.component.scss']
 })
 export class SettingsBackupComponent implements OnInit {
   mnemonicQr: string;
@@ -18,7 +18,6 @@ export class SettingsBackupComponent implements OnInit {
 
   async ngOnInit() {
     this.mnemonicQr = await this.generateQrCode();
-
   }
 
   async generateQrCode(): Promise<string> {
