@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-settingsToken',
-  templateUrl: './settingsToken.component.html',
-  styleUrls: ['./settingsToken.component.scss']
+  selector: 'app-settings-token',
+  templateUrl: './settings-token.component.html',
+  styleUrls: ['./settings-token.component.scss']
 })
 export class SettingsTokenComponent implements OnInit {
 
