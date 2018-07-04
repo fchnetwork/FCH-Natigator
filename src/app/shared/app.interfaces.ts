@@ -80,6 +80,7 @@ export interface iBlocks {
   export interface iGeneralSettings {
     language: string;
     derivationPath: string;
+    numberOfBlocks: number;
   }
 
   export interface iTransactionSettings {

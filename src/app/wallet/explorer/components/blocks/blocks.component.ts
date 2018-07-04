@@ -9,6 +9,7 @@ import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.se
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
+import { SettingsService } from '@app/core/settings/settings.service';
 
 
 @Component({
@@ -17,14 +18,18 @@ import { Observable } from 'rxjs/Observable';
 })
 export class BlocksComponent implements AfterViewInit {
   blocks: any[] = [];
-  maxBlocks: number = 20;
+  maxBlocks: number;
   highBlock: number;
 
   constructor(
     public exploreSrv: ExplorerService,
     private router: Router,
     private modal: ModalService,
-    public loaderService: LoaderService) { }
+    public loaderService: LoaderService,
+    private settingsService: SettingsService) 
+  { 
+    this.maxBlocks = this.settingsService.settings.generalSettings.numberOfBlocks;
+  }
 
   ngAfterViewInit() {
     this.loaderService.toggle(true);

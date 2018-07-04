@@ -59,7 +59,8 @@ export const environment = {
     lastTransactionsNumber: "10",
     maxBlockGas: "1",
     derivationPath: "m/44'/60'/0'/0/0",
-    laguage: "en"
+    laguage: "en",
+    numberOfBlocks: 20
   },
   chainId: 418313827693,
   loglevel: LogLevel.All
