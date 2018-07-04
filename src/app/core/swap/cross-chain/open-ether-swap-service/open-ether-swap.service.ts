@@ -34,6 +34,14 @@ export class OpenEtherSwapService extends BaseContractService {
     );
   }
 
+  /**
+   * Opens a swap
+   * @param {string} hash - hash of the swap
+   * @param {string} ethValue - amount of ETH tokens
+   * @param {string} withdrawTrader - address of counter partner trader
+   * @param {number} timelock - time within, funds will be locked
+   * @param {TransactionOptions} options - options for web3 contract method call
+   */
   async openSwap(hash: string, ethValue: string, withdrawTrader: string, timelock: number, options: TransactionOptions) {
     const contract = await this.createContract(options.wallet);
     const openSwap = contract.methods.open(hash, withdrawTrader, toBigNumberString(timelock));
@@ -41,6 +49,12 @@ export class OpenEtherSwapService extends BaseContractService {
     return receipt;
   }
 
+  /**
+   * Closes a swap
+   * @param {string} hash - hash of the swap
+   * @param {string} secretKey - key to validate if you are an owner of the swap
+   * @param {TransactionOptions} options - options for web3 contract method call
+   */
   async closeSwap(hash: string, secretKey: string, options: TransactionOptions) {
     const contract = await this.createContract(options.wallet);
     const closeSwap = contract.methods.close(hash, fromAscii(secretKey));
@@ -48,6 +62,11 @@ export class OpenEtherSwapService extends BaseContractService {
     return receipt;
   }
 
+  /**
+   * Expires a swap
+   * @param {string} hash - hash of the swap
+   * @param {TransactionOptions} options - options for web3 contract method call
+   */
   async expireSwap(hash: string, options: TransactionOptions) {
     const contract = await this.createContract(options.wallet);
     const expireSwap = contract.methods.expire(hash);
@@ -55,6 +74,11 @@ export class OpenEtherSwapService extends BaseContractService {
     return receipt;
   }
 
+  /**
+   * Checks and returns information about swap
+   * @param {string} hash - hash of the swap
+   * @return {OpenEtherSwap} Swap object
+   */
   async checkSwap(hash: string): Promise<OpenEtherSwap> {
     const contract = await this.createContract();
     const checkSwap = contract.methods.check(hash);
@@ -71,6 +95,10 @@ export class OpenEtherSwapService extends BaseContractService {
     return swap;
   }
 
+  /**
+   * Checks and returns secret key only for closed swaps
+   * @param {string} hash - hash of the swap
+   */
   async checkSecretKey(hash: string) {
     const contract = await this.createContract();
     const checkSecretKey = contract.methods.checkSecretKey(hash);
@@ -78,6 +106,11 @@ export class OpenEtherSwapService extends BaseContractService {
     return response;
   }
 
+  /**
+   * Returns list of swap ids for specified account
+   * @param {string} address - account address
+   * @return {string[]} List of swap ids
+   */
   async getAccountSwapIds(address: string): Promise<string[]> {
     const contract = await this.createContract();
     const getAccountSwaps = contract.methods.getAccountSwaps(address);

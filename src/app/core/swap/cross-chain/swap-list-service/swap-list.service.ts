@@ -24,6 +24,13 @@ export class SwapListService {
     private tokenService: TokenService,
   ) { }
 
+  /**
+   * Returns list of swap items for specified account
+   * @param {string} account - account address
+   * @param {number} take - number of items to fetch
+   * @param {number} page - page number
+   * @return {SwapListItem[]} List of swap items
+   */
   async getSwapsByAccountPaged(account: string, take: number, page: number): Promise<SwapListItem[]> {
     account = account.toLowerCase();
     const skip = take * page;

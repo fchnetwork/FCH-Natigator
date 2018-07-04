@@ -33,6 +33,15 @@ export class OpenErc20SwapService extends BaseContractService {
     );
   }
 
+  /**
+   * Opens a swap
+   * @param {string} hash - hash of the swap
+   * @param {string} erc20Value - amount of ERC20 tokens
+   * @param {string} erc20Address - address of ERC20 token contract
+   * @param {string} withdrawTrader - address of counter partner trader
+   * @param {number} timelock - time within, funds will be locked
+   * @param {TransactionOptions} options - options for web3 contract method call
+   */
   async openSwap(hash: string, erc20Value: string, erc20Address: string, withdrawTrader: string, timelock: number, options: TransactionOptions) {
     await this.tokenApprove(erc20Address, erc20Value, options);
     const contract = await this.createContract(options.wallet);
@@ -41,6 +50,12 @@ export class OpenErc20SwapService extends BaseContractService {
     return receipt;
   }
 
+  /**
+   * Approves funds in ERC20 token for open erc20 contract
+   * @param {string} erc20Address - ERC20 token address
+   * @param {string} value - amount of ERC20 tokens
+   * @param {TransactionOptions} options - options for web3 contract method call
+   */
   private async tokenApprove(erc20Address: string, value: string, options: TransactionOptions) {
     const openErc20Swap = environment.contracts.swap.crossChain.address.ethereum.OpenErc20Swap as string;
     const web3 = await this.createWeb3(options.wallet);
@@ -49,6 +64,11 @@ export class OpenErc20SwapService extends BaseContractService {
     await this.send(approve, { wallet: options.wallet, account: options.account });
   }
 
+  /**
+   * Expires a swap in open erc20 contract
+   * @param {string} hash - hash of the swap
+   * @param {TransactionOptions} options - options for web3 contract method call
+   */
   async expireSwap(hash: string, options: TransactionOptions) {
     const contract = await this.createContract(options.wallet);
     const expireSwap = contract.methods.expire(hash);
@@ -56,6 +76,11 @@ export class OpenErc20SwapService extends BaseContractService {
     return receipt;
   }
 
+  /**
+   * Checks and returns information about swap
+   * @param {string} hash - hash of the swap
+   * @return {OpenErc20Swap} Swap object
+   */
   async checkSwap(hash: string): Promise<OpenErc20Swap> {
     const contract = await this.createContract();
     const checkSwap = contract.methods.check(hash);
