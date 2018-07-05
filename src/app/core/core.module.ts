@@ -30,6 +30,7 @@ import { ValidateService } from '@app/core/validation/validate.service';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { ConnectionCheckerService } from '@core/general/connection-checker-service/connection-checker.service';
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
+import { OpenErc20SwapService } from "@core/swap/cross-chain/open-erc20-swap-service/open-erc20-swap.service";
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
 import { CounterAerumErc20SwapService } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-aerum-erc20-swap.service";
 import { CounterEtherSwapService } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.service";
@@ -78,6 +79,7 @@ import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-
     LoggerService,
     ValidateService,
     OpenEtherSwapService,
+    OpenErc20SwapService,
     OpenAerumErc20SwapService,
     CounterAerumErc20SwapService,
     CounterEtherSwapService,
