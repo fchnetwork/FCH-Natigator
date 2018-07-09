@@ -6,14 +6,16 @@ import * as CryptoJS from 'crypto-js';
 import { unique } from "@shared/helpers/array-utils";
 import { environment } from "@env/environment";
 import { SessionStorageService } from "ngx-webstorage";
-import { EtherSwapReference } from "./swap-reference.model";
+import { SwapReference } from "./swap-reference.model";
+import { SwapType } from "@core/swap/models/swap-type.enum";
+import { TokenType } from "@core/swap/models/token-type.enum";
 
 @Injectable()
 export class SwapLocalStorageService {
 
   constructor(private sessionStorage: SessionStorageService) { }
 
-  storeSwapReference(swap: EtherSwapReference): void {
+  storeSwapReference(swap: SwapReference): void {
     if(!swap) {
       return;
     }
@@ -24,14 +26,14 @@ export class SwapLocalStorageService {
     this.storeSwapsInCookies(swaps);
   }
 
-  private storeSwapsInCookies(swaps: EtherSwapReference[]): void {
+  private storeSwapsInCookies(swaps: SwapReference[]): void {
     const password = this.sessionStorage.retrieve('password');
     const stringSwaps = JSON.stringify(swaps);
     const encryptedSwaps = CryptoJS.AES.encrypt(stringSwaps, password);
     Cookie.set('cross_chain_swaps', encryptedSwaps, 7, "/", environment.cookiesDomain);
   }
 
-  loadSwapReference(hash: string): EtherSwapReference {
+  loadSwapReference(hash: string): SwapReference {
     if(!hash) {
       return null;
     }
@@ -40,8 +42,21 @@ export class SwapLocalStorageService {
     return swaps.find(swap => swap.hash === hash);
   }
 
-  loadAllSwaps(): EtherSwapReference[] {
-    return this.sessionStorage.retrieve("cross_chain_swaps") as EtherSwapReference[] || [];
+  loadAllSwaps(): SwapReference[] {
+    return this.sessionStorage.retrieve("cross_chain_swaps") as SwapReference[] || [];
+  }
+
+  loadSwapAccounts(swapType: SwapType, tokenType?: TokenType): string[] {
+    let swaps = this.loadAllSwaps().filter(swap => swap.swapType === swapType);
+    if(tokenType === TokenType.Ether) {
+      swaps = swaps.filter(swap => swap.walletTokenSymbol === 'ETH');
+    }
+    if(tokenType === TokenType.Erc20) {
+      swaps = swaps.filter(swap => swap.walletTokenSymbol !== 'ETH');
+    }
+    const accounts = swaps.map(swap => swap.account);
+    const uniqueAccounts = unique(accounts);
+    return uniqueAccounts;
   }
 
   loadAllSwapAccounts(): string[] {

@@ -127,13 +127,7 @@ export class TokenService {
   }
 
   getLocalTokenInfo(address: string): Token {
-    if (!address) {
-      return null;
-    }
-
-    const tokens = this.getTokens();
-    const token = tokens.find(item => item.address.toLowerCase() === address.toLowerCase());
-    return token;
+    return this.tokenStorageService.getLocalTokenInfo(address);
   }
 
   async getNetworkTokenInfo(address: string): Promise<Token> {

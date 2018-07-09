@@ -14,7 +14,9 @@ import { Guid } from "@shared/helpers/guid";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
-import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { SwapType } from "@core/swap/models/swap-type.enum";
+import { TokenType } from "@core/swap/models/token-type.enum";
 import { Token } from "@core/transactions/token-service/token.model";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
@@ -270,6 +272,18 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       wallet: this.params.wallet
     };
 
+    const localSwap: SwapReference = {
+      hash,
+      secret: this.secret,
+      account: this.params.account,
+      walletType: this.params.wallet,
+      walletTokenAddress: this.params.token,
+      walletTokenSymbol: this.params.symbol,
+      token: this.selectedToken.address,
+      tokenAmount: this.amount,
+      swapType: SwapType.Deposit
+    };
+
     if(this.params.token === this.ethAddress) {
       const amountString = toBigNumberString(this.tokenAmount);
       this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${amountString}`);
@@ -281,19 +295,11 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       await this.erc20SwapService.openSwap(hash, amountString, this.params.token, counterpartyTrader, timestamp, options);
     }
 
-    const localSwap: EtherSwapReference = {
-      hash,
-      secret: this.secret,
-      account: this.params.account,
-      walletType: this.params.wallet,
-      token: this.selectedToken.address,
-      tokenAmount: this.amount
-    };
     this.swapLocalStorageService.storeSwapReference(localSwap);
 
     this.swapCreated = true;
     this.logger.logMessage(`Swap ${hash} created`);
-    return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query, token: this.params.token, symbol: this.params.symbol}});
+    return this.router.navigate(['external/confirm-swap'], {queryParams: {hash, query: this.params.query}});
   }
 
   private calculateTimestamp(timeoutInSeconds: number) {

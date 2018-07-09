@@ -97,5 +97,18 @@ export class OpenErc20SwapService extends BaseContractService {
     };
     return swap;
   }
+
+  /**
+   * Returns list of swap ids for specified account
+   * @param {string} address - account address
+   * @return {string[]} List of swap ids
+   */
+  async getAccountSwapIds(address: string): Promise<string[]> {
+    const contract = await this.createContract();
+    const getAccountSwaps = contract.methods.getAccountSwaps(address);
+    const swapIds = await this.call(getAccountSwaps, address);
+    return swapIds;
+  }
+
 }
 
