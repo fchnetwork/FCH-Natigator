@@ -15,6 +15,7 @@ export class LastTransactionsComponent implements OnInit {
   transactions: iTransaction[] = [];
   limit: number;
   transactionsLoaded: boolean = false;
+  hideTxns: boolean = false;
   constructor(
     private sessionStorage: SessionStorageService,
     private transactionService: TransactionService,
@@ -46,6 +47,14 @@ export class LastTransactionsComponent implements OnInit {
 
   loadMoreTransactions() {
     this.limit += Number(this.settingsService.settings.transactionSettings.lastTransactionsNumber);
+    if (this.limit >= this.transactions.length) {
+      this.hideTxns = true;
+    }
+  }
+
+  hideTransactions() {
+    this.limit = Number(this.settingsService.settings.transactionSettings.lastTransactionsNumber);
+    this.hideTxns = false;
   }
 
   ngOnInit() { }
