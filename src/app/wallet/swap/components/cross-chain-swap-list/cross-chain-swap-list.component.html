@@ -24,7 +24,7 @@
             </ng-template>
             <ng-template aerTemplate="body" let-swap>
               <tr>
-                <td class="link" (click)="openSwap(swap.id)">
+                <td class="link" (click)="openSwap(swap)">
                   <span>
                     <aer-icon class="icon deposit" *ngIf="swap.type === 0">deposit</aer-icon> 
                     <aer-icon class="icon withdrawal" *ngIf="swap.type === 1">withdrawal</aer-icon>
