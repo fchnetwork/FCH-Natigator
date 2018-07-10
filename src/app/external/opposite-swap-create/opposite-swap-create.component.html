@@ -2,7 +2,7 @@
   <div class="adaptive-dialog">
     <div class="modal-content">
       <aer-modal-dialog>
-        <div class="c-swap-create c-swap-create__table c-swap-create__unlock">
+        <div class="swap-create swap-create__table swap-create__unlock">
           <h1>{{'EXTERNAL-SWAP.CREATE-OPPOSITE.TITLE'|translate}}</h1>
           <div aerRow>
             <div aerColumn size="sm-12" class="cell">
@@ -34,50 +34,50 @@
           </div>
           <div class="o-table">
             <div class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 {{'EXTERNAL-SWAP.CREATE-OPPOSITE.FIELD_SENDING_AERUM_ASSET'|translate}}
               </div>
-              <div class="o-table__cell o-data--right" *ngIf="selectedToken">
+              <div class="o-table__cell o-data_right" *ngIf="selectedToken">
                 {{ selectedToken.symbol }}
               </div>
             </div>
             <div class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 {{'EXTERNAL-SWAP.CREATE-OPPOSITE.FIELD_BALANCE'|translate}}
               </div>
-              <div class="o-table__cell o-data--right" *ngIf="selectedToken">
+              <div class="o-table__cell o-data_right" *ngIf="selectedToken">
                 {{selectedToken.balance | number:'1.2-5'}}
               </div>
             </div>
             <div class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 {{'EXTERNAL-SWAP.CREATE-OPPOSITE.FIELD_AMOUNT'|translate}}
               </div>
-              <div class="o-table__cell o-data--right">
+              <div class="o-table__cell o-data_right">
                 {{tokenAmount| number:'1.2-18'}}
               </div>
             </div>
             <div class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 {{'EXTERNAL-SWAP.CREATE-OPPOSITE.FIELD_EXCHANGE_RATE'|translate}}
               </div>
-              <div class="o-table__cell o-data--right">
+              <div class="o-table__cell o-data_right">
                 {{rate | number:'1.2-18'}}
               </div>
             </div>
             <div class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 {{'EXTERNAL-SWAP.CREATE-OPPOSITE.FIELD_SECRET_KEY'|translate}}
               </div>
-              <div class="o-table__cell o-data--right">
+              <div class="o-table__cell o-data_right">
                 <span class="secret-key" (click)="copyToClipboard()">{{secret}}</span>
               </div>
             </div>
             <div *ngIf="openSwapTransactionExplorerUrl" class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 <a href="{{openSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{openSwapTransactionExplorerUrl | truncate: 40}}</a>
               </div>
-              <div class="o-table__cell o-data--right">
+              <div class="o-table__cell o-data_right">
                 <img *ngIf="processing" src="assets/images/loading.svg" alt="loading"/>
               </div>
             </div>
