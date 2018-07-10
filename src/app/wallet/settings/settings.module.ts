@@ -18,6 +18,7 @@ import { SettingsGeneralComponent } from "@app/wallet/settings/components/settin
 import { SettingsTokenComponent } from "@app/wallet/settings/components/settings-token/settings-token.component";
 import { SettingsTransactionsComponent } from "@app/wallet/settings/components/settings-transactions/settings-transactions.component";
 import { SettingsSystemComponent } from "@app/wallet/settings/components/settings-system/settings-system.component";
+import { SettingsEthereumWalletComponent } from "@app/wallet/settings/components/settings-ethereum-wallet/settings-ethereum-wallet.component";
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
@@ -41,7 +42,8 @@ export function createTranslateLoader(http: HttpClient) {
         SettingsGeneralComponent,
         SettingsTokenComponent,
         SettingsTransactionsComponent,
-        SettingsSystemComponent
+        SettingsSystemComponent,
+        SettingsEthereumWalletComponent
     ]
 })
 
