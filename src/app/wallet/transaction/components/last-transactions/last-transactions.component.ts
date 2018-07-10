@@ -14,7 +14,6 @@ import { SettingsService } from '@app/core/settings/settings.service';
 export class LastTransactionsComponent implements OnInit {
   transactions: iTransaction[] = [];
   limit: number;
-  transactionsLoaded: boolean = false;
   hideTxns: boolean = false;
   constructor(
     private sessionStorage: SessionStorageService,
@@ -28,9 +27,8 @@ export class LastTransactionsComponent implements OnInit {
       this.transactions = this.sessionStorage.retrieve('transactions').sort((b, a) => {
         const c: any = new Date(a.date);
         const d: any = new Date(b.date);
-        this.transactionsLoaded = true;
         return c - d;
-      });
+      })
     }, 3000);
     setInterval(() => {
       for (let i = 0; i < this.transactions.length; i++) {
