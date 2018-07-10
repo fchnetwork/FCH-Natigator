@@ -3,9 +3,9 @@ import { iSystemSettings, iSettings } from '@shared/app.interfaces';
 import { SettingsService } from '@app/core/settings/settings.service';
 
 @Component({
-  selector: 'app-settingsSystem',
-  templateUrl: './settingsSystem.component.html',
-  styleUrls: ['./settingsSystem.component.scss']
+  selector: 'app-settings-system',
+  templateUrl: './settings-system.component.html',
+  styleUrls: ['./settings-system.component.scss']
 })
 export class SettingsSystemComponent implements OnInit {
 

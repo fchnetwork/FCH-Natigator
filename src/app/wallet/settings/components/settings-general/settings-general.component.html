@@ -1,0 +1,15 @@
+<div class="settings--form">
+    <div class="vertical--container">
+        <h3>General</h3>
+        <app-divider [fullWidth]="true"></app-divider>
+        <app-derivation-path></app-derivation-path>
+        <app-i18n></app-i18n>
+        <p>
+            Number of Blocks to show in Blockchain Explorer
+        </p>
+        <aer-input placeholder="Number of Blocks" [(ngModel)]="generalSettings.numberOfBlocks" icon="bars"></aer-input>
+    </div>
+    <div class="vertical--container save--button">
+        <aer-button class="blue" (buttonFn)="saveSettings()">Save</aer-button>
+    </div>
+</div>

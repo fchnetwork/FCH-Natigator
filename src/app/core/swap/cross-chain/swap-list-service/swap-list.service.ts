@@ -4,12 +4,12 @@ import { multiSlice } from "@shared/helpers/array-utils";
 
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { SwapType } from "@core/swap/models/swap-type.enum";
-import { OpenEtherSwap } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.model";
+import { OpenEtherSwap } from "@core/swap/models/open-ether-swap.model";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { OpenErc20Swap } from '@app/core/swap/cross-chain/open-aerum-erc20-swap-service/open-erc20-swap.model';
+import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
 import { TokenService } from "@core/transactions/token-service/token.service";
 
 
@@ -24,6 +24,13 @@ export class SwapListService {
     private tokenService: TokenService,
   ) { }
 
+  /**
+   * Returns list of swap items for specified account
+   * @param {string} account - account address
+   * @param {number} take - number of items to fetch
+   * @param {number} page - page number
+   * @return {SwapListItem[]} List of swap items
+   */
   async getSwapsByAccountPaged(account: string, take: number, page: number): Promise<SwapListItem[]> {
     account = account.toLowerCase();
     const skip = take * page;

@@ -1,9 +1,9 @@
-const artifacts = require('@core/abi/CounterAtomicSwapEther.json');
+const artifacts = require('@core/abi/CounterAtomicSwapERC20.json');
 
 import { Injectable } from '@angular/core';
 
 import { environment } from "@env/environment";
-import { fromWei, fromAscii } from "web3-utils";
+import { fromAscii } from "web3-utils";
 
 import { BaseContractService } from "@core/ethereum/base-contract-service/base-contract.service";
 import { TransactionOptions } from "@core/ethereum/base-contract-service/transaction-options.model";
@@ -11,10 +11,10 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contract-executor-service/ethereum-contract-executor.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
-import { CounterEtherSwap } from "@core/swap/models/counter-ether-swap.model";
+import { CounterErc20Swap } from "@core/swap/models/counter-erc20-swap.model";
 
 @Injectable()
-export class CounterEtherSwapService extends BaseContractService {
+export class CounterErc20SwapService extends BaseContractService {
 
   constructor(
     notificationService: InternalNotificationService,
@@ -24,7 +24,7 @@ export class CounterEtherSwapService extends BaseContractService {
   ) {
     super(
       artifacts.abi,
-      environment.contracts.swap.crossChain.address.ethereum.CounterEtherSwap,
+      environment.contracts.swap.crossChain.address.ethereum.CounterErc20Swap,
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,
@@ -49,20 +49,20 @@ export class CounterEtherSwapService extends BaseContractService {
    * Checks and returns an information about swap
    * @param {string} hash - hash of the swap
    * @param {TransactionOptions} options - options for web3 contract method call
-   * @return {CounterEtherSwap} Swap object
+   * @return {CounterErc20Swap} Swap object
    */
-  async checkSwap(hash: string, options: TransactionOptions): Promise<CounterEtherSwap> {
+  async checkSwap(hash: string, options: TransactionOptions): Promise<CounterErc20Swap> {
     const contract = await this.createContract(options.wallet);
     const checkSwap = contract.methods.check(hash);
     const response = await this.call(checkSwap);
-    const swap: CounterEtherSwap = {
+    const swap: CounterErc20Swap = {
       hash,
+      erc20Value: response.erc20Value,
+      erc20ContractAddress: response.erc20ContractAddress,
       openTrader: response.openTrader,
       withdrawTrader: response.openTrader,
-      value: Number(fromWei(response.value, 'ether')),
-      timelock: response.timelock,
-      openedOn: response.openedOn,
-      state: Number(response.state)
+      state: response.state,
+      timelock: response.timelock
     };
     return swap;
   }

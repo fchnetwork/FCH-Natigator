@@ -11,16 +11,19 @@ import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 
 import { SwapState } from "@core/swap/models/swap-state.enum";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
-import { OpenErc20Swap } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-erc20-swap.model";
-import { CounterEtherSwap } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.model";
 import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
-import { CounterEtherSwapService } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
+import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
+
+import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
+
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
+import { CounterEtherSwapService } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.service";
+import { CounterErc20SwapService } from "@core/swap/cross-chain/counter-erc20-swap-service/counter-erc20-swap.service";
 
 @Component({
   selector: 'app-opposite-swap-confirm',
@@ -30,9 +33,13 @@ import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc
 export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   private hash: string;
+  private ethAddress = '0x0';
+  private walletTokenAddress;
+  private walletTokenSymbol;
   private query: string;
 
   private localSwap: EtherSwapReference;
+
   private erc20Swap: OpenErc20Swap;
 
   secret: string;
@@ -49,12 +56,15 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   swapCancelled = false;
 
   processing = false;
-  loadingEthereumSwap = false;
-  loadingCounterSwap = false;
+
+  loadingErc20Swap = false;
+  loadingCounterEtherSwap = false;
+  loadingCounterErc20Swap = false;
 
   swapTransactionExplorerUrl: string;
 
-  swapLoadTimerInterval: Timer;
+  counterEtherSwapLoadTimerInterval: Timer;
+  counterErc20SwapLoadTimerInterval: Timer;
   swapExpireTimerInterval: Timer;
   timer: Duration;
 
@@ -67,9 +77,11 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private counterEtherSwapService: CounterEtherSwapService,
+    private counterErc20SwapService: CounterErc20SwapService,
     private swapLocalStorageService: SwapLocalStorageService,
     private openAerumErc20SwapService: OpenAerumErc20SwapService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private ethereumTokenService: EthereumTokenService
   ) { }
 
   async ngOnInit() {
@@ -97,19 +109,25 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
 
     this.hash = param.hash;
     this.query = param.query;
+    this.walletTokenAddress = param.token;
+    this.walletTokenSymbol = param.symbol;
 
     this.loadLocalSwap();
     await this.loadErc20Swap();
-    if (this.etherSwapFinishedOrExpired()) {
+    if (this.swapFinishedOrExpired()) {
       return;
     }
 
     this.setupSwapExpireTimer();
-    this.setupSwapLoadTimer();
+    if(this.walletTokenAddress === this.ethAddress) {
+      this.setupCounterEtherSwapLoadTimer();
+    } else {
+      this.setupCounterErc20SwapLoadTimer();
+    }
   }
 
   private async loadErc20Swap() {
-    this.loadingEthereumSwap = true;
+    this.loadingErc20Swap = true;
     try {
       await this.tryLoadErc20Swap();
     } catch(e) {
@@ -117,7 +135,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
       throw e;
     }
     finally {
-      this.loadingEthereumSwap = false;
+      this.loadingErc20Swap = false;
     }
   }
 
@@ -159,7 +177,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     }
   }
 
-  private etherSwapFinishedOrExpired(): boolean {
+  private swapFinishedOrExpired(): boolean {
     return this.swapClosed || this.swapCancelled || this.swapExpired;
   }
 
@@ -171,10 +189,10 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     this.secret = this.localSwap.secret;
   }
 
-  private setupSwapLoadTimer(): void {
-    this.swapLoadTimerInterval = setInterval(async () => {
+  private setupCounterEtherSwapLoadTimer(): void {
+    this.counterEtherSwapLoadTimerInterval = setInterval(async () => {
       // NOTE: Prevent double loading from events
-      if (this.loadingCounterSwap) {
+      if (this.loadingCounterEtherSwap) {
         this.logger.logMessage(`Opposite swap ${this.hash} is already being loaded...`);
         return;
       }
@@ -182,19 +200,51 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
         this.stopTimers();
         return;
       }
-      this.loadingCounterSwap = true;
+      this.loadingCounterEtherSwap = true;
       try {
         const counterSwap = await this.counterEtherSwapService.checkSwap(this.hash, { wallet: this.localSwap.walletType, account: this.localSwap.account });
         if(!this.swapLoaded && counterSwap.state > 0) {
           this.logger.logMessage(`Create counter swap success: ${this.hash}`);
           this.swapLoaded = true;
-          await this.tryLoadCounterSwap(counterSwap);
+          this.tryLoadCounterSwap(counterSwap.state, counterSwap.timelock, counterSwap.value);
+          await this.tryLoadCounterSwap(counterSwap.state, counterSwap.timelock, counterSwap.value);
         }
       } catch(e) {
         this.logger.logError(`Opposite swap ${this.hash} loading failed`, e);
       }
       finally {
-        this.loadingCounterSwap = false;
+        this.loadingCounterEtherSwap = false;
+      }
+    }, 5000);
+  }
+
+  private setupCounterErc20SwapLoadTimer(): void {
+    this.counterErc20SwapLoadTimerInterval = setInterval(async () => {
+      // NOTE: Prevent double loading from events
+      if (this.loadingCounterErc20Swap) {
+        this.logger.logMessage(`Opposite swap ${this.hash} is already being loaded...`);
+        return;
+      }
+      if (this.swapClosed || this.swapCancelled || this.swapExpired) {
+        this.stopTimers();
+        return;
+      }
+      this.loadingCounterErc20Swap = true;
+      try {
+        const counterSwap = await this.counterErc20SwapService.checkSwap(this.hash, { wallet: this.localSwap.walletType, account: this.localSwap.account });
+        if(!this.swapLoaded && counterSwap.state > 0) {
+          this.logger.logMessage(`Create counter swap success: ${this.hash}`);
+          this.swapLoaded = true;
+
+          const token = await this.ethereumTokenService.getNetworkTokenInfo(this.localSwap.walletType, counterSwap.erc20ContractAddress, this.localSwap.account);
+          const value = Number(counterSwap.erc20Value) / Math.pow(10, token.decimals);
+          this.tryLoadCounterSwap(counterSwap.state, counterSwap.timelock, value);
+        }
+      } catch(e) {
+        this.logger.logError(`Opposite swap ${this.hash} loading failed`, e);
+      }
+      finally {
+        this.loadingCounterErc20Swap = false;
       }
     }, 5000);
   }
@@ -226,19 +276,20 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
 
   private stopTimers(): void {
     clearInterval(this.swapExpireTimerInterval);
-    clearInterval(this.swapLoadTimerInterval);
+    clearInterval(this.counterEtherSwapLoadTimerInterval);
+    clearInterval(this.counterErc20SwapLoadTimerInterval);
   }
 
-  private async tryLoadCounterSwap(swap: CounterEtherSwap) {
+  private tryLoadCounterSwap(state: SwapState, timelock: number, amount: number) {
     this.cleanErrors();
 
-    if(swap.state === SwapState.Invalid) {
+    if(state === SwapState.Invalid) {
       this.logger.logMessage('Cannot load erc20 swap: ' + this.hash);
       this.canCloseSwap = false;
       return;
     }
 
-    if (swap.state === SwapState.Closed) {
+    if (state === SwapState.Closed) {
       this.logger.logMessage('Counter swap already closed');
       this.canCloseSwap = false;
       this.showError('Counter swap already closed');
@@ -246,15 +297,15 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     }
 
     const now = this.now();
-    if ((now >= swap.timelock) || (swap.state === SwapState.Expired)) {
+    if ((now >= timelock) || (state === SwapState.Expired)) {
       this.logger.logMessage('Counter swap expired');
       this.canCloseSwap = false;
       this.showError('Counter swap expired');
       return;
     }
 
-    this.receiveAmount = swap.value;
-    if (this.receiveAmount !== this.localSwap.ethAmount) {
+    this.receiveAmount = amount;
+    if (this.receiveAmount !== this.localSwap.tokenAmount) {
       this.showError('Counter swap amount / rate is not the same as requested');
     }
 
@@ -277,11 +328,19 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
 
   private async closeSwap(): Promise<void> {
     this.swapTransactionExplorerUrl = null;
-    await this.counterEtherSwapService.closeSwap(this.hash, this.secret, {
-      wallet: this.localSwap.walletType,
-      account: this.localSwap.account,
-      hashCallback: (txHash) => this.onSwapHashReceived(txHash, Chain.Ethereum)
-    });
+    if(this.walletTokenAddress === this.ethAddress) {
+      await this.counterEtherSwapService.closeSwap(this.hash, this.secret, {
+        wallet: this.localSwap.walletType,
+        account: this.localSwap.account,
+        hashCallback: (txHash) => this.onSwapHashReceived(txHash, Chain.Ethereum)
+      });
+    }else {
+      await this.counterErc20SwapService.closeSwap(this.hash, this.secret, {
+        wallet: this.localSwap.walletType,
+        account: this.localSwap.account,
+        hashCallback: (txHash) => this.onSwapHashReceived(txHash, Chain.Ethereum)
+      });
+    }
     this.canCloseSwap = false;
     this.swapClosed = true;
     this.cleanErrors();

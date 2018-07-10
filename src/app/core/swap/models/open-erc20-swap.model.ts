@@ -5,7 +5,7 @@ export interface OpenErc20Swap {
   openTrader: string;
   withdrawTrader: string;
   erc20Value: number;
-  erc20ContractAddress: string,
+  erc20ContractAddress: string;
   timelock: number;
   openedOn: Date;
   state: SwapState;

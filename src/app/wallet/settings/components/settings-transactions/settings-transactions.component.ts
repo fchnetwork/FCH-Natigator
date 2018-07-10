@@ -4,9 +4,9 @@ import { SettingsService } from '@app/core/settings/settings.service';
 
 
 @Component({
-  selector: 'app-settingsTransactions',
-  templateUrl: './settingsTransactions.component.html',
-  styleUrls: ['./settingsTransactions.component.scss']
+  selector: 'app-settings-transactions',
+  templateUrl: './settings-transactions.component.html',
+  styleUrls: ['./settings-transactions.component.scss']
 })
 export class SettingsTransactionsComponent implements OnInit {
 

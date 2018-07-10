@@ -39,7 +39,8 @@ export class EthereumTokenService extends BaseContractService {
     const tokens = [];
     if(includeEth){
       tokens.push({
-        symbol: 'ETH'
+        symbol: 'ETH',
+        address: '0x0'
       });
     }
     return tokens.concat(this.tokenStorageService.getTokens());
