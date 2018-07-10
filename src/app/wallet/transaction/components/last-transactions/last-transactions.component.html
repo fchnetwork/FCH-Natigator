@@ -34,11 +34,8 @@
         </div>
       </div>
     </div>
-    <div *ngIf="!showedAll" class="show-more-label-div">
-      <div class="show-more-label" (click)="showTransactions()">{{'SHOW_MORE'|translate}}</div>
-    </div>
-    <div *ngIf="showedAll" class="show-more-label-div">
-      <div class="show-more-label" (click)="hideTransactions()">{{'SHOW_LESS'|translate}}</div>
-    </div>
+    <app-divider [showLine]="false"></app-divider>
+    <div style="text-align: center;" *ngIf="!transactionsLoaded">Loading...</div>
+    <aer-button *ngIf="transactionsLoaded" class="full-width blue" (buttonFn)="loadMoreTransactions()">{{'SHOW_MORE'|translate}}</aer-button>
   </div>
 </aer-card>
