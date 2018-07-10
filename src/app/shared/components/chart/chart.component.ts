@@ -40,6 +40,12 @@ export class ChartComponent implements OnInit {
             lineStyle: {
                 color: '#EAF0F4'
             }
+        },
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: '#EAF0F4'
+            }
         }
     },
     yAxis: {
@@ -48,14 +54,10 @@ export class ChartComponent implements OnInit {
             lineStyle: {
                 color: '#EAF0F4'
             }
-        }
-    },
-    axis: {
-        axisLine: {
+        },
+        splitLine: {
             lineStyle: {
-                color: '#fff',
-                width: 5,
-                type: 'solid'
+                color: '#EAF0F4'
             }
         }
     },
@@ -68,8 +70,8 @@ export class ChartComponent implements OnInit {
                 }
             },
             data: [0, 120, 300, 150, 350, 100, 182, 50, 350, 20, 250, 0],
-        type: 'line',
-        itemStyle: {
+            type: 'line',
+            itemStyle: {
                 normal: {
                     color: 'rgb(69, 140, 201)'
                 }
