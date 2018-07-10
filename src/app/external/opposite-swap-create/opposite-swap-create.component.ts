@@ -18,7 +18,9 @@ import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.servi
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { Token } from "@core/transactions/token-service/token.model";
-import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { SwapType } from "@core/swap/models/swap-type.enum";
+import { TokenType } from "@core/swap/models/token-type.enum";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
@@ -247,13 +249,16 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       (txHash) => this.onOpenSwapHashReceived(txHash)
     );
 
-    const localSwap: EtherSwapReference = {
+    const localSwap: SwapReference = {
       hash,
       secret: this.secret,
       account: this.params.account,
       walletType: this.params.wallet,
+      walletTokenAddress: this.params.token,
+      walletTokenSymbol: this.params.symbol,
       token: this.selectedToken.address,
-      tokenAmount: this.amount
+      tokenAmount: this.amount,
+      swapType: SwapType.Withdrawal,
     };
     if(this.walletTokenSymbol === this.ethSymbol){
       localSwap.ethAmount = this.tokenAmount;

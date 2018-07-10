@@ -58,6 +58,10 @@ export class EthereumTokenService extends BaseContractService {
     return this.tokenStorageService.saveTokens(tokens);
   }
 
+  getLocalTokenInfo(address: string): Token {
+    return this.tokenStorageService.getLocalTokenInfo(address);
+  }
+
   async getBalance(wallet = EthWalletType.Imported, contractAddress: string, account: string): Promise<number> {
     const contract = await this.createContractByAddress(wallet, contractAddress);
     const tokenBalanceOf = this.call(contract.methods.balanceOf(account));

@@ -14,7 +14,7 @@ import { SwapState } from "@core/swap/models/swap-state.enum";
 import { OpenEtherSwap } from "@core/swap/models/open-ether-swap.model";
 import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
 import { CounterErc20Swap } from "@core/swap/models/counter-erc20-swap.model";
-import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
@@ -38,7 +38,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   private walletTokenSymbol;
   private query: string;
 
-  private localSwap: EtherSwapReference;
+  private localSwap: SwapReference;
   private etherSwap: OpenEtherSwap;
   private erc20Swap: OpenErc20Swap;
 
@@ -109,8 +109,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.hash = param.hash;
     this.query = param.query;
-    this.walletTokenAddress = param.token;
-    this.walletTokenSymbol = param.symbol;
 
     this.loadLocalSwap();
 
@@ -215,6 +213,8 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     if (!this.localSwap) {
       throw new Error('Cannot load data for local swap: ' + this.hash);
     }
+    this.walletTokenAddress = this.localSwap.walletTokenAddress;
+    this.walletTokenSymbol = this.localSwap.walletTokenSymbol;
     this.secret = this.localSwap.secret;
   }
 

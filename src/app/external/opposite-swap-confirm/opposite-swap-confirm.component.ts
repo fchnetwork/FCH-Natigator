@@ -11,7 +11,7 @@ import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 
 import { SwapState } from "@core/swap/models/swap-state.enum";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
-import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
@@ -38,7 +38,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   private walletTokenSymbol;
   private query: string;
 
-  private localSwap: EtherSwapReference;
+  private localSwap: SwapReference;
 
   private erc20Swap: OpenErc20Swap;
 
@@ -109,8 +109,6 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
 
     this.hash = param.hash;
     this.query = param.query;
-    this.walletTokenAddress = param.token;
-    this.walletTokenSymbol = param.symbol;
 
     this.loadLocalSwap();
     await this.loadErc20Swap();
@@ -186,6 +184,8 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     if (!this.localSwap) {
       throw new Error('Cannot load data for local swap: ' + this.hash);
     }
+    this.walletTokenAddress = this.localSwap.walletTokenAddress;
+    this.walletTokenSymbol = this.localSwap.walletTokenSymbol;
     this.secret = this.localSwap.secret;
   }
 

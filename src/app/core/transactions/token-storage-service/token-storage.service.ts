@@ -49,4 +49,14 @@ export class TokenStorageService {
     updatedTokens.push(token);
     this.saveTokens(updatedTokens);
   }
+
+  getLocalTokenInfo(address: string): Token {
+    if (!address) {
+      return null;
+    }
+
+    const tokens = this.getTokens();
+    const token = tokens.find(item => item.address.toLowerCase() === address.toLowerCase());
+    return token;
+  }
 }
