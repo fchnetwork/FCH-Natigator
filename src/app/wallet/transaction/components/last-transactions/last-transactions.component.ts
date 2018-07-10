@@ -4,6 +4,7 @@ import { TransactionService } from '@app/core/transactions/transaction-service/t
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { iTransaction } from '@shared/app.interfaces';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
+import { SettingsService } from '@app/core/settings/settings.service';
 
 @Component({
   selector: 'app-last-transactions',
@@ -12,18 +13,22 @@ import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.se
 })
 export class LastTransactionsComponent implements OnInit {
   transactions: iTransaction[] = [];
-  limit = 3;
-  showedAll = false;
+  limit: number;
+  transactionsLoaded: boolean = false;
+  hideTxns: boolean = false;
   constructor(
     private sessionStorage: SessionStorageService,
     private transactionService: TransactionService,
     private modalService: ModalService,
-    public explorerService: ExplorerService
+    public explorerService: ExplorerService,
+    public settingsService: SettingsService
   ) {
+    this.limit = Number(this.settingsService.settings.transactionSettings.lastTransactionsNumber);
     setInterval(() => {
       this.transactions = this.sessionStorage.retrieve('transactions').sort((b, a) => {
         const c: any = new Date(a.date);
         const d: any = new Date(b.date);
+        this.transactionsLoaded = true;
         return c - d;
       });
     }, 3000);
@@ -40,13 +45,16 @@ export class LastTransactionsComponent implements OnInit {
     return amount > 0;
   }
 
-  showTransactions() {
-    this.limit = 1000;
-    this.showedAll = true;
+  loadMoreTransactions() {
+    this.limit += Number(this.settingsService.settings.transactionSettings.lastTransactionsNumber);
+    if (this.limit >= this.transactions.length) {
+      this.hideTxns = true;
+    }
   }
+
   hideTransactions() {
-    this.limit = 3;
-    this.showedAll = false;
+    this.limit = Number(this.settingsService.settings.transactionSettings.lastTransactionsNumber);
+    this.hideTxns = false;
   }
 
   ngOnInit() { }
@@ -58,5 +66,4 @@ export class LastTransactionsComponent implements OnInit {
         }).catch(() => { });
       });
   }
-
 }

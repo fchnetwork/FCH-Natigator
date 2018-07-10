@@ -1,0 +1,53 @@
+.token-list {
+    &__title {
+      font-size: 18px;
+      padding: 0;
+      color: #2d353d;
+    }
+  
+    &__add-token {
+      text-align: right;
+      white-space: nowrap;
+    }
+  
+    & aer-table {
+      & aer-icon {
+        font-size: 20px;
+        margin-right: 5px;
+        color: #42526e;
+      }
+  
+      & .flex-container {
+        display: flex;
+        align-items: center;
+  
+        &--right-align {
+          justify-content: right;
+        }
+      }
+    }
+  
+    &__row-title {
+      &--right-align {
+        text-align: right;
+      }
+    }
+  
+    &__row-data {
+      &--token-name {
+        color: #2D353D;
+        font-weight: 600;
+      }
+  
+      &--right-align {
+        text-align: right;
+      }
+    }
+  
+    & .operation-icon {
+      cursor: pointer;
+      &--delete {
+        font-size: 14px;
+      }
+    }
+  }
