@@ -5,6 +5,7 @@ import { SettingsGeneralComponent } from "@app/wallet/settings/components/settin
 import { SettingsTokenComponent } from "@app/wallet/settings/components/settings-token/settings-token.component";
 import { SettingsTransactionsComponent } from "@app/wallet/settings/components/settings-transactions/settings-transactions.component";
 import { SettingsSystemComponent } from "@app/wallet/settings/components/settings-system/settings-system.component";
+import { SettingsEthereumWalletComponent } from "@app/wallet/settings/components/settings-ethereum-wallet/settings-ethereum-wallet.component";
 import { SettingsComponent } from '@app/wallet/settings/settings.component';
 
 export const DIAGNOSTICS_ROUTES: Routes = [
@@ -36,6 +37,10 @@ export const DIAGNOSTICS_ROUTES: Routes = [
       {
         path: 'system',
         component: SettingsSystemComponent
+      },
+      {
+        path: 'ethereum-wallet',
+        component: SettingsEthereumWalletComponent
       }
     ]
   }
