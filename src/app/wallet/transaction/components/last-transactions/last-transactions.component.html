@@ -35,8 +35,8 @@
       </div>
     </div>
     <app-divider [showLine]="false"></app-divider>
-    <div style="text-align: center;" *ngIf="!transactionsLoaded">Loading...</div>
-    <aer-button *ngIf="transactionsLoaded && !hideTxns" class="full-width blue" (buttonFn)="loadMoreTransactions()">{{'SHOW_MORE'|translate}}</aer-button>
+    <div style="text-align: center;" *ngIf="!transactions.length">No transaction history</div>
+    <aer-button *ngIf="transactions.length && !hideTxns" class="full-width blue" (buttonFn)="loadMoreTransactions()">{{'SHOW_MORE'|translate}}</aer-button>
     <aer-button *ngIf="hideTxns" class="full-width blue" (buttonFn)="hideTransactions()">{{'SHOW_LESS'|translate}}</aer-button>
   </div>
 </aer-card>
