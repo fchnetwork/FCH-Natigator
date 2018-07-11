@@ -96,7 +96,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
         this.logger.logError('Cannot load token information', e);
         this.notificationService.showMessage('Please configure the token first', 'Error');
       } else {
-        this.logger.logError('Opposite swap load error', e);
+        this.logger.logError('Withdrawal swap load error', e);
         this.notificationService.showMessage('Cannot load swap', 'Error');
       }
     }
@@ -157,20 +157,20 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
 
     if (this.erc20Swap.state === SwapState.Closed) {
       this.swapClosed = true;
-      this.logger.logMessage('Opening opposite swap already closed:' + this.hash);
+      this.logger.logMessage('Opening withdrawal swap already closed:' + this.hash);
       return;
     }
 
     if (this.erc20Swap.state === SwapState.Expired) {
       this.swapCancelled = true;
-      this.logger.logMessage('Opening opposite swap already cancelled:' + this.hash);
+      this.logger.logMessage('Opening withdrawal swap already cancelled:' + this.hash);
       return;
     }
 
     const now = this.now();
     if (now >= this.erc20Swap.timelock) {
       this.onSwapExpired();
-      this.logger.logMessage('Opening opposite swap expired but not cancelled:' + this.hash);
+      this.logger.logMessage('Opening withdrawal swap expired but not cancelled:' + this.hash);
       return;
     }
   }
@@ -193,7 +193,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     this.counterEtherSwapLoadTimerInterval = setInterval(async () => {
       // NOTE: Prevent double loading from events
       if (this.loadingCounterEtherSwap) {
-        this.logger.logMessage(`Opposite swap ${this.hash} is already being loaded...`);
+        this.logger.logMessage(`Withdrawal swap ${this.hash} is already being loaded...`);
         return;
       }
       if (this.swapClosed || this.swapCancelled || this.swapExpired) {
@@ -210,7 +210,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
           await this.tryLoadCounterSwap(counterSwap.state, counterSwap.timelock, counterSwap.value);
         }
       } catch(e) {
-        this.logger.logError(`Opposite swap ${this.hash} loading failed`, e);
+        this.logger.logError(`Withdrawal swap ${this.hash} loading failed`, e);
       }
       finally {
         this.loadingCounterEtherSwap = false;
@@ -222,7 +222,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     this.counterErc20SwapLoadTimerInterval = setInterval(async () => {
       // NOTE: Prevent double loading from events
       if (this.loadingCounterErc20Swap) {
-        this.logger.logMessage(`Opposite swap ${this.hash} is already being loaded...`);
+        this.logger.logMessage(`Withdrawal swap ${this.hash} is already being loaded...`);
         return;
       }
       if (this.swapClosed || this.swapCancelled || this.swapExpired) {
@@ -241,7 +241,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
           this.tryLoadCounterSwap(counterSwap.state, counterSwap.timelock, value);
         }
       } catch(e) {
-        this.logger.logError(`Opposite swap ${this.hash} loading failed`, e);
+        this.logger.logError(`Withdrawal swap ${this.hash} loading failed`, e);
       }
       finally {
         this.loadingCounterErc20Swap = false;
@@ -315,12 +315,12 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   async complete() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Completing swap', 'In Progress...');
+      this.notificationService.showMessage('Completing withdrawal swap', 'In Progress...');
       await this.closeSwap();
-      this.notificationService.showMessage('Swap closed', 'Done');
+      this.notificationService.showMessage('Withdrawal swap closed', 'Done');
     } catch (e) {
-      this.logger.logError('Opposite swap close error', e);
-      this.notificationService.showMessage('Swap close error', 'Unhandled error');
+      this.logger.logError('Withdrawal swap close error', e);
+      this.notificationService.showMessage('Withdrawal swap close error', 'Unhandled error');
     } finally {
       this.processing = false;
     }
@@ -349,12 +349,12 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   async cancel() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Cancelling swap', 'In Progress...');
+      this.notificationService.showMessage('Cancelling withdrawal swap', 'In Progress...');
       await this.cancelSwap();
-      this.notificationService.showMessage('Swap canceled', 'Done');
+      this.notificationService.showMessage('Withdrawal swap canceled', 'Done');
     } catch (e) {
-      this.logger.logError('Opposite swap cancel error', e);
-      this.notificationService.showMessage('Swap cancel error', 'Unhandled error');
+      this.logger.logError('Withdrawal swap cancel error', e);
+      this.notificationService.showMessage('Withdrawal swap cancel error', 'Unhandled error');
     } finally {
       this.processing = false;
     }

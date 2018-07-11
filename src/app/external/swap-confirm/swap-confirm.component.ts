@@ -96,8 +96,8 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
         this.logger.logError('Cannot load token information', e);
         this.notificationService.showMessage('Please configure the token first', 'Error');
       } else {
-        this.logger.logError('Swap load error', e);
-        this.notificationService.showMessage('Cannot load swap', 'Error');
+        this.logger.logError('Deposit swap load error', e);
+        this.notificationService.showMessage('Cannot load deposit swap', 'Error');
       }
     }
   }
@@ -319,12 +319,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   async complete() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Completing swap', 'In Progress...');
+      this.notificationService.showMessage('Completing deposit swap', 'In Progress...');
       await this.closeSwap();
-      this.notificationService.showMessage('Swap closed', 'Done');
+      this.notificationService.showMessage('Deposit swap closed', 'Done');
     } catch (e) {
-      this.logger.logError('Swap close error', e);
-      this.notificationService.showMessage('Swap close error', 'Unhandled error');
+      this.logger.logError('Deposit swap close error', e);
+      this.notificationService.showMessage('Deposit swap close error', 'Unhandled error');
     } finally {
       this.processing = false;
     }
@@ -341,12 +341,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   async cancel() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Cancelling swap', 'In Progress...');
+      this.notificationService.showMessage('Cancelling deposit swap', 'In Progress...');
       await this.cancelSwap();
-      this.notificationService.showMessage('Swap canceled', 'Done');
+      this.notificationService.showMessage('Deposit swap canceled', 'Done');
     } catch (e) {
-      this.logger.logError('Swap cancel error', e);
-      this.notificationService.showMessage('Swap cancel error', 'Unhandled error');
+      this.logger.logError('Deposit swap cancel error', e);
+      this.notificationService.showMessage('Deposit swap cancel error', 'Unhandled error');
     } finally {
       this.processing = false;
     }

@@ -20,7 +20,6 @@ import { TokenService } from "@core/transactions/token-service/token.service";
 import { Token } from "@core/transactions/token-service/token.model";
 import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { SwapType } from "@core/swap/models/swap-type.enum";
-import { TokenType } from "@core/swap/models/token-type.enum";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
@@ -87,8 +86,8 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
         this.logger.logError('Cannot load token information', e);
         this.notificationService.showMessage('Please configure the token first', 'Error');
       } else {
-        this.logger.logError('Opposite swap data load error', e);
-        this.notificationService.showMessage('Cannot load opposite swap screen', 'Error');
+        this.logger.logError('Withdrawal swap data load error', e);
+        this.notificationService.showMessage('Cannot load withdrawal swap screen', 'Error');
       }
     }
   }
@@ -215,15 +214,15 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   async next() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Creating opposite swap... (please wait 10-15 seconds)', 'In progress');
+      this.notificationService.showMessage('Creating withdrawal swap... (please wait 10-15 seconds)', 'In progress');
       await this.openERC20Swap();
-      this.notificationService.showMessage('Opposite swap created. Waiting for confirmation...', 'Success');
+      this.notificationService.showMessage('Withdrawal swap created. Waiting for confirmation...', 'Success');
     }
     catch (e) {
       // NOTE: We show more detailed errors for injected web3 in called functions
       if(!(e instanceof InjectedWeb3Error)) {
-        this.logger.logError('Error while creating opposite swap', e);
-        this.notificationService.showMessage('Error while creating opposite swap', 'Unhandled error');
+        this.logger.logError('Error while creating withdrawal swap', e);
+        this.notificationService.showMessage('Error while creating withdrawal swap', 'Unhandled error');
       }
     } finally {
       this.processing = false;
@@ -267,7 +266,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     }
     this.swapLocalStorageService.storeSwapReference(localSwap);
     this.swapCreated = true;
-    this.logger.logMessage(`Opposite swap ${hash} created`);
+    this.logger.logMessage(`Withdrawal swap ${hash} created`);
     return this.router.navigate(['external/confirm-opposite-swap'], {queryParams: {hash, query: this.params.query, token: this.params.token, symbol: this.params.symbol}});
   }
 
