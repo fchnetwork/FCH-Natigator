@@ -292,6 +292,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     if (state === SwapState.Closed) {
       this.logger.logMessage('Counter swap already closed');
       this.canCloseSwap = false;
+      this.swapClosed = true;
       this.showError('Counter swap already closed');
       return;
     }
@@ -376,10 +377,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   close() {
-    if(this.query) {
-      return this.router.navigate(['external/transaction'], {queryParams: {query: this.query}});
-    }
-    this.location.back();
+    return this.router.navigate(['wallet/swap']);
   }
 
   private showError(message: string): void {
