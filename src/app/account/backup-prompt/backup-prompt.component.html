@@ -1,13 +1,13 @@
 <aer-modal-container>
   <div class="account backup-confirmation">
-    <div class="header">{{'CREATE_BACKUP'|translate}}</div>
+    <div class="header">{{'ACCOUNT.BACKUP_PROMPT.TITLE'|translate}}</div>
     <app-divider></app-divider>
-    <div class="b-text">{{'BACKUP_PHRASE'|translate}}</div>
+    <div class="b-text">{{'ACCOUNT.BACKUP_PROMPT.SUBTITLE'|translate}}</div>
     <app-divider [showLine]="false"></app-divider>
-    <aer-button class="large full-width" (buttonFn)="createBackup()">{{'CREATE_BACKUP'|translate}}</aer-button>
+    <aer-button class="large full-width" (buttonFn)="createBackup()">{{'ACCOUNT.BACKUP_PROMPT.BACKUP_BTN'|translate}}</aer-button>
     <app-divider label="{{'OR'|translate}}"></app-divider>
     <div class="link-text">
-        <a (click)="skipStep()" routerLink="/wallet/home">{{'SKIP_STEP'|translate}}</a>
+        <a (click)="skipStep()" routerLink="/wallet/home">{{'ACCOUNT.BACKUP_PROMPT.SKIP_STEP'|translate}}</a>
     </div>
   </div>
 </aer-modal-container>

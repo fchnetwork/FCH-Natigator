@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { SettingsService } from '@app/core/settings/settings.service';
 
 export interface iDerivationPaths {
@@ -29,7 +29,7 @@ export class DerivationPathComponent {
   }]  
   
   constructor(
-      private notificationService: InternalNotificationService,
+      private notificationService: NotificationMessagesService,
       private settingsService: SettingsService ) 
   {
     let activeDerivation = this.settingsService.settings.generalSettings.derivationPath;
@@ -47,9 +47,9 @@ export class DerivationPathComponent {
    * @param {*} evt
    * @memberof DerivationPathComponent
    */
-  derivationChanged(evt){
+  derivationChanged(evt: iDerivationPaths){
     this.settingsService.saveSetting("generalSettings", "derivationPath", evt.derivation)
-    this.notificationService.showMessage(`Derivation path is now ${evt.derivation}`, 'YOUR DERIVATION PATH HAS BEEN MODIFIED');
+    this.notificationService.derivationModified(evt.derivation);
   }
 
 }

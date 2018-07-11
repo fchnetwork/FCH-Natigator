@@ -1,16 +1,16 @@
 <aer-modal-container>
     <div class="account backup-create">
-      <div class="header">{{'SAVE_PHRASE'|translate}}</div>
+      <div class="header">{{'ACCOUNT.BACKUP_CREATE.TITLE'|translate}}</div>
       <app-divider></app-divider>
-      <div class="b-text">{{'SAVE_PHRASE_TEXT'|translate}}</div>
-      <aer-button class="medium blue" (buttonFn)="savePhrase()">{{'SAVE_FILE'|translate}}</aer-button>
+      <div class="b-text">{{'ACCOUNT.BACKUP_CREATE.SUBTITLE'|translate}}</div>
+      <aer-button class="medium blue" (buttonFn)="savePhrase()">{{'ACCOUNT.BACKUP_CREATE.SAVE_FILE_BTN'|translate}}</aer-button>
       <app-divider label="{{'OR'|translate}}"></app-divider>
       <div class="warning-text">
-        {{'WRITE_SEED'|translate}} <a style="cursor: pointer" (click)="copyToClipboard()">{{'WRITE_SEED_COPY' | translate}}</a>
+        {{'ACCOUNT.BACKUP_CREATE.WRITE_DOWN'|translate}} <a style="cursor: pointer" (click)="copyToClipboard()">{{'ACCOUNT.BACKUP_CREATE.COPY_LINK' | translate}}</a>
       </div>
       <div class="phrase">
         {{seed}}
       </div>
-      <aer-button class="large full-width" (buttonFn)="confirmBackup()">{{'SAVED_IT'|translate}}</aer-button>
+      <aer-button class="large full-width" (buttonFn)="confirmBackup()">{{'ACCOUNT.BACKUP_CREATE.ACKNOWLEDGE_BTN'|translate}}</aer-button>
     </div>
   </aer-modal-container>

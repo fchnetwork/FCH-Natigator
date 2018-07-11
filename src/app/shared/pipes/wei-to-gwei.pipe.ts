@@ -15,7 +15,7 @@ export class WeiToGweiPipe implements PipeTransform {
 
   transform( amount: any ): any {
       if( amount > 0) {
-        this.coversionRate =  this.web3.utils.fromWei( amount.toString(), 'ether')
+        this.coversionRate =  this.web3.utils.fromWei( amount.toString(), 'gwei')
       } else {
         this.coversionRate = 0;
       }

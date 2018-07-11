@@ -21,7 +21,7 @@ export class ChartComponent implements OnInit {
         baseline: 'bottom'
     },
     grid: {
-        x: 30,
+        x: 40,
         y: 20,
         x2: 20,
         y2: 20
@@ -69,7 +69,7 @@ export class ChartComponent implements OnInit {
                     return [pt[0], '10%'];
                 }
             },
-            data: [0, 120, 300, 150, 350, 100, 182, 50, 350, 20, 250, 0],
+            data: [0, 120, 130, 250, 350, 800, 810, 950, 1200, 1245, 1500, 1870],
             type: 'line',
             itemStyle: {
                 normal: {
