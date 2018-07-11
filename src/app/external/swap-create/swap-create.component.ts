@@ -16,7 +16,6 @@ import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
 import { SwapType } from "@core/swap/models/swap-type.enum";
-import { TokenType } from "@core/swap/models/token-type.enum";
 import { Token } from "@core/transactions/token-service/token.model";
 import { Chain } from "@core/swap/cross-chain/swap-template-service/chain.enum";
 import { SwapTemplate } from "@core/swap/cross-chain/swap-template-service/swap-template.model";
@@ -96,8 +95,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
         this.logger.logError('Cannot load token information', e);
         this.notificationService.showMessage('Please configure the token first', 'Error');
       } else {
-        this.logger.logError('Swap data load error', e);
-        this.notificationService.showMessage('Cannot load swap screen', 'Error');
+        this.logger.logError('Deposit swap data load error', e);
+        this.notificationService.showMessage('Cannot load deposit swap screen', 'Error');
       }
     }
   }
@@ -244,15 +243,15 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   async next() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Creating swap... (please wait 10-15 seconds)', 'In progress');
+      this.notificationService.showMessage('Creating deposit swap... (please wait 10-15 seconds)', 'In progress');
       await this.openSwap();
-      this.notificationService.showMessage('Swap created. Waiting for confirmation...', 'Success');
+      this.notificationService.showMessage('Deposit swap created. Waiting for confirmation...', 'Success');
     }
     catch (e) {
       // NOTE: We show more detailed errors for injected web3 in called functions
       if(!(e instanceof InjectedWeb3Error)) {
-        this.logger.logError('Error while creating swap', e);
-        this.notificationService.showMessage('Error while creating swap', 'Unhandled error');
+        this.logger.logError('Error while creating deposit swap', e);
+        this.notificationService.showMessage('Error while creating deposit swap', 'Unhandled error');
       }
     } finally {
       this.processing = false;
