@@ -70,7 +70,7 @@
           </div>
           <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="canCloseSwap" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_COMPLETE_SWAP'|translate}}</aer-button>
           <aer-button (buttonFn)="cancel()" class="blue large full-width" *ngIf="swapExpired && !swapCancelled" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_CANCEL_SWAP'|translate}}</aer-button>
-          <aer-button (buttonFn)="close()" class="blue large full-width" [disabled]="processing" (ngClass)="{ 'blue': !processing, 'grey': processing }">{{ ((swapClosed || swapExpired) ? "EXTERNAL-SWAP.CONFIRM.BTN_CLOSE" : "EXTERNAL-SWAP.CONFIRM.BTN_CANCEL")|translate}}</aer-button>
+          <aer-button (buttonFn)="close()" class="blue large full-width" [disabled]="processing" (ngClass)="{ 'blue': !processing, 'grey': processing }">{{'EXTERNAL-SWAP.CONFIRM.BTN_CLOSE'|translate}}</aer-button>
         </div>
       </aer-modal-dialog>
     </div>
