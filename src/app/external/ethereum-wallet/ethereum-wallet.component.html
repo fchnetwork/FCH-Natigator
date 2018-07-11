@@ -53,7 +53,7 @@
           </div>
           <div aerRow>
             <div aerColumn size="sm-12" class="cell cell--left">
-              {{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_TOKEN'|translate}}
+              {{(params.direction === 'opposite' ? 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_ASSET_TO_RECEIVE' : 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_ASSET_TO_SEND')|translate}}
             </div>
           </div>
           <div aerRow *ngIf="address">
