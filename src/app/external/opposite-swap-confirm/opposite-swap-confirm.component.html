@@ -3,7 +3,7 @@
     <div class="modal-content">
       <aer-modal-dialog>
         <div class="swap-confirm swap-confirm__table swap-confirm__unlock">
-          <h1>{{(swapCancelled ? 'EXTERNAL-SWAP.CONFIRM.TITLE_CANCELLED_SWAP' : swapClosed ? 'EXTERNAL-SWAP.CONFIRM.TITLE_WITHDRAW_SWAP' : swapExpired ? 'EXTERNAL-SWAP.CONFIRM.TITLE_CANCEL_SWAP' : canCloseSwap ? 'EXTERNAL-SWAP.CONFIRM.TITLE_COMPLETE_SWAP' : 'EXTERNAL-SWAP.CONFIRM.TITLE_WAITING_COUNTERPARTY')|translate}}</h1>
+          <h1>{{(swapCancelled ? 'EXTERNAL-SWAP.CONFIRM.TITLE_CANCELLED_SWAP' : swapClosed ? 'EXTERNAL-SWAP.CONFIRM.TITLE_WITHDRAWAL_SWAP' : swapExpired ? 'EXTERNAL-SWAP.CONFIRM.TITLE_CANCEL_SWAP' : canCloseSwap ? 'EXTERNAL-SWAP.CONFIRM.TITLE_COMPLETE_SWAP' : 'EXTERNAL-SWAP.CONFIRM.TITLE_WAITING_COUNTERPARTY')|translate}}</h1>
           <div *ngFor="let error of errors" aerRow>
             <div aerColumn size="sm-12" class="cell cell_left error">{{error}}</div>
           </div>
