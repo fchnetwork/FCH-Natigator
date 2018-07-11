@@ -245,28 +245,9 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       amount,
       counterpartyTrader,
       timestamp,
-      (txHash) => this.onOpenSwapHashReceived(txHash)
+      (txHash) => this.onOpenSwapHashReceived(txHash, hash)
     );
 
-    const localSwap: SwapReference = {
-      hash,
-      secret: this.secret,
-      account: this.params.account,
-      walletType: this.params.wallet,
-      walletTokenAddress: this.params.token,
-      walletTokenSymbol: this.params.symbol,
-      token: this.selectedToken.address,
-      tokenAmount: this.amount,
-      swapType: SwapType.Withdrawal,
-    };
-    if(this.walletTokenSymbol === this.ethSymbol){
-      localSwap.ethAmount = this.tokenAmount;
-    }else{
-      localSwap.erc20Amount = this.tokenAmount;
-    }
-    this.swapLocalStorageService.storeSwapReference(localSwap);
-    this.swapCreated = true;
-    this.logger.logMessage(`Withdrawal swap ${hash} created`);
     return this.router.navigate(['external/confirm-opposite-swap'], {queryParams: {hash, query: this.params.query, token: this.params.token, symbol: this.params.symbol}});
   }
 
@@ -310,8 +291,28 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
   }
 
-  private onOpenSwapHashReceived(hash: string): void {
-    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(hash, Chain.Aerum);
+  private onOpenSwapHashReceived(txHash: string, hash: string): void {
+    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Aerum);
+
+    const localSwap: SwapReference = {
+      hash,
+      secret: this.secret,
+      account: this.params.account,
+      walletType: this.params.wallet,
+      walletTokenAddress: this.params.token,
+      walletTokenSymbol: this.params.symbol,
+      token: this.selectedToken.address,
+      tokenAmount: this.amount,
+      swapType: SwapType.Withdrawal,
+    };
+    if(this.walletTokenSymbol === this.ethSymbol){
+      localSwap.ethAmount = this.tokenAmount;
+    }else{
+      localSwap.erc20Amount = this.tokenAmount;
+    }
+    this.swapLocalStorageService.storeSwapReference(localSwap);
+    this.swapCreated = true;
+    this.logger.logMessage(`Withdrawal swap ${hash} created`);
   }
 
   cancel() {
