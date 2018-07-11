@@ -3,21 +3,20 @@
 <div aerRow>
     <div class="settings">
         <div class="settings__tab" [routerLink]="['/wallet/settings/general']" routerLinkActive="settings__tab--selected">
-            <span>General</span><aer-icon>gear</aer-icon>
+            <span>{{'SETTINGS.GENERAL.TAB_TITLE'|translate}}</span><aer-icon>gear</aer-icon>
         </div>
         <div class="settings__tab" [routerLink]="['/wallet/settings/transactions']" routerLinkActive="settings__tab--selected">
-            <span>Transactions</span><aer-icon>transaction</aer-icon>
+            <span>{{'SETTINGS.TRANSACTIONS.TAB_TITLE'|translate}}</span><aer-icon>transaction</aer-icon>
         </div>
         <div class="settings__tab" [routerLink]="['/wallet/settings/system']" routerLinkActive="settings__tab--selected">
-            <span>System</span><aer-icon>node</aer-icon>
+            <span>{{'SETTINGS.SYSTEM.TAB_TITLE'|translate}}</span><aer-icon>node</aer-icon>
         </div>
         <div class="settings__tab" [routerLink]="['/wallet/settings/backup']" routerLinkActive="settings__tab--selected">
-            <span>Backup</span><aer-icon>backup</aer-icon>
+            <span>{{'SETTINGS.BACKUP.TAB_TITLE'|translate}}</span><aer-icon>backup</aer-icon>
         </div>
         <div class="settings__tab" [routerLink]="['/wallet/settings/ethereum-wallet']" routerLinkActive="settings__tab--selected">
-            <span>Ethereum Wallet</span><aer-icon>ehtereum</aer-icon>
-        </div>
-                
+            <span>{{'SETTINGS.ETHWALLET.TAB_TITLE'|translate}}</span><aer-icon>ehtereum</aer-icon>
+        </div>                
         <div class="settings__tab-content">
             <section>
                 <router-outlet></router-outlet>

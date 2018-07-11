@@ -152,7 +152,6 @@ export class TransactionService {
             const rawTransaction:any = {
               nonce: this.web3.utils.toHex( nonce ),
               gas: this.web3.utils.toHex( gas ),
-              // TODO: export it to any config and import from there
               gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( this.settingsService.settings.transactionSettings.gasPrice, 'gwei')),
               to,
               value: txValue,

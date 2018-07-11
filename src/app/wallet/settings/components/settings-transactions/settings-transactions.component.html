@@ -1,21 +1,21 @@
 <div class="settings--form">
   <div class="vertical--container">
-      <h3>Transactions</h3>
+      <h3>{{'SETTINGS.TRANSACTIONS.TAB_TITLE'|translate}}</h3>
       <app-divider [fullWidth]="true"></app-divider>
       <p>
-        Default gas price
+        {{'SETTINGS.TRANSACTIONS.DEFAULT_GAS_PRICE_LABEL'|translate}}
       </p>
       <aer-input placeholder="Default gas price" [(ngModel)]="transactionSettings.gasPrice" icon="gas" class="with-button blue" buttonLabel="{{'AERO'|translate}}"></aer-input>
       <p>
-        Max amount of gas per txn
+        {{'SETTINGS.TRANSACTIONS.MAX_GAS_PRICE_LABEL'|translate}}
       </p>
       <aer-input placeholder="Max Amount of gas per txn" [(ngModel)]="transactionSettings.maxTransactionGas" icon="gas"></aer-input>
       <p>
-        Number of last transactions to show
+        {{'SETTINGS.TRANSACTIONS.LAST_TRANSACTIONS_LABEL'|translate}}
       </p>
       <aer-input placeholder="Number of transactions" [(ngModel)]="transactionSettings.lastTransactionsNumber" icon="sort-desc"></aer-input>
   </div>
   <div class="vertical--container save--button">
-      <aer-button class="blue" (buttonFn)="saveSettings()">Save</aer-button>
+      <aer-button class="blue" (buttonFn)="saveSettings()">{{'COMMON.BUTTONS.SAVE'|translate}}</aer-button>
   </div>
 </div>
