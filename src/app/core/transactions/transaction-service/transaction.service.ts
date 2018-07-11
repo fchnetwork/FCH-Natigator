@@ -80,11 +80,7 @@ export class TransactionService {
     saveTransaction(from, to, amount, data, hash, type, tokenName, decimals) {
       const date = new Date();
       let transaction;
-      if(tokenName && decimals) {
-        transaction = { from, to, amount, data, date, hash, type, tokenName, decimals };
-      } else {
-        transaction = { from, to, amount, data, date, hash, type };
-      }
+      transaction = { from, to, amount, data, date, hash, type, tokenName, decimals };
       const transactions = this.storageService.getSessionData('transactions') || [];
       transactions.push(transaction);
       this.updateStorage(transactions);
@@ -92,7 +88,6 @@ export class TransactionService {
 
     updateStorage(transactions) {
       const stringTransaction = JSON.stringify(transactions);
-      this.storageService.setCookie('transactions', stringTransaction, true, 7);
       this.storageService.setSessionData('transactions', transactions);
     }
 

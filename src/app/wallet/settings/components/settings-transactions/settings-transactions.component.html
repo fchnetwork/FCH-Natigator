@@ -5,11 +5,11 @@
       <p>
         Default gas price
       </p>
-      <aer-input placeholder="Default gas price" [(ngModel)]="transactionSettings.gasPrice" icon="gas"></aer-input>
+      <aer-input placeholder="Default gas price" [(ngModel)]="transactionSettings.gasPrice" icon="gas" class="with-button blue" buttonLabel="{{'AERO'|translate}}"></aer-input>
       <p>
-        Maximum gas price
+        Max amount of gas per txn
       </p>
-      <aer-input placeholder="Maximum gas price" [(ngModel)]="transactionSettings.maxTransactionGas" icon="gas"></aer-input>
+      <aer-input placeholder="Max Amount of gas per txn" [(ngModel)]="transactionSettings.maxTransactionGas" icon="gas"></aer-input>
       <p>
         Number of last transactions to show
       </p>

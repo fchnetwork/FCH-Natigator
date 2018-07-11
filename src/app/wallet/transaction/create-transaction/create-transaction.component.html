@@ -48,7 +48,7 @@
           <div aerRow>
             <div aerColumn size="sm-6" class="flex-fee">
                 <div class="note">{{'APP_TRANSACTION_FEE'|translate}}</div>
-                <div class="note">{{maxTransactionFee}} gwei</div>
+                <div class="note">{{maxTransactionFee | convertWeiToGwei}} {{'AERO'|translate}}</div>
             </div>
             <div aerColumn size="sm-6">
               <div class="note">{{'MAX_TRANS_FEE_WARNING'|translate}}</div>
@@ -60,11 +60,10 @@
               <div *ngIf="selectedToken.symbol !== 'Aero'" class="amount-total">
                   {{amount}} {{selectedToken.symbol}}
               </div>
-              <div *ngIf="selectedToken.symbol !== 'Aero'" class="input-name">Gas cost</div>
-              <div class="amount-total">
+              <div *ngIf="selectedToken.symbol == 'Aero'" class="amount-total">
                 {{totalAmount}} {{ 'AERO' | translate}}
               </div>
-              <div class="note">
+              <div *ngIf="selectedToken.symbol == 'Aero'" class="note">
                   {{'DATA_INCLUDED'|translate}}: {{includedDataLength}} {{'BYTES'|translate}}
               </div>
             </div>
