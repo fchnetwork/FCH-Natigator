@@ -2,6 +2,7 @@ import { Component, OnDestroy, ViewEncapsulation, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
 import Web3 from "web3";
+import { environment } from "@env/environment";
 
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
@@ -31,6 +32,8 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
 
   injectedWeb3: Web3;
   injectedWeb3Name: string;
+
+  isValidNetwork = false;
 
   walletTypes = EthWalletType;
   selectedWalletType = EthWalletType.Imported;
@@ -73,12 +76,30 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
 
     this.initPredefinedTokens();
     await this.initPredefinedAccount();
+    await this.validateNetwork();
   }
 
   private initPredefinedTokens() {
     this.tokens = this.ethereumTokenService.getTokens(true);
     if(this.tokens.length){
       this.token = this.tokens[0];
+    }
+  }
+
+  async validateNetwork() {
+    let netId = 0;
+    let provider = '';
+    if(this.selectedWalletType === EthWalletType.Imported){
+      netId = await this.web3.eth.net.getId();
+      provider = 'imported';
+    }
+    if(this.selectedWalletType === EthWalletType.Injected){
+      netId = await this.injectedWeb3.eth.net.getId();
+      provider = 'injected';
+    }
+    this.isValidNetwork = environment.ethereum.chainId === netId;
+    if(!this.isValidNetwork) {
+    this.notificationService.showMessage(`Please select Rinkeby network in your ${provider} wallet.`, 'Error');
     }
   }
 
@@ -123,6 +144,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
       } else {
         this.onImportedWalledSelected();
       }
+      await this.validateNetwork();
     } catch (e) {
       this.logger.logError('Error while selecting ethereum account provider', e);
       this.notificationService.showMessage('Unhandled error occurred', 'Error');
