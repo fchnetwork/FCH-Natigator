@@ -166,6 +166,12 @@
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
       "CLOSE": "Close"
+    },
+    "NOTIFICATIONS": {
+      "WRONG_VALUE": {
+          "TITLE": "Form error!",
+          "BODY": "field is incorrect."
+        }
     }
   },
 

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { iGeneralSettings, iSettings } from '@shared/app.interfaces';
 import { SettingsService } from '@app/core/settings/settings.service';
-import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
+import { ValidateService } from '@app/core/validation/validate.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-settings-general',
@@ -15,23 +17,33 @@ export class SettingsGeneralComponent implements OnInit {
     derivationPath: "",
     numberOfBlocks: 0
   }
+  settingsForm: FormGroup = this.formBuilder.group({});
 
-  constructor(private notificationService: InternalNotificationService,
-              private settingsService: SettingsService) 
+  constructor(private notificationMessagesService: NotificationMessagesService,
+              private settingsService: SettingsService,
+              private validateService: ValidateService,
+              private formBuilder: FormBuilder) 
   { 
     this.getGeneralSettings();
   }
 
   ngOnInit() {
+    const regexBlocks = "^(?:[1-9][0-9]{3}|[1-9][0-9]{2}|[1-9][0-9]|[1-9])$";
+    this.settingsForm = this.formBuilder.group({
+      "Number of Blocks": [null, [Validators.required, Validators.pattern(regexBlocks)]]
+    });
   }
 
   saveSettings() {
-    const generalSettings: iGeneralSettings = {
-      language: this.generalSettings.language,
-      derivationPath: this.generalSettings.derivationPath,
-      numberOfBlocks: this.generalSettings.numberOfBlocks
-    };
-    this.settingsService.saveSettings("generalSettings", generalSettings);
+    const valid = this.validateService.validateForm(this.settingsForm, 'All fields are valid');
+    if (valid) {
+      const generalSettings: iGeneralSettings = {
+        language: this.generalSettings.language,
+        derivationPath: this.generalSettings.derivationPath,
+        numberOfBlocks: this.generalSettings.numberOfBlocks
+      };
+      this.settingsService.saveSettings("generalSettings", generalSettings);
+    }
   }
 
   getGeneralSettings() {

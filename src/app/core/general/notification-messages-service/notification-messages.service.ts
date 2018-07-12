@@ -157,6 +157,21 @@ constructor(private notificationService: NotificationService,
       }
 
       /**
+       * Shows notification when field value is wrong
+       *
+       * @param {*} field name of the field
+       * @memberof NotificationMessagesService
+       */
+      public wrongValueProvided(field) {
+        this.notificationService.notify(
+          `${this.translate('COMMON.NOTIFICATIONS.WRONG_VALUE.TITLE')}`,
+          `${field} ${this.translate('COMMON.NOTIFICATIONS.WRONG_VALUE.BODY')}`,
+          'exclamation-triangle', 
+          5000
+        );
+      }
+
+      /**
        *Shows notification when full backup file has been downloaded
        *
        * @memberof NotificationMessagesService

@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
+
 
 @Injectable()
 export class ValidateService {
 
 constructor(
-  private notificationService: InternalNotificationService
+  private notificationMessagesService: NotificationMessagesService
 ) { }
   pushErrNotifications(form){
     for(const field in form.controls) {
       if(form.controls[field].status !== 'VALID'){
-        this.notificationService.showMessage(`${field} field is incorrect.`, 'FormError');
+        this.notificationMessagesService.wrongValueProvided(field);
       }
     }
   }
