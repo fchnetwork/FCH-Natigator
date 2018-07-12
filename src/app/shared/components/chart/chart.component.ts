@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import echarts from 'echarts/lib/echarts'
 
 @Component({
   selector: 'app-chart',
@@ -13,6 +14,18 @@ export class ChartComponent implements OnInit {
   }
 
   chartOption = {
+    textStyle: {
+        color: 'rgb(131, 134, 138)',
+        fontFamily: 'Open Sans, sans-serif',
+        align: 'left',
+        baseline: 'bottom'
+    },
+    grid: {
+        x: 40,
+        y: 20,
+        x2: 20,
+        y2: 20
+    },
     tooltip: {
         trigger: 'axis',
         position: function (pt) {
@@ -22,10 +35,31 @@ export class ChartComponent implements OnInit {
     xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri']
+        data: ['20.01', '21.01', '22.01', '23.01', '24.01', '25.01', '26.01', '27.01', '28.01', '29.01', '30.01', '31.01'],
+        axisLine: {
+            lineStyle: {
+                color: '#EAF0F4'
+            }
+        },
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: '#EAF0F4'
+            }
+        }
     },
     yAxis: {
-        type: 'value'
+        type: 'value',
+        axisLine: {
+            lineStyle: {
+                color: '#EAF0F4'
+            }
+        },
+        splitLine: {
+            lineStyle: {
+                color: '#EAF0F4'
+            }
+        }
     },
     series: [
         {
@@ -35,18 +69,24 @@ export class ChartComponent implements OnInit {
                     return [pt[0], '10%'];
                 }
             },
-            data: [820, 932, 901, 934, 1290, 1330, 1320, 1400, 1280, 987, 1450, 1290],
-        type: 'line',
-        itemStyle: {
+            data: [0, 120, 130, 250, 350, 800, 810, 950, 1200, 1245, 1500, 1870],
+            type: 'line',
+            itemStyle: {
                 normal: {
                     color: 'rgb(69, 140, 201)'
                 }
             },
-        areaStyle: {
-            normal: {
-                    color: 'rgb(69, 140, 201, 0.5)'
-            }
-        }
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(69, 140, 201, 0.7)'
+                    }, {
+                        offset: 1,
+                        color: 'rgba(255, 255, 255, 0)'
+                    }])
+                }
+            },
         }
     ]
 };

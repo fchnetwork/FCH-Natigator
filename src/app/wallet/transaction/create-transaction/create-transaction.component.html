@@ -35,19 +35,6 @@
                     </div>
               </div>
           </div>
-
-          <!-- <span *ngIf="txnForm.controls['senderAddress'].hasError('required') && txnForm.controls['senderAddress'].touched" class="login-error">You must include a sender address.</span>
-          <span *ngIf="txnForm.controls['senderAddress'].hasError('minlength') && txnForm.controls['senderAddress'].touched" class="login-error">Your sender address must be at least 42 characters in length and be prefixed with '0x'.</span>
-          <span *ngIf="txnForm.controls['senderAddress'].hasError('maxlength') && txnForm.controls['senderAddress'].touched" class="login-error">Your sender address cannot exceed 42 characters in length and be prefixed with '0x'.</span>
-          <span *ngIf="txnForm.controls['senderAddress'].hasError('pattern') && txnForm.controls['senderAddress'].touched" class="login-error">sender address needs to be a hex string</span>
-
-          <span *ngIf="txnForm.controls['receiverAddress'].hasError('required') && txnForm.controls['receiverAddress'].touched" class="login-error">You must include a receiverAddress.</span>
-          <span *ngIf="txnForm.controls['receiverAddress'].hasError('minlength') && txnForm.controls['receiverAddress'].touched" class="login-error">Your receiver address must be at least 42 characters in length and be prefixed with '0x'.</span>
-          <span *ngIf="txnForm.controls['receiverAddress'].hasError('maxlength') && txnForm.controls['receiverAddress'].touched" class="login-error">Your receiver address cannot exceed 42 characters in length and be prefixed with '0x'.</span>
-          <span *ngIf="txnForm.controls['receiverAddress'].hasError('pattern') && txnForm.controls['senderAddress'].touched" class="login-error">receiver address needs to be a hex string</span>
-
-          <span *ngIf="txnForm.controls['amount'].hasError('required') && txnForm.controls['amount'].touched" class="login-error">You must specify an amount for the transaction</span>
-          <span *ngIf="txnForm.controls['amount'].hasError('pattern')" class="login-error">must be an integer or decimal.</span> -->
         </form>
         <div class="show-more-button" *ngIf="selectedToken.symbol === 'Aero'">
               <div aerRow>
@@ -61,7 +48,7 @@
           <div aerRow>
             <div aerColumn size="sm-6" class="flex-fee">
                 <div class="note">{{'APP_TRANSACTION_FEE'|translate}}</div>
-                <div class="note">{{maxTransactionFee}} gwei</div>
+                <div class="note">{{maxTransactionFee | convertWeiToGwei}} {{'AERO'|translate}}</div>
             </div>
             <div aerColumn size="sm-6">
               <div class="note">{{'MAX_TRANS_FEE_WARNING'|translate}}</div>
@@ -73,11 +60,10 @@
               <div *ngIf="selectedToken.symbol !== 'Aero'" class="amount-total">
                   {{amount}} {{selectedToken.symbol}}
               </div>
-              <div *ngIf="selectedToken.symbol !== 'Aero'" class="input-name">Gas cost</div>
-              <div class="amount-total">
+              <div *ngIf="selectedToken.symbol == 'Aero'" class="amount-total">
                 {{totalAmount}} {{ 'AERO' | translate}}
               </div>
-              <div class="note">
+              <div *ngIf="selectedToken.symbol == 'Aero'" class="note">
                   {{'DATA_INCLUDED'|translate}}: {{includedDataLength}} {{'BYTES'|translate}}
               </div>
             </div>
@@ -96,12 +82,12 @@
       <div aerRow>
         <div aerColumn size="sm-12">
           <aer-card title="{{'RECEIVE_TO'|translate }}">
-              {{ transactionMessage }}
-              <img [src]="addressQR" alt="">
-              <div class="c-copy__address" >
-                <a (click)="copyToClipboard()">{{ senderAddress }}</a>
-              </div>
-            </aer-card>
+            <div class="qr__adress">
+                {{ transactionMessage }}
+                <img [src]="addressQR" alt="">
+                <app-address-clipboard address="{{ senderAddress }}" short="true"></app-address-clipboard>
+            </div>
+          </aer-card>
         </div>
       </div>
       <div aerRow>

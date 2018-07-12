@@ -33,7 +33,6 @@ export class StorageService {
      */
     getCookie(name: string, decrypt: boolean = false): any { 
         let data = Cookie.get(name);
-
         if (decrypt && data && data != null) {
             data = CryptoJS.AES.decrypt(Cookie.get(name), this.getSessionData('password')).toString(CryptoJS.enc.Utf8);
         }
@@ -61,5 +60,15 @@ export class StorageService {
      */
     setSessionData(key: string, data: any) {
         this.sessionStorageService.store(key, data);
+    }
+
+    /**
+     * Clear data from session storage by specified key
+     *
+     * @param {string} key Key of the entry in the session storage
+     * @memberof StorageService
+     */
+    clearSessionData(key: string) {
+        this.sessionStorageService.clear(key);
     }
 }

@@ -1,12 +1,9 @@
-import * as CryptoJS from 'crypto-js';
-import { environment } from '@app/../environments/environment';
 import { Injectable } from '@angular/core';
-
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 import { SessionStorageService } from 'ngx-webstorage';
 
 import Web3 from 'web3';
 import { Contract } from "web3/types";
+import { safePromise } from "@app/shared/helpers/promise-utils";
 import { tokensABI } from '@app/core/abi/tokens';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { iToken } from '@shared/app.interfaces';
@@ -14,6 +11,7 @@ import { AuthenticationService } from '@app/core/authentication/authentication-s
 import { Token } from "@core/transactions/token-service/token.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { TokenError } from "@core/transactions/token-service/token.error";
+import { TokenStorageService } from "@core/transactions/token-storage-service/token-storage.service";
 
 import { bigNumbersPow, bigNumbersDivide, bigNumberToString } from "@shared/helpers/number-utils";
 
@@ -26,6 +24,8 @@ export class TokenService {
   tokensContract: Contract;
   tokens$: BehaviorSubject<iToken> = new BehaviorSubject(<any>[]);
 
+  private tokenStorageService: TokenStorageService;
+
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
@@ -33,13 +33,12 @@ export class TokenService {
   ) {
     this.web3 = authService.getWeb3();
     this.wsWeb3 = authService.getWSWeb3();
+    this.tokenStorageService = new TokenStorageService("tokens", sessionStorage);
   }
 
   addToken(tokenData) {
-    const token = tokenData;
-    const tokens = this.sessionStorage.retrieve('tokens') || [];
-    tokens.push(token);
-    this.saveTokens(tokens);
+    this.tokenStorageService.addToken(tokenData);
+    const tokens = this.tokenStorageService.getTokens();
     // ADD observable here
     this.tokens$.next(tokens);
     setTimeout(() => {
@@ -48,11 +47,8 @@ export class TokenService {
   }
 
   deleteToken(token) {
-    let tokens = this.sessionStorage.retrieve('tokens') || [];
-    tokens = tokens.filter((item) => {
-      return item.address !== token.address;
-    });
-    this.saveTokens(tokens);
+    this.tokenStorageService.deleteToken(token);
+    const tokens = this.tokenStorageService.getTokens();
     // ADD observable here
     this.tokens$.next(tokens);
     setTimeout(() => {
@@ -61,24 +57,15 @@ export class TokenService {
   }
 
   saveTokens(tokens) {
-    const password = this.sessionStorage.retrieve('password');
-    const stringtoken = JSON.stringify(tokens);
-    const encryptedtokens = CryptoJS.AES.encrypt(stringtoken, password);
-    Cookie.set('tokens', encryptedtokens, 7, "/", environment.cookiesDomain);
-    this.sessionStorage.store('tokens', tokens);
+    this.tokenStorageService.saveTokens(tokens);
   }
 
   getTokens() {
-    return this.sessionStorage.retrieve('tokens') || [];
+    return this.tokenStorageService.getTokens();
   }
 
   updateStoredTokens(token) {
-    const tokens = this.sessionStorage.retrieve('tokens');
-    const updatedTokens = tokens.filter((item) => {
-      return item.symbol !== token.symbol;
-    });
-    updatedTokens.push(token);
-    this.saveTokens(updatedTokens);
+    this.tokenStorageService.updateStoredTokens(token);
   }
 
   getTokenBalance(tokenAddress) {
@@ -140,13 +127,7 @@ export class TokenService {
   }
 
   getLocalTokenInfo(address: string): Token {
-    if (!address) {
-      return null;
-    }
-
-    const tokens = this.getTokens();
-    const token = tokens.find(item => item.address.toLowerCase() === address.toLowerCase());
-    return token;
+    return this.tokenStorageService.getLocalTokenInfo(address);
   }
 
   async getNetworkTokenInfo(address: string): Promise<Token> {
@@ -167,10 +148,10 @@ export class TokenService {
     this.tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress);
     const myAddress = this.sessionStorage.retrieve('acc_address');
     const [symbol, decimals, totalSupply, balance] = await Promise.all([
-      this.safePromise(this.tokensContract.methods.symbol().call({from: myAddress}), null),
-      this.safePromise(this.tokensContract.methods.decimals().call({from: myAddress}), 0),
-      this.safePromise(this.tokensContract.methods.totalSupply().call({from: myAddress}), 0),
-      this.safePromise(this.tokensContract.methods.balanceOf(myAddress).call({from: myAddress}), 0)
+      safePromise(this.tokensContract.methods.symbol().call({from: myAddress}), null),
+      safePromise(this.tokensContract.methods.decimals().call({from: myAddress}), 0),
+      safePromise(this.tokensContract.methods.totalSupply().call({from: myAddress}), 0),
+      safePromise(this.tokensContract.methods.balanceOf(myAddress).call({from: myAddress}), 0)
     ]);
 
     const decimalsNumber = Number(decimals) || 0;
@@ -183,14 +164,6 @@ export class TokenService {
     };
 
     return token;
-  }
-
-  private async safePromise<T>(promise: Promise<T>, defaultValue: T = null) {
-    try {
-      return await promise;
-    } catch (e) {
-      return defaultValue;
-    }
   }
 
   tokenFallbackCheck(receiver, signature) {

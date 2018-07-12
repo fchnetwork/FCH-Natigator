@@ -3,9 +3,7 @@
       <div aerColumn size="sm-12">
           <span class="title">Overview</span>
           <span class="balance">{{walletBalance | bignumber:'1.0-4'}} Aero</span>
-          <div class="address">
-            <span (click)="copyToClipboard()">0x{{address | slice:0:5}}...{{address | slice:-5}}</span>
-          </div>
+          <app-address-clipboard address="{{ address }}" short="true"></app-address-clipboard>
       </div>
     </div>
 </aer-card>

@@ -1,0 +1,43 @@
+<aer-modal-container>
+  <div class="account access-recovery">
+    <div class="header">{{'ACCOUNT.RESTORE.TITLE'|translate}}</div>
+    <app-divider></app-divider>
+    <p class="aer-small paragraph">
+      {{'ACCOUNT.RESTORE.SUBTITLE'|translate}}
+      <a [routerLink]="['/account/register']"> {{'ACCOUNT.RESTORE.SUBTITLE_HINT'|translate}}</a>
+    </p>
+    <app-divider></app-divider>
+    <div aerRow>
+      <div aerColumn size="md-12" class="account__button-list">
+        <aer-file-upload class="medium blue" (filesChange)="openBackupFile($event, 'seed')">{{'ACCOUNT.RESTORE.SELECT_SEED'|translate}}</aer-file-upload>
+        <aer-file-upload class="medium blue" (filesChange)="openBackupFile($event, 'full')">{{'ACCOUNT.RESTORE.SELECT_BACKUP_FILE'|translate}}</aer-file-upload>
+        <aer-button class="medium blue" (buttonFn)="scanQr()">Scan QR code</aer-button>
+      </div>
+    </div>
+    <app-divider label="OR"></app-divider>
+    <form [formGroup]="recoverForm">
+      <aer-textarea icon="aerumleaf" formControlName="seed" [placeholder]="'ACCOUNT.RESTORE.SEED_WORD_PLACEHOLDER' | translate"
+        [addition]="address" [(ngModel)]="seedFileText" ngDefaultControl>{{ seedFileText }}</aer-textarea>
+
+      <aer-input  icon="key" 
+                  data-cy="password" 
+                  formControlName="password" 
+                  type="password" 
+                  [ngClass]="{'with-button': passwordStrength.strength}"
+                  class="{{passwordStrength.class}} element-wrapper" 
+                  buttonLabel="{{ passwordStrength.strength ? ('ACCOUNT.COMMON.PASSWORD_CHECKER.' + passwordStrength.strength + '.TITLE' | translate) : '' }}"
+                  [placeholder]="'ACCOUNT.RESTORE.CREATE_PWD_PLACEHOLDER' | translate" 
+                  ngDefaultControl 
+                  (keyup)="onKey($event)">
+      </aer-input>
+
+      <app-password-lines passClass='{{passwordStrength.strength | lowercase}}' class="element-wrapper"></app-password-lines>
+
+      <aer-input icon="key" formControlName="confirmpassword" type="password" [placeholder]="'ACCOUNT.RESTORE.CONFIRM_PWD_PLACEHOLDER' | translate" ngDefaultControl class="element-wrapper"></aer-input>
+
+      <app-divider [showLine]="false"></app-divider>
+      <aer-button data-cy="continue" class="large full-width" [ngClass]="{'disabled': !recoverForm.valid}" [disabled]="!recoverForm.valid"
+        (click)="onSubmitAddress()">{{'COMMON.BUTTONS.CONTINUE' | translate}}</aer-button>
+    </form>
+  </div>
+</aer-modal-container>

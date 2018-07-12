@@ -1,9 +1,3 @@
-.c-load-swap {
-    &__unlock {
-      // width: 380px;
-    }
-  }
-  
   .c-load-swap__table {
     color: #83868A;
     font-size: 13px;
@@ -41,10 +35,12 @@
   
       &.o-data--left {
         text-align: left;
+        margin-right: 10px;
       }
   
       &.o-data--right {
         text-align: right;
+        word-break: break-all;
       }
     }
   }

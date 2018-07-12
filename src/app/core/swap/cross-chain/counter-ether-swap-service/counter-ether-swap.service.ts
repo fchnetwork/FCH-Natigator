@@ -11,7 +11,7 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contract-executor-service/ethereum-contract-executor.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
-import { CounterEtherSwap } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.model";
+import { CounterEtherSwap } from "@core/swap/models/counter-ether-swap.model";
 
 @Injectable()
 export class CounterEtherSwapService extends BaseContractService {
@@ -32,6 +32,12 @@ export class CounterEtherSwapService extends BaseContractService {
     );
   }
 
+  /**
+   * Closes a swap
+   * @param {string} hash - hash of the swap
+   * @param {string} secretKey - key to validate if you are an owner of the swap
+   * @param {TransactionOptions} options - options for web3 contract method call
+   */
   async closeSwap(hash: string, secretKey: string, options: TransactionOptions) {
     const contract = await this.createContract(options.wallet);
     const closeSwap = contract.methods.close(hash, fromAscii(secretKey));
@@ -39,6 +45,12 @@ export class CounterEtherSwapService extends BaseContractService {
     return receipt;
   }
 
+  /**
+   * Checks and returns an information about swap
+   * @param {string} hash - hash of the swap
+   * @param {TransactionOptions} options - options for web3 contract method call
+   * @return {CounterEtherSwap} Swap object
+   */
   async checkSwap(hash: string, options: TransactionOptions): Promise<CounterEtherSwap> {
     const contract = await this.createContract(options.wallet);
     const checkSwap = contract.methods.check(hash);
@@ -52,7 +64,6 @@ export class CounterEtherSwapService extends BaseContractService {
       openedOn: response.openedOn,
       state: Number(response.state)
     };
-
     return swap;
   }
 }

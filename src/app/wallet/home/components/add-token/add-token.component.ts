@@ -28,7 +28,7 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
     private tokenService: TokenService,
     private sessionStorage: SessionStorageService,
     public notificationService: InternalNotificationService,
-    private aerumNameService: AerumNameService,
+    private aerumNameService: AerumNameService
   ) { }
 
   ngOnInit() {

@@ -30,12 +30,15 @@ import { ValidateService } from '@app/core/validation/validate.service';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { ConnectionCheckerService } from '@core/general/connection-checker-service/connection-checker.service';
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
+import { OpenErc20SwapService } from "@core/swap/cross-chain/open-erc20-swap-service/open-erc20-swap.service";
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
 import { CounterAerumErc20SwapService } from "@core/swap/cross-chain/counter-aerum-erc20-swap-service/counter-aerum-erc20-swap.service";
 import { CounterEtherSwapService } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.service";
+import { CounterErc20SwapService } from "@core/swap/cross-chain/counter-erc20-swap-service/counter-erc20-swap.service";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
+import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { SettingsBackupService } from '@app/core/settings/settingsBackup.service';
 import { SettingsService } from '@app/core/settings/settings.service';
@@ -77,9 +80,11 @@ import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-
     LoggerService,
     ValidateService,
     OpenEtherSwapService,
+    OpenErc20SwapService,
     OpenAerumErc20SwapService,
     CounterAerumErc20SwapService,
     CounterEtherSwapService,
+    CounterErc20SwapService,
     SwapTemplateService,
     SwapLocalStorageService,
     SettingsBackupService,
@@ -101,6 +106,7 @@ export class CoreModule {
         NotificationMessagesService,
         AuthenticationService,
         EthereumAuthenticationService,
+        EthereumTokenService,
         TranslateService,
         StorageService
       ]
