@@ -161,6 +161,7 @@
 
   "COMMON": {
     "BUTTONS": {
+      "SAVE": "Save",
       "BACK": "Back",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
