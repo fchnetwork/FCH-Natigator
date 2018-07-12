@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { iGeneralSettings, iSettings } from '@shared/app.interfaces';
 import { SettingsService } from '@app/core/settings/settings.service';
-import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { ValidateService } from '@app/core/validation/validate.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -19,8 +18,7 @@ export class SettingsGeneralComponent implements OnInit {
   }
   settingsForm: FormGroup = this.formBuilder.group({});
 
-  constructor(private notificationMessagesService: NotificationMessagesService,
-              private settingsService: SettingsService,
+  constructor(private settingsService: SettingsService,
               private validateService: ValidateService,
               private formBuilder: FormBuilder) 
   { 

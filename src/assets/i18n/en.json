@@ -122,7 +122,7 @@
     "TRANSACTIONS": {
       "TAB_TITLE": "Transactions",
       "DEFAULT_GAS_PRICE_LABEL": "Default gas price",
-      "MAX_GAS_PRICE_LABEL": "Maximum gas price",
+      "MAX_GAS_LABEL": "Max amount of gas per tx",
       "LAST_TRANSACTIONS_LABEL": "Number of last transactions to show"
     },
     "GENERAL": {
