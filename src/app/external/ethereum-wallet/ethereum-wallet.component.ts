@@ -263,7 +263,9 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
 
   private updateBalance(balance: number) {
     this.balance = balance;
-    this.canMoveNext = balance > 0;
+    if(this.params.direction !== 'opposite') {
+      this.canMoveNext = balance > 0;
+    }
   }
 
   private cleanImportingData() {
