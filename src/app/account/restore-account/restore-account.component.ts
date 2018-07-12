@@ -57,8 +57,6 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
   }
 
   openBackupFile(event, type) {
-
-
     const input = event.target;
     const fileTypes = ["txt", "aer"];
     if (input.files && input.files[0]) {
@@ -155,7 +153,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     seedControl.valueChanges
       .takeUntil(this.componentDestroyed$)
       .subscribe(async v => {
-        if (v && v.length > 2) {
+        if (v && v.split().length === 12) {
           let cleanSeed = v.trim(); // trim starting and ending spaces
           cleanSeed = cleanSeed.replace(/[^\w\s]/gi, " "); // clean all special characters
           cleanSeed.replace(/\s\s+/g, " "); // remove double spaces
