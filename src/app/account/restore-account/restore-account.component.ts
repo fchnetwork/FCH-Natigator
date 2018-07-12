@@ -153,7 +153,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     seedControl.valueChanges
       .takeUntil(this.componentDestroyed$)
       .subscribe(async v => {
-        if (v && v.split().length === 12) {
+        if (v && v.split(" ").length === 12) {
           let cleanSeed = v.trim(); // trim starting and ending spaces
           cleanSeed = cleanSeed.replace(/[^\w\s]/gi, " "); // clean all special characters
           cleanSeed.replace(/\s\s+/g, " "); // remove double spaces
