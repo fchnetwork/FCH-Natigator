@@ -27,6 +27,7 @@ import { ClipboardService } from "@core/general/clipboard-service/clipboard.serv
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { InjectedWeb3Error } from "@external/models/injected-web3.error";
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-opposite-swap-create',
@@ -71,7 +72,8 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     private swapTemplateService: SwapTemplateService,
     private erc20SwapService: OpenAerumErc20SwapService,
     private ethereumTokenService: EthereumTokenService,
-    private swapLocalStorageService: SwapLocalStorageService) { }
+    private swapLocalStorageService: SwapLocalStorageService,
+    private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
@@ -297,7 +299,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     const localSwap: SwapReference = {
       hash,
       secret: this.secret,
-      account: this.params.account,
+      account: this.authService.getAddress(),
       walletType: this.params.wallet,
       walletTokenAddress: this.params.token,
       walletTokenSymbol: this.params.symbol,
