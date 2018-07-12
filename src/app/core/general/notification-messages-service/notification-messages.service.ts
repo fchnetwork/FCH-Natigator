@@ -150,7 +150,7 @@ constructor(private notificationService: NotificationService,
       public saveSettings() {
         this.notificationService.notify(
           `${this.translate('SETTINGS.COMMON.NOTIFICATIONS.SAVE_SETTINGS.TITLE')}`, 
-          `${this.translate('SETTINGS.COMMON.NOTIFICATIONS.SAVE_SETTINGS.TITLE')}`,
+          `${this.translate('SETTINGS.COMMON.NOTIFICATIONS.SAVE_SETTINGS.BODY')}`,
           'check-square-o', 
           10000
         );
