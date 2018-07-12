@@ -26,7 +26,7 @@ import { Subscription } from "rxjs/Subscription";
 export class EthereumWalletComponent implements OnInit, OnDestroy {
 
   private routeSubscription: Subscription;
-  private params: { asset?: string, amount?: number, token?: string, symbol?: string, query?: string, direction?: string } = {};
+  params: { asset?: string, amount?: number, token?: string, symbol?: string, query?: string, direction?: string } = {};
 
   private web3: Web3;
 
@@ -240,7 +240,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
 
   private reloadTokenData() {
     if(!this.token) {
-      return;  
+      return;
     }
     this.tokenSymbol = this.token.symbol;
     if (this.selectedWalletType === EthWalletType.Injected) {
