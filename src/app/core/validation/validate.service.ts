@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 
 
