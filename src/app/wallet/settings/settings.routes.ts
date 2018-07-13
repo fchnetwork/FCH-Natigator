@@ -37,11 +37,11 @@ export const DIAGNOSTICS_ROUTES: Routes = [
       {
         path: 'system',
         component: SettingsSystemComponent
+      },
+      {
+        path: 'ethereum-wallet',
+        component: SettingsEthereumWalletComponent
       }
-      // {
-      //   path: 'ethereum-wallet',
-      //   component: SettingsEthereumWalletComponent
-      // }
     ]
   }
 ];
