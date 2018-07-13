@@ -502,6 +502,7 @@
       "FIELD_AMOUNT_AVAILABLE": "Amount available",
       "BTN_DEPOSIT_MORE": "Deposit more",
       "FIELD_I_ACKNOWLEDGE_RISKS": "I acknowledge risks.",
+      "NOT_ENOUGH_ASSET": "There is not enough of selected asset to proceed. Please deposit more asset",
       "BTN_PROCEED": "Proceed",
       "BTN_CLOSE": "Close",
       "BTN_CANCEL": "Cancel"
