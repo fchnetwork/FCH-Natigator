@@ -239,8 +239,13 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
   }
 
   private reloadTokenData() {
+<<<<<<< HEAD
     if(!this.token) {
       return;
+=======
+    if(!this.token || !this.address) {
+      return;  
+>>>>>>> 8c4718d064d6f9f51ab50191dc4f5c74e966c992
     }
     this.tokenSymbol = this.token.symbol;
     if (this.selectedWalletType === EthWalletType.Injected) {
