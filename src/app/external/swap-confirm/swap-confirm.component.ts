@@ -403,6 +403,9 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   close() {
+    if (this.query) {
+      return this.router.navigate(['external/transaction'], {queryParams: {query: this.query}});
+    }
     return this.router.navigate(['wallet/swap']);
   }
 

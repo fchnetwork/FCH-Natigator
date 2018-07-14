@@ -374,7 +374,7 @@
       "CROSS_CHAIN_TITLE":"Ethereum Swaps",
       "BTN_CREATE":"New Subatomic Swap",
       "BTN_DEPOSIT":"New Deposit",
-      "BTN_WITHDRAW":"New Withdraw",
+      "BTN_WITHDRAWAL":"New Withdrawal",
       "TITLE_SWAP_ID":"Swap ID",
       "TITLE_COUNTERPARTY":"Counterparty",
       "TITLE_AMOUNTS":"Amounts",
@@ -502,6 +502,7 @@
       "FIELD_AMOUNT_AVAILABLE": "Amount available",
       "BTN_DEPOSIT_MORE": "Deposit more",
       "FIELD_I_ACKNOWLEDGE_RISKS": "I acknowledge risks.",
+      "NOT_ENOUGH_ASSET": "There is not enough of selected asset to proceed. Please deposit more asset",
       "BTN_PROCEED": "Proceed",
       "BTN_CLOSE": "Close",
       "BTN_CANCEL": "Cancel"
