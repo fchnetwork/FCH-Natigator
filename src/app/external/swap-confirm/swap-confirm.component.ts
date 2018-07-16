@@ -35,7 +35,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
   private hash;
   private walletTokenAddress;
-  private walletTokenSymbol;
   private query: string;
 
   private localSwap: SwapReference;
@@ -44,6 +43,8 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private ethAddress = '0x0';
 
+  walletTokenSymbol;
+  canLoadSwap = true;
   secret: string;
   acceptedBy: string;
   sendAmount: number;
@@ -174,13 +175,24 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     if (!this.erc20Swap || (this.erc20Swap.state === SwapState.Invalid)) {
       throw new Error('Cannot load erc20 swap: ' + this.hash);
     }
-
-    const token = this.ethereumTokenService.getTokens().find(t => t.address === this.walletTokenAddress);
-    this.sendAmount = this.erc20Swap.erc20Value / Math.pow(10, token.decimals);
     this.acceptedBy = this.erc20Swap.withdrawTrader;
     this.timelock = this.erc20Swap.timelock;
     this.swapState = this.erc20Swap.state;
     this.validateSwapState();
+
+    let token = this.ethereumTokenService.getTokens().find(t => t.address === this.walletTokenAddress);
+    if(!token) {
+      token = await this.ethereumTokenService.getNetworkTokenInfo(this.localSwap.walletType, this.walletTokenAddress, this.localSwap.account);
+      if(token && token.symbol) {
+        this.ethereumTokenService.addToken(token);
+      }
+      else {
+        this.canLoadSwap = false;
+        this.showError(`The token used in the swap is not added to the wallet. Please add it first: ${this.walletTokenAddress}`);
+        throw new Error(`Cannot load erc20 token: ${this.walletTokenAddress}`);
+      }
+    }
+    this.sendAmount = this.erc20Swap.erc20Value / Math.pow(10, token.decimals); 
   }
 
   private validateSwapState(){

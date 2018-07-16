@@ -481,6 +481,7 @@
       "TITLE_WAITING_COUNTERPARTY": "Waiting Counterparty",
       "TITLE_DEPOSIT_SWAP": "Deposit Swap",
       "TITLE_WITHDRAWAL_SWAP": "Withdrawal Swap",
+      "TITLE_CANT_LOAD_SWAP": "Can’t load the swap",
       "FIELD_SWAP_CLOSED_SUCCESSFULLY": "Swap closed successfully",
       "FIELD_SWAP_CANCELLED_SUCCESSFULLY": "Swap cancelled successfully",
       "FIELD_YOUR_SWAP_WILL_EXPIRE_IN": "Your swap will expire in:",
