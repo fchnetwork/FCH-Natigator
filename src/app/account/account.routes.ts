@@ -38,7 +38,6 @@ const ACCOUNT_ROUTES = [
             },
             {
                 path: 'unlock',
-                canActivate: [CanActivateAccountAuthGuard],
                 component: UnlockComponent
             },
             {

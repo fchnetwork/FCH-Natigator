@@ -116,7 +116,10 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
                 false,
                 7
               );
-              this.router.navigate(["/account/unlock"]);
+              const urlQueryParams = this.returnUrl == null ? {} : { returnUrl: this.returnUrl };
+              const redirectUrl = this.router.createUrlTree(['/account/unlock'], { queryParams: urlQueryParams});
+
+              this.router.navigateByUrl(redirectUrl.toString());
             }
           };
           reader.readAsText(input.files[index]);
@@ -207,7 +210,13 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
         this.recoverForm.value.password,
         this.recoverForm.value.seed
       );
-      this.router.navigate([this.returnUrl || '/']); // improvements need to be made here but for now the auth guard should work just fine
+
+      if (this.returnUrl == null) {
+        this.router.navigate(["/"]); // improvements need to be made here but for now the auth guard should work just fine
+      }
+      else {
+        this.router.navigateByUrl(this.returnUrl);
+      }
     }
   }
 
@@ -221,8 +230,8 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
   }
 
   scanQr() {
-    if(this.returnUrl === null) {
-    this.router.navigate(["/account/restore/qr-code"]);
+    if (this.returnUrl === null) {
+      this.router.navigate(["/account/restore/qr-code"]);
     } else {
       this.router.navigate(["/account/restore/qr-code"], {
         queryParams: { returnUrl: this.returnUrl }

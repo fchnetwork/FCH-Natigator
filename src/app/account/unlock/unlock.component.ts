@@ -46,7 +46,7 @@ export class UnlockComponent implements OnInit {
     this.authServ
       .login(this.password)
       .then(res => {
-        this.router.navigate([this.returnUrl]);
+        this.router.navigateByUrl(this.returnUrl);
       })
       .catch(reason => {
         this.passwordIncorrect = true;

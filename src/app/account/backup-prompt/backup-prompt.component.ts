@@ -12,6 +12,7 @@ import { ModalService } from '@app/core/general/modal-service/modal.service';
   styleUrls: ['./backup-prompt.component.scss']
 })
 export class BackupPromptComponent implements OnInit {
+  returnUrl: string;
 
   constructor(private route: ActivatedRoute,
     private routeDataService: RouteDataService<RegistrationRouteData>,
@@ -22,6 +23,9 @@ export class BackupPromptComponent implements OnInit {
 
     if (!routeDataService.hasData()) {
       router.navigate(['account/register']);
+    }
+    else {
+      this.returnUrl = routeDataService.routeData.returnUrl; 
     }
   }
 
@@ -37,6 +41,6 @@ export class BackupPromptComponent implements OnInit {
   skipStep() {
     const data = this.routeDataService.routeData;
     this.authService.saveKeyStore( data.privateKey, data.password, data.mnemonic );
-    this.router.navigate([this.routeDataService.routeData.returnUrl]);
+    this.router.navigateByUrl(this.returnUrl);
   }
 }
