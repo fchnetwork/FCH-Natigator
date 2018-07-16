@@ -25,6 +25,7 @@ import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
 import { HextoAsciiPipe } from '@shared/pipes/hextoAscii.pipe';
 import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 import { BigNumbersPipe } from '@shared/pipes/big-numbers.pipe';
+import { GetBlockSignerPipe } from '@shared/pipes/get-block-signer.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
 import { DecimalPipe } from '@angular/common';
 
@@ -41,6 +42,8 @@ import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.
 import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
 import { FormsModule } from '@angular/forms';
  
+
+
 const modalWindows = [
   TransactionModalComponent,
   GetBlockModalComponent,
@@ -77,6 +80,7 @@ const modalWindows = [
     OrderbyPipe,
     ConvertToEtherPipe,
     HextoAsciiPipe,
+    GetBlockSignerPipe,
     HextoDecimalPipe,
     SidebarAccountSelectComponent,
     TruncatePipe,
@@ -99,6 +103,7 @@ const modalWindows = [
     TransactionTimeAgoPipe,
     TransactionTimeStampPipe,
     HexToTextPipe,
+    GetBlockSignerPipe,
     SafeResourceUrlPipe,
     SafeUrlPipe,
     SafeHTMLPipe,

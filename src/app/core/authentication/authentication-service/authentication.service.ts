@@ -125,6 +125,7 @@ export class AuthenticationService {
 
                 const transactions = this.decryptCookieToArray('transactions', password);
                 const tokens = this.decryptCookieToArray('tokens', password);
+                const ethereumTokens = this.decryptCookieToArray('ethereum-tokens', password);
                 const ethereumAccounts = this.decryptCookieToArray('ethereum_accounts', password);
                 const crossChainSwaps = this.decryptCookieToArray('cross_chain_swaps', password);
 
@@ -132,7 +133,7 @@ export class AuthenticationService {
                 if( encryptAccount ) {
                     const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
                     const seed = this.seedCleaner(plaintext);
-                    resolve( { web3: encryptAccount, s:seed, transactions, tokens, ethereumAccounts, crossChainSwaps } );
+                    resolve( { web3: encryptAccount, s:seed, transactions, tokens, ethereumTokens, ethereumAccounts, crossChainSwaps } );
                 }
                 else {
                     reject("no keystore found or password incorrect");
@@ -164,6 +165,7 @@ export class AuthenticationService {
                 this.sessionStorage.store('password', password);
                 this.sessionStorage.store('transactions', result.transactions.length ? JSON.parse(result.transactions) : []);
                 this.sessionStorage.store('tokens', result.tokens.length ? JSON.parse(result.tokens) : []);
+                this.sessionStorage.store('ethereum-tokens', result.ethereumTokens.length ? JSON.parse(result.ethereumTokens) : []);
                 this.sessionStorage.store('ethereum_accounts', result.ethereumAccounts.length ? JSON.parse(result.ethereumAccounts) : []);
                 this.sessionStorage.store('cross_chain_swaps', result.crossChainSwaps.length ? JSON.parse(result.crossChainSwaps) : []);
                 resolve('success');
