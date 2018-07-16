@@ -1,3 +1,4 @@
+import { ReturnUrlHandlerComponent } from './components/return-url-handler/return-url-handler.component';
 import { RestoreAccountComponent } from '@app/account/restore-account/restore-account.component';
 import { QrScanComponent } from './qr-scan/qr-scan.component';
 import { QrCodeScannerComponent } from './components/qr-code-scanner/qr-code-scanner.component';
@@ -50,7 +51,8 @@ import { ZXingScannerModule } from "@zxing/ngx-scanner";
         PasswordLinesComponent,
         QrCodeScannerComponent,
         RestoreAccountComponent,
-        QrScanComponent
+        QrScanComponent,
+        ReturnUrlHandlerComponent
     ]
 })
 export class AccountModule { }

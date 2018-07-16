@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { RegistrationRouteData } from '../models/RegistrationRouteData';
-import { Router } from '@angular/router';   
+import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 
@@ -18,10 +18,10 @@ export class BackupConfirmComponent implements OnInit {
   constructor(private routeDataService: RouteDataService<RegistrationRouteData>,
               private router: Router,
               private authService: AuthenticationService) {
-      
+
     if (!routeDataService.hasData()) {
       router.navigate(['account/register']);
-    }    
+    }
   }
 
   ngOnInit() {
@@ -32,8 +32,8 @@ export class BackupConfirmComponent implements OnInit {
   confirm() {
     const data = this.routeDataService.routeData;
     this.authService.saveKeyStore( data.privateKey, data.password, this.seed);
+    this.router.navigate([data.returnUrl]);
     this.routeDataService.clear();
-    this.router.navigate(['/wallet/home']);
   }
 
   clear() {
@@ -42,7 +42,7 @@ export class BackupConfirmComponent implements OnInit {
 
   private initializeSeedArrays() {
     this.shuffledSeed = this.shuffleArray(this.seed.slice()).map(x => ({ name: x, selected: false }));
-    this.selectedSeeds = [];  
+    this.selectedSeeds = [];
   }
 
   private selectSeed(seed:any) {
@@ -61,15 +61,15 @@ export class BackupConfirmComponent implements OnInit {
   private deselectSeed(seed: any, idx: number) {
 		seed.selected = false;
     this.selectedSeeds.splice(idx, 1);
-    
+
     this.compareResult();
 	}
 
   private compareResult() {
 		if (this.selectedSeeds.map(x => x.name).toString() === this.seed.toString()) {
-			this.isEqual = true; 
+			this.isEqual = true;
 		} else {
-			this.isEqual = false; 
+			this.isEqual = false;
 		}
 	}
 

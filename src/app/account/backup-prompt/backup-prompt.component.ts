@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'; 
-import { RegistrationRouteData } from '../models/RegistrationRouteData'; 
-import { BackupDisclamerComponent } from '../backup-disclamer/backup-disclamer.component';  
+import { ActivatedRoute, Router } from '@angular/router';
+import { RegistrationRouteData } from '../models/RegistrationRouteData';
+import { BackupDisclamerComponent } from '../backup-disclamer/backup-disclamer.component';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
@@ -19,14 +19,13 @@ export class BackupPromptComponent implements OnInit {
     private router: Router,
     private authService: AuthenticationService,
   ) {
-      
+
     if (!routeDataService.hasData()) {
       router.navigate(['account/register']);
     }
   }
 
   ngOnInit() {
-    console.log(this.routeDataService.routeData);
   }
 
   createBackup() {
@@ -38,5 +37,6 @@ export class BackupPromptComponent implements OnInit {
   skipStep() {
     const data = this.routeDataService.routeData;
     this.authService.saveKeyStore( data.privateKey, data.password, data.mnemonic );
+    this.router.navigate([this.routeDataService.routeData.returnUrl]);
   }
 }

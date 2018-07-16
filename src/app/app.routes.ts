@@ -1,3 +1,4 @@
+import { AuthenticationGuard } from './core/authentication/auth-guards/authentication.guard';
 import { RouterModule, PreloadAllModules } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { CanActivateViaAuthGuard } from "@app/core/authentication/auth-guards/can-activate-auth.guard";
@@ -15,12 +16,12 @@ const ROUTES = [
   },
   {
     path: 'wallet',
-    canActivate: [CanActivateViaAuthGuard],
+    canActivate: [AuthenticationGuard],
     loadChildren: 'app/wallet/wallet.module#WalletModule'
   },
   {
     path: 'external',
-    canActivate: [CanActivateViaAuthGuard],
+    canActivate: [AuthenticationGuard],
     loadChildren: 'app/external/external.module#ExternalModule'
   },
   {
@@ -30,9 +31,7 @@ const ROUTES = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(ROUTES
-    , {onSameUrlNavigation: 'reload', enableTracing: false}
-  )],
+  imports: [RouterModule.forRoot(ROUTES)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -1,3 +1,4 @@
+import { AuthenticationGuard } from './authentication/auth-guards/authentication.guard';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
@@ -92,7 +93,8 @@ import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-
     OnChainSwapListService,
     CrossChainSwapListService,
     CreateSwapService,
-    LoadSwapService
+    LoadSwapService,
+    AuthenticationGuard
   ]
 })
 export class CoreModule {
