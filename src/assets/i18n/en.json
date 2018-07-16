@@ -261,6 +261,7 @@
   "GAS": "Gas",
   "SENT_DATA": "Sent data",
   "HEIGHT": "Height",
+  "COMPOSER":"Composer",
   "TXN": "Txn",
   "SIGNER": "Signer",
   "GAS_LIMIT": "Gas limit",
