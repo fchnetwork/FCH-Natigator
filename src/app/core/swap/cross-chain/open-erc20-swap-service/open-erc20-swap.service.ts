@@ -61,7 +61,7 @@ export class OpenErc20SwapService extends BaseContractService {
     const web3 = await this.createWeb3(options.wallet);
     const tokenContract = new web3.eth.Contract(erc20ABI.tokensABI, erc20Address);
     const approve = tokenContract.methods.approve(openErc20Swap, value);
-    await this.send(approve, { wallet: options.wallet, account: options.account });
+    await this.send(approve, { wallet: options.wallet, account: options.account, hashCallback: options.approveCallback });
   }
 
   /**

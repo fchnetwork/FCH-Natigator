@@ -34,8 +34,8 @@ export class OpenAerumErc20SwapService extends BaseContractService {
    * @param {number} timelock - time within, funds will be locked
    * @param {function} hashCallback - callback function with transaction hash
    */
-  async openSwap(hash: string, erc20Address: string, value: string, withdrawTrader: string, timelock: number, hashCallback?: (hash: string) => void) {
-    await this.tokenApprove(erc20Address, value);
+  async openSwap(hash: string, erc20Address: string, value: string, withdrawTrader: string, timelock: number, approveCallback?: (hash: string) => void, hashCallback?: (hash: string) => void) {
+    await this.tokenApprove(erc20Address, value, approveCallback);
     const openSwap = this.contract.methods.open(hash, value, erc20Address, withdrawTrader, toBigNumberString(timelock));
     const receipt = await this.contractExecutorService.send(openSwap, { value: '0', hashReceivedCallback: hashCallback });
     return receipt;
@@ -46,11 +46,11 @@ export class OpenAerumErc20SwapService extends BaseContractService {
    * @param {string} erc20Address - ERC20 token address
    * @param {string} value - amount of ERC20 tokens
    */
-  private async tokenApprove(erc20Address: string, value: string) {
+  private async tokenApprove(erc20Address: string, value: string, approveCallback: (hash: string) => void) {
     const openErc20Swap = environment.contracts.swap.crossChain.address.aerum.OpenErc20Swap as string;
     const tokenContract = new this.web3.eth.Contract(erc20ABI.tokensABI, erc20Address);
     const approve = tokenContract.methods.approve(openErc20Swap, value);
-    await this.contractExecutorService.send(approve);
+    await this.contractExecutorService.send(approve, { value: '0', hashReceivedCallback: approveCallback });
   }
 
   /**
