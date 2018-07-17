@@ -49,7 +49,6 @@ export class UnlockComponent implements OnInit {
         this.router.navigateByUrl(this.returnUrl || '/');
       })
       .catch(reason => {
-        console.log(reason);
         this.passwordIncorrect = true;
 
         this.translateService
