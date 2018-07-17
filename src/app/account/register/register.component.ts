@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { environment } from '@env/environment';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,6 +20,7 @@ export class RegisterComponent implements OnInit {
   password: string;
   confirmPassword: string;
   avatar: string;
+  returnUrl: string;
 
   passwordStrength = {
     strength: '',
@@ -29,6 +31,7 @@ export class RegisterComponent implements OnInit {
     public translate: TranslateService,
     public formBuilder: FormBuilder,
     public router: Router,
+    public route: ActivatedRoute,
     private routeDataService: RouteDataService<RegistrationRouteData>,
     public passCheckService: PasswordCheckerService,
     public sessionStorage: SessionStorageService
@@ -45,6 +48,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
     this.registerForm = this.formBuilder.group({
       // password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower]],
       password: [ null, [Validators.required, Validators.minLength(5)]],
@@ -78,6 +82,7 @@ export class RegisterComponent implements OnInit {
       data.extendedPublicKey = this.registerForm.value.avatar.pubExtend;
       data.privateKey = this.registerForm.value.avatar.private;
       data.publicKey = this.registerForm.value.avatar.public;
+      data.returnUrl = this.returnUrl || '/';
 
       this.routeDataService.routeData = data;
       this.router.navigate(['/account/backup']);

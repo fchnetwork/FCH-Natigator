@@ -11,7 +11,7 @@ import {
   ViewChild
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs/Subject";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { PasswordCheckerService } from "@app/core/authentication/password-checker-service/password-checker.service";
@@ -34,6 +34,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
   componentDestroyed$: Subject<boolean> = new Subject();
   step = "step_1";
   seedFileText: string;
+  returnUrl: string;
   passwordStrength = {
     strength: "",
     class: ""
@@ -48,9 +49,10 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     public sessionStorage: SessionStorageService,
     private storageService: StorageService,
     public routeDataSerice: RouteDataService<QrRouteData>,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    public route: ActivatedRoute
   ) {
-    if(this.routeDataSerice.hasData()) {
+    if (this.routeDataSerice.hasData()) {
       this.seedFileText = this.routeDataSerice.routeData.qrCode;
       this.routeDataSerice.clear();
     }
@@ -114,7 +116,10 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
                 false,
                 7
               );
-              this.router.navigate(["/account/unlock"]);
+              const urlQueryParams = this.returnUrl == null ? {} : { returnUrl: this.returnUrl };
+              const redirectUrl = this.router.createUrlTree(['/account/unlock'], { queryParams: urlQueryParams});
+
+              this.router.navigateByUrl(redirectUrl.toString());
             }
           };
           reader.readAsText(input.files[index]);
@@ -134,6 +139,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || null;
     this.recoverForm = this.formBuilder.group(
       {
         seed: ["", [Validators.required]],
@@ -204,7 +210,13 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
         this.recoverForm.value.password,
         this.recoverForm.value.seed
       );
-      this.router.navigate(["/wallet/home"]); // improvements need to be made here but for now the auth guard should work just fine
+
+      if (this.returnUrl == null) {
+        this.router.navigate(["/"]); // improvements need to be made here but for now the auth guard should work just fine
+      }
+      else {
+        this.router.navigateByUrl(this.returnUrl);
+      }
     }
   }
 
@@ -218,6 +230,12 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
   }
 
   scanQr() {
-    this.router.navigate(['/account/restore/qr-code']);
+    if (this.returnUrl === null) {
+      this.router.navigate(["/account/restore/qr-code"]);
+    } else {
+      this.router.navigate(["/account/restore/qr-code"], {
+        queryParams: { returnUrl: this.returnUrl }
+      });
+    }
   }
 }

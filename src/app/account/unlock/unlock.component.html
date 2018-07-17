@@ -1,11 +1,11 @@
-<aer-modal-container>
+  <aer-modal-container>
   <form (ngSubmit)="onSubmitAddress()" [formGroup]="unlockForm">
     <div class="account login">
       <div class="header">{{'ACCOUNT.UNLOCK.TITLE'|translate}}</div>
       <app-divider></app-divider>
       <div class="b-text">
         {{'ACCOUNT.UNLOCK.SUBTITLE'|translate}}
-        <a routerLink="/account/register">{{'ACCOUNT.UNLOCK.REGISTER_LINK'|translate}}</a>
+        <a [routerLink]="['/account/register']" [queryParams]="returnUrl ? {returnUrl: returnUrl} : null">{{'ACCOUNT.UNLOCK.REGISTER_LINK'|translate}}</a>
       </div>
       <app-divider [showLine]="false"></app-divider>
       <aer-input type="password"
@@ -14,7 +14,7 @@
       <app-divider [showLine]="false"></app-divider>
       <aer-button class="large full-width" type="submit">{{'ACCOUNT.UNLOCK.UNLOCK_BTN'|translate}}</aer-button>
       <div class="link-text">
-        <a routerLink="/account/restore">{{'ACCOUNT.UNLOCK.RESTORE_LINK'|translate}}</a>
+        <a [routerLink]="['/account/restore']" [queryParams]="returnUrl ? {returnUrl: returnUrl} : null">{{'ACCOUNT.UNLOCK.RESTORE_LINK'|translate}}</a>
         <div>{{'ACCOUNT.UNLOCK.RESTORE_LINK_DESC'|translate}}</div>
       </div>
     </div>

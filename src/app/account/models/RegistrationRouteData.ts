@@ -1,4 +1,4 @@
-export class RegistrationRouteData {  
+export class RegistrationRouteData {
     avatar: any;
     password: string;
     mnemonic: string;
@@ -7,4 +7,5 @@ export class RegistrationRouteData {
     extendedPublicKey: string;
     privateKey: any;
     publicKey: any;
+    returnUrl: string;
 }
