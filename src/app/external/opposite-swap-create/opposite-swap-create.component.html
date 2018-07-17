@@ -73,9 +73,10 @@
                 <span class="secret-key" (click)="copyToClipboard()">{{secret}}</span>
               </div>
             </div>
-            <div *ngIf="openSwapTransactionExplorerUrl" class="o-table__row">
+            <div *ngIf="approveTokenTransactionExplorerUrl || openSwapTransactionExplorerUrl" class="o-table__row">
               <div class="o-table__cell o-data_left">
-                <a href="{{openSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{openSwapTransactionExplorerUrl | truncate: 40}}</a>
+                <a *ngIf="approveTokenTransactionExplorerUrl" href="{{approveTokenTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{approveTokenTransactionExplorerUrl | truncate: 40}}</a>
+                <a *ngIf="openSwapTransactionExplorerUrl" href="{{openSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{openSwapTransactionExplorerUrl | truncate: 40}}</a>
               </div>
               <div class="o-table__cell o-data_right">
                 <img *ngIf="processing" src="assets/images/loading.svg" alt="loading"/>

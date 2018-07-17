@@ -55,6 +55,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   walletTokenSymbol: string;
 
   openSwapTransactionExplorerUrl: string;
+  approveTokenTransactionExplorerUrl: string;
 
   processing = false;
   canCreateSwap = false;
@@ -233,6 +234,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
 
   async openERC20Swap() {
     await this.loadEthAccount();
+    this.approveTokenTransactionExplorerUrl = null;
     this.openSwapTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
@@ -247,6 +249,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       amount,
       counterpartyTrader,
       timestamp,
+      (txHash) => this.onApproveTokenHashReceived(txHash),
       (txHash) => this.onOpenSwapHashReceived(txHash, hash)
     );
 
@@ -293,7 +296,13 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
   }
 
+  private onApproveTokenHashReceived(txhash: string): void {
+    this.notificationService.showMessage(`Approving ${this.selectedToken.symbol} token allowance...`, 'In progress');
+    this.approveTokenTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Aerum);
+  }
+
   private onOpenSwapHashReceived(txHash: string, hash: string): void {
+    this.notificationService.showMessage('Opening withdrawal swap...', 'In progress');
     this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Aerum);
 
     const localSwap: SwapReference = {

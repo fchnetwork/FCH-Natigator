@@ -59,6 +59,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   walletTokenSymbol: string;
 
   openSwapTransactionExplorerUrl: string;
+  approveTokenTransactionExplorerUrl: string;
 
   processing = false;
   canCreateSwap = false;
@@ -260,6 +261,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   async openSwap() {
     this.openSwapTransactionExplorerUrl = null;
+    this.approveTokenTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
     const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
@@ -267,6 +269,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
     const options = {
       hashCallback: (txHash) => this.onOpenSwapHashReceived(txHash, hash),
+      approveCallback: (txHash) => this.onApproveTokenHashReceived(txHash),
       account: this.params.account,
       wallet: this.params.wallet
     };
@@ -289,7 +292,13 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
   }
 
+  private onApproveTokenHashReceived(txhash: string): void {
+    this.notificationService.showMessage(`Approving ${this.params.symbol} token allowance...`, 'In progress');
+    this.approveTokenTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Ethereum);
+  }
+
   private onOpenSwapHashReceived(txhash: string, hash: string): void {
+    this.notificationService.showMessage('Opening deposit swap...', 'In progress');
     this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Ethereum);
 
     const localSwap: SwapReference = {
