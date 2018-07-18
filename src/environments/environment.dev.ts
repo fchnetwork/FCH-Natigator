@@ -7,6 +7,7 @@ import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
 
 export const environment = {
   production: false,
+  isMobileBuild: false,
   configInUse: "environment.dev",
   WebsocketProvider: "wss://marge.aerum.net/wss",
   rpcApiProvider: "https://marge.aerum.net/eth",
