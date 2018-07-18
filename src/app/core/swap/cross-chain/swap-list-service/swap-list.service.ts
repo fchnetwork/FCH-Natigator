@@ -41,24 +41,22 @@ export class SwapListService {
     account = account.toLowerCase();
     const skip = take * page;
 
-    const [etherDepositSwapIds, erc20DepositSwapIds, etherWithdrawalSwapIds, erc20WithdrawalSwapIds] = await this.getSwapIdsByAccount(take, skip);
+    const [etherDepositSwapIds, erc20DepositSwapIds, erc20WithdrawalSwapIds] = await this.getSwapIdsByAccount(take, skip);
 
-    const [etherDepositSwaps, erc20DepositSwaps, etherWithdrawalSwap, erc20WithdrawalSwap] = await Promise.all([
+    const [etherDepositSwaps, erc20DepositSwaps, erc20WithdrawalSwap] = await Promise.all([
       this.getEtherDepositSwapsByIds(etherDepositSwapIds, account),
       this.getErc20DepositSwapsByIds(erc20DepositSwapIds, account),
-      this.getWithdrawalSwapsByIds(etherWithdrawalSwapIds, account, TokenType.Ether),
-      this.getWithdrawalSwapsByIds(erc20WithdrawalSwapIds, account, TokenType.Erc20)
+      this.getWithdrawalSwapsByIds(erc20WithdrawalSwapIds, account)
     ]);
 
-    return [...etherDepositSwaps, ...erc20DepositSwaps, ...etherWithdrawalSwap, ...erc20WithdrawalSwap];
+    return [...etherDepositSwaps, ...erc20DepositSwaps, ...erc20WithdrawalSwap];
   }
 
-  private async getSwapIdsByAccount(take: number, skip: number): Promise<[string[], string[], string[], string[]]> {
-    let [etherDepositSwapIds, erc20DepositSwapIds, etherWithdrawalSwapIds, erc20WithdrawalSwapIds] = await Promise.all([
+  private async getSwapIdsByAccount(take: number, skip: number): Promise<[string[], string[], string[]]> {
+    let [etherDepositSwapIds, erc20DepositSwapIds, erc20WithdrawalSwapIds] = await Promise.all([
       this.loadEtherDepositSwapIds(),
       this.loadErc20DepositSwapIds(),
-      this.loadWithdrawalSwapIds(TokenType.Ether),
-      this.loadWithdrawalSwapIds(TokenType.Erc20)
+      this.loadWithdrawalSwapIds()
     ]);
 
     // NOTE: We filter out unknown swaps from list because we cannot cancel them
@@ -66,12 +64,11 @@ export class SwapListService {
     //       However, we may allow in future showing them so that other account of the same user may cancel swap & return funds back
     etherDepositSwapIds = this.localSwapStorage.filterOutUnknown(etherDepositSwapIds);
     erc20DepositSwapIds = this.localSwapStorage.filterOutUnknown(erc20DepositSwapIds);
-    etherWithdrawalSwapIds = this.localSwapStorage.filterOutUnknown(etherWithdrawalSwapIds);
     erc20WithdrawalSwapIds = this.localSwapStorage.filterOutUnknown(erc20WithdrawalSwapIds);
 
-    [etherDepositSwapIds, erc20DepositSwapIds, etherWithdrawalSwapIds, erc20WithdrawalSwapIds] 
-      = multiSlice([etherDepositSwapIds, erc20DepositSwapIds, etherWithdrawalSwapIds, erc20WithdrawalSwapIds], take, skip);
-    return [etherDepositSwapIds, erc20DepositSwapIds, etherWithdrawalSwapIds, erc20WithdrawalSwapIds];
+    [etherDepositSwapIds, erc20DepositSwapIds, erc20WithdrawalSwapIds] 
+      = multiSlice([etherDepositSwapIds, erc20DepositSwapIds, erc20WithdrawalSwapIds], take, skip);
+    return [etherDepositSwapIds, erc20DepositSwapIds, erc20WithdrawalSwapIds];
   }
 
   private async loadEtherDepositSwapIds(): Promise<string[]> {
@@ -115,7 +112,7 @@ export class SwapListService {
 
   private async getErc20DepositSwapsByIds(swapIds: string[], account: string): Promise<SwapListItem[]> {
     const swaps = await Promise.all(swapIds.map(id => this.erc20DepositSwapService.checkSwap(id)));
-    return swaps.map(swap => this.mapOpenErc20Swap(account, swap, SwapType.Deposit, 'ERC20'));
+    return swaps.map(swap => this.mapOpenErc20Swap(account, swap, SwapType.Deposit));
   }
 
   private async getErc20DepositSwapsIdsByAccount(account: string): Promise<Array<{account: string, swapId: string}>> {
@@ -126,14 +123,14 @@ export class SwapListService {
     return swapIds.reverse().map(id => ({ account, swapId: id }));
   }
 
-  private async loadWithdrawalSwapIds(tokenType: TokenType): Promise<string[]> {
-    const ethAccounts = this.localSwapStorage.loadSwapAccounts(SwapType.Withdrawal, tokenType);
-    if (!ethAccounts.length) {
-      this.logger.logMessage('No locally stored ethereum addresses found');
+  private async loadWithdrawalSwapIds(): Promise<string[]> {
+    const accounts = this.localSwapStorage.loadSwapAccounts(SwapType.Withdrawal);
+    if (!accounts.length) {
+      this.logger.logMessage('No locally stored addresses found for withdrawal swaps');
       return [];
     }
 
-    const swapIdGroups = await Promise.all(ethAccounts.map(ethAccount => this.getWithdrawalSwapsIdsByAccount(ethAccount)));
+    const swapIdGroups = await Promise.all(accounts.map(account => this.getWithdrawalSwapsIdsByAccount(account)));
     return this.orderSwapIds(swapIdGroups);
   }
 
@@ -145,12 +142,9 @@ export class SwapListService {
     return swapIds.reverse().map(id => ({ account, swapId: id }));
   }
 
-  private async getWithdrawalSwapsByIds(swapIds: string[], account: string, tokenType: TokenType): Promise<SwapListItem[]> {
+  private async getWithdrawalSwapsByIds(swapIds: string[], account: string): Promise<SwapListItem[]> {
     const swaps = await Promise.all(swapIds.map(id => this.withdrawalSwapService.checkSwap(id)));
-    const result = tokenType === TokenType.Ether 
-      ? swaps.map(swap => this.mapOpenErc20Swap(account, swap, SwapType.Withdrawal, 'ETH'))
-      : swaps.map(swap => this.mapOpenErc20Swap(account, swap, SwapType.Withdrawal, 'ERC20'));
-    return result;
+    return swaps.map(swap => this.mapOpenErc20Swap(account, swap, SwapType.Withdrawal));
   }
 
   private mapEtherDepositSwap(account: string, swap: OpenEtherSwap): SwapListItem {
@@ -167,14 +161,14 @@ export class SwapListService {
     };
   }
 
-  private mapOpenErc20Swap(account: string, swap: OpenErc20Swap, swapType: SwapType, closeAsset: string): SwapListItem {
+  private mapOpenErc20Swap(account: string, swap: OpenErc20Swap, swapType: SwapType): SwapListItem {
     const token = this.getTokenInfo(swap.erc20ContractAddress);
     return {
       id: swap.hash,
       counterparty: this.getCounterparty(swap.openTrader, swap.withdrawTrader, account),
       openAsset: token.symbol,
       openValue: swap.erc20Value / Math.pow(10, token.decimals),
-      closeAsset,
+      closeAsset: '',
       closeValue: 0,
       createdOn: swap.openedOn,
       state: swap.state,
