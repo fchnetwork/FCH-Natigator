@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
     this.registerForm = this.formBuilder.group({
       // password: [ null, [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower]],
-      password: [ null, [Validators.required, Validators.minLength(5)]],
+      password: [ null, [Validators.required, Validators.minLength(8)]],
       confirmPassword: [ null, [Validators.required]],
       avatar: [1]
     }, {

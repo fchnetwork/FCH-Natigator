@@ -144,7 +144,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
       {
         seed: ["", [Validators.required]],
         // password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
-        password: ["", [Validators.required]],
+        password: ["", [Validators.required, Validators.minLength(8)]],
         confirmpassword: ["", [Validators.required]]
       },
       {
