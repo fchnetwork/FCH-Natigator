@@ -18,7 +18,21 @@
       "SEED_WORD_PLACEHOLDER":
         "Your seed is 12 words you saved when creating your account",
       "CREATE_PWD_PLACEHOLDER": "Create new password",
-      "CONFIRM_PWD_PLACEHOLDER": "Confirm new password"
+      "CONFIRM_PWD_PLACEHOLDER": "Confirm new password",
+      "NOTIFICATIONS": {
+        "FILE_NOT_SUPPORTED": {
+          "TITLE": "Warning!",
+          "BODY": "File not supported"
+        },
+        "WRONG_SEED_FILE": {
+          "TITLE": "Something went wrong!",
+          "BODY": "Seed file is broken! It should contain 12 seed words."
+        },
+        "WRONG_BACKUP_FILE": {
+          "TITLE": "Something went wrong!",
+          "BODY": "Backup file is broken!"
+        } 
+      }
     },
     "QR_SCAN": {
       "TITLE": "Scan QR Code",
