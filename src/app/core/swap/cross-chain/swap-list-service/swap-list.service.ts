@@ -162,35 +162,17 @@ export class SwapListService {
   }
 
   private mapOpenErc20Swap(account: string, swap: OpenErc20Swap, swapType: SwapType): SwapListItem {
-    const token = this.getTokenInfo(swap.erc20ContractAddress);
     return {
       id: swap.hash,
       counterparty: this.getCounterparty(swap.openTrader, swap.withdrawTrader, account),
-      openAsset: token.symbol,
-      openValue: swap.erc20Value / Math.pow(10, token.decimals),
+      openAsset: swap.erc20Token.symbol,
+      openValue: swap.erc20Value,
       closeAsset: '',
       closeValue: 0,
       createdOn: swap.openedOn,
       state: swap.state,
       type: swapType
     };
-  }
-
-  private getTokenInfo(erc20ContractAddress: string): Token {
-    let token = this.tokenService.getLocalTokenInfo(erc20ContractAddress);
-    if(!token) {
-      token = this.ethereumTokenService.getLocalTokenInfo(erc20ContractAddress);
-    }
-    if(!token) {
-      token = {
-        symbol: '',
-        address: erc20ContractAddress,
-        decimals: 0,
-        balance: 0,
-        totalSupply: 0
-      };
-    }
-    return token;
   }
 
   private orderSwapIds(swapIdGroups) {
