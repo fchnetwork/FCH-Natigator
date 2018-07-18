@@ -20,6 +20,7 @@ import { StorageService } from "@core/general/storage-service/storage.service";
 import { RouteDataService } from "@app/core/general/route-data-service/route-data.service";
 import { QrRouteData } from "@app/account/qr-scan/qr-route-data.model";
 import { SettingsService } from "@core/settings/settings.service";
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 
 @Component({
   selector: "app-restore-account",
@@ -40,6 +41,16 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     class: ""
   };
 
+  backupStructure = {
+    "aerumBase": "aerum_base",
+    "aerumKeyStore": "aerum_keyStore",
+    "tokens": "tokens",
+    "transactions": "transactions",
+    "settings": "settings",
+    "ethereumAccounts": "ethereum_accounts",
+    "crossChainSwaps": "cross_chain_swaps"
+  }
+
   constructor(
     public authServ: AuthenticationService,
     private router: Router,
@@ -50,7 +61,8 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     public routeDataSerice: RouteDataService<QrRouteData>,
     private settingsService: SettingsService,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private notificationMessagesService: NotificationMessagesService
   ) {
     if (this.routeDataSerice.hasData()) {
       this.seedFileText = this.routeDataSerice.routeData.qrCode;
@@ -75,55 +87,38 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
               if (reader.result.split(" ").length === 12) {
                 this.seedFileText = reader.result;
                 this.recoverForm.controls["seed"].setValue(this.seedFileText);
+              } else {
+                this.notificationMessagesService.wrongSeedFile();
               }
             } else if (type === "full") {
-              const results = JSON.parse(reader.result);
-              this.cleanOrSetDefaultCookies();
-              this.storageService.setCookie(
-                "aerum_base",
-                results.aerumBase,
-                false,
-                7
-              );
-              this.storageService.setCookie(
-                "aerum_keyStore",
-                results.aerumKeyStore,
-                false,
-                7
-              );
-              this.storageService.setCookie("tokens", results.tokens, false, 7);
-              this.storageService.setCookie(
-                "transactions",
-                results.transactions,
-                false,
-                7
-              );
-              this.storageService.setCookie(
-                "settings",
-                results.settings,
-                false,
-                3650
-              );
-              this.storageService.setCookie(
-                "ethereum_accounts",
-                results.ethereumAccounts,
-                false,
-                7
-              );
-              this.storageService.setCookie(
-                "cross_chain_swaps",
-                results.crossChainSwaps,
-                false,
-                7
-              );
-              const urlQueryParams = this.returnUrl == null ? {} : { returnUrl: this.returnUrl };
-              const redirectUrl = this.router.createUrlTree(['/account/unlock'], { queryParams: urlQueryParams});
+                try {
+                  const results = JSON.parse(reader.result);
+                  this.cleanOrSetDefaultCookies();
+                  for (var key in results) {
+                    let expiration = 7;
+                    if (key === "settings") {
+                      expiration = 3650;
+                    }
+                    this.storageService.setCookie(
+                        this.backupStructure[key],
+                        results[key],
+                        false,
+                        expiration
+                    );
+                  }
+                  const urlQueryParams = this.returnUrl == null ? {} : { returnUrl: this.returnUrl };
+                  const redirectUrl = this.router.createUrlTree(['/account/unlock'], { queryParams: urlQueryParams});
 
-              this.router.navigateByUrl(redirectUrl.toString());
+                  this.router.navigateByUrl(redirectUrl.toString());
+                } catch(e) {
+                  this.notificationMessagesService.wrongBackupFile();
+                }
             }
           };
           reader.readAsText(input.files[index]);
         }
+      } else {
+        this.notificationMessagesService.fileNotSupported();
       }
     }
   }
@@ -144,7 +139,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
       {
         seed: ["", [Validators.required]],
         // password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
-        password: ["", [Validators.required]],
+        password: ["", [Validators.required, Validators.minLength(8)]],
         confirmpassword: ["", [Validators.required]]
       },
       {

@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 
 import { environment } from "@env/environment";
 import { secondsToDate } from "@shared/helpers/date-util";
+import { fromSolidityDecimalString } from "@shared/helpers/number-utils";
 
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { TransactionOptions } from "@core/ethereum/base-contract-service/transaction-options.model";
@@ -13,6 +14,8 @@ import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contrac
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
+import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
+import { EthWalletType } from '@app/external/models/eth-wallet-type.enum';
 
 @Injectable()
 export class OpenErc20SwapService extends BaseContractService {
@@ -21,7 +24,8 @@ export class OpenErc20SwapService extends BaseContractService {
     notificationService: InternalNotificationService,
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
-    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService
+    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
+    private ethereumTokenService: EthereumTokenService
   ) {
     super(
       artifacts.abi,
@@ -85,12 +89,14 @@ export class OpenErc20SwapService extends BaseContractService {
     const contract = await this.createContract();
     const checkSwap = contract.methods.check(hash);
     const response = await this.call(checkSwap);
+    const token = await this.ethereumTokenService.getSaveTokensInfo(EthWalletType.Imported, response.erc20ContractAddress);
     const swap: OpenErc20Swap = {
       hash,
       openTrader: response.openTrader,
       withdrawTrader: response.withdrawTrader,
-      erc20Value: response.erc20Value,
+      erc20Value: fromSolidityDecimalString(response.erc20Value, token.decimals),
       erc20ContractAddress: response.erc20ContractAddress,
+      erc20Token: token,
       timelock: response.timelock,
       openedOn: secondsToDate(Number(response.openedOn)),
       state: Number(response.state)

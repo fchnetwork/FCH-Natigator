@@ -227,4 +227,49 @@ constructor(private notificationService: NotificationService,
           5000
         );
       }
+
+      
+      /**
+       * Shows notification when backup file type is not supported
+       *
+       * @memberof NotificationMessagesService
+       */
+      public fileNotSupported() {
+        this.notificationService.notify(
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.FILE_NOT_SUPPORTED.TITLE')}`, 
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.FILE_NOT_SUPPORTED.BODY')}`,
+          'exclamation-triangle', 
+          5000
+        );
+      }
+
+
+      /**
+       *  Shows notification when seed file has wrong structure
+       *
+       * @memberof NotificationMessagesService
+       */
+      public wrongSeedFile() {
+        this.notificationService.notify(
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.WRONG_SEED_FILE.TITLE')}`, 
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.WRONG_SEED_FILE.BODY')}`,
+          'exclamation-triangle', 
+          5000
+        );
+      }
+
+      
+      /**
+       *  Shows notification when backup file has wrong structure
+       *
+       * @memberof NotificationMessagesService
+       */
+      public wrongBackupFile() {
+        this.notificationService.notify(
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.WRONG_BACKUP_FILE.TITLE')}`, 
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.WRONG_BACKUP_FILE.BODY')}`,
+          'exclamation-triangle', 
+          5000
+        );
+      }
 }
