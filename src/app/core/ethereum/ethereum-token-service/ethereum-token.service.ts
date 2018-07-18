@@ -78,11 +78,22 @@ export class EthereumTokenService extends BaseContractService {
     return web3.utils.isAddress(contractAddress);
   }
 
-  async getNetworkTokenInfo(wallet = EthWalletType.Imported, contractAddress: string, account: string): Promise<Token> {
+  async getSaveTokensInfo(wallet = EthWalletType.Imported, contractAddress: string, account?: string): Promise<Token> {
+    let token = this.getLocalTokenInfo(contractAddress);
+    if (token && token.symbol) {
+      return token;
+    }
+    token = await this.getNetworkTokenInfo(wallet, contractAddress, account);
+    if (!token.symbol) {
+      token.symbol = contractAddress;
+    }
+    return token;
+  }
+
+  async getNetworkTokenInfo(wallet = EthWalletType.Imported, contractAddress: string, account?: string): Promise<Token> {
     if (!(await this.isAddress(wallet, contractAddress))) {
       throw new Error('Address is not valid');
     }
-
     const contract = await this.createContractByAddress(wallet, contractAddress);
     const tokenSymbol = this.call(contract.methods.symbol());
     const tokenDecimals = this.call(contract.methods.decimals());
@@ -93,7 +104,7 @@ export class EthereumTokenService extends BaseContractService {
       safePromise(tokenSymbol, null),
       safePromise(tokenDecimals, 0),
       safePromise(tokenTotalSupply, 0),
-      safePromise(tokenBalanceOf, 0)
+      account ? safePromise(tokenBalanceOf, 0) : 0
     ]);
 
     const decimalsNumber = Number(decimals) || 0;
