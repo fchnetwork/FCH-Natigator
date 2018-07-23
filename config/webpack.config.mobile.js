@@ -323,7 +323,7 @@ module.exports = {
     }),
     new NamedLazyChunksWebpackPlugin(),
     new HtmlWebpackPlugin({
-      "template": "./src/index.html",
+      "template": "./src/mobile.html",
       "filename": "./index.html",
       "hash": false,
       "inject": true,
