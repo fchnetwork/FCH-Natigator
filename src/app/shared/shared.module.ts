@@ -40,6 +40,8 @@ import { GetBlockModalComponent } from '@app/shared/modals/get-block-modal/get-b
 import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
 import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
 import { FormsModule } from '@angular/forms';
+
+import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-token.component';
  
 const modalWindows = [
   TransactionModalComponent,
@@ -86,7 +88,8 @@ const modalWindows = [
     LoaderComponent,
     modalWindows,
     BigNumbersPipe,
-    AddressClipboardComponent
+    AddressClipboardComponent,
+    AddTokenComponent
   ],
   providers: [DecimalPipe],
   exports:[
@@ -114,7 +117,8 @@ const modalWindows = [
     NgxEchartsModule,
     CropAddressPipe,
     BigNumbersPipe,
-    AddressClipboardComponent
+    AddressClipboardComponent,
+    AddTokenComponent
   ]
 })
 

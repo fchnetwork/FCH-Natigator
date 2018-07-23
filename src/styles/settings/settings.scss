@@ -2,7 +2,7 @@
     background: #dde0e6;
 	width: 100%;
 	position: relative;
-	min-height: 500px;
+	min-height: 800px;
     box-shadow: 0 0 2px 0 rgba(9,30,66,.25);
 
     & > .settings__tab {
@@ -68,8 +68,28 @@
         align-self: end;
     }
 
-    &__ethereum-wallet {
-        
+    &-ethereum-wallet {
+		&__injected {
+			display: flex;
+			justify-content: start;
+		}
+
+		&__balance {
+			display: flex;
+			justify-content: space-between;
+		}
+		&__addressQR {
+			text-align: center;
+		}
+		&__label {
+			text-align: left;
+			margin-right: 14px;
+		}
+        &__address-option {
+			.aer-radio {
+				margin-top: 0;
+			}
+		}
     }
 }
 
