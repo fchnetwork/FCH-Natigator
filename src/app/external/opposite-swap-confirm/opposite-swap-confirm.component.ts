@@ -147,7 +147,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     if(!token) {
       throw new Error('Cannot load erc20 token: ' + this.erc20Swap.erc20ContractAddress);
     }
-    this.sendAmount = this.erc20Swap.erc20Value / Math.pow(10, Number(token.decimals));
+    this.sendAmount = this.erc20Swap.erc20Value;
     this.sendCurrency = token.symbol;
     if (token.address.toLowerCase() !== this.localSwap.token.toLowerCase()) {
       this.showError('Counter swap currency is not the same as requested');

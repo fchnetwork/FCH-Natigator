@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 
+import { StorageService } from "@core/general/storage-service/storage.service";
 import { tokensABI } from '@app/core/abi/tokens';
 import { safePromise } from "@app/shared/helpers/promise-utils";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
@@ -22,7 +22,7 @@ export class EthereumTokenService extends BaseContractService {
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
     injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
-    sessionStorage: SessionStorageService
+    storageService: StorageService
   ) {
     super(
       tokensABI,
@@ -32,7 +32,7 @@ export class EthereumTokenService extends BaseContractService {
       ethereumContractExecutorService,
       injectedWeb3ContractExecutorService
     );
-    this.tokenStorageService = new TokenStorageService("ethereum-tokens", sessionStorage);
+    this.tokenStorageService = new TokenStorageService("ethereum_tokens", storageService);
   }
 
   getTokens(includeEth?: boolean): Token[] {

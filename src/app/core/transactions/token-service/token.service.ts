@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 
 import Web3 from 'web3';
 import { Contract } from "web3/types";
@@ -12,7 +11,7 @@ import { Token } from "@core/transactions/token-service/token.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { TokenError } from "@core/transactions/token-service/token.error";
 import { TokenStorageService } from "@core/transactions/token-storage-service/token-storage.service";
-
+import { StorageService } from "@core/general/storage-service/storage.service";
 import { bigNumbersPow, bigNumbersDivide, bigNumberToString } from "@shared/helpers/number-utils";
 
 @Injectable()
@@ -29,11 +28,11 @@ export class TokenService {
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
-    private sessionStorage: SessionStorageService
+    private storageService: StorageService
   ) {
     this.web3 = authService.getWeb3();
     this.wsWeb3 = authService.getWSWeb3();
-    this.tokenStorageService = new TokenStorageService("tokens", sessionStorage);
+    this.tokenStorageService = new TokenStorageService("tokens", this.storageService);
   }
 
   addToken(tokenData) {
@@ -70,7 +69,7 @@ export class TokenService {
 
   getTokenBalance(tokenAddress) {
     return new Promise((resolve)=>{
-      const address = this.sessionStorage.retrieve('acc_address');
+      const address = this.storageService.getSessionData('acc_address');
       this.tokensContract = new this.web3.eth.Contract(tokensABI, tokenAddress);
       this.tokensContract.methods.balanceOf(address).call({}).then((res) => {
         resolve(res);
@@ -79,8 +78,8 @@ export class TokenService {
   }
 
   updateTokensBalance() {
-    const tokens = this.sessionStorage.retrieve('tokens');
-    const address = this.sessionStorage.retrieve('acc_address');
+    const tokens = this.storageService.getSessionData('tokens');
+    const address = this.storageService.getSessionData('acc_address');
     return new Promise((resolve) => {
       for (let i = 0; i < tokens.length; i++) {
         this.tokensContract = new this.web3.eth.Contract(tokensABI, tokens[i].address);
@@ -89,7 +88,7 @@ export class TokenService {
           tokens[i].balance = bigNumberToString(balance);
           this.updateStoredTokens(tokens[i]);
           if (i === Number(tokens.length - 1)) {
-            const tokens = this.sessionStorage.retrieve('tokens');
+            const tokens = this.storageService.getSessionData('tokens');
             resolve(tokens);
           }
         });
@@ -146,7 +145,7 @@ export class TokenService {
     }
 
     this.tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress);
-    const myAddress = this.sessionStorage.retrieve('acc_address');
+    const myAddress = this.storageService.getSessionData('acc_address');
     const [symbol, decimals, totalSupply, balance] = await Promise.all([
       safePromise(this.tokensContract.methods.symbol().call({from: myAddress}), null),
       safePromise(this.tokensContract.methods.decimals().call({from: myAddress}), 0),

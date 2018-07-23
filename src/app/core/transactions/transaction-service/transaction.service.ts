@@ -1,8 +1,6 @@
-import * as CryptoJS from 'crypto-js';
 import { Injectable } from '@angular/core';
 import * as Moment from 'moment';
 import { tokensABI } from '@app/core/abi/tokens';
-import { environment } from '@env/environment';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { TokenService } from '@core/transactions/token-service/token.service';

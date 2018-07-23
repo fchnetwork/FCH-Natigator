@@ -1,5 +1,4 @@
 import { ActivatedRoute } from '@angular/router';
-import { environment } from '@env/environment';
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -7,8 +6,7 @@ import { RegistrationRouteData } from '../models/RegistrationRouteData';
 import { Router } from '@angular/router';
 import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
-import { SessionStorageService } from 'ngx-webstorage';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { StorageService } from '@app/core/general/storage-service/storage.service';
 
 @Component({
   selector: 'app-register',
@@ -34,17 +32,18 @@ export class RegisterComponent implements OnInit {
     public route: ActivatedRoute,
     private routeDataService: RouteDataService<RegistrationRouteData>,
     public passCheckService: PasswordCheckerService,
-    public sessionStorage: SessionStorageService
+    public storageService: StorageService
   ) { }
 
   // TODO: export somewhere to lib to avoid double code
   cleanCookies() {
-    Cookie.set('aerum_base', null, 7, "/", environment.cookiesDomain);
-    Cookie.set('aerum_keyStore', null, 7, "/", environment.cookiesDomain);
-    Cookie.set('tokens', null, 7, "/", environment.cookiesDomain);
-    Cookie.set('transactions', null, 7, "/", environment.cookiesDomain);
-    Cookie.set('ethereum_accounts', null, 7, "/", environment.cookiesDomain);
-    Cookie.set('cross_chain_swaps', null, 7, "/", environment.cookiesDomain);
+    this.storageService.setCookie('aerum_base', null, false, 7);
+    this.storageService.setCookie('aerum_keyStore', null, false, 7);
+    this.storageService.setCookie('tokens', null, false, 7);
+    this.storageService.setCookie('ethereum_tokens', null, false, 7);
+    this.storageService.setCookie('transactions', null, false, 7);
+    this.storageService.setCookie('ethereum_accounts', null, false, 7);
+    this.storageService.setCookie('cross_chain_swaps', null, false, 7);
   }
 
   ngOnInit() {
@@ -56,7 +55,7 @@ export class RegisterComponent implements OnInit {
       avatar: [1]
     }, {
         validator: this.matchingPasswords('password', 'confirmPassword')
-      });
+    });
   }
 
   onSubmit() {
@@ -64,15 +63,16 @@ export class RegisterComponent implements OnInit {
       this.cleanCookies();
       const data = new RegistrationRouteData();
 
-      this.sessionStorage.store('acc_address', this.registerForm.value.avatar.address);
-      this.sessionStorage.store('acc_avatar', this.registerForm.value.avatar.avatar);
-      this.sessionStorage.store('seed', this.registerForm.value.avatar.seed);
-      this.sessionStorage.store('private_key', this.registerForm.value.avatar.private);
-      this.sessionStorage.store('password', this.registerForm.value.password);
-      this.sessionStorage.store('transactions', []);
-      this.sessionStorage.store('tokens', []);
-      this.sessionStorage.store('ethereum_accounts', []);
-      this.sessionStorage.store('cross_chain_swaps', []);
+      this.storageService.setSessionData('acc_address', this.registerForm.value.avatar.address);
+      this.storageService.setSessionData('acc_avatar', this.registerForm.value.avatar.avatar);
+      this.storageService.setSessionData('seed', this.registerForm.value.avatar.seed);
+      this.storageService.setSessionData('private_key', this.registerForm.value.avatar.private);
+      this.storageService.setSessionData('password', this.registerForm.value.password);
+      this.storageService.setSessionData('transactions', []);
+      this.storageService.setSessionData('tokens', []);
+      this.storageService.setSessionData('ethereum_tokens', []);
+      this.storageService.setSessionData('ethereum_accounts', []);
+      this.storageService.setSessionData('cross_chain_swaps', []);
 
       data.avatar = this.registerForm.value.avatar.avatar;
       data.password = this.registerForm.value.password;

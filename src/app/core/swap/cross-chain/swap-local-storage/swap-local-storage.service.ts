@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Cookie } from "ng2-cookies/ng2-cookies";
-
-import * as CryptoJS from 'crypto-js';
 
 import { unique } from "@shared/helpers/array-utils";
-import { environment } from "@env/environment";
-import { SessionStorageService } from "ngx-webstorage";
 import { SwapReference } from "./swap-reference.model";
 import { SwapType } from "@core/swap/models/swap-type.enum";
 import { TokenType } from "@core/swap/models/token-type.enum";
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 @Injectable()
 export class SwapLocalStorageService {
 
-  constructor(private sessionStorage: SessionStorageService) { }
+  constructor(private storageService: StorageService) { }
 
   storeSwapReference(swap: SwapReference): void {
     if(!swap) {
@@ -22,15 +18,9 @@ export class SwapLocalStorageService {
 
     const swaps = this.loadAllSwaps();
     swaps.push(swap);
-    this.sessionStorage.store("cross_chain_swaps", swaps);
-    this.storeSwapsInCookies(swaps);
-  }
-
-  private storeSwapsInCookies(swaps: SwapReference[]): void {
-    const password = this.sessionStorage.retrieve('password');
+    this.storageService.setSessionData('cross_chain_swaps', swaps);
     const stringSwaps = JSON.stringify(swaps);
-    const encryptedSwaps = CryptoJS.AES.encrypt(stringSwaps, password);
-    Cookie.set('cross_chain_swaps', encryptedSwaps, 7, "/", environment.cookiesDomain);
+    this.storageService.setCookie('cross_chain_swaps', stringSwaps, true, 7);
   }
 
   loadSwapReference(hash: string): SwapReference {
@@ -43,7 +33,7 @@ export class SwapLocalStorageService {
   }
 
   loadAllSwaps(): SwapReference[] {
-    return this.sessionStorage.retrieve("cross_chain_swaps") as SwapReference[] || [];
+    return this.storageService.getSessionData('cross_chain_swaps') as SwapReference[] || [];
   }
 
   loadSwapAccounts(swapType: SwapType, tokenType?: TokenType): string[] {

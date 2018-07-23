@@ -1,12 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import * as avatars from 'identity-img';
-import * as CryptoJS from 'crypto-js';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import QRCode from 'qrcode';
-import { SessionStorageService } from 'ngx-webstorage';
-import { Router } from '@angular/router'; 
+import { Component } from '@angular/core';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
@@ -19,7 +13,7 @@ export interface iDerivedAccounts {
   id: number;
   title: string;
   img: string;
-  icon: 'key',
+  icon: 'key';
   disabled: boolean;
 }
 
@@ -38,16 +32,16 @@ export class SidebarAccountSelectComponent  {
     
   constructor(
     private _authSrv: AuthenticationService,
-    private sessionStorage: SessionStorageService ) {
+    private storageService: StorageService) {
 
-     this.seed = this.sessionStorage.retrieve('seed') || "";
-     this.existingAccounts = this.sessionStorage.retrieve('derived_accs') || [];
+     this.seed = this.storageService.getSessionData('seed') || '';
+     this.existingAccounts = this.storageService.getSessionData('derived_accs') || [];
 
-     const acc_address = this.sessionStorage.retrieve('acc_address') || "";
-     const acc_avatar = this.sessionStorage.retrieve('acc_avatar') || "";
+     const acc_address = this.storageService.getSessionData('acc_address') || '';
+     const acc_avatar = this.storageService.getSessionData('acc_avatar') || '';
 
      this.existingAccounts.push({ id:0, title: acc_address, img: acc_avatar,icon: 'key', disabled: false, });
-     let dp = this.sessionStorage.retrieve('derivation');
+     let dp = this.storageService.getSessionData('derivation');
         
      this.activeDerivation = (dp != null || dp != undefined) ? dp :  "m/44'/60'/0'/0/0"
    }

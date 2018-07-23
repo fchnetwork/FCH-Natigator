@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import * as avatars from 'identity-img';
-import * as CryptoJS from 'crypto-js';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { SessionStorageService } from 'ngx-webstorage'; 
+
+import { StorageService } from "@core/general/storage-service/storage.service";
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 @Component({
@@ -19,11 +17,11 @@ export class SidebarHeaderComponent implements OnInit {
   
   constructor(
     public authServ: AuthenticationService,
-    public sessionStorageService: SessionStorageService) {}
+    public storageService: StorageService) {}
 
   ngOnInit() {
-    this.address = this.sessionStorageService.retrieve('acc_address');
-    this.avatar = this.sessionStorageService.retrieve('acc_avatar');
+    this.address = this.storageService.getSessionData('acc_address');
+    this.avatar = this.storageService.getSessionData('acc_avatar');
     // if(!this.address) {
     //   this.sessionStorageService.observe('acc_address').subscribe((value)=>{
     //     this.address = this.sessionStorageService.retrieve('acc_address');
