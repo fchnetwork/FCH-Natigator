@@ -11,6 +11,7 @@
     "start": "webpack-dev-server --port=4200 --config config/webpack.config.local.js",
     "start:dev": "webpack-dev-server --port=4200 --config config/webpack.config.dev.js",
     "start:prod": "webpack-dev-server --port=4200 --config config/webpack.config.prod.js",
+    "start:mobile": "webpack-dev-server --port=4200 --config config/webpack.config.mobile.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "update:ui": "npm update @aerum/ui --save"
