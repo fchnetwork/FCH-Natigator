@@ -38,6 +38,12 @@ export class EthereumAuthenticationService {
         return;
       }
 
+      if(environment.isMobileBuild) { 
+        this.logger.logMessage("Mobile build: Web3 is not provided!");
+        resolve(null);
+        return; // NO need for window.addEventListener 'load' since 'deviceready' have already fired.
+      }
+
       window.addEventListener('load', () => {
         try {
           if (!window.web3) {
