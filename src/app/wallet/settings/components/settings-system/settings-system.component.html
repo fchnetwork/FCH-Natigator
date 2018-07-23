@@ -1,5 +1,5 @@
-<div class="settings--form">
-    <div class="vertical--container">
+<div class="settings__form">
+    <div class="settings__vertical-container">
         <h3>{{'SETTINGS.SYSTEM.TAB_TITLE'|translate}}</h3>
         <app-divider [fullWidth]="true"></app-divider>
         <form [formGroup]="settingsForm">
@@ -17,7 +17,7 @@
             <aer-input [ngClass]="{'has-error':!settingsForm.controls['Ethereum Node URL'].valid && settingsForm.controls['Ethereum Node URL'].touched}" placeholder="{{'SETTINGS.SYSTEM.ETHEREUM_NODE_URL'|translate}}" formControlName="Ethereum Node URL" ngDefaultControl [(ngModel)]="systemSettings.ethereumNodeURI" icon="ehtereum"></aer-input>
         </form>
     </div>
-    <div class="vertical--container save--button">
+    <div class="settings__save-button">
         <aer-button class="blue" (buttonFn)="saveSettings()">{{'COMMON.BUTTONS.SAVE'|translate}}</aer-button>
     </div>
-  </div>
+</div>

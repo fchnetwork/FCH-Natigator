@@ -1,5 +1,5 @@
-<div class="settings--form">
-  <div class="vertical--container">
+<div class="settings__form">
+  <div class="settings__vertical-container">
       <h3>{{'SETTINGS.TRANSACTIONS.TAB_TITLE'|translate}}</h3>
       <app-divider [fullWidth]="true"></app-divider>
       <form [formGroup]="settingsForm">
@@ -17,7 +17,7 @@
         <aer-input [ngClass]="{'has-error':!settingsForm.controls['Last Transactions'].valid && settingsForm.controls['Last Transactions'].touched}" placeholder="{{'SETTINGS.TRANSACTIONS.LAST_TRANSACTIONS_LABEL'|translate}}" formControlName="Last Transactions" ngDefaultControl [(ngModel)]="transactionSettings.lastTransactionsNumber" icon="sort-desc"></aer-input>
       </form>
   </div>
-  <div class="vertical--container save--button">
+  <div class="settings__save-button">
       <aer-button class="blue" (buttonFn)="saveSettings()">{{'COMMON.BUTTONS.SAVE'|translate}}</aer-button>
   </div>
 </div>
