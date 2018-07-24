@@ -421,6 +421,10 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     return this.router.navigate(['wallet/swap']);
   }
 
+  explorerLink() {
+    window.location.href = this.swapTransactionExplorerUrl;
+  }
+
   private showError(message: string): void {
     this.errors.push(message);
   }
