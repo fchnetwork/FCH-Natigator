@@ -506,6 +506,7 @@
       "FIELD_TYPE_SECRET_KEY": "Type secret key",
       "FIELD_MESSAGE":
         "Attention! You need to complete the swap before it expires. If swap expires before completion, you can cancel it and withdraw the funds.",
+      "LINK_TO_EXPLORER": "Transaction in explorer",
       "BTN_COMPLETE_SWAP": "Complete swap",
       "BTN_CANCEL_SWAP": "Cancel swap",
       "BTN_CLOSE": "Close",

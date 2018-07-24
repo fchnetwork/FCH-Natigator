@@ -6,7 +6,7 @@
           <h1>{{(!canLoadSwap ? 'EXTERNAL-SWAP.CONFIRM.TITLE_CANT_LOAD_SWAP' : swapCancelled ? 'EXTERNAL-SWAP.CONFIRM.TITLE_CANCELLED_SWAP' : swapClosed ? 'EXTERNAL-SWAP.CONFIRM.TITLE_DEPOSIT_SWAP' : swapExpired ? 'EXTERNAL-SWAP.CONFIRM.TITLE_CANCEL_SWAP' : canCloseSwap ? 'EXTERNAL-SWAP.CONFIRM.TITLE_COMPLETE_SWAP' : 'EXTERNAL-SWAP.CONFIRM.TITLE_WAITING_COUNTERPARTY')|translate}}</h1>
           <app-divider></app-divider>
           <div *ngFor="let error of errors" aerRow>
-            <div aerColumn size="sm-12" class="cell cell_left error">{{error}}</div>
+            <div aerColumn size="sm-12" class="cell error">{{error}}</div>
           </div>
           <div aerRow *ngIf="swapClosed">
             <div aerColumn size="sm-12" class="cell swap-confirm--success">
@@ -58,15 +58,12 @@
               <aer-input [(ngModel)]="secret" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_TYPE_SECRET_KEY'|translate}}" [attr.readonly]="processing"></aer-input>
             </div>
           </div>
-          <div aerRow *ngIf="swapTransactionExplorerUrl">
-            <div aerColumn size="sm-9" class="cell">
-              <a href="{{swapTransactionExplorerUrl}}" target="_blank" class="c-swap-confirm__explorer-link">{{swapTransactionExplorerUrl | truncate: 40}}</a>
-            </div>
-            <div aerColumn size="sm-3" class="cell cell_right" *ngIf="timer">
-              <img *ngIf="processing" src="assets/images/loading.svg" alt="loading"/>
-            </div>
+
+          <div *ngIf="swapTransactionExplorerUrl" class="swap-confirm__transaction-explorer">
+              <aer-button (buttonFn)="explorerLink()" class="blue small">{{'EXTERNAL-SWAP.CONFIRM.LINK_TO_EXPLORER'|translate}}</aer-button>
+              <img class="loader" *ngIf="processing" src="assets/images/loading.svg" alt="loading"/>
           </div>
-          <app-divider [showLine]="false"></app-divider>
+
           <div *ngIf="!swapClosed" class="message">
             {{'EXTERNAL-SWAP.CONFIRM.FIELD_MESSAGE'|translate}}
           </div>
