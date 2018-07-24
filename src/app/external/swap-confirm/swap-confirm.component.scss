@@ -1,6 +1,7 @@
 .swap-confirm {
   &--success {
     color: #8CCC67;
+    margin-bottom: 0;
   }
 
   &__unlock {
@@ -29,6 +30,17 @@
     }
     .btn--close {
       margin-bottom: 0;
+    }
+  }
+
+  &__transaction-explorer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 14px auto;
+
+    .loader {
+      margin-bottom: 14px;
     }
   }
 
@@ -102,3 +114,5 @@
     }
   }
 }
+
+
