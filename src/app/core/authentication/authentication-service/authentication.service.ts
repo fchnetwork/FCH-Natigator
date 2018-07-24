@@ -227,7 +227,10 @@ export class AuthenticationService {
         const formatAddress = this.isHexAddress(address) ? address : '0x' + address;
         return new Promise( (resolve) => {
             if( formatAddress ){
-                resolve( QRCode.toDataURL( formatAddress  ) );
+                resolve( QRCode.toDataURL( formatAddress, {margin: 0, color: {
+                    dark: '#636363',  // Blue dots
+                    light: '#0000' // Transparent background
+                  }} ) );
             }
         });
     }

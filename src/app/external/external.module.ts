@@ -12,7 +12,6 @@ import { SwapCreateComponent } from './swap-create/swap-create.component';
 import { SwapConfirmComponent } from './swap-confirm/swap-confirm.component';
 import { OppositeSwapCreateComponent } from './opposite-swap-create/opposite-swap-create.component';
 import { OppositeSwapConfirmComponent } from './opposite-swap-confirm/opposite-swap-confirm.component';
-import { AddTokenComponent } from './ethereum-wallet/add-token/add-token.component';
 
 @NgModule({
   entryComponents: [
@@ -38,8 +37,7 @@ import { AddTokenComponent } from './ethereum-wallet/add-token/add-token.compone
     SwapCreateComponent,
     SwapConfirmComponent,
     OppositeSwapCreateComponent,
-    OppositeSwapConfirmComponent,
-    AddTokenComponent,
+    OppositeSwapConfirmComponent
   ]
 })
 export class ExternalModule {
