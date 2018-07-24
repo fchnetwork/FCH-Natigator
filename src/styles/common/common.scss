@@ -148,3 +148,9 @@ h3 {
     min-width: 470px;
   }
 }
+
+@media (max-width: 520px) {
+  .container-modal .default-modal .body {
+    padding: 102px 42px 32px 42px;
+  }
+}

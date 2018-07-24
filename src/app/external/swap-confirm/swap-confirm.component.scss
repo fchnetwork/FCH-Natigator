@@ -1,6 +1,13 @@
-.c-swap-confirm {
+.swap-confirm {
+  &--success {
+    color: #8CCC67;
+  }
+
   &__unlock {
     width: 400px;
+    @media (max-width: 520px) {
+      width: 100%;
+    }
   }
 
   &__table {
@@ -13,12 +20,15 @@
       font-size: 36px;
       font-weight: normal;
       color: #27282A;
-      margin: 0 0 38px;
+      margin: 0 0 14px;
     }
 
     aer-button {
       margin-bottom: 20px;
       display: block;
+    }
+    .btn--close {
+      margin-bottom: 0;
     }
   }
 
@@ -53,11 +63,11 @@
   }
 
   .cell {
-    &--left {
+    &_left {
       text-align: left;
     }
 
-    &--right {
+    &_right {
       text-align: right;
     }
   }
@@ -81,12 +91,14 @@
     display: table-cell;
     padding-bottom: 15px;
 
-    &.o-data--left {
+    &.o-data_left {
       text-align: left;
+      margin-right: 10px;
     }
 
-    &.o-data--right {
+    &.o-data_right {
       text-align: right;
+      word-break: break-all;
     }
   }
 }

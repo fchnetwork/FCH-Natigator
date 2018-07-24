@@ -9,6 +9,7 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AddressClipboardComponent } from './components/address-clipboard/address-clipboard.component';
 import { EqualValidator } from './directives/equal-validator.directive';
 import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
 import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
@@ -23,6 +24,7 @@ import { ConvertToEtherPipe } from '@shared/pipes/convertToEther.pipe';
 import { HextoAsciiPipe } from '@shared/pipes/hextoAscii.pipe';
 import { HextoDecimalPipe } from '@shared/pipes/hextoDecimal.pipe';
 import { BigNumbersPipe } from '@shared/pipes/big-numbers.pipe';
+import { GetBlockSignerPipe } from '@shared/pipes/get-block-signer.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
 import { DecimalPipe } from '@angular/common';
 import { AppUIModule } from '@app/app.ui.module';
@@ -41,6 +43,10 @@ export function createTranslateLoader(http: HttpClient) {
 }
 
 import { FormsModule } from '@angular/forms';
+
+import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-token.component';
+
+
 
 const modalWindows = [
   TransactionModalComponent,
@@ -77,6 +83,7 @@ const modalWindows = [
     OrderbyPipe,
     ConvertToEtherPipe,
     HextoAsciiPipe,
+    GetBlockSignerPipe,
     HextoDecimalPipe,
     SidebarAccountSelectComponent,
     TruncatePipe,
@@ -85,7 +92,9 @@ const modalWindows = [
     CropAddressPipe,
     LoaderComponent,
     modalWindows,
-    BigNumbersPipe
+    BigNumbersPipe,
+    AddressClipboardComponent,
+    AddTokenComponent
   ],
   providers: [DecimalPipe],
   exports:[
@@ -98,6 +107,7 @@ const modalWindows = [
     TransactionTimeAgoPipe,
     TransactionTimeStampPipe,
     HexToTextPipe,
+    GetBlockSignerPipe,
     SafeResourceUrlPipe,
     SafeUrlPipe,
     SafeHTMLPipe,
@@ -112,7 +122,9 @@ const modalWindows = [
     ChartComponent,
     NgxEchartsModule,
     CropAddressPipe,
-    BigNumbersPipe
+    BigNumbersPipe,
+    AddressClipboardComponent,
+    AddTokenComponent
   ]
 })
 

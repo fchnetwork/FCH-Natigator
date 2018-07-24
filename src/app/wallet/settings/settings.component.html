@@ -1,32 +1,26 @@
 <!-- <router-outlet></router-outlet> -->
-
-<div class="settings">
-    <h3>{{'SETTINGS.TITLE'|translate}}</h3>
-    <div aerRow>
-        <div class="container">
-            <div class="clear-backend">
-                <div class="tab" [routerLink]="['/wallet/settings/general']" routerLinkActive="selected">
-                    <span>General</span><aer-icon>gear</aer-icon>
-                </div>
-                <!-- <div class="tab" [routerLink]="['/wallet/settings/token']" routerLinkActive="selected">
-                    <span>Token</span><aer-icon>generaltoken</aer-icon>
-                </div> -->
-                <div class="tab" [routerLink]="['/wallet/settings/transactions']" routerLinkActive="selected">
-                    <span>Transactions</span><aer-icon>transaction</aer-icon>
-                </div>
-                <div class="tab" [routerLink]="['/wallet/settings/system']" routerLinkActive="selected">
-                    <span>System</span><aer-icon>node</aer-icon>
-                </div>
-                <div class="tab" [routerLink]="['/wallet/settings/backup']" routerLinkActive="selected">
-                    <span>Backup</span><aer-icon>backup</aer-icon>
-                </div>
-                
-                <div class="tab-content">
-                    <section>
-                        <router-outlet></router-outlet>
-                    </section>
-                </div>
-            </div>
+<h3>{{'SETTINGS.TITLE'|translate}}</h3>
+<div aerRow>
+    <div class="settings">
+        <div class="settings__tab" [routerLink]="['/wallet/settings/general']" routerLinkActive="settings__tab--selected">
+            <span>{{'SETTINGS.GENERAL.TAB_TITLE'|translate}}</span><aer-icon>gear</aer-icon>
+        </div>
+        <div class="settings__tab" [routerLink]="['/wallet/settings/transactions']" routerLinkActive="settings__tab--selected">
+            <span>{{'SETTINGS.TRANSACTIONS.TAB_TITLE'|translate}}</span><aer-icon>transaction</aer-icon>
+        </div>
+        <div class="settings__tab" [routerLink]="['/wallet/settings/system']" routerLinkActive="settings__tab--selected">
+            <span>{{'SETTINGS.SYSTEM.TAB_TITLE'|translate}}</span><aer-icon>node</aer-icon>
+        </div>
+        <div class="settings__tab" [routerLink]="['/wallet/settings/backup']" routerLinkActive="settings__tab--selected">
+            <span>{{'SETTINGS.BACKUP.TAB_TITLE'|translate}}</span><aer-icon>backup</aer-icon>
+        </div>
+        <div class="settings__tab" [routerLink]="['/wallet/settings/ethereum-wallet']" routerLinkActive="settings__tab--selected">
+            <span>{{'SETTINGS.ETHWALLET.TAB_TITLE'|translate}}</span><aer-icon>ehtereum</aer-icon>
+        </div>                
+        <div class="settings__tab-content">
+            <section>
+                <router-outlet></router-outlet>
+            </section>
         </div>
     </div>
 </div>

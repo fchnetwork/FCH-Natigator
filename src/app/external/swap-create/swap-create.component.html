@@ -2,8 +2,9 @@
   <div class="adaptive-dialog">
     <div class="modal-content">
       <aer-modal-dialog>
-        <div class="c-swap-create c-swap-create__table c-swap-create__unlock">
+        <div class="swap-create swap-create__table swap-create__unlock">
           <h1>{{'EXTERNAL-SWAP.CREATE.TITLE'|translate}}</h1>
+          <app-divider></app-divider>
           <div aerRow>
             <div aerColumn size="sm-12" class="cell">
               <label>{{'EXTERNAL-SWAP.CREATE.FIELD_RECEIVING_AERUM_TOKEN'|translate}}</label>
@@ -34,42 +35,43 @@
           </div>
           <div class="o-table">
             <div class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 {{'EXTERNAL-SWAP.CREATE.FIELD_SEND_ETHEREUM_ASSET'|translate}}  
               </div>
-              <div class="o-table__cell o-data--right">
-                ETH
+              <div class="o-table__cell o-data_right">
+                {{ walletTokenSymbol }}
               </div>
             </div>
             <div class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 {{'EXTERNAL-SWAP.CREATE.FIELD_AMOUNT'|translate}}
               </div>
-              <div class="o-table__cell o-data--right">
-                {{ethAmount| number:'1.2-18'}}
+              <div class="o-table__cell o-data_right">
+                {{tokenAmount| number:'1.2-18'}}
               </div>
             </div>
             <div class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 {{'EXTERNAL-SWAP.CREATE.FIELD_EXCHANGE_RATE'|translate}}
               </div>
-              <div class="o-table__cell o-data--right">
+              <div class="o-table__cell o-data_right">
                 {{rate | number:'1.2-18'}}
               </div>
             </div>
             <div class="o-table__row">
-              <div class="o-table__cell o-data--left">
+              <div class="o-table__cell o-data_left">
                 {{'EXTERNAL-SWAP.CREATE.FIELD_SECRET_KEY'|translate}}
               </div>
-              <div class="o-table__cell o-data--right">
+              <div class="o-table__cell o-data_right">
                 <span class="secret-key" (click)="copyToClipboard()">{{secret}}</span>
               </div>
             </div>
-            <div *ngIf="openSwapTransactionExplorerUrl" class="o-table__row">
-              <div class="o-table__cell o-data--left">
-                <a href="{{openSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{openSwapTransactionExplorerUrl | truncate: 40}}</a>
+            <div *ngIf="approveTokenTransactionExplorerUrl || openSwapTransactionExplorerUrl" class="o-table__row">
+              <div class="o-table__cell o-data_left">
+                <a *ngIf="approveTokenTransactionExplorerUrl" href="{{approveTokenTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{approveTokenTransactionExplorerUrl | truncate: 40}}</a>
+                <a *ngIf="openSwapTransactionExplorerUrl" href="{{openSwapTransactionExplorerUrl}}" target="_blank" class="c-swap-create__explorer-link">{{openSwapTransactionExplorerUrl | truncate: 40}}</a>
               </div>
-              <div class="o-table__cell o-data--right">
+              <div class="o-table__cell o-data_right">
                 <img *ngIf="processing" src="assets/images/loading.svg" alt="loading"/>
               </div>
             </div>

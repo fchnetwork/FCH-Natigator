@@ -47,7 +47,7 @@ export class TransactionService {
     }
 
     generateContract(contractAddress) {
-      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, {gas: 10000000});
+      const tokensContract = new this.web3.eth.Contract(tokensABI, contractAddress, {gas: this.settingsService.settings.transactionSettings.maxTransactionGas});
       return tokensContract;
     }
 
@@ -69,10 +69,10 @@ export class TransactionService {
           const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
           resolve([resultInGwei, resultInEther, price, res[1]]);
         }).catch((err)=>{
-          const transactionFee = Number(this.web3.utils.toWei(this.settingsService.settings.transactionSettings.gasPrice, 'gwei')) * Number(1000000);
+          const transactionFee = Number(this.web3.utils.toWei(this.settingsService.settings.transactionSettings.gasPrice, 'gwei')) * Number(this.settingsService.settings.transactionSettings.maxTransactionGas);
           const resultInGwei = this.web3.utils.fromWei(String(transactionFee), 'gwei');
           const resultInEther = this.web3.utils.fromWei(String(transactionFee), 'ether');
-          resolve([resultInGwei, resultInEther, 1000000, 1000000]);
+          resolve([resultInGwei, resultInEther, this.settingsService.settings.transactionSettings.maxTransactionGas, this.settingsService.settings.transactionSettings.maxTransactionGas]);
         });
       });
     }
@@ -80,11 +80,7 @@ export class TransactionService {
     saveTransaction(from, to, amount, data, hash, type, tokenName, decimals) {
       const date = new Date();
       let transaction;
-      if(tokenName && decimals) {
-        transaction = { from, to, amount, data, date, hash, type, tokenName, decimals };
-      } else {
-        transaction = { from, to, amount, data, date, hash, type };
-      }
+      transaction = { from, to, amount, data, date, hash, type, tokenName, decimals };
       const transactions = this.storageService.getSessionData('transactions') || [];
       transactions.push(transaction);
       this.updateStorage(transactions);
@@ -92,7 +88,6 @@ export class TransactionService {
 
     updateStorage(transactions) {
       const stringTransaction = JSON.stringify(transactions);
-      this.storageService.setCookie('transactions', stringTransaction, true, 7);
       this.storageService.setSessionData('transactions', transactions);
     }
 
@@ -157,7 +152,6 @@ export class TransactionService {
             const rawTransaction:any = {
               nonce: this.web3.utils.toHex( nonce ),
               gas: this.web3.utils.toHex( gas ),
-              // TODO: export it to any config and import from there
               gasPrice: this.web3.utils.toHex( this.web3.utils.toWei( this.settingsService.settings.transactionSettings.gasPrice, 'gwei')),
               to,
               value: txValue,
@@ -204,7 +198,7 @@ export class TransactionService {
         "gasPrice": 
           this.web3.utils.toHex(gasPrice) || 
           this.web3.utils.toHex( this.web3.utils.toWei( this.settingsService.settings.transactionSettings.gasPrice, 'gwei')),
-        "gasLimit": this.settingsService.settings.transactionSettings.maxTransactionGas,
+        "gasLimit": this.web3.utils.toHex(this.settingsService.settings.transactionSettings.maxTransactionGas),
         "to": contractAddress,
         "value": "0x0",
         "data": tokensContract.methods.transfer(to, amount).encodeABI(),

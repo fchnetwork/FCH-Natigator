@@ -21,6 +21,10 @@ a {
   color: #2a669a;
 }
 
+h1 {
+  font-size: 36px;
+}
+
 .loader-overlay {
   background-color: rgba($color: #FFF, $alpha: 0.8);
   position: fixed;
@@ -157,4 +161,7 @@ a {
 
 aer-input {
   margin: 14px 0 28px 0;
+}
+aer-select {
+  line-height: 20px;
 }

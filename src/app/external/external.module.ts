@@ -37,7 +37,7 @@ import { OppositeSwapConfirmComponent } from './opposite-swap-confirm/opposite-s
     SwapCreateComponent,
     SwapConfirmComponent,
     OppositeSwapCreateComponent,
-    OppositeSwapConfirmComponent,
+    OppositeSwapConfirmComponent
   ]
 })
 export class ExternalModule {

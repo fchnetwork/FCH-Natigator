@@ -6,6 +6,7 @@ import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
+  isMobileBuild: false,
   configInUse: "environment.local",
   WebsocketProvider: "wss://marge.aerum.net/wss",
   rpcApiProvider: "https://marge.aerum.net/eth",
@@ -58,7 +59,8 @@ export const environment = {
     lastTransactionsNumber: "10",
     maxBlockGas: "1",
     derivationPath: "m/44'/60'/0'/0/0",
-    laguage: "en"
+    laguage: "en",
+    numberOfBlocks: 20
   },
   chainId: 418313827693,
   loglevel: LogLevel.All

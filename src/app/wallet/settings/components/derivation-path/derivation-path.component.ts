@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
+import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { SettingsService } from '@app/core/settings/settings.service';
-import { iGeneralSettings, iSettings } from '@shared/app.interfaces';
 
 export interface iDerivationPaths {
   id: number;
@@ -18,11 +17,6 @@ export class DerivationPathComponent {
 
   selectResult: any;
   activeDerivation: string;
-
-  generalSettings: iGeneralSettings = {
-    language: "",
-    derivationPath: ""
-  }
   
   derivationPaths: Array<iDerivationPaths> = [{
     id: 1,
@@ -35,11 +29,10 @@ export class DerivationPathComponent {
   }]  
   
   constructor(
-      private notificationService: InternalNotificationService,
+      private notificationService: NotificationMessagesService,
       private settingsService: SettingsService ) 
   {
-    this.getGeneralSettings();
-    let activeDerivation = this.generalSettings.derivationPath;
+    let activeDerivation = this.settingsService.settings.generalSettings.derivationPath;
                                  
     this.derivationPaths.forEach( (path, i) => {
       if (path.derivation == activeDerivation ) {
@@ -48,19 +41,15 @@ export class DerivationPathComponent {
     });  
   }
  
-  derivationChanged(evt){
-    const generalSettings: iGeneralSettings = {
-      language: this.generalSettings.language,
-      derivationPath: evt.derivation,
-    };
-    this.settingsService.saveSettings("generalSettings", generalSettings);
-    this.notificationService.showMessage(`Derivation path is now ${evt.derivation}`, 'YOUR DERIVATION PATH HAS BEEN MODIFIED');
+  /**
+   * Save derivation path to cookie when selected from dropdown
+   *
+   * @param {*} evt
+   * @memberof DerivationPathComponent
+   */
+  derivationChanged(evt: iDerivationPaths){
+    this.settingsService.saveSetting("generalSettings", "derivationPath", evt.derivation)
+    this.notificationService.derivationModified(evt.derivation);
   }
-
-  getGeneralSettings() {
-    let settings: iSettings = this.settingsService.getSettings();
-    this.generalSettings.language = settings.generalSettings.language;
-    this.generalSettings.derivationPath = settings.generalSettings.derivationPath;
-  }  
 
 }

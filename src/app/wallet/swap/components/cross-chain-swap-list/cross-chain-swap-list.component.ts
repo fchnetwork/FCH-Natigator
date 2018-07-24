@@ -7,6 +7,7 @@ import { SwapListService } from "@core/swap/cross-chain/swap-list-service/swap-l
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { SwapType } from '@app/core/swap/models/swap-type.enum';
 
 @Component({
   selector: 'app-cross-chain-swap-list',
@@ -72,8 +73,9 @@ export class CrossChainSwapListComponent implements OnInit {
     return this.router.navigate(['external/eth-wallet'], { queryParams: { direction: 'opposite' }});
   }
 
-  openSwap(swapId: string) {
-    return this.router.navigate(['external/confirm-swap'], {queryParams: {hash: swapId}});
+  openSwap(swap: SwapListItem) {
+    const url = swap.type === SwapType.Deposit ? 'external/confirm-swap' : 'external/confirm-opposite-swap';
+    return this.router.navigate([url], {queryParams: {hash: swap.id}}); 
   }
 
   private translate(key: string): string {

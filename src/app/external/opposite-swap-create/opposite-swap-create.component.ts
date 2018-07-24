@@ -18,13 +18,16 @@ import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.servi
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { Token } from "@core/transactions/token-service/token.model";
-import { EtherSwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { SwapReference } from "@core/swap/cross-chain/swap-local-storage/swap-reference.model";
+import { SwapType } from "@core/swap/models/swap-type.enum";
 import { SwapTemplateService } from "@core/swap/cross-chain/swap-template-service/swap-template.service";
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
+import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { InjectedWeb3Error } from "@external/models/injected-web3.error";
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-opposite-swap-create',
@@ -33,7 +36,9 @@ import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 })
 export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   private routeSubscription: Subscription;
-  private params: { asset?: string, amount?: number, wallet?: EthWalletType, account?: string, query?: string } = {};
+  private params: { asset?: string, amount?: number, wallet?: EthWalletType, account?: string, query?: string, token?: string, symbol?: string } = {};
+  private ethAddress = '0x0';
+  private ethSymbol = 'ETH';
 
   secret: string;
   amount: number;
@@ -45,9 +50,12 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   selectedTemplate: SwapTemplate;
 
   rate: number;
-  ethAmount: number;
+  tokenAmount: number;
+  walletToken: Token;
+  walletTokenSymbol: string;
 
   openSwapTransactionExplorerUrl: string;
+  approveTokenTransactionExplorerUrl: string;
 
   processing = false;
   canCreateSwap = false;
@@ -64,7 +72,9 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
     private swapTemplateService: SwapTemplateService,
     private erc20SwapService: OpenAerumErc20SwapService,
-    private swapLocalStorageService: SwapLocalStorageService) { }
+    private ethereumTokenService: EthereumTokenService,
+    private swapLocalStorageService: SwapLocalStorageService,
+    private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
@@ -79,8 +89,8 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
         this.logger.logError('Cannot load token information', e);
         this.notificationService.showMessage('Please configure the token first', 'Error');
       } else {
-        this.logger.logError('Opposite swap data load error', e);
-        this.notificationService.showMessage('Cannot load opposite swap screen', 'Error');
+        this.logger.logError('Withdrawal swap data load error', e);
+        this.notificationService.showMessage('Cannot load withdrawal swap screen', 'Error');
       }
     }
   }
@@ -96,13 +106,17 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       amount: Number(param.amount) || 0,
       wallet: param.wallet ? Number(param.wallet) : EthWalletType.Injected,
       account: param.account,
-      query: param.query
+      query: param.query,
+      token: param.token ? param.token : this.ethAddress,
+      symbol: param.symbol ? param.symbol : this.ethSymbol
     };
 
     this.amount = this.params.amount;
     this.tokens = this.tokenService.getTokens() || [];
+    this.walletTokenSymbol = this.params.symbol;
     await this.ensureTokenPresent(this.params.asset);
     await this.loadSwapTemplates();
+    await this.loadWalletToken();
   }
 
   onTokenChange() {
@@ -156,7 +170,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       this.logger.logMessage("Token not selected");
       return;
     }
-    const templates = await this.swapTemplateService.getTemplatesByOffchainAsset(this.selectedToken.address, Chain.Ethereum);
+    const templates = await this.swapTemplateService.getTemplatesByOffchainAsset(this.selectedToken.address, this.params.token, Chain.Ethereum);
     if (templates) {
       this.templates = templates.sort((one, two) => Number(one.rate <= two.rate));
       this.selectedTemplate = this.templates[0];
@@ -167,10 +181,16 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     await this.recalculateTotals();
   }
 
+  private async loadWalletToken() {
+    if(this.params.token !== this.ethAddress){
+      this.walletToken = await this.ethereumTokenService.getNetworkTokenInfo(this.params.wallet, this.params.token, this.params.account);
+    }
+  }
+
   private async recalculateTotals() {
     if (this.selectedTemplate) {
       this.rate = this.selectedTemplate.rate;
-      this.ethAmount = this.amount * this.selectedTemplate.rate;
+      this.tokenAmount = this.amount * this.selectedTemplate.rate;
       if (this.selectedToken) {
         this.canCreateSwap = this.selectedToken.balance >= this.amount;
       } else {
@@ -178,7 +198,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       }
     } else {
       this.rate = 0;
-      this.ethAmount = 0;
+      this.tokenAmount = 0;
       this.canCreateSwap = false;
     }
   }
@@ -197,15 +217,15 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   async next() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Creating opposite swap... (please wait 10-15 seconds)', 'In progress');
+      this.notificationService.showMessage('Creating withdrawal swap... (please wait 10-15 seconds)', 'In progress');
       await this.openERC20Swap();
-      this.notificationService.showMessage('Opposite swap created. Waiting for confirmation...', 'Success');
+      this.notificationService.showMessage('Withdrawal swap created. Waiting for confirmation...', 'Success');
     }
     catch (e) {
       // NOTE: We show more detailed errors for injected web3 in called functions
       if(!(e instanceof InjectedWeb3Error)) {
-        this.logger.logError('Error while creating opposite swap', e);
-        this.notificationService.showMessage('Error while creating opposite swap', 'Unhandled error');
+        this.logger.logError('Error while creating withdrawal swap', e);
+        this.notificationService.showMessage('Error while creating withdrawal swap', 'Unhandled error');
       }
     } finally {
       this.processing = false;
@@ -214,6 +234,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
 
   async openERC20Swap() {
     await this.loadEthAccount();
+    this.approveTokenTransactionExplorerUrl = null;
     this.openSwapTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
@@ -228,23 +249,11 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
       amount,
       counterpartyTrader,
       timestamp,
-      (txHash) => this.onOpenSwapHashReceived(txHash)
+      (txHash) => this.onApproveTokenHashReceived(txHash),
+      (txHash) => this.onOpenSwapHashReceived(txHash, hash)
     );
 
-    const localSwap: EtherSwapReference = {
-      hash,
-      secret: this.secret,
-      account: this.params.account,
-      walletType: this.params.wallet,
-      token: this.selectedToken.address,
-      tokenAmount: this.amount,
-      ethAmount: this.ethAmount
-    };
-    this.swapLocalStorageService.storeSwapReference(localSwap);
-
-    this.swapCreated = true;
-    this.logger.logMessage(`Opposite swap ${hash} created`);
-    return this.router.navigate(['external/confirm-opposite-swap'], {queryParams: {hash, query: this.params.query}});
+    return this.router.navigate(['external/confirm-opposite-swap'], {queryParams: {hash, query: this.params.query, token: this.params.token, symbol: this.params.symbol}});
   }
 
   private async loadEthAccount() {
@@ -287,8 +296,34 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
   }
 
-  private onOpenSwapHashReceived(hash: string): void {
-    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(hash, Chain.Aerum);
+  private onApproveTokenHashReceived(txhash: string): void {
+    this.notificationService.showMessage(`Approving ${this.selectedToken.symbol} token allowance...`, 'In progress');
+    this.approveTokenTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Aerum);
+  }
+
+  private onOpenSwapHashReceived(txHash: string, hash: string): void {
+    this.notificationService.showMessage('Opening withdrawal swap...', 'In progress');
+    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Aerum);
+
+    const localSwap: SwapReference = {
+      hash,
+      secret: this.secret,
+      account: this.authService.getAddress(),
+      walletType: this.params.wallet,
+      walletTokenAddress: this.params.token,
+      walletTokenSymbol: this.params.symbol,
+      token: this.selectedToken.address,
+      tokenAmount: this.amount,
+      swapType: SwapType.Withdrawal,
+    };
+    if(this.walletTokenSymbol === this.ethSymbol){
+      localSwap.ethAmount = this.tokenAmount;
+    }else{
+      localSwap.erc20Amount = this.tokenAmount;
+    }
+    this.swapLocalStorageService.storeSwapReference(localSwap);
+    this.swapCreated = true;
+    this.logger.logMessage(`Withdrawal swap ${hash} created`);
   }
 
   cancel() {

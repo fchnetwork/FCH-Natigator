@@ -107,8 +107,8 @@ constructor(private notificationService: NotificationService,
        */
       public langugeChanged(language) {
         this.notificationService.notify(
-          `${this.translate('SETTINGS.LANGUAGE.NOTIFICATION_TITLE_CHANGE_LANGUAGE')}`, 
-          `${this.translate('SETTINGS.LANGUAGE.NOTIFICATION_BODY_CHANGE_LANGUAGE')} ${language}`,
+          `${this.translate('SETTINGS.GENERAL.NOTIFICATIONS.CHANGE_LANGUAGE.TITLE')}`, 
+          `${this.translate('SETTINGS.GENERAL.NOTIFICATIONS.CHANGE_LANGUAGE.BODY')} ${language}`,
           'translation', 
           10000
         );
@@ -149,10 +149,25 @@ constructor(private notificationService: NotificationService,
        */
       public saveSettings() {
         this.notificationService.notify(
-          `${this.translate('SETTINGS.NOTIFICATION_TITLE_SAVE_SETTINGS')}`, 
-          `${this.translate('SETTINGS.NOTIFICATION_BODY_SAVE_SETTINGS')}`,
+          `${this.translate('SETTINGS.COMMON.NOTIFICATIONS.SAVE_SETTINGS.TITLE')}`, 
+          `${this.translate('SETTINGS.COMMON.NOTIFICATIONS.SAVE_SETTINGS.BODY')}`,
           'check-square-o', 
           10000
+        );
+      }
+
+      /**
+       * Shows notification when field value is wrong
+       *
+       * @param {*} field name of the field
+       * @memberof NotificationMessagesService
+       */
+      public wrongValueProvided(field) {
+        this.notificationService.notify(
+          `${this.translate('COMMON.NOTIFICATIONS.WRONG_VALUE.TITLE')}`,
+          `${field} ${this.translate('COMMON.NOTIFICATIONS.WRONG_VALUE.BODY')}`,
+          'exclamation-triangle', 
+          5000
         );
       }
 
@@ -163,8 +178,8 @@ constructor(private notificationService: NotificationService,
        */
       public fullBackup() {
         this.notificationService.notify(
-          `${this.translate('SETTINGS.BACKUP.NOTIFICATION_TITLE_SAVE_FULL_BACKUP')}`, 
-          `${this.translate('SETTINGS.BACKUP.NOTIFICATION_BODY_SAVE_FULL_BACKUP')}`,
+          `${this.translate('SETTINGS.BACKUP.NOTIFICATIONS.SAVE_FULL_BACKUP.TITLE')}`, 
+          `${this.translate('SETTINGS.BACKUP.NOTIFICATIONS.SAVE_FULL_BACKUP.BODY')}`,
           'check-square-o', 
           10000
         );
@@ -177,10 +192,84 @@ constructor(private notificationService: NotificationService,
        */
       public simpleBackup() {
         this.notificationService.notify(
-          `${this.translate('SETTINGS.BACKUP.NOTIFICATION_TITLE_SAVE_SIMPLE_BACKUP')}`, 
-          `${this.translate('SETTINGS.BACKUP.NOTIFICATION_BODY_SAVE_SIMPLE_BACKUP')}`,
+          `${this.translate('SETTINGS.BACKUP.NOTIFICATIONS.SAVE_SIMPLE_BACKUP.TITLE')}`, 
+          `${this.translate('SETTINGS.BACKUP.NOTIFICATIONS.SAVE_SIMPLE_BACKUP.BODY')}`,
           'check-square-o', 
           10000
+        );
+      }
+
+     /**
+      * Shows notification when derivation path has been modified
+      *
+      * @param {string} derivation New derivation
+      * @memberof NotificationMessagesService
+      */
+     public derivationModified(derivation: string) {
+        this.notificationService.notify(
+          `${this.translate('SETTINGS.GENERAL.NOTIFICATIONS.CHANGE_DERIVATION.TITLE')}`, 
+          `${this.translate('SETTINGS.GENERAL.NOTIFICATIONS.CHANGE_DERIVATION.BODY')} ${derivation}`,
+          'check-square-o', 
+          10000
+        );
+      }
+
+      /**
+       *Shows notification when something copied to clipboard
+       *
+       * @memberof NotificationMessagesService
+       */
+      public valueCopiedToClipboard() {
+        this.notificationService.notify(
+          `Notification`, 
+          `Value has been copied to clipboard`,
+          'clipboard', 
+          5000
+        );
+      }
+
+      
+      /**
+       * Shows notification when backup file type is not supported
+       *
+       * @memberof NotificationMessagesService
+       */
+      public fileNotSupported() {
+        this.notificationService.notify(
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.FILE_NOT_SUPPORTED.TITLE')}`, 
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.FILE_NOT_SUPPORTED.BODY')}`,
+          'exclamation-triangle', 
+          5000
+        );
+      }
+
+
+      /**
+       *  Shows notification when seed file has wrong structure
+       *
+       * @memberof NotificationMessagesService
+       */
+      public wrongSeedFile() {
+        this.notificationService.notify(
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.WRONG_SEED_FILE.TITLE')}`, 
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.WRONG_SEED_FILE.BODY')}`,
+          'exclamation-triangle', 
+          5000
+        );
+      }
+
+      
+      /**
+       *  Shows notification when backup file has wrong structure
+       *
+       * @memberof NotificationMessagesService
+       */
+      public wrongBackupFile() {
+        this.notificationService.notify(
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.WRONG_BACKUP_FILE.TITLE')}`, 
+          `${this.translate('ACCOUNT.RESTORE.NOTIFICATIONS.WRONG_BACKUP_FILE.BODY')}`,
+          'exclamation-triangle', 
+          5000
         );
       }
 }

@@ -64,7 +64,7 @@
                         {{ 'FEE' | translate }}
                     </div>
                     <div class="o-table__cell o-data--right">
-                        {{ maxTransactionFee }} gwei
+                        {{ maxTransactionFee | convertWeiToGwei}} {{'AERO'|translate}}
                     </div>
                 </div>
                 <div class="o-table__row">
@@ -72,12 +72,14 @@
                         <!-- {{ 'AMOUNT' | translate }} -->
                         {{'EXTERNAL-SWAP.TRANSACTION.FIELD_AMOUNT_AVAILABLE'|translate}}
                     </div>
-                    <div class="o-table__cell o-data--right deposit-more">
-                        <span>{{ balance | bignumber:'1.0-3' }}</span> <aer-button class="small blue" (buttonFn)="deposit()">{{'EXTERNAL-SWAP.TRANSACTION.BTN_DEPOSIT_MORE'|translate}}</aer-button>
+                    <div class="o-table__cell o-data--right">
+                        <span>{{ balance | bignumber:'1.0-3' }}</span>
                     </div>
                 </div>
             </div>
             <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">{{'EXTERNAL-SWAP.TRANSACTION.FIELD_I_ACKNOWLEDGE_RISKS'|translate}}</aer-checkbox>
+            <p *ngIf="!proceedAvailable">{{'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' | translate}}</p>
+            <aer-button class="blue large full-width" (buttonFn)="deposit()">{{'EXTERNAL-SWAP.TRANSACTION.BTN_DEPOSIT_MORE'|translate}}</aer-button>
             <aer-button [disabled]="checkbox && !checked || !proceedAvailable" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()" class="blue large full-width">{{'EXTERNAL-SWAP.TRANSACTION.BTN_PROCEED'|translate}}</aer-button>
             <aer-button (buttonFn)="dismiss()" class="large full-width">{{(proceedAvailable ? 'EXTERNAL-SWAP.TRANSACTION.BTN_CLOSE':'EXTERNAL-SWAP.TRANSACTION.BTN_CANCEL') | translate}}</aer-button>
         </div>

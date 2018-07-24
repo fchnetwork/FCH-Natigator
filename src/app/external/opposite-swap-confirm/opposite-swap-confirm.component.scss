@@ -1,6 +1,9 @@
-.c-swap-confirm {
+.swap-confirm {
     &__unlock {
       width: 400px;
+      @media (max-width: 520px) {
+        width: 100%;
+      }
     }
   
     &__table {
@@ -53,11 +56,11 @@
     }
   
     .cell {
-      &--left {
+      &_left {
         text-align: left;
       }
   
-      &--right {
+      &_right {
         text-align: right;
       }
     }
@@ -81,11 +84,11 @@
       display: table-cell;
       padding-bottom: 15px;
   
-      &.o-data--left {
+      &.o-data_left {
         text-align: left;
       }
   
-      &.o-data--right {
+      &.o-data_right {
         text-align: right;
       }
     }

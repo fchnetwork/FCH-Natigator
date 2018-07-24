@@ -1,33 +1,34 @@
 <aer-card class="token-list">
     <div aerRow class="title-row">
         <div aerColumn size="lg-6 md-6 sm-6 xs-6">
-            <span class="title">Tokens</span>
+            <span class="token-list__title">Tokens</span>
         </div>
-        <div aerColumn size="lg-6 md-6 sm-6 xs-6" class="add-token">
+        <div aerColumn size="lg-6 md-6 sm-6 xs-6" class="token-list__add-token">
             <aer-button class="blue medium" (click)="addToken()">Add token <aer-icon>plus</aer-icon></aer-button>
         </div>
     </div>
-    <div aerRow *ngIf="tokens" class="token-item">
-        <div aerColumn size="lg-3 md-3 sm-3 xs-3">
-            {{ 'DASHBOARD_TOKENS.NAME' | translate }}
-        </div>
-        <div aerColumn size="lg-7 md-7 sm-7 xs-7" class="right-align">
-            {{ 'DASHBOARD_TOKENS.AMOUNT' | translate }}
-        </div>
-        <div aerColumn size="lg-2 md-2 sm-2 xs-2">
-            
-        </div>
-    </div>
-    <div aerRow *ngFor="let token of tokens" class="token-item">
-        <div aerColumn size="lg-3 md-3 sm-3 xs-3" class="name">
-            <span class="token-img"><aer-icon>generaltoken</aer-icon></span>{{token.symbol}}
-        </div>
-        <div aerColumn size="lg-7 md-7 sm-7 xs-7" class="amount">
-            {{token.balance | bignumber:'1.0-3'}}
-        </div>
-        <div aerColumn size="lg-2 md-2 sm-2 xs-2" class="name">
-            <span class="token-img"><aer-icon class="delete-token" (click)="copyTokenAddress(token.address)">clipboard</aer-icon></span>
-            <span class="delete-icon"><aer-icon class="delete-token" (click)="deleteToken(token)">close-round</aer-icon></span>
-        </div>
-    </div>
+    <app-divider [showLine]="false"></app-divider>
+    <aer-table *ngIf="tokens" [data]="tokens" [paginator]="false">
+        <ng-template aerTemplate="header">
+            <th id="tokens" class="token-list__row-title">{{ 'DASHBOARD_TOKENS.NAME' | translate }}</th>
+            <th id="amount" class="token-list__row-title token-list__row-title--right-align">{{ 'DASHBOARD_TOKENS.AMOUNT' | translate }}</th>
+            <th id="operations"></th>
+        </ng-template>
+        <ng-template aerTemplate="body" let-token>
+            <tr>
+                <td class="token-list__row-data--token-name">
+                    <div class="flex-container">
+                        <aer-icon>generaltoken</aer-icon>{{token.symbol}}
+                    </div>
+                </td>
+                <td class="token-list__row-data token-list__row-data--right-align">{{token.balance | bignumber:'1.0-3'}}</td>
+                <td class="token-list__row-data">
+                    <div class="flex-container flex-container--right-align">
+                        <aer-icon class="operation-icon" (click)="copyTokenAddress(token.address)">clipboard</aer-icon>
+                        <aer-icon class="operation-icon operation-icon--delete" (click)="deleteToken(token)">close-round</aer-icon>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </aer-table>
 </aer-card>

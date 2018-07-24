@@ -27,7 +27,7 @@ export class AddTokenComponent implements ModalViewComponent<any, any>, OnInit {
     private tokenService: TokenService,
     private sessionStorage: SessionStorageService,
     public notificationService: InternalNotificationService,
-    private aerumNameService: AerumNameService,
+    private aerumNameService: AerumNameService
   ) { }
 
   ngOnInit() {

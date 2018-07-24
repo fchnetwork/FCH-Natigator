@@ -4,7 +4,7 @@
     <app-divider></app-divider>
     <p class="aer-small paragraph">
       {{'ACCOUNT.RESTORE.SUBTITLE'|translate}}
-      <a [routerLink]="['/account/register']"> {{'ACCOUNT.RESTORE.SUBTITLE_HINT'|translate}}</a>
+      <a [routerLink]="['/account/register']" [queryParams]="returnUrl ? {returnUrl: returnUrl} : null"> {{'ACCOUNT.RESTORE.SUBTITLE_HINT'|translate}}</a>
     </p>
     <app-divider></app-divider>
     <div aerRow>
@@ -19,9 +19,17 @@
       <aer-textarea icon="aerumleaf" formControlName="seed" [placeholder]="'ACCOUNT.RESTORE.SEED_WORD_PLACEHOLDER' | translate"
         [addition]="address" [(ngModel)]="seedFileText" ngDefaultControl>{{ seedFileText }}</aer-textarea>
 
-      <aer-input icon="key" data-cy="password" formControlName="password" type="password" [ngClass]="{'with-button': passwordStrength.strength}"
-        class="{{passwordStrength.class}} element-wrapper" buttonLabel="{{ passwordStrength.strength ? (passwordStrength.strength + '.TITLE' | translate) : '' }}"
-        [placeholder]="'ACCOUNT.RESTORE.CREATE_PWD_PLACEHOLDER' | translate" ngDefaultControl (keyup)="onKey($event)"></aer-input>
+      <aer-input  icon="key"
+                  data-cy="password"
+                  formControlName="password"
+                  type="password"
+                  [ngClass]="{'with-button': passwordStrength.strength}"
+                  class="{{passwordStrength.class}} element-wrapper"
+                  buttonLabel="{{ passwordStrength.strength ? ('ACCOUNT.COMMON.PASSWORD_CHECKER.' + passwordStrength.strength + '.TITLE' | translate) : '' }}"
+                  [placeholder]="'ACCOUNT.RESTORE.CREATE_PWD_PLACEHOLDER' | translate"
+                  ngDefaultControl
+                  (keyup)="onKey($event)">
+      </aer-input>
 
       <app-password-lines passClass='{{passwordStrength.strength | lowercase}}' class="element-wrapper"></app-password-lines>
 
@@ -29,7 +37,7 @@
 
       <app-divider [showLine]="false"></app-divider>
       <aer-button data-cy="continue" class="large full-width" [ngClass]="{'disabled': !recoverForm.valid}" [disabled]="!recoverForm.valid"
-        (click)="onSubmitAddress()">{{'BUTTONS.CONTINUE' | translate}}</aer-button>
+        (click)="onSubmitAddress()">{{'COMMON.BUTTONS.CONTINUE' | translate}}</aer-button>
     </form>
   </div>
 </aer-modal-container>

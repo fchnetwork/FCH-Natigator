@@ -1,8 +1,4 @@
 .c-name-buy-confirm {
-  &__unlock {
-    // width: 400px;
-  }
-
   &__table {
     color: #83868A;
     font-size: 13px;
@@ -42,7 +38,6 @@
   &__arrow {
     font-size: 30px;
     line-height: 2;
-    margin: 0 20px;
   }
 }
 
@@ -69,10 +64,12 @@
 
     &.o-data--left {
       text-align: left;
+      margin-right: 10px;
     }
 
     &.o-data--right {
       text-align: right;
+      word-break: break-all;
     }
   }
 }

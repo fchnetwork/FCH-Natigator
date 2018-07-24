@@ -1,6 +1,4 @@
 .c-eth-wallet {
-  width: 400px;
-  min-width: 400px;
   color: #83868A;
   font-size: 13px;
   line-height: 1;
@@ -56,6 +54,14 @@
         content: "Click to copy";
         font-size: 10px;
       }
+    }
+  }
+  .token-select-option{
+    text-align: left;
+  }
+  aer-input{
+    .with-button {
+      padding-top: 12px!important;
     }
   }
 }

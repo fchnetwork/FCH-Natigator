@@ -1,11 +1,12 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from "@angular/core";
-import { SettingsBackupComponent } from '@app/wallet/settings/components/settingsBackup/settingsBackup.component';
-import { SettingsGeneralComponent } from "@app/wallet/settings/components/settingsGeneral/settingsGeneral.component";
+import { SettingsBackupComponent } from "@app/wallet/settings/components/settings-backup/settings-backup.component";
+import { SettingsGeneralComponent } from "@app/wallet/settings/components/settings-general/settings-general.component";
+import { SettingsTokenComponent } from "@app/wallet/settings/components/settings-token/settings-token.component";
+import { SettingsTransactionsComponent } from "@app/wallet/settings/components/settings-transactions/settings-transactions.component";
+import { SettingsSystemComponent } from "@app/wallet/settings/components/settings-system/settings-system.component";
+import { SettingsEthereumWalletComponent } from "@app/wallet/settings/components/settings-ethereum-wallet/settings-ethereum-wallet.component";
 import { SettingsComponent } from '@app/wallet/settings/settings.component';
-import { SettingsTokenComponent } from "@app/wallet/settings/components/settingsToken/settingsToken.component";
-import { SettingsTransactionsComponent } from "@app/wallet/settings/components/settingsTransactions/settingsTransactions.component";
-import { SettingsSystemComponent } from "@app/wallet/settings/components/settingsSystem/settingsSystem.component";
 
 export const DIAGNOSTICS_ROUTES: Routes = [
   {
@@ -36,6 +37,10 @@ export const DIAGNOSTICS_ROUTES: Routes = [
       {
         path: 'system',
         component: SettingsSystemComponent
+      },
+      {
+        path: 'ethereum-wallet',
+        component: SettingsEthereumWalletComponent
       }
     ]
   }

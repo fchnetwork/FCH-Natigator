@@ -83,23 +83,25 @@ export class SwapTemplateService extends BaseContractService {
     return templates;
   }
 
-  async getTemplatesByAsset(asset: string, chain: Chain) : Promise<SwapTemplate[]> {
+  async getTemplatesByAsset(asset: string, offchainAsset: string, chain: Chain) : Promise<SwapTemplate[]> {
     const templates = await this.getTemplates(chain);
     const swapTemplates =  (
       await filterAsync(templates, async t => {
         const result = await this.nameService.safeResolveNameOrAddress(t.onchainAsset);
-        return result === asset.toLowerCase();
+        return result === asset.toLowerCase() 
+          && (t.offchainAsset === offchainAsset.toLowerCase() || (offchainAsset.toLowerCase() === '0x0' && t.offchainAsset === '')); //Check to look for ETH templates
       })
     ).map(r => r as SwapTemplate);
     return swapTemplates;
   }
 
-  async getTemplatesByOffchainAsset(asset: string, chain: Chain) : Promise<SwapTemplate[]> {
+  async getTemplatesByOffchainAsset(asset: string, onchainAsset: string, chain: Chain) : Promise<SwapTemplate[]> {
     const templates = await this.getTemplates(chain);
     const swapTemplates =  (
       await filterAsync(templates, async t => {
         const result = await this.nameService.safeResolveNameOrAddress(t.offchainAsset);
-        return result === asset.toLowerCase();
+        return result === asset.toLowerCase()
+          && (t.onchainAsset === onchainAsset.toLowerCase() || (onchainAsset.toLowerCase() === '0x0' && t.onchainAsset === '')); //Check to look for ETH templates
       })
     ).map(r => r as SwapTemplate);
     return swapTemplates;

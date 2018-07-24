@@ -1,9 +1,13 @@
+import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { BlockModalComponent, BlockModalData } from '@app/shared/modals/block-modal/block-modal.component';
 import { Component, AfterViewInit } from '@angular/core';
 import { iBlocks } from '@shared/app.interfaces';
-import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
+import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { SettingsService } from '@app/core/settings/settings.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,14 +15,20 @@ import { LoaderService } from '@app/core/general/loader-service/loader.service';
   templateUrl: './blocks.component.html'
 })
 export class BlocksComponent implements AfterViewInit {
-  blocks = [];
-  maxBlocks = 20;
+  blocks: any[] = [];
+  maxBlocks: number;
   highBlock: number;
 
   constructor(
     public exploreSrv: ExplorerService,
-    private modalService: ModalService,
-    public loaderService: LoaderService) { }
+    private router: Router,
+    private modal: ModalService,
+    public loaderService: LoaderService,
+    private settingsService: SettingsService,
+    public modalService: ModalService)
+  {
+    this.maxBlocks = this.settingsService.settings.generalSettings.numberOfBlocks;
+  }
 
   ngAfterViewInit() {
     this.loaderService.toggle(true);
