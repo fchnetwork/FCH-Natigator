@@ -14,7 +14,7 @@
             </div>
           </div>
           <div aerRow *ngIf="swapCancelled">
-            <div aerColumn size="sm-12" class="cell cell_left">
+            <div aerColumn size="sm-12" class="cell swap-confirm--cancelled">
               {{'EXTERNAL-SWAP.CONFIRM.FIELD_SWAP_CANCELLED_SUCCESSFULLY'|translate}}
             </div>
           </div>
@@ -60,11 +60,11 @@
           </div>
 
           <div *ngIf="swapTransactionExplorerUrl" class="swap-confirm__transaction-explorer">
-              <aer-button (buttonFn)="explorerLink()" class="blue small">{{'EXTERNAL-SWAP.CONFIRM.LINK_TO_EXPLORER'|translate}}</aer-button>
-              <img class="loader" *ngIf="processing" src="assets/images/loading.svg" alt="loading"/>
+              <aer-button (buttonFn)="explorerLink()" class="blue small">{{'EXTERNAL-SWAP.CONFIRM.OPEN_SWAP_TX_IN_EXPLORER'|translate}}</aer-button>
+              <aer-loader *ngIf="processing"></aer-loader>
           </div>
 
-          <div *ngIf="!swapClosed" class="message">
+          <div *ngIf="!swapClosed && !swapCancelled" class="message">
             {{'EXTERNAL-SWAP.CONFIRM.FIELD_MESSAGE'|translate}}
           </div>
           <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="canCloseSwap" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_COMPLETE_SWAP'|translate}}</aer-button>
