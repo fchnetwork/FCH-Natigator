@@ -1,12 +1,13 @@
 <aer-card class="token-list">
     <div aerRow class="title-row">
-        <div aerColumn size="lg-6 md-6 sm-6 xs-6">
+        <div aerColumn size="lg-6 md-6 sm-6 xs-12">
             <span class="token-list__title">Tokens</span>
         </div>
-        <div aerColumn size="lg-6 md-6 sm-6 xs-6" class="token-list__add-token">
+        <div aerColumn size="lg-6 md-6 sm-6 xs-12" class="token-list__add-token">
             <aer-button class="blue medium" (click)="addToken()">Add token <aer-icon>plus</aer-icon></aer-button>
         </div>
     </div>
+
     <app-divider [showLine]="false"></app-divider>
     <aer-table *ngIf="tokens" [data]="tokens" [paginator]="false">
         <ng-template aerTemplate="header">
