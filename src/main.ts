@@ -20,6 +20,10 @@ if (typeof window['cordova'] !== 'undefined') {
     if(window.wkWebView) {
       window.wkWebView.injectCookie('/');
     }
+    //For iPhones except iPhones X we would like header to not overlay the status bar
+    if (window.device.model !== 'iPhone10,3' && window.device.model !== 'iPhone10,6') {
+      window.StatusBar.overlaysWebView(false);
+    }
     bootstrap();
   }, false);
 } else {
