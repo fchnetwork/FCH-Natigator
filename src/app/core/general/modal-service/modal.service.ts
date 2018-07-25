@@ -13,11 +13,17 @@ import {
   BlockModalComponent,
   BlockModalData
 } from "@app/shared/modals/block-modal/block-modal.component";
-import { TransactionModalComponent } from "@app/shared/modals/transaction-modal/transaction-modal.component";
-import { TransactionSignModalComponent } from "@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component";
+import {
+  TransactionModalComponent,
+  TransactionModalData
+} from "@app/shared/modals/transaction-modal/transaction-modal.component";
+import {
+  TransactionSignModalComponent,
+  TransactionSignData,
+  TransactionSignResponse
+} from "@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component";
 import { ModalService as UiModalService, DialogResponse } from "@aerum/ui";
 import { ModalViewComponent } from "@aerum/ui";
-import { TransactionModalData } from "@app/shared/modals/models/transaction-modal-data.model";
 import { CreateSwapComponent } from "@app/wallet/swap/components/create-swap/create-swap.component";
 
 @Injectable()
@@ -86,28 +92,46 @@ export class ModalService {
   }
 
   async openAddToken(): Promise<DialogResponse<any>> {
-    return this.openViewOnly('HOME.ADD_TOKEN', AddTokenComponent);
+    return this.openViewOnly("HOME.ADD_TOKEN", AddTokenComponent);
   }
 
-  async openTransaction(data: TransactionModalData): Promise<DialogResponse<any>> {
-    return this.open<TransactionModalData, any, TransactionModalComponent>('TRANSACTION', TransactionModalComponent, data);
+  async openTransaction(
+    data: TransactionModalData
+  ): Promise<DialogResponse<any>> {
+    return this.open<TransactionModalData, any, TransactionModalComponent>(
+      "TRANSACTION_MODAL",
+      TransactionModalComponent,
+      data
+    );
   }
 
-  async openBackupDisclaimerModal() : Promise<DialogResponse<any>> {
-    return this.openViewOnly("ACCOUNT.BACKUP_DISCLAIMER.TITLE", BackupDisclamerComponent);
+  async openBackupDisclaimerModal(): Promise<DialogResponse<any>> {
+    return this.openViewOnly(
+      "ACCOUNT.BACKUP_DISCLAIMER.TITLE",
+      BackupDisclamerComponent
+    );
   }
 
-  openTransactionConfirm(data?: any, external?: boolean): Promise<any> {
-    return this.openModal(TransactionSignModalComponent, {
-      isBlocking: false,
-      dialogClass: "adaptive-dialog",
-      param: data,
-      external
-    });
+  async openTransactionConfirm(
+    data: TransactionSignData
+  ): Promise<DialogResponse<TransactionSignResponse>> {
+    return this.open<
+      TransactionSignData,
+      TransactionSignResponse,
+      TransactionSignModalComponent
+    >(
+      "TRANSACTION.CONFIRM_TRANSACTION.TITLE",
+      TransactionSignModalComponent,
+      data
+    );
   }
 
   openSwapCreate(data?: any): Promise<any> {
-    return this.openModal(CreateSwapComponent, {isBlocking: false, dialogClass: 'adaptive-dialog', param: data});
+    return this.openModal(CreateSwapComponent, {
+      isBlocking: false,
+      dialogClass: "adaptive-dialog",
+      param: data
+    });
   }
 
   openSwapCreateConfirm(data?: any): Promise<any> {

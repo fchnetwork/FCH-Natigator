@@ -88,8 +88,5 @@
       </div>
     </div>
   </div>
-  <div class="tr button" *ngIf="transaction.to && transaction.input > 3">
-    <aer-button (click)="convert()" class="small blue">{{btnText}}</aer-button>
-  </div>
-  <aer-button (click)="close()" class="large full-width">Close</aer-button>
+  <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{ 'COMMON.BUTTONS.CLOSE' | translate }}</aer-modal-button>
 </div>

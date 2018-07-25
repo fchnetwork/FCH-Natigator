@@ -1,4 +1,3 @@
-import { TransactionModalData } from '@shared/modals/models/transaction-modal-data.model';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { iTransaction } from '@shared/app.interfaces';
 import { environment } from '@env/environment';
@@ -6,6 +5,15 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { ModalViewComponent, DialogRef } from '@aerum/ui';
+
+export class TransactionModalData {
+  hash?: string;
+  transaction?: iTransaction;
+  external?: boolean;
+  urls?: any;
+  orderId: string;
+}
+
 
 @Component({
   selector: 'app-transaction-modal',

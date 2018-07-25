@@ -1,0 +1,57 @@
+.o-txnID {
+  &__person {
+  }
+  &__arrow {
+  }
+}
+.u-lreset {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.c-avatar__img {
+}
+
+.from-to-avatar {
+  width: 100%;
+  text-align: center;
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__image-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+    display: inline-block;
+
+    li:first-child {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__arrow {
+    font-size: 30px;
+    line-height: 2;
+    font-size: 30px;
+    line-height: 2;
+  }
+
+  &__avatar-img {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: brightness(2.2) saturate(2);
+    box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    margin: 0 auto;
+  }
+}

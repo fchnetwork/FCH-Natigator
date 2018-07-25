@@ -44,7 +44,6 @@
   display: table;
   table-layout: fixed;
   width: 100%;
-  margin: 46px 0 25px;
   &__row {
     display: table-row;
   }
@@ -59,7 +58,7 @@
       text-align: right;
       word-break: break-all;
     }
-  }  
+  }
 }
 
 

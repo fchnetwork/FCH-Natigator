@@ -1,6 +1,5 @@
 import { ModalViewComponent, DialogRef } from '@aerum/ui';
 import { Component, OnInit } from '@angular/core';
-import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
 
 @Component({
   selector: 'app-backup-disclamer',

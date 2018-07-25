@@ -1,3 +1,4 @@
+import { FromToAvatarComponent } from './components/from-to-avatar/from-to-avatar.component';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Error404Component } from './components/error404/error404.component';
@@ -51,12 +52,13 @@ import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-t
 const modalWindows = [
   TransactionModalComponent,
   BlockModalComponent,
-  //TransactionSignModalComponent
+  TransactionSignModalComponent
 ];
 
 @NgModule({
   entryComponents: [
-    modalWindows
+    modalWindows,
+    FromToAvatarComponent
   ],
   imports: [
     CommonModule,
@@ -94,7 +96,8 @@ const modalWindows = [
     modalWindows,
     BigNumbersPipe,
     AddressClipboardComponent,
-    AddTokenComponent
+    AddTokenComponent,
+    FromToAvatarComponent
   ],
   providers: [DecimalPipe],
   exports:[
@@ -124,7 +127,8 @@ const modalWindows = [
     CropAddressPipe,
     BigNumbersPipe,
     AddressClipboardComponent,
-    AddTokenComponent
+    AddTokenComponent,
+    FromToAvatarComponent
   ]
 })
 
