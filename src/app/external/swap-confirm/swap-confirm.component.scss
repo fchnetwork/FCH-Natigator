@@ -4,8 +4,12 @@
     margin-bottom: 0;
   }
 
+  &--cancelled {
+    color: #2a669a;
+    margin-bottom: 0;
+  }
+
   &__unlock {
-    width: 400px;
     @media (max-width: 520px) {
       width: 100%;
     }
@@ -38,6 +42,12 @@
     justify-content: center;
     flex-direction: column;
     margin: 14px auto;
+    align-items: center;
+
+    aer-loader {
+      width: 30px;
+      height: 30px;
+    }
 
     .loader {
       margin-bottom: 14px;

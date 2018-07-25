@@ -317,6 +317,13 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.logger.logMessage(`Deposit swap ${hash} created`);
   }
 
+  explorerLink(link) {
+    window.open(
+      link,
+      '_blank'
+    );
+  }
+
   cancel() {
     if(this.swapCreated && this.params.query) {
       return this.router.navigate(['external/transaction'], {queryParams: {query: this.params.query}});

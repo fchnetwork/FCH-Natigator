@@ -422,7 +422,10 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   }
 
   explorerLink() {
-    window.location.href = this.swapTransactionExplorerUrl;
+      window.open(
+        this.swapTransactionExplorerUrl,
+        '_blank'
+      );
   }
 
   private showError(message: string): void {

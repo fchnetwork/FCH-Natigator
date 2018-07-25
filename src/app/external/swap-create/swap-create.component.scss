@@ -1,6 +1,5 @@
 .swap-create {
   &__unlock {
-    width: 400px;
     @media (max-width: 520px) {
       width: 100%;
     }
@@ -39,11 +38,33 @@
 
   .secret-key {
     color: #8ccc67;
+    cursor: pointer;
   }
 
   &__explorer-link {
     display: block;
     margin-top: 10px;
+  }
+
+  &__processing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+
+
+    .explorer-button {
+      margin: auto 10px auto 0;
+    }
+
+    aer-loader {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  &__explorer-buttons {
+    display: inherit;
   }
 }
 
@@ -67,6 +88,7 @@
     &.o-data_right {
       text-align: right;
       word-break: break-all;
+      display: flex;
     }
   }
 }
