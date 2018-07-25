@@ -66,9 +66,9 @@
     &__explorer-buttons {
       display: inherit;
     }
-  }
+}
 
-  .swap-confirm {
+.swap-confirm {
     &--success {
       color: #8CCC67;
       margin-bottom: 0;
@@ -167,4 +167,35 @@
     .error {
       color: #c94545;
     }
+}
+
+.swap {
+  &__header-buttons { 
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    & > h3 {
+      padding: 0;
+      margin: 0;
+      margin-right: 20px;
+    }
+
+    & > aer-button {
+      margin-right: 10px;
+    }
   }
+}
+
+@media only screen and (max-width: 480px) {
+  .swap {
+    &__header-buttons { 
+      display: block;
+  
+      & > aer-button > .aer-button {
+        width: 100%;
+        margin-top: 14px;
+      }
+    }
+  }
+}
