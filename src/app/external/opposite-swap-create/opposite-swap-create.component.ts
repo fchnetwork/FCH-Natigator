@@ -28,6 +28,7 @@ import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethe
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
 import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 
 @Component({
   selector: 'app-opposite-swap-create',
@@ -42,6 +43,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
 
   secret: string;
   amount: number;
+  aerAmount: number;
 
   tokens = [];
   selectedToken: Token;
@@ -74,11 +76,15 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     private erc20SwapService: OpenAerumErc20SwapService,
     private ethereumTokenService: EthereumTokenService,
     private swapLocalStorageService: SwapLocalStorageService,
-    private authService: AuthenticationService) { }
+    private authService: AuthenticationService,
+    private transactionService: TransactionService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
     this.secret = Guid.newGuid().replace(/-/g, '');
+
+    const keystore = await this.authService.showKeystore();
+    this.aerAmount = await this.transactionService.checkBalance(keystore.address);
   }
 
   async init(param) {
@@ -211,7 +217,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   }
 
   canMoveNext(): boolean {
-    return this.canCreateSwap && !this.swapCreated && !this.processing && (this.amount > 0);
+    return this.canCreateSwap && !this.swapCreated && !this.processing && (this.amount > 0) && (this.aerAmount > 0);
   }
 
   async next() {
