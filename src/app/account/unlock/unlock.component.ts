@@ -1,11 +1,7 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators, FormArray } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
-import { Subject } from "rxjs/Subject";
-import { SessionStorageService } from "ngx-webstorage";
-import { PasswordValidator } from "../../shared/helpers/validator.password";
-import { Cookie } from "ng2-cookies/ng2-cookies";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { InternalNotificationService } from "@app/core/general/internal-notification-service/internal-notification.service";
 
@@ -29,16 +25,15 @@ export class UnlockComponent implements OnInit {
     public authServ: AuthenticationService,
     private router: Router,
     public formBuilder: FormBuilder,
-    public sessionStorageService: SessionStorageService,
     private route: ActivatedRoute,
     private notificationService: InternalNotificationService,
     private translateService: TranslateService
   ) {}
 
   ngOnInit() {
-    this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || null;
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
     this.unlockForm = this.formBuilder.group({
-      password: ["", [Validators.required]]
+      password: ['', [Validators.required]]
     });
   }
 

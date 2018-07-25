@@ -2,9 +2,8 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import Web3 from 'web3';
 import { AuthenticationService } from './authentication.service';
-import { SessionStorageService } from "ngx-webstorage";
+import { StorageService } from "@core/general/storage-service/storage.service";
 import { Router } from "@angular/router";
-import { ConvertToEtherPipe } from "@shared/pipes/convertToEther.pipe";
 
 /*
 class TestableAuthenticationService extends AuthenticationService {
@@ -18,7 +17,7 @@ describe('Service: Authentication', () => {
     TestBed.configureTestingModule({
       providers: [
         AuthenticationService,
-        { provide: SessionStorageService, useValue: jest.fn() },
+        { provide: StorageService, useValue: jest.fn() },
         { provide: Router, useValue: jest.fn() }
       ]
     });

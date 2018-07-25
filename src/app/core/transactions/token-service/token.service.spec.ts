@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { TokenService } from './token.service';
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
-import { SessionStorageService } from "ngx-webstorage";
+import { StorageService } from "@core/general/storage-service/storage.service";
 import Web3 from "web3";
 
 describe('Service: Token', () => {
@@ -14,7 +14,7 @@ describe('Service: Token', () => {
       providers: [
         TokenService,
         { provide: AuthenticationService, useValue: authService },
-        { provide: SessionStorageService, useValue: jest.fn() },
+        { provide: StorageService, useValue: jest.fn() },
       ]
     });
   });

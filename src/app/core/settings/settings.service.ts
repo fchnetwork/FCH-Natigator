@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@app/../environments/environment';
-import * as CryptoJS from 'crypto-js';
 import { iSettings } from '@shared/app.interfaces';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';

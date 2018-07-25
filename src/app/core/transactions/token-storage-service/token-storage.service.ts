@@ -1,32 +1,27 @@
 import { Injectable } from '@angular/core';
-
-import { environment } from '@app/../environments/environment';
-
-import * as CryptoJS from 'crypto-js';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { SessionStorageService } from 'ngx-webstorage';
 import { Token } from "@core/transactions/token-service/token.model";
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 @Injectable()
 export class TokenStorageService {
   private key: string;
 
-  constructor(key: string, private sessionStorage: SessionStorageService) {
+  constructor(key: string, private storageService: StorageService) {
     this.key = key;
   }
 
   getTokens() {
-    return this.sessionStorage.retrieve(this.key) || [];
+    return this.storageService.getSessionData(this.key) || [];
   }
 
   addToken(token: Token) {
-    const tokens = this.sessionStorage.retrieve(this.key) || [];
+    const tokens = this.storageService.getSessionData(this.key) || [];
     tokens.push(token);
     this.saveTokens(tokens);
   }
 
   deleteToken(token: Token) {
-    let tokens = this.sessionStorage.retrieve(this.key) || [];
+    let tokens = this.storageService.getSessionData(this.key) || [];
     tokens = tokens.filter((item) => {
       return item.address !== token.address;
     });
@@ -34,15 +29,13 @@ export class TokenStorageService {
   }
 
   saveTokens(tokens: Token[]) {
-    const password = this.sessionStorage.retrieve('password');
     const stringtoken = JSON.stringify(tokens);
-    const encryptedtokens = CryptoJS.AES.encrypt(stringtoken, password);
-    Cookie.set(this.key, encryptedtokens, 7, "/", environment.cookiesDomain);
-    this.sessionStorage.store(this.key, tokens);
+    this.storageService.setCookie(this.key, stringtoken, true, 7);
+    this.storageService.setSessionData(this.key, tokens);
   }
 
   updateStoredTokens(token) {
-    const tokens = this.sessionStorage.retrieve(this.key);
+    const tokens = this.storageService.getSessionData(this.key);
     const updatedTokens = tokens.filter((item) => {
       return item.symbol !== token.symbol;
     });

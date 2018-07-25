@@ -178,6 +178,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.acceptedBy = this.erc20Swap.withdrawTrader;
     this.timelock = this.erc20Swap.timelock;
     this.swapState = this.erc20Swap.state;
+    this.sendAmount = this.erc20Swap.erc20Value; 
     this.validateSwapState();
 
     let token = this.ethereumTokenService.getTokens().find(t => t.address === this.walletTokenAddress);
@@ -192,7 +193,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
         throw new Error(`Cannot load erc20 token: ${this.walletTokenAddress}`);
       }
     }
-    this.sendAmount = this.erc20Swap.erc20Value / Math.pow(10, token.decimals); 
   }
 
   private validateSwapState(){

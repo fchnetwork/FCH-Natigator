@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 
 import { environment } from "@env/environment";
 
@@ -10,6 +9,7 @@ import { TransactionObject, TransactionReceipt, Tx } from "web3/types";
 import { TransactionOptions } from "./transaction-options.model";
 import { LoggerService } from '@core/general/logger-service/logger.service';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 @Injectable()
 export class ContractExecutorService {
@@ -23,10 +23,10 @@ export class ContractExecutorService {
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
-    private sessionService: SessionStorageService
+    private storageService: StorageService
   ) {
     this.address = this.authService.getAddress();
-    this.privateKey = this.sessionService.retrieve('private_key');
+    this.privateKey = this.storageService.getSessionData('private_key');
     this.web3 = this.authService.getWeb3();
     this.chainId = environment.chainId;
   }

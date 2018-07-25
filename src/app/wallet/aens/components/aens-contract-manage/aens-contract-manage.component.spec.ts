@@ -11,7 +11,7 @@ import { CoreModule } from '@app/core/core.module';
 import { AerumNameService } from '@core/aens//aerum-name-service/aerum-name.service';
 import { NotificationService } from '@aerum/ui';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { SessionStorageService } from 'ngx-webstorage';
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 import { ConvertToEtherPipe } from '@app/shared/pipes/convertToEther.pipe';
 import Web3 from "web3";
@@ -39,7 +39,7 @@ describe('ManageAensContractComponent', () => {
         { provide: NotificationService, useValue: jest.fn() },
         { provide: AuthenticationService, useValue: authService },
         // TODO: Routes requires this. We should mock routes as well
-        { provide: SessionStorageService, useValue: jest.fn() }
+        { provide: StorageService, useValue: jest.fn() }
       ],
     })
     .compileComponents();

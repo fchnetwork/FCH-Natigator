@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 
 import 'rxjs/Rx';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { environment } from '@env/environment';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { BlockListModel } from '@core/explorer/explorer-service/blocks-list.model';
 import { TransactionListModel } from '@core/explorer/explorer-service/transaction-list.model';
 import { iTransaction, iPendingTxn } from "@shared/app.interfaces";
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 @Injectable()
 export class ExplorerService {
@@ -31,9 +29,9 @@ export class ExplorerService {
     }]
   };
 
-  constructor(private _http: Http, _auth: AuthenticationService) {
+  constructor(private _http: Http, _auth: AuthenticationService, private storageService: StorageService) {
     this.web3 = _auth.getWeb3();
-    this.account = JSON.parse(Cookie.get('account'));
+    this.account = JSON.parse(this.storageService.getCookie('account'));
   }
 
   fromWei(amountInWei, currency) {

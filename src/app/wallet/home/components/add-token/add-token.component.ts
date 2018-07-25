@@ -2,12 +2,12 @@ import { DialogRef } from 'ngx-modialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalComponent } from 'ngx-modialog';
 import { Component, OnInit } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
 import { AddressValidator } from "@shared/validators/address.validator";
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
 import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 @Component({
   selector: 'app-add-token',
@@ -26,9 +26,9 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
     public dialog: DialogRef<DefaultModalContext>,
     public formBuilder: FormBuilder,
     private tokenService: TokenService,
-    private sessionStorage: SessionStorageService,
     public notificationService: InternalNotificationService,
-    private aerumNameService: AerumNameService
+    private aerumNameService: AerumNameService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit() {
@@ -45,7 +45,7 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
   }
 
   validateTokens() {
-    const tokens = this.sessionStorage.retrieve('tokens') || [];
+    const tokens = this.storageService.getSessionData('tokens') || [];
     if(tokens.length) {
       // TODO: handle errors in any styled component
       for(let i = 0; i < tokens.length; i++) {

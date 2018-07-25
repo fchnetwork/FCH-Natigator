@@ -4,7 +4,7 @@ export interface selectedSeedPhrase {
 }
 
 export interface iBlocks {
-    "difficulty": string;
+    "difficulty": number;
     "extraData": string;
     "gasLimit": number;
     "gasUsed": number;
@@ -19,14 +19,12 @@ export interface iBlocks {
     "sha3Uncles": string;
     "size": number;
     "stateRoot": string;
-    "timestamp": 1520373465;
-    "totalDifficulty": "102723";
+    "timestamp": number;
+    "totalDifficulty": number;
     "transactions": [any];
     "transactionsRoot": string;
     "uncles": [any];
   }
-
-  
 
 
   export interface iTransaction {

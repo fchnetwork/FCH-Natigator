@@ -1,32 +1,29 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
-import { SessionStorageService } from "ngx-webstorage";
-import { Cookie } from "ng2-cookies/ng2-cookies";
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 @Injectable()
 export class CanActivateAccountAuthGuard implements CanActivate {
+  constructor( 
+    private router: Router,
+    public storageService: StorageService
+  ) {}
 
-    constructor( 
-        private router: Router,
-        public sessionStorageService: SessionStorageService,
-    ) {}
-
-        canActivate(): Promise<boolean> {
-            return new Promise((resolve) => {
-                const registered = Cookie.get('aerum_keyStore');
-                const loggedIn = this.sessionStorageService.retrieve('acc_address');
-                if(!registered || registered === 'null') {
-                    this.router.navigate(['/account/register']);
-                    resolve(false);
-                }
-                else if(loggedIn) {
-                    this.router.navigate(['/dashboard']);
-                    resolve(false);
-                } 
-                else {
-                    resolve(true);
-                }
-            });
-        }
-
+  canActivate(): Promise<boolean> {
+    return new Promise((resolve) => {
+      const registered = this.storageService.getCookie('aerum_keyStore');
+      const loggedIn = this.storageService.getSessionData('acc_address');
+      if(!registered || registered === 'null') {
+        this.router.navigate(['/account/register']);
+        resolve(false);
+      }
+      else if(loggedIn) {
+        this.router.navigate(['/dashboard']);
+        resolve(false);
+      } 
+      else {
+        resolve(true);
+      }
+    });
+  }
 }

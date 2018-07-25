@@ -2,20 +2,13 @@ import {
   Component,
   OnInit,
   ChangeDetectorRef,
-  OnDestroy,
-  style,
-  trigger,
-  state,
-  transition,
-  animate,
-  ViewChild
+  OnDestroy
 } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs/Subject";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { PasswordCheckerService } from "@app/core/authentication/password-checker-service/password-checker.service";
-import { SessionStorageService } from "ngx-webstorage";
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { RouteDataService } from "@app/core/general/route-data-service/route-data.service";
 import { QrRouteData } from "@app/account/qr-scan/qr-route-data.model";
@@ -45,11 +38,12 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     "aerumBase": "aerum_base",
     "aerumKeyStore": "aerum_keyStore",
     "tokens": "tokens",
+    "ethereum_tokens": "ethereum_tokens",
     "transactions": "transactions",
     "settings": "settings",
     "ethereumAccounts": "ethereum_accounts",
     "crossChainSwaps": "cross_chain_swaps"
-  }
+  };
 
   constructor(
     public authServ: AuthenticationService,
@@ -57,7 +51,6 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     public formBuilder: FormBuilder,
     public cd: ChangeDetectorRef,
     public passCheckService: PasswordCheckerService,
-    public sessionStorage: SessionStorageService,
     private storageService: StorageService,
     public routeDataSerice: RouteDataService<QrRouteData>,
     private settingsService: SettingsService,
@@ -127,6 +120,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     this.storageService.setCookie("aerum_base", null, false, 7);
     this.storageService.setCookie("aerum_keyStore", null, false, 7);
     this.storageService.setCookie("tokens", null, false, 7);
+    this.storageService.setCookie("ethereum_tokens", null, false, 7);
     this.storageService.setCookie("transactions", null, false, 7);
     this.storageService.setCookie("ethereum_accounts", null, false, 7);
     this.storageService.setCookie("cross_chain_swaps", null, false, 7);
@@ -197,6 +191,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
       );
       this.storageService.setSessionData("transactions", []);
       this.storageService.setSessionData("tokens", []);
+      this.storageService.setSessionData("ethereum_tokens", []);
       this.storageService.setSessionData("ethereum_accounts", []);
       this.storageService.setSessionData("cross_chain_swaps", []);
 

@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { SessionStorageService } from "ngx-webstorage";
+import { StorageService } from "@core/general/storage-service/storage.service";
 import { SwapLocalStorageService } from './swap-local-storage.service';
 
 describe('SwapLocalStorageService', () => {
@@ -8,7 +8,7 @@ describe('SwapLocalStorageService', () => {
     TestBed.configureTestingModule({
       providers: [
         SwapLocalStorageService,
-        { provide: SessionStorageService, useValue: jest.fn() },
+        { provide: StorageService, useValue: jest.fn() },
       ]
     });
   });

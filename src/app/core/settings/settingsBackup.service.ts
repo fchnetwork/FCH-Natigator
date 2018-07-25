@@ -1,4 +1,3 @@
-import { SessionStorageService } from 'ngx-webstorage';
 import { Injectable } from '@angular/core';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
@@ -36,9 +35,9 @@ export class SettingsBackupService {
     const aerumBase = this.storageService.getCookie('aerum_base');
     const aerumKeyStore = this.storageService.getCookie('aerum_keyStore');
     const tokens = this.storageService.getCookie('tokens');
+    const ethereumTokens = this.storageService.getCookie('ethereum_tokens');
     const transactions = this.storageService.getCookie('transactions');
     const settings = this.storageService.getCookie('settings');
-    
 
     const ethereumAccounts = this.storageService.getCookie('ethereum_accounts');
     const crossChainSwaps = this.storageService.getCookie('cross_chain_swaps');
@@ -46,6 +45,7 @@ export class SettingsBackupService {
       aerumBase,
       aerumKeyStore,
       tokens,
+      ethereumTokens,
       transactions,
       settings,
       ethereumAccounts,

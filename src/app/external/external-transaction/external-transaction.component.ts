@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SessionStorageService } from 'ngx-webstorage';
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 import { Token } from "@core/transactions/token-service/token.model";
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
@@ -57,7 +57,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router,
-    private sessionStorageService: SessionStorageService,
+    private storageService: StorageService,
     private transactionService: TransactionService,
     private tokenService: TokenService,
     private nameService: AerumNameService,
@@ -87,8 +87,8 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
             this.nameService.safeResolveNameOrAddress(parsed.tokenAddress ? parsed.tokenAddress : this.tokenAddress)
           ]);
           this.receiverAddressShort = this.cropAddress(this.receiverAddressHex);
-          this.senderAddressShort = this.cropAddress(this.sessionStorageService.retrieve('acc_address'));
-          this.senderAddress = this.sessionStorageService.retrieve('acc_address');
+          this.senderAddressShort = this.cropAddress(this.storageService.getSessionData('acc_address'));
+          this.senderAddress = this.storageService.getSessionData('acc_address');
           this.senderAvatar = this.authService.generateCryptedAvatar(this.senderAddress);
           this.receiverAvatar = this.authService.generateCryptedAvatar(this.receiverAddressHex);
           this.amount = parsed.amount;
@@ -99,7 +99,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
           this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
           this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
           await this.prepareMessages();
-          
+
           if (this.isToken) {
             this.getTokenInfo();
           } else {
@@ -132,7 +132,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
 
   async accept() {
     const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
-    const privateKey = this.sessionStorageService.retrieve('private_key');
+    const privateKey = this.storageService.getSessionData('private_key');
     const urls = {
       failed: this.returnUrlFailed,
       success: this.redirectUrl,
@@ -192,7 +192,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     }
     return false;
   }
-  
+
   async getTokenInfo() {
     this.tokenInfo = this.checkTokenCookies(this.tokenAddress);
     console.log(this.tokenInfo);
@@ -212,7 +212,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   }
 
   getBalance() {
-    if(!this.isToken) {
+    if (!this.isToken) {
       this.transactionService.checkBalance(this.senderAddress).then((res) => {
         this.balance = res;
         this.proceedAvailable = (this.balance <= this.amount) ? false : true;
