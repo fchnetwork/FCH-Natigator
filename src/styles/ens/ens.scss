@@ -1,0 +1,16 @@
+.aens {
+    &__info {
+      display: flex;
+      align-items: center;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .aens {
+        &__btn-check, &__btn-release, &__btn-buy {
+          .aer-button {
+              width: 100%;
+          }
+        }
+    }
+}
