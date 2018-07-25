@@ -18,6 +18,7 @@ import { TransactionSignModalComponent } from "@app/shared/modals/transaction-si
 import { ModalService as UiModalService, DialogResponse } from "@aerum/ui";
 import { ModalViewComponent } from "@aerum/ui";
 import { TransactionModalData } from "@app/shared/modals/models/transaction-modal-data.model";
+import { CreateSwapComponent } from "@app/wallet/swap/components/create-swap/create-swap.component";
 
 @Injectable()
 export class ModalService {
@@ -92,12 +93,8 @@ export class ModalService {
     return this.open<TransactionModalData, any, TransactionModalComponent>('TRANSACTION', TransactionModalComponent, data);
   }
 
-  openBackupDisclaimerModal(data?: any) {
-    return this.openModal(BackupDisclamerComponent, {
-      isBlocking: false,
-      dialogClass: "adaptive-dialog",
-      param: data
-    });
+  async openBackupDisclaimerModal() : Promise<DialogResponse<any>> {
+    return this.openViewOnly("ACCOUNT.BACKUP_DISCLAIMER.TITLE", BackupDisclamerComponent);
   }
 
   openTransactionConfirm(data?: any, external?: boolean): Promise<any> {

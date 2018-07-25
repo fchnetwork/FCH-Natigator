@@ -1,16 +1,15 @@
 <div class="o-confirm--seed">
-  <h1>{{'WARNING'|translate}}</h1>
   <p>
-    {{'REGISTRATION_WARNING_TXT1'|translate}}
+    {{'ACCOUNT.BACKUP_DISCLAIMER.WARNING_1'|translate}}
   </p>
   <p>
-    {{'REGISTRATION_WARNING_TXT2'|translate}}
+    {{'ACCOUNT.BACKUP_DISCLAIMER.WARNING_2'|translate}}
   </p>
   <p>
-    {{'REGISTRATION_WARNING_TXT3'|translate}}
+    {{'ACCOUNT.BACKUP_DISCLAIMER.WARNING_3'|translate}}
   </p>
   <app-divider [showLine]="false"></app-divider>
-  <aer-button class="large full-width" (buttonFn)="dismiss()">I Understand</aer-button>
+  <aer-modal-button class="large full-width" (buttonFn)="dialogRef.dismiss()">{{'ACCOUNT.BACKUP_DISCLAIMER.ACKNOWLEDGE_BTN' | translate}}</aer-modal-button>
 </div>
 <!-- <aer-modal-dialog>
     <div class="o-confirm--seed">
@@ -25,6 +24,6 @@
             {{'ACCOUNT.BACKUP_DISCLAIMER.WARNING_3'|translate}}
         </p>
         <app-divider [showLine]="false"></app-divider>
-        <aer-button class="large full-width" (buttonFn)="dismiss()">{{'ACCOUNT.BACKUP_DISCLAIMER.ACKNOWLEDGE_BTN' | translate}}</aer-button>
+
     </div>
 </aer-modal-dialog> -->

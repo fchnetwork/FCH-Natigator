@@ -1,5 +1,5 @@
+import { ModalViewComponent, DialogRef } from '@aerum/ui';
 import { Component, OnInit } from '@angular/core';
-import { ModalComponent, DialogRef } from 'ngx-modialog'; 
 import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
 
 @Component({
@@ -7,16 +7,13 @@ import { DefaultModalContext } from '@app/shared/modals/models/default-modal-con
   templateUrl: './backup-disclamer.component.html',
   styleUrls: ['./backup-disclamer.component.scss']
 })
-export class BackupDisclamerComponent implements ModalComponent<DefaultModalContext>, OnInit {
- 
-  constructor(public dialog: DialogRef<DefaultModalContext>) { 
+export class BackupDisclamerComponent implements ModalViewComponent<any, any>, OnInit {
+
+  constructor(public dialogRef: DialogRef<any, any>) {
 
   }
 
   ngOnInit() {
   }
 
-  dismiss() {
-    this.dialog.close();
-  }
 }
