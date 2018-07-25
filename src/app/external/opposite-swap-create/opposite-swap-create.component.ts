@@ -325,6 +325,13 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     this.swapCreated = true;
     this.logger.logMessage(`Withdrawal swap ${hash} created`);
   }
+  
+  explorerLink(link) {
+    window.open(
+      link,
+      '_blank'
+    );
+  }
 
   cancel() {
     if(this.swapCreated && this.params.query) {

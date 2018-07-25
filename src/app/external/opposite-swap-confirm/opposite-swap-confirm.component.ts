@@ -388,6 +388,13 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     this.errors = [];
   }
 
+  explorerLink(link) {
+    window.open(
+      link,
+      '_blank'
+    );
+  }
+
   ngOnDestroy(): void {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
