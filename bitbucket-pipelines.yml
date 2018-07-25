@@ -7,26 +7,25 @@
 
 image: node:8
 pipelines:
-  default: 
+  default:
     - step:
         name: Install Deps and Build
         caches:
           - node
         script:
-          - npm install 
+          - npm install
           - npm run-script build:dev
         artifacts:
-          - build/**  
-  branches: 
-    development:    
+          - build/**
+  branches:
+    development:
       - step:
           name: Install Deps and Build
           caches:
             - node
           script:
-            - npm run update:ui
             - npm install
-            - npm run-script build:dev 
+            - npm run-script build:dev
             - tar -czvf ./dist.tar.gz ./build/dist
             - apt-get update && apt-get install -y rsync
             - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/
