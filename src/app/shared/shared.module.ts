@@ -1,3 +1,4 @@
+import { FromToAvatarComponent } from './components/from-to-avatar/from-to-avatar.component';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Error404Component } from './components/error404/error404.component';
@@ -34,29 +35,17 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { WeiToGweiPipe } from '@app/shared/pipes/wei-to-gwei.pipe';
 import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe';
 import { LoaderComponent } from '@app/shared/components/loader/loader.component';
-import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
-import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
-import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/transaction-modal.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
 }
 
 import { FormsModule } from '@angular/forms';
-
 import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-token.component';
-
-
-
-const modalWindows = [
-  TransactionModalComponent,
-  BlockModalComponent,
-  //TransactionSignModalComponent
-];
 
 @NgModule({
   entryComponents: [
-    modalWindows
+    FromToAvatarComponent
   ],
   imports: [
     CommonModule,
@@ -91,10 +80,10 @@ const modalWindows = [
     ChartComponent,
     CropAddressPipe,
     LoaderComponent,
-    modalWindows,
     BigNumbersPipe,
     AddressClipboardComponent,
-    AddTokenComponent
+    AddTokenComponent,
+    FromToAvatarComponent
   ],
   providers: [DecimalPipe],
   exports:[
@@ -124,7 +113,8 @@ const modalWindows = [
     CropAddressPipe,
     BigNumbersPipe,
     AddressClipboardComponent,
-    AddTokenComponent
+    AddTokenComponent,
+    FromToAvatarComponent
   ]
 })
 

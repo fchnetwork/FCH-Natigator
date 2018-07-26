@@ -117,12 +117,12 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
     const loadedSwap = await this.mapToLoadedSwap(this.swapId, swap);
     this.logger.logMessage('Mapped swap:', loadedSwap);
 
-    const modalResult = await this.modalService.openSwapLoadConfirm(loadedSwap);
-    if(modalResult.confirmed) {
+    const modalResponse = await this.modalService.openSwapLoadConfirm(loadedSwap);
+    if(modalResponse.result.confirmed) {
       this.notificationService.notify('Swap completion in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
       await this.confirm(loadedSwap);
       this.notificationService.notify('Swap done', `Swap ID: ${this.swapId}`, "aerum");
-    } else if(modalResult.rejected) {
+    } else if(modalResponse.result.rejected) {
       this.notificationService.notify('Swap rejection in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
       await this.reject();
       this.notificationService.notify('Swap rejected', `Swap ID: ${this.swapId}`, "aerum");

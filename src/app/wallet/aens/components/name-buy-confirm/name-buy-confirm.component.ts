@@ -1,46 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { DialogRef } from 'ngx-modialog'; 
-import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service'; 
-import { NameBuyConfirmRequest } from '@aens/models/nameBuyConfirmRequest';
-import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
+import { ModalViewComponent, DialogRef } from "@aerum/ui";
+import { Component, OnInit } from "@angular/core";
+import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
+import { NameBuyConfirmRequest } from "@aens/models/nameBuyConfirmRequest";
 
 @Component({
-  selector: 'app-name-buy-confirm',
-  templateUrl: './name-buy-confirm.component.html',
-  styleUrls: ['./name-buy-confirm.component.scss']
+  selector: "app-name-buy-confirm",
+  templateUrl: "./name-buy-confirm.component.html",
+  styleUrls: ["./name-buy-confirm.component.scss"]
 })
-export class NameBuyConfirmComponent implements OnInit {
-
-  param: NameBuyConfirmRequest;
-
-  buyerAvatar: string;
-  ansOwnerAvatar: string;
+export class NameBuyConfirmComponent
+  implements OnInit, ModalViewComponent<NameBuyConfirmRequest, any> {
 
   estimatedFeeInWei: number;
   maximumFeeInWei: number;
 
   constructor(
-    public dialog: DialogRef<DefaultModalContext>,
-    public authenticationService: AuthenticationService) {
-      if(dialog.context.param) {
-        this.param = dialog.context.param as NameBuyConfirmRequest;
-
-        this.buyerAvatar = this.authenticationService.generateCryptedAvatar(this.param.buyer);
-        this.ansOwnerAvatar = this.authenticationService.generateCryptedAvatar(this.param.ansOwner);
-
-        this.estimatedFeeInWei = this.param.gasPrice * this.param.estimatedFeeInGas;
-        this.maximumFeeInWei = this.param.gasPrice * this.param.maximumFeeInGas;
-      }
-    }
+    public dialogRef: DialogRef<NameBuyConfirmRequest, any>,
+    public authenticationService: AuthenticationService
+  ) { }
 
   ngOnInit() {
+    console.log(this.dialogRef);
+    this.estimatedFeeInWei = this.dialogRef.data.gasPrice * this.dialogRef.data.estimatedFeeInGas;
+    this.maximumFeeInWei = this.dialogRef.data.gasPrice * this.dialogRef.data.maximumFeeInGas;
   }
 
   accept() {
-    this.dialog.close({ accepted: true });
-  }
-
-  dismiss() {
-    this.dialog.close({ accepted: false });
+    this.dialogRef.close(null);
   }
 }

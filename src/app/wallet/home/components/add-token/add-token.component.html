@@ -17,6 +17,6 @@
         equalValidator="confirmPassword" reverse="true"></aer-input>
     </div>
   </div>
-  <aer-modal-button type="submit" [disabled]="!addTokenForm.valid">{{'BUTTONS.ADD' | translate}}</aer-modal-button>
+  <aer-modal-button [isAcceptButton]="true" type="submit" [disabled]="!addTokenForm.valid">{{'BUTTONS.ADD' | translate}}</aer-modal-button>
   <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{'BUTTONS.CLOSE' | translate}}</aer-modal-button>
 </form>

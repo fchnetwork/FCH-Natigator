@@ -3,7 +3,7 @@ import { LoggerService } from '@app/core/general/logger-service/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
-import { NotificationService } from '@aerum/ui';
+import { NotificationService, DialogResult } from '@aerum/ui';
 import { SwapListService } from '@app/core/swap/on-chain/swap-list-service/swap-list.service';
 import { ERC20TokenService } from '@app/core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { AeroToErc20SwapService } from '@app/core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
@@ -32,20 +32,19 @@ export class CreateSwapService {
         private aensService: AerumNameService) { }
 
     async createSwap() {
-        const result = await this.modalService.openSwapCreate();
-        console.log(result);
+        const swapCreateResponse = await this.modalService.openSwapCreate();
 
-        if (!result.dismiss) {
-            const modalResult = await this.modalService.openSwapCreateConfirm(result);
+        if (swapCreateResponse.dialogResult === DialogResult.OK) {
+            const confirmResponse = await this.modalService.openSwapCreateConfirm(swapCreateResponse.result);
 
-            if (!modalResult.confirmed) {
+            if (confirmResponse.dialogResult === DialogResult.Cancel) {
                 this.logger.logMessage('Swap creation canceled');
                 return;
             }
 
-            this.notificationService.notify('Swap creation in progress...', `Swap ID: ${result.swapId}`, "aerum", 3000);
-            await this.createSwapBasedOnMode(result);
-            this.notificationService.notify('Swap created', `Swap ID: ${result.swapId}`, "aerum");
+            this.notificationService.notify('Swap creation in progress...', `Swap ID: ${swapCreateResponse.result.swapId}`, "aerum", 3000);
+            await this.createSwapBasedOnMode(swapCreateResponse.result);
+            this.notificationService.notify('Swap created', `Swap ID: ${swapCreateResponse.result.swapId}`, "aerum");
         }
     }
 

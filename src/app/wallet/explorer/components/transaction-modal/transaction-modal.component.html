@@ -1,28 +1,28 @@
-<div class="explorer detail-modal" *ngIf="transaction">
+<div class="transaction-modal">
   <div class="link copy" (click)="openTxn(transaction.hash)">{{transaction.hash | slice:0:20}}...{{transaction.hash | slice:-18}}</div>
   <div>
     <p class="aer-small">{{transaction.timestamp | transactionTimeStamp }}</p>
   </div>
   <div class="age">({{transaction.timestamp | transactionTimeAgo }})</div>
-  <div class="transaction-table">
-    <div class="tr">
-      <div class="name">
+  <div class="table-simple">
+    <div>
+      <div>
         {{'AMOUNT'|translate}}
       </div>
       <div class="value">
         {{transaction.value | convertToEther }} {{'AERO'|translate}}
       </div>
     </div>
-    <div class="tr">
-      <div class="name">
+    <div>
+      <div>
         {{'FROM'|translate}}
       </div>
       <div class="value copy" (click)="copyToClipboard(transaction.from)">
         {{transaction.from | slice:0:16}}...{{transaction.from | slice:-14}}
       </div>
     </div>
-    <div class="tr">
-      <div class="name">
+    <div>
+      <div>
         {{'TO'|translate}}
       </div>
       <div class="value" [ngClass]="{'copy': transaction.to}" (click)="copyToClipboard(transaction.to)">
@@ -35,40 +35,40 @@
         </ng-template>
       </div>
     </div>
-    <div class="tr">
-      <div class="name">
+    <div>
+      <div>
         {{'GAS'|translate}}
       </div>
       <div class="value">
         {{transaction.gasUsedinTxn }}
       </div>
     </div>
-    <div class="tr">
-      <div class="name">
+    <div>
+      <div>
         {{'TRANSACTION_COST'|translate}}
       </div>
       <div class="value">
         {{transaction.gasUsedinTxn * transaction.gasPrice | convertToEther}} {{'AERO'|translate}}
       </div>
     </div>
-    <div class="tr">
-      <div class="name">
+    <div>
+      <div>
         {{'GAS_PRICE'|translate}}
       </div>
       <div class="value">
         {{transaction.gasPrice | convertToEther }} {{'AERO'|translate}}
       </div>
     </div>
-    <div *ngIf="transaction.blockNumber" class="tr">
-      <div class="name">
+    <div *ngIf="transaction.blockNumber">
+      <div>
         {{'BLOCK'|translate}}
       </div>
-      <div class="value link" (click)="openBlock(transaction.blockNumber)">
+      <div class="value copy" (click)="openBlock(transaction.blockNumber)">
         {{transaction.blockNumber}}
       </div>
     </div>
-    <div class="tr" *ngIf="transaction.input.length > 3">
-      <div class="name">
+    <div *ngIf="transaction.input.length > 3">
+      <div>
         {{'SENT_DATA'|translate}}
       </div>
       <div class="value">
@@ -88,8 +88,5 @@
       </div>
     </div>
   </div>
-  <div class="tr button" *ngIf="transaction.to && transaction.input > 3">
-    <aer-button (click)="convert()" class="small blue">{{btnText}}</aer-button>
-  </div>
-  <aer-button (click)="close()" class="large full-width">Close</aer-button>
+  <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{ 'COMMON.BUTTONS.CLOSE' | translate }}</aer-modal-button>
 </div>

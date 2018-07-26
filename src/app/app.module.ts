@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule, ErrorHandler } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { HttpModule } from "@angular/http";
@@ -8,13 +8,21 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app.routes";
 import { AccountModule } from "./account/account.module";
 import { SharedModule } from "./shared/shared.module";
-import { AppUIModule } from "./app.ui.module"; 
+import { AppUIModule } from "./app.ui.module";
 import { CoreModule } from "@app/core/core.module";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
+}
+
+
+class MyErrorHandler implements ErrorHandler {
+  handleError(error) {
+    console.log('Router Error');
+    console.log(error);
+  }
 }
 
 @NgModule({
@@ -39,7 +47,7 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent
   ],
-  providers: [],
+  providers: [{provide: ErrorHandler, useClass: MyErrorHandler}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

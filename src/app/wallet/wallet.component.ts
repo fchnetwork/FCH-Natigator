@@ -45,6 +45,7 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
         if (currentData && currentData.sidebarGroup) {
           this.viewLoaded$.subscribe(w => {
             this.sidebar.toggleGroup(currentData.sidebarGroup);
+            this.sidebar.toggleSidebar();
             this.viewLoaded$.complete();
           });
         }

@@ -1,6 +1,12 @@
+import { AensModule } from './aens/aens.module';
+import { HomeModule } from './home/home.module';
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { WalletComponent } from './wallet.component';
+import { TransactionModule } from '@app/wallet/transaction/transaction.module';
+import { ExplorerModule } from '@app/wallet/explorer/explorer.module';
+import { SettingsModule } from '@app/wallet/settings/settings.module';
+import { SwapModule } from '@app/wallet/swap/swap.module';
 
 export const WALLET_ROUTES = [
     {
@@ -14,29 +20,29 @@ export const WALLET_ROUTES = [
             },
             {
                 path: 'home',
-                loadChildren: 'app/wallet/home/home.module#HomeModule'
+                loadChildren: () => HomeModule
             },
             {
                 path: 'swap',
-                loadChildren: 'app/wallet/swap/swap.module#SwapModule',
+                loadChildren: () => SwapModule,
                 data: { sidebarGroup: 'swap'}
             },
             {
                 path: 'transaction',
-                loadChildren: 'app/wallet/transaction/transaction.module#TransactionModule'
+                loadChildren: () => TransactionModule
             },
             {
                 path: 'explorer',
-                loadChildren: 'app/wallet/explorer/explorer.module#ExplorerModule',
+                loadChildren: () => ExplorerModule,
                 data: { sidebarGroup: 'explorer'}
             },
             {
                 path: 'aens',
-                loadChildren: 'app/wallet/aens/aens.module#AensModule'
+                loadChildren: () => AensModule
             },
             {
                 path: 'settings',
-                loadChildren: 'app/wallet/settings/settings.module#SettingsModule'
+                loadChildren: () => SettingsModule
             }
         ]
     }

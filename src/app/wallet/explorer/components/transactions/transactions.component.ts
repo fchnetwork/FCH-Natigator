@@ -1,5 +1,3 @@
-import { BlockModalData, BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
-import { TransactionModalData } from '@shared/modals/models/transaction-modal-data.model';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
@@ -9,6 +7,8 @@ import { ExplorerService } from '@core/explorer/explorer-service/explorer.servic
 import { LoaderService } from '@core/general/loader-service/loader.service';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
+import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
+import { BlockModalData } from '@app/wallet/explorer/components/block-modal/block-modal.component';
 
 @Component({
   selector: 'app-transactions',

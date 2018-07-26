@@ -1,65 +1,47 @@
-<aer-modal-dialog>
-  <div class="c-name-buy-confirm c-name-buy-confirm__table c-name-buy-confirm__unlock">
-    <h1>{{'ENS.CONFIRM_BUY_TITLE'|translate}}</h1>
-    <ul class="o-txnID u-lreset">
-      <li>
-        <ul class="o-txnID__person u-lreset">
-          <li>
-            <div class="u-marginCntr c-avatar__img" [style.background-image]="'url(' + buyerAvatar + ')'"></div>
-          </li>
-          <li>
-            {{ param.buyer | cropAddress }}
-          </li>
-        </ul>
-        <ul class="o-txnID__person o-txnID__arrow u-lreset">
-          <li><aer-icon>angle-right</aer-icon></li>
-        </ul>
-        <ul class="o-txnID__person u-lreset">
-          <li>
-            <div class="u-marginCntr c-avatar__img" [style.background-image]="'url(' + ansOwnerAvatar + ')'"></div>
-          </li>
-          <li>
-            {{ param.ansOwner | cropAddress }}
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <div class="o-table">
-      <div class="o-table__row">
-        <div class="o-table__cell o-data--left">
-          {{ 'ENS.FIELD_NAME' | translate }}
+<div class="name-buy-confirm">
+ <div aerRow>
+   <div aerColumn size="md-12">
+     <app-from-to-avatar [senderAddress]="dialogRef.data.buyer" [recieverAddress]="dialogRef.data.ansOwner"></app-from-to-avatar>
+   </div>
+ </div>
+ <div aerRow>
+   <div aerColumn size="md-12">
+      <div class="table-simple">
+          <div>
+            <div>
+              {{ 'ENS.FIELD_NAME' | translate }}
+            </div>
+            <div>
+              {{ dialogRef.data.name }}
+            </div>
+          </div>
+          <div>
+            <div>
+              {{ 'ENS.FIELD_NEW_ADDRESS' | translate }}
+            </div>
+            <div >
+              {{ dialogRef.data.address | truncate: 32 }}
+            </div>
+          </div>
+          <div>
+            <div>
+              {{ 'AMOUNT' | translate }}
+            </div>
+            <div>
+              {{ dialogRef.data.amount | number:'1.2-5' }} Aero
+            </div>
+          </div>
+          <div>
+            <div>
+              {{ 'ENS.ESTIMATED_FEE' | translate }}
+            </div>
+            <div>
+              {{ estimatedFeeInWei | convertToEther | number:'1.0-18' }} Aero
+            </div>
+          </div>
         </div>
-        <div class="o-table__cell o-data--right">
-          {{ param.name }}
-        </div>
-      </div>
-      <div class="o-table__row">
-        <div class="o-table__cell o-data--left">
-          {{ 'ENS.FIELD_NEW_ADDRESS' | translate }}
-        </div>
-        <div class="o-table__cell o-data--right">
-          {{ param.address | truncate: 32 }}
-        </div>
-      </div>
-      <div class="o-table__row">
-        <div class="o-table__cell o-data--left">
-          {{ 'AMOUNT' | translate }}
-        </div>
-        <div class="o-table__cell o-data--right">
-          {{ param.amount | number:'1.2-5' }} Aero
-        </div>
-      </div>
-      <div class="o-table__row">
-        <div class="o-table__cell o-data--left">
-          {{ 'ENS.ESTIMATED_FEE' | translate }}
-        </div>
-        <div class="o-table__cell o-data--right">
-          {{ estimatedFeeInWei | convertToEther | number:'1.0-18' }} Aero
-        </div>
-      </div>
-    </div>
-    <aer-button (buttonFn)="accept()" class="large full-width blue">{{ 'ENS.BTN_MODAL_BUY' | translate }}</aer-button>
-    <app-divider [showLine]="false" [fullWidth]="true"></app-divider>
-    <aer-button (buttonFn)="dismiss()" class="large full-width">{{ 'ENS.BTN_MODAL_CANCEL' | translate }}</aer-button>
-  </div>
-</aer-modal-dialog>
+   </div>
+ </div>
+ <aer-modal-button [isAcceptButton]="true" (buttonFn)="accept()">{{ 'ENS.BTN_MODAL_BUY' | translate }}</aer-modal-button>
+ <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{'COMMON.BUTTONS.CLOSE' | translate}}</aer-modal-button>
+</div>

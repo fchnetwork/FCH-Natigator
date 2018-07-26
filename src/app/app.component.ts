@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ErrorHandler } from "@angular/core";
 import { environment } from "../environments/environment";
 import { ActivatedRoute, Router, NavigationStart } from "@angular/router";
 import { LoggerService } from "@app/core/general/logger-service/logger.service";

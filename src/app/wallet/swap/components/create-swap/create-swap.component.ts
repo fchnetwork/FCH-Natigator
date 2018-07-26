@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Guid } from "@shared/helpers/guid";
-import { NotificationService } from "@aerum/ui";
+import { NotificationService, ModalViewComponent, DialogRef } from "@aerum/ui";
 
 import { environment } from '@env/environment';
 
@@ -14,12 +14,10 @@ import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20
 import { AeroToErc20SwapService } from '@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
-import { ModalComponent, DialogRef } from 'ngx-modialog';
-import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
 
 export class CreateSwapModalContext {
   swapId: string;
-  token: SwapToken
+  token: SwapToken;
   tokenAmount: number;
   counterpartyAddress: string;
   counterpartyToken: SwapToken;
@@ -34,7 +32,7 @@ export class CreateSwapModalContext {
   templateUrl: './create-swap.component.html',
   styleUrls: ['./create-swap.component.scss']
 })
-export class CreateSwapComponent implements ModalComponent<DefaultModalContext>, OnInit {
+export class CreateSwapComponent implements ModalViewComponent<any, any>, OnInit {
 
   currentAddress: string;
 
@@ -51,7 +49,7 @@ export class CreateSwapComponent implements ModalComponent<DefaultModalContext>,
   processing = false;
 
   constructor(
-    public dialog: DialogRef<DefaultModalContext>,
+    public dialogRef: DialogRef<any,any>,
     private logger: LoggerService,
     private authService: AuthenticationService,
     private notificationService: NotificationService,
@@ -159,7 +157,7 @@ export class CreateSwapComponent implements ModalComponent<DefaultModalContext>,
   private async confirmAndCreateSwap() {
     this.counterpartyAddress = this.counterpartyAddress.replace(/\s+/g, '');
     this.counterpartyAddress = await this.aensService.safeResolveNameOrAddress(this.counterpartyAddress);
-    this.dialog.close({
+    this.dialogRef.close({
       swapId: this.swapId,
       token: this.token,
       tokenAmount: this.tokenAmount,
@@ -252,9 +250,5 @@ export class CreateSwapComponent implements ModalComponent<DefaultModalContext>,
 
   private stopLoading() {
     this.processing = false;
-  }
-
-  private close() {
-    this.dialog.dismiss();
   }
 }
