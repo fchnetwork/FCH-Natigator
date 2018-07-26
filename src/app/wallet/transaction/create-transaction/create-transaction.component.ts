@@ -18,8 +18,8 @@ import { NotificationMessagesService } from '@core/general/notification-messages
 import { toBigNumberString } from "@shared/helpers/number-utils";
 
 import { bigNumbersPow, bigNumbersMultiply, bigNumberToString } from "@shared/helpers/number-utils";
-import { TransactionSignData } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
 import { DialogResult } from '@aerum/ui';
+import { TransactionSignData } from '@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component';
 
 declare var window: any;
 

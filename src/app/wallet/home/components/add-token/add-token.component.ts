@@ -4,8 +4,7 @@ import { SessionStorageService } from 'ngx-webstorage';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
 import { AddressValidator } from "@shared/validators/address.validator";
-import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
-import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
+import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service"; 
 import { ModalViewComponent, DialogRef } from '@aerum/ui';
 
 @Component({

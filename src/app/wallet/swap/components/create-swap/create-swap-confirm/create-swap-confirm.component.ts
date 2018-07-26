@@ -1,28 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalComponent, DialogRef } from 'ngx-modialog'; 
-import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
+import { ModalViewComponent, DialogRef } from '@aerum/ui';
+import { CreateSwapModalContext } from '@app/wallet/swap/components/create-swap/create-swap.component';
 
 @Component({
   selector: 'app-create-swap-confirm',
   templateUrl: './create-swap-confirm.component.html',
   styleUrls: ['./create-swap-confirm.component.scss']
 })
-export class CreateSwapConfirmComponent implements ModalComponent<DefaultModalContext>, OnInit {
+export class CreateSwapConfirmComponent implements ModalViewComponent<CreateSwapModalContext, any>, OnInit {
 
-  param: any;
-
-  constructor(public dialog: DialogRef<DefaultModalContext>) { 
-    this.param = dialog.context.param;
-  }
+  constructor(public dialogRef: DialogRef<CreateSwapModalContext, any>) {}
 
   ngOnInit() {
   }
 
   onCreate() {
-    this.dialog.close({confirmed: true});
-  }
-
-  onCancel() {
-    this.dialog.close({confirmed: false});
+    this.dialogRef.close(null);
   }
 }

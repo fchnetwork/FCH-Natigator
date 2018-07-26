@@ -1,4 +1,4 @@
-<div class="c-transaction c-transaction__table c-transaction__unlock">
+<div class="transaction-sign-modal">
   <div aerRow>
     <div aerColumn size="md-12">
       <app-from-to-avatar [senderAddress]="dialogRef.data.senderAddress" [recieverAddress]="dialogRef.data.receiverAddress"></app-from-to-avatar>
@@ -6,24 +6,24 @@
   </div>
   <div aerRow>
     <div aerColumn size="md-12">
-        <div class="table-simple">
-            <div>
-              <div>
-                {{ 'AMOUNT' | translate }}
-              </div>
-              <div>
-                {{ dialogRef.data.amount }} {{ dialogRef.data.token }}
-              </div>
-            </div>
-            <div>
-              <div>
-                {{ 'FEE' | translate }}
-              </div>
-              <div>
-                {{ dialogRef.data.fee }} {{ 'AERO' | translate }}
-              </div>
-            </div>
+      <div class="table-simple">
+        <div>
+          <div>
+            {{ 'AMOUNT' | translate }}
           </div>
+          <div>
+            {{ dialogRef.data.amount }} {{ dialogRef.data.token }}
+          </div>
+        </div>
+        <div>
+          <div>
+            {{ 'FEE' | translate }}
+          </div>
+          <div>
+            {{ dialogRef.data.fee }} {{ 'AERO' | translate }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <aer-modal-button [isAcceptButton]="true" (buttonFn)="accept()">Send transaction</aer-modal-button>

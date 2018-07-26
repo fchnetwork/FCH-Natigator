@@ -1,7 +1,8 @@
-@import '~@aerum/ui/core/styles/_theming.scss';
-@import './styles/global.scss';
+@import "~@aerum/ui/core/styles/_theming.scss";
+@import "./styles/global.scss";
 
-html, body{
+html,
+body {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -13,7 +14,7 @@ html, body{
 /* DEFAULT FONT USED IN APP */
 @font-face {
   font-family: OpenSans;
-  src: url('fonts/open-sans/OpenSans-Regular.ttf');
+  src: url("fonts/open-sans/OpenSans-Regular.ttf");
 }
 
 a {
@@ -26,7 +27,7 @@ h1 {
 }
 
 .loader-overlay {
-  background-color: rgba($color: #FFF, $alpha: 0.8);
+  background-color: rgba($color: #fff, $alpha: 0.8);
   position: fixed;
   top: 0;
   bottom: 0;
@@ -38,125 +39,68 @@ h1 {
   justify-content: center;
   align-items: center;
 
-.circle_animation {
-  margin: 40px auto;
-  width: 100px;
-  height: 100px;
-  position: relative;
-  z-index: 2000;
-}
-
-.image1 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: rotation 1.5s infinite ease-in-out;
-  filter: grayscale(100%) contrast(200%) brightness(0%);
-  z-index:5;
-}
-
-.image2 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: rotation 1.5s infinite ease-in-out;
-  filter: hue-rotate(90deg);
-  animation-delay: 0.03s;
-  z-index:4;
-}
-
-.image3 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: rotation 1.5s infinite ease-in-out;
-  animation-delay: 0.06s;
-  filter: hue-rotate(180deg);
-  z-index:3;
-}
-.image4 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: rotation 1.5s infinite ease-in-out;
-  animation-delay: 0.09s;
-  filter: hue-rotate(270deg);
-  z-index:2;
-}
-.image5 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: rotation 1.5s infinite ease-in-out;
-  animation-delay: 0.12s;
-  z-index:1;
-}
-
-@keyframes rotation {
-  from {transform: rotate(0deg);}
-  to   {transform: rotate(359deg);}
-}
-}
-
-.input-name {
-  margin-bottom: 14px;
-}
-
-.default-modal {
-  max-width: 500px;
-}
-
-.explorer {
-  &.detail-modal {
-      .title, .link, .aer-small, .age {
-          text-align: center;
-          padding: 0;
-          overflow: hidden;
-          text-overflow: ellipsis;
-      }
-
-      .link {
-        color: #458cc9;
-        cursor: pointer;
-      }
-
-      .tr {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 14px;
-
-          &.button {
-            justify-content: center;
-
-            aer-button {
-              margin-top: 14px;
-            }
-          }
-
-          .name {
-            margin-right: 25px;
-          }
-
-          .value {
-              text-align: right;
-              overflow: hidden;
-              word-wrap: break-word;
-
-              &.link {
-                margin-bottom: 0;
-              }
-          }
-      }
+  .circle_animation {
+    margin: 40px auto;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    z-index: 2000;
   }
-}
 
-.copy {
-  color: #458cc9;
-  cursor: pointer;
-}
+  .image1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: rotation 1.5s infinite ease-in-out;
+    filter: grayscale(100%) contrast(200%) brightness(0%);
+    z-index: 5;
+  }
 
-.fullrow-label {
-  margin: 0;
+  .image2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: rotation 1.5s infinite ease-in-out;
+    filter: hue-rotate(90deg);
+    animation-delay: 0.03s;
+    z-index: 4;
+  }
+
+  .image3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: rotation 1.5s infinite ease-in-out;
+    animation-delay: 0.06s;
+    filter: hue-rotate(180deg);
+    z-index: 3;
+  }
+  .image4 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: rotation 1.5s infinite ease-in-out;
+    animation-delay: 0.09s;
+    filter: hue-rotate(270deg);
+    z-index: 2;
+  }
+  .image5 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: rotation 1.5s infinite ease-in-out;
+    animation-delay: 0.12s;
+    z-index: 1;
+  }
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
 }
 
 aer-input {

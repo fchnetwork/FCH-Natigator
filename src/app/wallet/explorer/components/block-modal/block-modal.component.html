@@ -1,4 +1,4 @@
-<div class="explorer detail-modal" *ngIf="dialogRef.data.block">
+<div class="block-modal">
   <div aerRow>
     <div aerColumn size="md-12">
       <div class="link" (click)="openBlock(dialogRef.data.block.number)">{{dialogRef.data.block.number}}</div>
@@ -10,65 +10,65 @@
   </div>
   <div aerRow>
     <div aerColumn size="md-12">
-      <div class="transaction-table">
-        <div class="tr">
-          <div class="name">
+      <div class="table-simple">
+        <div>
+          <div>
             {{'TXNS'|translate}}
           </div>
           <div class="value">
             {{dialogRef.data.block.transactions.length}}
           </div>
         </div>
-        <div class="tr">
-          <div class="name">
+        <div>
+          <div>
             {{'HASH'|translate}}
           </div>
           <div class="value copy" (click)="copyToClipboard(dialogRef.data.block.hash)">
             {{dialogRef.data.block.hash | slice:0:8}}...{{dialogRef.data.block.hash | slice:-6}}
           </div>
         </div>
-        <div class="tr">
-          <div class="name">
+        <div>
+          <div>
             {{'PARENT_HASH'|translate}}
           </div>
           <div class="value copy" (click)="copyToClipboard(dialogRef.data.block.parentHash)">
             {{dialogRef.data.block.parentHash | slice:0:8}}...{{dialogRef.data.block.parentHash | slice:-6}}
           </div>
         </div>
-        <div class="tr">
-          <div class="name">
+        <div>
+          <div>
             {{'SIZE'|translate}}
           </div>
           <div class="value">
             {{dialogRef.data.block.size}}
           </div>
         </div>
-        <div class="tr">
-          <div class="name">
+        <div>
+          <div>
             {{'GAS_USED'|translate}}
           </div>
           <div class="value">
             {{dialogRef.data.block.gasUsed }}
           </div>
         </div>
-        <div class="tr">
-          <div class="name">
+        <div>
+          <div>
             {{'GAS_LIMIT'|translate}}
           </div>
           <div class="value">
             {{dialogRef.data.block.gasLimit }}
           </div>
         </div>
-        <div class="tr">
-          <div class="name">
+        <div>
+          <div>
             {{'NONCE'|translate}}
           </div>
           <div class="value">
             {{dialogRef.data.block.nonce}}
           </div>
         </div>
-        <div class="tr">
-          <div class="name">
+        <div>
+          <div>
             {{'EXTRA_DATA'|translate}}
           </div>
           <div class="value copy" (click)="copyToClipboard(dialogRef.data.block.extraData)">

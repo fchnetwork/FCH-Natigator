@@ -8,9 +8,19 @@ import { ExplorerRoutingModule } from './explorer.routes';
 import { PendingTxnsComponent } from './components/pending-txns/pending-txns.component';
 import { AppUIModule } from '@app/app.ui.module';
 import { SharedModule } from '@shared/shared.module';
-import { CoreModule } from '@core/core.module'; 
+import { CoreModule } from '@core/core.module';
+import { TransactionModalComponent } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
+import { BlockModalComponent } from '@app/wallet/explorer/components/block-modal/block-modal.component';
+
+const modalWindows = [
+  TransactionModalComponent,
+  BlockModalComponent
+];
 
 @NgModule({
+  entryComponents: [
+    modalWindows
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -24,7 +34,8 @@ import { CoreModule } from '@core/core.module';
     TransactionsComponent,
     AddressComponent,
     BlocksComponent,
-    PendingTxnsComponent
+    PendingTxnsComponent,
+    modalWindows
   ]
 })
 export class ExplorerModule {}

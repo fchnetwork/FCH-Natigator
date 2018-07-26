@@ -13,12 +13,10 @@ import { SharedModule } from "@app/shared/shared.module";
 import { TransactionMoreOptionsComponent } from "@app/wallet/transaction/components/transaction-more-options/transaction-more-options.component";
 import { TransactionRoutingModule } from "@app/wallet/transaction/transaction.routes";
 import { CoreModule } from "@app/core/core.module";
-import { TransactionModalComponent } from "@app/shared/modals/transaction-modal/transaction-modal.component";
 import { TransactionSignModalComponent } from "@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component";
 
 @NgModule({
   entryComponents: [
-    TransactionModalComponent,
     TransactionSignModalComponent,
     CreateTransactionComponent,
     LastTransactionsComponent

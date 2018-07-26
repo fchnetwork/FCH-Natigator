@@ -5,7 +5,7 @@ import { iBlocks, iPendingTxn } from '@shared/app.interfaces';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ExplorerService } from '@core/explorer/explorer-service/explorer.service';
 import { Subscription } from 'rxjs';
-import { TransactionModalData } from '@app/shared/modals/models/transaction-modal-data.model';
+import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
 
 @Component({
   selector: 'app-pending-txns',
@@ -13,7 +13,7 @@ import { TransactionModalData } from '@app/shared/modals/models/transaction-moda
 })
 export class PendingTxnsComponent implements OnInit {
 
-  transactions: Array<iPendingTxn> = [];
+  transactions: iPendingTxn[] = [];
 
   constructor( public exploreSrv: ExplorerService,
                private router: Router,

@@ -1,5 +1,4 @@
 import { ModalService } from '@app/core/general/modal-service/modal.service';
-import { BlockModalComponent, BlockModalData } from '@app/shared/modals/block-modal/block-modal.component';
 import { Component, AfterViewInit } from '@angular/core';
 import { iBlocks } from '@shared/app.interfaces';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
@@ -8,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { SettingsService } from '@app/core/settings/settings.service';
 import { Router } from '@angular/router';
+import { BlockModalData } from '@app/wallet/explorer/components/block-modal/block-modal.component';
 
 
 @Component({

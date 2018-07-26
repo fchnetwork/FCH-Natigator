@@ -5,7 +5,7 @@ import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { iTransaction } from '@shared/app.interfaces';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 import { SettingsService } from '@app/core/settings/settings.service';
-import { TransactionModalData } from '@app/shared/modals/models/transaction-modal-data.model';
+import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
 
 @Component({
   selector: 'app-last-transactions',
