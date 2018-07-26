@@ -1,28 +1,20 @@
 .swap-create {
-  &__unlock {
-    width: 400px;
-    @media (max-width: 520px) {
-      width: 100%;
-    }
+  color: #83868A;
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+  max-width: 420px;
+
+  h1 {
+    font-size: 36px;
+    font-weight: normal;
+    color: #27282A;
+    margin: 0 0 14px;
   }
 
-  &__table {
-    color: #83868A;
-    font-size: 13px;
-    line-height: 1;
-    text-align: center;
-
-    h1 {
-      font-size: 36px;
-      font-weight: normal;
-      color: #27282A;
-      margin: 0 0 14px;
-    }
-
-    aer-button {
-      margin-bottom: 20px;
-      display: block;
-    }
+  aer-button {
+    margin-bottom: 20px;
+    display: block;
   }
 
   .message {
@@ -41,32 +33,13 @@
     color: #8ccc67;
   }
 
+  .table-simple {
+    width: 100%;
+    margin: 20px 0 0;
+  }
+
   &__explorer-link {
     display: block;
     margin-top: 10px;
-  }
-}
-
-.o-table {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-  margin: 20px 0 0;
-  &__row {
-    display: -webkit-flex; /* Safari */
-    display: flex;
-    justify-content: space-between;
-  }
-  &__cell {
-    display: inline-block;
-    padding-bottom: 20px;
-    &.o-data_left {
-      text-align: left;
-      margin-right: 10px;
-    }
-    &.o-data_right {
-      text-align: right;
-      word-break: break-all;
-    }
   }
 }

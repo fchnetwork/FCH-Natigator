@@ -192,7 +192,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
         throw new Error(`Cannot load erc20 token: ${this.walletTokenAddress}`);
       }
     }
-    this.sendAmount = this.erc20Swap.erc20Value / Math.pow(10, token.decimals); 
+    this.sendAmount = this.erc20Swap.erc20Value; 
   }
 
   private validateSwapState(){
