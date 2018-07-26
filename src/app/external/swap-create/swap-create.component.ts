@@ -30,6 +30,8 @@ import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-ser
 import { OpenErc20SwapService } from "@core/swap/cross-chain/open-erc20-swap-service/open-erc20-swap.service";
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 
 @Component({
   selector: 'app-swap-create',
@@ -44,6 +46,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   secret: string;
   amount: number;
+  aerAmount: number;
 
   tokens = [];
   selectedToken: Token;
@@ -79,13 +82,17 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private etherSwapService: OpenEtherSwapService,
     private erc20SwapService: OpenErc20SwapService,
     private ethereumTokenService: EthereumTokenService,
-    private swapLocalStorageService: SwapLocalStorageService
-  ) { }
+    private swapLocalStorageService: SwapLocalStorageService,
+    private authService: AuthenticationService,
+    private transactionService: TransactionService) { }
 
   async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
     this.ethWeb3 = this.ethereumAuthService.getWeb3();
     this.secret = Guid.newGuid().replace(/-/g, '');
+
+    const keystore = await this.authService.showKeystore();
+    this.aerAmount = await this.transactionService.checkBalance(keystore.address);
   }
 
   async init(param) {
@@ -238,7 +245,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   canMoveNext(): boolean {
-    return this.canCreateSwap && !this.swapCreated && !this.processing && (this.amount > 0);
+    return this.canCreateSwap && !this.swapCreated && !this.processing && (this.amount > 0) && (this.aerAmount > 0);
   }
 
   async next() {
