@@ -1,6 +1,5 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SessionStorageService } from 'ngx-webstorage';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
@@ -13,13 +12,11 @@ import { AddressValidator } from "@shared/validators/address.validator";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { ValidateService } from '@app/core/validation/validate.service';
 import Web3 from "web3";
-import { repeat } from 'rxjs/operators';
-import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { toBigNumberString } from "@shared/helpers/number-utils";
-
 import { bigNumbersPow, bigNumbersMultiply, bigNumberToString } from "@shared/helpers/number-utils";
 import { DialogResult } from '@aerum/ui';
 import { TransactionSignData } from '@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component';
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 declare var window: any;
 
@@ -73,14 +70,12 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     private clipboardService: ClipboardService,
     private notificationService: InternalNotificationService,
     private transactionService: TransactionService,
-    private sessionStorageService: SessionStorageService,
+    private storageService: StorageService,
     private tokenService: TokenService,
-    private route: ActivatedRoute,
     private nameService: AerumNameService,
     private validateService: ValidateService,
-    private notificationMessagesService: NotificationMessagesService
+    private sessionStorageService: SessionStorageService
   ) {
-
     this.loadUserData().catch((e) => this.logger.logError(e));
     this.updateInterval = setInterval(async () => {
       // TODO: Do we really need to update user data every n seconds? Possibly only aero amount
@@ -287,7 +282,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     let data;
     const resolvedAddress = await this.nameService.safeResolveNameOrAddress(this.receiverAddress);
     if(this.isToken) {
-      const tokensContract  = this.transactionService.generateContract(this.selectedToken.address);
+      const tokensContract = this.transactionService.generateContract(this.selectedToken.address);
       data = tokensContract.methods.transfer(resolvedAddress, this.amount).encodeABI();
       data = this.web3.utils.toHex(data);
       this.includedDataLength = Number(data.length - 2) / 2;

@@ -481,6 +481,10 @@
       "FIELD_SECRET_KEY": "Secret key",
       "FIELD_MESSAGE":
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "FIELD_AER_AMOUNT_MESSAGE":
+        "Attention! Please, make sure you have sufficient amount of AERO in your wallet to cover transaction fee (up to 0.000021 Aer)",
+      "OPEN_APPROVAL_TX_IN_EXPLORER": "Open approval tx",
+      "OPEN_TRANSFER_TX_IN_EXPLORER": "Open transfer tx",
       "BTN_NEXT": "Next",
       "BTN_CLOSE": "Close",
       "BTN_BACK": "Back"
@@ -500,6 +504,8 @@
       "FIELD_SECRET_KEY": "Secret key",
       "FIELD_MESSAGE":
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "FIELD_AER_AMOUNT_MESSAGE":
+        "Attention! Please, make sure you have sufficient amount of AERO in your wallet to cover transaction fee (up to 0.000021 Aer)",
       "BTN_NEXT": "Next",
       "BTN_CLOSE": "Close",
       "BTN_BACK": "Back"
@@ -522,6 +528,7 @@
       "FIELD_TYPE_SECRET_KEY": "Type secret key",
       "FIELD_MESSAGE":
         "Attention! You need to complete the swap before it expires. If swap expires before completion, you can cancel it and withdraw the funds.",
+      "OPEN_SWAP_TX_IN_EXPLORER": "Open swap tx",
       "BTN_COMPLETE_SWAP": "Complete swap",
       "BTN_CANCEL_SWAP": "Cancel swap",
       "BTN_CLOSE": "Close",

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionStorageService } from 'ngx-webstorage';
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { iTransaction } from '@shared/app.interfaces';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 import { SettingsService } from '@app/core/settings/settings.service';
 import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 @Component({
   selector: 'app-last-transactions',
@@ -17,7 +17,7 @@ export class LastTransactionsComponent implements OnInit {
   limit: number;
   hideTxns: boolean = false;
   constructor(
-    private sessionStorage: SessionStorageService,
+    private storageService: StorageService,
     private transactionService: TransactionService,
     private modalService: ModalService,
     public explorerService: ExplorerService,
@@ -25,7 +25,7 @@ export class LastTransactionsComponent implements OnInit {
   ) {
     this.limit = Number(this.settingsService.settings.transactionSettings.lastTransactionsNumber);
     setInterval(() => {
-      this.transactions = this.sessionStorage.retrieve('transactions').sort((b, a) => {
+      this.transactions = this.storageService.getSessionData('transactions').sort((b, a) => {
         const c: any = new Date(a.date);
         const d: any = new Date(b.date);
         return c - d;

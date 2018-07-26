@@ -4,7 +4,6 @@ import { WalletModule } from './wallet/wallet.module';
 import { AuthenticationGuard } from './core/authentication/auth-guards/authentication.guard';
 import { RouterModule, PreloadAllModules } from "@angular/router";
 import { NgModule } from "@angular/core";
-import { CanActivateViaAuthGuard } from "@app/core/authentication/auth-guards/can-activate-auth.guard";
 
 const ROUTES = [
   {

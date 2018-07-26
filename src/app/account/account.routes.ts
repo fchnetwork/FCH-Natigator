@@ -8,7 +8,6 @@ import { RegistrationRouteData } from "./models/RegistrationRouteData";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
 import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component";
 import { UnlockComponent } from "@app/account/unlock/unlock.component";
-import { CanActivateAccountAuthGuard } from "@app/core/authentication/auth-guards/can-activate-account.guard";
 import { RestoreAccountComponent } from "@app/account/restore-account/restore-account.component";
 
 const ACCOUNT_ROUTES = [
