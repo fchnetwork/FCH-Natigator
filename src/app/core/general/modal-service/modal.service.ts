@@ -1,7 +1,6 @@
 import { NameReleaseConfirmRequest } from "./../../../wallet/aens/models/nameReleaseConfirmRequest";
 import { TranslateService } from "@ngx-translate/core";
 import { Injectable, Type } from "@angular/core";
-import { BSModalContext } from "ngx-modialog/plugins/bootstrap";
 import { AddTokenComponent } from "@app/wallet/home/components/add-token/add-token.component";
 import { CreateSwapConfirmComponent } from "@app/wallet/swap/components/create-swap/create-swap-confirm/create-swap-confirm.component";
 import { LoadSwapConfirmComponent, LoadSwapConfirmResponse } from "@app/wallet/swap/components/load-swap/load-swap-confirm/load-swap-confirm.component";
@@ -192,7 +191,7 @@ export class ModalService {
     );
   }
 
-  openSwapLoadConfirm(data: LoadedSwap): Promise<DialogResponse<LoadSwapConfirmResponse>> {
+  async openSwapLoadConfirm(data: LoadedSwap): Promise<DialogResponse<LoadSwapConfirmResponse>> {
     return this.open<LoadedSwap, LoadSwapConfirmResponse, LoadSwapConfirmComponent>('SWAP.LOAD.CONFIRM_TITLE', LoadSwapConfirmComponent, data);
   }
 }

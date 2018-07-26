@@ -23,16 +23,20 @@
           <div>
             {{'HASH'|translate}}
           </div>
-          <div class="value copy" (click)="copyToClipboard(dialogRef.data.block.hash)">
-            {{dialogRef.data.block.hash | slice:0:8}}...{{dialogRef.data.block.hash | slice:-6}}
+          <div>
+            <app-link-clipboard [link]="dialogRef.data.block.hash">
+              {{dialogRef.data.block.hash | slice:0:8}}...{{dialogRef.data.block.hash | slice:-6}}
+            </app-link-clipboard>
           </div>
         </div>
         <div>
           <div>
             {{'PARENT_HASH'|translate}}
           </div>
-          <div class="value copy" (click)="copyToClipboard(dialogRef.data.block.parentHash)">
-            {{dialogRef.data.block.parentHash | slice:0:8}}...{{dialogRef.data.block.parentHash | slice:-6}}
+          <div>
+            <app-link-clipboard [link]="dialogRef.data.block.parentHash">
+              {{dialogRef.data.block.parentHash | slice:0:8}}...{{dialogRef.data.block.parentHash | slice:-6}}
+            </app-link-clipboard>
           </div>
         </div>
         <div>
@@ -55,7 +59,7 @@
           <div>
             {{'GAS_LIMIT'|translate}}
           </div>
-          <div class="value">
+          <div>
             {{dialogRef.data.block.gasLimit }}
           </div>
         </div>
@@ -63,7 +67,7 @@
           <div>
             {{'NONCE'|translate}}
           </div>
-          <div class="value">
+          <div>
             {{dialogRef.data.block.nonce}}
           </div>
         </div>
@@ -71,8 +75,10 @@
           <div>
             {{'EXTRA_DATA'|translate}}
           </div>
-          <div class="value copy" (click)="copyToClipboard(dialogRef.data.block.extraData)">
-            {{dialogRef.data.block.extraData | hextoAscii }}
+          <div>
+            <app-link-clipboard [link]="dialogRef.data.block.extraData">
+              {{dialogRef.data.block.extraData | hextoAscii }}
+            </app-link-clipboard>
           </div>
         </div>
       </div>
