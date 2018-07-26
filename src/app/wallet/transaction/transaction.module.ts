@@ -14,6 +14,8 @@ import { TransactionMoreOptionsComponent } from "@app/wallet/transaction/compone
 import { TransactionRoutingModule } from "@app/wallet/transaction/transaction.routes";
 import { CoreModule } from "@app/core/core.module";
 import { TransactionSignModalComponent } from "@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component";
+import { TransactionModalComponent } from "@app/wallet/explorer/components/transaction-modal/transaction-modal.component";
+import { ExplorerModule } from "@app/wallet/explorer/explorer.module";
 
 @NgModule({
   entryComponents: [
@@ -28,7 +30,8 @@ import { TransactionSignModalComponent } from "@app/wallet/transaction/component
     ReactiveFormsModule,
     TransactionRoutingModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    ExplorerModule
   ],
   declarations: [
     CreateTransactionComponent,

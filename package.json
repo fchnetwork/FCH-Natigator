@@ -18,7 +18,7 @@
   },
   "private": true,
   "dependencies": {
-    "@aerum/ui": "^1.1.2",
+    "@aerum/ui": "^1.1.5",
     "@angular/animations": "^5.2.10",
     "@angular/common": "^5.2.10",
     "@angular/compiler": "^5.2.10",
@@ -50,7 +50,6 @@
     "moment": "^2.22.1",
     "ng2-cookies": "^1.0.12",
     "ngx-echarts": "^2.1.0",
-    "ngx-modialog": "^5.0.0",
     "ngx-webstorage": "^2.0.1",
     "npm": "^6.1.0",
     "qrcode": "^1.2.0",

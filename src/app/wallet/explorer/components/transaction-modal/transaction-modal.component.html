@@ -17,18 +17,22 @@
       <div>
         {{'FROM'|translate}}
       </div>
-      <div class="value copy" (click)="copyToClipboard(transaction.from)">
-        {{transaction.from | slice:0:16}}...{{transaction.from | slice:-14}}
+      <div>
+        <app-link-clipboard [link]="transaction.from">
+          {{transaction.from | slice:0:16}}...{{transaction.from | slice:-14}}
+        </app-link-clipboard>
       </div>
     </div>
     <div>
       <div>
         {{'TO'|translate}}
       </div>
-      <div class="value" [ngClass]="{'copy': transaction.to}" (click)="copyToClipboard(transaction.to)">
+      <div>
         <div *ngIf="!transaction.to; then contractTxn else normalTxn"></div>
         <ng-template #normalTxn>
-          {{transaction.to | slice:0:16}}...{{transaction.to | slice:-14}}
+          <app-link-clipboard [link]="transaction.to">
+            {{transaction.to | slice:0:16}}...{{transaction.to | slice:-14}}
+          </app-link-clipboard>
         </ng-template>
         <ng-template #contractTxn>
           [Contract Creation Transaction]
@@ -63,8 +67,10 @@
       <div>
         {{'BLOCK'|translate}}
       </div>
-      <div class="value copy" (click)="openBlock(transaction.blockNumber)">
-        {{transaction.blockNumber}}
+      <div>
+        <app-link-clipboard [link]="transaction.blockNumber">
+          {{transaction.blockNumber}}
+        </app-link-clipboard>
       </div>
     </div>
     <div *ngIf="transaction.input.length > 3">

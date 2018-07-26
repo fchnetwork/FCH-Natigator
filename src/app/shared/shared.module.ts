@@ -5,8 +5,6 @@ import { Error404Component } from './components/error404/error404.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { I18nComponent } from './components/i18n/i18n.component';
-import { ModalModule } from 'ngx-modialog';
-import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -42,6 +40,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 import { FormsModule } from '@angular/forms';
 import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-token.component';
+import { LinkClipboardComponent } from '@app/shared/components/link-clipboard/link-clipboard.component';
 
 @NgModule({
   entryComponents: [
@@ -49,9 +48,7 @@ import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-t
   ],
   imports: [
     CommonModule,
-    ModalModule.forRoot(),
     AppUIModule,
-    BootstrapModalModule,
     FormsModule,
     NgxEchartsModule,
     TranslateModule
@@ -83,7 +80,8 @@ import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-t
     BigNumbersPipe,
     AddressClipboardComponent,
     AddTokenComponent,
-    FromToAvatarComponent
+    FromToAvatarComponent,
+    LinkClipboardComponent
   ],
   providers: [DecimalPipe],
   exports:[
@@ -114,7 +112,8 @@ import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-t
     BigNumbersPipe,
     AddressClipboardComponent,
     AddTokenComponent,
-    FromToAvatarComponent
+    FromToAvatarComponent,
+    LinkClipboardComponent
   ]
 })
 
