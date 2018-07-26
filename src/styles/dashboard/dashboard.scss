@@ -1,9 +1,20 @@
 .token-list {
+
+  .aer__card {
+    margin-bottom: 15px;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+  }
+
     &__title {
       font-size: 18px;
       padding: 0;
       color: #2d353d;
     }
+
   
     &__add-token {
       text-align: right;
