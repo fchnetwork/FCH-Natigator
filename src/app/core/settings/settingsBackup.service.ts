@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
+import { iFullBackup } from '@shared/app.interfaces';
 
 @Injectable()
 export class SettingsBackupService {
@@ -31,6 +32,11 @@ export class SettingsBackupService {
     this.notificationMessagesService.simpleBackup();
   }
 
+  formatDate() {
+    const date = new Date().toLocaleString().replace(/ /g, '').replace(",", "_").replace(/\//g,'-')
+    return date;
+  }
+
   fullBackup() {
     const aerumBase = this.storageService.getCookie('aerum_base');
     const aerumKeyStore = this.storageService.getCookie('aerum_keyStore');
@@ -38,20 +44,19 @@ export class SettingsBackupService {
     const ethereumTokens = this.storageService.getCookie('ethereum_tokens');
     const transactions = this.storageService.getCookie('transactions');
     const settings = this.storageService.getCookie('settings');
-
     const ethereumAccounts = this.storageService.getCookie('ethereum_accounts');
     const crossChainSwaps = this.storageService.getCookie('cross_chain_swaps');
-    const preparedData = {
-      aerumBase,
-      aerumKeyStore,
-      tokens,
-      ethereumTokens,
-      transactions,
-      settings,
-      ethereumAccounts,
-      crossChainSwaps
+    const preparedData: iFullBackup = {
+      aerum_base: aerumBase,
+      aerum_keyStore: aerumKeyStore,
+      tokens: tokens,
+      ethereum_tokens: ethereumTokens,
+      transactions: transactions,
+      settings: settings,
+      ethereum_accounts: ethereumAccounts,
+      cross_chain_swaps: crossChainSwaps
     };
-    this.generateFile(preparedData, 'full_backup', 'full');
+    this.generateFile(preparedData, 'full_backup' + this.formatDate(), 'full');
     this.notificationMessagesService.fullBackup();
   }
 }

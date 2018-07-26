@@ -114,7 +114,7 @@ export class AuthenticationService {
           const decryptSeed = CryptoJS.AES.decrypt(this.storageService.getCookie('aerum_base'), password );
           const transactions = this.decryptCookieToArray('transactions', password);
           const tokens = this.decryptCookieToArray('tokens', password);
-          const ethereumTokens = this.decryptCookieToArray('ethereum-tokens', password);
+          const ethereumTokens = this.decryptCookieToArray('ethereum_tokens', password);
           const ethereumAccounts = this.decryptCookieToArray('ethereum_accounts', password);
           const crossChainSwaps = this.decryptCookieToArray('cross_chain_swaps', password);
 
@@ -153,7 +153,7 @@ export class AuthenticationService {
           this.storageService.setSessionData('password', password);
           this.storageService.setSessionData('transactions', result.transactions.length ? JSON.parse(result.transactions) : []);
           this.storageService.setSessionData('tokens', result.tokens.length ? JSON.parse(result.tokens) : []);
-          this.storageService.setSessionData('ethereum-tokens', result.ethereumTokens.length ? JSON.parse(result.ethereumTokens) : []);
+          this.storageService.setSessionData('ethereum_tokens', result.ethereumTokens.length ? JSON.parse(result.ethereumTokens) : []);
           this.storageService.setSessionData('ethereum_accounts', result.ethereumAccounts.length ? JSON.parse(result.ethereumAccounts) : []);
           this.storageService.setSessionData('cross_chain_swaps', result.crossChainSwaps.length ? JSON.parse(result.crossChainSwaps) : []);
           resolve('success');
@@ -175,6 +175,7 @@ export class AuthenticationService {
       this.storageService.clearSessionData('ethereum_accounts');
       this.storageService.clearSessionData('cross_chain_swaps');
       this.storageService.clearSessionData('derivation');
+      this.storageService.clearSessionData('ethereum_tokens');
     }
 
     /**

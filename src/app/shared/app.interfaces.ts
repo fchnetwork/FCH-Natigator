@@ -69,6 +69,17 @@ export interface iBlocks {
     "balance": string
   }
 
+  export interface iFullBackup {
+    'aerum_base': string,
+    'aerum_keyStore': string,
+    'tokens': string,
+    'ethereum_tokens': string,
+    'transactions': string,
+    'settings': string,
+    'ethereum_accounts': string,
+    'cross_chain_swaps': string
+  }
+
   export interface iSettings {
     generalSettings: iGeneralSettings,
     transactionSettings: iTransactionSettings,

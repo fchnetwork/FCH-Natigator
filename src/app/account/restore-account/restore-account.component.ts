@@ -34,17 +34,6 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     class: ""
   };
 
-  backupStructure = {
-    "aerumBase": "aerum_base",
-    "aerumKeyStore": "aerum_keyStore",
-    "tokens": "tokens",
-    "ethereum_tokens": "ethereum_tokens",
-    "transactions": "transactions",
-    "settings": "settings",
-    "ethereumAccounts": "ethereum_accounts",
-    "crossChainSwaps": "cross_chain_swaps"
-  };
-
   constructor(
     public authServ: AuthenticationService,
     private router: Router,
@@ -63,6 +52,8 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     }
   }
 
+  
+
   openBackupFile(event, type) {
     const input = event.target;
     const fileTypes = ["txt", "aer"];
@@ -76,6 +67,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
         for (let index = 0; index < input.files.length; index++) {
           const reader: any = new FileReader();
           reader.onload = () => {
+            this.cleanOrSetDefaultCookies();
             if (type === "seed") {
               if (reader.result.split(" ").length === 12) {
                 this.seedFileText = reader.result;
@@ -86,14 +78,13 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
             } else if (type === "full") {
                 try {
                   const results = JSON.parse(reader.result);
-                  this.cleanOrSetDefaultCookies();
                   for (var key in results) {
                     let expiration = 7;
                     if (key === "settings") {
                       expiration = 3650;
                     }
                     this.storageService.setCookie(
-                        this.backupStructure[key],
+                        key,
                         results[key],
                         false,
                         expiration
