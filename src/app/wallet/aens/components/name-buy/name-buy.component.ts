@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { NotificationService } from '@aerum/ui';
+import { NotificationService, DialogResult } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -97,8 +97,8 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
       estimatedFeeInGas: cost[1],
       maximumFeeInGas: cost[2]
     };
-    const modalResult: ConfirmResponse = await this.modalService.openBuyAensConfirm(buyRequest);
-    if(!modalResult.accepted) {
+    const modalResult = await this.modalService.openBuyAensConfirm(buyRequest);
+    if(modalResult.dialogResult === DialogResult.Cancel) {
       this.logger.logMessage('Name buy cancelled');
       return;
     }

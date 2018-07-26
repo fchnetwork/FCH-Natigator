@@ -1,3 +1,5 @@
+import { NameTransferConfirmComponent } from "./../../../wallet/aens/components/name-transfer-confirm/name-transfer-confirm.component";
+import { NameReleaseConfirmRequest } from "./../../../wallet/aens/models/nameReleaseConfirmRequest";
 import { TranslateService } from "@ngx-translate/core";
 import { Injectable, Type } from "@angular/core";
 import { BSModalContext } from "ngx-modialog/plugins/bootstrap";
@@ -21,10 +23,13 @@ import {
   TransactionSignModalComponent,
   TransactionSignData,
   TransactionSignResponse
-} from "@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component";
+} from "@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component";
 import { ModalService as UiModalService, DialogResponse } from "@aerum/ui";
 import { ModalViewComponent } from "@aerum/ui";
 import { CreateSwapComponent } from "@app/wallet/swap/components/create-swap/create-swap.component";
+import { NameBuyConfirmRequest } from "@app/wallet/aens/models/nameBuyConfirmRequest";
+import { NameTransferConfirmRequest } from "@app/wallet/aens/models/nameTransferConfirmRequest";
+import { SetAddressConfirmRequest } from "@app/wallet/aens/models/setAddressConfirmRequest";
 
 @Injectable()
 export class ModalService {
@@ -126,6 +131,40 @@ export class ModalService {
     );
   }
 
+  async openBuyAensConfirm(
+    data: NameBuyConfirmRequest
+  ): Promise<DialogResponse<any>> {
+    return this.open<NameBuyConfirmRequest, any, NameBuyConfirmComponent>(
+      "ENS.CONFIRM_BUY_TITLE",
+      NameBuyConfirmComponent,
+      data
+    );
+  }
+
+  async openReleaseAensNameConfirm(
+    data: NameReleaseConfirmRequest
+  ): Promise<DialogResponse<any>> {
+    return this.open<
+      NameReleaseConfirmRequest,
+      any,
+      NameReleaseConfirmComponent
+    >("ENS.CONFIRM_RELEASE_NAME_TITLE", NameReleaseConfirmComponent, data);
+  }
+
+  async openTransferAensNameConfirm(
+    data: NameTransferConfirmRequest
+  ): Promise<DialogResponse<any>> {
+    return this.open<
+      NameTransferConfirmRequest,
+      any,
+      NameTransferConfirmComponent
+    >("ENS.CONFIRM_TRANSFER_NAME_TITLE", NameTransferConfirmComponent, data);
+  }
+
+  async openSetAensAddressConfirm(data: SetAddressConfirmRequest): Promise<DialogResponse<any>> {
+    return this.open<SetAddressConfirmRequest, any, NameUpdateAddressConfirmComponent>('ENS.CONFIRM_SET_ADDRESS_TITLE', NameUpdateAddressConfirmComponent, data);
+  }
+
   openSwapCreate(data?: any): Promise<any> {
     return this.openModal(CreateSwapComponent, {
       isBlocking: false,
@@ -150,35 +189,7 @@ export class ModalService {
     });
   }
 
-  openBuyAensConfirm(data?: any): Promise<any> {
-    return this.openModal(NameBuyConfirmComponent, {
-      isBlocking: false,
-      dialogClass: "adaptive-dialog",
-      param: data
-    });
-  }
+  
 
-  openSetAensAddressConfirm(data?: any): Promise<any> {
-    return this.openModal(NameUpdateAddressConfirmComponent, {
-      isBlocking: false,
-      dialogClass: "adaptive-dialog",
-      param: data
-    });
-  }
 
-  openTransferAensNameConfirm(data?: any): Promise<any> {
-    return this.openModal(NameTransferConfirmComponent, {
-      isBlocking: false,
-      dialogClass: "adaptive-dialog",
-      param: data
-    });
-  }
-
-  openReleaseAensNameConfirm(data?: any): Promise<any> {
-    return this.openModal(NameReleaseConfirmComponent, {
-      isBlocking: false,
-      dialogClass: "adaptive-dialog",
-      param: data
-    });
-  }
 }

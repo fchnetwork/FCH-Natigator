@@ -36,7 +36,6 @@ import { WeiToGweiPipe } from '@app/shared/pipes/wei-to-gwei.pipe';
 import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe';
 import { LoaderComponent } from '@app/shared/components/loader/loader.component';
 import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
-import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
 import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/transaction-modal.component';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -51,8 +50,7 @@ import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-t
 
 const modalWindows = [
   TransactionModalComponent,
-  BlockModalComponent,
-  TransactionSignModalComponent
+  BlockModalComponent
 ];
 
 @NgModule({
