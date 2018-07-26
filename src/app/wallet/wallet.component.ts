@@ -42,13 +42,13 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
       })
       .mergeMap(route => route.data)
       .subscribe(currentData => {
-        if( this.sidebar.isToggled) {
-          this.sidebar.toggleSidebar();
-        }
         if (currentData && currentData.sidebarGroup) {
+          if( this.sidebar.isToggled) {
+            this.sidebar.toggleSidebar();
+          }
+
           this.viewLoaded$.subscribe(w => {
             this.sidebar.toggleGroup(currentData.sidebarGroup);
-            this.sidebar.toggleSidebar();
             this.viewLoaded$.complete();
           });
         }
