@@ -5,12 +5,12 @@
       <div aerColumn size="sm-12" class="cell cell_left error">{{error}}</div>
     </div>
     <div aerRow *ngIf="swapClosed">
-      <div aerColumn size="sm-12" class="cell cell_left">
+      <div aerColumn size="sm-12" class="cell swap-confirm--success">
         {{'EXTERNAL-SWAP.CONFIRM.FIELD_SWAP_CLOSED_SUCCESSFULLY'|translate}}
       </div>
     </div>
     <div aerRow *ngIf="swapCancelled">
-      <div aerColumn size="sm-12" class="cell cell_left">
+      <div aerColumn size="sm-12" class="cell swap-confirm--cancelled">
         {{'EXTERNAL-SWAP.CONFIRM.FIELD_SWAP_CANCELLED_SUCCESSFULLY'|translate}}
       </div>
     </div>
@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <div class="table-simple" *ngIf="canCloseSwap">
+    <div class="table-simple" *ngIf="canCloseSwap || swapClosed">
       <div>
         <div>
           {{'EXTERNAL-SWAP.CONFIRM.FIELD_YOUR_SWAP_WAS_ACCEPTED_BY'|translate}}
@@ -51,11 +51,20 @@
           {{receiveAmount | number:'1.2-18'}} {{ walletTokenSymbol }}
         </div>
       </div>
+      <div>
+        <div>
+          {{'EXTERNAL-SWAP.CONFIRM.FIELD_SWAP_OPENED'|translate}}
+        </div>
+        <div>
+          <span *ngIf="openedDate">{{openedDate | date: 'short'}}</span>
+        </div>
+      </div>
     </div>
-    <div aerRow *ngIf="canCloseSwap">
+    <div aerRow *ngIf="canCloseSwap || swapClosed">
       <div aerColumn size="sm-12" class="cell">
         <label>{{'EXTERNAL-SWAP.CONFIRM.FIELD_ENTER_SECRET_KEY'|translate}}</label>
-        <aer-input [(ngModel)]="secret" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_TYPE_SECRET_KEY'|translate}}" [attr.readonly]="processing"></aer-input>
+        <aer-input *ngIf="processing || swapClosed" [(ngModel)]="secret" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_TYPE_SECRET_KEY'|translate}}" disabled="disabled"></aer-input>
+        <aer-input *ngIf="!processing && !swapClosed" [(ngModel)]="secret" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_TYPE_SECRET_KEY'|translate}}"></aer-input>
       </div>
     </div>
     <div *ngIf="swapTransactionExplorerUrl" class="swap-confirm__transaction-explorer">

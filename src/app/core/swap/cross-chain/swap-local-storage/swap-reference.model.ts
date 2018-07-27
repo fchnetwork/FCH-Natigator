@@ -5,6 +5,7 @@ export interface SwapReference {
   hash: string;
   secret: string;
   account: string;
+  opened: number;
   walletType: EthWalletType;
   walletTokenAddress: string;
   walletTokenSymbol: string;
