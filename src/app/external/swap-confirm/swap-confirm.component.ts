@@ -49,6 +49,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   acceptedBy: string;
   sendAmount: number;
   timelock: number;
+  openedDate: Date;
   swapState: SwapState;
   receiveCurrency: string;
   receiveAmount: number;
@@ -113,11 +114,13 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.loadLocalSwap();
 
-    if(this.walletTokenAddress === this.ethAddress){
+    if(this.walletTokenAddress === this.ethAddress) {
       await this.loadEthereumSwap();
-    }else{
+    }else {
       await this.loadErc20Swap();
     }
+
+    await this.loadAerumSwap();
 
     if (this.swapFinishedOrExpired()) {
       return;
@@ -127,8 +130,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.aerumErc20SwapService.onOpen(this.hash, (err, event) => this.onOpenSwapHandler(this.hash, err, event));
     this.aerumErc20SwapService.onExpire(this.hash, (err, event) => this.onExpiredSwapHandler(this.hash, err, event));
-
-    await this.loadAerumSwap();
   }
 
   private async loadEthereumSwap() {
@@ -222,12 +223,16 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private loadLocalSwap() {
     this.localSwap = this.swapLocalStorageService.loadSwapReference(this.hash);
+    console.log(this.localSwap);
     if (!this.localSwap) {
       throw new Error('Cannot load data for local swap: ' + this.hash);
     }
     this.walletTokenAddress = this.localSwap.walletTokenAddress;
     this.walletTokenSymbol = this.localSwap.walletTokenSymbol;
     this.secret = this.localSwap.secret;
+    if(this.localSwap.opened) {
+      this.openedDate = new Date(Number(this.localSwap.opened));
+    }
   }
 
   private setupTimer(): void {
@@ -295,22 +300,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (swap.state === SwapState.Closed) {
-      this.logger.logMessage('Counter swap already closed');
-      this.canCloseSwap = false;
-      this.swapClosed = true;
-      this.showError('Counter swap already closed');
-      return;
-    }
-
-    const now = this.now();
-    if ((now >= swap.timelock) || (swap.state === SwapState.Expired)) {
-      this.logger.logMessage('Counter swap expired');
-      this.canCloseSwap = false;
-      this.showError('Counter swap expired');
-      return;
-    }
-
     const token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
     if(!token) {
       throw new Error('Cannot load erc20 token: ' + swap.erc20ContractAddress);
@@ -324,6 +313,26 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.receiveAmount = Number(swap.erc20Value) / Math.pow(10, Number(token.decimals));
     if (this.receiveAmount !== this.localSwap.tokenAmount) {
       this.showError('Counter swap amount / rate is not the same as requested');
+    }
+
+    if(this.swapCancelled || this.swapClosed) {
+      this.canCloseSwap = false;
+      return;
+    }
+
+    if (swap.state === SwapState.Closed) {
+      this.logger.logMessage('Counter swap already closed');
+      this.canCloseSwap = false;
+      this.swapClosed = true;
+      return;
+    }
+
+    const now = this.now();
+    if ((now >= swap.timelock) || (swap.state === SwapState.Expired)) {
+      this.logger.logMessage('Counter swap expired');
+      this.canCloseSwap = false;
+      this.showError('Counter swap expired');
+      return;
     }
 
     this.canCloseSwap = true;

@@ -526,6 +526,7 @@
       "FIELD_YOUR_SWAP_WAS_ACCEPTED_BY": "Your swap was accepted by",
       "FIELD_YOU_WILL_SEND": "You will send",
       "FIELD_YOU_WILL_RECEIVE": "You will receive",
+      "FIELD_SWAP_OPENED": "Swap opened",
       "FIELD_ENTER_SECRET_KEY": "Enter secret key:",
       "FIELD_TYPE_SECRET_KEY": "Type secret key",
       "FIELD_MESSAGE":
