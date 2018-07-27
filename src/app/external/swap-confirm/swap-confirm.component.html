@@ -17,7 +17,7 @@
         {{'EXTERNAL-SWAP.CONFIRM.FIELD_SWAP_CANCELLED_SUCCESSFULLY'|translate}}
       </div>
     </div>
-    <div class="table-simple table-simple_top-marign" *ngIf="!swapClosed && !swapCancelled">
+    <div class="table-simple table-simple_top-marign" *ngIf="!swapClosed && !swapCancelled && !swapExpired">
       <div>
         <div>
           {{'EXTERNAL-SWAP.CONFIRM.FIELD_YOUR_SWAP_WILL_EXPIRE_IN'|translate}}
