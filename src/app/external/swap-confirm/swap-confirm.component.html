@@ -13,19 +13,23 @@
       </div>
     </div>
     <div aerRow *ngIf="swapCancelled">
-      <div aerColumn size="sm-12" class="cell cell_left">
+      <div aerColumn size="sm-12" class="cell swap-confirm--cancelled">
         {{'EXTERNAL-SWAP.CONFIRM.FIELD_SWAP_CANCELLED_SUCCESSFULLY'|translate}}
       </div>
     </div>
-    <div class="table-simple" *ngIf="canCloseSwap">
+    <div class="table-simple table-simple_top-marign" *ngIf="!swapClosed && !swapCancelled">
       <div>
         <div>
           {{'EXTERNAL-SWAP.CONFIRM.FIELD_YOUR_SWAP_WILL_EXPIRE_IN'|translate}}
         </div>
         <div>
-          {{timer.hours() | number:'2.0'}}:{{timer.minutes() | number:'2.0'}}:{{timer.seconds() | number:'2.0'}}
+          <span *ngIf="timer">
+            {{timer.hours() | number:'2.0'}}:{{timer.minutes() | number:'2.0'}}:{{timer.seconds() | number:'2.0'}}
+          </span>
         </div>
       </div>
+    </div>
+    <div class="table-simple" *ngIf="canCloseSwap">
       <div>
         <div>
           {{'EXTERNAL-SWAP.CONFIRM.FIELD_YOUR_SWAP_WAS_ACCEPTED_BY'|translate}}
@@ -57,16 +61,12 @@
         <aer-input [(ngModel)]="secret" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_TYPE_SECRET_KEY'|translate}}" [attr.readonly]="processing"></aer-input>
       </div>
     </div>
-    <div aerRow *ngIf="swapTransactionExplorerUrl">
-      <div aerColumn size="sm-9" class="cell">
-        <a href="{{swapTransactionExplorerUrl}}" target="_blank" class="c-swap-confirm__explorer-link">{{swapTransactionExplorerUrl | truncate: 40}}</a>
-      </div>
-      <div aerColumn size="sm-3" class="cell cell_right" *ngIf="timer">
-        <img *ngIf="processing" src="assets/images/loading.svg" alt="loading" />
-      </div>
+    <div *ngIf="swapTransactionExplorerUrl" class="swap-confirm__transaction-explorer">
+      <aer-button (buttonFn)="explorerLink(swapTransactionExplorerUrl)" class="blue small">{{'EXTERNAL-SWAP.CONFIRM.OPEN_SWAP_TX_IN_EXPLORER'|translate}}</aer-button>
+      <aer-loader *ngIf="processing"></aer-loader>
     </div>
     <app-divider [showLine]="false"></app-divider>
-    <div *ngIf="!swapClosed" class="message">
+    <div *ngIf="!swapClosed && !swapCancelled" class="message">
       {{'EXTERNAL-SWAP.CONFIRM.FIELD_MESSAGE'|translate}}
     </div>
     <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="canCloseSwap" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_COMPLETE_SWAP'|translate}}</aer-button>

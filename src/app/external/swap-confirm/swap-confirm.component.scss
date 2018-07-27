@@ -12,11 +12,6 @@
     margin: 0 0 14px;
   }
 
-  aer-button {
-    margin-bottom: 20px;
-    display: block;
-  }
-
   .btn--close {
     margin-bottom: 0;
   }
@@ -40,7 +35,9 @@
 
   .table-simple {
     width: 100%;
-    margin: 15px 0 0;
+    &_top-marign {
+      margin: 15px 0 0;
+    }
   }
 
   .or {
@@ -67,5 +64,32 @@
 
   .error {
     color: #c94545;
+  }
+
+  aer-button {
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  &--cancelled {
+    color: #2a669a;
+    margin-bottom: 0;
+  }
+
+  &__transaction-explorer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 14px auto;
+    align-items: center;
+
+    aer-loader {
+      width: 30px;
+      height: 30px;
+    }
+
+    .loader {
+      margin-bottom: 14px;
+    }
   }
 }
