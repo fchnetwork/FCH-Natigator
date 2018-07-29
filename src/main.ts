@@ -24,6 +24,10 @@ if (typeof window['cordova'] !== 'undefined') {
     if (window.device.model !== 'iPhone10,3' && window.device.model !== 'iPhone10,6') {
       window.StatusBar.overlaysWebView(false);
     }
+
+    //Changed definition for window open to use in app browser
+    window.open = window.cordova.InAppBrowser.open;
+
     bootstrap();
   }, false);
 } else {
