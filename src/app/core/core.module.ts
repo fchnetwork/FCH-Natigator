@@ -47,6 +47,7 @@ import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/s
 import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
+import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
 
 @NgModule({
   imports: [
@@ -90,7 +91,8 @@ import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-
     CrossChainSwapListService,
     CreateSwapService,
     LoadSwapService,
-    AuthenticationGuard
+    AuthenticationGuard,
+    GlobalEventService
   ]
 })
 export class CoreModule {
