@@ -1,16 +1,14 @@
+import { FromToAvatarComponent } from './components/from-to-avatar/from-to-avatar.component';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Error404Component } from './components/error404/error404.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 import { I18nComponent } from './components/i18n/i18n.component';
-import { ModalModule } from 'ngx-modialog';
-import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap'; 
 import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AddressClipboardComponent } from './components/address-clipboard/address-clipboard.component';
-
 import { EqualValidator } from './directives/equal-validator.directive';
 import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
 import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
@@ -28,7 +26,6 @@ import { BigNumbersPipe } from '@shared/pipes/big-numbers.pipe';
 import { GetBlockSignerPipe } from '@shared/pipes/get-block-signer.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
 import { DecimalPipe } from '@angular/common';
-
 import { AppUIModule } from '@app/app.ui.module';
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
 import { ChartComponent } from '@app/shared/components/chart/chart.component';
@@ -36,33 +33,23 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { WeiToGweiPipe } from '@app/shared/pipes/wei-to-gwei.pipe';
 import { CropAddressPipe } from '@app/shared/pipes/crop-address.pipe';
 import { LoaderComponent } from '@app/shared/components/loader/loader.component';
-import { TransactionModalComponent } from '@app/shared/modals/transaction-modal/transaction-modal.component';
-import { GetBlockModalComponent } from '@app/shared/modals/get-block-modal/get-block-modal.component';
-import { BlockModalComponent } from '@app/shared/modals/block-modal/block-modal.component';
-import { TransactionSignModalComponent } from '@app/shared/modals/transaction-sign-modal/transaction-sign-modal.component';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, '../../assets/i18n/', '.json');
+}
+
 import { FormsModule } from '@angular/forms';
-
 import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-token.component';
- 
-
-
-const modalWindows = [
-  TransactionModalComponent,
-  GetBlockModalComponent,
-  BlockModalComponent,
-  TransactionSignModalComponent  
-];
+import { LinkClipboardComponent } from '@app/shared/components/link-clipboard/link-clipboard.component';
 
 @NgModule({
   entryComponents: [
-    modalWindows
+    FromToAvatarComponent
   ],
   imports: [
     CommonModule,
-    ModalModule.forRoot(),
     AppUIModule,
-    BootstrapModalModule,
-    FormsModule, 
+    FormsModule,
     NgxEchartsModule,
     TranslateModule
   ],
@@ -90,10 +77,11 @@ const modalWindows = [
     ChartComponent,
     CropAddressPipe,
     LoaderComponent,
-    modalWindows,
     BigNumbersPipe,
     AddressClipboardComponent,
-    AddTokenComponent
+    AddTokenComponent,
+    FromToAvatarComponent,
+    LinkClipboardComponent
   ],
   providers: [DecimalPipe],
   exports:[
@@ -123,9 +111,11 @@ const modalWindows = [
     CropAddressPipe,
     BigNumbersPipe,
     AddressClipboardComponent,
-    AddTokenComponent
+    AddTokenComponent,
+    FromToAvatarComponent,
+    LinkClipboardComponent
   ]
 })
 
-export class SharedModule { 
+export class SharedModule {
 }

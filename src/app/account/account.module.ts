@@ -54,3 +54,4 @@ import { ZXingScannerModule } from "@zxing/ngx-scanner";
     ]
 })
 export class AccountModule { }
+

@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';  
-import { iBlocks, iPendingTxn } from '@shared/app.interfaces';  
+import { Router } from '@angular/router';
+import { iBlocks, iPendingTxn } from '@shared/app.interfaces';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ExplorerService } from '@core/explorer/explorer-service/explorer.service';
 import { Subscription } from 'rxjs';
+import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
 
 @Component({
   selector: 'app-pending-txns',
@@ -12,15 +13,15 @@ import { Subscription } from 'rxjs';
 })
 export class PendingTxnsComponent implements OnInit {
 
-  transactions: Array<iPendingTxn> = [];
-  
+  transactions: iPendingTxn[] = [];
+
   constructor( public exploreSrv: ExplorerService,
                private router: Router,
                private modal: ModalService) { }
 
 
   ngOnInit() {
-    this.getPendingTxPool();   
+    this.getPendingTxPool();
   }
 
   getPendingTxPool() {
@@ -47,8 +48,15 @@ export class PendingTxnsComponent implements OnInit {
     });
   }
 
-  openTransaction(transaction) {
-    this.modal.openTransaction(transaction.hash, transaction, false, null, null).then((result) => {
-    }).catch( () => {});
+  async openTransaction(transaction) {
+    const data: TransactionModalData = {
+      hash: transaction.hash,
+      transaction: transaction,
+      external: false,
+      orderId: null,
+      urls: null
+    };
+
+    await this.modal.openTransaction(data);
   }
 }

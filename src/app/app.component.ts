@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ErrorHandler } from "@angular/core";
 import { environment } from "../environments/environment";
 import { ActivatedRoute, Router, NavigationStart } from "@angular/router";
 import { LoggerService } from "@app/core/general/logger-service/logger.service";
@@ -6,6 +6,7 @@ import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
 import { ConnectionCheckerService } from "@core/general/connection-checker-service/connection-checker.service";
 import { TranslateService } from "@ngx-translate/core";
 import { SettingsService } from '@core/settings/settings.service';
+import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
 
 @Component({
   selector: "app-root",
@@ -19,10 +20,14 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private logger: LoggerService,
+    private globalEventService: GlobalEventService,
     public connectionCheckerService: ConnectionCheckerService,
     public translate: TranslateService,
     public settingsService: SettingsService
   ) {
+    // Initialize global events
+    this.globalEventService.init();
+
     // Initialize the logger service
     logger.setLogLevel(environment.loglevel);
 

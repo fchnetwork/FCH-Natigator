@@ -30,10 +30,9 @@ export class BackupPromptComponent implements OnInit {
 
   ngOnInit() {}
 
-  createBackup() {
-    this.modalService.openModal(BackupDisclamerComponent).then(result => {
-      this.router.navigate(["account/backup/create"]);
-    });
+  async createBackup() {
+    await this.modalService.openBackupDisclaimerModal();
+    this.router.navigate(["account/backup/create"]);
   }
 
   skipStep() {

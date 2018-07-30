@@ -1,12 +1,10 @@
-import { DialogRef } from 'ngx-modialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ModalComponent } from 'ngx-modialog';
 import { Component, OnInit } from '@angular/core';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
 import { AddressValidator } from "@shared/validators/address.validator";
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
-import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
+import { ModalViewComponent, DialogRef } from '@aerum/ui';
 import { StorageService } from "@core/general/storage-service/storage.service";
 
 @Component({
@@ -14,7 +12,7 @@ import { StorageService } from "@core/general/storage-service/storage.service";
   templateUrl: './add-token.component.html',
   styleUrls: ['./add-token.component.scss']
 })
-export class AddTokenComponent implements ModalComponent<DefaultModalContext>, OnInit {
+export class AddTokenComponent implements ModalViewComponent<any, any>, OnInit {
   addTokenForm: FormGroup = this.formBuilder.group({});
   tokenAddress: any;
   tokenSymbol: any;
@@ -23,7 +21,7 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
   balance: any;
 
   constructor(
-    public dialog: DialogRef<DefaultModalContext>,
+    public dialogRef: DialogRef<any, any>,
     public formBuilder: FormBuilder,
     private tokenService: TokenService,
     public notificationService: InternalNotificationService,
@@ -74,7 +72,7 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
         balance: this.balance,
       };
       this.tokenService.addToken(token);
-      this.dialog.dismiss();
+      this.dialogRef.dismiss();
     }
   }
 
@@ -96,7 +94,6 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
       this.fillTokenData(res);
     } catch (e) {
       this.clearTokenData();
-      console.log(e);
     }
   }
 
@@ -113,9 +110,4 @@ export class AddTokenComponent implements ModalComponent<DefaultModalContext>, O
     this.balance = 0;
     this.totalSupply = 0;
   }
-
-  dismiss() {
-    this.dialog.close();
-  }
-
 }

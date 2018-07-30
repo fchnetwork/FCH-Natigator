@@ -1,24 +1,66 @@
-  .o-table {
-    display: table;
-    table-layout: fixed;
+.swap-create {
+  color: #83868A;
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+  max-width: 420px;
+
+  h1 {
+    font-size: 36px;
+    font-weight: normal;
+    color: #27282A;
+    margin: 0 0 14px;
+  }
+
+  aer-button {
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .message {
+    text-align: left;
+    padding: 0 0 20px;
+  }
+
+  label {
+    text-align: left;
     width: 100%;
-    margin: 20px 0 0;
-    &__row {
-      display: -webkit-flex; /* Safari */
-      display: flex;
-      justify-content: space-between;
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .secret-key {
+    color: #8ccc67;
+    cursor: pointer;
+  }
+
+  &__processing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+
+    .explorer-button {
+      margin: auto 10px auto 0;
     }
-    &__cell {
-      display: inline-block;
-      padding-bottom: 20px;
-      &.o-data_left {
-        text-align: left;
-        margin-right: 10px;
-      }
-      &.o-data_right {
-        text-align: right;
-        word-break: break-all;
-      }
+
+    aer-loader {
+      width: 30px;
+      height: 30px;
     }
   }
-  
+
+  &__explorer-buttons {
+    display: inherit;
+  }
+
+  &__explorer-link {
+    display: block;
+    margin-top: 10px;
+  }
+
+  .table-simple {
+    width: 100%;
+    margin: 20px 0 0;
+  }
+}

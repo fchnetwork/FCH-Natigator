@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service'; 
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 
@@ -21,12 +21,12 @@ export class AccountOverviewComponent implements OnInit {
   ) { }
 
   userData() {
-    return this.authServ.showKeystore().then( 
+    return this.authServ.showKeystore().then(
       (keystore) => {
         const getBalance = this.txnServ.checkBalance(keystore.address);
-        const getQR = this.authServ.createQRcode( "0x" + keystore.address );  
+        const getQR = this.authServ.createQRcode( "0x" + keystore.address );
         this.address = keystore.address;
-        return Promise.all([ keystore, getBalance, getQR ]); 
+        return Promise.all([ keystore, getBalance, getQR ]);
     }
   )
     .then(

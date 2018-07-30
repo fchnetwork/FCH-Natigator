@@ -31,7 +31,7 @@
         "WRONG_BACKUP_FILE": {
           "TITLE": "Something went wrong!",
           "BODY": "Backup file is broken!"
-        } 
+        }
       }
     },
     "QR_SCAN": {
@@ -110,6 +110,12 @@
           "TITLE": "Very Strong"
         }
       }
+    }
+  },
+
+  "TRANSACTION" : {
+    "CONFIRM_TRANSACTION": {
+      "TITLE": "Confirm transaction"
     }
   },
 
@@ -225,7 +231,7 @@
   "LATEST_TRANSACTION": "Latest transactions",
   "SHOW_MORE": "Show more",
   "SHOW_LESS": "Show less",
-  "TRANSACTION": "Transaction",
+  "TRANSACTION_MODAL": "Transaction",
   "I_UNDERSTAND": "I understand",
   "WARNING": "Warning!",
   "REGISTRATION_WARNING_TXT1": "You should ONLY use the official Aerum client.",
@@ -346,6 +352,11 @@
       "CONNECTED": "Connected to AERUM Network"
     }
   },
+  "BUTTONS" : {
+    "ADD": "Add",
+    "CLOSE": "Close",
+    "CANCEL": "Cancel"
+  },
   "DIAGNOSTICS": "Diagnostics",
   "OVERVIEW": "Overview",
   "UNLOCK": {
@@ -369,6 +380,11 @@
     "DECILLION": "Decillion"
   },
   "TRANSACTION_COST": "Txn fee",
+  "HOME": {
+    "ADD_TOKEN": "Add token",
+    "ADD_BUTTON": "Add",
+    "CLOSE_BUTTON": "Cancel"
+  },
   "DASHBOARD_TOKENS": {
     "NAME": "Name",
     "DECIMALS": "Decimals",
@@ -490,6 +506,8 @@
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
       "FIELD_AER_AMOUNT_MESSAGE":
         "Attention! Please, make sure you have sufficient amount of AERO in your wallet to cover transaction fee (up to 0.000021 Aer)",
+      "OPEN_APPROVAL_TX_IN_EXPLORER": "Open approval tx",
+      "OPEN_TRANSFER_TX_IN_EXPLORER": "Open transfer tx",
       "BTN_NEXT": "Next",
       "BTN_CLOSE": "Close",
       "BTN_BACK": "Back"
@@ -508,6 +526,7 @@
       "FIELD_YOUR_SWAP_WAS_ACCEPTED_BY": "Your swap was accepted by",
       "FIELD_YOU_WILL_SEND": "You will send",
       "FIELD_YOU_WILL_RECEIVE": "You will receive",
+      "FIELD_SWAP_OPENED": "Swap opened",
       "FIELD_ENTER_SECRET_KEY": "Enter secret key:",
       "FIELD_TYPE_SECRET_KEY": "Type secret key",
       "FIELD_MESSAGE":

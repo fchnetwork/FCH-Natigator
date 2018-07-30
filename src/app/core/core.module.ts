@@ -11,8 +11,6 @@ import { Erc20ToErc20SwapService } from '@app/core/swap/on-chain/erc20-to-erc20-
 import { ERC20TokenService } from '@app/core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
-import { CanActivateAccountAuthGuard } from '@app/core/authentication/auth-guards/can-activate-account.guard';
-import { CanActivateViaAuthGuard } from '@app/core/authentication/auth-guards/can-activate-auth.guard';
 import { ContractExecutorService } from '@app/core/contract/contract-executor-service/contract-executor.service';
 import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contract-executor-service/ethereum-contract-executor.service";
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
@@ -49,6 +47,7 @@ import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/s
 import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
+import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
 
 @NgModule({
   imports: [
@@ -65,8 +64,6 @@ import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-
     RouteDataService,
     TokenService,
     TransactionService,
-    CanActivateAccountAuthGuard,
-    CanActivateViaAuthGuard,
     AerumStatsService,
     AerumStatsWebsocketsService,
     AerumNameService,
@@ -94,7 +91,8 @@ import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-
     CrossChainSwapListService,
     CreateSwapService,
     LoadSwapService,
-    AuthenticationGuard
+    AuthenticationGuard,
+    GlobalEventService
   ]
 })
 export class CoreModule {

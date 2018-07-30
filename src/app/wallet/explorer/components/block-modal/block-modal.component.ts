@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalComponent, DialogRef } from 'ngx-modialog'; 
 import { iBlocks } from '@app/shared/app.interfaces';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { environment } from '@env/environment';
+import {DialogRef, ModalViewComponent} from '@aerum/ui';
 
-export interface BlockModalContext {
+export class BlockModalData {
   blockNumber?: number;
   block?: iBlocks;
 }
@@ -15,34 +15,15 @@ export interface BlockModalContext {
   templateUrl: './block-modal.component.html',
   styleUrls: ['./block-modal.component.scss']
 })
-export class BlockModalComponent implements OnInit, ModalComponent<BlockModalContext> {
+export class BlockModalComponent implements OnInit, ModalViewComponent<BlockModalData, any> {
 
-  blockNumber: number;
-  block: iBlocks;
-
-  constructor(public dialog: DialogRef<BlockModalContext>,
+  constructor(public dialogRef: DialogRef<BlockModalData, any>,
               public clipboardService: ClipboardService,
               public notificationService: InternalNotificationService) {
-    if(dialog.context.blockNumber) {
-      this.blockNumber = dialog.context.blockNumber;
-    }
-    if(dialog.context.block) {
-      this.block = dialog.context.block;
-    }
-    else {
-      // GET BLOCK via blockNumber or id or define it
-    }
+
   }
 
   ngOnInit() {
-  }
-
-  dismiss(): void {
-    this.dialog.dismiss();
-  }
-
-  close(): void {
-    this.dialog.close();
   }
 
   copyToClipboard(hash) {

@@ -1,27 +1,95 @@
-.o-table {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-  margin: 15px 0 0;
+.swap-confirm {
+  color: #83868a;
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+  max-width: 420px;
 
-  &__row {
-    display: table-row;
+  h1 {
+    font-size: 36px;
+    font-weight: normal;
+    color: #27282A;
+    margin: 0 0 14px;
   }
 
-  &__cell {
-    display: table-cell;
-    padding-bottom: 15px;
+  .btn--close {
+    margin-bottom: 0;
+  }
 
-    &.o-data_left {
+  &__explorer-link {
+    display: block;
+    margin-top: 10px;
+  }
+
+  .message {
+    text-align: left;
+    padding: 20px 0;
+  }
+
+  label {
+    text-align: left;
+    width: 100%;
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .table-simple {
+    width: 100%;
+    &_top-marign {
+      margin: 15px 0 0;
+    }
+  }
+
+  .or {
+    width: 20%;
+    margin: 0 auto 20px;
+    &:before {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 10px;
+      border-bottom: 1px solid;
+    }
+  }
+
+  .cell {
+    &_left {
       text-align: left;
-      margin-right: 10px;
     }
 
-    &.o-data_right {
+    &_right {
       text-align: right;
-      word-break: break-all;
+    }
+  }
+
+  .error {
+    color: #c94545;
+  }
+
+  aer-button {
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  &--cancelled {
+    color: #2a669a;
+    margin-bottom: 0;
+  }
+
+  &__transaction-explorer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 14px auto;
+    align-items: center;
+
+    aer-loader {
+      width: 30px;
+      height: 30px;
+    }
+
+    .loader {
+      margin-bottom: 14px;
     }
   }
 }
-
-

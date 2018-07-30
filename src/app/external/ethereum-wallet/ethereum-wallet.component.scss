@@ -1,8 +1,9 @@
-.c-eth-wallet {
+.ethereum-wallet {
   color: #83868A;
   font-size: 13px;
   line-height: 1;
   text-align: center;
+  max-width: 420px;
 
   h1 {
     font-size: 36px;
@@ -35,6 +36,11 @@
   .address-option {
     margin-top: -15px;
     display: block;
+  }
+
+  .table-simple {
+    width: 100%;
+    margin: 15px 0 0;
   }
 
   .c-copy__address {

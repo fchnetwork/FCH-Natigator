@@ -1,33 +1,34 @@
-<aer-modal-dialog>
-  <div class="c-confirm-name-transfer c-confirm-name-transfer__table c-confirm-name-transfer__unlock">
-    <h1>{{'ENS.CONFIRM_TRANSFER_NAME_TITLE'|translate}}</h1>
-    <div class="o-table">
-      <div class="o-table__row">
-        <div class="o-table__cell o-data--left">
-          {{ 'ENS.FIELD_NAME' | translate }}
+<div class="name-transfer-confirm">
+  <div aerRow>
+    <div aerColumn size="md-12">
+      <div class="table-simple">
+        <div>
+          <div>
+            {{ 'ENS.FIELD_NAME' | translate }}
+          </div>
+          <div>
+            {{ dialogRef.data.name }}
+          </div>
         </div>
-        <div class="o-table__cell o-data--right">
-          {{ param.name }}
+        <div>
+          <div>
+            {{ 'ENS.FIELD_NEW_OWNER' | translate }}
+          </div>
+          <div>
+            {{ dialogRef.data.newOwner | truncate: 32 }}
+          </div>
         </div>
-      </div>
-      <div class="o-table__row">
-        <div class="o-table__cell o-data--left">
-          {{ 'ENS.FIELD_NEW_OWNER' | translate }}
-        </div>
-        <div class="o-table__cell o-data--right">
-          {{ param.newOwner | truncate: 32 }}
-        </div>
-      </div>
-      <div class="o-table__row">
-        <div class="o-table__cell o-data--left">
-          {{ 'ENS.ESTIMATED_FEE' | translate }}
-        </div>
-        <div class="o-table__cell o-data--right">
-          {{ estimatedFeeInWei | convertToEther | number:'1.0-18' }} Aero
+        <div>
+          <div>
+            {{ 'ENS.ESTIMATED_FEE' | translate }}
+          </div>
+          <div>
+            {{ estimatedFeeInWei | convertToEther | number:'1.0-18' }} Aero
+          </div>
         </div>
       </div>
     </div>
-    <aer-button (buttonFn)="accept()" class="large full-width blue">{{ 'ENS.BTN_TRANSFER_NAME' | translate }}</aer-button>
-    <aer-button (buttonFn)="dismiss()" class="large full-width">{{ 'ENS.BTN_MODAL_CANCEL' | translate }}</aer-button>
   </div>
-</aer-modal-dialog>
+  <aer-modal-button [isAcceptButton]="true" (buttonFn)="accept()">{{ 'ENS.BTN_TRANSFER_NAME' | translate }}</aer-modal-button>
+  <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{'COMMON.BUTTONS.CANCEL' | translate}}</aer-modal-button>
+</div>

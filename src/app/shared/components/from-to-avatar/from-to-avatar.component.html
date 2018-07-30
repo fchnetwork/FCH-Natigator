@@ -1,0 +1,27 @@
+<div class="from-to-avatar">
+  <ul class="from-to-avatar__list">
+    <li>
+      <ul class="from-to-avatar__image-list">
+        <li>
+          <div class="from-to-avatar__avatar-img" [style.background-image]="'url(' + getSenderAvatar() + ')'"></div>
+        </li>
+        <li>
+          {{ cropAddress(senderAddress) }}
+        </li>
+      </ul>
+      <ul class="from-to-avatar__image-list from-to-avatar__arrow">
+        <li>
+          <aer-icon>angle-right</aer-icon>
+        </li>
+      </ul>
+      <ul class="from-to-avatar__image-list">
+        <li>
+          <div class="from-to-avatar__avatar-img" [style.background-image]="'url(' + getReceiverAvatar() + ')'"></div>
+        </li>
+        <li>
+          {{ cropAddress(recieverAddress) }}
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
