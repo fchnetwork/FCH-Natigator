@@ -12,6 +12,7 @@ import { getCurrentProvider } from "@shared/helpers/web3-providers";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { StorageService } from "@core/general/storage-service/storage.service";
+import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
 
 declare const window: any;
 
@@ -23,40 +24,33 @@ export class EthereumAuthenticationService {
 
   constructor(
     private logger: LoggerService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private globalEventService: GlobalEventService
   ) {
     this.web3 = new Web3(environment.ethereum.endpoint);
     this.injectedWeb3 = this.loadInjectedWeb3();
   }
 
   private loadInjectedWeb3(): Promise<Web3> {
-    return new Promise((resolve, reject) => {
-
-      if (window.web3) {
-        this.logger.logMessage("Web3 is present");
-        resolve(new Web3(window.web3.currentProvider));
-        return;
-      }
-
+    return new Promise(async (resolve, reject) => {
       if(environment.isMobileBuild) { 
         this.logger.logMessage("Mobile build: Web3 is not provided!");
         resolve(null);
-        return; // NO need for window.addEventListener 'load' since 'deviceready' have already fired.
+        return; // NO need for window 'load' since 'deviceready' have already fired.
       }
 
-      window.addEventListener('load', () => {
-        try {
-          if (!window.web3) {
-            this.logger.logMessage("Web3 is not provided!");
-            resolve(null);
-          } else {
-            this.logger.logMessage("Web3 is present");
-            resolve(new Web3(window.web3.currentProvider));
-          }
-        } catch (e) {
-          reject("Error while loading injected web3");
+      const windowLoaded = await this.globalEventService.isWindowLoaded();
+      if(windowLoaded) {
+        if (window.web3) {
+          this.logger.logMessage("Web3 is present");
+          resolve(new Web3(window.web3.currentProvider));
+        }else {
+          this.logger.logMessage("Web3 is not provided!");
+          resolve(null);
         }
-      });
+      } else {
+        reject("Error while loading injected web3");
+      }
     });
   }
 
