@@ -312,7 +312,6 @@
   "GWEI": "Gwei",
   "TRANSACTIONS_FOUND_COUNT": "{{transactionsCount}} transactions found",
   "SHOWING_THE_LAST": "showing the last {{value}}k records",
-  "STAKING": "STAKING",
   "CONTRACTS": "Contracts",
   "EXCHANGE": "Exchange",
   "KYC": "KYC",
@@ -638,5 +637,8 @@
     "NOTIFICATION_BODY_TOKEN_NOT_CONFIGURED":
       "Please configure the token first",
     "NOTIFICATION_TITLE_TOKEN_NOT_CONFIGURED": "Warning!"
+  },
+  "STAKING": {
+    "MAIN_MENU_ITEM_NAME": "Staking"
   }
 }

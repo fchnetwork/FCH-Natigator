@@ -7,6 +7,7 @@ import { TransactionModule } from '@app/wallet/transaction/transaction.module';
 import { ExplorerModule } from '@app/wallet/explorer/explorer.module';
 import { SettingsModule } from '@app/wallet/settings/settings.module';
 import { SwapModule } from '@app/wallet/swap/swap.module';
+import { StakingModule } from '@app/wallet/staking/staking.module';
 
 export const WALLET_ROUTES = [
     {
@@ -39,6 +40,10 @@ export const WALLET_ROUTES = [
             {
                 path: 'aens',
                 loadChildren: () => AensModule
+            },
+            {
+                path: 'staking',
+                loadChildren: () => StakingModule
             },
             {
                 path: 'settings',
