@@ -1,5 +1,5 @@
 <aer-modal-container>
-  <div class="swap-create swap-create__table swap-create__unlock">
+  <div class="swap-create">
     <h1>{{'EXTERNAL-SWAP.CREATE-OPPOSITE.TITLE'|translate}}</h1>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
@@ -84,7 +84,15 @@
     <div class="message">
       {{'EXTERNAL-SWAP.CREATE-OPPOSITE.FIELD_AER_AMOUNT_MESSAGE'|translate}}
     </div>
-    <aer-button (buttonFn)="next()" class="blue large full-width" [disabled]="!canMoveNext()" (ngClass)="{ 'blue': canMoveNext(), 'grey': !canMoveNext() }">{{'EXTERNAL-SWAP.CREATE-OPPOSITE.BTN_NEXT'|translate}}</aer-button>
-    <aer-button (buttonFn)="cancel()" class="blue large full-width" [disabled]="processing" (ngClass)="{ 'blue': !processing, 'grey': processing }">{{(swapCreated ? "EXTERNAL-SWAP.CREATE-OPPOSITE.BTN_CLOSE" : "EXTERNAL-SWAP.CREATE-OPPOSITE.BTN_BACK")|translate}}</aer-button>
+    <div aerRow>
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="next()" class="blue large full-width" [disabled]="!canMoveNext()" [ngClass]="{ 'blue': canMoveNext(), 'grey': !canMoveNext() }">{{'EXTERNAL-SWAP.CREATE-OPPOSITE.BTN_NEXT'|translate}}</aer-button>
+      </div>
+    </div>
+    <div aerRow>
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="cancel()" class="blue large full-width" [disabled]="processing" [ngClass]="{ 'blue': !processing, 'grey': processing }">{{(swapCreated ? "EXTERNAL-SWAP.CREATE-OPPOSITE.BTN_CLOSE" : "EXTERNAL-SWAP.CREATE-OPPOSITE.BTN_BACK")|translate}}</aer-button>
+      </div>
+    </div>
   </div>
 </aer-modal-container>

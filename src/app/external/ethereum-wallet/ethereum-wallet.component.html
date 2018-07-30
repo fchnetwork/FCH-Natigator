@@ -77,9 +77,17 @@
     <div class="message">
       {{'EXTERNAL-SWAP.WALLET.FIELD_MESSAGE'|translate}}
     </div>
-    <aer-button (buttonFn)="next()" class="large full-width"
-                ngClass="{ 'blue': canMoveNext, 'grey': !canMoveNext }" [disabled]="!canMoveNext || !isValidNetwork">{{'EXTERNAL-SWAP.WALLET.BTN_NEXT'|translate}}
-    </aer-button>
-    <aer-button (buttonFn)="cancel()" class="large full-width">{{'EXTERNAL-SWAP.WALLET.BTN_CANCEL'|translate}}</aer-button>
+    <div aerRow>
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="next()" class="large full-width" 
+          [ngClass]="{ 'blue': canMoveNext, 'grey': !canMoveNext }" [disabled]="!canMoveNext || !isValidNetwork">{{'EXTERNAL-SWAP.WALLET.BTN_NEXT'|translate}}
+        </aer-button>
+      </div>
+    </div>
+    <div aerRow>
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="cancel()" class="large full-width">{{'EXTERNAL-SWAP.WALLET.BTN_CANCEL'|translate}}</aer-button>
+      </div>
+    </div>
   </div>
 </aer-modal-container>
