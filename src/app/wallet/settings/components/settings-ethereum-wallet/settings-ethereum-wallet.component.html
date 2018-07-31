@@ -29,9 +29,9 @@
           <div aerColumn size="sm-8">
             <div aerRow>
               <div aerColumn size="sm-12">
-                <aer-select [(ngModel)]="address" 
+                <aer-select [(ngModel)]="address"
                                 icon="key"
-                                (ngModelChange)="onAddressChange()" 
+                                (ngModelChange)="onAddressChange()"
                                 placeholder="{{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_YOUR_ACCOUNT'|translate}}">
                   <aer-select-option *ngFor="let item of addresses;" [value]="item">
                     <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
@@ -89,7 +89,7 @@
                       </div>
                 </div>
             </div>
-            
+
           </div>
 
           <div *ngIf="address" aerColumn size="sm-4">
@@ -102,6 +102,5 @@
 
 
         <app-add-token *ngIf="address && importTokenInProgress" [wallet]="selectedWalletType" [account]="address" (tokenAdded)="onTokenAdded($event)"></app-add-token>
-        
       </div>
 </div>

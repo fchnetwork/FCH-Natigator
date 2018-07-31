@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { TransactionService } from "@app/core/transactions/transaction-service/transaction.service";
 import { ModalService } from "@app/core/general/modal-service/modal.service";
 import { iTransaction } from "@shared/app.interfaces";
@@ -12,10 +12,13 @@ import { StorageService } from "@core/general/storage-service/storage.service";
   templateUrl: "./last-transactions.component.html",
   styleUrls: ["./last-transactions.component.scss"]
 })
-export class LastTransactionsComponent implements OnInit {
+export class LastTransactionsComponent implements OnInit, OnDestroy {
   transactions: iTransaction[] = [];
   limit: number;
   hideTxns: boolean = false;
+  checkForTransactions = null;
+  updateTransactions = null;
+
   constructor(
     private storageService: StorageService,
     private transactionService: TransactionService,
@@ -26,7 +29,8 @@ export class LastTransactionsComponent implements OnInit {
     this.limit = Number(
       this.settingsService.settings.transactionSettings.lastTransactionsNumber
     );
-    setInterval(() => {
+
+    this.checkForTransactions = setInterval(() => {
       const sessionTransaactions = this.storageService.getSessionData(
         "transactions"
       );
@@ -39,7 +43,7 @@ export class LastTransactionsComponent implements OnInit {
         });
       }
     }, 3000);
-    setInterval(() => {
+    this.updateTransactions = setInterval(() => {
       for (let i = 0; i < this.transactions.length; i++) {
         if (
           this.transactions[i].data === "Pending transaction" ||
@@ -72,6 +76,11 @@ export class LastTransactionsComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    if(this.checkForTransactions) clearInterval(this.checkForTransactions);
+    if(this.updateTransactions) clearInterval(this.updateTransactions);
+  }
 
   async openTransaction(transaction) {
     const response = await this.explorerService.getTransactionByHash(

@@ -41,6 +41,7 @@ export function createTranslateLoader(http: HttpClient) {
 import { FormsModule } from '@angular/forms';
 import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-token.component';
 import { LinkClipboardComponent } from '@app/shared/components/link-clipboard/link-clipboard.component';
+import { ImportWalletBoxComponent } from '@app/shared/components/import-wallet-box/import-wallet-box.component';
 
 @NgModule({
   entryComponents: [
@@ -81,7 +82,8 @@ import { LinkClipboardComponent } from '@app/shared/components/link-clipboard/li
     AddressClipboardComponent,
     AddTokenComponent,
     FromToAvatarComponent,
-    LinkClipboardComponent
+    LinkClipboardComponent,
+    ImportWalletBoxComponent
   ],
   providers: [DecimalPipe],
   exports:[
@@ -113,7 +115,8 @@ import { LinkClipboardComponent } from '@app/shared/components/link-clipboard/li
     AddressClipboardComponent,
     AddTokenComponent,
     FromToAvatarComponent,
-    LinkClipboardComponent
+    LinkClipboardComponent,
+    ImportWalletBoxComponent
   ]
 })
 

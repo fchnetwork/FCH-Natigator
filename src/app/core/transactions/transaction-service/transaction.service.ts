@@ -54,7 +54,7 @@ export class TransactionService {
         const tokensContract = this.generateContract(data.contractAddress);
         data = tokensContract.methods.transfer(to, data.amount).encodeABI();
       }
-      return new Promise((resolve, reject) => { 
+      return new Promise((resolve, reject) => {
         const sendTo = ethJsUtil.toChecksumAddress( to );
         const txData = this.web3.utils.asciiToHex( data );
         const estimateGas = this.web3.eth.estimateGas({to:sendTo, data:txData});
@@ -171,6 +171,7 @@ export class TransactionService {
                       window.location.href = urls.success;
                     } else {
                       this.notificationMessagesService.pendingTransactionNotification(hash);
+                      resolve(res);
                     }
                   });
                 }).catch( error => {
@@ -179,6 +180,7 @@ export class TransactionService {
                     window.location.href=urls.failed;
                   } else {
                     this.notificationMessagesService.failedTransactionNotification();
+                    reject(error);
                   }
                 });
           });
@@ -193,8 +195,8 @@ export class TransactionService {
       const rawTransaction = {
         "from": myAddress,
         "nonce": this.web3.utils.toHex( count ),
-        "gasPrice": 
-          this.web3.utils.toHex(gasPrice) || 
+        "gasPrice":
+          this.web3.utils.toHex(gasPrice) ||
           this.web3.utils.toHex( this.web3.utils.toWei( this.settingsService.settings.transactionSettings.gasPrice, 'gwei')),
         "gasLimit": this.web3.utils.toHex(this.settingsService.settings.transactionSettings.maxTransactionGas),
         "to": contractAddress,

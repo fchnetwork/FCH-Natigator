@@ -169,6 +169,9 @@
     "ETHWALLET": {
       "TAB_TITLE": "Ethereum Wallet"
     },
+    "IMPORT_WALLET": {
+      "TAB_TITLE": "Import wallet"
+    },
     "COMMON": {
       "NOTIFICATIONS": {
         "SAVE_SETTINGS": {
@@ -192,6 +195,17 @@
           "TITLE": "Form error!",
           "BODY": "field is incorrect."
         }
+    }
+  },
+
+  "SHARED": {
+    "IMPORT_WALLET": {
+      "INPUT_BUTTON": "Import",
+      "INPUT_PLACEHOLDER": "Type in the private key of your wallet 0x...",
+      "IMPORTING_NOTIFICATION_TITLE": "Importing wallet",
+      "IMPORTING_NOTIFICATION_ADDRESS": "Address",
+      "IMPORTING_NOTIFICATION_AMOUNT": "Amount",
+      "IMPORTING_NOTIFICATION_SUCCESS": "Wallet successfully imported"
     }
   },
 

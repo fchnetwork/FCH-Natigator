@@ -1,3 +1,4 @@
+import { AddressKeyValidationService } from './validation/address-key-validation.service';
 import { AuthenticationGuard } from './authentication/auth-guards/authentication.guard';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -47,6 +48,7 @@ import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/s
 import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
+import { ImportWalletService } from '@app/core/transactions/import-wallet-service/import-wallet.service';
 
 @NgModule({
   imports: [
@@ -90,7 +92,9 @@ import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-
     CrossChainSwapListService,
     CreateSwapService,
     LoadSwapService,
-    AuthenticationGuard
+    AuthenticationGuard,
+    AddressKeyValidationService,
+    ImportWalletService
   ]
 })
 export class CoreModule {
