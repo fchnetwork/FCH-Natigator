@@ -78,8 +78,20 @@
     <div *ngIf="!swapClosed && !swapCancelled" class="message">
       {{'EXTERNAL-SWAP.CONFIRM.FIELD_MESSAGE'|translate}}
     </div>
-    <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="canCloseSwap" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_COMPLETE_SWAP'|translate}}</aer-button>
-    <aer-button (buttonFn)="cancel()" class="blue large full-width" *ngIf="swapExpired && !swapCancelled" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_CANCEL_SWAP'|translate}}</aer-button>
-    <aer-button (buttonFn)="close()" class="blue large full-width btn--close" [disabled]="processing" [ngClass]="{ 'blue': !processing, 'grey': processing }">{{'EXTERNAL-SWAP.CONFIRM.BTN_CLOSE'|translate}}</aer-button>
+    <div aerRow *ngIf="canCloseSwap">
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="complete()" class="blue large full-width" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_COMPLETE_SWAP'|translate}}</aer-button>
+      </div>
+    </div>
+    <div aerRow *ngIf="swapExpired && !swapCancelled">
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="cancel()" class="blue large full-width" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_CANCEL_SWAP'|translate}}</aer-button>
+      </div>
+    </div>
+    <div aerRow>
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="close()" class="blue large full-width" [disabled]="processing" [ngClass]="{ 'blue': !processing, 'grey': processing }">{{'EXTERNAL-SWAP.CONFIRM.BTN_CLOSE'|translate}}</aer-button>
+      </div>
+    </div>
   </div>
 </aer-modal-container>

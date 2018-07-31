@@ -12,10 +12,6 @@
     margin: 0 0 14px;
   }
 
-  .btn--close {
-    margin-bottom: 0;
-  }
-
   &__explorer-link {
     display: block;
     margin-top: 10px;
@@ -64,16 +60,6 @@
 
   .error {
     color: #c94545;
-  }
-
-  aer-button {
-    margin-bottom: 20px;
-    display: block;
-  }
-
-  &--cancelled {
-    color: #2a669a;
-    margin-bottom: 0;
   }
 
   &__transaction-explorer {
