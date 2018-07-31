@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { StakingComponent } from "@app/wallet/staking/staking.component";
 
 const STAKING_ROUTES: Routes = [{
-  path: 'staking',
+  path: '',
   children: [
     {
       path: '',
