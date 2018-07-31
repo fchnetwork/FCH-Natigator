@@ -1,3 +1,12 @@
-<aer-input [(ngModel)]="privateKey" class="with-button blue" [ngClass]="{'blue' : isValid()}" [placeholder]="'SHARED.IMPORT_WALLET.INPUT_PLACEHOLDER' | translate"
-  [buttonLabel]="'SHARED.IMPORT_WALLET.INPUT_BUTTON' | translate" icon="key" (buttonFn)="importWallet()">
-</aer-input>
+<div aerRow>
+  <div aerColumn size="md-12 lg-12">
+    <aer-input [(ngModel)]="privateKey" class="with-button blue" [ngClass]="{'blue' : isValid()}" [placeholder]="'SHARED.IMPORT_WALLET.INPUT_PLACEHOLDER' | translate"
+      [buttonLabel]="'SHARED.IMPORT_WALLET.INPUT_BUTTON' | translate" icon="key" (buttonFn)="importWallet()">
+    </aer-input>
+  </div>
+</div>
+<div aerRow>
+  <div aerColumn size="md-3 lg-3 xs-12">
+    <aer-button class="full-width blue" (buttonFn)="scanQrCode()">{{'COMMON.BUTTONS.SCAN_QR_CODE' | translate}}</aer-button>
+  </div>
+</div>

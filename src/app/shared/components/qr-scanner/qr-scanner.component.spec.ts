@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { QrCodeScannerComponent } from './qr-code-scanner.component';
+import { QrScannerComponent } from './qr-scanner.component';
 
-describe('QrCodeScannerComponent', () => {
-  let component: QrCodeScannerComponent;
-  let fixture: ComponentFixture<QrCodeScannerComponent>;
+describe('QrScannerComponent', () => {
+  let component: QrScannerComponent;
+  let fixture: ComponentFixture<QrScannerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QrCodeScannerComponent ]
+      declarations: [ QrScannerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QrCodeScannerComponent);
+    fixture = TestBed.createComponent(QrScannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

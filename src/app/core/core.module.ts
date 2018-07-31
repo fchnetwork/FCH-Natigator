@@ -1,3 +1,4 @@
+import { QrScannerService } from './general/qr-scanner/qr-scanner.service';
 import { AddressKeyValidationService } from './validation/address-key-validation.service';
 import { AuthenticationGuard } from './authentication/auth-guards/authentication.guard';
 import { NgModule, ModuleWithProviders } from '@angular/core';
@@ -94,7 +95,8 @@ import { ImportWalletService } from '@app/core/transactions/import-wallet-servic
     LoadSwapService,
     AuthenticationGuard,
     AddressKeyValidationService,
-    ImportWalletService
+    ImportWalletService,
+    QrScannerService
   ]
 })
 export class CoreModule {

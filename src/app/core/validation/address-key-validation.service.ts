@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
 
+const ethWallet = require("ethereumjs-wallet");
+
 @Injectable()
 export class AddressKeyValidationService {
   constructor() {}
@@ -9,6 +11,14 @@ export class AddressKeyValidationService {
   }
 
   isPrivateKey(privateKey: string): boolean {
-    return privateKey && new RegExp("^0x[a-fA-F0-9]{64}$").test(privateKey);
+    try {
+      const privateKeyBuffer = Buffer.from(privateKey, "hex");
+      const wallet = ethWallet.fromPrivateKey(privateKeyBuffer);
+
+      return true;
+    }
+    catch {
+      return false;
+    }
   }
 }

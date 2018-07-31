@@ -1,4 +1,3 @@
-import { QrScanComponent } from './qr-scan/qr-scan.component';
 import { RouterModule } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { RegisterComponent } from "./register/register.component";
@@ -42,11 +41,7 @@ const ACCOUNT_ROUTES = [
             {
                 path: 'restore',
                 component: RestoreAccountComponent
-            },
-            {
-              path: 'restore/qr-code',
-              component: QrScanComponent
-            },
+            }
         ]
     }
 ];
