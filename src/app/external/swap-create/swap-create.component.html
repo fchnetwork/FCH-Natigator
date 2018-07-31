@@ -74,7 +74,18 @@
     <div class="message">
       {{'EXTERNAL-SWAP.CREATE.FIELD_MESSAGE'|translate}}
     </div>
-    <aer-button (buttonFn)="next()" class="blue large full-width" [disabled]="!canMoveNext()" (ngClass)="{ 'blue': canMoveNext(), 'grey': !canMoveNext() }">{{'EXTERNAL-SWAP.CREATE.BTN_NEXT'|translate}}</aer-button>
-    <aer-button (buttonFn)="cancel()" class="blue large full-width" [disabled]="processing" (ngClass)="{ 'blue': !processing, 'grey': processing }">{{(swapCreated ? 'EXTERNAL-SWAP.CREATE.BTN_CLOSE' : 'EXTERNAL-SWAP.CREATE.BTN_BACK') |translate}}</aer-button>
+    <div class="message">
+      {{'EXTERNAL-SWAP.CREATE.FIELD_AER_AMOUNT_MESSAGE'|translate}}
+    </div>
+    <div aerRow>
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="next()" class="blue large full-width" [disabled]="!canMoveNext()" [ngClass]="{ 'blue': canMoveNext(), 'grey': !canMoveNext() }">{{'EXTERNAL-SWAP.CREATE.BTN_NEXT'|translate}}</aer-button>
+      </div>
+    </div>
+    <div aerRow>
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="cancel()" class="blue large full-width" [disabled]="processing" [ngClass]="{ 'blue': !processing, 'grey': processing }">{{(swapCreated ? 'EXTERNAL-SWAP.CREATE.BTN_CLOSE' : 'EXTERNAL-SWAP.CREATE.BTN_BACK') |translate}}</aer-button>
+      </div>
+    </div>
   </div>
 </aer-modal-container>

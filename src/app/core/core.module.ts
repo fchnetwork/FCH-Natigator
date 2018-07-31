@@ -50,6 +50,7 @@ import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-c
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
 import { ImportWalletService } from '@app/core/transactions/import-wallet-service/import-wallet.service';
+import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
 
 @NgModule({
   imports: [
@@ -96,7 +97,8 @@ import { ImportWalletService } from '@app/core/transactions/import-wallet-servic
     AuthenticationGuard,
     AddressKeyValidationService,
     ImportWalletService,
-    QrScannerService
+    QrScannerService,
+    GlobalEventService
   ]
 })
 export class CoreModule {

@@ -314,6 +314,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     const localSwap: SwapReference = {
       hash,
       secret: this.secret,
+      opened: Date.now(),
       account: this.authService.getAddress(),
       walletType: this.params.wallet,
       walletTokenAddress: this.params.token,

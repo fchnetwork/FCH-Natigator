@@ -63,6 +63,8 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
 
   swapTransactionExplorerUrl: string;
 
+  openedDate: Date;
+
   counterEtherSwapLoadTimerInterval: Timer;
   counterErc20SwapLoadTimerInterval: Timer;
   swapExpireTimerInterval: Timer;
@@ -112,11 +114,10 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
 
     this.loadLocalSwap();
     await this.loadErc20Swap();
-    if (this.swapFinishedOrExpired()) {
-      return;
+    if (!this.swapFinishedOrExpired()) {
+      this.setupSwapExpireTimer();
     }
 
-    this.setupSwapExpireTimer();
     if(this.walletTokenAddress === this.ethAddress) {
       this.setupCounterEtherSwapLoadTimer();
     } else {
@@ -187,6 +188,9 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     this.walletTokenAddress = this.localSwap.walletTokenAddress;
     this.walletTokenSymbol = this.localSwap.walletTokenSymbol;
     this.secret = this.localSwap.secret;
+    if(this.localSwap.opened) {
+      this.openedDate = new Date(Number(this.localSwap.opened));
+    }
   }
 
   private setupCounterEtherSwapLoadTimer(): void {
@@ -196,7 +200,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
         this.logger.logMessage(`Withdrawal swap ${this.hash} is already being loaded...`);
         return;
       }
-      if (this.swapClosed || this.swapCancelled || this.swapExpired) {
+      if (this.swapCancelled || this.swapExpired) {
         this.stopTimers();
         return;
       }
@@ -225,7 +229,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
         this.logger.logMessage(`Withdrawal swap ${this.hash} is already being loaded...`);
         return;
       }
-      if (this.swapClosed || this.swapCancelled || this.swapExpired) {
+      if (this.swapCancelled || this.swapExpired) {
         this.stopTimers();
         return;
       }
@@ -289,6 +293,16 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.receiveAmount = amount;
+    if (this.receiveAmount !== this.localSwap.tokenAmount) {
+      this.showError('Counter swap amount / rate is not the same as requested');
+    }
+
+    if(this.swapCancelled || this.swapClosed) {
+      this.canCloseSwap = false;
+      return;
+    }
+
     if (state === SwapState.Closed) {
       this.logger.logMessage('Counter swap already closed');
       this.canCloseSwap = false;
@@ -303,11 +317,6 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
       this.canCloseSwap = false;
       this.showError('Counter swap expired');
       return;
-    }
-
-    this.receiveAmount = amount;
-    if (this.receiveAmount !== this.localSwap.tokenAmount) {
-      this.showError('Counter swap amount / rate is not the same as requested');
     }
 
     this.canCloseSwap = true;

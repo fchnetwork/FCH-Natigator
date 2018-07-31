@@ -311,6 +311,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     const localSwap: SwapReference = {
       hash,
       secret: this.secret,
+      opened: Date.now(),
       account: this.params.account,
       walletType: this.params.wallet,
       walletTokenAddress: this.params.token,

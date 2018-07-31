@@ -17,7 +17,7 @@
         {{'EXTERNAL-SWAP.CONFIRM.FIELD_SWAP_CANCELLED_SUCCESSFULLY'|translate}}
       </div>
     </div>
-    <div class="table-simple table-simple_top-marign" *ngIf="!swapClosed && !swapCancelled">
+    <div class="table-simple table-simple_top-marign" *ngIf="!swapClosed && !swapCancelled && !swapExpired">
       <div>
         <div>
           {{'EXTERNAL-SWAP.CONFIRM.FIELD_YOUR_SWAP_WILL_EXPIRE_IN'|translate}}
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="table-simple" *ngIf="canCloseSwap">
+    <div class="table-simple" *ngIf="canCloseSwap || swapClosed">
       <div>
         <div>
           {{'EXTERNAL-SWAP.CONFIRM.FIELD_YOUR_SWAP_WAS_ACCEPTED_BY'|translate}}
@@ -54,11 +54,20 @@
           {{receiveAmount | number:'1.2-18'}} {{receiveCurrency}}
         </div>
       </div>
+      <div>
+        <div>
+          {{'EXTERNAL-SWAP.CONFIRM.FIELD_SWAP_OPENED'|translate}}
+        </div>
+        <div>
+          <span *ngIf="openedDate">{{openedDate | date: 'short'}}</span>
+        </div>
+      </div>
     </div>
-    <div aerRow *ngIf="canCloseSwap">
+    <div aerRow *ngIf="canCloseSwap || swapClosed">
       <div aerColumn size="sm-12" class="cell">
         <label>{{'EXTERNAL-SWAP.CONFIRM.FIELD_ENTER_SECRET_KEY'|translate}}</label>
-        <aer-input [(ngModel)]="secret" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_TYPE_SECRET_KEY'|translate}}" [attr.readonly]="processing"></aer-input>
+        <aer-input *ngIf="processing || swapClosed" [(ngModel)]="secret" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_TYPE_SECRET_KEY'|translate}}" disabled="disabled"></aer-input>
+        <aer-input *ngIf="!processing && !swapClosed" [(ngModel)]="secret" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_TYPE_SECRET_KEY'|translate}}"></aer-input>
       </div>
     </div>
     <div *ngIf="swapTransactionExplorerUrl" class="swap-confirm__transaction-explorer">
@@ -69,8 +78,20 @@
     <div *ngIf="!swapClosed && !swapCancelled" class="message">
       {{'EXTERNAL-SWAP.CONFIRM.FIELD_MESSAGE'|translate}}
     </div>
-    <aer-button (buttonFn)="complete()" class="blue large full-width" *ngIf="canCloseSwap" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_COMPLETE_SWAP'|translate}}</aer-button>
-    <aer-button (buttonFn)="cancel()" class="blue large full-width" *ngIf="swapExpired && !swapCancelled" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_CANCEL_SWAP'|translate}}</aer-button>
-    <aer-button (buttonFn)="close()" class="blue large full-width btn--close" [disabled]="processing" (ngClass)="{ 'blue': !processing, 'grey': processing }">{{'EXTERNAL-SWAP.CONFIRM.BTN_CLOSE'|translate}}</aer-button>
+    <div aerRow *ngIf="canCloseSwap">
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="complete()" class="blue large full-width" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_COMPLETE_SWAP'|translate}}</aer-button>
+      </div>
+    </div>
+    <div aerRow *ngIf="swapExpired && !swapCancelled">
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="cancel()" class="blue large full-width" [disabled]="processing">{{'EXTERNAL-SWAP.CONFIRM.BTN_CANCEL_SWAP'|translate}}</aer-button>
+      </div>
+    </div>
+    <div aerRow>
+      <div aerColumn size="sm-12" class="cell">
+        <aer-button (buttonFn)="close()" class="blue large full-width" [disabled]="processing" [ngClass]="{ 'blue': !processing, 'grey': processing }">{{'EXTERNAL-SWAP.CONFIRM.BTN_CLOSE'|translate}}</aer-button>
+      </div>
+    </div>
   </div>
 </aer-modal-container>
