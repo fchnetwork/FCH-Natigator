@@ -1,15 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+
+import { EthereumWalletAccount } from "@app/wallet/staking/models/ethereum-wallet-account.model";
 
 @Component({
   selector: 'app-staking',
   templateUrl: './staking.component.html',
   styleUrls: ['./staking.component.scss']
 })
-export class StakingComponent implements OnInit {
+export class StakingComponent {
+  private account: EthereumWalletAccount;
+  canMoveToStaking = false;
 
   constructor() { }
 
-  ngOnInit() {
+  updateAccount(account: EthereumWalletAccount) {
+    this.account = account;
+    this.canMoveToStaking =
+      !!this.account.address && !!this.account.walletType && this.account.ethereumBalance > 0 && this.account.aerumBalance > 0;
   }
 
+  moveToStaking() {
+    console.log('move to staking');
+  }
 }

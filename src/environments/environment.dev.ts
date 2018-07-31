@@ -46,6 +46,11 @@ export const environment = {
         FixedPriceRegistrar: "0xa942a9d2793cc12b35b7801cc0b60b72095f8553",
         PublicResolver: "0x125a0dd27bb49b38b1f023263ccfbf1757e603b7"
       }
+    },
+    staking: {
+      address: {
+        xmr: "0x67c1cfc23e3ff014829939b463cdb800eb076b26"
+      }
     }
   },
   ethereum: {

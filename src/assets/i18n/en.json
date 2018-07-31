@@ -639,6 +639,20 @@
     "NOTIFICATION_TITLE_TOKEN_NOT_CONFIGURED": "Warning!"
   },
   "STAKING": {
-    "MAIN_MENU_ITEM_NAME": "Staking"
+    "TITLE": "Staking",
+    "MAIN_MENU_ITEM_NAME": "Staking",
+    "PANEL_TITLE_ETHEREUM_WALLET": "ETHEREUM WALLET",
+    "PANEL_TITLE_STAKING": "STAKING",
+    "BTN_NEXT": "Next",
+    "ETHEREUM_WALLET_ACCOUNT": {
+      "FIELD_SELECT_WALLET": "Select Wallet",
+      "FIELD_STORED_KEYS": "Stored Keys",
+      "PLACEHOLDER_SELECT_ACCOUNT": "Select your account",
+      "OPTION_ADD_ACCOUNT": "Add account",
+      "FIELD_FROM": "From"
+    },
+    "ETHEREUM_WALLET_BALANCE": {
+      "FIELD_BALANCE": "Balance"
+    }
   }
 }

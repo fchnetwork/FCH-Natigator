@@ -1,3 +1,17 @@
-<p>
-  ethereum-wallet works!
-</p>
+<div aerRow>
+  <div aerColumn size="sm-6">
+    <app-ethereum-wallet-account
+      (addressChanged)="updateAddress($event)"
+      (walletTypeChanged)="updateWalletType($event)"
+      (selectedWalletType)="walletType">
+    </app-ethereum-wallet-account>
+  </div>
+  <div aerColumn size="sm-6">
+    <app-ethereum-wallet-balance
+      [address]="address"
+      [walletType]="walletType"
+      (ethereumBalanceChanged)="updateEthereumBalance($event)"
+      (aerumBalanceChanged)="updateAerumBalance($event)">
+    </app-ethereum-wallet-balance>
+  </div>
+</div>

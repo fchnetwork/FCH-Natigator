@@ -1,0 +1,12 @@
+<div aerRow>
+  <div aerColumn size="sm-12" class="cell">
+    <aer-input (buttonFn)="import()"
+                [(ngModel)]="privateKey"
+                [attr.disabled]="!privateKey"
+                class="with-button"
+                [ngClass]="{ 'blue': privateKey, 'grey': !privateKey }"
+                placeholder="Private key"
+                buttonLabel="Import">
+    </aer-input>
+  </div>
+</div>
