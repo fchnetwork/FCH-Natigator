@@ -108,6 +108,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     this.storageService.setCookie("transactions", null, false, 7);
     this.storageService.setCookie("ethereum_accounts", null, false, 7);
     this.storageService.setCookie("cross_chain_swaps", null, false, 7);
+    this.storageService.setCookie("stakings", null, false, 7);
     this.settingsService.setDefaultSettings();
   }
 
@@ -178,6 +179,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
       this.storageService.setSessionData("ethereum_tokens", []);
       this.storageService.setSessionData("ethereum_accounts", []);
       this.storageService.setSessionData("cross_chain_swaps", []);
+      this.storageService.setSessionData("stakings", []);
 
       this.authServ.saveKeyStore(
         this.private,
