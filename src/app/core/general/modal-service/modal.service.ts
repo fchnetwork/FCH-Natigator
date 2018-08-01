@@ -1,3 +1,4 @@
+import { QrScannerComponent } from './../../../shared/components/qr-scanner/qr-scanner.component';
 import { NameReleaseConfirmRequest } from "./../../../wallet/aens/models/nameReleaseConfirmRequest";
 import { TranslateService } from "@ngx-translate/core";
 import { Injectable, Type } from "@angular/core";
@@ -32,6 +33,7 @@ import {
   TransactionModalComponent
 } from "@app/wallet/explorer/components/transaction-modal/transaction-modal.component";
 import { LoadedSwap } from "@app/wallet/swap/models/models";
+import { QrScannerRequest, QrScannerResponse } from "@app/shared/components/qr-scanner/qr-scanner.component";
 
 @Injectable()
 export class ModalService {
@@ -193,5 +195,9 @@ export class ModalService {
 
   async openSwapLoadConfirm(data: LoadedSwap): Promise<DialogResponse<LoadSwapConfirmResponse>> {
     return this.open<LoadedSwap, LoadSwapConfirmResponse, LoadSwapConfirmComponent>('SWAP.LOAD.CONFIRM_TITLE', LoadSwapConfirmComponent, data);
+  }
+
+  async openQrScanner(data: QrScannerRequest): Promise<DialogResponse<QrScannerResponse>> {
+    return this.open<QrScannerRequest, QrScannerResponse, QrScannerComponent>('SHARED.QR_SCAN.TITLE', QrScannerComponent, data);
   }
 }

@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, OnDestroy } from "@angular/core";
 import { RouteDataService } from "@app/core/general/route-data-service/route-data.service";
 
 @Component({
-  selector: "app-qr-code-scanner",
-  templateUrl: "./qr-code-scanner.component.html",
-  styleUrls: ["./qr-code-scanner.component.scss"]
+  selector: "app-qr-scanner-video",
+  templateUrl: "./qr-scanner-video.component.html",
+  styleUrls: ["./qr-scanner-video.component.scss"]
 })
-export class QrCodeScannerComponent implements OnInit {
+export class QrScannerVideoComponent implements OnInit, OnDestroy {
+  @Input()errorMessage: string;
   @ViewChild("scanner") scanner: any;
   hasCameras = false;
   hasPermission = false;
-  isValidSeedQr = true;
   availableDevices: MediaDeviceInfo[];
   selectedDevice: MediaDeviceInfo;
 
@@ -18,20 +18,15 @@ export class QrCodeScannerComponent implements OnInit {
 
   constructor() {}
 
+  ngOnDestroy() {
+    this.scanner.resetScan();
+  }
+
   ngOnInit(): void {
     this.scanner.camerasFound.subscribe((devices: MediaDeviceInfo[]) => {
       this.hasCameras = true;
       this.availableDevices = devices;
       this.selectedDevice = devices[0];
-
-      // selects the devices's back camera by default
-      // for (const device of devices) {
-      //     if (/back|rear|environment/gi.test(device.label)) {
-      //         this.scanner.changeDevice(device);
-      //         this.selectedDevice = device;
-      //         break;
-      //     }
-      // }
     });
 
     this.scanner.camerasNotFound.subscribe((devices: MediaDeviceInfo[]) => {
@@ -46,11 +41,6 @@ export class QrCodeScannerComponent implements OnInit {
   }
 
   handleQrCodeResult(resultString: string) {
-    if(resultString && resultString.split(' ').length !== 12) {
-      this.isValidSeedQr = false;
-      return;
-    }
-
     this.codeScanned.emit(resultString);
   }
 }

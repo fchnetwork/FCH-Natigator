@@ -1,3 +1,4 @@
+import { SettingsImportWalletComponent } from './components/settings-import-wallet/settings-import-wallet.component';
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -41,7 +42,8 @@ export function createTranslateLoader(http: HttpClient) {
         SettingsTokenComponent,
         SettingsTransactionsComponent,
         SettingsSystemComponent,
-        SettingsEthereumWalletComponent
+        SettingsEthereumWalletComponent,
+        SettingsImportWalletComponent
     ]
 })
 

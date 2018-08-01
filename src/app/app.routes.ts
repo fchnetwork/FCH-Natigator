@@ -1,3 +1,4 @@
+import { QrScannerComponent } from './shared/components/qr-scanner/qr-scanner.component';
 import { ExternalModule } from './external/external.module';
 import { AccountModule } from './account/account.module';
 import { WalletModule } from './wallet/wallet.module';
@@ -27,9 +28,14 @@ const ROUTES = [
     loadChildren: () => ExternalModule
   },
   {
+    path: 'qr',
+    component: QrScannerComponent
+  },
+  {
     path: '**',
     redirectTo: '/not-found'
   }
+
 ];
 
 @NgModule({

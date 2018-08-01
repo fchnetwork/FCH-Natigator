@@ -19,6 +19,8 @@
         "Your seed is 12 words you saved when creating your account",
       "CREATE_PWD_PLACEHOLDER": "Create new password",
       "CONFIRM_PWD_PLACEHOLDER": "Confirm new password",
+      "QR_SCANNER_TEXT": "Please scan the QR code of your seed. The QR code can be found in the Settings > Backup page of wallet.",
+      "QR_SCANNER_ERROR": "QR code doesn't contain a valid seed phrase.",
       "NOTIFICATIONS": {
         "FILE_NOT_SUPPORTED": {
           "TITLE": "Warning!",
@@ -33,15 +35,6 @@
           "BODY": "Backup file is broken!"
         }
       }
-    },
-    "QR_SCAN": {
-      "TITLE": "Scan QR Code",
-      "SUBTITLE":
-        "Please scan the QR code of your seed. The QR code can be found in the Settings > Backup page of wallet.",
-      "NO_CAMERAS": "No cameras have been detected.",
-      "NO_PERMISSIONS":
-        "You need to grant AERUM a permission to access your camera.",
-      "QR_ERROR": "QR code doesn't contain a valid seed phrase."
     },
     "REGISTER": {
       "TITLE": "Create new account",
@@ -169,6 +162,9 @@
     "ETHWALLET": {
       "TAB_TITLE": "Ethereum Wallet"
     },
+    "IMPORT_WALLET": {
+      "TAB_TITLE": "Import wallet"
+    },
     "COMMON": {
       "NOTIFICATIONS": {
         "SAVE_SETTINGS": {
@@ -185,13 +181,33 @@
       "BACK": "Back",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
-      "CLOSE": "Close"
+      "CLOSE": "Close",
+      "SCAN_QR_CODE": "Scan QR code"
     },
     "NOTIFICATIONS": {
       "WRONG_VALUE": {
           "TITLE": "Form error!",
           "BODY": "field is incorrect."
         }
+    }
+  },
+
+  "SHARED": {
+    "IMPORT_WALLET": {
+      "INPUT_BUTTON": "Import",
+      "INPUT_PLACEHOLDER": "Type in the private key of your wallet 0x...",
+      "IMPORTING_NOTIFICATION_TITLE": "Importing wallet",
+      "IMPORTING_NOTIFICATION_ADDRESS": "Address",
+      "IMPORTING_NOTIFICATION_AMOUNT": "Amount",
+      "IMPORTING_NOTIFICATION_SUCCESS": "Wallet successfully imported",
+      "QR_CODE_TEXT": "Please scan the QR code of your private key",
+      "QR_CODE_ERROR": "QR code doesn't contain a valid private key"
+    },
+    "QR_SCAN": {
+      "TITLE": "QR Scanner",
+      "NO_CAMERAS": "No cameras have been detected.",
+      "NO_PERMISSIONS":
+        "You need to grant AERUM a permission to access your camera."
     }
   },
 
