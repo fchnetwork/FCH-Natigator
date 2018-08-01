@@ -669,6 +669,13 @@
     },
     "ETHEREUM_WALLET_BALANCE": {
       "FIELD_BALANCE": "Balance"
+    },
+    "CREATE": {
+      "FIELD_DELEGATE": "Delegate",
+      "FIELD_STAKE": "Stake",
+      "PLACEHOLDER_SELECT_ADDRESS": "Select delegate",
+      "BTN_STAKE": "Stake",
+      "PLACEHOLDER_AMOUNT": "Amount"
     }
   }
 }
