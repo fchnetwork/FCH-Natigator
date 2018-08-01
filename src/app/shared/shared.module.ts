@@ -1,3 +1,5 @@
+import { QrScannerVideoComponent } from './components/qr-scanner-video/qr-scanner-video.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { FromToAvatarComponent } from './components/from-to-avatar/from-to-avatar.component';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -41,6 +43,8 @@ export function createTranslateLoader(http: HttpClient) {
 import { FormsModule } from '@angular/forms';
 import { AddTokenComponent } from '@app/external/ethereum-wallet/add-token/add-token.component';
 import { LinkClipboardComponent } from '@app/shared/components/link-clipboard/link-clipboard.component';
+import { ImportWalletBoxComponent } from '@app/shared/components/import-wallet-box/import-wallet-box.component';
+import { QrScannerComponent } from '@app/shared/components/qr-scanner/qr-scanner.component';
 
 @NgModule({
   entryComponents: [
@@ -51,7 +55,8 @@ import { LinkClipboardComponent } from '@app/shared/components/link-clipboard/li
     AppUIModule,
     FormsModule,
     NgxEchartsModule,
-    TranslateModule
+    TranslateModule,
+    ZXingScannerModule
   ],
   declarations: [
     I18nComponent,
@@ -81,7 +86,10 @@ import { LinkClipboardComponent } from '@app/shared/components/link-clipboard/li
     AddressClipboardComponent,
     AddTokenComponent,
     FromToAvatarComponent,
-    LinkClipboardComponent
+    LinkClipboardComponent,
+    ImportWalletBoxComponent,
+    QrScannerComponent,
+    QrScannerVideoComponent
   ],
   providers: [DecimalPipe],
   exports:[
@@ -113,7 +121,10 @@ import { LinkClipboardComponent } from '@app/shared/components/link-clipboard/li
     AddressClipboardComponent,
     AddTokenComponent,
     FromToAvatarComponent,
-    LinkClipboardComponent
+    LinkClipboardComponent,
+    ImportWalletBoxComponent,
+    QrScannerComponent,
+    QrScannerVideoComponent
   ]
 })
 

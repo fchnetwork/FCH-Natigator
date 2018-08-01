@@ -1,3 +1,4 @@
+import { SettingsImportWalletComponent } from './components/settings-import-wallet/settings-import-wallet.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from "@angular/core";
 import { SettingsBackupComponent } from "@app/wallet/settings/components/settings-backup/settings-backup.component";
@@ -41,6 +42,10 @@ export const DIAGNOSTICS_ROUTES: Routes = [
       {
         path: 'ethereum-wallet',
         component: SettingsEthereumWalletComponent
+      },
+      {
+        path: 'import-wallet',
+        component: SettingsImportWalletComponent
       }
     ]
   }

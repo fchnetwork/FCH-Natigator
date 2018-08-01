@@ -1,3 +1,5 @@
+import { QrScannerService } from './general/qr-scanner/qr-scanner.service';
+import { AddressKeyValidationService } from './validation/address-key-validation.service';
 import { AuthenticationGuard } from './authentication/auth-guards/authentication.guard';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -47,6 +49,7 @@ import { SwapListService as OnChainSwapListService } from "@core/swap/on-chain/s
 import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-chain/swap-list-service/swap-list.service";
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
+import { ImportWalletService } from '@app/core/transactions/import-wallet-service/import-wallet.service';
 import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
 import { StakingAerumService } from "@core/staking/staking-aerum-service/staking-aerum.service";
 import { StakingGovernanceService } from "@core/staking/staking-governance-service/staking-governance.service";
@@ -96,7 +99,11 @@ import { StakingGovernanceService } from "@core/staking/staking-governance-servi
     AuthenticationGuard,
     GlobalEventService,
     StakingAerumService,
-    StakingGovernanceService
+    StakingGovernanceService,
+    AddressKeyValidationService,
+    ImportWalletService,
+    QrScannerService,
+    GlobalEventService
   ]
 })
 export class CoreModule {

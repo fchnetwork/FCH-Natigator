@@ -1,0 +1,9 @@
+<div class="qr-scanner">
+  <p class="aer-small paragraph">
+    {{dialogRef.data.text}}
+  </p>
+  <app-divider></app-divider>
+  <app-qr-scanner-video #qrScanner (codeScanned)="codeScanned($event)" [errorMessage]="errorMessage"></app-qr-scanner-video>
+  <app-divider [showLine]="false"></app-divider>
+  <aer-button class="large full-width blue" (buttonFn)="dialogRef.dismiss()">{{'COMMON.BUTTONS.CANCEL' | translate}}</aer-button>
+</div>

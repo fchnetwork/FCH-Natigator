@@ -16,7 +16,10 @@
         </div>
         <div class="settings__tab" [routerLink]="['/wallet/settings/ethereum-wallet']" routerLinkActive="settings__tab--selected">
             <span>{{'SETTINGS.ETHWALLET.TAB_TITLE'|translate}}</span><aer-icon>ehtereum</aer-icon>
-        </div>                
+        </div>
+        <div class="settings__tab" [routerLink]="['/wallet/settings/import-wallet']" routerLinkActive="settings__tab--selected">
+          <span>{{'SETTINGS.IMPORT_WALLET.TAB_TITLE'|translate}}</span><aer-icon>wallet-import</aer-icon>
+      </div>
         <div class="settings__tab-content">
             <section>
                 <router-outlet></router-outlet>
