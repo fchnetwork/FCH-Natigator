@@ -15,3 +15,9 @@
     </app-ethereum-wallet-balance>
   </div>
 </div>
+<app-divider fullWidth="true"></app-divider>
+<div aerRow>
+  <div aerColumn size="sm-12" class="cell">
+    <aer-button (buttonFn)="onMoveToStaking()" class="blue" [disabled]="!canMoveToStaking" (ngClass)="{ 'blue': canMoveToStaking, 'grey': !canMoveToStaking }">{{'STAKING.BTN_NEXT'|translate}}</aer-button>
+  </div>
+</div>

@@ -9,37 +9,42 @@ import { EthereumWalletAccount } from "@app/wallet/staking/models/ethereum-walle
   styleUrls: ['./ethereum-wallet.component.scss']
 })
 export class EthereumWalletComponent {
+  canMoveToStaking = false;
   address: string;
   walletType: EthWalletType;
   ethereumBalance: number;
   aerumBalance: number;
 
-  @Output() accountChanged: EventEmitter<EthereumWalletAccount> = new EventEmitter<EthereumWalletAccount>();
+  @Output() moveToStaking: EventEmitter<EthereumWalletAccount> = new EventEmitter<EthereumWalletAccount>();
 
   constructor() { }
 
   updateWalletType(walletType: EthWalletType) {
     this.walletType = walletType;
-    this.updateAccount();
+    this.updateCanMoveToStaking();
   }
 
   updateAddress(address: string) {
     this.address = address;
-    this.updateAccount();
+    this.updateCanMoveToStaking();
   }
 
   updateEthereumBalance(ethereumBalance: number) {
     this.ethereumBalance = ethereumBalance;
-    this.updateAccount();
+    this.updateCanMoveToStaking();
   }
 
   updateAerumBalance(aerumBalance: number) {
     this.aerumBalance = aerumBalance;
-    this.updateAccount();
+    this.updateCanMoveToStaking();
   }
 
-  updateAccount() {
-    this.accountChanged.emit({
+  updateCanMoveToStaking() {
+    this.canMoveToStaking = !!this.address && !!this.walletType && this.ethereumBalance > 0 && this.aerumBalance > 0;
+  }
+
+  onMoveToStaking() {
+    this.moveToStaking.emit({
       address: this.address,
       walletType: this.walletType,
       ethereumBalance: this.ethereumBalance,

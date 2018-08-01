@@ -8,18 +8,15 @@ import { EthereumWalletAccount } from "@app/wallet/staking/models/ethereum-walle
   styleUrls: ['./staking.component.scss']
 })
 export class StakingComponent {
-  private account: EthereumWalletAccount;
-  canMoveToStaking = false;
+  ethereumWalletExpanded = true;
+  stakingCreateExpanded = false;
+  account: EthereumWalletAccount;
 
   constructor() { }
 
-  updateAccount(account: EthereumWalletAccount) {
+  moveToStaking(account: EthereumWalletAccount) {
     this.account = account;
-    this.canMoveToStaking =
-      !!this.account.address && !!this.account.walletType && this.account.ethereumBalance > 0 && this.account.aerumBalance > 0;
-  }
-
-  moveToStaking() {
-    console.log('move to staking');
+    this.ethereumWalletExpanded = false;
+    this.stakingCreateExpanded = true;
   }
 }
