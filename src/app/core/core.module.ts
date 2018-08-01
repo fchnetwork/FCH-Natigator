@@ -48,6 +48,8 @@ import { SwapListService as CrossChainSwapListService } from "@core/swap/cross-c
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
 import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
+import { StakingAerumService } from "@core/staking/staking-aerum-service/staking-aerum.service";
+import { StakingGovernanceService } from "@core/staking/staking-governance-service/staking-governance.service";
 
 @NgModule({
   imports: [
@@ -92,7 +94,9 @@ import { GlobalEventService } from "@core/general/global-event-service/global-ev
     CreateSwapService,
     LoadSwapService,
     AuthenticationGuard,
-    GlobalEventService
+    GlobalEventService,
+    StakingAerumService,
+    StakingGovernanceService
   ]
 })
 export class CoreModule {

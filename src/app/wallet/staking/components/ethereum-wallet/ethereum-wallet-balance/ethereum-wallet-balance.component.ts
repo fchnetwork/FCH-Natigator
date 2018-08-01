@@ -51,8 +51,8 @@ export class EthereumWalletBalanceComponent {
       this.aerumBalanceChanged.emit(this.aerumBalance);
       return;
     }
-    const xmrAddress = environment.contracts.staking.address.xmr;
-    const getAerumBalance = this.ethereumTokenService.getBalance(this._walletType, xmrAddress, this._address);
+    const aerumAddress = environment.contracts.staking.address.Aerum;
+    const getAerumBalance = this.ethereumTokenService.getBalance(this._walletType, aerumAddress, this._address);
     const getEthereumBalance = this.getEthereumBalance();
 
     const [ethereumBalance, aerumBalance] = await Promise.all([getEthereumBalance, getAerumBalance]);

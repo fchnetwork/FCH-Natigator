@@ -48,7 +48,8 @@ export const environment = {
     },
     staking: {
       address: {
-        xmr: "0x67c1cfc23e3ff014829939b463cdb800eb076b26"
+        Aerum: "0x386b004c6dd89448cb287fa339893af9e4fdfa12",
+        Governance: "0x095084bf92d7ddc9934448b708fc5c3cd410e5be"
       }
     }
   },
