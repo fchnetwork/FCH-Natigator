@@ -1,0 +1,50 @@
+.staking-update-container {
+    white-space: normal;
+    .delegate-info {
+        &__span {
+            &_bold {
+                margin-right: 5px;
+                font-weight: bold;
+                color: #42526E;
+            }
+        }
+        app-address-clipboard {
+            display: inline-block;
+            .c-copy {
+                &__address {
+                    margin-top: 0;
+                }
+            }
+        }
+    }
+    .delegate-amount {
+        &__span{
+            &_black{
+                color: #42526E;
+            }
+            &_blue {
+                font-weight: bold;
+                color: #458CC9;
+            }
+        }
+    }
+    .staked-balance {
+        &__span {
+            &_green {
+                font-weight: bold;
+                color: #8CCC67;
+            }
+        }
+    }
+    .aer-input {
+        .with-button {
+            min-width: 95px;
+            text-align: center;
+        }
+    }
+    .aer-checkbox {
+        label::after {
+            background: #458CC9;
+        }
+    }
+}
