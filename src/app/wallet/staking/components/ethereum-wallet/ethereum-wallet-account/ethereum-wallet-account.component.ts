@@ -143,6 +143,6 @@ export class EthereumWalletAccountComponent implements OnInit {
   }
 
   private isAddressStaked(address: string) {
-    return !!this.stakingReferences.find(r => r.address === address);
+    return !!this.stakingReferences.find(r => r.address && address && address.toLowerCase() === address.toLowerCase());
   }
 }
