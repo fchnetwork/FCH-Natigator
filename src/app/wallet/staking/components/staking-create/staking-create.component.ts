@@ -66,7 +66,7 @@ export class StakingCreateComponent implements OnInit {
 
   private async getAerumAmount() {
     const aerumAddress = environment.contracts.staking.address.Aerum;
-    const tokenInfo = await this.ethereumTokenService.getNetworkTokenInfo(this.ethereumAccount.walletType, aerumAddress);
-    return toBigNumberString(this.amount * Math.pow(10, Number(tokenInfo.decimals)));
+    const aerumInfo = await this.ethereumTokenService.getNetworkTokenInfo(this.ethereumAccount.walletType, aerumAddress);
+    return toBigNumberString(this.amount * Math.pow(10, Number(aerumInfo.decimals)));
   }
 }

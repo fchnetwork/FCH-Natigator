@@ -40,7 +40,7 @@ export class EthereumWalletBalanceComponent {
   constructor(private ethereumTokenService: EthereumTokenService,
     private ethereumAuthenticationService: EthereumAuthenticationService) {
       this.web3 = this.ethereumAuthenticationService.getWeb3();
-      this.injectedWeb3 = this.ethereumAuthenticationService.getInjectedWeb3(); 
+      this.injectedWeb3 = this.ethereumAuthenticationService.getInjectedWeb3();
   }
 
   private async updateBalance(): Promise<void> {
@@ -52,7 +52,7 @@ export class EthereumWalletBalanceComponent {
       return;
     }
     const aerumAddress = environment.contracts.staking.address.Aerum;
-    const getAerumBalance = this.ethereumTokenService.getBalance(this._walletType, aerumAddress, this._address);
+    const getAerumBalance = this.ethereumTokenService.getBalance(EthWalletType.Imported, aerumAddress, this._address);
     const getEthereumBalance = this.getEthereumBalance();
 
     const [ethereumBalance, aerumBalance] = await Promise.all([getEthereumBalance, getAerumBalance]);

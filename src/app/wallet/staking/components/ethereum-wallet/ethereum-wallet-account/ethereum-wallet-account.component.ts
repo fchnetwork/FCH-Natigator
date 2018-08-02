@@ -8,6 +8,8 @@ import { InternalNotificationService } from "@core/general/internal-notification
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { EthWalletType } from "@app/external/models/eth-wallet-type.enum";
+import { StakingReference } from "@app/wallet/staking/models/staking-reference.model";
+import { StakingLocalStorageService } from '@app/wallet/staking/staking-local-storage/staking-local-storage.service';
 
 @Component({
   selector: 'app-ethereum-wallet-account',
@@ -31,14 +33,22 @@ export class EthereumWalletAccountComponent implements OnInit {
 
   importInProgress = false;
 
+  private stakingReferences: StakingReference[] = [];
+
   constructor(private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private storageService: StorageService,
+    private stakingLocalStorageService: StakingLocalStorageService,
     private ethereumAuthenticationService: EthereumAuthenticationService) { }
 
   async ngOnInit() {
     this.onWalletSelect({ value: EthWalletType.Imported });
+    this.initStakingReferences();
     await this.initPredefinedAccount();
+  }
+
+  private initStakingReferences() {
+    this.stakingReferences =  this.stakingLocalStorageService.get();
   }
 
   private async initPredefinedAccount() {
@@ -68,6 +78,9 @@ export class EthereumWalletAccountComponent implements OnInit {
   }
 
   private storeAndSelectNewImportedAccount(importedAccount: EthereumAccount): void {
+    if(this.isAddressStaked(importedAccount.address)) {
+      return;
+    }
     this.storedAccounts.push(importedAccount);
     this.addresses.push(importedAccount.address);
     this.ethereumAuthenticationService.saveEthereumAccounts(this.storedAccounts);
@@ -100,7 +113,7 @@ export class EthereumWalletAccountComponent implements OnInit {
   }
 
   private onImportedWalledSelected() {
-    this.addresses = this.storedAccounts.map(acc => acc.address);
+    this.setAddresses(this.storedAccounts.map(acc => acc.address));
     if (!this.addresses || !this.addresses.length) {
       this.setAddress(null);
     } else {
@@ -111,11 +124,11 @@ export class EthereumWalletAccountComponent implements OnInit {
   private async onInjectedWalletSelected() {
     const accounts = await this.injectedWeb3.eth.getAccounts();
     if (!accounts || !accounts.length) {
-      this.addresses = [];
+      this.setAddresses([]);
       this.setAddress(null);
       this.notificationService.showMessage('Please login in Mist / Metamask', 'Cannot get accounts from wallet');
     } else {
-      this.addresses = accounts;
+      this.setAddresses(accounts);
       this.setAddress(this.addresses[0]);
     }
   }
@@ -123,5 +136,13 @@ export class EthereumWalletAccountComponent implements OnInit {
   private setAddress(address: string){
     this.address = address;
     this.addressChanged.emit(this.address);
+  }
+
+  private setAddresses(addresses: string[]) {
+    this.addresses = addresses.filter(a => !this.isAddressStaked(a));
+  }
+
+  private isAddressStaked(address: string) {
+    return !!this.stakingReferences.find(r => r.address === address);
   }
 }

@@ -5,14 +5,14 @@
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="delegate-info">
-        <span class="delegate-info__span_bold">ASR Cryptotechnology</span>
-        <app-address-clipboard [address]="delegeteAddress" [short]="true" [centered]="true"></app-address-clipboard>
+        <span class="delegate-info__span_bold">{{ delegateName }}</span>
+        <app-address-clipboard [address]="delegateAddress"></app-address-clipboard>
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="delegate-amount">
         <span class="delegate-amount__span_black">{{'STAKING.UPDATE.FIELD_AMOUNT_AVAILABLE'|translate}}</span>
-        <span class="delegate-amount__span_blue">17 XRM</span>
+        <span class="delegate-amount__span_blue">{{ accountBalance | number:'1.2-5' }} XRM</span>
       </div>
     </div>
     <div aerRow>
@@ -30,7 +30,7 @@
     <div aerRow>
       <div aerColumn size="sm-12">
         <aer-select [(ngModel)]="accountAddress" icon="key"
-          (ngModelChange)="onAddressChange($event)" placeholder="{{'STAKING.UPDATE.PLACEHOLDER_SELECT_ACCOUNT'|translate}}">
+          (ngModelChange)="onAccountAddressChange($event)" placeholder="{{'STAKING.UPDATE.PLACEHOLDER_SELECT_ACCOUNT'|translate}}">
           <aer-select-option *ngFor="let item of accountAddresses;" [value]="item">
             <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
           </aer-select-option>
@@ -40,16 +40,16 @@
     <div aerRow>
       <div aerColumn size="sm-12" class="staked-balance">
         <span>{{'STAKING.UPDATE.FIELD_STAKED_BALANCE'|translate}}</span>
-        <span class="staked-balance__span_green">3 XRM</span>
+        <span class="staked-balance__span_green">{{ stakedBalance | number:'1.2-5' }} XRM</span>
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
         <aer-input (buttonFn)="increaseStaking()"
                     [(ngModel)]="increaseAmount"
-                    [attr.disabled]="!increaseAmount"
+                    [attr.disabled]="!canIncreaseStaking()"
                     class="with-button"
-                    [ngClass]="{ 'green': increaseAmount, 'grey': !increaseAmount }"
+                    [ngClass]="{ 'green': canIncreaseStaking(), 'grey': !canIncreaseStaking() }"
                     placeholder="{{'STAKING.UPDATE.FIELD_ENTER_AMOUNT'|translate}}"
                     buttonLabel="{{'STAKING.UPDATE.BTN_ADD'|translate}}">
         </aer-input>
@@ -64,9 +64,10 @@
       <div aerColumn size="sm-12" class="cell">
         <aer-input (buttonFn)="decreaseStaking()"
                     [(ngModel)]="decreaseAmount"
-                    [attr.disabled]="!decreaseAmount"
+                    (ngModelChange)="onDecreaseAmountChange($event)"
+                    [attr.disabled]="canDecreaseStaking()"
                     class="with-button"
-                    [ngClass]="{ 'blue': decreaseAmount, 'grey': !decreaseAmount }"
+                    [ngClass]="{ 'blue': canDecreaseStaking(), 'grey': !canDecreaseStaking() }"
                     placeholder="{{'STAKING.UPDATE.FIELD_ENTER_AMOUNT'|translate}}"
                     buttonLabel="{{'STAKING.UPDATE.BTN_REMOVE'|translate}}">
         </aer-input>
@@ -74,8 +75,8 @@
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <aer-checkbox
-          (ngModelChange)="onChange($event)">
+        <aer-checkbox [(ngModel)]="removeEverything"
+          (ngModelChange)="onRemoveEverythingChange($event)">
           {{'STAKING.UPDATE.CHECK_REMOVE_EVERYTHING'|translate}}
         </aer-checkbox>
       </div>
