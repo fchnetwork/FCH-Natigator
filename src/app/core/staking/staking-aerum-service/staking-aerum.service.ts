@@ -35,7 +35,7 @@ export class StakingAerumService extends BaseContractService {
    * @param {number} amount - token amount
    * @param {TransactionOptions} options - options for web3 contract method call
    */
-  async stake(delegate: string, amount: number, options: TransactionOptions) {
+  async stake(delegate: string, amount: string|number, options: TransactionOptions) {
     const contract = await this.createContract(options.wallet);
     const stake = contract.methods.stake(delegate, amount);
     const receipt = await this.send(stake, options);

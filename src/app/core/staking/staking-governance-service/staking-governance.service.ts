@@ -8,6 +8,7 @@ import { InternalNotificationService } from "@core/general/internal-notification
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
 import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contract-executor-service/ethereum-contract-executor.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
+import { EthWalletType } from "@app/external/models/eth-wallet-type.enum";
 
 @Injectable()
 export class StakingGovernanceService extends BaseContractService {
@@ -29,11 +30,13 @@ export class StakingGovernanceService extends BaseContractService {
 
   /**
    * Returns list of valid delegates which might be composers
+   * @param {EthWalletType} walletType - wallet type, imported or injected
    * @return {string[]} List of delegates addresses
    */
-  async getValidDelegates(): Promise<string[]> {
-    const contract = await this.createContract();
-    const getValidDelegates = contract.methods.getValidDelegates();
+  async getValidDelegates(walletType: EthWalletType = EthWalletType.Imported): Promise<string[]> {
+    const [web3, contract] = await Promise.all([this.createWeb3(walletType), this.createContract()]);
+    const blockNumber =  await web3.eth.getBlockNumber();
+    const getValidDelegates = contract.methods.getValidDelegates(blockNumber);
     const delegatesIds = await this.call(getValidDelegates);
     return delegatesIds;
   }
