@@ -40,8 +40,10 @@ export class EthereumWalletComponent {
   }
 
   updateCanMoveToStaking() {
-    this.canMoveToStaking = 
-      !!this.address && !!this.walletType && this.ethereumBalance > 0 && this.aerumBalance > 0;
+    this.canMoveToStaking = !!this.address 
+      && (this.walletType !== null && this.walletType !== undefined) 
+      && this.ethereumBalance > 0
+      && this.aerumBalance > 0;
   }
 
   onMoveToStaking() {
