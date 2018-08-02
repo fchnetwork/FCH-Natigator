@@ -1,24 +1,38 @@
-<div aerRow>
-  <div aerColumn size="sm-6">{{'STAKING.CREATE.FIELD_DELEGATE'|translate}}</div>
-  <div aerColumn size="sm-6">{{'STAKING.CREATE.FIELD_STAKE'|translate}}</div>
-</div>
-<div aerRow>
-  <div aerColumn size="sm-6">
-    <aer-select [(ngModel)]="address" icon="key" placeholder="{{'STAKING.CREATE.PLACEHOLDER_SELECT_ADDRESS'|translate}}">
-      <aer-select-option *ngFor="let item of addresses;" [value]="item">
-        <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
-      </aer-select-option>
-    </aer-select>
+<div class="staking-create-container">
+  <div aerRow>
+    <div aerColumn size="sm-6">{{'STAKING.CREATE.FIELD_DELEGATE'|translate}}</div>
+    <div aerColumn size="sm-6">{{'STAKING.CREATE.FIELD_STAKE'|translate}}</div>
   </div>
-  <div aerColumn size="sm-6">
-    <aer-input class="with-button blue" [(ngModel)]="amount" placeholder="{{'STAKING.CREATE.PLACEHOLDER_AMOUNT'|translate}}" buttonLabel="XMR"></aer-input>
+  <div aerRow>
+    <div aerColumn size="sm-6">
+      <aer-select [(ngModel)]="address" icon="key" placeholder="{{'STAKING.CREATE.PLACEHOLDER_SELECT_ADDRESS'|translate}}">
+        <aer-select-option *ngFor="let item of addresses;" [value]="item">
+          <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
+        </aer-select-option>
+      </aer-select>
+    </div>
+    <div aerColumn size="sm-6">
+      <div aerRow class="delegate-amount">
+        <div aerColumn size="sm-12">
+          <aer-input class="with-button blue" [(ngModel)]="amount" placeholder="{{'STAKING.CREATE.PLACEHOLDER_AMOUNT'|translate}}" buttonLabel="XMR"></aer-input>
+        </div>
+      </div>
+      <div aerRow *ngIf="stakingInProgress">
+        <div aerColumn size="sm-6">
+          <aer-button *ngIf="transactionExplorerUrl" (buttonFn)="explorerLink(transactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.CREATE.OPEN_CREATE_TX_IN_EXPLORER'|translate}}</aer-button> 
+        </div>
+        <div aerColumn size="sm-6" class="loader">
+          <aer-loader></aer-loader>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-<app-divider fullWidth="true"></app-divider>
-<div aerRow>
-  <div aerColumn size="sm-12" class="cell">
-    <aer-button (buttonFn)="stake()" class="blue" [disabled]="!canStake()" (ngClass)="{ 'blue': canStake(), 'grey': !canStake() }">
-      {{'STAKING.CREATE.BTN_STAKE'|translate}}
-    </aer-button>
+  <app-divider fullWidth="true"></app-divider>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
+      <aer-button (buttonFn)="stake()" class="blue" [disabled]="!canStake()" (ngClass)="{ 'blue': canStake(), 'grey': !canStake() }">
+        {{'STAKING.CREATE.BTN_STAKE'|translate}}
+      </aer-button>
+    </div>
   </div>
 </div>

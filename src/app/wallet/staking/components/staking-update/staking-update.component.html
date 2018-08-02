@@ -47,12 +47,19 @@
       <div aerColumn size="sm-12" class="cell">
         <aer-input (buttonFn)="increaseStaking()"
                     [(ngModel)]="increaseAmount"
-                    [attr.disabled]="!canIncreaseStaking()"
                     class="with-button"
                     [ngClass]="{ 'green': canIncreaseStaking(), 'grey': !canIncreaseStaking() }"
                     placeholder="{{'STAKING.UPDATE.FIELD_ENTER_AMOUNT'|translate}}"
                     buttonLabel="{{'STAKING.UPDATE.BTN_ADD'|translate}}">
         </aer-input>
+      </div>
+    </div>
+    <div aerRow *ngIf="increaseStakingInProgress">
+      <div aerColumn size="sm-6">
+        <aer-button *ngIf="increaseTransactionExplorerUrl" (buttonFn)="explorerLink(increaseTransactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.UPDATE.OPEN_INCREASE_TX_IN_EXPLORER'|translate}}</aer-button> 
+      </div>
+      <div aerColumn size="sm-6" class="loader">
+        <aer-loader></aer-loader>
       </div>
     </div>
     <div aerRow>
@@ -65,12 +72,19 @@
         <aer-input (buttonFn)="decreaseStaking()"
                     [(ngModel)]="decreaseAmount"
                     (ngModelChange)="onDecreaseAmountChange($event)"
-                    [attr.disabled]="canDecreaseStaking()"
                     class="with-button"
                     [ngClass]="{ 'blue': canDecreaseStaking(), 'grey': !canDecreaseStaking() }"
                     placeholder="{{'STAKING.UPDATE.FIELD_ENTER_AMOUNT'|translate}}"
                     buttonLabel="{{'STAKING.UPDATE.BTN_REMOVE'|translate}}">
         </aer-input>
+      </div>
+    </div>
+    <div aerRow *ngIf="decreaseStakingInProgress">
+      <div aerColumn size="sm-6">
+        <aer-button *ngIf="decreaseTransactionExplorerUrl" (buttonFn)="explorerLink(decreaseTransactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.UPDATE.OPEN_DECREASE_TX_IN_EXPLORER'|translate}}</aer-button> 
+      </div>
+      <div aerColumn size="sm-6" class="loader">
+        <aer-loader></aer-loader>
       </div>
     </div>
     <div aerRow>

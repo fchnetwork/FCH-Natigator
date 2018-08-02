@@ -1,0 +1,14 @@
+.staking-create-container {
+  .delegate-amount {
+    margin-top: -16px;
+  }
+  .loader {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    aer-loader {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}

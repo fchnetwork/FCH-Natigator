@@ -3,6 +3,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import Web3 from "web3";
 import { environment } from "@env/environment";
 
+import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { StakingAerumService } from "@core/staking/staking-aerum-service/staking-aerum.service";
@@ -14,6 +15,7 @@ import { StorageService } from "@core/general/storage-service/storage.service";
 import { EthWalletType } from '@app/external/models/eth-wallet-type.enum';
 import { Token } from "@core/transactions/token-service/token.model";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
+import { Chain } from '@app/core/swap/cross-chain/swap-template-service/chain.enum';
 
 @Component({
   selector: 'app-staking-update',
@@ -23,7 +25,11 @@ import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/
 })
 export class StakingUpdateComponent implements OnInit {
   increaseAmount: number;
+  increaseTransactionExplorerUrl: string;
   decreaseAmount: number;
+  decreaseTransactionExplorerUrl: string;
+  increaseStakingInProgress = false;
+  decreaseStakingInProgress = false;
   removeEverything: boolean;
 
   private web3: Web3;
@@ -84,42 +90,74 @@ export class StakingUpdateComponent implements OnInit {
   }
 
   async increaseStaking() {
+    if(!this.canIncreaseStaking()) {
+      return;
+    }
     try {
+      this.increaseStakingInProgress = true;
       const tokenAmount = this.increaseAmount * Math.pow(10, this.aerumTokenInfo.decimals);
-      const options = { account: this.accountAddress, wallet: this.stakingReference.walletType };
+      const options = {
+        account: this.accountAddress,
+        wallet: this.stakingReference.walletType,
+        hashCallback: (txHash) => this.increaseTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
+      };
+      this.notificationService.showMessage(`Increasing staking ${this.increaseAmount} XMR for ${this.delegateAddress} delegate`, 'In progress');
       await this.stakingAerumService.stake(this.delegateAddress, tokenAmount, options);
-      this.notificationService.showMessage(`Successfully increased staking ${this.increaseAmount} Xmr for ${this.delegateAddress} delegate`, 'Done');
+      this.notificationService.showMessage(`Successfully increased staking ${this.increaseAmount} XMR for ${this.delegateAddress} delegate`, 'Done');
       this.updateAccountInfo();
+      this.increaseTransactionExplorerUrl = null;
+      this.increaseStakingInProgress = false;
     } catch (err) {
       this.logger.logError('Staking increase failed', err);
       this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.increaseStakingInProgress = false;
     }
   }
 
   canIncreaseStaking() {
-    return this.accountEthBalance > 0
+    return !this.increaseStakingInProgress
+      && !this.decreaseStakingInProgress
+      && this.accountEthBalance > 0
       && this.increaseAmount > 0
       && this.accountBalance >= this.increaseAmount;
   }
 
   async decreaseStaking() {
+    if(!this.canDecreaseStaking()) {
+      return;
+    }
     try {
+      this.decreaseStakingInProgress = true;
       const tokenAmount = this.decreaseAmount * Math.pow(10, this.aerumTokenInfo.decimals);
-      const options = { account: this.accountAddress, wallet: this.stakingReference.walletType };
+      const options = { 
+        account: this.accountAddress,
+        wallet: this.stakingReference.walletType,
+        hashCallback: (txHash) => this.decreaseTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
+      };
+      this.notificationService.showMessage(`Unstaking ${this.decreaseAmount} XMR from ${this.delegateAddress} delegate`, 'In progress');
       await this.stakingAerumService.unstake(tokenAmount, options);
-      this.notificationService.showMessage(`Successfully unstaked ${this.decreaseAmount} Xmr from ${this.delegateAddress} delegate`, 'Done');
+      this.notificationService.showMessage(`Successfully unstaked ${this.decreaseAmount} XMR from ${this.delegateAddress} delegate`, 'Done');
       this.updateAccountInfo();
+      this.decreaseTransactionExplorerUrl = null;
+      this.decreaseStakingInProgress = false;
     } catch (err) {
       this.logger.logError('Unstaking failed', err);
       this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.decreaseStakingInProgress = false;
     }
   }
 
   canDecreaseStaking() {
-    return this.accountEthBalance > 0
+    return !this.increaseStakingInProgress
+      && !this.decreaseStakingInProgress
+      && this.accountEthBalance > 0
       && this.stakedBalance > 0
       && this.decreaseAmount > 0
       && this.stakedBalance >= this.decreaseAmount;
+  }
+
+  explorerLink(link) {
+    window.open(link, '_blank');
   }
 
   private async updateAccountInfo() {
