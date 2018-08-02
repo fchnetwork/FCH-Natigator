@@ -35,6 +35,20 @@ export class StakingComponent implements OnInit {
     this.updateStakingView();
   }
 
+  onEthereumWalletExpandChanged(expanded) {
+    this.ethereumWalletExpanded = expanded;
+    if(expanded) {
+      this.stakingExpanded = false;
+    }
+  }
+
+  onStakingExpandChanged(expanded) {
+    this.stakingExpanded = expanded;
+    if(expanded) {
+      this.ethereumWalletExpanded = false;
+    }
+  }
+
   private updateStakingView() {
     this.localStakes = this.stakingLocalStorageService.get();
     this.showStakingUpdate = this.localStakes.length > 0;
