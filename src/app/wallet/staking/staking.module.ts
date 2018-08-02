@@ -12,6 +12,7 @@ import { StakingUpdateComponent } from './components/staking-update/staking-upda
 import { EthereumWalletAccountComponent } from './components/ethereum-wallet/ethereum-wallet-account/ethereum-wallet-account.component';
 import { EthereumWalletBalanceComponent } from './components/ethereum-wallet/ethereum-wallet-balance/ethereum-wallet-balance.component';
 import { EthereumWalletAccountImportComponent } from './components/ethereum-wallet/ethereum-wallet-account/ethereum-wallet-account-import/ethereum-wallet-account-import.component';
+import { StakingLocalStorageService } from '@app/wallet/staking/staking-local-storage/staking-local-storage.service';
 
 @NgModule({
   imports: [
@@ -31,6 +32,9 @@ import { EthereumWalletAccountImportComponent } from './components/ethereum-wall
     EthereumWalletAccountComponent,
     EthereumWalletBalanceComponent,
     EthereumWalletAccountImportComponent
+  ],
+  providers: [
+    StakingLocalStorageService
   ]
 })
 export class StakingModule { }

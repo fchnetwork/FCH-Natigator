@@ -1,11 +1,14 @@
 <h3>{{'STAKING.TITLE'|translate}}</h3>
 <div class="staking-container">
   <aer-expandable-group>
-    <aer-expandable-panel title="{{'STAKING.PANEL_TITLE_ETHEREUM_WALLET'|translate}}" [expanded]="ethereumWalletExpanded">
-      <app-ethereum-wallet (moveToStaking)="moveToStaking($event)"></app-ethereum-wallet>
+    <aer-expandable-panel title="{{'STAKING.PANEL_TITLE_ETHEREUM_WALLET'|translate}}"
+      [expanded]="ethereumWalletExpanded">
+      <app-ethereum-wallet (moveToStaking)="onMoveToStaking($event)"></app-ethereum-wallet>
     </aer-expandable-panel>
-    <aer-expandable-panel title="{{'STAKING.PANEL_TITLE_STAKING'|translate}}" [expanded]="stakingCreateExpanded">
-      <app-staking-create [ethereumAccount]="account"></app-staking-create>
+    <aer-expandable-panel title="{{(!showStakingUpdate ? 'STAKING.PANEL_TITLE_STAKING' : 'STAKING.PANEL_TITLE_ADD_REMOVE_STAKE')|translate}}"
+      [expanded]="stakingExpanded">
+      <app-staking-create *ngIf="!showStakingUpdate" (stakeCreated)="onStakeCreated($event)" [ethereumAccount]="account"></app-staking-create>
+      <app-staking-update *ngIf="showStakingUpdate"></app-staking-update>
     </aer-expandable-panel>
   </aer-expandable-group>
 </div>
