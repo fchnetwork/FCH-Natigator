@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 
 import Web3 from "web3";
 
@@ -33,6 +33,12 @@ export class EthereumWalletAccountComponent implements OnInit {
 
   importInProgress = false;
 
+  @Input() set isVisible(value: boolean) {
+    if(value) {
+      this.init();
+    }
+  }
+
   private stakingReferences: StakingReference[] = [];
 
   constructor(private logger: LoggerService,
@@ -41,10 +47,14 @@ export class EthereumWalletAccountComponent implements OnInit {
     private stakingLocalStorageService: StakingLocalStorageService,
     private ethereumAuthenticationService: EthereumAuthenticationService) { }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.init();
+  }
+
+  private init() {
     this.onWalletSelect({ value: EthWalletType.Imported });
     this.initStakingReferences();
-    await this.initPredefinedAccount();
+    this.initPredefinedAccount();
   }
 
   private initStakingReferences() {

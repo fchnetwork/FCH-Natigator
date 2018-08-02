@@ -1,6 +1,7 @@
 <div aerRow>
   <div aerColumn size="sm-6">
     <app-ethereum-wallet-account
+      [isVisible]="isVisible"
       (addressChanged)="updateAddress($event)"
       (walletTypeChanged)="updateWalletType($event)"
       (selectedWalletType)="walletType">

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { EthWalletType } from "@app/external/models/eth-wallet-type.enum";
 import { EthereumWalletAccount } from "@app/wallet/staking/models/ethereum-wallet-account.model";
@@ -15,6 +15,7 @@ export class EthereumWalletComponent {
   ethereumBalance: number;
   aerumBalance: number;
 
+  @Input() isVisible: boolean;
   @Output() moveToStaking: EventEmitter<EthereumWalletAccount> = new EventEmitter<EthereumWalletAccount>();
 
   constructor() { }
