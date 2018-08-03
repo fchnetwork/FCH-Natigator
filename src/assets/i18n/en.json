@@ -682,7 +682,7 @@
     "UPDATE": {
       "FIELD_DELEGATE_INFO": "Delegate info",
       "FIELD_AMOUNT_AVAILABLE": "Amount available: ",
-      "FIELD_MESSAGE": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Integer pellentesque quam vel velit. Etiam dui sem, fermentum vitae, sagittis id, malesuada in, quam. Nunc dapibus tortor vel mi dapibus sollicitudin. Fusce wisi. Nullam sit amet magna in magna gravida vehicula. Integer lacinia. Pellentesque arcu. Integer lacinia. Fusce nibh. Aliquam ornare wisi eu metus. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim...",
+      "FIELD_MESSAGE": "",
       "FIELD_SELECT_ACCOUNT": "Select account:",
       "PLACEHOLDER_SELECT_ACCOUNT": "Select account",
       "FIELD_STAKED_BALANCE": "Staked balance: ",
