@@ -132,9 +132,9 @@ export class TransactionService {
         }
     }
 
-    transaction( privkey, activeUser, to, amount, data, external, urls, orderId, moreOptionsData ) : Promise<any> {
+    transaction( privkey: string, activeUser, to, amount, data, external, urls, orderId, moreOptionsData ) : Promise<any> {
       return new Promise( (resolve, reject) => {
-          const privateKey = ethJsUtil.toBuffer( privkey )
+          const privateKey = privkey.startsWith('0x') ? ethJsUtil.toBuffer( privkey ) : Buffer.from(privkey, 'hex');
           const sendTo = ethJsUtil.toChecksumAddress( to ) ;
           const from = ethJsUtil.toChecksumAddress( activeUser );
           const txValue = this.web3.utils.numberToHex(this.web3.utils.toWei( amount.toString(), 'ether'));

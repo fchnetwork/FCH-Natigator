@@ -49,18 +49,23 @@ export interface iBlocks {
 
 
   export interface iPendingTxn {
-    "blockHash": string; 
-    "from": string; 
-    "to": string; 
+    "blockHash": string;
+    "from": string;
+    "to": string;
     "gas": string;
     "gasPrice": string;
     "hash": string;
-    "nonce": number; 
+    "nonce": number;
     "transactionIndex": string;
-    "value": string; 
+    "value": string;
   }
 
-
+  export enum TransactionStatus {
+    PendingContract = 'Contract execution(pending)',
+    Pending = 'Pending transaction',
+    Successfull = 'Successful transaction',
+    Failed = 'Failed transaction'
+  }
 
   export interface iToken {
     "address": string,
