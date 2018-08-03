@@ -13,17 +13,17 @@ export class FromToAvatarComponent implements OnInit {
   constructor(public authService: AuthenticationService) { }
 
   cropAddress(address: string) {
-    return address.substr(0, 6) + "..." + address.substr(-4);
+    return address ? address.substr(0, 6) + "..." + address.substr(-4) : '';
   }
 
   ngOnInit() {
   }
 
   getSenderAvatar() {
-    return this.authService.generateCryptedAvatar(this.senderAddress);
+    return this.senderAddress ? this.authService.generateCryptedAvatar(this.senderAddress) : '';
   }
 
   getReceiverAvatar() {
-    return this.authService.generateCryptedAvatar(this.recieverAddress);
+    return this.recieverAddress ? this.authService.generateCryptedAvatar(this.recieverAddress) : '';
   }
 }
