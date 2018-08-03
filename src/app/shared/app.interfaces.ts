@@ -33,7 +33,7 @@ export interface iBlocks {
     "blockNumber":number;
     "from": string;
     "gas":number;
-    "gasPrice": string;
+    "gasPrice": number;
     "hash": string;
     "input": string;
     "nonce": number;
@@ -44,6 +44,7 @@ export interface iBlocks {
     "r": string;
     "s": string;
     "data": string;
+    "gasUsedinTxn": number;
   }
 
 
