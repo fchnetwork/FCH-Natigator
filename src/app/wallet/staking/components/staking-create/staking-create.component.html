@@ -20,6 +20,7 @@
       <div aerRow *ngIf="stakingInProgress">
         <div aerColumn size="xs-6">
           <aer-button *ngIf="transactionExplorerUrl" (buttonFn)="explorerLink(transactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.CREATE.OPEN_CREATE_TX_IN_EXPLORER'|translate}}</aer-button> 
+          <span>&nbsp;</span>
         </div>
         <div aerColumn size="xs-6" class="loader">
           <aer-loader></aer-loader>

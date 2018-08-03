@@ -57,6 +57,7 @@
     <div aerRow *ngIf="increaseStakingInProgress">
       <div aerColumn size="xs-6">
         <aer-button *ngIf="increaseTransactionExplorerUrl" (buttonFn)="explorerLink(increaseTransactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.UPDATE.OPEN_INCREASE_TX_IN_EXPLORER'|translate}}</aer-button> 
+        <span>&nbsp;</span>
       </div>
       <div aerColumn size="xs-6" class="loader">
         <aer-loader></aer-loader>
@@ -82,6 +83,7 @@
     <div aerRow *ngIf="decreaseStakingInProgress">
       <div aerColumn size="xs-6">
         <aer-button *ngIf="decreaseTransactionExplorerUrl" (buttonFn)="explorerLink(decreaseTransactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.UPDATE.OPEN_DECREASE_TX_IN_EXPLORER'|translate}}</aer-button> 
+        <span>&nbsp;</span>
       </div>
       <div aerColumn size="xs-6" class="loader">
         <aer-loader></aer-loader>
