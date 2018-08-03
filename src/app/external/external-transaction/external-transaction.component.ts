@@ -89,11 +89,12 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
             this.nameService.safeResolveNameOrAddress(this.receiverAddress),
             this.nameService.safeResolveNameOrAddress(parsed.tokenAddress ? parsed.tokenAddress : this.tokenAddress)
           ]);
-          this.receiverAddressShort = this.cropAddress(this.receiverAddressHex);
+          this.receiverAddress = this.receiverAddressHex;
+          this.receiverAddressShort = this.cropAddress(this.receiverAddress);
           this.senderAddressShort = this.cropAddress(this.storageService.getSessionData('acc_address'));
           this.senderAddress = this.storageService.getSessionData('acc_address');
           this.senderAvatar = this.authService.generateCryptedAvatar(this.senderAddress);
-          this.receiverAvatar = this.authService.generateCryptedAvatar(this.receiverAddressHex);
+          this.receiverAvatar = this.authService.generateCryptedAvatar(this.receiverAddress);
           this.amount = parsed.amount;
           this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
 
