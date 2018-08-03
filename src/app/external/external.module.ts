@@ -12,6 +12,7 @@ import { SwapCreateComponent } from './swap-create/swap-create.component';
 import { SwapConfirmComponent } from './swap-confirm/swap-confirm.component';
 import { OppositeSwapCreateComponent } from './opposite-swap-create/opposite-swap-create.component';
 import { OppositeSwapConfirmComponent } from './opposite-swap-confirm/opposite-swap-confirm.component';
+import { PaperWalletImportComponent } from "@app/external/components/paper-wallet-import/paper-wallet-import.component";
 
 @NgModule({
   entryComponents: [
@@ -29,7 +30,7 @@ import { OppositeSwapConfirmComponent } from './opposite-swap-confirm/opposite-s
     SharedModule,
     ExternalRoutingModule,
     AppUIModule,
-    CoreModule
+    CoreModule,
   ],
   declarations: [
     ExternalTransactionComponent,
@@ -37,7 +38,8 @@ import { OppositeSwapConfirmComponent } from './opposite-swap-confirm/opposite-s
     SwapCreateComponent,
     SwapConfirmComponent,
     OppositeSwapCreateComponent,
-    OppositeSwapConfirmComponent
+    OppositeSwapConfirmComponent,
+    PaperWalletImportComponent
   ]
 })
 export class ExternalModule {

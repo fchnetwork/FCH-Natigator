@@ -1,0 +1,20 @@
+<div class="import-wallet__margin-bar"></div>
+<div [@slideInOut] *ngIf="expanded" class="import-wallet">
+  <div aerRow>
+    <div aerColumn size="md-12">
+      <div class="import-wallet__top"></div>
+      <div class="import-wallet__content">
+        <div>
+          <p class="aer-small">
+            {{"EXTERNAL.TRANSACTION.PAPER_WALLET_1" | translate}} <span class="import-wallet__balance">{{balance | bignumber:'1.0-4'}}</span> {{"EXTERNAL.TRANSACTION.PAPER_WALLET_2" | translate}}
+          </p>
+        </div>
+        <div>
+          <aer-button class="blue" (buttonFn)="import()">{{'COMMON.BUTTONS.IMPORT' | translate}}</aer-button>
+          <aer-button (buttonFn)="cancel()">{{'COMMON.BUTTONS.CANCEL' | translate}}</aer-button>
+        </div>
+      </div>
+      <div class="import-wallet__bottom"></div>
+    </div>
+  </div>
+</div>

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { SettingsImportWalletComponent } from './settings-import-wallet.component';
+import { PaperWalletImportComponent } from './paper-wallet-import.component';
 
-describe('SettingsImportWalletComponent', () => {
-  let component: SettingsImportWalletComponent;
-  let fixture: ComponentFixture<SettingsImportWalletComponent>;
+describe('PaperWalletImportComponent', () => {
+  let component: PaperWalletImportComponent;
+  let fixture: ComponentFixture<PaperWalletImportComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsImportWalletComponent ]
+      declarations: [ PaperWalletImportComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SettingsImportWalletComponent);
+    fixture = TestBed.createComponent(PaperWalletImportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

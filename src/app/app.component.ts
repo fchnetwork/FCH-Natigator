@@ -1,3 +1,4 @@
+import { PendingTransactionsService } from './core/transactions/pending-transactions/pending-transactions.service';
 import { Component, OnInit, ErrorHandler } from "@angular/core";
 import { environment } from "../environments/environment";
 import { ActivatedRoute, Router, NavigationStart } from "@angular/router";
@@ -23,7 +24,8 @@ export class AppComponent implements OnInit {
     private globalEventService: GlobalEventService,
     public connectionCheckerService: ConnectionCheckerService,
     public translate: TranslateService,
-    public settingsService: SettingsService
+    public settingsService: SettingsService,
+    public pendingTxns: PendingTransactionsService
   ) {
     // Initialize global events
     this.globalEventService.init();

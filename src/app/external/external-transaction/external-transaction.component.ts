@@ -9,6 +9,7 @@ import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.s
 import { TokenService } from '@app/core/transactions/token-service/token.service';
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
+import { AddressKeyValidationService } from '@app/core/validation/address-key-validation.service';
 
 @Component({
   selector: 'app-external-transaction',
@@ -49,6 +50,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   query: string;
   proceedAvailable: boolean = false;
   depositMore: boolean = false;
+  privateKeyToImport: string;
 
   tokens: any;
 
@@ -62,6 +64,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
     private nameService: AerumNameService,
     private notificationMessagesService: NotificationMessagesService,
+    private addressKeyvalidation: AddressKeyValidationService
   ) {
     this.prepareData();
   }
@@ -95,6 +98,10 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
           this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
 
           this.isToken = (!parsed.tokenAddress || parsed.tokenAddress === "0x0") ? false : true;
+
+          if(parsed.privateKey && this.addressKeyvalidation.isPrivateKey(parsed.privateKey)) {
+            this.privateKeyToImport = parsed.privateKey;
+          }
 
           this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
           this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
@@ -225,6 +232,9 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
         this.depositMore = (this.balance < this.amount || !this.currency) ? true : false;
       });
     }
+  }
+
+  preparePaperWallet(privateKey: string) {
 
   }
 

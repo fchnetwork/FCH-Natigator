@@ -35,6 +35,10 @@ export class AerumNameService {
     this.web3 = this.authService.getWeb3();
   }
 
+  isAensName(nameOrAddress: string): boolean {
+    return nameOrAddress && nameOrAddress.endsWith('.aer');
+  }
+
   async safeResolveNameOrAddress(nameOrAddress: string) {
     try {
       const address = await this.resolveNameOrAddress(nameOrAddress);
@@ -50,7 +54,7 @@ export class AerumNameService {
       return null;
     }
 
-    if(nameOrAddress.endsWith('.aer')) {
+    if(this.isAensName(nameOrAddress)) {
       return this.resolveAddressFromName(nameOrAddress);
     }
 

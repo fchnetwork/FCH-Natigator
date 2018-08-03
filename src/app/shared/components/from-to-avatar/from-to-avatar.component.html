@@ -3,10 +3,10 @@
     <li>
       <ul class="from-to-avatar__image-list">
         <li>
-          <div class="from-to-avatar__avatar-img" [style.background-image]="'url(' + getSenderAvatar() + ')'"></div>
+          <div class="from-to-avatar__avatar-img" [style.background-image]="senderAddressAvatar"></div>
         </li>
         <li>
-          {{ cropAddress(senderAddress) }}
+          {{ senderCropedAddress }}
         </li>
       </ul>
       <ul class="from-to-avatar__image-list from-to-avatar__arrow">
@@ -16,10 +16,10 @@
       </ul>
       <ul class="from-to-avatar__image-list">
         <li>
-          <div class="from-to-avatar__avatar-img" [style.background-image]="'url(' + getReceiverAvatar() + ')'"></div>
+          <div class="from-to-avatar__avatar-img" [style.background-image]="recieverAddressAvatar"></div>
         </li>
         <li>
-          {{ cropAddress(recieverAddress) }}
+          {{ recieverCropedAddress }}
         </li>
       </ul>
     </li>

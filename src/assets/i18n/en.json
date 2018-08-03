@@ -175,6 +175,13 @@
     }
   },
 
+  "EXTERNAL": {
+    "TRANSACTION": {
+      "PAPER_WALLET_1": "You have been given a paper wallet with a balance of",
+      "PAPER_WALLET_2": "Aero. Would you like to import it?"
+    }
+  },
+
   "COMMON": {
     "BUTTONS": {
       "SAVE": "Save",
@@ -182,7 +189,8 @@
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
       "CLOSE": "Close",
-      "SCAN_QR_CODE": "Scan QR code"
+      "SCAN_QR_CODE": "Scan QR code",
+      "IMPORT": "Import"
     },
     "NOTIFICATIONS": {
       "WRONG_VALUE": {

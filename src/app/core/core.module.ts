@@ -1,3 +1,4 @@
+import { PendingTransactionsService } from './transactions/pending-transactions/pending-transactions.service';
 import { QrScannerService } from './general/qr-scanner/qr-scanner.service';
 import { AddressKeyValidationService } from './validation/address-key-validation.service';
 import { AuthenticationGuard } from './authentication/auth-guards/authentication.guard';
@@ -119,7 +120,8 @@ export class CoreModule {
         EthereumAuthenticationService,
         EthereumTokenService,
         TranslateService,
-        StorageService
+        StorageService,
+        PendingTransactionsService
       ]
     };
   }

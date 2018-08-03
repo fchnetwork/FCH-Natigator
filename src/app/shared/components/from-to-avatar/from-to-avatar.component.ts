@@ -1,4 +1,5 @@
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -7,23 +8,51 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./from-to-avatar.component.scss']
 })
 export class FromToAvatarComponent implements OnInit {
-  @Input() senderAddress: string;
-  @Input() recieverAddress: string;
+  private _senderAddress: string;
+  private _recieverAddress: string;
 
-  constructor(public authService: AuthenticationService) { }
+  senderAddressAvatar: string;
+  recieverAddressAvatar: string;
 
-  cropAddress(address: string) {
-    return address.substr(0, 6) + "..." + address.substr(-4);
+  @Input() set senderAddress(value: string) {
+    this._senderAddress = value;
+    this.updateSenderAvatar();
   }
 
-  ngOnInit() {
+  @Input() set recieverAddress(value: string) {
+    this._recieverAddress = value;
+    this.updateReceiverAvatar();
   }
 
-  getSenderAvatar() {
-    return this.authService.generateCryptedAvatar(this.senderAddress);
+  get senderCropedAddress() {
+    return this.cropAddress(this._senderAddress);
   }
 
-  getReceiverAvatar() {
-    return this.authService.generateCryptedAvatar(this.recieverAddress);
+  get recieverCropedAddress() {
+    return this.cropAddress(this._recieverAddress);
+  }
+
+  constructor(public authService: AuthenticationService,
+    private nameService: AerumNameService)
+  { }
+
+  ngOnInit() 
+  { }
+
+  private cropAddress(address: string) {
+    if(this.nameService.isAensName(address)){
+      return address;
+    }
+    return address ? address.substr(0, 6) + "..." + address.substr(-4) : '';
+  }
+
+  private async updateSenderAvatar() {
+    const address = await this.nameService.safeResolveNameOrAddress(this._senderAddress);
+    this.senderAddressAvatar = address ? `url(${this.authService.generateCryptedAvatar(address)})` : '';
+  }
+
+  private async updateReceiverAvatar() {
+    const address = await this.nameService.safeResolveNameOrAddress(this._recieverAddress);
+    this.recieverAddressAvatar = address ? `url(${this.authService.generateCryptedAvatar(address)})` : '';
   }
 }

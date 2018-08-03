@@ -1,8 +1,10 @@
+import { PendingTransactionsService } from './../pending-transactions/pending-transactions.service';
 import { NotificationMessagesService } from "@core/general/notification-messages-service/notification-messages.service";
 import { StorageService } from "@app/core/general/storage-service/storage.service";
 import { TransactionService } from "@app/core/transactions/transaction-service/transaction.service";
 import { AuthenticationService } from "./../../authentication/authentication-service/authentication.service";
 import { Injectable } from "@angular/core";
+import { TransactionStatus } from '@app/shared/app.interfaces';
 
 const ethWallet = require("ethereumjs-wallet");
 
@@ -12,7 +14,8 @@ export class ImportWalletService {
     private authService: AuthenticationService,
     private transactionService: TransactionService,
     private storageService: StorageService,
-    private notification: NotificationMessagesService
+    private notification: NotificationMessagesService,
+    private pendingTxn: PendingTransactionsService
   ) {}
 
   async importWalletToCurrentAddress(privateKey: string): Promise<boolean> {
@@ -20,10 +23,7 @@ export class ImportWalletService {
       try {
         const web3 = this.authService.getWeb3();
         const address = this.storageService.getSessionData("acc_address");
-        const validPrivateKey = privateKey.startsWith("0x")
-          ? privateKey.substr(2, privateKey.length - 2)
-          : privateKey;
-        const privateKeyBuffer = Buffer.from(validPrivateKey, "hex");
+        const privateKeyBuffer = Buffer.from(privateKey, "hex");
 
         const paperWallet = ethWallet.fromPrivateKey(privateKeyBuffer);
         const paperWalletAddress = paperWallet.getChecksumAddressString();
@@ -58,7 +58,9 @@ export class ImportWalletService {
               selectedToken: "Aero"
             }
           )
-          .then(result => {
+          .then(async result => {
+            await this.pendingTxn.subscribeByHash(result.hash, TransactionStatus.Successfull);
+            this.notification.importWalletSuccessfulll();
             resolve();
           });
       } catch (e) {
