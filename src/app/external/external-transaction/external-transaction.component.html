@@ -1,5 +1,6 @@
 <aer-modal-container>
-  <div>
+  <div class="external-transaction">
+    <app-paper-wallet-import *ngIf="privateKeyToImport" [privateKey]="privateKeyToImport"></app-paper-wallet-import>
     <h1>{{(title || 'EXTERNAL-SWAP.TRANSACTION.TITLE')|translate}}</h1>
     <div aerRow>
       <div aerColumn size="md-12">
