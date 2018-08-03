@@ -117,12 +117,13 @@ export class AuthenticationService {
           const ethereumTokens = this.decryptCookieToArray('ethereum_tokens', password);
           const ethereumAccounts = this.decryptCookieToArray('ethereum_accounts', password);
           const crossChainSwaps = this.decryptCookieToArray('cross_chain_swaps', password);
+          const stakings = this.decryptCookieToArray('stakings', password);
 
           const encryptAccount = this.web3.eth.accounts.decrypt(JSON.parse(this.storageService.getCookie('aerum_keyStore')), password);
           if( encryptAccount ) {
             const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
             const seed = this.seedCleaner(plaintext);
-            resolve( { web3: encryptAccount, s:seed, transactions, tokens, ethereumTokens, ethereumAccounts, crossChainSwaps } );
+            resolve( { web3: encryptAccount, s:seed, transactions, tokens, ethereumTokens, ethereumAccounts, crossChainSwaps, stakings: stakings } );
           }
           else {
             reject("no keystore found or password incorrect");
@@ -156,6 +157,7 @@ export class AuthenticationService {
           this.storageService.setSessionData('ethereum_tokens', result.ethereumTokens.length ? JSON.parse(result.ethereumTokens) : []);
           this.storageService.setSessionData('ethereum_accounts', result.ethereumAccounts.length ? JSON.parse(result.ethereumAccounts) : []);
           this.storageService.setSessionData('cross_chain_swaps', result.crossChainSwaps.length ? JSON.parse(result.crossChainSwaps) : []);
+          this.storageService.setSessionData('stakings', result.stakings.length ? JSON.parse(result.stakings) : []);
           resolve('success');
         }).catch((err)=>{
             reject(err);
@@ -174,6 +176,7 @@ export class AuthenticationService {
       this.storageService.clearSessionData('tokens');
       this.storageService.clearSessionData('ethereum_accounts');
       this.storageService.clearSessionData('cross_chain_swaps');
+      this.storageService.clearSessionData('stakings');
       this.storageService.clearSessionData('derivation');
       this.storageService.clearSessionData('ethereum_tokens');
     }

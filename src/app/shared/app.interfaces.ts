@@ -78,6 +78,7 @@ export interface iBlocks {
     'settings': string,
     'ethereum_accounts': string,
     'cross_chain_swaps': string
+    'stakings': string
   }
 
   export interface iSettings {

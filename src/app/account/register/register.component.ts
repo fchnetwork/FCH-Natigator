@@ -44,6 +44,7 @@ export class RegisterComponent implements OnInit {
     this.storageService.setCookie('transactions', null, false, 7);
     this.storageService.setCookie('ethereum_accounts', null, false, 7);
     this.storageService.setCookie('cross_chain_swaps', null, false, 7);
+    this.storageService.setCookie('stakings', null, false, 7);
   }
 
   ngOnInit() {
@@ -73,6 +74,7 @@ export class RegisterComponent implements OnInit {
       this.storageService.setSessionData('ethereum_tokens', []);
       this.storageService.setSessionData('ethereum_accounts', []);
       this.storageService.setSessionData('cross_chain_swaps', []);
+      this.storageService.setSessionData('stakings', []);
 
       data.avatar = this.registerForm.value.avatar.avatar;
       data.password = this.registerForm.value.password;

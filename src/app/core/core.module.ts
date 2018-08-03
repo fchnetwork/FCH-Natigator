@@ -51,6 +51,8 @@ import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/c
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
 import { ImportWalletService } from '@app/core/transactions/import-wallet-service/import-wallet.service';
 import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
+import { StakingAerumService } from "@core/staking/staking-aerum-service/staking-aerum.service";
+import { StakingGovernanceService } from "@core/staking/staking-governance-service/staking-governance.service";
 
 @NgModule({
   imports: [
@@ -95,6 +97,9 @@ import { GlobalEventService } from "@core/general/global-event-service/global-ev
     CreateSwapService,
     LoadSwapService,
     AuthenticationGuard,
+    GlobalEventService,
+    StakingAerumService,
+    StakingGovernanceService,
     AddressKeyValidationService,
     ImportWalletService,
     QrScannerService,
