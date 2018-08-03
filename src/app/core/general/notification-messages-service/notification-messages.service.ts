@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { NotificationService } from "@aerum/ui";
 import { TranslateService } from "@ngx-translate/core";
+import 'rxjs/add/operator/first';
 
 @Injectable()
 export class NotificationMessagesService {
@@ -11,6 +12,16 @@ export class NotificationMessagesService {
 
   protected translate(key: string): string {
     return this.translateService.instant(key);
+  }
+
+  protected translateAsync(key: string): Promise<string> {
+    return new Promise(resolve => {
+      this.translateService.get(key)
+        .first()
+        .subscribe(r => {
+          resolve(r);
+        });
+    });
   }
 
   /**
@@ -131,12 +142,12 @@ export class NotificationMessagesService {
    *
    * @memberof NotificationMessagesService
    */
-  public connectionConnected() {
+  public async connectionConnected() {
     this.notificationService.notify(
-      `${this.translate("CONNECTION.CONNECTION_STATUS")}: ${this.translate(
+      `${await this.translateAsync("CONNECTION.CONNECTION_STATUS")}: ${await this.translateAsync(
         "CONNECTION.STATUS_TITLE.CONNECTED"
       )}`,
-      this.translate("CONNECTION.STATUS_BODY.CONNECTED"),
+      await this.translateAsync("CONNECTION.STATUS_BODY.CONNECTED"),
       "blocks",
       10000
     );
