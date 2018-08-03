@@ -1,0 +1,98 @@
+<div class="transaction-modal">
+  <div class="link copy" (click)="openTxn(transaction.hash)">{{transaction.hash | slice:0:20}}...{{transaction.hash | slice:-18}}</div>
+  <div>
+    <p class="aer-small">{{transaction.timestamp | transactionTimeStamp }}</p>
+  </div>
+  <div class="age">({{transaction.timestamp | transactionTimeAgo }})</div>
+  <div class="table-simple">
+    <div>
+      <div>
+        {{'AMOUNT'|translate}}
+      </div>
+      <div class="value">
+        {{transaction.value | convertToEther }} {{'AERO'|translate}}
+      </div>
+    </div>
+    <div>
+      <div>
+        {{'FROM'|translate}}
+      </div>
+      <div>
+        <app-link-clipboard [link]="transaction.from">
+          {{transaction.from | slice:0:16}}...{{transaction.from | slice:-14}}
+        </app-link-clipboard>
+      </div>
+    </div>
+    <div>
+      <div>
+        {{'TO'|translate}}
+      </div>
+      <div>
+        <div *ngIf="!transaction.to; then contractTxn else normalTxn"></div>
+        <ng-template #normalTxn>
+          <app-link-clipboard [link]="transaction.to">
+            {{transaction.to | slice:0:16}}...{{transaction.to | slice:-14}}
+          </app-link-clipboard>
+        </ng-template>
+        <ng-template #contractTxn>
+          [Contract Creation Transaction]
+        </ng-template>
+      </div>
+    </div>
+    <div>
+      <div>
+        {{'GAS'|translate}}
+      </div>
+      <div class="value">
+        {{transaction.gasUsedinTxn }}
+      </div>
+    </div>
+    <div>
+      <div>
+        {{'TRANSACTION_COST'|translate}}
+      </div>
+      <div class="value">
+        {{transaction.gasUsedinTxn * transaction.gasPrice | convertToEther}} {{'AERO'|translate}}
+      </div>
+    </div>
+    <div>
+      <div>
+        {{'GAS_PRICE'|translate}}
+      </div>
+      <div class="value">
+        {{transaction.gasPrice | convertToEther }} {{'AERO'|translate}}
+      </div>
+    </div>
+    <div *ngIf="transaction.blockNumber">
+      <div>
+        {{'BLOCK'|translate}}
+      </div>
+      <div>
+        <app-link-clipboard [link]="transaction.blockNumber">
+          {{transaction.blockNumber}}
+        </app-link-clipboard>
+      </div>
+    </div>
+    <div *ngIf="transaction.input.length > 3">
+      <div>
+        {{'SENT_DATA'|translate}}
+      </div>
+      <div class="value">
+        <div *ngIf="!transaction.to; then contractTxn else normalTxn"></div>
+        <ng-template #normalTxn>
+          <div *ngIf="showHexData; then hex else text"></div>
+          <ng-template #text>
+            {{transaction.input|hextoAscii}}
+          </ng-template>
+          <ng-template #hex>
+            {{transaction.input}}
+          </ng-template>
+        </ng-template>
+        <ng-template #contractTxn>
+          [Contract Creation Transaction]
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{ 'COMMON.BUTTONS.CLOSE' | translate }}</aer-modal-button>
+</div>

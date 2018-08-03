@@ -1,49 +1,50 @@
-<aer-modal-dialog>
-  <div class="c-create-swap c-create-swap__table c-create-swap__unlock">
-    <h1>{{'SWAP.CREATE.TITLE'|translate}}</h1>
-    <div class="o-table">
-        <div class="o-table__row">
-            <div class="o-table__cell o-data--left">
-              {{ 'SWAP.CREATE.FIELD_SWAP_ID' | translate }}
-            </div>     
-            <div class="o-table__cell o-data--right">
-              {{ param.swapId }}
-            </div>
+<div class="create-swap-confirm-dialog">
+  <div aerRow>
+    <div aerColumn="md-12">
+      <div class="table-simple">
+        <div>
+          <div>
+            {{ 'SWAP.CREATE.FIELD_SWAP_ID' | translate }}
+          </div>
+          <div>
+            {{ dialogRef.data.swapId }}
+          </div>
         </div>
-        <div class="o-table__row">
-            <div class="o-table__cell o-data--left">
-              {{ param.token.symbol }}
-            </div>     
-            <div class="o-table__cell o-data--right">
-              {{ param.tokenAmount }}
-            </div>
+        <div>
+          <div>
+            {{ dialogRef.data.token.symbol }}
+          </div>
+          <div>
+            {{ dialogRef.data.tokenAmount }}
+          </div>
         </div>
-        <div class="o-table__row">
-            <div class="o-table__cell o-data--left">
-              {{ 'SWAP.CREATE.FIELD_COUNTERPARTY' | translate }}
-            </div>     
-            <div class="o-table__cell o-data--right">
-              {{ param.counterpartyAddress | truncate: 32 }}
-            </div>
+        <div>
+          <div>
+            {{ 'SWAP.CREATE.FIELD_COUNTERPARTY' | translate }}
+          </div>
+          <div>
+            {{ dialogRef.data.counterpartyAddress | truncate: 32 }}
+          </div>
         </div>
-        <div class="o-table__row">
-            <div class="o-table__cell o-data--left">
-              {{ param.counterpartyToken.symbol }}
-            </div>     
-            <div class="o-table__cell o-data--right">
-              {{ param.counterpartyTokenAmount }}
-            </div>
+        <div>
+          <div>
+            {{ dialogRef.data.counterpartyToken.symbol }}
+          </div>
+          <div>
+            {{ dialogRef.data.counterpartyTokenAmount }}
+          </div>
         </div>
-        <div class="o-table__row">
-            <div class="o-table__cell o-data--left">
-              {{ 'SWAP.CREATE.FIELD_RATE' | translate }}
-            </div>     
-            <div class="o-table__cell o-data--right">
-              {{ param.rate }}
-            </div>
+        <div>
+          <div>
+            {{ 'SWAP.CREATE.FIELD_RATE' | translate }}
+          </div>
+          <div>
+            {{ dialogRef.data.rate }}
+          </div>
         </div>
+      </div>
     </div>
-    <aer-button (buttonFn)="onCreate()" class="large full-width blue">{{'SWAP.CREATE.BTN_CREATE'|translate}}</aer-button>
-    <aer-button (buttonFn)="onCancel()" class="large full-width">{{'SWAP.CREATE.BTN_CANCEL'|translate}}</aer-button>
   </div>
-</aer-modal-dialog>
+  <aer-modal-button [isAcceptButton]="true" (buttonFn)="onCreate()">{{'SWAP.CREATE.BTN_CREATE'|translate}}</aer-modal-button>
+  <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{'COMMON.BUTTONS.CANCEL' | translate}}</aer-modal-button>
+</div>

@@ -18,16 +18,23 @@
       "SEED_WORD_PLACEHOLDER":
         "Your seed is 12 words you saved when creating your account",
       "CREATE_PWD_PLACEHOLDER": "Create new password",
-      "CONFIRM_PWD_PLACEHOLDER": "Confirm new password"
-    },
-    "QR_SCAN": {
-      "TITLE": "Scan QR Code",
-      "SUBTITLE":
-        "Please scan the QR code of your seed. The QR code can be found in the Settings > Backup page of wallet.",
-      "NO_CAMERAS": "No cameras have been detected.",
-      "NO_PERMISSIONS":
-        "You need to grant AERUM a permission to access your camera.",
-      "QR_ERROR": "QR code doesn't contain a valid seed phrase."
+      "CONFIRM_PWD_PLACEHOLDER": "Confirm new password",
+      "QR_SCANNER_TEXT": "Please scan the QR code of your seed. The QR code can be found in the Settings > Backup page of wallet.",
+      "QR_SCANNER_ERROR": "QR code doesn't contain a valid seed phrase.",
+      "NOTIFICATIONS": {
+        "FILE_NOT_SUPPORTED": {
+          "TITLE": "Warning!",
+          "BODY": "File not supported"
+        },
+        "WRONG_SEED_FILE": {
+          "TITLE": "Something went wrong!",
+          "BODY": "Seed file is broken! It should contain 12 seed words."
+        },
+        "WRONG_BACKUP_FILE": {
+          "TITLE": "Something went wrong!",
+          "BODY": "Backup file is broken!"
+        }
+      }
     },
     "REGISTER": {
       "TITLE": "Create new account",
@@ -99,6 +106,12 @@
     }
   },
 
+  "TRANSACTION" : {
+    "CONFIRM_TRANSACTION": {
+      "TITLE": "Confirm transaction"
+    }
+  },
+
   "SETTINGS": {
     "TITLE": "Settings",
     "BACKUP": {
@@ -149,6 +162,9 @@
     "ETHWALLET": {
       "TAB_TITLE": "Ethereum Wallet"
     },
+    "IMPORT_WALLET": {
+      "TAB_TITLE": "Import wallet"
+    },
     "COMMON": {
       "NOTIFICATIONS": {
         "SAVE_SETTINGS": {
@@ -159,19 +175,47 @@
     }
   },
 
+  "EXTERNAL": {
+    "TRANSACTION": {
+      "PAPER_WALLET_1": "You have been given a paper wallet with a balance of",
+      "PAPER_WALLET_2": "Aero. Would you like to import it?"
+    }
+  },
+
   "COMMON": {
     "BUTTONS": {
       "SAVE": "Save",
       "BACK": "Back",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
-      "CLOSE": "Close"
+      "CLOSE": "Close",
+      "SCAN_QR_CODE": "Scan QR code",
+      "IMPORT": "Import"
     },
     "NOTIFICATIONS": {
       "WRONG_VALUE": {
           "TITLE": "Form error!",
           "BODY": "field is incorrect."
         }
+    }
+  },
+
+  "SHARED": {
+    "IMPORT_WALLET": {
+      "INPUT_BUTTON": "Import",
+      "INPUT_PLACEHOLDER": "Type in the private key of your wallet 0x...",
+      "IMPORTING_NOTIFICATION_TITLE": "Importing wallet",
+      "IMPORTING_NOTIFICATION_ADDRESS": "Address",
+      "IMPORTING_NOTIFICATION_AMOUNT": "Amount",
+      "IMPORTING_NOTIFICATION_SUCCESS": "Wallet successfully imported",
+      "QR_CODE_TEXT": "Please scan the QR code of your private key",
+      "QR_CODE_ERROR": "QR code doesn't contain a valid private key"
+    },
+    "QR_SCAN": {
+      "TITLE": "QR Scanner",
+      "NO_CAMERAS": "No cameras have been detected.",
+      "NO_PERMISSIONS":
+        "You need to grant AERUM a permission to access your camera."
     }
   },
 
@@ -211,7 +255,7 @@
   "LATEST_TRANSACTION": "Latest transactions",
   "SHOW_MORE": "Show more",
   "SHOW_LESS": "Show less",
-  "TRANSACTION": "Transaction",
+  "TRANSACTION_MODAL": "Transaction",
   "I_UNDERSTAND": "I understand",
   "WARNING": "Warning!",
   "REGISTRATION_WARNING_TXT1": "You should ONLY use the official Aerum client.",
@@ -261,6 +305,7 @@
   "GAS": "Gas",
   "SENT_DATA": "Sent data",
   "HEIGHT": "Height",
+  "COMPOSER":"Composer",
   "TXN": "Txn",
   "SIGNER": "Signer",
   "GAS_LIMIT": "Gas limit",
@@ -291,7 +336,6 @@
   "GWEI": "Gwei",
   "TRANSACTIONS_FOUND_COUNT": "{{transactionsCount}} transactions found",
   "SHOWING_THE_LAST": "showing the last {{value}}k records",
-  "STAKING": "STAKING",
   "CONTRACTS": "Contracts",
   "EXCHANGE": "Exchange",
   "KYC": "KYC",
@@ -331,6 +375,11 @@
       "CONNECTED": "Connected to AERUM Network"
     }
   },
+  "BUTTONS" : {
+    "ADD": "Add",
+    "CLOSE": "Close",
+    "CANCEL": "Cancel"
+  },
   "DIAGNOSTICS": "Diagnostics",
   "OVERVIEW": "Overview",
   "UNLOCK": {
@@ -354,6 +403,11 @@
     "DECILLION": "Decillion"
   },
   "TRANSACTION_COST": "Txn fee",
+  "HOME": {
+    "ADD_TOKEN": "Add token",
+    "ADD_BUTTON": "Add",
+    "CLOSE_BUTTON": "Cancel"
+  },
   "DASHBOARD_TOKENS": {
     "NAME": "Name",
     "DECIMALS": "Decimals",
@@ -450,6 +504,10 @@
       "FIELD_SECRET_KEY": "Secret key",
       "FIELD_MESSAGE":
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "FIELD_AER_AMOUNT_MESSAGE":
+        "Attention! Please, make sure you have sufficient amount of AERO in your wallet to cover transaction fee (up to 0.000021 Aer)",
+      "OPEN_APPROVAL_TX_IN_EXPLORER": "Open approval tx",
+      "OPEN_TRANSFER_TX_IN_EXPLORER": "Open transfer tx",
       "BTN_NEXT": "Next",
       "BTN_CLOSE": "Close",
       "BTN_BACK": "Back"
@@ -469,6 +527,10 @@
       "FIELD_SECRET_KEY": "Secret key",
       "FIELD_MESSAGE":
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
+      "FIELD_AER_AMOUNT_MESSAGE":
+        "Attention! Please, make sure you have sufficient amount of AERO in your wallet to cover transaction fee (up to 0.000021 Aer)",
+      "OPEN_APPROVAL_TX_IN_EXPLORER": "Open approval tx",
+      "OPEN_TRANSFER_TX_IN_EXPLORER": "Open transfer tx",
       "BTN_NEXT": "Next",
       "BTN_CLOSE": "Close",
       "BTN_BACK": "Back"
@@ -480,16 +542,19 @@
       "TITLE_WAITING_COUNTERPARTY": "Waiting Counterparty",
       "TITLE_DEPOSIT_SWAP": "Deposit Swap",
       "TITLE_WITHDRAWAL_SWAP": "Withdrawal Swap",
+      "TITLE_CANT_LOAD_SWAP": "Can’t load the swap",
       "FIELD_SWAP_CLOSED_SUCCESSFULLY": "Swap closed successfully",
       "FIELD_SWAP_CANCELLED_SUCCESSFULLY": "Swap cancelled successfully",
       "FIELD_YOUR_SWAP_WILL_EXPIRE_IN": "Your swap will expire in:",
       "FIELD_YOUR_SWAP_WAS_ACCEPTED_BY": "Your swap was accepted by",
       "FIELD_YOU_WILL_SEND": "You will send",
       "FIELD_YOU_WILL_RECEIVE": "You will receive",
+      "FIELD_SWAP_OPENED": "Swap opened",
       "FIELD_ENTER_SECRET_KEY": "Enter secret key:",
       "FIELD_TYPE_SECRET_KEY": "Type secret key",
       "FIELD_MESSAGE":
         "Attention! You need to complete the swap before it expires. If swap expires before completion, you can cancel it and withdraw the funds.",
+      "OPEN_SWAP_TX_IN_EXPLORER": "Open swap tx",
       "BTN_COMPLETE_SWAP": "Complete swap",
       "BTN_CANCEL_SWAP": "Cancel swap",
       "BTN_CLOSE": "Close",
@@ -596,5 +661,46 @@
     "NOTIFICATION_BODY_TOKEN_NOT_CONFIGURED":
       "Please configure the token first",
     "NOTIFICATION_TITLE_TOKEN_NOT_CONFIGURED": "Warning!"
+  },
+  "STAKING": {
+    "TITLE": "Staking",
+    "MAIN_MENU_ITEM_NAME": "Staking",
+    "PANEL_TITLE_ETHEREUM_WALLET": "ETHEREUM WALLET",
+    "PANEL_TITLE_STAKING": "STAKING",
+    "PANEL_TITLE_ADD_REMOVE_STAKE": "ADD/REMOVE STAKE",
+    "BTN_NEXT": "Next",
+    "ETHEREUM_WALLET_ACCOUNT": {
+      "FIELD_SELECT_WALLET": "Select Wallet",
+      "FIELD_STORED_KEYS": "Stored Keys",
+      "PLACEHOLDER_SELECT_ACCOUNT": "Select your account",
+      "OPTION_ADD_ACCOUNT": "Add account",
+      "FIELD_FROM": "From"
+    },
+    "ETHEREUM_WALLET_BALANCE": {
+      "FIELD_BALANCE": "Balance"
+    },
+    "CREATE": {
+      "FIELD_DELEGATE": "Delegate",
+      "FIELD_STAKE": "Stake",
+      "PLACEHOLDER_SELECT_ADDRESS": "Select delegate",
+      "BTN_STAKE": "Stake",
+      "PLACEHOLDER_AMOUNT": "Amount",
+      "OPEN_CREATE_TX_IN_EXPLORER": "Open staking tx"
+    },
+    "UPDATE": {
+      "FIELD_DELEGATE_INFO": "Delegate info",
+      "FIELD_AMOUNT_AVAILABLE": "Amount available: ",
+      "FIELD_MESSAGE": "",
+      "FIELD_SELECT_ACCOUNT": "Select account:",
+      "PLACEHOLDER_SELECT_ACCOUNT": "Select account",
+      "FIELD_STAKED_BALANCE": "Staked balance: ",
+      "FIELD_ENTER_AMOUNT": "Enter amount",
+      "BTN_ADD": "Add",
+      "BTN_REMOVE": "Remove",
+      "CHECK_REMOVE_EVERYTHING": "Remove everything",
+      "FIELD_REMOVE_FROM_STAKE": "Remove from stake",
+      "OPEN_INCREASE_TX_IN_EXPLORER": "Open staking increase tx",
+      "OPEN_DECREASE_TX_IN_EXPLORER": "Open unstaking tx"
+    }
   }
 }

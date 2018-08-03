@@ -6,6 +6,7 @@ import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
+  isMobileBuild: false,
   configInUse: "environment.local",
   WebsocketProvider: "wss://marge.aerum.net/wss",
   rpcApiProvider: "https://marge.aerum.net/eth",
@@ -43,6 +44,12 @@ export const environment = {
         ENSRegistry: "0x49dc6ee5540eb3e0d8015ec2381ed4146315b6b6",
         FixedPriceRegistrar: "0xa942a9d2793cc12b35b7801cc0b60b72095f8553",
         PublicResolver: "0x125a0dd27bb49b38b1f023263ccfbf1757e603b7"
+      }
+    },
+    staking: {
+      address: {
+        Aerum: "0xa394b7920f8c6b9b0fe22dd336f651dc4ea521ce",
+        Governance: "0x4cc8a4429b669a78c76cc28d54cd7085b1eb03b4"
       }
     }
   },

@@ -1,0 +1,18 @@
+.ethereum-wallet-account-container {
+    aer-radio-button {
+        .aer-radio {
+            margin: 0;
+        }
+        & + aer-radio-button {
+            display: block;
+            margin-top: 15px;
+        }
+    }
+    .aer-select-content {
+        aer-select-option:last-child {
+            .aer-select-option {
+                text-align: center;
+            }
+        }
+    }
+}

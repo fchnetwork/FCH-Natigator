@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { NotificationService } from '@aerum/ui';
+import { NotificationService, DialogResult } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -89,8 +89,8 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
       estimatedFeeInGas: cost[1],
       maximumFeeInGas: cost[2]
     };
-    const modalResult: ConfirmResponse = await this.modalService.openSetAensAddressConfirm(updateRequest);
-    if(!modalResult.accepted) {
+    const modalResult = await this.modalService.openSetAensAddressConfirm(updateRequest);
+    if(modalResult.dialogResult === DialogResult.Cancel) {
       this.logger.logMessage('Update address cancelled');
       return;
     }
@@ -131,8 +131,8 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
       estimatedFeeInGas: cost[1],
       maximumFeeInGas: cost[2]
     };
-    const modalResult: ConfirmResponse = await this.modalService.openTransferAensNameConfirm(transferRequest);
-    if(!modalResult.accepted) {
+    const modalResult = await this.modalService.openTransferAensNameConfirm(transferRequest);
+    if(modalResult.dialogResult === DialogResult.Cancel) {
       this.logger.logMessage('Transfer name cancelled');
       return;
     }
@@ -173,8 +173,10 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
       estimatedFeeInGas: cost[1],
       maximumFeeInGas: cost[2]
     };
-    const modalResult: ConfirmResponse = await this.modalService.openReleaseAensNameConfirm(releaseRequest);
-    if(!modalResult.accepted) {
+
+    const modalResult = await this.modalService.openReleaseAensNameConfirm(releaseRequest);
+
+    if(modalResult.dialogResult === DialogResult.Cancel) {
       this.logger.logMessage('Release name cancelled');
       return;
     }

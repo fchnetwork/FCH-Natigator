@@ -7,6 +7,8 @@ import { ExplorerService } from '@core/explorer/explorer-service/explorer.servic
 import { LoaderService } from '@core/general/loader-service/loader.service';
 import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
+import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
+import { BlockModalData } from '@app/wallet/explorer/components/block-modal/block-modal.component';
 
 @Component({
   selector: 'app-transactions',
@@ -28,7 +30,7 @@ export class TransactionsComponent implements AfterViewInit {
   constructor(public exploreSrv: ExplorerService,
     private route: ActivatedRoute,
     private router: Router,
-    private modal: ModalService,
+    private modalService: ModalService,
     private loaderService: LoaderService) { }
 
   ngAfterViewInit() {
@@ -46,17 +48,28 @@ export class TransactionsComponent implements AfterViewInit {
     this.exploreSrv.getTransactions(this.highBlock, this.maxBlocks).then(transactionList => {
       this.loaderService.toggle(false);
       this.transactions = this.transactions.concat(transactionList.transactions);
-      this.highBlock = transactionList.highBlock - 1; 
+      this.highBlock = transactionList.highBlock - 1;
     });
   }
 
-  openBlock(transaction) {
-    this.modal.openBlock(transaction.blockNumber, transaction.block).then(result => {
-    }).catch(() => { });
+  async openBlock(transaction) {
+    const data: BlockModalData = {
+      block: transaction.block,
+      blockNumber: transaction.blockNumber
+    };
+
+    await this.modalService.openBlock(data);
   }
 
-  openTransaction(transaction) {
-    this.modal.openTransaction(transaction.hash, transaction, false, null, null).then((result) => {
-    }).catch(() => { });
+  async openTransaction(transaction) {
+    const data: TransactionModalData = {
+      hash: transaction.hash,
+      transaction: transaction,
+      external: false,
+      orderId: null,
+      urls: null
+    };
+
+    this.modalService.openTransaction(data);
   }
 }

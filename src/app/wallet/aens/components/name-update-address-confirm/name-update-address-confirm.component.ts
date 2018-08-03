@@ -1,37 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { DialogRef } from 'ngx-modialog'; 
-import { SetAddressConfirmRequest } from '@aens/models/setAddressConfirmRequest';
-import { DefaultModalContext } from '@app/shared/modals/models/default-modal-context.model';
+import { Component, OnInit } from "@angular/core";
+import { SetAddressConfirmRequest } from "@aens/models/setAddressConfirmRequest";
+import { ModalViewComponent, DialogRef } from "@aerum/ui";
 
 @Component({
-  selector: 'app-name-update-address-confirm',
-  templateUrl: './name-update-address-confirm.component.html',
-  styleUrls: ['./name-update-address-confirm.component.scss']
+  selector: "app-name-update-address-confirm",
+  templateUrl: "./name-update-address-confirm.component.html",
+  styleUrls: ["./name-update-address-confirm.component.scss"]
 })
-export class NameUpdateAddressConfirmComponent implements OnInit {
-
-  param: SetAddressConfirmRequest;
-
+export class NameUpdateAddressConfirmComponent
+  implements OnInit, ModalViewComponent<SetAddressConfirmRequest, any> {
   estimatedFeeInWei: number;
   maximumFeeInWei: number;
 
-  constructor(private dialog: DialogRef<DefaultModalContext>) {
-    if(dialog.context.param) {
-      this.param = dialog.context.param as SetAddressConfirmRequest;
-
-      this.estimatedFeeInWei = this.param.gasPrice * this.param.estimatedFeeInGas;
-      this.maximumFeeInWei = this.param.gasPrice * this.param.maximumFeeInGas;
-    }
-  }
+  constructor(public dialogRef: DialogRef<SetAddressConfirmRequest, any>) {}
 
   ngOnInit() {
+    this.estimatedFeeInWei = this.dialogRef.data.gasPrice * this.dialogRef.data.estimatedFeeInGas;
+    this.maximumFeeInWei = this.dialogRef.data.gasPrice * this.dialogRef.data.maximumFeeInGas;
   }
 
   accept() {
-    this.dialog.close({ accepted: true });
-  }
-
-  dismiss() {
-    this.dialog.close({ accepted: false });
+    this.dialogRef.close(null);
   }
 }

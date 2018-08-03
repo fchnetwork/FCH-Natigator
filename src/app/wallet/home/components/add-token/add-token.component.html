@@ -1,19 +1,22 @@
-<aer-modal-dialog >
-  <div class="add-token">
-    <h3 class="header">Add token</h3>
-    <app-divider></app-divider>
-    <form [formGroup]="addTokenForm" (ngSubmit)="onSubmit()">
-        <app-divider [showLine]="false" ></app-divider>
-        <aer-input placeholder="Token contract address" type="tokenAddress" formControlName="tokenAddress" [(ngModel)]="tokenAddress" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
-        <app-divider [showLine]="false" ></app-divider>
-        <aer-input placeholder="Token symbol" type="tokenSymbol" formControlName="tokenSymbol" [(ngModel)]="tokenSymbol" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
-        <app-divider [showLine]="false" ></app-divider>
-        <aer-input placeholder="Decimals of precision" type="decimals" formControlName="decimals" [(ngModel)]="decimals" ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
-        <app-divider [showLine]="false" ></app-divider>
-        <app-divider [showLine]="false" ></app-divider>
-        <aer-button class="large blue full-width" [ngClass]="{'disabled': !addTokenForm.valid}" type="submit" [disabled]="!addTokenForm.valid">Add</aer-button>
-        <app-divider [showLine]="false"></app-divider>
-        <aer-button class="large full-width" (buttonFn)="dismiss()">Close</aer-button>
-    </form>
+<form [formGroup]="addTokenForm" (ngSubmit)="onSubmit()">
+  <div aerRow>
+    <div aerColumn size="md-12">
+      <aer-input placeholder="Token contract address" type="tokenAddress" formControlName="tokenAddress" [(ngModel)]="tokenAddress"
+        ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
+    </div>
   </div>
-</aer-modal-dialog>
+  <div aerRow>
+    <div aerColumn size="md-12">
+      <aer-input placeholder="Token symbol" type="tokenSymbol" formControlName="tokenSymbol" [(ngModel)]="tokenSymbol" ngDefaultControl
+        equalValidator="confirmPassword" reverse="true"></aer-input>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="md-12">
+      <aer-input placeholder="Decimals of precision" type="decimals" formControlName="decimals" [(ngModel)]="decimals" ngDefaultControl
+        equalValidator="confirmPassword" reverse="true"></aer-input>
+    </div>
+  </div>
+  <aer-modal-button [isAcceptButton]="true" type="submit" [disabled]="!addTokenForm.valid">{{'BUTTONS.ADD' | translate}}</aer-modal-button>
+  <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{'BUTTONS.CLOSE' | translate}}</aer-modal-button>
+</form>

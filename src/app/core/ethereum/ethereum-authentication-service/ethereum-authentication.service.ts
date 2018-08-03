@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 import { environment } from "@env/environment";
 import Web3 from "web3";
-import * as CryptoJS from 'crypto-js';
 import { toChecksumAddress, addHexPrefix } from "ethereumjs-util";
 
 // TODO: Should be strongly typed
@@ -11,9 +10,9 @@ const bip39 = require("bip39");
 
 import { getCurrentProvider } from "@shared/helpers/web3-providers";
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { Cookie } from "ng2-cookies/ng2-cookies";
-import { SessionStorageService } from "ngx-webstorage";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
+import { StorageService } from "@core/general/storage-service/storage.service";
+import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
 
 declare const window: any;
 
@@ -25,34 +24,33 @@ export class EthereumAuthenticationService {
 
   constructor(
     private logger: LoggerService,
-    private sessionStorage: SessionStorageService
+    private storageService: StorageService,
+    private globalEventService: GlobalEventService
   ) {
     this.web3 = new Web3(environment.ethereum.endpoint);
     this.injectedWeb3 = this.loadInjectedWeb3();
   }
 
   private loadInjectedWeb3(): Promise<Web3> {
-    return new Promise((resolve, reject) => {
-
-      if (window.web3) {
-        this.logger.logMessage("Web3 is present");
-        resolve(new Web3(window.web3.currentProvider));
-        return;
+    return new Promise(async (resolve, reject) => {
+      if(environment.isMobileBuild) { 
+        this.logger.logMessage("Mobile build: Web3 is not provided!");
+        resolve(null);
+        return; // NO need for window 'load' since 'deviceready' have already fired.
       }
 
-      window.addEventListener('load', () => {
-        try {
-          if (!window.web3) {
-            this.logger.logMessage("Web3 is not provided!");
-            resolve(null);
-          } else {
-            this.logger.logMessage("Web3 is present");
-            resolve(new Web3(window.web3.currentProvider));
-          }
-        } catch (e) {
-          reject("Error while loading injected web3");
+      const windowLoaded = await this.globalEventService.isWindowLoaded();
+      if(windowLoaded) {
+        if (window.web3) {
+          this.logger.logMessage("Web3 is present");
+          resolve(new Web3(window.web3.currentProvider));
+        }else {
+          this.logger.logMessage("Web3 is not provided!");
+          resolve(null);
         }
-      });
+      } else {
+        reject("Error while loading injected web3");
+      }
     });
   }
 
@@ -74,16 +72,14 @@ export class EthereumAuthenticationService {
       return null;
     }
 
-    const accounts = this.sessionStorage.retrieve('ethereum_accounts') as EthereumAccount[] || [];
+    const accounts = this.storageService.getSessionData('ethereum_accounts') as EthereumAccount[] || [];
     return accounts.find(account => account.address === address);
   }
 
   saveEthereumAccounts(accounts: EthereumAccount[]): void {
-    const password = this.sessionStorage.retrieve('password');
     const stringAccounts = JSON.stringify(accounts);
-    const encryptedAccounts = CryptoJS.AES.encrypt(stringAccounts, password);
-    Cookie.set('ethereum_accounts', encryptedAccounts, 7, "/", environment.cookiesDomain);
-    this.sessionStorage.store('ethereum_accounts', accounts);
+    this.storageService.setCookie('ethereum_accounts', stringAccounts, true, 7);
+    this.storageService.setSessionData('ethereum_accounts', accounts);
   }
 
   generateAddressFromSeed(seed: string): EthereumAccount {

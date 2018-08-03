@@ -1,13 +1,41 @@
-@import './colors.scss';
-@import './common/common.scss';
-@import './account/account.scss';
-@import './contract/contract.scss';
-@import './ens/ens.scss';
-@import './exchange/exchange.scss';
-@import './kyc/kyc.scss';
-@import './staking/staking.scss';
-@import './swap/swap.scss';
-@import './transaction/transaction.scss';
-@import './explorer/explorer.scss';
-@import './settings/settings.scss';
-@import './dashboard/dashboard.scss';
+@import "./colors.scss";
+@import "./common/common.scss";
+@import "./account/account.scss";
+@import "./contract/contract.scss";
+@import "./ens/ens.scss";
+@import "./exchange/exchange.scss";
+@import "./kyc/kyc.scss";
+@import "./staking/staking.scss";
+@import "./swap/swap.scss";
+@import "./transaction/transaction.scss";
+@import "./explorer/explorer.scss";
+@import "./settings/settings.scss";
+@import "./dashboard/dashboard.scss";
+
+/* GLOBAL STYLES */
+
+.table-simple {
+  display: table;
+  width: 100%;
+
+  // ROW
+  & > div {
+    display: table-row;
+  }
+
+  // CELL
+  & > div > div {
+    display: table-cell;
+    padding-bottom: 15px;
+
+    &:first-child {
+      text-align: left;
+      padding-right: 20px;
+    }
+
+    &:last-child {
+      text-align: right;
+      word-break: break-all;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { EthereumAuthenticationService } from './ethereum-authentication.service';
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { SessionStorageService } from "ngx-webstorage";
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 describe('EthereumAuthenticationService', () => {
   beforeEach(() => {
@@ -10,7 +10,7 @@ describe('EthereumAuthenticationService', () => {
       providers: [
         EthereumAuthenticationService,
         { provide: LoggerService, useValue: jest.fn() },
-        { provide: SessionStorageService, useValue: jest.fn() },
+        { provide: StorageService, useValue: jest.fn() },
       ]
     });
   });

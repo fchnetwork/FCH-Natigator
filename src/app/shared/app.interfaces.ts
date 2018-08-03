@@ -4,7 +4,7 @@ export interface selectedSeedPhrase {
 }
 
 export interface iBlocks {
-    "difficulty": string;
+    "difficulty": number;
     "extraData": string;
     "gasLimit": number;
     "gasUsed": number;
@@ -19,14 +19,12 @@ export interface iBlocks {
     "sha3Uncles": string;
     "size": number;
     "stateRoot": string;
-    "timestamp": 1520373465;
-    "totalDifficulty": "102723";
+    "timestamp": number;
+    "totalDifficulty": number;
     "transactions": [any];
     "transactionsRoot": string;
     "uncles": [any];
   }
-
-  
 
 
   export interface iTransaction {
@@ -35,7 +33,7 @@ export interface iBlocks {
     "blockNumber":number;
     "from": string;
     "gas":number;
-    "gasPrice": string;
+    "gasPrice": number;
     "hash": string;
     "input": string;
     "nonce": number;
@@ -46,29 +44,47 @@ export interface iBlocks {
     "r": string;
     "s": string;
     "data": string;
+    "gasUsedinTxn": number;
   }
 
 
 
   export interface iPendingTxn {
-    "blockHash": string; 
-    "from": string; 
-    "to": string; 
+    "blockHash": string;
+    "from": string;
+    "to": string;
     "gas": string;
     "gasPrice": string;
     "hash": string;
-    "nonce": number; 
+    "nonce": number;
     "transactionIndex": string;
-    "value": string; 
+    "value": string;
   }
 
-
+  export enum TransactionStatus {
+    PendingContract = 'Contract execution(pending)',
+    Pending = 'Pending transaction',
+    Successfull = 'Successful transaction',
+    Failed = 'Failed transaction'
+  }
 
   export interface iToken {
     "address": string,
     "symbol": string,
     "decimals": string,
     "balance": string
+  }
+
+  export interface iFullBackup {
+    'aerum_base': string,
+    'aerum_keyStore': string,
+    'tokens': string,
+    'ethereum_tokens': string,
+    'transactions': string,
+    'settings': string,
+    'ethereum_accounts': string,
+    'cross_chain_swaps': string
+    'stakings': string
   }
 
   export interface iSettings {

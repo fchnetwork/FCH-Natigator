@@ -1,0 +1,33 @@
+<div class="ethereum-wallet-account-container">
+  <div aerRow *ngIf="injectedWeb3">
+    <div aerColumn size="sm-12">
+      {{'STAKING.ETHEREUM_WALLET_ACCOUNT.FIELD_SELECT_WALLET'|translate}}
+    </div>
+  </div>
+  <div aerRow *ngIf="injectedWeb3">
+    <div aerColumn size="sm-12">
+      <aer-radio-group>
+        <aer-radio-button [value]="walletTypes.Injected" (change)="onWalletSelect($event)">{{injectedWeb3Name}}</aer-radio-button>
+        <aer-radio-button [value]="walletTypes.Imported" (change)="onWalletSelect($event)" [checked]="true">{{'STAKING.ETHEREUM_WALLET_ACCOUNT.FIELD_STORED_KEYS'|translate}}</aer-radio-button>
+      </aer-radio-group>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12">
+      {{'STAKING.ETHEREUM_WALLET_ACCOUNT.FIELD_FROM'|translate}}
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12">
+      <aer-select [(ngModel)]="address" icon="key"
+          (ngModelChange)="onAddressChange()" placeholder="{{'STAKING.ETHEREUM_WALLET_ACCOUNT.PLACEHOLDER_SELECT_ACCOUNT'|translate}}">
+        <aer-select-option *ngFor="let item of addresses;" [value]="item">
+          <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
+        </aer-select-option>
+        <aer-select-option *ngIf="walletTypes.Imported === selectedWalletType"><span>{{'STAKING.ETHEREUM_WALLET_ACCOUNT.OPTION_ADD_ACCOUNT'|translate}}</span></aer-select-option>
+      </aer-select>
+    </div>
+  </div>
+  <app-ethereum-wallet-account-import *ngIf="importInProgress" [storedAccounts]="storedAccounts" (importedAccountCreated)="storeImportedAccount($event)"></app-ethereum-wallet-account-import>
+</div>
+

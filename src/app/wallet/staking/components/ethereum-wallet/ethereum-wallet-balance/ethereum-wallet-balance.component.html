@@ -1,0 +1,27 @@
+<div class="ethereum-wallet-balance-container">
+  <div aerRow>
+    <div aerColumn size="sm-12">
+      {{'STAKING.ETHEREUM_WALLET_BALANCE.FIELD_BALANCE'|translate}}
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12">
+      <div class="table-simple">
+        <div>
+          <div class="currency">ETH</div>
+          <div>{{ ethereumBalance | convertToEther | number:'1.2-5' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12">
+      <div class="table-simple">
+        <div>
+          <div class="currency">XRM</div>
+          <div>{{ aerumBalance | number:'1.2-5' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

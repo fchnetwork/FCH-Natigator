@@ -28,7 +28,7 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
     this.idle.onTimerStart().subscribe(count => {});
 
     this.idle.onTimeout().subscribe( () => {
-      this.idle.stopWatching()
+      this.idle.stopWatching();
       this.logout();
     });
 
@@ -42,7 +42,10 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
       })
       .mergeMap(route => route.data)
       .subscribe(currentData => {
-        if (currentData && currentData.sidebarGroup) {
+        if(this.sidebar.isToggled) {
+          this.sidebar.toggleSidebar();
+        }
+        if (currentData && currentData.sidebarGroup) { 
           this.viewLoaded$.subscribe(w => {
             this.sidebar.toggleGroup(currentData.sidebarGroup);
             this.viewLoaded$.complete();

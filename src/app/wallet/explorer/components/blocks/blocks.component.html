@@ -5,6 +5,7 @@
             <aer-table [data]="blocks" [paginator]="false">
                 <ng-template aerTemplate="header">
                     <th sortable id="id" class="">{{'HEIGHT'|translate}}</th>
+                    <th id="lastSeen" class="">{{ 'COMPOSER'| translate}}</th>                    
                     <th id="lastSeen" class="">{{'AGE'|translate}}</th>
                     <th sortable id="gas" class="">{{'TXN'|translate}}</th>
                     <th id="gasPrice" class="">{{'GAS_USED'|translate}}</th>
@@ -13,6 +14,7 @@
                 <ng-template aerTemplate="body" let-block>
                     <tr>
                         <td class="link hash" (click)="openBlock(block)">{{block.number}}</td>
+                        <td>{{block | getBlockSigner }}</td>
                         <td class="age">{{ block.timestamp | transactionTimeAgo }}</td>
                         <td>{{block.transactions.length}}</td>
                         <td>{{block.gasUsed}}</td>

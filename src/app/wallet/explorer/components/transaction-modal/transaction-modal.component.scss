@@ -1,0 +1,16 @@
+.transaction-modal {
+  .title,
+  .link,
+  .aer-small,
+  .age {
+    text-align: center;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .link {
+    color: #458cc9;
+    cursor: pointer;
+  }
+}

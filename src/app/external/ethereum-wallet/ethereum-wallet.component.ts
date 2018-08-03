@@ -7,8 +7,7 @@ import { environment } from "@env/environment";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { Token } from "@core/transactions/token-service/token.model";
-
-import { SessionStorageService } from "ngx-webstorage";
+import { StorageService } from "@core/general/storage-service/storage.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
@@ -62,7 +61,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private logger: LoggerService,
     private notificationService: InternalNotificationService,
-    private sessionStorageService: SessionStorageService,
+    private storageService: StorageService,
     private authenticationService: AuthenticationService,
     private ethereumAuthenticationService: EthereumAuthenticationService,
     private ethereumTokenService: EthereumTokenService
@@ -99,13 +98,13 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     }
     this.isValidNetwork = environment.ethereum.chainId === netId;
     if(!this.isValidNetwork) {
-    this.notificationService.showMessage(`Please select Rinkeby network in your ${provider} wallet.`, 'Error');
+      this.notificationService.showMessage(`Please select Rinkeby network in your ${provider} wallet.`, 'Error');
     }
   }
 
   private async initPredefinedAccount() {
     this.web3 = this.ethereumAuthenticationService.getWeb3();
-    this.storedAccounts = this.sessionStorageService.retrieve('ethereum_accounts') as EthereumAccount[] || [];
+    this.storedAccounts = this.storageService.getSessionData('ethereum_accounts') as EthereumAccount[] || [];
     if (!this.storedAccounts.length) {
       this.generatePredefinedAccount();
     } else {
@@ -120,7 +119,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
 
   private generatePredefinedAccount(): void {
     try {
-      const seed = this.sessionStorageService.retrieve('seed');
+      const seed = this.storageService.getSessionData('seed');
       if (seed) {
         const predefinedAccount = this.ethereumAuthenticationService.generateAddressFromSeed(seed);
         this.storeAndSelectNewImportedAccount(predefinedAccount);

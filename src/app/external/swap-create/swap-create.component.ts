@@ -30,6 +30,8 @@ import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-ser
 import { OpenErc20SwapService } from "@core/swap/cross-chain/open-erc20-swap-service/open-erc20-swap.service";
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { SwapLocalStorageService } from "@core/swap/cross-chain/swap-local-storage/swap-local-storage.service";
+import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
+import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
 
 @Component({
   selector: 'app-swap-create',
@@ -44,6 +46,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   secret: string;
   amount: number;
+  aerAmount: number;
 
   tokens = [];
   selectedToken: Token;
@@ -59,6 +62,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   walletTokenSymbol: string;
 
   openSwapTransactionExplorerUrl: string;
+  approveTokenTransactionExplorerUrl: string;
 
   processing = false;
   canCreateSwap = false;
@@ -78,13 +82,17 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private etherSwapService: OpenEtherSwapService,
     private erc20SwapService: OpenErc20SwapService,
     private ethereumTokenService: EthereumTokenService,
-    private swapLocalStorageService: SwapLocalStorageService
-  ) { }
+    private swapLocalStorageService: SwapLocalStorageService,
+    private authService: AuthenticationService,
+    private transactionService: TransactionService) { }
 
   async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
     this.ethWeb3 = this.ethereumAuthService.getWeb3();
     this.secret = Guid.newGuid().replace(/-/g, '');
+
+    const keystore = await this.authService.showKeystore();
+    this.aerAmount = await this.transactionService.checkBalance(keystore.address);
   }
 
   async init(param) {
@@ -237,7 +245,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   canMoveNext(): boolean {
-    return this.canCreateSwap && !this.swapCreated && !this.processing && (this.amount > 0);
+    return this.canCreateSwap && !this.swapCreated && !this.processing && (this.amount > 0) && (this.aerAmount > 0);
   }
 
   async next() {
@@ -260,6 +268,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
   async openSwap() {
     this.openSwapTransactionExplorerUrl = null;
+    this.approveTokenTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
     const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
@@ -267,6 +276,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
 
     const options = {
       hashCallback: (txHash) => this.onOpenSwapHashReceived(txHash, hash),
+      approveCallback: (txHash) => this.onApproveTokenHashReceived(txHash),
       account: this.params.account,
       wallet: this.params.wallet
     };
@@ -289,12 +299,19 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     return Math.ceil((new Date().getTime() / 1000) + timeoutInSeconds);
   }
 
+  private onApproveTokenHashReceived(txhash: string): void {
+    this.notificationService.showMessage(`Approving ${this.params.symbol} token allowance...`, 'In progress');
+    this.approveTokenTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Ethereum);
+  }
+
   private onOpenSwapHashReceived(txhash: string, hash: string): void {
+    this.notificationService.showMessage('Opening deposit swap...', 'In progress');
     this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Ethereum);
 
     const localSwap: SwapReference = {
       hash,
       secret: this.secret,
+      opened: Date.now(),
       account: this.params.account,
       walletType: this.params.wallet,
       walletTokenAddress: this.params.token,
@@ -306,6 +323,13 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.swapLocalStorageService.storeSwapReference(localSwap);
     this.swapCreated = true;
     this.logger.logMessage(`Deposit swap ${hash} created`);
+  }
+
+  explorerLink(link) {
+    window.open(
+      link,
+      '_blank'
+    );
   }
 
   cancel() {

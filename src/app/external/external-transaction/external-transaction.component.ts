@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SessionStorageService } from 'ngx-webstorage';
+import { StorageService } from "@core/general/storage-service/storage.service";
 
 import { Token } from "@core/transactions/token-service/token.model";
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
@@ -9,6 +9,7 @@ import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.s
 import { TokenService } from '@app/core/transactions/token-service/token.service';
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
+import { AddressKeyValidationService } from '@app/core/validation/address-key-validation.service';
 
 @Component({
   selector: 'app-external-transaction',
@@ -49,6 +50,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   query: string;
   proceedAvailable: boolean = false;
   depositMore: boolean = false;
+  privateKeyToImport: string;
 
   tokens: any;
 
@@ -57,11 +59,12 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router,
-    private sessionStorageService: SessionStorageService,
+    private storageService: StorageService,
     private transactionService: TransactionService,
     private tokenService: TokenService,
     private nameService: AerumNameService,
     private notificationMessagesService: NotificationMessagesService,
+    private addressKeyvalidation: AddressKeyValidationService
   ) {
     this.prepareData();
   }
@@ -87,8 +90,8 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
             this.nameService.safeResolveNameOrAddress(parsed.tokenAddress ? parsed.tokenAddress : this.tokenAddress)
           ]);
           this.receiverAddressShort = this.cropAddress(this.receiverAddressHex);
-          this.senderAddressShort = this.cropAddress(this.sessionStorageService.retrieve('acc_address'));
-          this.senderAddress = this.sessionStorageService.retrieve('acc_address');
+          this.senderAddressShort = this.cropAddress(this.storageService.getSessionData('acc_address'));
+          this.senderAddress = this.storageService.getSessionData('acc_address');
           this.senderAvatar = this.authService.generateCryptedAvatar(this.senderAddress);
           this.receiverAvatar = this.authService.generateCryptedAvatar(this.receiverAddressHex);
           this.amount = parsed.amount;
@@ -96,10 +99,14 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
 
           this.isToken = (!parsed.tokenAddress || parsed.tokenAddress === "0x0") ? false : true;
 
+          if(parsed.privateKey && this.addressKeyvalidation.isPrivateKey(parsed.privateKey)) {
+            this.privateKeyToImport = parsed.privateKey;
+          }
+
           this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
           this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
           await this.prepareMessages();
-          
+
           if (this.isToken) {
             this.getTokenInfo();
           } else {
@@ -132,7 +139,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
 
   async accept() {
     const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
-    const privateKey = this.sessionStorageService.retrieve('private_key');
+    const privateKey = this.storageService.getSessionData('private_key');
     const urls = {
       failed: this.returnUrlFailed,
       success: this.redirectUrl,
@@ -192,7 +199,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     }
     return false;
   }
-  
+
   async getTokenInfo() {
     this.tokenInfo = this.checkTokenCookies(this.tokenAddress);
     console.log(this.tokenInfo);
@@ -212,7 +219,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   }
 
   getBalance() {
-    if(!this.isToken) {
+    if (!this.isToken) {
       this.transactionService.checkBalance(this.senderAddress).then((res) => {
         this.balance = res;
         this.proceedAvailable = (this.balance <= this.amount) ? false : true;
@@ -225,6 +232,9 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
         this.depositMore = (this.balance < this.amount || !this.currency) ? true : false;
       });
     }
+  }
+
+  preparePaperWallet(privateKey: string) {
 
   }
 

@@ -1,12 +1,111 @@
-.settings--form {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.settings {
+    background: #dde0e6;
+	width: 100%;
+	position: relative;
+	min-height: 800px;
+    box-shadow: 0 0 2px 0 rgba(9,30,66,.25);
 
-    .vertical--container {
-        &.save--button {
-            align-self: end;
-        }
+    & > .settings__tab {
+		cursor: pointer;
+
+		& > aer-icon {
+			color: #42526e;
+			position: absolute;
+			margin-top: -40px;
+			padding: 0 20px;
+			font-size: 20px;
+			transition: all .5s;
+		}
+
+		& > span {
+			background: #DDE0E6;
+			display: block;
+			width: 200px;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			z-index: 9;
+			color: #42526e;
+		}
+
+		&--selected {
+			& > span {
+				background: #fff;
+				transition: all .5s;
+
+				& + aer-icon {
+					color: #0052CC;
+				}
+			}
+		}
+	}
+
+	&__tab-content {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: calc(100% - 200px);
+		height: 100%;
+		overflow-y: auto;
+		background-color: #fff;
+
+		& > section {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			padding: 20px; 
+		}
+	}
+    
+    &__form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
+
+    &__save-button {
+        align-self: end;
+    }
+
+    &-ethereum-wallet {
+		&__injected {
+			display: flex;
+			justify-content: start;
+		}
+
+		&__balance {
+			display: flex;
+			justify-content: space-between;
+		}
+		&__addressQR {
+			text-align: center;
+		}
+		&__label {
+			text-align: left;
+			margin-right: 14px;
+		}
+        &__address-option {
+			.aer-radio {
+				margin-top: 0;
+			}
+		}
+    }
+}
+
+@media only screen and (max-width: 641px) {
+	.settings {
+		& > .settings__tab {
+			& > span {
+				width: 60px;
+				height: 60px;
+				filter: alpha(opacity=0);
+				opacity: 0;
+			}
+		}
+
+		&__tab-content {
+			width: calc(100% - 60px);
+		}
+	}
 }

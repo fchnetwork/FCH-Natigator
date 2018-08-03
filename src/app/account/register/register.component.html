@@ -4,7 +4,7 @@
         <app-divider></app-divider>
         <p class="aer-small paragraph">
             {{ 'ACCOUNT.REGISTER.SUBTITLE_1' | translate }}
-            <a data-cy="restore" routerLink="/account/restore">{{ 'ACCOUNT.REGISTER.RESTORE_LINK' | translate }}</a>
+            <a data-cy="restore" [routerLink]="['/account/restore']" [queryParams]="returnUrl ? {returnUrl: returnUrl} : null">{{ 'ACCOUNT.REGISTER.RESTORE_LINK' | translate }}</a>
             {{ 'ACCOUNT.REGISTER.SUBTITLE_2' | translate }}
         </p>
         <app-divider></app-divider>

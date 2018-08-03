@@ -1,25 +1,14 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef,
-  OnDestroy,
-  style,
-  trigger,
-  state,
-  transition,
-  animate,
-  ViewChild
-} from "@angular/core";
+import { selectedSeedPhrase } from './../../shared/app.interfaces';
+import { QrScannerService } from "./../../core/general/qr-scanner/qr-scanner.service";
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs/Subject";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { PasswordCheckerService } from "@app/core/authentication/password-checker-service/password-checker.service";
-import { SessionStorageService } from "ngx-webstorage";
 import { StorageService } from "@core/general/storage-service/storage.service";
-import { RouteDataService } from "@app/core/general/route-data-service/route-data.service";
-import { QrRouteData } from "@app/account/qr-scan/qr-route-data.model";
 import { SettingsService } from "@core/settings/settings.service";
+import { NotificationMessagesService } from "@core/general/notification-messages-service/notification-messages.service";
 
 @Component({
   selector: "app-restore-account",
@@ -34,6 +23,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
   componentDestroyed$: Subject<boolean> = new Subject();
   step = "step_1";
   seedFileText: string;
+  returnUrl: string;
   passwordStrength = {
     strength: "",
     class: ""
@@ -45,15 +35,12 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     public formBuilder: FormBuilder,
     public cd: ChangeDetectorRef,
     public passCheckService: PasswordCheckerService,
-    public sessionStorage: SessionStorageService,
     private storageService: StorageService,
-    public routeDataSerice: RouteDataService<QrRouteData>,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    public route: ActivatedRoute,
+    private notificationMessagesService: NotificationMessagesService,
+    private qrScanner: QrScannerService
   ) {
-    if(this.routeDataSerice.hasData()) {
-      this.seedFileText = this.routeDataSerice.routeData.qrCode;
-      this.routeDataSerice.clear();
-    }
   }
 
   openBackupFile(event, type) {
@@ -69,56 +56,46 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
         for (let index = 0; index < input.files.length; index++) {
           const reader: any = new FileReader();
           reader.onload = () => {
+            this.cleanOrSetDefaultCookies();
             if (type === "seed") {
               if (reader.result.split(" ").length === 12) {
                 this.seedFileText = reader.result;
                 this.recoverForm.controls["seed"].setValue(this.seedFileText);
+              } else {
+                this.notificationMessagesService.wrongSeedFile();
               }
             } else if (type === "full") {
-              const results = JSON.parse(reader.result);
-              this.cleanOrSetDefaultCookies();
-              this.storageService.setCookie(
-                "aerum_base",
-                results.aerumBase,
-                false,
-                7
-              );
-              this.storageService.setCookie(
-                "aerum_keyStore",
-                results.aerumKeyStore,
-                false,
-                7
-              );
-              this.storageService.setCookie("tokens", results.tokens, false, 7);
-              this.storageService.setCookie(
-                "transactions",
-                results.transactions,
-                false,
-                7
-              );
-              this.storageService.setCookie(
-                "settings",
-                results.settings,
-                false,
-                3650
-              );
-              this.storageService.setCookie(
-                "ethereum_accounts",
-                results.ethereumAccounts,
-                false,
-                7
-              );
-              this.storageService.setCookie(
-                "cross_chain_swaps",
-                results.crossChainSwaps,
-                false,
-                7
-              );
-              this.router.navigate(["/account/unlock"]);
+              try {
+                const results = JSON.parse(reader.result);
+                for (var key in results) {
+                  let expiration = 7;
+                  if (key === "settings") {
+                    expiration = 3650;
+                  }
+                  this.storageService.setCookie(
+                    key,
+                    results[key],
+                    false,
+                    expiration
+                  );
+                }
+                const urlQueryParams =
+                  this.returnUrl == null ? {} : { returnUrl: this.returnUrl };
+                const redirectUrl = this.router.createUrlTree(
+                  ["/account/unlock"],
+                  { queryParams: urlQueryParams }
+                );
+
+                this.router.navigateByUrl(redirectUrl.toString());
+              } catch (e) {
+                this.notificationMessagesService.wrongBackupFile();
+              }
             }
           };
           reader.readAsText(input.files[index]);
         }
+      } else {
+        this.notificationMessagesService.fileNotSupported();
       }
     }
   }
@@ -127,18 +104,21 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     this.storageService.setCookie("aerum_base", null, false, 7);
     this.storageService.setCookie("aerum_keyStore", null, false, 7);
     this.storageService.setCookie("tokens", null, false, 7);
+    this.storageService.setCookie("ethereum_tokens", null, false, 7);
     this.storageService.setCookie("transactions", null, false, 7);
     this.storageService.setCookie("ethereum_accounts", null, false, 7);
     this.storageService.setCookie("cross_chain_swaps", null, false, 7);
+    this.storageService.setCookie("stakings", null, false, 7);
     this.settingsService.setDefaultSettings();
   }
 
   ngOnInit() {
+    this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || null;
     this.recoverForm = this.formBuilder.group(
       {
         seed: ["", [Validators.required]],
         // password: [ "", [Validators.required, Validators.minLength(10), PasswordValidator.number, PasswordValidator.upper, PasswordValidator.lower ] ],
-        password: ["", [Validators.required]],
+        password: ["", [Validators.required, Validators.minLength(8)]],
         confirmpassword: ["", [Validators.required]]
       },
       {
@@ -196,15 +176,22 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
       );
       this.storageService.setSessionData("transactions", []);
       this.storageService.setSessionData("tokens", []);
+      this.storageService.setSessionData("ethereum_tokens", []);
       this.storageService.setSessionData("ethereum_accounts", []);
       this.storageService.setSessionData("cross_chain_swaps", []);
+      this.storageService.setSessionData("stakings", []);
 
       this.authServ.saveKeyStore(
         this.private,
         this.recoverForm.value.password,
         this.recoverForm.value.seed
       );
-      this.router.navigate(["/wallet/home"]); // improvements need to be made here but for now the auth guard should work just fine
+
+      if (this.returnUrl == null) {
+        this.router.navigate(["/"]); // improvements need to be made here but for now the auth guard should work just fine
+      } else {
+        this.router.navigateByUrl(this.returnUrl);
+      }
     }
   }
 
@@ -217,7 +204,19 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     this.passwordStrength = this.passCheckService.checkPassword(event);
   }
 
-  scanQr() {
-    this.router.navigate(['/account/restore/qr-code']);
+  async scanQr() {
+    const scannerResult = await this.qrScanner.scanQrCode(
+      "ACCOUNT.RESTORE.QR_SCANNER_TEXT",
+      qrCode => {
+        return {
+          valid: qrCode.split(" ").length === 12,
+          errorMessageResourceName: "ACCOUNT.RESTORE.QR_SCANNER_ERROR"
+        };
+      }
+    );
+
+    if(scannerResult.scanSuccessful) {
+      this.seedFileText = scannerResult.result;
+    }
   }
 }
