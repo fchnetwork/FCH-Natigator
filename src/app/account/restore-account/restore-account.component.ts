@@ -1,14 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from "@angular/core";
 
-import { environment } from '@env/environment';
-
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs/Subject";
-import { TranslateService } from "@ngx-translate/core";
-import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 import { QrScannerService } from "./../../core/general/qr-scanner/qr-scanner.service";
-import { MobileQrScannerService } from "@app/core/general/mobile-qr-scanner/mobile-qr-scanner.service";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { PasswordCheckerService } from "@app/core/authentication/password-checker-service/password-checker.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
@@ -44,10 +39,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     private settingsService: SettingsService,
     public route: ActivatedRoute,
     private notificationMessagesService: NotificationMessagesService,
-    private qrScanner: QrScannerService,
-    private mobileQrScanner: MobileQrScannerService,
-    private translateService: TranslateService,
-    private notificationService: InternalNotificationService
+    private qrScanner: QrScannerService
   ) {
   }
 
@@ -213,14 +205,6 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
   }
 
   async scanQr() {
-    if(environment.isMobileBuild) {
-      await this.scanQrCodeFromMobile();
-    } else {
-      await this.scanQrCodeFromWeb();
-    }
-  }
-
-  async scanQrCodeFromWeb() {
     const scannerResult = await this.qrScanner.scanQrCode(
       "ACCOUNT.RESTORE.QR_SCANNER_TEXT",
       qrCode => {
@@ -234,15 +218,5 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     if(scannerResult.scanSuccessful) {
       this.seedFileText = scannerResult.result;
     }
-  }
-
-  async scanQrCodeFromMobile() {
-    const result = await this.mobileQrScanner.scanQrCode();
-    if(result.split(" ").length !== 12) {
-      const msg = this.translateService.instant("ACCOUNT.RESTORE.QR_SCANNER_ERROR");
-      this.notificationService.showMessage(msg, "Error");
-      return;
-    }
-    this.seedFileText = result;
   }
 }

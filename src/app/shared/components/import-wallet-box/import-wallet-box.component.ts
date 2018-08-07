@@ -1,14 +1,10 @@
 import { Component, OnInit, Input } from "@angular/core";
 
-import { environment } from '@env/environment';
 import "rxjs/add/operator/first";
 
-import { TranslateService } from "@ngx-translate/core";
 import { AddressKeyValidationService } from "@app/core/validation/address-key-validation.service";
 import { ImportWalletService } from "@app/core/transactions/import-wallet-service/import-wallet.service";
 import { QrScannerService } from "./../../../core/general/qr-scanner/qr-scanner.service";
-import { MobileQrScannerService } from "@app/core/general/mobile-qr-scanner/mobile-qr-scanner.service";
-import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
 
 @Component({
   selector: "app-import-wallet-box",
@@ -21,10 +17,7 @@ export class ImportWalletBoxComponent implements OnInit {
   constructor(
     private addressKeyValidator: AddressKeyValidationService,
     private importWalletService: ImportWalletService,
-    private qrScanner: QrScannerService,
-    private mobileQrScanner: MobileQrScannerService,
-    private translateService: TranslateService,
-    private notificationService: InternalNotificationService
+    private qrScanner: QrScannerService
   ) {}
 
   ngOnInit() {}
@@ -34,14 +27,6 @@ export class ImportWalletBoxComponent implements OnInit {
   }
 
   async scanQrCode() {
-    if(environment.isMobileBuild){
-      await this.scanQrCodeFromMobile();
-    } else {
-      await this.scanQrCodeFromWeb();
-    }
-  }
-
-  async scanQrCodeFromWeb() {
     const scannerResult = await this.qrScanner.scanQrCode("SHARED.IMPORT_WALLET.QR_CODE_TEXT", qrCode => {
       return {
         valid: this.addressKeyValidator.isPrivateKey(qrCode),
@@ -52,16 +37,6 @@ export class ImportWalletBoxComponent implements OnInit {
     if(scannerResult.scanSuccessful) {
       this.privateKey = scannerResult.result;
     }
-  }
-
-  async scanQrCodeFromMobile() {
-    const result = await this.mobileQrScanner.scanQrCode();
-    if(!this.addressKeyValidator.isPrivateKey(result)) {
-      const msg = this.translateService.instant("SHARED.IMPORT_WALLET.QR_CODE_ERROR");
-      this.notificationService.showMessage(msg, "Error");
-      return;
-    }
-    this.privateKey = result;
   }
 
   importWallet() {
