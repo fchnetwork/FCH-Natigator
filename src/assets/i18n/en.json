@@ -215,7 +215,9 @@
       "TITLE": "QR Scanner",
       "NO_CAMERAS": "No cameras have been detected.",
       "NO_PERMISSIONS":
-        "You need to grant AERUM a permission to access your camera."
+        "You need to grant AERUM a permission to access your camera.",
+      "QR_CODE_SCANNING_CANCELLED": "QR code scanning cancelled.",
+      "QR_CODE_SCANNING_FAILED": "QR code scanning failed:"
     }
   },
 
