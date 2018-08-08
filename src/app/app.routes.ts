@@ -15,21 +15,17 @@ const ROUTES = [
   // TO PREVENT LAZY LOADING OF COMPONENTS ACCESSIBLE IMMEDIATELY AFTER LOAD
   {
     path: 'account',
-    loadChildren: () => AccountModule
+    loadChildren: 'app/account/account.module#AccountModule'
   },
   {
     path: 'wallet',
     canActivate: [AuthenticationGuard],
-    loadChildren: () => WalletModule
+    loadChildren: 'app/wallet/wallet.module#WalletModule'
   },
   {
     path: 'external',
     canActivate: [AuthenticationGuard],
-    loadChildren: () => ExternalModule
-  },
-  {
-    path: 'qr',
-    component: QrScannerComponent
+    loadChildren: 'app/external/external.module#ExternalModule'
   },
   {
     path: '**',

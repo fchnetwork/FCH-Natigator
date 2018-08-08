@@ -20,7 +20,7 @@
   <div aerRow>
     <div aerColumn size="sm-12">
       <aer-select [(ngModel)]="address" icon="key"
-          (ngModelChange)="onAddressChange($event)" placeholder="{{'STAKING.ETHEREUM_WALLET_ACCOUNT.PLACEHOLDER_SELECT_ACCOUNT'|translate}}">
+          (ngModelChange)="onAddressChange()" placeholder="{{'STAKING.ETHEREUM_WALLET_ACCOUNT.PLACEHOLDER_SELECT_ACCOUNT'|translate}}">
         <aer-select-option *ngFor="let item of addresses;" [value]="item">
           <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
         </aer-select-option>

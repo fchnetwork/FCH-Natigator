@@ -48,7 +48,9 @@ import { QrScannerComponent } from '@app/shared/components/qr-scanner/qr-scanner
 
 @NgModule({
   entryComponents: [
-    FromToAvatarComponent
+    FromToAvatarComponent,
+    QrScannerComponent,
+    QrScannerVideoComponent
   ],
   imports: [
     CommonModule,

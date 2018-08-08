@@ -18,14 +18,6 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, prefix, '.json');
 }
 
-
-class MyErrorHandler implements ErrorHandler {
-  handleError(error) {
-    console.log('Router Error');
-    console.log(error);
-  }
-}
-
 @NgModule({
   imports: [
     CommonModule,
@@ -48,7 +40,7 @@ class MyErrorHandler implements ErrorHandler {
   declarations: [
     AppComponent
   ],
-  providers: [{provide: ErrorHandler, useClass: MyErrorHandler}],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

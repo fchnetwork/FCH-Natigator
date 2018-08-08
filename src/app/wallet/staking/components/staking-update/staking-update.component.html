@@ -30,7 +30,7 @@
     <div aerRow>
       <div aerColumn size="sm-12">
         <aer-select [(ngModel)]="accountAddress" icon="key"
-          (ngModelChange)="onAccountAddressChange($event)" placeholder="{{'STAKING.UPDATE.PLACEHOLDER_SELECT_ACCOUNT'|translate}}">
+          (ngModelChange)="onAccountAddressChange()" placeholder="{{'STAKING.UPDATE.PLACEHOLDER_SELECT_ACCOUNT'|translate}}">
           <aer-select-option *ngFor="let item of accountAddresses;" [value]="item">
             <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
           </aer-select-option>
@@ -56,7 +56,7 @@
     </div>
     <div aerRow *ngIf="increaseStakingInProgress">
       <div aerColumn size="xs-6">
-        <aer-button *ngIf="increaseTransactionExplorerUrl" (buttonFn)="explorerLink(increaseTransactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.UPDATE.OPEN_INCREASE_TX_IN_EXPLORER'|translate}}</aer-button> 
+        <aer-button *ngIf="increaseTransactionExplorerUrl" (buttonFn)="explorerLink(increaseTransactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.UPDATE.OPEN_INCREASE_TX_IN_EXPLORER'|translate}}</aer-button>
         <span>&nbsp;</span>
       </div>
       <div aerColumn size="xs-6" class="loader">
@@ -72,7 +72,7 @@
       <div aerColumn size="sm-12" class="cell">
         <aer-input (buttonFn)="decreaseStaking()"
                     [(ngModel)]="decreaseAmount"
-                    (ngModelChange)="onDecreaseAmountChange($event)"
+                    (ngModelChange)="onDecreaseAmountChange()"
                     class="with-button"
                     [ngClass]="{ 'blue': canDecreaseStaking(), 'grey': !canDecreaseStaking() }"
                     placeholder="{{'STAKING.UPDATE.FIELD_ENTER_AMOUNT'|translate}}"
@@ -82,7 +82,7 @@
     </div>
     <div aerRow *ngIf="decreaseStakingInProgress">
       <div aerColumn size="xs-6">
-        <aer-button *ngIf="decreaseTransactionExplorerUrl" (buttonFn)="explorerLink(decreaseTransactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.UPDATE.OPEN_DECREASE_TX_IN_EXPLORER'|translate}}</aer-button> 
+        <aer-button *ngIf="decreaseTransactionExplorerUrl" (buttonFn)="explorerLink(decreaseTransactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.UPDATE.OPEN_DECREASE_TX_IN_EXPLORER'|translate}}</aer-button>
         <span>&nbsp;</span>
       </div>
       <div aerColumn size="xs-6" class="loader">
@@ -92,7 +92,7 @@
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
         <aer-checkbox [(ngModel)]="removeEverything"
-          (ngModelChange)="onRemoveEverythingChange($event)">
+          (ngModelChange)="onRemoveEverythingChange()">
           {{'STAKING.UPDATE.CHECK_REMOVE_EVERYTHING'|translate}}
         </aer-checkbox>
       </div>
