@@ -6,7 +6,7 @@
                 <label>{{'TOTAL_OF_PENDING_TXNS'|translate: {transactionsCount: transactions.length } }}</label>
             </div>
             <app-divider [showLine]="false"></app-divider>
-            <aer-table [data]="transactions" [paginator]="false" [perfectScrollbarDisabled]="perfectScrollbarDisabled">
+            <aer-table [data]="transactions" [paginator]="false">
                 <ng-template aerTemplate="header">
                     <th class="">{{'TX_HASH'|translate}}</th>
                     <th class="">{{'FROM'|translate}}</th>

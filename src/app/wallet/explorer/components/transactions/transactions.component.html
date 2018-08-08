@@ -5,7 +5,7 @@
             {{'EXPLORER.SHOWING_TRANSACTIONS'|translate}}
             <b>{{latestBlock}} - {{highBlock}}</b>
             <app-divider [showLine]="false"></app-divider>
-            <aer-table [data]="transactions" [paginator]="false" [perfectScrollbarDisabled]="perfectScrollbarDisabled">
+            <aer-table [data]="transactions" [paginator]="false">
                 <ng-template aerTemplate="header">
                     <th class="">{{'TX_HASH'|translate}}</th>
                     <th class="">{{'BLOCK'|translate}}</th>
