@@ -1,5 +1,5 @@
 <aer-layout>
-  <aer-sidebar #sidebar>
+  <aer-sidebar #sidebar [perfectScrollbarDisabled]="perfectScrollbarDisabled">
     <aer-sidebar-header [isToggled]="sidebar.isToggled" (headerFn)="home()"></aer-sidebar-header>
 
     <aer-sidebar-group title="{{'SEND_RECEIVE.MAIN_MENU_ITEM_NAME'|translate}}" iconName="transaction" [single]="true" [routerLink]="['/wallet/transaction']"
@@ -36,7 +36,7 @@
   </div> -->
     <!-- <app-sidebar-account-select style="display: none!important;"></app-sidebar-account-select> -->
   </aer-toolbar>
-  <aer-content>
+  <aer-content [perfectScrollbarDisabled]="perfectScrollbarDisabled">
     <router-outlet></router-outlet>
   </aer-content>
 </aer-layout>
