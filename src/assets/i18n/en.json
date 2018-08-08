@@ -704,5 +704,8 @@
       "OPEN_INCREASE_TX_IN_EXPLORER": "Open staking increase tx",
       "OPEN_DECREASE_TX_IN_EXPLORER": "Open unstaking tx"
     }
+  },
+  "TOKEN_FACTORY": {
+    "MAIN_MENU_ITEM_NAME": "Token Factory"
   }
 }
