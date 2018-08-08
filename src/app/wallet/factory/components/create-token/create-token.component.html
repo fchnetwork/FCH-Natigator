@@ -3,7 +3,7 @@
 <div aerRow>
   <div aerColumn size="sm-6">
     <aer-card title="{{'TOKEN_FACTORY.CREATE.TITLE'|translate}}">
-      <form>
+      <form [formGroup]="createForm">
         <div aerRow>
           <div aerColumn size="sm-12">
             {{'TOKEN_FACTORY.CREATE.FIELD_NAME'|translate}}
@@ -11,7 +11,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="name" placeholder="e.g. Aerum" ngDefaultControl></aer-input>
+            <aer-input [(ngModel)]="name" placeholder="e.g. Aerum" formControlName="name" [ngClass]="{'has-error': hasError(createForm.controls.name)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -21,7 +21,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="symbol" placeholder="e.g. AER" ngDefaultControl></aer-input>
+            <aer-input [(ngModel)]="symbol" placeholder="e.g. AER" formControlName="symbol" [ngClass]="{'has-error': hasError(createForm.controls.symbol)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -31,7 +31,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="supply" placeholder="1000000" ngDefaultControl></aer-input>
+            <aer-input [(ngModel)]="supply" placeholder="1000000" formControlName="supply" [ngClass]="{'has-error': hasError(createForm.controls.supply)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -41,7 +41,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="decimals" placeholder="18" ngDefaultControl></aer-input>
+            <aer-input [(ngModel)]="decimals" placeholder="18" formControlName="decimals" [ngClass]="{'has-error': hasError(createForm.controls.decimals)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div *ngIf="address" aerRow>
@@ -57,9 +57,7 @@
         <app-divider [showLine]="true" [fullWidth]="true"></app-divider>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-button class="normal" type="submit" (buttonFn)="createToken()">
-              {{'TOKEN_FACTORY.CREATE.BTN_CREATE'|translate}}
-            </aer-button>
+            <aer-button class="normal" type="submit" (buttonFn)="createToken()" [ngClass]="{'blue': canCreateToken()}" [disabled]="!canCreateToken()">{{'TOKEN_FACTORY.CREATE.BTN_CREATE'|translate}}</aer-button>
           </div>
         </div>
       </form>
