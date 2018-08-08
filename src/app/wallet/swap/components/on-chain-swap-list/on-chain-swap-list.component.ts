@@ -19,7 +19,6 @@ import { environment } from '@env/environment';
 import { TokenError } from '@app/core/transactions/token-service/token.error';
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
 
 @Component({
   selector: 'app-on-chain-swap-list',
@@ -35,7 +34,6 @@ export class OnChainSwapListComponent implements OnInit {
   loading = false;
   canShowMore = true;
   swaps: SwapListItem[] = [];
-  perfectScrollbarDisabled = isAndroidDevice();
 
   constructor(
     private logger: LoggerService,

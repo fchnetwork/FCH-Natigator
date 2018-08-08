@@ -6,7 +6,6 @@ import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ExplorerService } from '@core/explorer/explorer-service/explorer.service';
 import { Subscription } from 'rxjs';
 import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
 
 @Component({
   selector: 'app-pending-txns',
@@ -15,7 +14,6 @@ import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
 export class PendingTxnsComponent implements OnInit {
 
   transactions: iPendingTxn[] = [];
-  perfectScrollbarDisabled = isAndroidDevice();
 
   constructor( public exploreSrv: ExplorerService,
                private router: Router,

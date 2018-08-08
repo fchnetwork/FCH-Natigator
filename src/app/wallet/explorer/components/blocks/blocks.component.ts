@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { SettingsService } from '@app/core/settings/settings.service';
 import { Router } from '@angular/router';
 import { BlockModalData } from '@app/wallet/explorer/components/block-modal/block-modal.component';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
+
 
 @Component({
   selector: 'app-blocks',
@@ -18,8 +18,6 @@ export class BlocksComponent implements AfterViewInit {
   blocks: any[] = [];
   maxBlocks: number;
   highBlock: number;
-
-  perfectScrollbarDisabled = isAndroidDevice();
 
   constructor(
     public exploreSrv: ExplorerService,
