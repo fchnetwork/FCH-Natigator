@@ -1,9 +1,9 @@
-import { selectedSeedPhrase } from './../../shared/app.interfaces';
-import { QrScannerService } from "./../../core/general/qr-scanner/qr-scanner.service";
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from "@angular/core";
+
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs/Subject";
+import { QrScannerService } from "./../../core/general/qr-scanner/qr-scanner.service";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { PasswordCheckerService } from "@app/core/authentication/password-checker-service/password-checker.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
