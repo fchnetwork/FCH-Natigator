@@ -1,3 +1,68 @@
-<p>
-  create-token works!
-</p>
+<h3>{{'TOKEN_FACTORY.TITLE'|translate}}</h3>
+
+<div aerRow>
+  <div aerColumn size="sm-6">
+    <aer-card title="{{'TOKEN_FACTORY.CREATE.TITLE'|translate}}">
+      <form>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            {{'TOKEN_FACTORY.CREATE.FIELD_NAME'|translate}}
+          </div>
+        </div>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            <aer-input [(ngModel)]="name" placeholder="e.g. Aerum" ngDefaultControl></aer-input>
+          </div>
+        </div>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            {{'TOKEN_FACTORY.CREATE.FIELD_SYMBOL'|translate}}
+          </div>
+        </div>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            <aer-input [(ngModel)]="symbol" placeholder="e.g. AER" ngDefaultControl></aer-input>
+          </div>
+        </div>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            {{'TOKEN_FACTORY.CREATE.FIELD_SUPPLY'|translate}}
+          </div>
+        </div>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            <aer-input [(ngModel)]="supply" placeholder="1000000" ngDefaultControl></aer-input>
+          </div>
+        </div>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            {{'TOKEN_FACTORY.CREATE.FIELD_DECIMALS'|translate}}
+          </div>
+        </div>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            <aer-input [(ngModel)]="decimals" placeholder="18" ngDefaultControl></aer-input>
+          </div>
+        </div>
+        <div *ngIf="address" aerRow>
+          <div aerColumn size="sm-12">
+            {{'TOKEN_FACTORY.CREATE.FIELD_ADDRESS'|translate}}
+          </div>
+        </div>
+        <div *ngIf="address" aerRow>
+          <div aerColumn size="sm-12">
+            <aer-input [(ngModel)]="address" class="blue with-button" buttonLabel="{{'TOKEN_FACTORY.CREATE.BTN_COPY'|translate}}" [attr.readonly]="true" ngDefaultControl></aer-input>
+          </div>
+        </div>
+        <app-divider [showLine]="true" [fullWidth]="true"></app-divider>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            <aer-button class="normal" type="submit" (buttonFn)="createToken()">
+              {{'TOKEN_FACTORY.CREATE.BTN_CREATE'|translate}}
+            </aer-button>
+          </div>
+        </div>
+      </form>
+    </aer-card>
+  </div>
+</div>

@@ -706,6 +706,17 @@
     }
   },
   "TOKEN_FACTORY": {
-    "MAIN_MENU_ITEM_NAME": "Token Factory"
+    "MAIN_MENU_ITEM_NAME": "Token Factory",
+    "TITLE": "Token Factory",
+    "CREATE": {
+      "TITLE": "Create Token",
+      "FIELD_NAME": "Name",
+      "FIELD_SYMBOL": "Symbol",
+      "FIELD_SUPPLY": "Total Supply",
+      "FIELD_DECIMALS": "Decimals",
+      "FIELD_ADDRESS": "Address",
+      "BTN_COPY": "Copy",
+      "BTN_CREATE": "Create"
+    }
   }
 }

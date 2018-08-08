@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateTokenComponent implements OnInit {
 
+  name: string;
+  symbol: string;
+  supply: number;
+  decimals: number;
+  address: string;
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  async createToken() {
+    this.address = "abc";
+  }
 }
