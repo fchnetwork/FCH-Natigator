@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { CreateTokenModel } from "@app/wallet/factory/models/create-token.model";
+
+import { NotificationService } from "@aerum/ui";
+import { ModalService } from "@core/general/modal-service/modal.service";
+import { LoggerService } from "@core/general/logger-service/logger.service";
 
 @Component({
   selector: 'app-create-token',
@@ -18,7 +23,12 @@ export class CreateTokenComponent implements OnInit {
 
   createForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private logger: LoggerService,
+    private modalService: ModalService,
+    private notificationService: NotificationService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.createForm = this.formBuilder.group({
@@ -30,7 +40,28 @@ export class CreateTokenComponent implements OnInit {
   }
 
   async createToken() {
-    this.address = "abc";
+    if(!this.canCreateToken()) {
+      this.logger.logMessage("Cannot create token due to validation issues");
+      return;
+    }
+
+    const model = this.createForm.value as CreateTokenModel;
+    model.supply = Number(model.supply);
+    model.decimals = Number(model.decimals);
+
+    try {
+      this.locked = true;
+      await this.tryCreateToken(model);
+    } catch (e) {
+      // TODO: Add notification
+      this.logger.logError('Create token error:', e);
+    } finally {
+      this.locked = false;
+    }
+  }
+
+  private async tryCreateToken(model: CreateTokenModel) {
+    this.address = "aaaaa";
   }
 
   canCreateToken() {
