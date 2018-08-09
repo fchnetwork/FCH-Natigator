@@ -11,7 +11,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="name" placeholder="e.g. Aerum" formControlName="name" [ngClass]="{'has-error': hasError(createForm.controls.name)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="e.g. Aerum" formControlName="name" [ngClass]="{'has-error': hasError(createForm.controls.name)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -21,7 +21,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="symbol" placeholder="e.g. AER" formControlName="symbol" [ngClass]="{'has-error': hasError(createForm.controls.symbol)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="e.g. AER" formControlName="symbol" [ngClass]="{'has-error': hasError(createForm.controls.symbol)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -31,7 +31,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="supply" placeholder="1000000" formControlName="supply" [ngClass]="{'has-error': hasError(createForm.controls.supply)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="1000000" formControlName="supply" [ngClass]="{'has-error': hasError(createForm.controls.supply)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -41,7 +41,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="decimals" placeholder="18" formControlName="decimals" [ngClass]="{'has-error': hasError(createForm.controls.decimals)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="18" formControlName="decimals" [ngClass]="{'has-error': hasError(createForm.controls.decimals)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div *ngIf="address" aerRow>
@@ -51,7 +51,7 @@
         </div>
         <div *ngIf="address" aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="address" class="blue with-button" buttonLabel="{{'TOKEN_FACTORY.CREATE.BTN_COPY'|translate}}" [attr.readonly]="true" ngDefaultControl></aer-input>
+            <aer-input [(ngModel)]="address" class="blue with-button" [ngModelOptions]="{standalone: true}" buttonLabel="{{'TOKEN_FACTORY.CREATE.BTN_COPY'|translate}}" [attr.readonly]="true" (buttonFn)="copyAddress()" ngDefaultControl></aer-input>
           </div>
         </div>
         <app-divider [showLine]="true" [fullWidth]="true"></app-divider>

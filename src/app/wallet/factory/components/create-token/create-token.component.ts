@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 
-import { NotificationService } from "@aerum/ui";
 import { CreateTokenModel } from "@app/core/factory/models/create-token.model";
 import { ModalService } from "@core/general/modal-service/modal.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
+import { TranslateService } from "@ngx-translate/core";
+import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 
 @Component({
   selector: 'app-create-token',
@@ -14,12 +16,7 @@ import { TokenFactoryService } from "@core/factory/token-factory-service/token-f
 })
 export class CreateTokenComponent implements OnInit {
 
-  locked = false;
-
-  name: string;
-  symbol: string;
-  supply: number;
-  decimals: number;
+  processing = false;
   address: string;
 
   createForm: FormGroup;
@@ -27,9 +24,11 @@ export class CreateTokenComponent implements OnInit {
   constructor(
     private logger: LoggerService,
     private modalService: ModalService,
-    private notificationService: NotificationService,
+    private notificationService: InternalNotificationService,
     private formBuilder: FormBuilder,
-    private tokenFactoryService: TokenFactoryService
+    private translateService: TranslateService,
+    private tokenFactoryService: TokenFactoryService,
+    private clipboardService: ClipboardService
   ) { }
 
   ngOnInit() {
@@ -48,22 +47,36 @@ export class CreateTokenComponent implements OnInit {
     }
 
     try {
-      this.locked = true;
-      await this.tryCreateToken(this.createForm.value as CreateTokenModel);
+      this.processing = true;
+      const data = this.createForm.value as CreateTokenModel;
+      await this.tryCreateToken(data);
+      this.notificationService.showMessage(`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.SUCCESS_SUFFIX')}`, this.translate('DONE'));
     } catch (e) {
-      // TODO: Add notification
       this.logger.logError('Create token error:', e);
+      this.notificationService.showMessage(this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.ERROR'), this.translate('ERROR'));
     } finally {
-      this.locked = false;
+      this.processing = false;
     }
   }
 
   private async tryCreateToken(data: CreateTokenModel) {
-    await this.tokenFactoryService.create(data);
+    this.logger.logMessage("Creating new token", data);
+
+    this.address = null;
+    // TODO: Uncomment later
+    // await this.tokenFactoryService.create(data);
+
+    // TODO: Remove later
+    this.address = "test";
+  }
+
+  async copyAddress() {
+    await this.clipboardService.copy(this.address);
+    this.notificationService.showMessage(this.translate('COPIED_TO_CLIPBOARD'), this.translate('DONE'));
   }
 
   canCreateToken() {
-    return !this.locked && this.createForm.valid;
+    return !this.processing && this.createForm.valid;
   }
 
   hasError(control: AbstractControl): boolean {
@@ -72,5 +85,9 @@ export class CreateTokenComponent implements OnInit {
     }
 
     return !control.valid && control.touched;
+  }
+
+  private translate(key: string): string {
+    return this.translateService.instant(key);
   }
 }

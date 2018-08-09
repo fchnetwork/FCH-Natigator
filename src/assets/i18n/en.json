@@ -346,6 +346,9 @@
   "TRANSACTIONS": "Transactions",
   "BASIC_TRANSACTION": "Basic Transaction",
   "ERROR": "Error",
+  "DONE": "Done",
+  "COPIED_TO_CLIPBOARD": "Copied to clipboard",
+
   "SEND_RECEIVE": {
     "MAIN_MENU_ITEM_NAME": "Send & Receive",
     "MAIN_TITLE": "Send & Receive Crypto",
@@ -716,7 +719,11 @@
       "FIELD_DECIMALS": "Decimals",
       "FIELD_ADDRESS": "Address",
       "BTN_COPY": "Copy",
-      "BTN_CREATE": "Create"
+      "BTN_CREATE": "Create",
+      "NOTIFICATIONS": {
+        "ERROR": "Error while creating token",
+        "SUCCESS_SUFFIX": "token was created successfully"
+      }
     }
   }
 }
