@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { CreateTokenModel } from "@app/wallet/factory/models/create-token.model";
 
 import { NotificationService } from "@aerum/ui";
+import { CreateTokenModel } from "@app/core/factory/models/create-token.model";
 import { ModalService } from "@core/general/modal-service/modal.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
 
 @Component({
   selector: 'app-create-token',
@@ -27,7 +28,8 @@ export class CreateTokenComponent implements OnInit {
     private logger: LoggerService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private tokenFactoryService: TokenFactoryService
   ) { }
 
   ngOnInit() {
@@ -45,13 +47,9 @@ export class CreateTokenComponent implements OnInit {
       return;
     }
 
-    const model = this.createForm.value as CreateTokenModel;
-    model.supply = Number(model.supply);
-    model.decimals = Number(model.decimals);
-
     try {
       this.locked = true;
-      await this.tryCreateToken(model);
+      await this.tryCreateToken(this.createForm.value as CreateTokenModel);
     } catch (e) {
       // TODO: Add notification
       this.logger.logError('Create token error:', e);
@@ -60,8 +58,8 @@ export class CreateTokenComponent implements OnInit {
     }
   }
 
-  private async tryCreateToken(model: CreateTokenModel) {
-    this.address = "aaaaa";
+  private async tryCreateToken(data: CreateTokenModel) {
+    await this.tokenFactoryService.create(data);
   }
 
   canCreateToken() {
