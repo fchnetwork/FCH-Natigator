@@ -30,7 +30,7 @@ export class TokenService {
     private logger: LoggerService,
     private authService: AuthenticationService,
     private storageService: StorageService,
-    private nameService: AerumNameService,
+    private nameService: AerumNameService
   ) {
     this.web3 = authService.getWeb3();
     this.wsWeb3 = authService.getWSWeb3();
