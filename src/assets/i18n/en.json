@@ -718,6 +718,7 @@
       "FIELD_SUPPLY": "Total Supply",
       "FIELD_DECIMALS": "Decimals",
       "FIELD_ADDRESS": "Address",
+      "FIELD_ESTIMATED_FEE": "Estimated Fee",
       "BTN_COPY": "Copy",
       "BTN_CREATE": "Create",
       "NOTIFICATIONS": {

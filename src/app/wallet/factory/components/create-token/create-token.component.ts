@@ -37,7 +37,7 @@ export class CreateTokenComponent implements OnInit {
     this.createForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.maxLength(100), Validators.pattern("^[0-9A-Za-z- ]+$")]],
       symbol: [null, [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9A-Z]+$")]],
-      supply: [null, [Validators.required, Validators.pattern("^[0-9]{1,10}$"),  Validators.min(1)]],
+      supply: [null, [Validators.required, Validators.pattern("^[0-9]{1,18}$"),  Validators.min(1)]],
       decimals: [null, [Validators.required, Validators.pattern("^[0-9]+$"), Validators.min(0), Validators.max(18)]]
     });
   }
