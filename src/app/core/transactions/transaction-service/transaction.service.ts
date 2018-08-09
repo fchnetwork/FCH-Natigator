@@ -232,15 +232,15 @@ export class TransactionService {
         : Buffer.from(privkey, "hex");
       const sendTo = ethJsUtil.toChecksumAddress(to);
       const from = ethJsUtil.toChecksumAddress(activeUser);
-      const txValue = this.web3.utils.numberToHex(
-        this.web3.utils.toWei(amount.toString(), "ether")
-      );
+      const amountInEther = this.web3.utils.toWei(amount.toString(), "ether");
+      const txValue = this.web3.utils.numberToHex(amountInEther);
       const txData = this.web3.utils.asciiToHex(data);
       const getGasPrice = this.web3.eth.getGasPrice();
       const getTransactionCount = this.web3.eth.getTransactionCount(from);
       const estimateGas = this.web3.eth.estimateGas({
         to: sendTo,
-        data: txData
+        data: txData,
+        value: amountInEther
       });
 
       return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then(
