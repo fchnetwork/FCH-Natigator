@@ -13,6 +13,7 @@ import { TokenError } from "@core/transactions/token-service/token.error";
 import { TokenStorageService } from "@core/transactions/token-storage-service/token-storage.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { bigNumbersPow, bigNumbersDivide, bigNumberToString } from "@shared/helpers/number-utils";
+import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 
 @Injectable()
 export class TokenService {
@@ -28,7 +29,8 @@ export class TokenService {
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private nameService: AerumNameService,
   ) {
     this.web3 = authService.getWeb3();
     this.wsWeb3 = authService.getWSWeb3();
@@ -166,8 +168,9 @@ export class TokenService {
   }
 
   tokenFallbackCheck(receiver, signature) {
-    return new Promise((resolve, reject) => {
-      this.web3.eth.getCode(receiver).then((res) => {
+    return new Promise(async (resolve, reject) => {
+      const address =  await this.nameService.safeResolveNameOrAddress(receiver);
+      this.web3.eth.getCode(address).then((res) => {
         let hash = this.web3.utils.keccak256(signature);
         hash = "63" + hash.slice(2, 10);
         resolve(res.includes(hash));
