@@ -63,11 +63,7 @@ export class CreateTokenComponent implements OnInit {
     this.logger.logMessage("Creating new token", data);
 
     this.address = null;
-    // TODO: Uncomment later
-    // await this.tokenFactoryService.create(data);
-
-    // TODO: Remove later
-    this.address = "test";
+    this.address = await this.tokenFactoryService.create(data);
   }
 
   async copyAddress() {

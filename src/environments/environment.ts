@@ -54,7 +54,7 @@ export const environment = {
     },
     factory: {
       address: {
-        TokenFactory: "0x4cc8a4429b669a78c76cc28d54cd7085b1eb03b4"
+        TokenFactory: "0x6e2c36eb9734547529b927da484bcf3a8e468af0"
       }
     }
   },
