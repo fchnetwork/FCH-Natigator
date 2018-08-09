@@ -723,6 +723,9 @@
       "NOTIFICATIONS": {
         "ERROR": "Error while creating token",
         "SUCCESS_SUFFIX": "token was created successfully"
+      },
+      "CONFIRM": {
+        "TITLE": "Confirm Token Creation"
       }
     }
   }

@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 
+import { DialogResult } from "@aerum/ui";
+import { CreateTokenRequest } from "@app/wallet/factory/models/create-token-request.model";
 import { CreateTokenModel } from "@app/core/factory/models/create-token.model";
 import { ModalService } from "@core/general/modal-service/modal.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
-import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
 import { TranslateService } from "@ngx-translate/core";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
+import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
+import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
 
 @Component({
   selector: 'app-create-token',
@@ -48,9 +50,7 @@ export class CreateTokenComponent implements OnInit {
 
     try {
       this.processing = true;
-      const data = this.createForm.value as CreateTokenModel;
-      await this.tryCreateToken(data);
-      this.notificationService.showMessage(`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.SUCCESS_SUFFIX')}`, this.translate('DONE'));
+      await this.tryCreateToken(this.createForm.value as CreateTokenModel);
     } catch (e) {
       this.logger.logError('Create token error:', e);
       this.notificationService.showMessage(this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.ERROR'), this.translate('ERROR'));
@@ -61,9 +61,29 @@ export class CreateTokenComponent implements OnInit {
 
   private async tryCreateToken(data: CreateTokenModel) {
     this.logger.logMessage("Creating new token", data);
-
     this.address = null;
+
+    const cost = await this.tokenFactoryService.estimateCreate(data);
+    this.logger.logMessage(`Creating new token cost: ${cost}`);
+
+    const createTokenRequest: CreateTokenRequest = {
+      name: data.name,
+      symbol: data.symbol,
+      decimals: data.decimals,
+      supply: data.supply,
+      gasPrice: cost[0],
+      estimatedFeeInGas: cost[1],
+      maximumFeeInGas: cost[2]
+    };
+
+    const modalResult = await this.modalService.openCreateTokenConfirm(createTokenRequest);
+    if(modalResult.dialogResult === DialogResult.Cancel) {
+      this.logger.logMessage('Creating new token cancelled');
+      return;
+    }
+
     this.address = await this.tokenFactoryService.create(data);
+    this.notificationService.showMessage(`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.SUCCESS_SUFFIX')}`, this.translate('DONE'));
   }
 
   async copyAddress() {

@@ -5,15 +5,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppUIModule } from '@app/app.ui.module';
 import { SharedModule } from '@app/shared/shared.module';
-import { SwapRoutingModule } from '@app/wallet/swap/swap.routes';
 import { CoreModule } from '@app/core/core.module';
 import { FactoryRoutingModule } from "./factory.routes";
 
 import { CreateTokenComponent } from "./components/create-token/create-token.component";
+import { CreateTokenConfirmModalComponent } from './components/create-token-confirm-modal/create-token-confirm-modal.component';
 
 @NgModule({
   entryComponents: [
-    CreateTokenComponent
+    CreateTokenComponent,
+    CreateTokenConfirmModalComponent
   ],
   imports: [
     FormsModule,
@@ -25,10 +26,12 @@ import { CreateTokenComponent } from "./components/create-token/create-token.com
     FactoryRoutingModule
   ],
   declarations: [
-    CreateTokenComponent
+    CreateTokenComponent,
+    CreateTokenConfirmModalComponent
   ],
   exports: [
-    CreateTokenComponent
+    CreateTokenComponent,
+    CreateTokenConfirmModalComponent
   ]
 })
 export class FactoryModule { }
