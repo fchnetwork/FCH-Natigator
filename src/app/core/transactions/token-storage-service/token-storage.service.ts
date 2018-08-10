@@ -37,7 +37,7 @@ export class TokenStorageService {
   updateToken(token) {
     const tokens = this.storageService.getSessionData(this.key);
     const updatedTokens = tokens.filter((item) => {
-      return item.symbol !== token.symbol;
+      return item.address !== token.address;
     });
     updatedTokens.push(token);
     this.saveTokens(updatedTokens);

@@ -34,9 +34,6 @@ export class AddTokenComponent {
         if(this.totalSupply <= 0 || !Number.isInteger(this.totalSupply)) {
           this.notificationService.showMessage('Tokens supply has to be bigger than 0', 'Form error');
           return false;
-        } else if(this.tokenSymbol === tokens[i].symbol){
-          this.notificationService.showMessage('You cannot add token with the same token name', 'Form error');
-          return false;
         } else if (this.tokenAddress === tokens[i].address) {
           this.notificationService.showMessage('You cannot add token with the same token address', 'Form error');
           return false;
@@ -50,10 +47,6 @@ export class AddTokenComponent {
     let result = true;
     if(!(await this.ethereumTokenService.isAddress(this.wallet, this.tokenAddress))) {
       this.notificationService.showMessage('Tokens address is not valid', 'Form error');
-      result = false;
-    }
-    if(!this.tokenSymbol || this.tokenSymbol.length < 3) {
-      this.notificationService.showMessage('Tokens symbol length has to be greater than two', 'Form error');
       result = false;
     }
     if(!Number.isInteger(this.decimals) || this.decimals < 0) {
