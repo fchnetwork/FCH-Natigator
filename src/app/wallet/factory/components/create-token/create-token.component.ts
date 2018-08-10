@@ -82,6 +82,7 @@ export class CreateTokenComponent implements OnInit {
       return;
     }
 
+    this.notificationService.showMessage(`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.OPERATION_IN_PROGRESS_SUFFIX')}`, this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.OPERATION_IN_PROGRESS'));
     this.address = await this.tokenFactoryService.create(data);
     this.notificationService.showMessage(`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.SUCCESS_SUFFIX')}`, this.translate('DONE'));
   }

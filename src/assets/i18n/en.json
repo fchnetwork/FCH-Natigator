@@ -723,7 +723,9 @@
       "BTN_CREATE": "Create",
       "NOTIFICATIONS": {
         "ERROR": "Error while creating token",
-        "SUCCESS_SUFFIX": "token was created successfully"
+        "SUCCESS_SUFFIX": "token was created successfully",
+        "OPERATION_IN_PROGRESS": "Operation in progress...",
+        "OPERATION_IN_PROGRESS_SUFFIX": "token creation started"
       },
       "CONFIRM": {
         "TITLE": "Confirm Token Creation"

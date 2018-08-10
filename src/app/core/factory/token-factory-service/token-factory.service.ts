@@ -29,14 +29,17 @@ export class TokenFactoryService extends BaseContractService {
         const latestBlockNumber = await this.web3.eth.getBlockNumber();
         await this.contractExecutorService.send(create);
 
-        // TODO: I don't like this event relying on block number only
         contract.events.NewToken({fromBlock: latestBlockNumber}, (err, event) => {
           if (err) {
             this.loggerService.logError("Error on token created event", err);
             reject(err);
           } else {
             this.loggerService.logMessage("Token created event", err);
-            resolve(event.returnValues.token);
+            const values = event.returnValues;
+            // NOTE: Just make sure it's correct event
+            if((values.name === data.name) && (values.symbol === data.symbol)) {
+              resolve(values.token);
+            }
           }
         });
       } catch (e) {
