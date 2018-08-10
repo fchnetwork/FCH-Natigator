@@ -124,7 +124,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
       return;
     }
     const resolvedAddress = await this.nameService.resolveNameOrAddress(this.receiverAddress);
-    const checkedAddress = await this.transactionService.checkAddressCode(resolvedAddress);
+    const checkedAddress: any = await this.transactionService.checkAddressCode(resolvedAddress);
     if (checkedAddress.length > 3) {
       this.title = 'WARNING!';
       this.text = 'You are sending tokens to a contract address that appears to support ERC223 standard. However, this is not a guarantee that your token transfer will be processed properly. Make sure you always trust a contract that you are sending your tokens to.';
