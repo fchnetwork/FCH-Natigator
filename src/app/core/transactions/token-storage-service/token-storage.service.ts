@@ -29,12 +29,12 @@ export class TokenStorageService {
   }
 
   saveTokens(tokens: Token[]) {
-    const stringtoken = JSON.stringify(tokens);
-    this.storageService.setCookie(this.key, stringtoken, true, 7);
+    const stringToken = JSON.stringify(tokens);
+    this.storageService.setCookie(this.key, stringToken, true, 7);
     this.storageService.setSessionData(this.key, tokens);
   }
 
-  updateStoredTokens(token) {
+  updateToken(token) {
     const tokens = this.storageService.getSessionData(this.key);
     const updatedTokens = tokens.filter((item) => {
       return item.symbol !== token.symbol;

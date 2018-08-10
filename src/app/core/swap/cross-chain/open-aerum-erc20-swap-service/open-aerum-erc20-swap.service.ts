@@ -98,7 +98,7 @@ export class OpenAerumErc20SwapService extends BaseContractService {
   async checkSwap(hash: string): Promise<OpenErc20Swap> {
     const checkSwap = this.contract.methods.check(hash);
     const response = await this.contractExecutorService.call(checkSwap);
-    const token = await this.tokenService.getSaveTokensInfo(response.erc20ContractAddress);
+    const token = await this.tokenService.safeGetTokensInfo(response.erc20ContractAddress);
     const swap: OpenErc20Swap = {
       hash,
       openTrader: response.openTrader,
