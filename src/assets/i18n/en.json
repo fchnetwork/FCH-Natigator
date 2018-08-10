@@ -346,6 +346,9 @@
   "TRANSACTIONS": "Transactions",
   "BASIC_TRANSACTION": "Basic Transaction",
   "ERROR": "Error",
+  "DONE": "Done",
+  "COPIED_TO_CLIPBOARD": "Copied to clipboard",
+
   "SEND_RECEIVE": {
     "MAIN_MENU_ITEM_NAME": "Send & Receive",
     "MAIN_TITLE": "Send & Receive Crypto",
@@ -703,6 +706,30 @@
       "FIELD_REMOVE_FROM_STAKE": "Remove from stake",
       "OPEN_INCREASE_TX_IN_EXPLORER": "Open staking increase tx",
       "OPEN_DECREASE_TX_IN_EXPLORER": "Open unstaking tx"
+    }
+  },
+  "TOKEN_FACTORY": {
+    "MAIN_MENU_ITEM_NAME": "Token Factory",
+    "TITLE": "Token Factory",
+    "CREATE": {
+      "TITLE": "Create Token",
+      "FIELD_NAME": "Name",
+      "FIELD_SYMBOL": "Symbol",
+      "FIELD_SUPPLY": "Total Supply",
+      "FIELD_DECIMALS": "Decimals",
+      "FIELD_ADDRESS": "Address",
+      "FIELD_ESTIMATED_FEE": "Estimated Fee",
+      "BTN_COPY": "Copy",
+      "BTN_CREATE": "Create",
+      "NOTIFICATIONS": {
+        "ERROR": "Error while creating token",
+        "SUCCESS_SUFFIX": "token was created successfully",
+        "OPERATION_IN_PROGRESS": "Operation in progress...",
+        "OPERATION_IN_PROGRESS_SUFFIX": "token creation started"
+      },
+      "CONFIRM": {
+        "TITLE": "Confirm Token Creation"
+      }
     }
   }
 }

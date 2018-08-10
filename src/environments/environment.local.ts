@@ -51,6 +51,11 @@ export const environment = {
         Aerum: "0xa394b7920f8c6b9b0fe22dd336f651dc4ea521ce",
         Governance: "0x4cc8a4429b669a78c76cc28d54cd7085b1eb03b4"
       }
+    },
+    factory: {
+      address: {
+        TokenFactory: "0x2b4330586db346eac0477305e0a76468c4281dc4"
+      }
     }
   },
   ethereum: {

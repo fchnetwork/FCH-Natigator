@@ -54,6 +54,7 @@ import { ImportWalletService } from '@app/core/transactions/import-wallet-servic
 import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
 import { StakingAerumService } from "@core/staking/staking-aerum-service/staking-aerum.service";
 import { StakingGovernanceService } from "@core/staking/staking-governance-service/staking-governance.service";
+import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
 
 @NgModule({
   imports: [
@@ -104,7 +105,8 @@ import { StakingGovernanceService } from "@core/staking/staking-governance-servi
     AddressKeyValidationService,
     ImportWalletService,
     QrScannerService,
-    GlobalEventService
+    GlobalEventService,
+    TokenFactoryService
   ]
 })
 export class CoreModule {

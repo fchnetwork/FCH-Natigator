@@ -34,6 +34,8 @@ import {
 } from "@app/wallet/explorer/components/transaction-modal/transaction-modal.component";
 import { LoadedSwap } from "@app/wallet/swap/models/models";
 import { QrScannerRequest, QrScannerResponse } from "@app/shared/components/qr-scanner/qr-scanner.component";
+import { CreateTokenRequest } from "@app/wallet/factory/models/create-token-request.model";
+import { CreateTokenConfirmModalComponent } from "@app/wallet/factory/components/create-token-confirm-modal/create-token-confirm-modal.component";
 
 @Injectable()
 export class ModalService {
@@ -199,5 +201,9 @@ export class ModalService {
 
   async openQrScanner(data: QrScannerRequest): Promise<DialogResponse<QrScannerResponse>> {
     return this.open<QrScannerRequest, QrScannerResponse, QrScannerComponent>('SHARED.QR_SCAN.TITLE', QrScannerComponent, data);
+  }
+
+  async openCreateTokenConfirm(data: CreateTokenRequest): Promise<DialogResponse<any>> {
+    return this.open<CreateTokenRequest, any, CreateTokenConfirmModalComponent>('TOKEN_FACTORY.CREATE.CONFIRM.TITLE', CreateTokenConfirmModalComponent, data);
   }
 }
