@@ -10,6 +10,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
+import { TokenService } from "@core/transactions/token-service/token.service";
 
 @Component({
   selector: 'app-create-token',
@@ -29,8 +30,9 @@ export class CreateTokenComponent implements OnInit {
     private notificationService: InternalNotificationService,
     private formBuilder: FormBuilder,
     private translateService: TranslateService,
+    private clipboardService: ClipboardService,
     private tokenFactoryService: TokenFactoryService,
-    private clipboardService: ClipboardService
+    private tokenService: TokenService
   ) { }
 
   ngOnInit() {
@@ -84,6 +86,9 @@ export class CreateTokenComponent implements OnInit {
 
     this.notificationService.showMessage(`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.OPERATION_IN_PROGRESS_SUFFIX')}`, this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.OPERATION_IN_PROGRESS'));
     this.address = await this.tokenFactoryService.create(data);
+    if(this.address) {
+      await this.tokenService.safeImportToken(this.address);
+    }
     this.notificationService.showMessage(`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.SUCCESS_SUFFIX')}`, this.translate('DONE'));
   }
 

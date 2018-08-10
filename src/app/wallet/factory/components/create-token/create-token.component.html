@@ -31,7 +31,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="1000000" formControlName="supply" [ngClass]="{'has-error': hasError(createForm.controls.supply)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="e.g. 1000000" formControlName="supply" [ngClass]="{'has-error': hasError(createForm.controls.supply)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -41,7 +41,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="18" formControlName="decimals" [ngClass]="{'has-error': hasError(createForm.controls.decimals)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="e.g. 18" formControlName="decimals" [ngClass]="{'has-error': hasError(createForm.controls.decimals)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div *ngIf="address" aerRow>

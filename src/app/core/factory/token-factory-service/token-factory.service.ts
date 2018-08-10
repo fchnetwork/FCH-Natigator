@@ -34,7 +34,7 @@ export class TokenFactoryService extends BaseContractService {
             this.loggerService.logError("Error on token created event", err);
             reject(err);
           } else {
-            this.loggerService.logMessage("Token created event", err);
+            this.loggerService.logMessage("Token created event", event);
             const values = event.returnValues;
             // NOTE: Just make sure it's correct event
             if((values.name === data.name) && (values.symbol === data.symbol)) {

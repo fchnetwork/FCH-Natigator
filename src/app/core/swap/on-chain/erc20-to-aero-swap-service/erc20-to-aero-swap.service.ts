@@ -59,7 +59,7 @@ export class Erc20ToAeroSwapService extends BaseContractService {
   async checkSwapDetailed(swapId: string): Promise<Erc20ToAeroSwap> {
     const checkSwap = this.contract.methods.check(this.web3.utils.fromAscii(swapId));
     const response = await this.contractExecutorService.call(checkSwap);
-    const token = await this.tokenService.getSaveTokensInfo(response.erc20ContractAddress);
+    const token = await this.tokenService.safeGetTokensInfo(response.erc20ContractAddress);
     const swap: Erc20ToAeroSwap = {
       id: swapId,
       erc20Trader: response.erc20Trader,
