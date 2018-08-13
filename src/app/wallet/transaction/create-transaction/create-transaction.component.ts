@@ -271,8 +271,14 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   }
 
   isFormValid() {
-    const valid = this.txnForm.status === 'VALID';
-    return valid && this.amount > 0 && this.selectedToken && this.selectedToken.balance >= this.amount;
+    const validFrom = this.txnForm.status === 'VALID';
+    let validAmount = false;
+    if(this.selectedToken.address == null) {
+      validAmount = this.amount > 0 && this.aeroBalance >= this.amount;
+    } else {
+      validAmount = this.amount > 0 && this.selectedToken.balance >= this.amount;
+    }
+    return validFrom && validAmount;
   }
 
   async moreOptionsChange(event) {
