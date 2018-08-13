@@ -727,7 +727,8 @@
       "NOTIFICATIONS": {
         "ERROR": "Error while creating token",
         "SUCCESS_SUFFIX": "token was created successfully",
-        "CREATING_TOKEN": "Creating contract for token"
+        "CREATING_TOKEN": "Creating contract for token",
+        "ANS_NOT_AVAILABLE": "ANS name not available"
       },
       "CONFIRM": {
         "TITLE": "Confirm Token Creation"

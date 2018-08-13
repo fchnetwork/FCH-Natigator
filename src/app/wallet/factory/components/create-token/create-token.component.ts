@@ -73,6 +73,13 @@ export class CreateTokenComponent implements OnInit {
       return;
     }
 
+    const ansName = `${this.createForm.value.ansName}.aer`;
+    if(!(await this.aensService.isNameAvailable(ansName))) {
+      this.logger.logMessage(`ANS name is not available: ${ansName}`);
+      this.notify(this.translate('ERROR'), `${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.ANS_NOT_AVAILABLE')}: ${ansName}`);
+      return;
+    }
+
     try {
       this.processing = true;
       await this.confirmAndCreateToken(this.createForm.value as CreateTokenModel);
