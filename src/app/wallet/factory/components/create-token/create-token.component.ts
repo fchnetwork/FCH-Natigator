@@ -13,6 +13,7 @@ import { TokenFactoryService } from "@core/factory/token-factory-service/token-f
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
+import { TransactionService } from "@core/transactions/transaction-service/transaction.service";
 
 @Component({
   selector: 'app-create-token',
@@ -24,6 +25,7 @@ export class CreateTokenComponent implements OnInit {
   private ansPriceInEther: string;
   private ansPriceInWei: string;
   private account: string;
+  private currentAccountBalanceInEther: number;
 
   processing = false;
   address: string;
@@ -38,6 +40,7 @@ export class CreateTokenComponent implements OnInit {
     private formBuilder: FormBuilder,
     private translateService: TranslateService,
     private clipboardService: ClipboardService,
+    private transactionService: TransactionService,
     private tokenFactoryService: TokenFactoryService,
     private tokenService: TokenService,
     private aensService: AerumNameService
@@ -55,12 +58,18 @@ export class CreateTokenComponent implements OnInit {
     this.account = this.authenticationService.getAddress();
     this.ansPriceInWei = await this.aensService.getPrice();
     this.ansPriceInEther = fromWei(this.ansPriceInWei, 'ether');
+    this.currentAccountBalanceInEther = await this.transactionService.checkBalance(this.account);
   }
 
   async createToken() {
-    // TODO: Validate if ANS name already taken
     if(!this.canCreateToken()) {
       this.logger.logMessage("Cannot create token due to validation issues");
+      return;
+    }
+
+    if(!this.hasEnoughFundsForName()) {
+      this.logger.logMessage(`Cannot buy name as balance is too low: ${this.currentAccountBalanceInEther} in wei`);
+      this.notify(this.translate('ENS.NOT_ENOUGH_FUNDS_TITLE'), this.translate('ENS.NOT_ENOUGH_FUNDS'));
       return;
     }
 
@@ -147,6 +156,10 @@ export class CreateTokenComponent implements OnInit {
 
   canCreateToken() {
     return !this.processing && this.createForm.valid;
+  }
+
+  private hasEnoughFundsForName() {
+    return Number(this.currentAccountBalanceInEther) >= Number(this.ansPriceInEther);
   }
 
   hasError(control: AbstractControl): boolean {
