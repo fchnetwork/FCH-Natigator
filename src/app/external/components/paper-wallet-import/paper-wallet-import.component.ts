@@ -3,12 +3,14 @@ import {
   Component,
   OnInit,
   Input,
+  Output,
+  EventEmitter,
   trigger,
   state,
   style,
   transition,
   group,
-  animate
+  animate,
 } from "@angular/core";
 import { ImportWalletService } from "@app/core/transactions/import-wallet-service/import-wallet.service";
 
