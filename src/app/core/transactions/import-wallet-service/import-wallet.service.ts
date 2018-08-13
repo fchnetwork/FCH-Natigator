@@ -21,7 +21,6 @@ export class ImportWalletService {
   async importWalletToCurrentAddress(privateKey: string): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
       try {
-        const web3 = this.authService.getWeb3();
         const address = this.storageService.getSessionData("acc_address");
         const privateKeyBuffer = Buffer.from(privateKey, "hex");
 
