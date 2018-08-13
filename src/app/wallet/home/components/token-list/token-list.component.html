@@ -19,7 +19,8 @@
             <tr>
                 <td class="token-list__row-data--token-name">
                     <div class="flex-container">
-                        <aer-icon>generaltoken</aer-icon>{{token.symbol}}
+                        <aer-icon>generaltoken</aer-icon>
+                        <app-token-description [token]="token"></app-token-description>
                     </div>
                 </td>
                 <td class="token-list__row-data token-list__row-data--right-align">{{token.balance | bignumber:'1.0-3'}}</td>

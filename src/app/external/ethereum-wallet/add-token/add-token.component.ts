@@ -48,6 +48,9 @@ export class AddTokenComponent {
     if(!(await this.ethereumTokenService.isAddress(this.wallet, this.tokenAddress))) {
       this.notificationService.showMessage('Tokens address is not valid', 'Form error');
       result = false;
+    } if(!this.tokenSymbol || this.tokenSymbol.length < 3) {
+      this.notificationService.showMessage('Tokens symbol length has to be greater than two', 'Form error');
+      result = false;
     }
     if(!Number.isInteger(this.decimals) || this.decimals < 0) {
       this.notificationService.showMessage('Tokens decimals has to be bigger or equal 0', 'Form error');

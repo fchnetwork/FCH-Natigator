@@ -66,8 +66,7 @@
                               dataKey="symbol"
                               (ngModelChange)="onTokenChange()" placeholder="{{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_YOUR_TOKEN'|translate}}">
                     <aer-select-option class="token-select-option" *ngFor="let token of tokens;" [value]="token">
-                      <span>
-                        <aer-icon>{{token.symbol.toLowerCase()}}</aer-icon> {{token.symbol}}</span>
+                      <app-token-description [token]="token"></app-token-description>
                     </aer-select-option>
                   <aer-select-option><span>{{'EXTERNAL-SWAP.WALLET.BTN_ADD_TOKEN'|translate}}</span></aer-select-option>
                 </aer-select>
