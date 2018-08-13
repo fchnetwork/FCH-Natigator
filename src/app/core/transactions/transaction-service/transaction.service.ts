@@ -9,6 +9,7 @@ import { NotificationMessagesService } from "@core/general/notification-messages
 
 import { SettingsService } from "@app/core/settings/settings.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
+import { LoggerService } from "@core/general/logger-service/logger.service";
 
 const Tx = require("ethereumjs-tx");
 const ethJsUtil = require("ethereumjs-util");
@@ -21,6 +22,7 @@ export class TransactionService {
 
   constructor(
     _auth: AuthenticationService,
+    private logger: LoggerService,
     private modalService: ModalService,
     private tokenService: TokenService,
     private notificationMessagesService: NotificationMessagesService,
@@ -210,6 +212,7 @@ export class TransactionService {
     }
   }
 
+  // TODO: Refactor this method to async / await as it becomes really complicated
   transaction(
     privkey: string,
     activeUser,
@@ -267,7 +270,8 @@ export class TransactionService {
             ethJsUtil.addHexPrefix(tx.serialize().toString("hex"))
           );
           transaction
-            .on("transactionHash", hash => {
+            .once("transactionHash", hash => {
+              this.logger.logMessage(`Transaction hash received: ${hash}`);
               this.saveTransaction(
                 activeUser,
                 to,
@@ -278,20 +282,23 @@ export class TransactionService {
                 null,
                 null
               );
-              this.web3.eth.getTransaction(hash).then(res => {
+              this.notificationMessagesService.pendingTransactionNotification(
+                hash
+              );
+            })
+            .once("receipt", receipt => {
+              this.logger.logMessage(`Transaction receipt received: ${receipt}`);
+              this.web3.eth.getTransaction(receipt.transactionHash).then(res => {
                 res.timestamp = Moment(new Date()).unix();
                 if (external) {
                   window.location.href = urls.success;
                 } else {
-                  this.notificationMessagesService.pendingTransactionNotification(
-                    hash
-                  );
                   resolve(res);
                 }
               });
             })
             .catch(error => {
-              console.log(error);
+              this.logger.logError(error);
               if (external) {
                 window.location.href = urls.failed;
               } else {
@@ -300,7 +307,15 @@ export class TransactionService {
               }
             });
         }
-      );
+      ).catch(error => {
+        this.logger.logError(error);
+        if (external) {
+          window.location.href = urls.failed;
+        } else {
+          this.notificationMessagesService.failedTransactionNotification();
+          reject(error);
+        }
+      });
     });
   }
 
@@ -378,7 +393,7 @@ export class TransactionService {
         });
       })
       .catch(error => {
-        console.log(error);
+        this.logger.logError(error);
         if (external) {
           window.location.href = urls.failed;
         } else {
