@@ -11,6 +11,7 @@ import { DividerComponent } from './components/divider/divider.component';
 import { TranslatePipe, TranslateService, TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AddressClipboardComponent } from './components/address-clipboard/address-clipboard.component';
+import { TokenDescriptionComponent } from './components/token-description/token-description.component';
 import { EqualValidator } from './directives/equal-validator.directive';
 import { SidebarHeaderComponent } from '@app/shared/components/sidebar-header/sidebar-header.component';
 import { TransactionTimeAgoPipe } from '@shared/pipes/transaction-time-ago.pipe';
@@ -29,6 +30,7 @@ import { GetBlockSignerPipe } from '@shared/pipes/get-block-signer.pipe';
 import { TruncatePipe } from '@app/shared/pipes/truncate.pipe';
 import { DecimalPipe } from '@angular/common';
 import { AppUIModule } from '@app/app.ui.module';
+import { CoreModule } from '@app/core/core.module';
 import { SidebarAccountSelectComponent } from '@shared/components/sidebar-account-select/sidebar-account-select.component';
 import { ChartComponent } from '@app/shared/components/chart/chart.component';
 import { NgxEchartsModule } from 'ngx-echarts';
@@ -55,6 +57,7 @@ import { QrScannerComponent } from '@app/shared/components/qr-scanner/qr-scanner
   imports: [
     CommonModule,
     AppUIModule,
+    CoreModule,
     FormsModule,
     NgxEchartsModule,
     TranslateModule,
@@ -86,6 +89,7 @@ import { QrScannerComponent } from '@app/shared/components/qr-scanner/qr-scanner
     LoaderComponent,
     BigNumbersPipe,
     AddressClipboardComponent,
+    TokenDescriptionComponent,
     AddTokenComponent,
     FromToAvatarComponent,
     LinkClipboardComponent,
@@ -121,6 +125,7 @@ import { QrScannerComponent } from '@app/shared/components/qr-scanner/qr-scanner
     CropAddressPipe,
     BigNumbersPipe,
     AddressClipboardComponent,
+    TokenDescriptionComponent,
     AddTokenComponent,
     FromToAvatarComponent,
     LinkClipboardComponent,

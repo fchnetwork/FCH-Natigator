@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Location } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
@@ -36,7 +36,8 @@ import { TransactionService } from '@app/core/transactions/transaction-service/t
 @Component({
   selector: 'app-swap-create',
   templateUrl: './swap-create.component.html',
-  styleUrls: ['./swap-create.component.scss']
+  styleUrls: ['./swap-create.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SwapCreateComponent implements OnInit, OnDestroy {
 

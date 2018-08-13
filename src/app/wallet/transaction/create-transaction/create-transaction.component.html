@@ -31,7 +31,9 @@
               <aer-select formControlName="selectedToken" [(ngModel)]="selectedToken" (ngModelChange)="handleSelectChange()" dataKey="symbol"
                 icon="aerum" placeholder="Select your token">
                 <aer-select-option [value]="{symbol: 'Aero'}">{{ 'AERO' | translate}}</aer-select-option>
-                <aer-select-option *ngFor="let item of tokens;" [value]="item">{{item.symbol}}</aer-select-option>
+                <aer-select-option *ngFor="let item of tokens;" [value]="item">
+                  <app-token-description [token]="item"></app-token-description>
+                </aer-select-option>
               </aer-select>
               <div class="account-status-line">
                 <aer-icon>aerum</aer-icon>

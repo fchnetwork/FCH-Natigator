@@ -1,5 +1,5 @@
 import { ModalService } from '@app/core/general/modal-service/modal.service';
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { ClipboardService } from "@app/core/general/clipboard-service/clipboard.service";
 import { InternalNotificationService } from "@app/core/general/internal-notification-service/internal-notification.service";
@@ -8,7 +8,9 @@ import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
 @Component({
   selector: "app-token-list",
   templateUrl: "./token-list.component.html",
-  styleUrls: ["./token-list.component.scss"]
+  styleUrls: ["./token-list.component.scss"],
+  encapsulation: ViewEncapsulation.None
+
 })
 export class TokenListComponent implements OnInit {
   tokens: any;
