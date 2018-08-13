@@ -3,6 +3,7 @@ export interface CreateTokenRequest {
   symbol: string;
   decimals: string;
   supply: string;
+  ansName: string;
   estimatedFeeInGas: number;
   maximumFeeInGas: number;
   gasPrice: number;

@@ -8,7 +8,6 @@ import { environment } from '@env/environment';
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { AddressValidator } from "@shared/validators/address.validator";
 import { NameBuyConfirmRequest } from '@aens/models/nameBuyConfirmRequest';
-import { ConfirmResponse } from '@aens/models/confirmResponse';
 import { ModalService } from '@core/general/modal-service/modal.service';
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { AerumNameService } from '@core/aens/aerum-name-service/aerum-name.service';

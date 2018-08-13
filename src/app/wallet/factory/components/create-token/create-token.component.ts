@@ -40,11 +40,13 @@ export class CreateTokenComponent implements OnInit {
       name: [null, [Validators.required, Validators.maxLength(100), Validators.pattern("^[0-9A-Za-z- ]+$")]],
       symbol: [null, [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9A-Z]+$")]],
       supply: [null, [Validators.required, Validators.pattern("^[0-9]{1,18}$"),  Validators.min(1)]],
-      decimals: [null, [Validators.required, Validators.pattern("^[0-9]+$"), Validators.min(0), Validators.max(18)]]
+      decimals: [null, [Validators.required, Validators.pattern("^[0-9]+$"), Validators.min(0), Validators.max(18)]],
+      ansName: [null, [Validators.required, Validators.pattern("^[a-zA-Z0-9-]{5,50}$")]],
     });
   }
 
   async createToken() {
+    // TODO: Validate if ANS name already taken
     if(!this.canCreateToken()) {
       this.logger.logMessage("Cannot create token due to validation issues");
       return;
@@ -53,6 +55,7 @@ export class CreateTokenComponent implements OnInit {
     try {
       this.processing = true;
       await this.tryCreateToken(this.createForm.value as CreateTokenModel);
+      // TODO: Create ANS name here
     } catch (e) {
       this.logger.logError('Create token error:', e);
       this.notificationService.showMessage(this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.ERROR'), this.translate('ERROR'));
@@ -73,11 +76,12 @@ export class CreateTokenComponent implements OnInit {
       symbol: data.symbol,
       decimals: data.decimals,
       supply: data.supply,
+      ansName: data.ansName + ".aer",
       gasPrice: cost[0],
       estimatedFeeInGas: cost[1],
       maximumFeeInGas: cost[2]
     };
-
+    
     const modalResult = await this.modalService.openCreateTokenConfirm(createTokenRequest);
     if(modalResult.dialogResult === DialogResult.Cancel) {
       this.logger.logMessage('Creating new token cancelled');

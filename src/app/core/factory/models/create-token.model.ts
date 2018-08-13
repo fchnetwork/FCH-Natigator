@@ -3,4 +3,5 @@ export interface CreateTokenModel {
   symbol: string;
   supply: string;
   decimals: string;
+  ansName: string;
 }

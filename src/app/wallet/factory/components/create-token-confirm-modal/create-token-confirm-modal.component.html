@@ -19,6 +19,10 @@
           <div>{{ dialogRef.data.supply }}</div>
         </div>
         <div>
+          <div>{{ 'TOKEN_FACTORY.CREATE.FIELD_ANS_NAME' | translate }}</div>
+          <div>{{ dialogRef.data.ansName }}</div>
+        </div>
+        <div>
           <div>{{ 'TOKEN_FACTORY.CREATE.FIELD_ESTIMATED_FEE' | translate }}</div>
           <div>{{ estimatedFeeInWei | convertToEther | number:'1.0-18' }} Aero</div>
         </div>
