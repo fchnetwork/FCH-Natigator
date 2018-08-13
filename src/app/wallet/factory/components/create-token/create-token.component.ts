@@ -2,18 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { fromWei } from "web3-utils";
-import { DialogResult } from "@aerum/ui";
+import { DialogResult, NotificationService } from "@aerum/ui";
 import { CreateTokenRequest } from "@app/wallet/factory/models/create-token-request.model";
 import { CreateTokenModel } from "@app/core/factory/models/create-token.model";
 import { ModalService } from "@core/general/modal-service/modal.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { TranslateService } from "@ngx-translate/core";
 import { ClipboardService } from "@core/general/clipboard-service/clipboard.service";
-import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
-import { toBigNumberString } from "@shared/helpers/number-utils";
 import { AuthenticationService } from "@core/authentication/authentication-service/authentication.service";
 
 @Component({
@@ -36,7 +34,7 @@ export class CreateTokenComponent implements OnInit {
     private logger: LoggerService,
     private modalService: ModalService,
     private authenticationService: AuthenticationService,
-    private notificationService: InternalNotificationService,
+    private notificationService: NotificationService,
     private formBuilder: FormBuilder,
     private translateService: TranslateService,
     private clipboardService: ClipboardService,
@@ -68,17 +66,16 @@ export class CreateTokenComponent implements OnInit {
 
     try {
       this.processing = true;
-      await this.tryCreateToken(this.createForm.value as CreateTokenModel);
-      // TODO: Create ANS name here
+      await this.confirmAndCreateToken(this.createForm.value as CreateTokenModel);
     } catch (e) {
       this.logger.logError('Create token error:', e);
-      this.notificationService.showMessage(this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.ERROR'), this.translate('ERROR'));
+      this.notify(this.translate('ERROR'), this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.ERROR'));
     } finally {
       this.processing = false;
     }
   }
 
-  private async tryCreateToken(data: CreateTokenModel) {
+  private async confirmAndCreateToken(data: CreateTokenModel) {
     this.logger.logMessage("Creating new token", data);
     this.address = null;
 
@@ -98,12 +95,7 @@ export class CreateTokenComponent implements OnInit {
       return;
     }
 
-    this.notificationService.showMessage(`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.OPERATION_IN_PROGRESS_SUFFIX')}`, this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.OPERATION_IN_PROGRESS'));
-    this.address = await this.tokenFactoryService.create(data);
-    if(this.address) {
-      await this.tokenService.safeImportToken(this.address);
-    }
-    this.notificationService.showMessage(`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.SUCCESS_SUFFIX')}`, this.translate('DONE'));
+    await this.createTokenAndSetAnsName(data);
   }
 
   private async estimateCost(data: CreateTokenModel): Promise<[number, number, number]> {
@@ -121,9 +113,36 @@ export class CreateTokenComponent implements OnInit {
     ];
   }
 
+  private async createTokenAndSetAnsName(data: CreateTokenModel) {
+    await this.createAndImportToken(data);
+    if(this.address) {
+      await this.registerAnsName(this.address, data.ansName);
+      this.notify(this.translate('DONE'),`${data.name} ${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.SUCCESS_SUFFIX')}`);
+    }
+  }
+
+  private async createAndImportToken(data: CreateTokenModel) {
+    this.notify(this.multiContractsExecutionNotificationTitle(1, 4), `${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.CREATING_TOKEN')}: ${data.name}`);
+    this.address = await this.tokenFactoryService.create(data);
+    if(this.address) {
+      await this.tokenService.safeImportToken(this.address);
+    }
+  }
+
+  private async registerAnsName(address: string, label: string) {
+    const fullName = label + ".aer";
+    this.notify(this.multiContractsExecutionNotificationTitle(2, 4), `${this.translate('ENS.NOTIFICATION_BODY_BUY_NAME')}: ${fullName}`);
+    await this.aensService.buyName(label, this.account, this.ansPriceInEther);
+    this.notify(this.multiContractsExecutionNotificationTitle(3, 4), this.translate('ENS.NOTIFICATION_BODY_SET_RESOLVER'));
+    await this.aensService.setFixedPriceResolver(fullName);
+    this.notify(this.multiContractsExecutionNotificationTitle(4, 4), `${this.translate('ENS.NOTIFICATION_BODY_SET_ADDRESS')}: ${address}`);
+    await this.aensService.setAddress(fullName, address);
+    this.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${fullName}`);
+  }
+
   async copyAddress() {
     await this.clipboardService.copy(this.address);
-    this.notificationService.showMessage(this.translate('COPIED_TO_CLIPBOARD'), this.translate('DONE'));
+    this.notify(this.translate('DONE'), this.translate('COPIED_TO_CLIPBOARD'));
   }
 
   canCreateToken() {
@@ -136,6 +155,14 @@ export class CreateTokenComponent implements OnInit {
     }
 
     return !control.valid && control.touched;
+  }
+
+  private multiContractsExecutionNotificationTitle(current: number, total: number) {
+    return `${this.translate('COMMON.NOTIFICATIONS.CONTRACT.EXECUTING_CONTRACT')} ${current} ${this.translate('COMMON.NOTIFICATIONS.CONTRACT.N_OF')} ${total}`;
+  }
+
+  private notify(title: string, message: string) {
+    this.notificationService.notify(title, message, 'aerum', 5000);
   }
 
   private translate(key: string): string {

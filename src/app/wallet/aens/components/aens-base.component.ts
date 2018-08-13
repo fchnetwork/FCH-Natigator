@@ -34,7 +34,7 @@ export abstract class AensBaseComponent {
   }
 
   protected multiContractsExecutionNotificationTitle(current: number, total: number) {
-    return `${this.translate('ENS.EXECUTING_CONTRACT')} ${current} ${this.translate('ENS.N_OF')} ${total}`;
+    return `${this.translate('COMMON.NOTIFICATIONS.CONTRACT.EXECUTING_CONTRACT')} ${current} ${this.translate('COMMON.NOTIFICATIONS.CONTRACT.N_OF')} ${total}`;
   }
 
   protected translate(key: string): string {
