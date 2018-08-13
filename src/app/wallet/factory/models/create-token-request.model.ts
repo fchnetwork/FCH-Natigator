@@ -4,7 +4,5 @@ export interface CreateTokenRequest {
   decimals: string;
   supply: string;
   ansName: string;
-  estimatedFeeInGas: number;
-  maximumFeeInGas: number;
-  gasPrice: number;
+  estimatedFeeInWei: number;
 }

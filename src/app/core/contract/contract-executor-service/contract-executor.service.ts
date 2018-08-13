@@ -136,7 +136,7 @@ export class ContractExecutorService {
     });
 
     const [gasPrice, estimatedGas] = await Promise.all([getGasPrice, getEstimatedGas]);
-    return [gasPrice, estimatedGas, estimatedGas + this.contractGasThreshold];
+    return [Number(gasPrice), estimatedGas, estimatedGas + this.contractGasThreshold];
   }
 
   private ensureOptions(options: TransactionOptions): TransactionOptions {

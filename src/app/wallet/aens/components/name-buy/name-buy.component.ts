@@ -108,7 +108,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
     await this.aensService.setFixedPriceResolver(fullName);
     this.notificationService.notify(this.multiContractsExecutionNotificationTitle(3, 3), `${this.translate('ENS.NOTIFICATION_BODY_SET_ADDRESS')}: ${nameAddress}`, 'aerum', 5000);
     await this.aensService.setAddress(fullName, nameAddress);
-    this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${this.name}.aer`, 'aerum');
+    this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${fullName}`, 'aerum');
   }
 
   canBuyName() {
