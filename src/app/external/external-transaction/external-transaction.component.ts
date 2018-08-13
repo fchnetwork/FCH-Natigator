@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 import { StorageService } from "@core/general/storage-service/storage.service";
 
 import { Token } from "@core/transactions/token-service/token.model";
@@ -16,7 +16,7 @@ import { AddressKeyValidationService } from '@app/core/validation/address-key-va
   templateUrl: './external-transaction.component.html',
   styleUrls: ['./external-transaction.component.scss']
 })
-export class ExternalTransactionComponent implements OnInit, OnDestroy {
+export class ExternalTransactionComponent implements OnDestroy {
   sub: any;
   isToken: boolean;
   redirectUrl: string;
@@ -25,6 +25,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   orderId: string;
   tokenAddress: string;
   tokenInfo: any;
+  params: Params;
 
   senderAddress: string;
   receiverAddress: string;
@@ -66,56 +67,59 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     private notificationMessagesService: NotificationMessagesService,
     private addressKeyvalidation: AddressKeyValidationService
   ) {
-    this.prepareData();
-  }
-
-  ngOnInit() {
-    this.tokens = this.tokenService.getTokens();
+    this.sub = this.route
+      .queryParams
+      .subscribe(async params => {
+        if (params.query) {
+          this.params = params;
+          await this.init();
+        }
+      });
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  prepareData() {
-    this.sub = this.route
-      .queryParams
-      .subscribe(async params => {
-        if (params.query) {
-          this.query = params.query;
-          const parsed = JSON.parse(params.query);
-          this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
-          [this.receiverAddressHex, this.tokenAddress] = await Promise.all([
-            this.nameService.safeResolveNameOrAddress(this.receiverAddress),
-            this.nameService.safeResolveNameOrAddress(parsed.tokenAddress ? parsed.tokenAddress : this.tokenAddress)
-          ]);
-          this.receiverAddressShort = this.cropAddress(this.receiverAddressHex);
-          this.senderAddressShort = this.cropAddress(this.storageService.getSessionData('acc_address'));
-          this.senderAddress = this.storageService.getSessionData('acc_address');
-          this.senderAvatar = this.authService.generateCryptedAvatar(this.senderAddress);
-          this.receiverAvatar = this.authService.generateCryptedAvatar(this.receiverAddressHex);
-          this.amount = parsed.amount;
-          this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
+  async onPaperWalletImported() {
+    await this.init();
+  }
 
-          this.isToken = (!parsed.tokenAddress || parsed.tokenAddress === "0x0") ? false : true;
+  private async init() {
+    this.tokens = this.tokenService.getTokens();
+    this.query = this.params.query;
 
-          if(parsed.privateKey && this.addressKeyvalidation.isPrivateKey(parsed.privateKey)) {
-            this.privateKeyToImport = parsed.privateKey;
-          }
+    const parsed = JSON.parse(this.params.query);
+    this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
+    [this.receiverAddressHex, this.tokenAddress] = await Promise.all([
+      this.nameService.safeResolveNameOrAddress(this.receiverAddress),
+      this.nameService.safeResolveNameOrAddress(parsed.tokenAddress ? parsed.tokenAddress : this.tokenAddress)
+    ]);
+    this.receiverAddressShort = this.cropAddress(this.receiverAddressHex);
+    this.senderAddressShort = this.cropAddress(this.storageService.getSessionData('acc_address'));
+    this.senderAddress = this.storageService.getSessionData('acc_address');
+    this.senderAvatar = this.authService.generateCryptedAvatar(this.senderAddress);
+    this.receiverAvatar = this.authService.generateCryptedAvatar(this.receiverAddressHex);
+    this.amount = parsed.amount;
+    this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
 
-          this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
-          this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
-          await this.prepareMessages();
+    this.isToken = (!parsed.tokenAddress || parsed.tokenAddress === "0x0") ? false : true;
 
-          if (this.isToken) {
-            this.getTokenInfo();
-          } else {
-            this.currency = 'Aero';
-            await this.getMaxTransactionFee();
-          }
-          this.getBalance();
-        }
-      });
+    if(parsed.privateKey && this.addressKeyvalidation.isPrivateKey(parsed.privateKey)) {
+      this.privateKeyToImport = parsed.privateKey;
+    }
+
+    this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
+    this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
+    await this.prepareMessages();
+
+    if (this.isToken) {
+      this.getTokenInfo();
+    } else {
+      this.currency = 'Aero';
+      await this.getMaxTransactionFee();
+    }
+    this.getBalance();
   }
 
   async prepareMessages() {

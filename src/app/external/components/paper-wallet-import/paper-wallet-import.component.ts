@@ -42,6 +42,7 @@ import { ImportWalletService } from "@app/core/transactions/import-wallet-servic
 })
 export class PaperWalletImportComponent implements OnInit {
   @Input() privateKey: string;
+  @Output() walletImported = new EventEmitter();
   balance = 0;
   expanded = false;
 
@@ -57,6 +58,7 @@ export class PaperWalletImportComponent implements OnInit {
 
   async import() {
     await this.importWallet.importWalletToCurrentAddress(this.privateKey);
+    this.walletImported.emit();
     this.expanded = false;
   }
 
