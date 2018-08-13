@@ -40,16 +40,12 @@ export class TransactionService {
     });
   }
 
-  checkBalanceOfPrivateKey(privateKey: string): Promise<number> {
-    return new Promise(async (resolve, reject) => {
+  async checkBalanceOfPrivateKey(privateKey: string): Promise<number> {
       const privateKeyBuffer = Buffer.from(privateKey, "hex");
-
       const wallet = ethWallet.fromPrivateKey(privateKeyBuffer);
       const address = wallet.getChecksumAddressString();
       const balance = await this.checkBalance(address);
-
-      resolve(balance);
-    });
+      return Number(balance);
   }
 
   // If moving this function be sure to update the convertToEther pipe in shared modules
@@ -153,7 +149,6 @@ export class TransactionService {
   }
 
   updateStorage(transactions) {
-    const stringTransaction = JSON.stringify(transactions);
     this.storageService.setSessionData("transactions", transactions);
   }
 

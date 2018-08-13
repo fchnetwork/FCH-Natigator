@@ -64,7 +64,7 @@
     <div aerRow>
       <div aerColumn size="md-12">
         <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">{{'EXTERNAL-SWAP.TRANSACTION.FIELD_I_ACKNOWLEDGE_RISKS'|translate}}</aer-checkbox>
-        <p *ngIf="!proceedAvailable">{{'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' | translate}}</p>
+        <p *ngIf="depositMore">{{'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' | translate}}</p>
       </div>
     </div>
     <div aerRow>

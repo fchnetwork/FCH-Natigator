@@ -164,7 +164,7 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
   }
 
   deposit() {
-    this.router.navigate(['/external/eth-wallet/'], {
+    return this.router.navigate(['/external/eth-wallet/'], {
       queryParams: {
         asset: this.assetAddress,
         amount: this.amount,
@@ -192,10 +192,9 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     }
   }
 
-
   checkTokenCookies(targetToken): any {
     console.log(targetToken);
-    for (let cookieToken of this.tokens) {
+    for (const cookieToken of this.tokens) {
       console.log(cookieToken);
       if (cookieToken.address === targetToken) {
         return cookieToken;
@@ -226,20 +225,15 @@ export class ExternalTransactionComponent implements OnInit, OnDestroy {
     if (!this.isToken) {
       this.transactionService.checkBalance(this.senderAddress).then((res) => {
         this.balance = res;
-        this.proceedAvailable = (this.balance <= this.amount) ? false : true;
-        this.depositMore = (this.balance < this.amount) ? true : false;
+        this.proceedAvailable = (this.balance > this.amount);
+        this.depositMore = !this.proceedAvailable;
       });
     } else {
       this.tokenService.getTokenBalance(this.tokenAddress).then((res) => {
         this.balance = Number(res) / Math.pow(10, this.tokenDecimals);
-        this.proceedAvailable = (this.balance < this.amount || !this.currency) ? false : true;
-        this.depositMore = (this.balance < this.amount || !this.currency) ? true : false;
+        this.proceedAvailable = !(this.balance < this.amount || !this.currency);
+        this.depositMore = !this.proceedAvailable;
       });
     }
   }
-
-  preparePaperWallet(privateKey: string) {
-
-  }
-
 }

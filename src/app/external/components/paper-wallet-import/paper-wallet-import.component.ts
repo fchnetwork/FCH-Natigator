@@ -3,8 +3,6 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  EventEmitter,
   trigger,
   state,
   style,
@@ -52,7 +50,8 @@ export class PaperWalletImportComponent implements OnInit {
 
   async ngOnInit() {
     this.balance = await this.transaction.checkBalanceOfPrivateKey(this.privateKey);
-    this.expanded = true;
+    // NOTE: We don't allow importing to small amount as it doesn't make sense
+    this.expanded = this.balance > 0.0001;
   }
 
   async import() {
