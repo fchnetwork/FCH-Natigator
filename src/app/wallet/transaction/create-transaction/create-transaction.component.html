@@ -76,7 +76,7 @@
           <div aerColumn size="sm-12">
             <app-divider [showLine]="true" [fullWidth]="true"></app-divider>
             <div class="footer-buttons">
-              <aer-button [ngClass]="!txnForm.valid ? 'disabled' : 'blue'" class="normal" (buttonFn)="send()">{{'SEND'|translate}}</aer-button>
+              <aer-button [ngClass]="!isFormValid() ? 'disabled' : 'blue'" [disabled]="!isFormValid()" class="normal" (buttonFn)="send()">{{'SEND'|translate}}</aer-button>
             </div>
           </div>
         </div>
