@@ -216,6 +216,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         this.transactionService.transaction(privateKey, address, resolvedAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, false, {}, null, this.moreOptionsData).then(res => {
           this.transactionMessage = res;
         }).catch((error) => {
+          this.notificationService.showMessage(`An error occurred during transaction. Please review all the fields and try again. ${error}`, 'Error');
           console.log(error);
         });
       } else if (this.selectedToken.address) {
@@ -225,6 +226,9 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
 
         this.transactionService.sendTokens(address, resolvedAddress, convertedAmount, this.selectedToken.address, false, {}, null, this.selectedToken.symbol, this.selectedToken.decimals).then((res) => {
           this.transactionMessage = res;
+        }).catch((error) => {
+          this.notificationService.showMessage(`An error occurred during sending the tokens. Please review all the fields and try again. ${error}`, 'Error');
+          console.log(error);
         });
       }
     }
@@ -264,6 +268,11 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  isFormValid() {
+    const valid = this.txnForm.status === 'VALID';
+    return valid && this.amount > 0 && this.selectedToken && this.selectedToken.balance >= this.amount;
   }
 
   async moreOptionsChange(event) {
