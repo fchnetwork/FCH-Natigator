@@ -10,15 +10,9 @@ import { CreateTokenRequest } from "@app/wallet/factory/models/create-token-requ
 })
 export class CreateTokenConfirmModalComponent implements ModalViewComponent<CreateTokenRequest, any>, OnInit {
 
-  estimatedFeeInWei: number;
-  maximumFeeInWei: number;
-
   constructor(public dialogRef: DialogRef<CreateTokenRequest, any>) { }
 
-  ngOnInit() {
-    this.estimatedFeeInWei = this.dialogRef.data.gasPrice * this.dialogRef.data.estimatedFeeInGas;
-    this.maximumFeeInWei = this.dialogRef.data.gasPrice * this.dialogRef.data.maximumFeeInGas;
-  }
+  ngOnInit() { }
 
   accept() {
     this.dialogRef.close(null);

@@ -119,7 +119,7 @@ export class AerumNameService {
     return CheckStatus.NotAvailable;
   }
 
-  async buyNameAndSetAddress(label: string, owner: string, address: string, priceInWei: string) {
+  async buyNameAndSetAddress(label: string, owner: string, address: string, priceInEther: string) {
     if(!label) {
       throw new Error('Can only buy not empty names');
     }
@@ -130,13 +130,13 @@ export class AerumNameService {
     const hashedLabel = sha3(label);
 
     if(!await this.isNodeOwner(node, owner)) {
-      await this.registrarContractService.buy(hashedLabel, priceInWei);
+      await this.registrarContractService.buy(hashedLabel, priceInEther);
     }
     await this.registryContractService.setResolver(node, AensPublicResolverContractService.getContractAddress());
     await this.resolverContractService.setAddress(node, address);
   }
 
-  async estimateBuyNameAndSetAddressCost(label: string, owner: string, address: string, priceInWei: string) {
+  async estimateBuyNameAndSetAddressCost(label: string, owner: string, address: string, priceInEther: string) {
     if(!label) {
       throw new Error('Can only handle not empty names');
     }
@@ -145,7 +145,7 @@ export class AerumNameService {
     return [Number(gasPrice), this.buyNameEstimatedGasUsage, this.buyNameEstimatedGasUsage + this.threeOperationsGasThreshold];
   }
 
-  async buyName(label: string, owner: string, priceInWei: string) {
+  async buyName(label: string, owner: string, priceInEther: string) {
     if(!label) {
       throw new Error('Can only buy not empty names');
     }
@@ -156,7 +156,7 @@ export class AerumNameService {
     const hashedLabel = sha3(label);
 
     if(!await this.isNodeOwner(node, owner)) {
-      await this.registrarContractService.buy(hashedLabel, priceInWei);
+      await this.registrarContractService.buy(hashedLabel, priceInEther);
     }
   }
 

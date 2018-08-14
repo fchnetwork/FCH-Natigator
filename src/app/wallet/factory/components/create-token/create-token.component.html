@@ -44,6 +44,16 @@
             <aer-input placeholder="e.g. 18" formControlName="decimals" [ngClass]="{'has-error': hasError(createForm.controls.decimals)}" ngDefaultControl></aer-input>
           </div>
         </div>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            {{'TOKEN_FACTORY.CREATE.FIELD_ANS_NAME'|translate}}
+          </div>
+        </div>
+        <div aerRow>
+          <div aerColumn size="sm-12">
+            <aer-input placeholder="e.g. aerum" class="with-button blue" [ngClass]="{'has-error': hasError(createForm.controls.ansName)}" buttonLabel=".aer" formControlName="ansName" ngDefaultControl></aer-input>
+          </div>
+        </div>
         <div *ngIf="address" aerRow>
           <div aerColumn size="sm-12">
             {{'TOKEN_FACTORY.CREATE.FIELD_ADDRESS'|translate}}

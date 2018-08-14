@@ -194,9 +194,13 @@
     },
     "NOTIFICATIONS": {
       "WRONG_VALUE": {
-          "TITLE": "Form error!",
-          "BODY": "field is incorrect."
-        }
+        "TITLE": "Form error!",
+        "BODY": "field is incorrect."
+      },
+      "CONTRACT": {
+        "EXECUTING_CONTRACT": "Executing contract",
+        "N_OF": "of"
+      }
     }
   },
 
@@ -640,8 +644,6 @@
     "WITHDRAW_SUCCESS": "Funds sent to",
     "OPERATION_STARTED_TITLE": "Started",
     "OPERATION_IN_PROGRESS": "Operation in progress...",
-    "EXECUTING_CONTRACT": "Executing contract",
-    "N_OF": "of",
     "NOTIFICATION_BODY_BUY_NAME": "Buying name",
     "NOTIFICATION_BODY_SET_RESOLVER": "Setting resolver",
     "NOTIFICATION_BODY_SET_ADDRESS": "Setting address",
@@ -718,14 +720,15 @@
       "FIELD_SUPPLY": "Total Supply",
       "FIELD_DECIMALS": "Decimals",
       "FIELD_ADDRESS": "Address",
+      "FIELD_ANS_NAME": "ANS Name",
       "FIELD_ESTIMATED_FEE": "Estimated Fee",
       "BTN_COPY": "Copy",
       "BTN_CREATE": "Create",
       "NOTIFICATIONS": {
         "ERROR": "Error while creating token",
         "SUCCESS_SUFFIX": "token was created successfully",
-        "OPERATION_IN_PROGRESS": "Operation in progress...",
-        "OPERATION_IN_PROGRESS_SUFFIX": "token creation started"
+        "CREATING_TOKEN": "Creating contract for token",
+        "ANS_NOT_AVAILABLE": "ANS name not available"
       },
       "CONFIRM": {
         "TITLE": "Confirm Token Creation"
