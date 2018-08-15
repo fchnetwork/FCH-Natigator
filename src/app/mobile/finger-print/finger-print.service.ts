@@ -28,7 +28,7 @@ export class FingerPrintService {
     }
     await this.deletePassword();
     return new Promise<boolean>(resolve => {
-      this.touchId.save(this.key, password, true, () => {
+      this.touchId.save(this.key, password, false, () => {
         resolve(true);
       });
     });
