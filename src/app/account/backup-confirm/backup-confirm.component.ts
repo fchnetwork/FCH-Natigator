@@ -29,9 +29,9 @@ export class BackupConfirmComponent implements OnInit {
     this.initializeSeedArrays();
   }
 
-  confirm() {
+  async confirm() {
     const data = this.routeDataService.routeData;
-    this.authService.saveKeyStore( data.privateKey, data.password, this.seed);
+    await this.authService.saveKeyStore(data.privateKey, data.password, this.seed);
 
     if (data.returnUrl) {
       this.router.navigateByUrl(data.returnUrl);

@@ -35,9 +35,9 @@ export class BackupPromptComponent implements OnInit {
     this.router.navigate(["account/backup/create"]);
   }
 
-  skipStep() {
+  async skipStep() {
     const data = this.routeDataService.routeData;
-    this.authService.saveKeyStore(
+    await this.authService.saveKeyStore(
       data.privateKey,
       data.password,
       data.mnemonic

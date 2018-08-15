@@ -1,4 +1,4 @@
-  <aer-modal-container>
+<aer-modal-container>
   <form (ngSubmit)="onSubmitAddress()" [formGroup]="unlockForm">
     <div class="account login">
       <div class="header">{{'ACCOUNT.UNLOCK.TITLE'|translate}}</div>
@@ -13,10 +13,19 @@
       <app-divider [showLine]="false"></app-divider>
       <app-divider [showLine]="false"></app-divider>
       <aer-button class="large full-width" type="submit">{{'ACCOUNT.UNLOCK.UNLOCK_BTN'|translate}}</aer-button>
-      <div class="link-text">
-        <a [routerLink]="['/account/restore']" [queryParams]="returnUrl ? {returnUrl: returnUrl} : null">{{'ACCOUNT.UNLOCK.RESTORE_LINK'|translate}}</a>
-        <div>{{'ACCOUNT.UNLOCK.RESTORE_LINK_DESC'|translate}}</div>
-      </div>
     </div>
   </form>
+  <div *ngIf="isFingerPrintAvailable">
+    <app-divider label="{{'OR'|translate}}"></app-divider>
+    <aer-button class="large full-width" type="button" (click)="onFingerPrint()">
+      <aer-icon class="finger-print-icon">aerum</aer-icon>
+      Scan
+    </aer-button>
+  </div>
+  <div class="account">
+    <div class="link-text">
+      <a [routerLink]="['/account/restore']" [queryParams]="returnUrl ? {returnUrl: returnUrl} : null">{{'ACCOUNT.UNLOCK.RESTORE_LINK'|translate}}</a>
+      <div>{{'ACCOUNT.UNLOCK.RESTORE_LINK_DESC'|translate}}</div>
+    </div>
+  </div>
 </aer-modal-container>

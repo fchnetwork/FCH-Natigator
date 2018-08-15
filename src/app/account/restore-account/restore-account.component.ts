@@ -159,7 +159,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     };
   }
 
-  onSubmitAddress() {
+  async onSubmitAddress() {
     if (this.recoverForm.valid) {
       this.cleanOrSetDefaultCookies();
 
@@ -181,7 +181,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
       this.storageService.setSessionData("cross_chain_swaps", []);
       this.storageService.setSessionData("stakings", []);
 
-      this.authServ.saveKeyStore(
+      await this.authServ.saveKeyStore(
         this.private,
         this.recoverForm.value.password,
         this.recoverForm.value.seed
