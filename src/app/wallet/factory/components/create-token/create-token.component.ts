@@ -59,6 +59,7 @@ export class CreateTokenComponent implements OnInit {
     this.ansPriceInWei = await this.aensService.getPrice();
     this.ansPriceInEther = fromWei(this.ansPriceInWei, 'ether');
     this.currentAccountBalanceInEther = await this.transactionService.checkBalance(this.account);
+    this.logger.logMessage(`Current account balance: ${this.currentAccountBalanceInEther}`);
   }
 
   async createToken() {
