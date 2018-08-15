@@ -4,6 +4,7 @@ import { AddressKeyValidationService } from './validation/address-key-validation
 import { AuthenticationGuard } from './authentication/auth-guards/authentication.guard';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MobileModule } from '@app/mobile/mobile.module';
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 import { AensFixedPriceRegistrarContractService } from '@app/core/aens/aens-fixed-price-registrar-contract-service/aens-fixed-price-registrar-contract.service';
 import { AensPublicResolverContractService } from '@app/core/aens/aens-public-resolver-contract-service/aens-public-resolver-contract.service';
@@ -58,7 +59,8 @@ import { TokenFactoryService } from "@core/factory/token-factory-service/token-f
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    MobileModule
   ],
   providers: [
     ContractExecutorService,

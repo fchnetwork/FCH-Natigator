@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { privateToAddress, bufferToHex } from "ethereumjs-util";
 import { SettingsService } from '@app/core/settings/settings.service';
 import { StorageService } from "@core/general/storage-service/storage.service";
+import { FingerPrintService } from "@app/mobile/finger-print/finger-print.service";
 
 const ethUtil = require('ethereumjs-util');
 const hdkey   = require("ethereumjs-wallet/hdkey");
@@ -25,7 +26,8 @@ export class AuthenticationService {
 
     constructor(public router: Router,
                 public settingsService: SettingsService,
-                private storageService: StorageService
+                private storageService: StorageService,
+                private fingerPrintService: FingerPrintService
     ) {
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.settingsService.settings.systemSettings.aerumNodeRpcURI));
         this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.settingsService.settings.systemSettings.aerumNodeWsURI));
@@ -74,7 +76,8 @@ export class AuthenticationService {
     }
 
      // creates an auth cookie
-    saveKeyStore(privateKey: string, password: string, seed: any){
+    async saveKeyStore(privateKey: string, password: string, seed: any){
+      await this.fingerPrintService.savePassword(password);
       const formatSeed = this.seedCleaner(seed.toString());
       const encryptAccount = this.web3.eth.accounts.encrypt(privateKey, password);
       this.storageService.setCookie('aerum_keyStore', JSON.stringify(encryptAccount), false, 7);
