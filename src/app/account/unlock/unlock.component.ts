@@ -22,6 +22,7 @@ export class UnlockComponent implements OnInit {
 
   windowState: boolean;
   isFingerPrintAvailable: boolean;
+  inProgress = false;
 
   constructor(
     public authServ: AuthenticationService,
@@ -41,6 +42,7 @@ export class UnlockComponent implements OnInit {
   async ngOnInit() {
     this.isFingerPrintAvailable = await this.fingerPrintService.isAvailable();
     if(this.isFingerPrintAvailable) {
+      this.inProgress = true;
       this.onFingerPrint();
     }
   }
@@ -58,9 +60,11 @@ export class UnlockComponent implements OnInit {
     this.authServ
     .login(password)
     .then(() => {
+      this.inProgress = false;
       this.router.navigateByUrl(this.returnUrl || '/');
     })
     .catch(() => {
+      this.inProgress = false;
       this.passwordIncorrect = true;
       this.translateService
         .get("UNLOCK.INVALID_PASSWORD")

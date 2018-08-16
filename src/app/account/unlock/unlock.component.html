@@ -13,6 +13,9 @@
       <app-divider [showLine]="false"></app-divider>
       <app-divider [showLine]="false"></app-divider>
       <aer-button class="large full-width" type="submit">{{'ACCOUNT.UNLOCK.UNLOCK_BTN'|translate}}</aer-button>
+      <div *ngIf="inProgress" class="login__processing">
+        <aer-loader></aer-loader>
+      </div>
       <div class="link-text">
         <a [routerLink]="['/account/restore']" [queryParams]="returnUrl ? {returnUrl: returnUrl} : null">{{'ACCOUNT.UNLOCK.RESTORE_LINK'|translate}}</a>
         <div>{{'ACCOUNT.UNLOCK.RESTORE_LINK_DESC'|translate}}</div>
