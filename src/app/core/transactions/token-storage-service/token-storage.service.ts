@@ -1,13 +1,9 @@
-import { Injectable } from '@angular/core';
 import { Token } from "@core/transactions/token-service/token.model";
 import { StorageService } from "@core/general/storage-service/storage.service";
 
-@Injectable()
 export class TokenStorageService {
-  private key: string;
 
-  constructor(key: string, private storageService: StorageService) {
-    this.key = key;
+  constructor(private key: string, private storageService: StorageService) {
   }
 
   getTokens() {
