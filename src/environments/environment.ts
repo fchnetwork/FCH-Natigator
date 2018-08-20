@@ -12,7 +12,7 @@ export const environment = {
   rpcApiProvider: "https://marge.aerum.net/eth",
   cookiesDomain: "localhost",
   webSocketStatServer: "ws://localhost:3000/primus",
-  externalBlockExplorer: "http://explore.aerum.net/#/",
+  externalBlockExplorer: "https://explore.aerum.net/#/",
   contracts: {
     swap: {
       address: {
