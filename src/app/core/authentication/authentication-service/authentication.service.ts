@@ -17,6 +17,8 @@ const bip39   = require("bip39");
 
 import Web3 from 'web3';
 
+declare const window: any;
+
 @Injectable()
 export class AuthenticationService {
 
@@ -169,7 +171,6 @@ export class AuthenticationService {
     }
 
     logout() {
-      this.router.navigate(['account/unlock']);
       this.storageService.clearSessionData('acc_address');
       this.storageService.clearSessionData('acc_avatar');
       this.storageService.clearSessionData('seed');
@@ -182,6 +183,8 @@ export class AuthenticationService {
       this.storageService.clearSessionData('stakings');
       this.storageService.clearSessionData('derivation');
       this.storageService.clearSessionData('ethereum_tokens');
+      //Doing page full reload to make sure all components and services will be correctly initialized for next user.
+      window.location.href = 'account/unlock';
     }
 
     /**
