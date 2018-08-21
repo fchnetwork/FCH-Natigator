@@ -37,7 +37,7 @@ export class BigNumbersPipe implements PipeTransform {
       return '0'; 
     }
     let unit = 0; 
-    while ( value > 1000 ) { 
+    while ( value >= 1000 ) { 
       value /= 1000; 
       unit ++; 
     }

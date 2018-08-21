@@ -4,6 +4,7 @@ import { AddressKeyValidationService } from './validation/address-key-validation
 import { AuthenticationGuard } from './authentication/auth-guards/authentication.guard';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MobileModule } from '@app/mobile/mobile.module';
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 import { AensFixedPriceRegistrarContractService } from '@app/core/aens/aens-fixed-price-registrar-contract-service/aens-fixed-price-registrar-contract.service';
 import { AensPublicResolverContractService } from '@app/core/aens/aens-public-resolver-contract-service/aens-public-resolver-contract.service';
@@ -54,10 +55,12 @@ import { ImportWalletService } from '@app/core/transactions/import-wallet-servic
 import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
 import { StakingAerumService } from "@core/staking/staking-aerum-service/staking-aerum.service";
 import { StakingGovernanceService } from "@core/staking/staking-governance-service/staking-governance.service";
+import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    MobileModule
   ],
   providers: [
     ContractExecutorService,
@@ -104,7 +107,8 @@ import { StakingGovernanceService } from "@core/staking/staking-governance-servi
     AddressKeyValidationService,
     ImportWalletService,
     QrScannerService,
-    GlobalEventService
+    GlobalEventService,
+    TokenFactoryService
   ]
 })
 export class CoreModule {

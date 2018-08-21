@@ -13,6 +13,7 @@ import { TokenError } from "@core/transactions/token-service/token.error";
 import { TokenStorageService } from "@core/transactions/token-storage-service/token-storage.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { bigNumbersPow, bigNumbersDivide, bigNumberToString } from "@shared/helpers/number-utils";
+import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 
 @Injectable()
 export class TokenService {
@@ -28,7 +29,8 @@ export class TokenService {
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private nameService: AerumNameService
   ) {
     this.web3 = authService.getWeb3();
     this.wsWeb3 = authService.getWSWeb3();
@@ -55,20 +57,16 @@ export class TokenService {
     }, 100);
   }
 
-  saveTokens(tokens) {
-    this.tokenStorageService.saveTokens(tokens);
-  }
-
   getTokens() {
     return this.tokenStorageService.getTokens();
   }
 
-  updateStoredTokens(token) {
-    this.tokenStorageService.updateStoredTokens(token);
+  updateToken(token) {
+    this.tokenStorageService.updateToken(token);
   }
 
   getTokenBalance(tokenAddress) {
-    return new Promise((resolve)=>{
+    return new Promise((resolve) => {
       const address = this.storageService.getSessionData('acc_address');
       this.tokensContract = new this.web3.eth.Contract(tokensABI, tokenAddress);
       this.tokensContract.methods.balanceOf(address).call({}).then((res) => {
@@ -86,7 +84,7 @@ export class TokenService {
         this.tokensContract.methods.balanceOf(address).call({}).then((res) => {
           const balance = bigNumbersDivide(res, bigNumbersPow(10, tokens[i].decimals));
           tokens[i].balance = bigNumberToString(balance);
-          this.updateStoredTokens(tokens[i]);
+          this.updateToken(tokens[i]);
           if (i === Number(tokens.length - 1)) {
             const tokens = this.storageService.getSessionData('tokens');
             resolve(tokens);
@@ -111,7 +109,7 @@ export class TokenService {
     return token;
   }
 
-  async getSaveTokensInfo(contractAddress): Promise<Token> {
+  async safeGetTokensInfo(contractAddress): Promise<Token> {
     let token = this.getLocalTokenInfo(contractAddress);
     if (token && token.symbol) {
       return token;
@@ -136,6 +134,22 @@ export class TokenService {
       this.logger.logError(`Error while loading ${address} token info`, e);
       throw new TokenError(`Error while loading ${address} token info`);
     }
+  }
+
+  async safeImportToken(address: string): Promise<void> {
+    try {
+      await this.importToken(address);
+    } catch (e) {
+      this.logger.logError(`Error while importing ${address} token info`, e);
+    }
+  }
+
+  async importToken(address: string): Promise<void> {
+    const token = await this.getNetworkTokenInfo(address);
+    if (!token) {
+      throw new Error(`Cannot load ${address} token info`);
+    }
+    this.tokenStorageService.addToken(token);
   }
 
   private async tryGetNetworkTokenInfo(contractAddress): Promise<Token> {
@@ -166,8 +180,9 @@ export class TokenService {
   }
 
   tokenFallbackCheck(receiver, signature) {
-    return new Promise((resolve, reject) => {
-      this.web3.eth.getCode(receiver).then((res) => {
+    return new Promise(async (resolve, reject) => {
+      const address =  await this.nameService.safeResolveNameOrAddress(receiver);
+      this.web3.eth.getCode(address).then((res) => {
         let hash = this.web3.utils.keccak256(signature);
         hash = "63" + hash.slice(2, 10);
         resolve(res.includes(hash));

@@ -13,6 +13,7 @@
         <div>
           <div>
             {{ dialogRef.data.tokenInfo && dialogRef.data.tokenInfo.symbol ? dialogRef.data.tokenInfo.symbol : 'Aero' }}
+            <app-token-description [token]="dialogRef.data.tokenInfo"></app-token-description>
           </div>
           <div>
             {{ dialogRef.data.tokenAmountFormatted | number:'1.2-18' }}

@@ -7,6 +7,7 @@ import { AvatarSelectComponent } from "./components/avatar-select/avatar-select.
 import { PasswordLinesComponent } from "./components/password-lines/password-lines.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
+import { MobileModule } from "@app/mobile/mobile.module";
 import { RegisterComponent } from './register/register.component';
 import { BackupCreateComponent } from './backup-create/backup-create.component';
 import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component';
@@ -33,7 +34,8 @@ import { UnlockComponent } from "@app/account/unlock/unlock.component";
         CommonModule,
         SharedModule,
         CoreModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MobileModule
     ],
     declarations: [
         UnlockComponent,

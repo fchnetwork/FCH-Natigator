@@ -1,9 +1,9 @@
-import { selectedSeedPhrase } from './../../shared/app.interfaces';
-import { QrScannerService } from "./../../core/general/qr-scanner/qr-scanner.service";
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from "@angular/core";
+
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs/Subject";
+import { QrScannerService } from "./../../core/general/qr-scanner/qr-scanner.service";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { PasswordCheckerService } from "@app/core/authentication/password-checker-service/password-checker.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
@@ -159,7 +159,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
     };
   }
 
-  onSubmitAddress() {
+  async onSubmitAddress() {
     if (this.recoverForm.valid) {
       this.cleanOrSetDefaultCookies();
 
@@ -181,7 +181,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
       this.storageService.setSessionData("cross_chain_swaps", []);
       this.storageService.setSessionData("stakings", []);
 
-      this.authServ.saveKeyStore(
+      await this.authServ.saveKeyStore(
         this.private,
         this.recoverForm.value.password,
         this.recoverForm.value.seed

@@ -1,0 +1,34 @@
+<div class="name-release-confirm">
+  <div aerRow>
+    <div aerColumn size="md-12">
+      <div class="table-simple">
+        <div>
+          <div>{{ 'TOKEN_FACTORY.CREATE.FIELD_NAME' | translate }}</div>
+          <div>{{ dialogRef.data.name }}</div>
+        </div>
+        <div>
+          <div>{{ 'TOKEN_FACTORY.CREATE.FIELD_SYMBOL' | translate }}</div>
+          <div>{{ dialogRef.data.symbol }}</div>
+        </div>
+        <div>
+          <div>{{ 'TOKEN_FACTORY.CREATE.FIELD_DECIMALS' | translate }}</div>
+          <div>{{ dialogRef.data.decimals }}</div>
+        </div>
+        <div>
+          <div>{{ 'TOKEN_FACTORY.CREATE.FIELD_SUPPLY' | translate }}</div>
+          <div>{{ dialogRef.data.supply }}</div>
+        </div>
+        <div>
+          <div>{{ 'TOKEN_FACTORY.CREATE.FIELD_ANS_NAME' | translate }}</div>
+          <div>{{ dialogRef.data.ansName }}</div>
+        </div>
+        <div>
+          <div>{{ 'TOKEN_FACTORY.CREATE.FIELD_ESTIMATED_FEE' | translate }}</div>
+          <div>{{ dialogRef.data.estimatedFeeInWei | convertToEther | number:'1.0-18' }} Aero</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aer-modal-button [isAcceptButton]="true" (buttonFn)="accept()">{{ 'TOKEN_FACTORY.CREATE.BTN_CREATE' | translate }}</aer-modal-button>
+  <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{'COMMON.BUTTONS.CANCEL' | translate}}</aer-modal-button>
+</div>

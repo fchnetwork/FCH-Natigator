@@ -1,0 +1,6 @@
+<span *ngIf="!!token" class="token-description">
+  {{token.symbol}}
+  <span class="token-description-address" *ngIf="token.symbol && token.symbol.toLowerCase() !== 'eth'">
+    {{token.address | slice:0:7}}...{{token.address | slice:-5}}
+  </span>
+</span>

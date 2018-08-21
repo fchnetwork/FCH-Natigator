@@ -1,13 +1,6 @@
-import { AensModule } from "./aens/aens.module";
-import { HomeModule } from "./home/home.module";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { WalletComponent } from "./wallet.component";
-import { TransactionModule } from "@app/wallet/transaction/transaction.module";
-import { ExplorerModule } from "@app/wallet/explorer/explorer.module";
-import { SettingsModule } from "@app/wallet/settings/settings.module";
-import { SwapModule } from "@app/wallet/swap/swap.module";
-import { StakingModule } from "@app/wallet/staking/staking.module";
 
 export const WALLET_ROUTES = [
   {
@@ -49,6 +42,10 @@ export const WALLET_ROUTES = [
       {
         path: "staking",
         loadChildren: "app/wallet/staking/staking.module#StakingModule"
+      },
+      {
+        path: "factory",
+        loadChildren: "app/wallet/factory/factory.module#FactoryModule"
       }
     ]
   }

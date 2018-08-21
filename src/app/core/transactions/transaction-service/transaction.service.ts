@@ -9,6 +9,7 @@ import { NotificationMessagesService } from "@core/general/notification-messages
 
 import { SettingsService } from "@app/core/settings/settings.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
+import { LoggerService } from "@core/general/logger-service/logger.service";
 
 const Tx = require("ethereumjs-tx");
 const ethJsUtil = require("ethereumjs-util");
@@ -21,6 +22,7 @@ export class TransactionService {
 
   constructor(
     _auth: AuthenticationService,
+    private logger: LoggerService,
     private modalService: ModalService,
     private tokenService: TokenService,
     private notificationMessagesService: NotificationMessagesService,
@@ -40,16 +42,12 @@ export class TransactionService {
     });
   }
 
-  checkBalanceOfPrivateKey(privateKey: string): Promise<number> {
-    return new Promise(async (resolve, reject) => {
+  async checkBalanceOfPrivateKey(privateKey: string): Promise<number> {
       const privateKeyBuffer = Buffer.from(privateKey, "hex");
-
       const wallet = ethWallet.fromPrivateKey(privateKeyBuffer);
       const address = wallet.getChecksumAddressString();
       const balance = await this.checkBalance(address);
-
-      resolve(balance);
-    });
+      return Number(balance);
   }
 
   // If moving this function be sure to update the convertToEther pipe in shared modules
@@ -153,7 +151,6 @@ export class TransactionService {
   }
 
   updateStorage(transactions) {
-    const stringTransaction = JSON.stringify(transactions);
     this.storageService.setSessionData("transactions", transactions);
   }
 
@@ -215,6 +212,7 @@ export class TransactionService {
     }
   }
 
+  // TODO: Refactor this method to async / await as it becomes really complicated
   transaction(
     privkey: string,
     activeUser,
@@ -232,15 +230,15 @@ export class TransactionService {
         : Buffer.from(privkey, "hex");
       const sendTo = ethJsUtil.toChecksumAddress(to);
       const from = ethJsUtil.toChecksumAddress(activeUser);
-      const txValue = this.web3.utils.numberToHex(
-        this.web3.utils.toWei(amount.toString(), "ether")
-      );
+      const amountInEther = this.web3.utils.toWei(amount.toString(), "ether");
+      const txValue = this.web3.utils.numberToHex(amountInEther);
       const txData = this.web3.utils.asciiToHex(data);
       const getGasPrice = this.web3.eth.getGasPrice();
       const getTransactionCount = this.web3.eth.getTransactionCount(from);
       const estimateGas = this.web3.eth.estimateGas({
         to: sendTo,
-        data: txData
+        data: txData,
+        value: amountInEther
       });
 
       return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then(
@@ -272,7 +270,8 @@ export class TransactionService {
             ethJsUtil.addHexPrefix(tx.serialize().toString("hex"))
           );
           transaction
-            .on("transactionHash", hash => {
+            .once("transactionHash", hash => {
+              this.logger.logMessage(`Transaction hash received: ${hash}`);
               this.saveTransaction(
                 activeUser,
                 to,
@@ -283,20 +282,23 @@ export class TransactionService {
                 null,
                 null
               );
-              this.web3.eth.getTransaction(hash).then(res => {
+              this.notificationMessagesService.pendingTransactionNotification(
+                hash
+              );
+            })
+            .once("receipt", receipt => {
+              this.logger.logMessage(`Transaction receipt received: ${receipt}`);
+              this.web3.eth.getTransaction(receipt.transactionHash).then(res => {
                 res.timestamp = Moment(new Date()).unix();
                 if (external) {
                   window.location.href = urls.success;
                 } else {
-                  this.notificationMessagesService.pendingTransactionNotification(
-                    hash
-                  );
                   resolve(res);
                 }
               });
             })
             .catch(error => {
-              console.log(error);
+              this.logger.logError(error);
               if (external) {
                 window.location.href = urls.failed;
               } else {
@@ -305,7 +307,15 @@ export class TransactionService {
               }
             });
         }
-      );
+      ).catch(error => {
+        this.logger.logError(error);
+        if (external) {
+          window.location.href = urls.failed;
+        } else {
+          this.notificationMessagesService.failedTransactionNotification();
+          reject(error);
+        }
+      });
     });
   }
 
@@ -383,7 +393,7 @@ export class TransactionService {
         });
       })
       .catch(error => {
-        console.log(error);
+        this.logger.logError(error);
         if (external) {
           window.location.href = urls.failed;
         } else {

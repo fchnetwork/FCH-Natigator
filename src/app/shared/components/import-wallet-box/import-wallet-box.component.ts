@@ -1,9 +1,10 @@
-import { QrScannerService } from "./../../../core/general/qr-scanner/qr-scanner.service";
 import { Component, OnInit, Input } from "@angular/core";
 
-import { Wallet } from "ethereumjs-wallet";
+import "rxjs/add/operator/first";
+
 import { AddressKeyValidationService } from "@app/core/validation/address-key-validation.service";
 import { ImportWalletService } from "@app/core/transactions/import-wallet-service/import-wallet.service";
+import { QrScannerService } from "./../../../core/general/qr-scanner/qr-scanner.service";
 
 @Component({
   selector: "app-import-wallet-box",

@@ -194,9 +194,13 @@
     },
     "NOTIFICATIONS": {
       "WRONG_VALUE": {
-          "TITLE": "Form error!",
-          "BODY": "field is incorrect."
-        }
+        "TITLE": "Form error!",
+        "BODY": "field is incorrect."
+      },
+      "CONTRACT": {
+        "EXECUTING_CONTRACT": "Executing contract",
+        "N_OF": "of"
+      }
     }
   },
 
@@ -215,7 +219,9 @@
       "TITLE": "QR Scanner",
       "NO_CAMERAS": "No cameras have been detected.",
       "NO_PERMISSIONS":
-        "You need to grant AERUM a permission to access your camera."
+        "You need to grant AERUM a permission to access your camera.",
+      "QR_CODE_SCANNING_CANCELLED": "QR code scanning cancelled.",
+      "QR_CODE_SCANNING_FAILED": "QR code scanning failed:"
     }
   },
 
@@ -344,6 +350,9 @@
   "TRANSACTIONS": "Transactions",
   "BASIC_TRANSACTION": "Basic Transaction",
   "ERROR": "Error",
+  "DONE": "Done",
+  "COPIED_TO_CLIPBOARD": "Copied to clipboard",
+
   "SEND_RECEIVE": {
     "MAIN_MENU_ITEM_NAME": "Send & Receive",
     "MAIN_TITLE": "Send & Receive Crypto",
@@ -635,8 +644,6 @@
     "WITHDRAW_SUCCESS": "Funds sent to",
     "OPERATION_STARTED_TITLE": "Started",
     "OPERATION_IN_PROGRESS": "Operation in progress...",
-    "EXECUTING_CONTRACT": "Executing contract",
-    "N_OF": "of",
     "NOTIFICATION_BODY_BUY_NAME": "Buying name",
     "NOTIFICATION_BODY_SET_RESOLVER": "Setting resolver",
     "NOTIFICATION_BODY_SET_ADDRESS": "Setting address",
@@ -701,6 +708,31 @@
       "FIELD_REMOVE_FROM_STAKE": "Remove from stake",
       "OPEN_INCREASE_TX_IN_EXPLORER": "Open staking increase tx",
       "OPEN_DECREASE_TX_IN_EXPLORER": "Open unstaking tx"
+    }
+  },
+  "TOKEN_FACTORY": {
+    "MAIN_MENU_ITEM_NAME": "Token Factory",
+    "TITLE": "Token Factory",
+    "CREATE": {
+      "TITLE": "Create Token",
+      "FIELD_NAME": "Name",
+      "FIELD_SYMBOL": "Symbol",
+      "FIELD_SUPPLY": "Total Supply",
+      "FIELD_DECIMALS": "Decimals",
+      "FIELD_ADDRESS": "Address",
+      "FIELD_ANS_NAME": "ANS Name",
+      "FIELD_ESTIMATED_FEE": "Estimated Fee",
+      "BTN_COPY": "Copy",
+      "BTN_CREATE": "Create",
+      "NOTIFICATIONS": {
+        "ERROR": "Error while creating token",
+        "SUCCESS_SUFFIX": "token was created successfully",
+        "CREATING_TOKEN": "Creating contract for token",
+        "ANS_NOT_AVAILABLE": "ANS name not available"
+      },
+      "CONFIRM": {
+        "TITLE": "Confirm Token Creation"
+      }
     }
   }
 }

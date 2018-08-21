@@ -10,7 +10,7 @@ import {
   style,
   transition,
   group,
-  animate
+  animate,
 } from "@angular/core";
 import { ImportWalletService } from "@app/core/transactions/import-wallet-service/import-wallet.service";
 
@@ -42,6 +42,7 @@ import { ImportWalletService } from "@app/core/transactions/import-wallet-servic
 })
 export class PaperWalletImportComponent implements OnInit {
   @Input() privateKey: string;
+  @Output() walletImported = new EventEmitter();
   balance = 0;
   expanded = false;
 
@@ -52,11 +53,13 @@ export class PaperWalletImportComponent implements OnInit {
 
   async ngOnInit() {
     this.balance = await this.transaction.checkBalanceOfPrivateKey(this.privateKey);
-    this.expanded = true;
+    // NOTE: We don't allow importing to small amount as it doesn't make sense
+    this.expanded = this.balance > 0.0001;
   }
 
   async import() {
     await this.importWallet.importWalletToCurrentAddress(this.privateKey);
+    this.walletImported.emit();
     this.expanded = false;
   }
 

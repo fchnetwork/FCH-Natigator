@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
 import { BlockModalData } from '@app/wallet/explorer/components/block-modal/block-modal.component';
+import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
 
 @Component({
   selector: 'app-transactions',
@@ -26,6 +27,7 @@ export class TransactionsComponent implements AfterViewInit {
   highBlock: number;
   lowBlock: number;
   maxBlocks: number = 100;
+  perfectScrollbarDisabled = isAndroidDevice();
 
   constructor(public exploreSrv: ExplorerService,
     private route: ActivatedRoute,

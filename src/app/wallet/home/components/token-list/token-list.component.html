@@ -9,7 +9,7 @@
     </div>
 
     <app-divider [showLine]="false"></app-divider>
-    <aer-table *ngIf="tokens" [data]="tokens" [paginator]="false">
+    <aer-table *ngIf="tokens" [data]="tokens" [paginator]="false" [perfectScrollbarDisabled]="perfectScrollbarDisabled">
         <ng-template aerTemplate="header">
             <th id="tokens" class="token-list__row-title">{{ 'DASHBOARD_TOKENS.NAME' | translate }}</th>
             <th id="amount" class="token-list__row-title token-list__row-title--right-align">{{ 'DASHBOARD_TOKENS.AMOUNT' | translate }}</th>
@@ -19,7 +19,8 @@
             <tr>
                 <td class="token-list__row-data--token-name">
                     <div class="flex-container">
-                        <aer-icon>generaltoken</aer-icon>{{token.symbol}}
+                        <aer-icon>generaltoken</aer-icon>
+                        <app-token-description [token]="token"></app-token-description>
                     </div>
                 </td>
                 <td class="token-list__row-data token-list__row-data--right-align">{{token.balance | bignumber:'1.0-3'}}</td>

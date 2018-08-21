@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { InternalNotificationService } from "@app/core/general/internal-notification-service/internal-notification.service";
+import { FingerPrintService } from "@app/mobile/finger-print/finger-print.service";
 
 @Component({
   selector: "app-unlock",
@@ -20,6 +21,8 @@ export class UnlockComponent implements OnInit {
   returnUrl: string;
 
   windowState: boolean;
+  isFingerPrintAvailable: boolean;
+  inProgress = false;
 
   constructor(
     public authServ: AuthenticationService,
@@ -27,30 +30,47 @@ export class UnlockComponent implements OnInit {
     public formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private notificationService: InternalNotificationService,
-    private translateService: TranslateService
-  ) {}
-
-  ngOnInit() {
+    private translateService: TranslateService,
+    private fingerPrintService: FingerPrintService
+  ) {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
     this.unlockForm = this.formBuilder.group({
       password: ['', [Validators.required]]
     });
   }
 
-  onSubmitAddress() {
-    this.authServ
-      .login(this.password)
-      .then(res => {
-        this.router.navigateByUrl(this.returnUrl || '/');
-      })
-      .catch(reason => {
-        this.passwordIncorrect = true;
+  async ngOnInit() {
+    this.isFingerPrintAvailable = await this.fingerPrintService.isAvailable();
+    if(this.isFingerPrintAvailable) {
+      this.inProgress = true;
+      this.onFingerPrint();
+    }
+  }
 
-        this.translateService
-          .get("UNLOCK.INVALID_PASSWORD")
-          .subscribe(message => {
-            this.notificationService.showMessage(message, "Error");
-          });
-      });
+  onSubmitAddress() {
+    this.login(this.password);
+  }
+
+  async onFingerPrint() {
+    const password = await this.fingerPrintService.verify();
+    this.login(password);
+  }
+
+  private login(password: string) {
+    this.authServ
+    .login(password)
+    .then(() => {
+      this.inProgress = false;
+      this.router.navigateByUrl(this.returnUrl || '/');
+    })
+    .catch(() => {
+      this.inProgress = false;
+      this.passwordIncorrect = true;
+      this.translateService
+        .get("UNLOCK.INVALID_PASSWORD")
+        .subscribe(message => {
+          this.notificationService.showMessage(message, "Error");
+        });
+    });
   }
 }

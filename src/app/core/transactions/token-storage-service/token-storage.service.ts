@@ -1,13 +1,9 @@
-import { Injectable } from '@angular/core';
 import { Token } from "@core/transactions/token-service/token.model";
 import { StorageService } from "@core/general/storage-service/storage.service";
 
-@Injectable()
 export class TokenStorageService {
-  private key: string;
 
-  constructor(key: string, private storageService: StorageService) {
-    this.key = key;
+  constructor(private key: string, private storageService: StorageService) {
   }
 
   getTokens() {
@@ -29,15 +25,15 @@ export class TokenStorageService {
   }
 
   saveTokens(tokens: Token[]) {
-    const stringtoken = JSON.stringify(tokens);
-    this.storageService.setCookie(this.key, stringtoken, true, 7);
+    const stringToken = JSON.stringify(tokens);
+    this.storageService.setCookie(this.key, stringToken, true, 7);
     this.storageService.setSessionData(this.key, tokens);
   }
 
-  updateStoredTokens(token) {
+  updateToken(token) {
     const tokens = this.storageService.getSessionData(this.key);
     const updatedTokens = tokens.filter((item) => {
-      return item.symbol !== token.symbol;
+      return item.address !== token.address;
     });
     updatedTokens.push(token);
     this.saveTokens(updatedTokens);

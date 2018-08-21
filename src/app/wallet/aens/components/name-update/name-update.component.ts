@@ -7,7 +7,6 @@ import { AddressValidator } from "@shared/validators/address.validator";
 import { SetAddressConfirmRequest } from '@aens/models/setAddressConfirmRequest';
 import { NameReleaseConfirmRequest } from "@aens/models/nameReleaseConfirmRequest";
 import { NameTransferConfirmRequest } from "@aens/models/nameTransferConfirmRequest";
-import { ConfirmResponse } from '@aens/models/confirmResponse';
 import { AensBaseComponent } from "@aens/components/aens-base.component";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { ModalService } from '@core/general/modal-service/modal.service';
@@ -51,8 +50,7 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
     });
 
     this.transferForm = this.formBuilder.group({
-      address: [null, [AddressValidator.isAddress]],
-      newAddress: [null, [AddressValidator.isAddress]]
+      address: [ null, [], [new AddressValidator(this.aensService).isAddressOrAensName]]
     });
 
     this.oldAddress = await this.aensService.resolveAddressFromName(this.fullName);
@@ -101,7 +99,7 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
   }
 
   async transfer() {
-    if(!this.canReleaseName()) {
+    if(!this.canTransfer()) {
       this.logger.logMessage('Transfer name form is invalid or other thing is in progress');
       return;
     }

@@ -8,6 +8,7 @@
     "build:dev": "webpack --config config/webpack.config.dev.js",
     "build:prod": "webpack --config config/webpack.config.prod.js",
     "build:mobile": "webpack --config config/webpack.config.mobile.js",
+    "build:beta": "webpack --config config/webpack.config.beta.js",
     "start": "webpack-dev-server --port=4200 --config config/webpack.config.local.js",
     "start:dev": "webpack-dev-server --port=4200 --config config/webpack.config.dev.js",
     "start:prod": "webpack-dev-server --port=4200 --config config/webpack.config.prod.js",
@@ -18,7 +19,7 @@
   },
   "private": true,
   "dependencies": {
-    "@aerum/ui": "^1.1.7",
+    "@aerum/ui": "^1.1.9",
     "@angular/animations": "^5.2.10",
     "@angular/common": "^5.2.10",
     "@angular/compiler": "^5.2.10",
