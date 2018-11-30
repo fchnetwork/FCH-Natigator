@@ -1,7 +1,8 @@
 <aer-modal-container>
   <div class="external-transaction">
     <app-paper-wallet-import *ngIf="privateKeyToImport" (walletImported)="onPaperWalletImported($event)" [privateKey]="privateKeyToImport"></app-paper-wallet-import>
-    <h1>{{(title || 'EXTERNAL-SWAP.TRANSACTION.TITLE')|translate}}</h1>
+    <h1 *ngIf="isToken">{{(title || 'EXTERNAL-SWAP.TRANSACTION.TITLE_1')|translate}}</h1>
+    <h1 *ngIf="!isToken">{{(title || 'EXTERNAL-SWAP.TRANSACTION.TITLE_2')|translate}}</h1>
     <div aerRow>
       <div aerColumn size="md-12">
         <app-from-to-avatar [senderAddress]="senderAddress" [recieverAddress]="receiverAddress"></app-from-to-avatar>
@@ -67,7 +68,7 @@
         <p *ngIf="depositMore">{{'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' | translate}}</p>
       </div>
     </div>
-    <div aerRow>
+    <div aerRow *ngIf="isToken">
       <div aerColumn size="sm-12">
         <aer-button class="blue large full-width" (buttonFn)="deposit()">{{'EXTERNAL-SWAP.TRANSACTION.BTN_DEPOSIT_MORE'|translate}}</aer-button>
       </div>

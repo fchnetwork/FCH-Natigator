@@ -570,7 +570,8 @@
       "BTN_CANCEL": "Back"
     },
     "TRANSACTION": {
-      "TITLE": "Confirm payment",
+      "TITLE_1": "Confirm payment",
+      "TITLE_2": "Confirm transaction",
       "FIELD_PAYMENT_TO": "Payment to",
       "FIELD_PAYMENT_IN": "Payment in",
       "FIELD_AMOUNT_AVAILABLE": "Amount available",
