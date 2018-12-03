@@ -1,5 +1,6 @@
 const artifacts = require('@core/abi/AerumToken.json');
 
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
@@ -17,7 +18,8 @@ export class StakingAerumService extends BaseContractService {
   constructor(notificationService: InternalNotificationService,
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
-    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService
+    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
+    translateService: TranslateService
   ){
     super(
       artifacts.abi,
@@ -25,7 +27,8 @@ export class StakingAerumService extends BaseContractService {
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,
-      injectedWeb3ContractExecutorService
+      injectedWeb3ContractExecutorService,
+      translateService
     );
   }
 

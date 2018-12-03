@@ -1,4 +1,8 @@
 {
+  "BASE_CONTRACT": {
+    "ERROR": "Error",
+    "CANNOT_LOAD_ACCOUNT": "Cannot load injected account."
+  },
   "ACCOUNT": {
     "UNLOCK": {
       "TITLE": "Unlock",

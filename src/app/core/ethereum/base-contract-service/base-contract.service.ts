@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import { Contract, TransactionObject } from 'web3/types';
 
+import { TranslateService } from '@ngx-translate/core';
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 import { TransactionOptions } from "@core/ethereum/base-contract-service/transaction-options.model";
@@ -17,7 +18,8 @@ export abstract class BaseContractService {
     protected notificationService: InternalNotificationService,
     protected ethereumAuthService: EthereumAuthenticationService,
     protected ethereumContractExecutorService: EthereumContractExecutorService,
-    protected injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService
+    protected injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
+    protected translateService: TranslateService
   ) { }
 
   protected async send(transaction: TransactionObject<any>, options: TransactionOptions, value = '0') {
@@ -57,6 +59,12 @@ export abstract class BaseContractService {
   }
 
   private async ensureInjectedAccount(account: string) {
+    try {
+      await this.ethereumAuthService.ensureEthereumEnabled();
+    } catch (error) {
+      this.notificationService.showMessage(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'), this.translateService.instant('BASE_CONTRACT.ERROR'));
+      throw new InjectedWeb3Error(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'));
+    }
     const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
     if (!injectedWeb3) {
       this.notificationService.showMessage('Injected web3 not provided', 'Error');

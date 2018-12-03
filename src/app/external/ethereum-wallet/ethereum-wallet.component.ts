@@ -2,8 +2,9 @@ import { Component, OnDestroy, ViewEncapsulation, OnInit } from '@angular/core';
 import { Location } from "@angular/common";
 
 import Web3 from "web3";
+import { TranslateService } from '@ngx-translate/core';
 import { environment } from "@env/environment";
-
+import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { Token } from "@core/transactions/token-service/token.model";
@@ -64,7 +65,8 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     private storageService: StorageService,
     private authenticationService: AuthenticationService,
     private ethereumAuthenticationService: EthereumAuthenticationService,
-    private ethereumTokenService: EthereumTokenService
+    private ethereumTokenService: EthereumTokenService,
+    private translateService: TranslateService
   ) {
   }
 
@@ -103,6 +105,12 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
   }
 
   private async initPredefinedAccount() {
+    try {
+      await this.ethereumAuthenticationService.ensureEthereumEnabled();
+    } catch (error) {
+      this.notificationService.showMessage(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'), this.translateService.instant('BASE_CONTRACT.ERROR'));
+      throw new InjectedWeb3Error(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'));
+    }
     this.web3 = this.ethereumAuthenticationService.getWeb3();
     this.storedAccounts = this.storageService.getSessionData('ethereum_accounts') as EthereumAccount[] || [];
     if (!this.storedAccounts.length) {

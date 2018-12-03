@@ -1,5 +1,6 @@
 const artifacts = require('@core/abi/Governance.json');
 
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
 
@@ -16,7 +17,8 @@ export class StakingGovernanceService extends BaseContractService {
   constructor(notificationService: InternalNotificationService,
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
-    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService
+    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
+    translateService: TranslateService
   ){
     super(
       artifacts.abi,
@@ -24,7 +26,8 @@ export class StakingGovernanceService extends BaseContractService {
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,
-      injectedWeb3ContractExecutorService
+      injectedWeb3ContractExecutorService,
+      translateService
     );
   }
 
