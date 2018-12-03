@@ -1,7 +1,7 @@
 const artifacts = require('@core/abi/CounterAtomicSwapERC20.json');
 
 import { Injectable } from '@angular/core';
-
+import { TranslateService } from '@ngx-translate/core';
 import { environment } from "@env/environment";
 import { fromAscii } from "web3-utils";
 
@@ -20,7 +20,8 @@ export class CounterErc20SwapService extends BaseContractService {
     notificationService: InternalNotificationService,
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
-    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService
+    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
+    translateService: TranslateService
   ) {
     super(
       artifacts.abi,
@@ -28,7 +29,8 @@ export class CounterErc20SwapService extends BaseContractService {
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,
-      injectedWeb3ContractExecutorService
+      injectedWeb3ContractExecutorService,
+      translateService
     );
   }
 
