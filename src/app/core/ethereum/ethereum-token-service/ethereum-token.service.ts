@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { tokensABI } from '@app/core/abi/tokens';
 import { safePromise } from "@app/shared/helpers/promise-utils";
@@ -22,6 +23,7 @@ export class EthereumTokenService extends BaseContractService {
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
     injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
+    translateService: TranslateService,
     storageService: StorageService
   ) {
     super(
@@ -30,7 +32,8 @@ export class EthereumTokenService extends BaseContractService {
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,
-      injectedWeb3ContractExecutorService
+      injectedWeb3ContractExecutorService,
+      translateService
     );
     this.tokenStorageService = new TokenStorageService("ethereum_tokens", storageService);
   }

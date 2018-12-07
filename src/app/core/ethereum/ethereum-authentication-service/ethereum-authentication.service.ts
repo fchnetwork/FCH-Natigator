@@ -38,13 +38,14 @@ export class EthereumAuthenticationService {
         resolve(null);
         return; // NO need for window 'load' since 'deviceready' have already fired.
       }
-
       const windowLoaded = await this.globalEventService.isWindowLoaded();
       if(windowLoaded) {
-        if (window.web3) {
+        if (window.ethereum) {
+          resolve(new Web3(window.ethereum));
+        } else if (window.web3) {
           this.logger.logMessage("Web3 is present");
           resolve(new Web3(window.web3.currentProvider));
-        }else {
+        } else {
           this.logger.logMessage("Web3 is not provided!");
           resolve(null);
         }
@@ -60,6 +61,12 @@ export class EthereumAuthenticationService {
 
   getInjectedWeb3(): Promise<Web3> {
     return this.injectedWeb3;
+  }
+
+  async ensureEthereumEnabled() {
+    if (window.ethereum) {
+      await window.ethereum.enable();
+    }
   }
 
   async getInjectedProviderName(): Promise<string> {
