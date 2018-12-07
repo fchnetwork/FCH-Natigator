@@ -34,6 +34,7 @@ export class ExternalTransactionComponent implements OnDestroy {
   senderAvatar: string;
   receiverAvatar: string;
   amount: any;
+  data: string;
   maxFee: string;
   fee: string;
   token: string;
@@ -101,6 +102,7 @@ export class ExternalTransactionComponent implements OnDestroy {
     this.senderAvatar = this.authService.generateCryptedAvatar(this.senderAddress);
     this.receiverAvatar = this.authService.generateCryptedAvatar(this.receiverAddressHex);
     this.amount = parsed.amount;
+    this.data = parsed.data;
     this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
 
     this.isToken = (!parsed.tokenAddress || parsed.tokenAddress === "0x0") ? false : true;
@@ -158,7 +160,7 @@ export class ExternalTransactionComponent implements OnDestroy {
       this.transactionService.sendTokens(this.senderAddress, resolvedAddress, Number(this.amount * Math.pow(10, decimals)), this.tokenAddress, this.external, urls, this.orderId, token.symbol, decimals);
       this.proceedAvailable = false;
     } else {
-      this.transactionService.transaction(privateKey, this.senderAddress, resolvedAddress, this.amount, null, this.external, urls, this.orderId, {});
+      this.transactionService.transaction(privateKey, this.senderAddress, resolvedAddress, this.amount, this.data, this.external, urls, this.orderId, {});
       this.proceedAvailable = false;
     }
   }

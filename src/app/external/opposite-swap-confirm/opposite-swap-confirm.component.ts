@@ -148,6 +148,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     if(!token) {
       throw new Error('Cannot load erc20 token: ' + this.erc20Swap.erc20ContractAddress);
     }
+
     this.sendAmount = this.erc20Swap.erc20Value;
     this.sendCurrency = token.symbol;
     if (token.address.toLowerCase() !== this.localSwap.token.toLowerCase()) {
@@ -294,7 +295,8 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     }
 
     this.receiveAmount = amount;
-    if (this.receiveAmount !== this.localSwap.tokenAmount) {
+    const localSwapAmount = this.walletTokenAddress === this.ethAddress ? this.localSwap.ethAmount : this.localSwap.tokenAmount;
+    if (this.receiveAmount !== localSwapAmount) {
       this.showError('Counter swap amount / rate is not the same as requested');
     }
 

@@ -56,6 +56,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   canCloseSwap = false;
 
+  swapLoaded = false;
   swapClosed = false;
   swapExpired = false;
   swapCancelled = false;
@@ -69,6 +70,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   timerInterval: Timer;
   timer: Duration;
+  counterSwapLoadTimerInterval: Timer;
 
   errors: string[] =[];
 
@@ -121,15 +123,11 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
 
     await this.loadAerumSwap();
-
     if (this.swapFinishedOrExpired()) {
       return;
     }
-
     this.setupTimer();
-
-    this.aerumErc20SwapService.onOpen(this.hash, (err, event) => this.onOpenSwapHandler(this.hash, err, event));
-    this.aerumErc20SwapService.onExpire(this.hash, (err, event) => this.onExpiredSwapHandler(this.hash, err, event));
+    this.setupCounterSwapLoadTimer();
   }
 
   private async loadEthereumSwap() {
@@ -238,7 +236,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   private setupTimer(): void {
     this.timerInterval = setInterval(() => {
       if (this.swapClosed || this.swapCancelled) {
-        this.stopTimer();
+        this.stopTimers();
         return;
       }
 
@@ -256,13 +254,14 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.swapExpired = true;
     this.canCloseSwap = false;
     this.timer = moment.duration(0);
-    this.stopTimer();
+    this.stopTimers();
     this.cleanErrors();
     this.showError('Your swap has been timed out and is expired. Please cancel it');
   }
 
-  private stopTimer(): void {
+  private stopTimers(): void {
     clearInterval(this.timerInterval);
+    clearInterval(this.counterSwapLoadTimerInterval);
   }
 
   private async loadAerumSwap() {
@@ -292,13 +291,14 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.cleanErrors();
 
     const swap: CounterErc20Swap = await this.aerumErc20SwapService.checkSwap(this.hash);
-    this.logger.logMessage('Swap loaded: ', swap);
-
+    this.logger.logMessage('Swap check loaded: ', swap);
     if(!swap || (swap.state === SwapState.Invalid)) {
       this.logger.logMessage('Cannot load erc20 swap: ' + this.hash);
       this.canCloseSwap = false;
       return;
     }
+
+    this.swapLoaded = true;
 
     const token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
     if(!token) {
@@ -336,6 +336,18 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
 
     this.canCloseSwap = true;
+  }
+
+  private setupCounterSwapLoadTimer(): void {
+    this.counterSwapLoadTimerInterval = setInterval(async () => {
+      if (this.swapCancelled || this.swapExpired) {
+        this.stopTimers();
+        return;
+      }
+      if(!this.swapLoaded) {
+        await this.loadAerumSwap();
+      }
+    }, 5000);
   }
 
   async complete() {
@@ -395,26 +407,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.cleanErrors();
   }
 
-  private async onOpenSwapHandler(hash: string, err, event) {
-    if (err) {
-      this.logger.logError(`Create counter swap error: ${hash}`, err);
-      this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
-    } else {
-      this.logger.logMessage(`Create counter swap success: ${hash}`, event);
-    }
-    await this.loadAerumSwap();
-  }
-
-  private async onExpiredSwapHandler(hash: string, err, event) {
-    if (err) {
-      this.logger.logError(`Create counter swap error: ${hash}`, err);
-      this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
-    } else {
-      this.logger.logMessage(`Create counter swap success: ${hash}`, event);
-    }
-    await this.loadAerumSwap();
-  }
-
   private now(): number {
     return Math.ceil(new Date().getTime() / 1000);
   }
@@ -450,7 +442,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       this.routeSubscription.unsubscribe();
     }
     if (this.timerInterval) {
-      clearInterval(this.timerInterval);
+      this.stopTimers();
     }
   }
 }
