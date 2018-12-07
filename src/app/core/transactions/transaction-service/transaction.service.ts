@@ -233,12 +233,15 @@ export class TransactionService {
       const txData = data;
       const getGasPrice = this.web3.eth.getGasPrice();
       const getTransactionCount = this.web3.eth.getTransactionCount(activeUser);
-      const estimateGas = this.web3.eth.estimateGas({
+      const estimateGasParams: any = {
         to,
         from: activeUser,
-        data: txData,
         value: amountInEther
-      });
+      };
+      if(txData) {
+        estimateGasParams.data = txData;
+      }
+      const estimateGas = this.web3.eth.estimateGas(estimateGasParams);
       return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then(
         values => {
           const gasPrice = values[0];
