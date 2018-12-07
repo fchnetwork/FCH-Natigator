@@ -28,5 +28,5 @@ pipelines:
             - npm run-script build:dev
             - tar -czvf ./dist.tar.gz ./build/dist
             - apt-get update && apt-get install -y rsync
-            - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/
-            - ssh -p 22 root@dev.aerum.net "bash /home/vsftpd/docker/builder-dev.sh"
+            - rsync -rvz -e 'ssh -p 22 -o StrictHostKeyChecking=no' --progress ./dist.tar.gz root@dev.aerum.net:~/
+            - ssh -p 22 -o StrictHostKeyChecking=no root@dev.aerum.net "bash /home/vsftpd/docker/builder-dev.sh"
