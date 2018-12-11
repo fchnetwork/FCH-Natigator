@@ -357,4 +357,20 @@ export class NotificationMessagesService {
       5000
     );
   }
+
+  /**
+   *Shows notification
+   *
+   * @param title message title
+   * @param body message body
+   * @memberof NotificationMessagesService
+   */
+  public show(title: string, body: string) {
+    this.notificationService.notify(
+      this.translate(title),
+      this.translate(body),
+      "transaction",
+      10000
+    );
+  }
 }
