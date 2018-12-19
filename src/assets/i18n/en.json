@@ -591,7 +591,11 @@
       "NOT_ENOUGH_ASSET": "There is not enough of selected asset to proceed. Please deposit more asset",
       "BTN_PROCEED": "Proceed",
       "BTN_CLOSE": "Close",
-      "BTN_CANCEL": "Cancel"
+      "BTN_CANCEL": "Cancel",
+      "NAME": "Name",
+      "PARAMS": "Params",
+      "VALUE": "Value",
+      "TYPE": "Type"
     }
   },
   "ENS": {
