@@ -24,6 +24,7 @@ export class CrossChainSwapListComponent implements OnInit {
   loading = false;
   canShowMore = true;
   swaps: SwapListItem[] = [];
+  allSwaps: SwapListItem[] = [];
   perfectScrollbarDisabled = isAndroidDevice();
 
   constructor(
@@ -43,7 +44,10 @@ export class CrossChainSwapListComponent implements OnInit {
   private async loadSwaps() {
     try {
       this.loading = true;
-      this.swaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
+      this.allSwaps = (await this.swapListService.getSwapsByAccount(this.account))
+        .sort((s1, s2) => s1.createdOn > s2.createdOn ? -1 : s1.createdOn < s2.createdOn ? 1 : 0);
+      const skip = this.itemsPerPage * this.page; 
+      this.swaps = this.allSwaps.slice(skip, this.itemsPerPage);
       this.canShowMore = this.swaps.length === this.itemsPerPage;
     }
     catch (e) {
@@ -56,10 +60,12 @@ export class CrossChainSwapListComponent implements OnInit {
 
   async showMore() {
     try {
+
       this.page++;
-      const pageSwaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
-      this.canShowMore = pageSwaps.length === this.itemsPerPage;
+      const skip = this.itemsPerPage * this.page;
+      const pageSwaps = this.allSwaps.slice(skip, skip + this.itemsPerPage);
       this.swaps = this.swaps.concat(pageSwaps);
+      this.canShowMore = pageSwaps.length === this.itemsPerPage;
     }
     catch (e) {
       this.logger.logError('Error loading swaps', e);
