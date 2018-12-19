@@ -11,6 +11,14 @@
     <div aerRow>
       <div aerColumn size="md-12">
         <p *ngIf="text">{{ text }}</p>
+        <p *ngIf="decodeMessage" [ngClass]="{'has-error': decodeHasError}">{{ decodeMessage | translate }}
+          <a *ngIf="decodeData" class="info" (click)="showDecodeData = !showDecodeData">more info</a>
+        </p>
+        <p *ngIf="decodeData && showDecodeData" class="code">
+          <code>
+            <pre>{{ decodeData | json }}</pre>
+          </code>
+        </p>
       </div>
     </div>
     <div aerRow>

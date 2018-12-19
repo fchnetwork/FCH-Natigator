@@ -56,6 +56,9 @@ export const environment = {
       address: {
         TokenFactory: "0x7281e96d6feb03162e93f6b9077e7d407d0c6880"
       }
+    },
+    contractRegistry: {
+      address: "0x8a550f44836101b45f02dfbd13d99ffa425a29b0"
     }
   },
   ethereum: {

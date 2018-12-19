@@ -182,7 +182,14 @@
   "EXTERNAL": {
     "TRANSACTION": {
       "PAPER_WALLET_1": "You have been given a paper wallet with a balance of",
-      "PAPER_WALLET_2": "Aero. Would you like to import it?"
+      "PAPER_WALLET_2": "Aero. Would you like to import it?",
+      "TITLE_IN_PROGRESS": "In Progress",
+      "BODY_APPROVING": "Approving tokens.",
+      "TITLE_DONE": "Done",
+      "BODY_APPROVED": "Tokens successfully approved.",
+      "NO_CONTRACT_REGISTRATION": "Contract registration was not found. Please execute transaction on your own risk.",
+      "ERROR_PAYLOAD_DECODING": "An error ocured while decoding transaction payload. Please execute transaction on your own risk.",
+      "PAYLOAD_DECODED": "Transaction payload was successfully decoded."
     }
   },
 
