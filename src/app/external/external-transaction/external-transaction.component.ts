@@ -11,6 +11,9 @@ import { LoggerService } from "@core/general/logger-service/logger.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { AddressKeyValidationService } from '@app/core/validation/address-key-validation.service';
 import { ERC20TokenService } from '@app/core/swap/on-chain/erc20-token-service/erc20-token.service';
+import { ContractRegistryService } from '@app/core/registry/contract-registry/contract-registry.service';
+
+const abiDecoder = require('abi-decoder');
 
 @Component({
   selector: 'app-external-transaction',
@@ -60,6 +63,11 @@ export class ExternalTransactionComponent implements OnDestroy {
 
   tokens: any;
 
+  decodeMessage: string;
+  decodeHasError: boolean;
+  decodeData: any;
+  showDecodeData = false;
+
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
@@ -71,7 +79,8 @@ export class ExternalTransactionComponent implements OnDestroy {
     private nameService: AerumNameService,
     private notificationMessagesService: NotificationMessagesService,
     private addressKeyvalidation: AddressKeyValidationService,
-    private erc20TokenService: ERC20TokenService
+    private erc20TokenService: ERC20TokenService,
+    private contractRegistryService: ContractRegistryService
   ) {
     this.sub = this.route
       .queryParams
@@ -94,6 +103,7 @@ export class ExternalTransactionComponent implements OnDestroy {
   private async init() {
     this.tokens = this.tokenService.getTokens();
     this.query = this.params.query;
+    this.decodeHasError = false;
 
     const parsed = JSON.parse(this.params.query);
     this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
@@ -132,6 +142,7 @@ export class ExternalTransactionComponent implements OnDestroy {
       await this.getMaxTransactionFee();
     }
     this.getBalance();
+    await this.decodeAbi();
   }
 
   async prepareMessages() {
@@ -153,6 +164,30 @@ export class ExternalTransactionComponent implements OnDestroy {
       if (!res) {
         this.text += 'The contract address you are sending your tokens to does not appear to support ERC223 standard, sending your tokens to this contract address will likely result in a loss of tokens sent. Please acknowledge your understanding of risks before proceeding further.';
         this.checkbox = true;
+      }
+    }
+  }
+
+  async decodeAbi() {
+    if(this.isToken || !this.data) {
+      return;
+    }
+    const address = await this.nameService.resolveNameOrAddress(this.receiverAddress);
+    const contract = await this.contractRegistryService.getContract(address);
+    if(Number(contract.addr) === 0) {
+      this.decodeHasError = true;
+      this.decodeMessage = 'EXTERNAL.TRANSACTION.NO_CONTRACT_REGISTRATION';
+    } else {
+      try {
+        abiDecoder.addABI(JSON.parse(contract.abi));
+        this.decodeData = abiDecoder.decodeMethod(this.data);
+        this.decodeHasError = !this.decodeData;
+        this.decodeMessage =  !!this.decodeData
+          ? 'EXTERNAL.TRANSACTION.PAYLOAD_DECODED'
+          : 'EXTERNAL.TRANSACTION.ERROR_PAYLOAD_DECODING';
+      } catch(ex) {
+        this.decodeHasError = true;
+        this.decodeMessage = 'EXTERNAL.TRANSACTION.ERROR_PAYLOAD_DECODING';
       }
     }
   }

@@ -11,6 +11,39 @@
     <div aerRow>
       <div aerColumn size="md-12">
         <p *ngIf="text">{{ text }}</p>
+        <p *ngIf="decodeMessage" [ngClass]="{'has-error': decodeHasError}">{{ decodeMessage | translate }}
+          <a *ngIf="decodeData" class="info" (click)="showDecodeData = !showDecodeData">more info</a>
+        </p>
+        <div *ngIf="decodeData && showDecodeData" class="table-responsive text-left">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>{{ 'EXTERNAL-SWAP.TRANSACTION.NAME' | translate }}</th>
+                <th>{{ decodeData.name }}</th>
+              </tr>
+              <tr>
+                <td>
+                  <strong>{{ 'EXTERNAL-SWAP.TRANSACTION.PARAMS' | translate }}</strong>
+                </td>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody *ngFor="let param of decodeData.params">
+              <tr class="table-param">
+                <td>{{ 'EXTERNAL-SWAP.TRANSACTION.NAME' | translate }}</td>
+                <td>{{ param.name }}</td>
+              </tr>
+              <tr>
+                <td>{{ 'EXTERNAL-SWAP.TRANSACTION.VALUE' | translate }}</td>
+                <td>{{ param.value }}</td>
+              </tr>
+              <tr>
+                <td>{{ 'EXTERNAL-SWAP.TRANSACTION.TYPE' | translate }}</td>
+                <td>{{ param.type }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div aerRow>
