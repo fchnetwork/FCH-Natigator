@@ -5,11 +5,7 @@
   </div>
   <div aerRow>
     <div aerColumn size="sm-6">
-      <aer-select [(ngModel)]="address" icon="key" placeholder="{{'STAKING.CREATE.PLACEHOLDER_SELECT_ADDRESS'|translate}}">
-        <aer-select-option *ngFor="let item of addresses;" [value]="item">
-          <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
-        </aer-select-option>
-      </aer-select>
+      <aer-input [(ngModel)]="address" placeholder="{{'STAKING.CREATE.PLACEHOLDER_ENTER_ADDRESS'|translate}}"></aer-input>
     </div>
     <div aerColumn size="sm-6">
       <div aerRow class="delegate-amount">

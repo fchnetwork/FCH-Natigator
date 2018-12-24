@@ -53,7 +53,7 @@ import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/c
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
 import { ImportWalletService } from '@app/core/transactions/import-wallet-service/import-wallet.service';
 import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
-import { StakingAerumService } from "@core/staking/staking-aerum-service/staking-aerum.service";
+import { StakingDelegateService } from "@core/staking/staking-delegate-service/staking-delegate.service";
 import { StakingGovernanceService } from "@core/staking/staking-governance-service/staking-governance.service";
 import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
 import { ContractRegistryService } from "@core/registry/contract-registry/contract-registry.service";
@@ -103,7 +103,7 @@ import { ContractRegistryService } from "@core/registry/contract-registry/contra
     LoadSwapService,
     AuthenticationGuard,
     GlobalEventService,
-    StakingAerumService,
+    StakingDelegateService,
     StakingGovernanceService,
     AddressKeyValidationService,
     ImportWalletService,
