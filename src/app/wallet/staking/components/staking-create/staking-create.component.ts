@@ -7,12 +7,13 @@ import { toBigNumberString } from "@shared/helpers/number-utils";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { StakingGovernanceService } from "@core/staking/staking-governance-service/staking-governance.service";
-import { StakingAerumService } from "@core/staking/staking-aerum-service/staking-aerum.service";
+import { StakingDelegateService } from "@core/staking/staking-delegate-service/staking-delegate.service";
 import { EthereumWalletAccount } from '@app/wallet/staking/models/ethereum-wallet-account.model';
 import { StakingLocalStorageService } from '@app/wallet/staking/staking-local-storage/staking-local-storage.service';
 import { StakingReference } from "@app/wallet/staking/models/staking-reference.model";
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { Chain } from '@app/core/swap/cross-chain/swap-template-service/chain.enum';
+import { AddressKeyValidationService } from "@app/core/validation/address-key-validation.service";
 
 @Component({
   selector: 'app-staking-create',
@@ -22,7 +23,6 @@ import { Chain } from '@app/core/swap/cross-chain/swap-template-service/chain.en
 export class StakingCreateComponent implements OnInit {
   amount = 0;
   address: string;
-  addresses: string[] = [];
   stakingInProgress = false;
   transactionExplorerUrl: string;
 
@@ -32,20 +32,25 @@ export class StakingCreateComponent implements OnInit {
   constructor(private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private stakingGovernanceService: StakingGovernanceService,
-    private stakingAerumService: StakingAerumService,
+    private stakingDelegateService: StakingDelegateService,
     private stakingLocalStorageService: StakingLocalStorageService,
-    private ethereumTokenService: EthereumTokenService)
+    private ethereumTokenService: EthereumTokenService,
+    private addressKeyValidationService: AddressKeyValidationService)
   { }
 
-  async ngOnInit() {
-    this.addresses = await this.stakingGovernanceService.getValidDelegates();
-    if(this.addresses.length > 0) {
-      this.address = this.addresses[0];
-    }
-  }
+  async ngOnInit() { }
 
   async stake() {
     try {
+      if(!this.addressKeyValidationService.isAddress(this.address)) {
+        this.notificationService.showMessage('Please enter a valid address', 'Error');
+        return;
+      }
+      const isKnownDelegate = await this.stakingGovernanceService.isKnown(this.address);
+      if(!isKnownDelegate) {
+        this.notificationService.showMessage('Specified delegate is unknown. Please enter a valid delegate', 'Error');
+        return;
+      }
       this.stakingInProgress = true;
       const tokenAmount = await this.getAerumAmount();
       const options = { 
@@ -54,8 +59,8 @@ export class StakingCreateComponent implements OnInit {
         hashCallback: (txHash) => this.transactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
       this.notificationService.showMessage(`Stakeding ${this.amount} XMR for ${this.address} delegate`, 'In progress');
-      await this.stakingAerumService.stake(this.address, tokenAmount, options);
-      const stakingReference = { address: this.ethereumAccount.address, walletType: this.ethereumAccount.walletType };
+      await this.stakingDelegateService.stake(this.address, tokenAmount, options);
+      const stakingReference = { address: this.ethereumAccount.address, delegate: this.address, walletType: this.ethereumAccount.walletType };
       this.stakingLocalStorageService.store(stakingReference);
       this.notificationService.showMessage(`Successfully staked ${this.amount} XMR for ${this.address} delegate`, 'Done');
       this.stakeCreated.emit(stakingReference);

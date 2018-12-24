@@ -706,6 +706,7 @@
       "FIELD_DELEGATE": "Delegate",
       "FIELD_STAKE": "Stake",
       "PLACEHOLDER_SELECT_ADDRESS": "Select delegate",
+      "PLACEHOLDER_ENTER_ADDRESS": "Enter delegate address",
       "BTN_STAKE": "Stake",
       "PLACEHOLDER_AMOUNT": "Amount",
       "OPEN_CREATE_TX_IN_EXPLORER": "Open staking tx"
