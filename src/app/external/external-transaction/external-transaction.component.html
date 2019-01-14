@@ -49,7 +49,7 @@
     <div aerRow>
       <div aerColumn size="md-12">
         <div class="table-simple">
-          <div>
+          <div *ngIf="amount > 0">
             <div>
               <!-- {{ 'AMOUNT' | translate }} -->
               {{'EXTERNAL-SWAP.TRANSACTION.FIELD_PAYMENT_TO'|translate}}
@@ -58,21 +58,20 @@
               {{ receiverAddress }}
             </div>
           </div>
-          <div>
-            <div>
-              <!-- {{ 'AMOUNT' | translate }} -->
-              {{'EXTERNAL-SWAP.TRANSACTION.FIELD_PAYMENT_IN'|translate}}
-            </div>
-            <div>
-              {{ currency }}
-            </div>
-          </div>
-          <div>
+          <div *ngIf="amount > 0">
             <div>
               {{ 'AMOUNT' | translate }}
             </div>
             <div>
-              {{ amount }} {{ token }}
+              {{ amount }} {{ currency }} {{ token }}
+            </div>
+          </div>
+          <div *ngIf="approveAddress" [ngClass]="{'has-error': approvedBalanceNotEnough}">
+            <div>
+              {{'EXTERNAL-SWAP.TRANSACTION.FIELD_APPROVED_FOR'|translate}}
+            </div>
+            <div>
+              {{ approveAmountDec }} {{ approveAddressSymbol }}
             </div>
           </div>
           <div>
@@ -89,7 +88,7 @@
               {{'EXTERNAL-SWAP.TRANSACTION.FIELD_AMOUNT_AVAILABLE'|translate}}
             </div>
             <div>
-              <span>{{ balance | bignumber:'1.0-3' }}</span>
+              <span>{{ balance | bignumber:'1.0-3' }} {{'AERO'|translate}}</span>
             </div>
           </div>
         </div>

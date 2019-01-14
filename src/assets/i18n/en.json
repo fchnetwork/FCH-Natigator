@@ -584,7 +584,7 @@
       "TITLE_1": "Confirm payment",
       "TITLE_2": "Confirm transaction",
       "FIELD_PAYMENT_TO": "Payment to",
-      "FIELD_PAYMENT_IN": "Payment in",
+      "FIELD_APPROVED_FOR": "Approved for",
       "FIELD_AMOUNT_AVAILABLE": "Amount available",
       "BTN_DEPOSIT_MORE": "Deposit more",
       "FIELD_I_ACKNOWLEDGE_RISKS": "I acknowledge risks.",

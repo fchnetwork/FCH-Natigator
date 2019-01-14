@@ -55,7 +55,11 @@ export class ExternalTransactionComponent implements OnDestroy {
   receiverAddressHex: any;
   approve: boolean;
   approveAddress: string;
+  approveAddressSymbol: string;
   approveAmount: number;
+  approveAmountDec: number;
+  approveBalance: number;
+  approvedBalanceNotEnough: boolean = false;
   query: string;
   proceedAvailable: boolean = false;
   depositMore: boolean = false;
@@ -129,10 +133,7 @@ export class ExternalTransactionComponent implements OnDestroy {
     this.orderId = parsed.orderId ? parsed.orderId : this.orderId;
     this.returnUrlFailed = parsed.returnUrlFailed ? parsed.returnUrlFailed : this.returnUrlFailed;
 
-    this.approve = parsed.approve ? parsed.approve : false;
-    this.approveAmount = parsed.approveAmount ? parsed.approveAmount : 0;
-    this.approveAddress = parsed.approveAddress;
-
+    await this.initApprove(parsed);
     await this.prepareMessages();
 
     if (this.isToken) {
@@ -143,6 +144,23 @@ export class ExternalTransactionComponent implements OnDestroy {
     }
     this.getBalance();
     await this.decodeAbi();
+  }
+
+  async initApprove(parsed) {
+    this.approve = parsed.approve ? parsed.approve : false;
+    if(!this.approve) {
+      return;
+    }
+    this.approveAmount = parsed.approveAmount ? parsed.approveAmount : 0;
+    this.approveAddress = parsed.approveAddress;
+
+    if(this.approveAddress) {
+      const token = await this.tokenService.getNetworkTokenInfo(this.approveAddress);
+      this.approveAddressSymbol = token.symbol;
+      this.approveAmountDec = this.approveAmount / Math.pow(10, token.decimals);
+      this.approveBalance = ((await this.tokenService.getTokenBalance(this.approveAddress)) as number) / Math.pow(10, token.decimals);
+      this.approvedBalanceNotEnough = this.approveAmountDec > this.approveBalance;
+    }
   }
 
   async prepareMessages() {
@@ -265,7 +283,6 @@ export class ExternalTransactionComponent implements OnDestroy {
 
   async getTokenInfo() {
     this.tokenInfo = this.checkTokenCookies(this.tokenAddress);
-    console.log(this.tokenInfo);
     if (!this.tokenInfo) {
       try {
         this.tokenInfo = await this.tokenService.getTokensInfo(this.tokenAddress);
@@ -285,7 +302,7 @@ export class ExternalTransactionComponent implements OnDestroy {
     if (!this.isToken) {
       this.transactionService.checkBalance(this.senderAddress).then((res) => {
         this.balance = res;
-        this.proceedAvailable = (this.balance > this.amount);
+        this.proceedAvailable = (this.balance > this.amount) && !this.approvedBalanceNotEnough;
         this.depositMore = !this.proceedAvailable;
       });
     } else {
