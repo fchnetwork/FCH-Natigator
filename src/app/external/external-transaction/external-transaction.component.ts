@@ -63,6 +63,7 @@ export class ExternalTransactionComponent implements OnDestroy {
   query: string;
   proceedAvailable: boolean = false;
   depositMore: boolean = false;
+  depositMoreAssets: boolean = false;
   privateKeyToImport: string;
 
   tokens: any;
@@ -304,12 +305,14 @@ export class ExternalTransactionComponent implements OnDestroy {
         this.balance = res;
         this.proceedAvailable = (this.balance > this.amount) && !this.approvedBalanceNotEnough;
         this.depositMore = !this.proceedAvailable;
+        this.depositMoreAssets = this.approvedBalanceNotEnough;
       });
     } else {
       this.tokenService.getTokenBalance(this.tokenAddress).then((res) => {
         this.balance = Number(res) / Math.pow(10, this.tokenDecimals);
-        this.proceedAvailable = !(this.balance < this.amount || !this.currency);
+        this.proceedAvailable = !(this.balance < this.amount || !this.currency) && !this.approvedBalanceNotEnough;
         this.depositMore = !this.proceedAvailable;
+        this.depositMoreAssets = this.approvedBalanceNotEnough;
       });
     }
   }

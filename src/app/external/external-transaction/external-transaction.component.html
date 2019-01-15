@@ -66,23 +66,31 @@
               {{ amount }} {{ currency }} {{ token }}
             </div>
           </div>
-          <div *ngIf="approveAddress" [ngClass]="{'has-error': approvedBalanceNotEnough}">
+          <div *ngIf="approveAddress" [ngClass]="{'has-error': depositMoreAssets}">
             <div>
-              {{'EXTERNAL-SWAP.TRANSACTION.FIELD_APPROVED_FOR'|translate}}
+              <span title="{{(depositMoreAssets ? 'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' : '') | translate}}"><aer-icon *ngIf="depositMoreAssets">exclamation-triangle</aer-icon> {{'EXTERNAL-SWAP.TRANSACTION.FIELD_APPROVED_FOR'|translate}}</span>
             </div>
             <div>
               {{ approveAmountDec }} {{ approveAddressSymbol }}
             </div>
           </div>
-          <div>
+          <div *ngIf="approveAddress">
             <div>
-              {{ 'FEE' | translate }}
+              {{'EXTERNAL-SWAP.TRANSACTION.FIELD_AMOUNT_AVAILABLE'|translate}}
+            </div>
+            <div>
+              {{ approveBalance }} {{ approveAddressSymbol }}
+            </div>
+          </div>
+          <div [ngClass]="{'has-error': depositMore}">
+            <div>
+              <span title="{{(depositMore ? 'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_AERO' : '') | translate}}"><aer-icon *ngIf="depositMore">exclamation-triangle</aer-icon> {{ 'FEE' | translate }}</span>
             </div>
             <div>
               {{ maxTransactionFee | convertWeiToGwei}} {{'AERO'|translate}}
             </div>
           </div>
-          <div>
+          <div *ngIf="amount > 0">
             <div>
               <!-- {{ 'AMOUNT' | translate }} -->
               {{'EXTERNAL-SWAP.TRANSACTION.FIELD_AMOUNT_AVAILABLE'|translate}}
@@ -97,7 +105,6 @@
     <div aerRow>
       <div aerColumn size="md-12">
         <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">{{'EXTERNAL-SWAP.TRANSACTION.FIELD_I_ACKNOWLEDGE_RISKS'|translate}}</aer-checkbox>
-        <p *ngIf="depositMore">{{'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' | translate}}</p>
       </div>
     </div>
     <div aerRow *ngIf="isToken">
