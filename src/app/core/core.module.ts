@@ -57,6 +57,7 @@ import { StakingDelegateService } from "@core/staking/staking-delegate-service/s
 import { StakingGovernanceService } from "@core/staking/staking-governance-service/staking-governance.service";
 import { TokenFactoryService } from "@core/factory/token-factory-service/token-factory.service";
 import { ContractRegistryService } from "@core/registry/contract-registry/contract-registry.service";
+import { AerumbitService } from "@core/aerumbit/aerumbit.service";
 
 @NgModule({
   imports: [
@@ -110,7 +111,8 @@ import { ContractRegistryService } from "@core/registry/contract-registry/contra
     QrScannerService,
     GlobalEventService,
     TokenFactoryService,
-    ContractRegistryService
+    ContractRegistryService,
+    AerumbitService
   ]
 })
 export class CoreModule {

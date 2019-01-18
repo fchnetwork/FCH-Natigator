@@ -87,7 +87,7 @@ export class RegisterComponent implements OnInit {
       data.returnUrl = this.returnUrl || '/';
 
       this.routeDataService.routeData = data;
-      this.router.navigate(['/account/backup']);
+      this.router.navigate(['/account/register-name']);
     }
   }
 
