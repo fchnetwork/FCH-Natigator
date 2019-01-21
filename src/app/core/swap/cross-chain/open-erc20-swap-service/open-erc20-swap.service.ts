@@ -1,6 +1,7 @@
 const artifacts = require('@core/abi/OpenAtomicSwapERC20.json');
 const erc20ABI = require('@core/abi/tokens.ts');
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from "@env/environment";
 import { secondsToDate } from "@shared/helpers/date-util";
@@ -25,7 +26,8 @@ export class OpenErc20SwapService extends BaseContractService {
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
     injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
-    private ethereumTokenService: EthereumTokenService
+    private ethereumTokenService: EthereumTokenService,
+    translateService: TranslateService
   ) {
     super(
       artifacts.abi,
@@ -33,7 +35,8 @@ export class OpenErc20SwapService extends BaseContractService {
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,
-      injectedWeb3ContractExecutorService
+      injectedWeb3ContractExecutorService,
+      translateService
     );
   }
 

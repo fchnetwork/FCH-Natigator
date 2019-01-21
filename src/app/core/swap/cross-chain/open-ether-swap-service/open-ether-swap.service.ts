@@ -1,6 +1,7 @@
 const artifacts = require('@core/abi/OpenAtomicSwapEther.json');
 
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import { environment } from "@env/environment";
 import { fromWei, fromAscii } from "web3-utils";
@@ -22,7 +23,8 @@ export class OpenEtherSwapService extends BaseContractService {
     notificationService: InternalNotificationService,
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
-    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService
+    injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
+    translateService: TranslateService
   ) {
     super(
       artifacts.abi,
@@ -30,7 +32,8 @@ export class OpenEtherSwapService extends BaseContractService {
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,
-      injectedWeb3ContractExecutorService
+      injectedWeb3ContractExecutorService,
+      translateService
     );
   }
 

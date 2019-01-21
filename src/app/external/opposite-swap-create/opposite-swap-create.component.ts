@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
 import { environment } from "@env/environment";
-
+import { TranslateService } from '@ngx-translate/core';
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 import { sha3 } from 'web3-utils';
@@ -77,7 +77,8 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     private ethereumTokenService: EthereumTokenService,
     private swapLocalStorageService: SwapLocalStorageService,
     private authService: AuthenticationService,
-    private transactionService: TransactionService) { }
+    private transactionService: TransactionService,
+    private translateService: TranslateService) { }
 
   async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
@@ -271,6 +272,12 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   }
 
   private async loadInjectedEthAccount() {
+    try {
+      await this.ethereumAuthService.ensureEthereumEnabled();
+    } catch (error) {
+      this.notificationService.showMessage(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'), this.translateService.instant('BASE_CONTRACT.ERROR'));
+      throw new InjectedWeb3Error(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'));
+    }
     const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
     if (!injectedWeb3) {
       this.notificationService.showMessage('Injected web3 not provided', 'Error');

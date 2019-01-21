@@ -1,4 +1,8 @@
 {
+  "BASE_CONTRACT": {
+    "ERROR": "Error",
+    "CANNOT_LOAD_ACCOUNT": "Cannot load injected account."
+  },
   "ACCOUNT": {
     "UNLOCK": {
       "TITLE": "Unlock",
@@ -178,7 +182,14 @@
   "EXTERNAL": {
     "TRANSACTION": {
       "PAPER_WALLET_1": "You have been given a paper wallet with a balance of",
-      "PAPER_WALLET_2": "Aero. Would you like to import it?"
+      "PAPER_WALLET_2": "Aero. Would you like to import it?",
+      "TITLE_IN_PROGRESS": "In Progress",
+      "BODY_APPROVING": "Approving tokens.",
+      "TITLE_DONE": "Done",
+      "BODY_APPROVED": "Tokens successfully approved.",
+      "NO_CONTRACT_REGISTRATION": "Contract registration was not found. Please execute transaction on your own risk.",
+      "ERROR_PAYLOAD_DECODING": "An error ocured while decoding transaction payload. Please execute transaction on your own risk.",
+      "PAYLOAD_DECODED": "Transaction payload was successfully decoded."
     }
   },
 
@@ -570,16 +581,22 @@
       "BTN_CANCEL": "Back"
     },
     "TRANSACTION": {
-      "TITLE": "Confirm payment",
+      "TITLE_1": "Confirm payment",
+      "TITLE_2": "Confirm transaction",
       "FIELD_PAYMENT_TO": "Payment to",
-      "FIELD_PAYMENT_IN": "Payment in",
+      "FIELD_APPROVED_FOR": "Approved for",
       "FIELD_AMOUNT_AVAILABLE": "Amount available",
       "BTN_DEPOSIT_MORE": "Deposit more",
       "FIELD_I_ACKNOWLEDGE_RISKS": "I acknowledge risks.",
-      "NOT_ENOUGH_ASSET": "There is not enough of selected asset to proceed. Please deposit more asset",
+      "NOT_ENOUGH_ASSET": "Not sufficient amount of assets",
+      "NOT_ENOUGH_AERO": "Not sufficient amount of Aero",
       "BTN_PROCEED": "Proceed",
       "BTN_CLOSE": "Close",
-      "BTN_CANCEL": "Cancel"
+      "BTN_CANCEL": "Cancel",
+      "NAME": "Name",
+      "PARAMS": "Params",
+      "VALUE": "Value",
+      "TYPE": "Type"
     }
   },
   "ENS": {
@@ -690,6 +707,7 @@
       "FIELD_DELEGATE": "Delegate",
       "FIELD_STAKE": "Stake",
       "PLACEHOLDER_SELECT_ADDRESS": "Select delegate",
+      "PLACEHOLDER_ENTER_ADDRESS": "Enter delegate address",
       "BTN_STAKE": "Stake",
       "PLACEHOLDER_AMOUNT": "Amount",
       "OPEN_CREATE_TX_IN_EXPLORER": "Open staking tx"

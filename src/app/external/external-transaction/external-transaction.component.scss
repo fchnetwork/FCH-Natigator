@@ -1,3 +1,53 @@
 .external-transaction {
   text-align: center;
 }
+.has-error {
+  color: #c94545;
+}
+.code {
+  text-align: start;
+  background-color: blanchedalmond;
+}
+.info {
+  cursor: pointer;
+}
+.table {
+  width: 100%;
+  background-color: transparent;
+  border-spacing: 0;
+
+  th,
+  td {
+    padding: .3rem;
+    vertical-align: top;
+    border: 1px solid #dee2e6;
+    color: #495057;
+    &:not(:first-child) {
+      border-left: none;
+    }
+  }
+
+  th {
+    vertical-align: bottom;
+    border-bottom: 1px solid #dee2e6;
+    background-color: #e9ecef;
+  }
+
+  td {
+    border-top: none;
+  }
+
+  tr.table-param {
+    td {
+      border-top: 1px solid #dee2e6;
+    }
+  }
+
+  &-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+}

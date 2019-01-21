@@ -2,7 +2,6 @@ const artifacts = require('@core/abi/CounterAtomicSwapERC20.json');
 
 import { Injectable } from '@angular/core';
 import { environment } from "@env/environment";
-import { Callback } from "web3/types";
 
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { CounterErc20Swap } from "@core/swap/models/counter-erc20-swap.model";
@@ -86,37 +85,5 @@ export class CounterAerumErc20SwapService extends BaseContractService {
     const checkSecretKey = this.contract.methods.checkSecretKey(hash);
     const response = await this.contractExecutorService.call(checkSecretKey);
     return response;
-  }
-
-  /**
-   * Event listner for open event
-   * @param {string} hash - hash of the swap
-   * @param {function} callback - callback method for open event
-   */
-  onOpen(hash: string, callback: Callback<any>): void {
-    this.handleEvent("Open", hash, callback);
-  }
-
-  /**
-   * Event listner for close event
-   * @param {string} hash - hash of the swap
-   * @param {function} callback - callback method for close event
-   */
-  onClose(hash: string, callback: Callback<any>): void {
-    this.handleEvent("Close", hash, callback);
-  }
-
-  /**
-   * Event listner for expire event
-   * @param {string} hash - hash of the swap
-   * @param {function} callback - callback method for expire event
-   */
-  onExpire(hash: string, callback: Callback<any>): void {
-    this.handleEvent("Expire", hash, callback);
-  }
-
-  private handleEvent(eventName: string, hash: string, callback: Callback<any>): void {
-    const contract = this.createEventsSupportingContract();
-    contract.events[eventName]({ filter: { _hash: hash }, fromBlock: 0 }, callback);
   }
 }

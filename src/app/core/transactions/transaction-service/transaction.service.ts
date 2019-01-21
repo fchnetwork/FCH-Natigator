@@ -228,19 +228,20 @@ export class TransactionService {
       const privateKey = privkey.startsWith("0x")
         ? ethJsUtil.toBuffer(privkey)
         : Buffer.from(privkey, "hex");
-      const sendTo = ethJsUtil.toChecksumAddress(to);
-      const from = ethJsUtil.toChecksumAddress(activeUser);
       const amountInEther = this.web3.utils.toWei(amount.toString(), "ether");
       const txValue = this.web3.utils.numberToHex(amountInEther);
-      const txData = this.web3.utils.asciiToHex(data);
+      const txData = data;
       const getGasPrice = this.web3.eth.getGasPrice();
-      const getTransactionCount = this.web3.eth.getTransactionCount(from);
-      const estimateGas = this.web3.eth.estimateGas({
-        to: sendTo,
-        data: txData,
+      const getTransactionCount = this.web3.eth.getTransactionCount(activeUser);
+      const estimateGasParams: any = {
+        to,
+        from: activeUser,
         value: amountInEther
-      });
-
+      };
+      if(txData) {
+        estimateGasParams.data = txData;
+      }
+      const estimateGas = this.web3.eth.estimateGas(estimateGasParams);
       return Promise.all([getGasPrice, getTransactionCount, estimateGas]).then(
         values => {
           const gasPrice = values[0];
