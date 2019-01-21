@@ -23,7 +23,7 @@ export class FingerPrintService {
   }
 
   async savePassword(password: string): Promise<boolean> {
-    if(!environment.isMobileBuild) {
+    if(!environment.isMobileBuild || !(await this.isTouchIdAvailable())) {
       return;
     }
     await this.deletePassword();

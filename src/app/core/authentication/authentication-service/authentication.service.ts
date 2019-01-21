@@ -16,6 +16,7 @@ const hdkey   = require("ethereumjs-wallet/hdkey");
 const bip39   = require("bip39");
 
 import Web3 from 'web3';
+import { environment } from '@env/environment';
 
 declare const window: any;
 
@@ -184,7 +185,8 @@ export class AuthenticationService {
       this.storageService.clearSessionData('derivation');
       this.storageService.clearSessionData('ethereum_tokens');
       //Doing page full reload to make sure all components and services will be correctly initialized for next user.
-      window.location.href = 'account/unlock';
+      const url = environment.isMobileBuild ? 'index.html' : 'account/unlock';
+      window.location.href = url;
     }
 
     /**
