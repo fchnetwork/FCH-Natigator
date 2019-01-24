@@ -5,6 +5,7 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 declare const window;
+declare const navigator;
 
 if (environment.production) {
   enableProdMode();
@@ -27,6 +28,21 @@ if (typeof window['cordova'] !== 'undefined') {
 
     //Changed definition for window open to use in app browser
     window.open = window.cordova.InAppBrowser.open;
+
+    //Prevent back button to go to unlock screen
+    document.addEventListener('backbutton', e =>
+    {
+      if (window.location.href.indexOf('wallet/home') !== -1) {
+        e.preventDefault();
+      }
+      else {
+        navigator.app.backHistory();
+      }
+    }, false);
+
+    window.addEventListener('keyboardDidHide', ()=> {
+      window.style.height = '100vh';
+    });
 
     bootstrap();
   }, false);

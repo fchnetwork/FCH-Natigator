@@ -8,7 +8,7 @@ import { AuthenticationService } from "@core/authentication/authentication-servi
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { SwapType } from '@app/core/swap/models/swap-type.enum';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
+import { environment } from '@env/environment';
 import { SwapLocalStorageService } from '@app/core/swap/cross-chain/swap-local-storage/swap-local-storage.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class CrossChainSwapListComponent implements OnInit {
   canShowMore = true;
   swaps: SwapListItem[] = [];
   allSwaps: SwapListItem[] = [];
-  perfectScrollbarDisabled = isAndroidDevice();
+  perfectScrollbarDisabled = environment.isMobileBuild;
 
   constructor(
     private logger: LoggerService,

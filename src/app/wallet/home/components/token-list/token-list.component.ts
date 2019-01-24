@@ -3,7 +3,7 @@ import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { ClipboardService } from "@app/core/general/clipboard-service/clipboard.service";
 import { InternalNotificationService } from "@app/core/general/internal-notification-service/internal-notification.service";
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
+import { environment } from '@env/environment';
 
 @Component({
   selector: "app-token-list",
@@ -14,7 +14,7 @@ import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
 })
 export class TokenListComponent implements OnInit {
   tokens: any;
-  perfectScrollbarDisabled = isAndroidDevice();
+  perfectScrollbarDisabled = environment.isMobileBuild;
 
   constructor(
     public modalService: ModalService,
