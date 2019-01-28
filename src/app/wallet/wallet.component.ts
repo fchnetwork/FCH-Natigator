@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewChild, AfterViewInit, EventEmitter, AfterViewChecked, ChangeDetectorRef, OnDestroy, AfterContentInit, AfterContentChecked } from '@angular/core';
-import { Router, RoutesRecognized, ActivatedRoute, NavigationEnd, Data } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Component, ViewChild, EventEmitter, AfterViewChecked, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-wallet',
@@ -16,7 +15,7 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
   sidebarLoaded$: EventEmitter<any>;
   routeData$: Subscription;
 
-  perfectScrollbarDisabled = isAndroidDevice();
+  perfectScrollbarDisabled = environment.isMobileBuild;
 
   constructor(
     private authService: AuthenticationService,

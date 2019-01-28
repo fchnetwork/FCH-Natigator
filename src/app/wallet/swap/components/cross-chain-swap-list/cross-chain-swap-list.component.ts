@@ -8,7 +8,8 @@ import { AuthenticationService } from "@core/authentication/authentication-servi
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { SwapType } from '@app/core/swap/models/swap-type.enum';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
+import { environment } from '@env/environment';
+import { SwapLocalStorageService } from '@app/core/swap/cross-chain/swap-local-storage/swap-local-storage.service';
 
 @Component({
   selector: 'app-cross-chain-swap-list',
@@ -25,7 +26,7 @@ export class CrossChainSwapListComponent implements OnInit {
   canShowMore = true;
   swaps: SwapListItem[] = [];
   allSwaps: SwapListItem[] = [];
-  perfectScrollbarDisabled = isAndroidDevice();
+  perfectScrollbarDisabled = environment.isMobileBuild;
 
   constructor(
     private logger: LoggerService,
@@ -33,7 +34,8 @@ export class CrossChainSwapListComponent implements OnInit {
     private translateService: TranslateService,
     private authService: AuthenticationService,
     private notificationService: InternalNotificationService,
-    private swapListService: SwapListService
+    private swapListService: SwapListService,
+    private swapLocalStorageService: SwapLocalStorageService
   ) { }
 
   async ngOnInit() {
@@ -44,8 +46,11 @@ export class CrossChainSwapListComponent implements OnInit {
   private async loadSwaps() {
     try {
       this.loading = true;
+      const localSwaps = this.swapLocalStorageService.loadAllSwaps();
       this.allSwaps = (await this.swapListService.getSwapsByAccount(this.account))
+        .filter(sw => localSwaps.findIndex(lsw => lsw.hash === sw.id) !== -1)
         .sort((s1, s2) => s1.createdOn > s2.createdOn ? -1 : s1.createdOn < s2.createdOn ? 1 : 0);
+      
       const skip = this.itemsPerPage * this.page; 
       this.swaps = this.allSwaps.slice(skip, this.itemsPerPage);
       this.canShowMore = this.swaps.length === this.itemsPerPage;

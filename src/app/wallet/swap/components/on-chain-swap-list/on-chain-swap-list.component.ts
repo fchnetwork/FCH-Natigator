@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { multiSlice } from "@shared/helpers/array-utils";
 import { TranslateService } from "@ngx-translate/core";
 import { SwapListItem } from "@core/swap/models/swap-list-item.model";
 import { SwapListService } from "@core/swap/on-chain/swap-list-service/swap-list.service";
@@ -8,7 +7,7 @@ import { InternalNotificationService } from "@core/general/internal-notification
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-on-chain-swap-list',
@@ -25,7 +24,7 @@ export class OnChainSwapListComponent implements OnInit {
   canShowMore = true;
   swaps: SwapListItem[] = [];
   allSwaps: SwapListItem[] = [];
-  perfectScrollbarDisabled = isAndroidDevice();
+  perfectScrollbarDisabled = environment.isMobileBuild;
 
   constructor(
     private logger: LoggerService,
