@@ -12,5 +12,6 @@ module.exports = {
     '@diagnostics': path.resolve('src/app/wallet/diagnostics'),
     '@env': path.resolve('src/environments'),
     '@aens': path.resolve('src/app/wallet/aens'),
-    '@swap': path.resolve('src/app/wallet/swap')
+    '@swap': path.resolve('src/app/wallet/swap'),
+    '@mobile': path.resolve('src/app/mobile')
 };

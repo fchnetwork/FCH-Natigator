@@ -5,6 +5,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { InternalNotificationService } from "@app/core/general/internal-notification-service/internal-notification.service";
 import { FingerPrintService } from "@app/mobile/finger-print/finger-print.service";
+import { UniversalLinkService } from "@mobile/universal-link/universal-link.service";
 
 @Component({
   selector: "app-unlock",
@@ -31,9 +32,11 @@ export class UnlockComponent implements OnInit {
     private route: ActivatedRoute,
     private notificationService: InternalNotificationService,
     private translateService: TranslateService,
-    private fingerPrintService: FingerPrintService
+    private fingerPrintService: FingerPrintService,
+    private universalLinkService: UniversalLinkService
   ) {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || null;
+
     this.unlockForm = this.formBuilder.group({
       password: ['', [Validators.required]]
     });
@@ -61,6 +64,8 @@ export class UnlockComponent implements OnInit {
     .login(password)
     .then(() => {
       this.inProgress = false;
+      const universalUrl = this.universalLinkService.getLink(true);
+      this.returnUrl = !!universalUrl ? universalUrl : this.returnUrl;
       this.router.navigateByUrl(this.returnUrl || '/');
     })
     .catch(() => {

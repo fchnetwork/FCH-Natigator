@@ -1,4 +1,3 @@
-import { privateToAddress } from "ethereumjs-util";
 import { Injectable } from "@angular/core";
 import * as Moment from "moment";
 import { tokensABI } from "@app/core/abi/tokens";
@@ -6,10 +5,12 @@ import { AuthenticationService } from "@app/core/authentication/authentication-s
 import { ModalService } from "@app/core/general/modal-service/modal.service";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { NotificationMessagesService } from "@core/general/notification-messages-service/notification-messages.service";
+import { ActivatedRoute, Router, Params } from '@angular/router';
 
 import { SettingsService } from "@app/core/settings/settings.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
+import { environment } from "@env/environment";
 
 const Tx = require("ethereumjs-tx");
 const ethJsUtil = require("ethereumjs-util");
@@ -27,7 +28,8 @@ export class TransactionService {
     private tokenService: TokenService,
     private notificationMessagesService: NotificationMessagesService,
     private settingsService: SettingsService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private router: Router
   ) {
     this.web3 = _auth.getWeb3();
   }
@@ -292,6 +294,9 @@ export class TransactionService {
               this.web3.eth.getTransaction(receipt.transactionHash).then(res => {
                 res.timestamp = Moment(new Date()).unix();
                 if (external) {
+                  if(environment.isMobileBuild) {
+                    this.router.navigateByUrl('/');
+                  }
                   window.location.href = urls.success;
                 } else {
                   resolve(res);
@@ -301,6 +306,9 @@ export class TransactionService {
             .catch(error => {
               this.logger.logError(error);
               if (external) {
+                if(environment.isMobileBuild) {
+                  this.router.navigateByUrl('/');
+                }
                 window.location.href = urls.failed;
               } else {
                 this.notificationMessagesService.failedTransactionNotification();
@@ -311,6 +319,9 @@ export class TransactionService {
       ).catch(error => {
         this.logger.logError(error);
         if (external) {
+          if(environment.isMobileBuild) {
+            this.router.navigateByUrl('/');
+          }
           window.location.href = urls.failed;
         } else {
           this.notificationMessagesService.failedTransactionNotification();
@@ -384,6 +395,9 @@ export class TransactionService {
           this.web3.eth.getTransaction(hash).then(res => {
             res.timestamp = Moment(new Date()).unix();
             if (external) {
+              if(environment.isMobileBuild) {
+                this.router.navigateByUrl('/');
+              }
               window.location.href = urls.success;
             } else {
               this.notificationMessagesService.pendingTransactionNotification(
@@ -396,6 +410,9 @@ export class TransactionService {
       .catch(error => {
         this.logger.logError(error);
         if (external) {
+          if(environment.isMobileBuild) {
+            this.router.navigateByUrl('/');
+          }
           window.location.href = urls.failed;
         } else {
           this.notificationMessagesService.failedTransactionNotification();

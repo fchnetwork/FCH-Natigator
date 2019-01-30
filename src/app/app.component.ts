@@ -1,13 +1,13 @@
 import { PendingTransactionsService } from './core/transactions/pending-transactions/pending-transactions.service';
-import { Component, OnInit, ErrorHandler } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { environment } from "../environments/environment";
-import { ActivatedRoute, Router, NavigationStart } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { LoggerService } from "@app/core/general/logger-service/logger.service";
-import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
 import { ConnectionCheckerService } from "@core/general/connection-checker-service/connection-checker.service";
 import { TranslateService } from "@ngx-translate/core";
 import { SettingsService } from '@core/settings/settings.service';
 import { GlobalEventService } from "@core/general/global-event-service/global-event.service";
+import { UniversalLinkService } from "@mobile/universal-link/universal-link.service";
 
 @Component({
   selector: "app-root",
@@ -25,7 +25,8 @@ export class AppComponent implements OnInit {
     public connectionCheckerService: ConnectionCheckerService,
     public translate: TranslateService,
     public settingsService: SettingsService,
-    public pendingTxns: PendingTransactionsService
+    public pendingTxns: PendingTransactionsService,
+    public universalLinkService: UniversalLinkService
   ) {
     // Initialize global events
     this.globalEventService.init();
@@ -35,6 +36,9 @@ export class AppComponent implements OnInit {
 
     // Configure the translation service.
     this.translate.use(this.settingsService.settings.generalSettings.language);
+
+    // Initialize universal links
+    this.universalLinkService.init();
   }
 
   ngOnInit() {
