@@ -10,7 +10,8 @@
       "outDir": "build/dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "apple-app-site-association"
       ],
       "index": "index.html",
       "main": "main.ts",
