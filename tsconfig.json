@@ -31,7 +31,8 @@
       "@diagnostics/*": ["app/wallet/diagnostics/*"],
       "@aens/*": ["app/wallet/aens/*"],
       "@swap/*": ["app/wallet/swap/*"],
-      "@env/*": ["environments/*"]
+      "@env/*": ["environments/*"],
+      "@mobile/*": ["app/mobile/*"]
     }
   },
   "exclude": [

@@ -305,6 +305,14 @@ module.exports = {
           "glob": "favicon.ico",
           "dot": true
         }
+      },
+      {
+        "context": "src",
+        "to": "",
+        "from": {
+          "glob": "apple-app-site-association",
+          "dot": true
+        }
       }
     ], {
       "ignore": [

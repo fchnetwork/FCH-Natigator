@@ -12,6 +12,7 @@ import { NotificationMessagesService } from '@core/general/notification-messages
 import { AddressKeyValidationService } from '@app/core/validation/address-key-validation.service';
 import { ERC20TokenService } from '@app/core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { ContractRegistryService } from '@app/core/registry/contract-registry/contract-registry.service';
+import { environment } from '@env/environment';
 
 const abiDecoder = require('abi-decoder');
 
@@ -107,10 +108,9 @@ export class ExternalTransactionComponent implements OnDestroy {
 
   private async init() {
     this.tokens = this.tokenService.getTokens();
-    this.query = this.params.query;
+    this.query = decodeURIComponent(this.params.query);
     this.decodeHasError = false;
-
-    const parsed = JSON.parse(this.params.query);
+    const parsed = JSON.parse(this.query);
     this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
     [this.receiverAddressHex, this.tokenAddress] = await Promise.all([
       this.nameService.safeResolveNameOrAddress(this.receiverAddress),
@@ -239,6 +239,9 @@ export class ExternalTransactionComponent implements OnDestroy {
   }
 
   dismiss() {
+    if(environment.isMobileBuild) {
+      this.router.navigateByUrl('/');
+    }
     window.location.href = this.returnUrlFailed;
   }
 
