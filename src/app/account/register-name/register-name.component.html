@@ -7,7 +7,6 @@
         [placeholder]="'ACCOUNT.REGISTER_NAME.NAME_PLACEHOLDER' | translate"
         type="text"
         formControlName="name"
-        [(ngModel)]="name"
         class="element-wrapper with-button blue"
         buttonLabel=".aer"></aer-input>
       <p class="label-error" *ngIf="nameUsed">Name is already reserved. Please use a new one.</p>
