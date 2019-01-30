@@ -50,6 +50,16 @@
       "CREATE_PWD_PLACEHOLDER": "Choose your password",
       "CONFIRM_PWD_PLACEHOLDER": "Confirm password"
     },
+    "REGISTER_NAME": {
+      "TITLE": "Create account name",
+      "LABEL": "Choose unique name for your address:",
+      "NAME_PLACEHOLDER": "Enter name",
+      "SKIP_STEP": "Skip this step",
+      "ERROR_REQUESTING_AERO": "An error occurred while requesting Aero. Please contact administrator.",
+      "AERUMBIT_TITLE": "Aerumbit",
+      "REQUESTING_TOKEN": "Requesting aerumbit access token.",
+      "REQUESTING_AERO": "Requesting Aero for aens name registration."
+    },
     "BACKUP_PROMPT": {
       "TITLE": "Backup",
       "SUBTITLE": "You must save the mnemonic seed. It is the only one way to recover access",
@@ -643,6 +653,7 @@
     "ADDRESS_TRANSFER_NAME_DESCRIPTION":
       "This is address of new owner of the name",
     "NAME_BUY_SUCCESS_TITLE": "Success",
+    "NAME_BUY_ERROR_TITLE": "Error",
     "NAME_BUY_SUCCESS": "You bought name",
     "CHANGE_ADDRESS_SUCCESS_TITLE": "Success",
     "CHANGE_ADDRESS_SUCCESS": "You changed address of",

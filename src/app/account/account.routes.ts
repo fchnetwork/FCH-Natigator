@@ -1,9 +1,8 @@
 import { RouterModule } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { RegisterComponent } from "./register/register.component";
-import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
+import { RegisterNameComponent } from "./register-name/register-name.component";
 import { BackupCreateComponent } from "./backup-create/backup-create.component";
-import { RegistrationRouteData } from "./models/RegistrationRouteData";
 import { BackupPromptComponent } from "./backup-prompt/backup-prompt.component";
 import { BackupConfirmComponent } from "./backup-confirm/backup-confirm.component";
 import { UnlockComponent } from "@app/account/unlock/unlock.component";
@@ -21,6 +20,10 @@ const ACCOUNT_ROUTES = [
             {
                 path: 'register',
                 component: RegisterComponent
+            },
+            {
+                path: 'register-name',
+                component: RegisterNameComponent
             },
             {
                 path: 'backup',

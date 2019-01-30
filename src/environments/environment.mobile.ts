@@ -11,6 +11,7 @@ export const environment = {
   configInUse: "environment.mpbile",
   WebsocketProvider: "wss://marge.aerum.net/wss",
   rpcApiProvider: "https://marge.aerum.net/eth",
+  aerumBit: "https://api.merchant.aerum.net/",
   cookiesDomain: "dev.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "https://explore.aerum.net/#/",

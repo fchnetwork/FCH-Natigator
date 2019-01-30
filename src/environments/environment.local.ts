@@ -10,6 +10,7 @@ export const environment = {
   configInUse: "environment.local",
   WebsocketProvider: "wss://marge.aerum.net/wss",
   rpcApiProvider: "https://marge.aerum.net/eth",
+  aerumBit: "https://marge.aerum.net/",
   cookiesDomain: "localhost",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "https://explore.aerum.net/#/",
