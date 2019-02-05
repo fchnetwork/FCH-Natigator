@@ -104,6 +104,10 @@ export class AuthenticationService {
       return this.storageService.getSessionData('acc_address');
     }
 
+    getName(): string {
+      return this.storageService.getSessionData('acc_name');
+    }
+
     getKeystore() {
       const keystore = this.storageService.getCookie('aerum_keyStore');
       if(!keystore) {
@@ -164,6 +168,12 @@ export class AuthenticationService {
           this.storageService.setSessionData('ethereum_accounts', result.ethereumAccounts.length ? JSON.parse(result.ethereumAccounts) : []);
           this.storageService.setSessionData('cross_chain_swaps', result.crossChainSwaps.length ? JSON.parse(result.crossChainSwaps) : []);
           this.storageService.setSessionData('stakings', result.stakings.length ? JSON.parse(result.stakings) : []);
+
+          const settings = this.settingsService.getSettings();
+          if(settings.accountSettings) {
+            this.storageService.setSessionData('acc_name', settings.accountSettings.accName);
+          }
+
           resolve('success');
         }).catch((err)=>{
             reject(err);
@@ -173,6 +183,7 @@ export class AuthenticationService {
 
     logout() {
       this.storageService.clearSessionData('acc_address');
+      this.storageService.clearSessionData('acc_name');
       this.storageService.clearSessionData('acc_avatar');
       this.storageService.clearSessionData('seed');
       this.storageService.clearSessionData('private_key');

@@ -63,6 +63,9 @@ export class SettingsService {
                 aerumNodeWsURI: environment.WebsocketProvider,
                 aerumNodeRpcURI: environment.rpcApiProvider,
                 ethereumNodeURI: environment.ethereum.endpoint
+            },
+            accountSettings: {
+                accName: ''
             }
         };
         const stringSettings = JSON.stringify(settings);

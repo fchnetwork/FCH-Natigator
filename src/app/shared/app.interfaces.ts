@@ -90,7 +90,8 @@ export interface iBlocks {
   export interface iSettings {
     generalSettings: iGeneralSettings,
     transactionSettings: iTransactionSettings,
-    systemSettings: iSystemSettings
+    systemSettings: iSystemSettings,
+    accountSettings: AccountSettings,
   }
 
   export interface iGeneralSettings {
@@ -109,4 +110,8 @@ export interface iBlocks {
     aerumNodeWsURI: string;
     aerumNodeRpcURI: string;
     ethereumNodeURI: string;
+  }
+
+  export interface AccountSettings {
+    accName: string;
   }
