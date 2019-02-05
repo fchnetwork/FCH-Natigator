@@ -13,6 +13,7 @@ export class AccountOverviewComponent implements OnInit {
   walletBalance: string;
   addressQR: string;
   address: string;
+  name: string;
 
   constructor(
     private authServ: AuthenticationService,
@@ -26,6 +27,7 @@ export class AccountOverviewComponent implements OnInit {
         const getBalance = this.txnServ.checkBalance(keystore.address);
         const getQR = this.authServ.createQRcode( "0x" + keystore.address );
         this.address = keystore.address;
+        this.name = this.authServ.getName();
         return Promise.all([ keystore, getBalance, getQR ]);
     }
   )

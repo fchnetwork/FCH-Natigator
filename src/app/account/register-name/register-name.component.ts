@@ -8,6 +8,7 @@ import { Status } from "@core/aerumbit/models/request-faucet-data";
 import { CheckStatus } from "@core/aens/aerum-name-service/check-status.enum";
 import { TranslateService } from "@ngx-translate/core";
 import { NotificationService } from '@aerum/ui';
+import { SettingsService } from '@app/core/settings/settings.service';
 
 import { fromWei } from 'web3-utils';
 import { toBigNumberString } from "@shared/helpers/number-utils";
@@ -31,6 +32,7 @@ export class RegisterNameComponent implements OnInit {
     private aensService: AerumNameService,
     private aerumbitService: AerumbitService,
     private translateService: TranslateService,
+    private settingsService: SettingsService,
     private notificationService: NotificationService,
   ) { }
 
@@ -81,6 +83,9 @@ export class RegisterNameComponent implements OnInit {
       await this.aensService.setAddress(fullName, this.account);
       this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${fullName}`, 'aerum');
   
+      this.storageService.setSessionData('acc_name', label);
+      this.settingsService.saveSettings("accountSettings", { accName: label });
+
       this.router.navigate(['/account/backup']);
     } finally {
       this.inProgress = false;
