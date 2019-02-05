@@ -15,7 +15,7 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
   sidebarLoaded$: EventEmitter<any>;
   routeData$: Subscription;
 
-  perfectScrollbarDisabled = environment.isMobileBuild;
+  isMobileBuild = environment.isMobileBuild;
 
   constructor(
     private authService: AuthenticationService,
