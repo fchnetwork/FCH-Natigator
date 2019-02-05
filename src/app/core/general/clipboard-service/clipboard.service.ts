@@ -1,56 +1,71 @@
 import { Injectable } from '@angular/core';
 import { DOCUMENT } from "@angular/platform-browser";
-import { Inject } from "@angular/core"; 
+import { Inject } from "@angular/core";
+import { environment } from '@env/environment';
+
+declare const window: any;
 
 @Injectable()
 export class ClipboardService {
+  private dom: Document;
+  private isMobileBuild = environment.isMobileBuild;
 
-    private dom: Document;
+  constructor(@Inject(DOCUMENT) dom: Document) {
+    this.dom = dom;
+  }
 
-    constructor(@Inject(DOCUMENT) dom: Document) {
-
-        this.dom = dom;
-
+  copy(value: string): Promise<string> {
+    if (this.isMobileBuild) {
+      return this.copyMobile(value);  
     }
+    return this.copyWeb(value);
+  }
 
-    copy(value: string): Promise<string> {
+  copyWeb(value: string): Promise<string> {
+    const promise = new Promise<string>(
+      (resolve, reject): void => {
+        let textarea = null;
 
-        const promise = new Promise<string>(
-            (resolve, reject): void => {
+        try {
+          textarea = this.dom.createElement("textarea");
+          textarea.style.height = "0px";
+          textarea.style.left = "-100px";
+          textarea.style.opacity = "0";
+          textarea.style.position = "fixed";
+          textarea.style.top = "-100px";
+          textarea.style.width = "0px";
+          this.dom.body.appendChild(textarea);
 
-                let textarea = null; 
+          textarea.value = value;
+          textarea.select();
 
-                try {
-                    textarea = this.dom.createElement("textarea");
-                    textarea.style.height = "0px";
-                    textarea.style.left = "-100px";
-                    textarea.style.opacity = "0";
-                    textarea.style.position = "fixed";
-                    textarea.style.top = "-100px";
-                    textarea.style.width = "0px";
-                    this.dom.body.appendChild(textarea);
+          this.dom.execCommand("copy");
 
-                    textarea.value = value;
-                    textarea.select();
+          resolve(value);
+        } finally {
+          if (textarea && textarea.parentNode) {
+            textarea.parentNode.removeChild(textarea);
+          }
+        }
+      }
+    );
+    return promise;
+  }
 
-                    this.dom.execCommand("copy");
+  copyMobile(value: string): Promise<string> {
+    const promise = new Promise<string>(
+      (resolve, reject): void => {
+        if(window.cordova && window.cordova.plugins && window.cordova.plugins.clipboard) {
+          window.cordova.plugins.clipboard.copy(value, () => {
+            resolve(value);
+          }, err => {
+            reject(err);
+          });
+        } else {
+          reject('Clipboard plugin not defined');
+        }
+      });
 
-                    resolve(value);
-
-                } finally {
-
-                    if (textarea && textarea.parentNode) {
-
-                        textarea.parentNode.removeChild(textarea);
-
-                    }
-
-                }
-
-            }
-        );
-
-        return promise;
-
-    }
+    return promise;
+  }
 }
