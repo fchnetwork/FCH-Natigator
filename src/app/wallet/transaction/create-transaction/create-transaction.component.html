@@ -89,7 +89,6 @@
         <div aerColumn size="sm-12">
           <aer-card title="{{'RECEIVE_TO'|translate }}">
             <div class="qr__adress">
-              {{ transactionMessage }}
               <img [src]="addressQR" alt="">
               <app-address-clipboard address="{{ senderAddress }}" short="true"></app-address-clipboard>
             </div>
