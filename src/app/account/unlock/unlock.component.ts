@@ -45,7 +45,6 @@ export class UnlockComponent implements OnInit {
   async ngOnInit() {
     this.isFingerPrintAvailable = await this.fingerPrintService.isAvailable();
     if(this.isFingerPrintAvailable) {
-      this.inProgress = true;
       this.onFingerPrint();
     }
   }
