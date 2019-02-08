@@ -22,6 +22,7 @@
         <div aerRow>
           <div aerColumn size="sm-12">
             <aer-input placeholder="e.g. AER" formControlName="symbol" [ngClass]="{'has-error': hasError(createForm.controls.symbol)}" ngDefaultControl></aer-input>
+            <span *ngIf="hasError(createForm.controls.symbol)" class="error">{{'TOKEN_FACTORY.CREATE.FIELD_SYMBOL_ERROR'|translate}}</span>
           </div>
         </div>
         <div aerRow>
@@ -52,6 +53,7 @@
         <div aerRow>
           <div aerColumn size="sm-12">
             <aer-input placeholder="e.g. aerum" class="with-button blue" [ngClass]="{'has-error': hasError(createForm.controls.ansName)}" buttonLabel=".aer" formControlName="ansName" ngDefaultControl></aer-input>
+            <span *ngIf="hasError(createForm.controls.ansName)" class="error">{{'TOKEN_FACTORY.CREATE.FIELD_ANS_NAME_ERROR'|translate}}</span>
           </div>
         </div>
         <div *ngIf="address" aerRow>
