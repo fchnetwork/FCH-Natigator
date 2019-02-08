@@ -33,6 +33,11 @@ export class UniversalLinkService {
 
   private getUrlPath(urlStr): string {
     const url = new URL(urlStr);
-    return url.pathname + url.search;
+    let path = url.pathname + url.search;
+    const returnUrl = 'returnUrl=';
+    if(path && path.includes(returnUrl)) {
+        path = path.substring(path.indexOf(returnUrl) + 10);
+    }
+    return decodeURIComponent(path);
   }
 }
