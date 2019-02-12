@@ -4,10 +4,6 @@
         <app-divider [fullWidth]="true"></app-divider>
         <form [formGroup]="settingsForm">
             <p>
-                {{'SETTINGS.SYSTEM.AERUM_WEBSOCKET_URL'|translate}}
-            </p>
-            <aer-input [ngClass]="{'has-error':!settingsForm.controls['Websocket URL'].valid && settingsForm.controls['Websocket URL'].touched}" placeholder="{{'SETTINGS.SYSTEM.AERUM_WEBSOCKET_URL'|translate}}" formControlName="Websocket URL" ngDefaultControl [(ngModel)]="systemSettings.aerumNodeWsURI" icon="aerum"></aer-input>
-            <p>
                 {{'SETTINGS.SYSTEM.AERUM_RPC_URL'|translate}}
             </p>
             <aer-input [ngClass]="{'has-error':!settingsForm.controls['RPC URL'].valid && settingsForm.controls['RPC URL'].touched}" placeholder="{{'SETTINGS.SYSTEM.AERUM_RPC_URL'|translate}}" formControlName="RPC URL" ngDefaultControl [(ngModel)]="systemSettings.aerumNodeRpcURI" icon="aerumleaf"></aer-input>
