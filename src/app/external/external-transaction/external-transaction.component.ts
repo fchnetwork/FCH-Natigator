@@ -290,7 +290,7 @@ export class ExternalTransactionComponent implements OnDestroy {
     if (!this.tokenInfo) {
       try {
         this.tokenInfo = await this.tokenService.getTokensInfo(this.tokenAddress);
-        this.notificationMessagesService.tokenNotInTheCookies();
+        this.addToken(this.tokenInfo);
       } catch (e) {
         this.proceedAvailable = false;
         this.logger.logError(`Error while ${this.tokenAddress} token loading`, e);
@@ -300,6 +300,16 @@ export class ExternalTransactionComponent implements OnDestroy {
     this.currency = this.tokenInfo.symbol;
     this.tokenDecimals = this.tokenInfo.decimals;
     this.getMaxTransactionFee();
+  }
+
+  private addToken(token) {
+    if(!token || !token.address) {
+      return;
+    }
+    const tokens = this.tokenService.getTokens() || [];
+    if(tokens.findIndex(t => t.address === token.address) === -1) {
+      this.tokenService.addToken(token);
+    }
   }
 
   getBalance() {
