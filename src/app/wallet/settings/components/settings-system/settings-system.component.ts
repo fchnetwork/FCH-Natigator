@@ -27,7 +27,6 @@ export class SettingsSystemComponent implements OnInit {
     this.getSystemSettings();
     const regexURL = "^((ws)(s)?|(http)(s)?)://[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$";
     this.settingsForm = this.formBuilder.group({
-      "Websocket URL": [null, [Validators.required, Validators.pattern(regexURL)]],
       "RPC URL": [null, [Validators.required, Validators.pattern(regexURL)]],
       "Ethereum Node URL": [null, [Validators.required, Validators.pattern(regexURL)]]
     });
@@ -35,9 +34,10 @@ export class SettingsSystemComponent implements OnInit {
 
   saveSettings() {
     const valid = this.validateService.validateForm(this.settingsForm, 'All fields are valid');
+    let settings: iSettings = this.settingsService.getSettings();
     if (valid) {
       const systemSettings: iSystemSettings = {
-        aerumNodeWsURI: this.systemSettings.aerumNodeWsURI,
+        aerumNodeWsURI: settings.systemSettings.aerumNodeWsURI,
         aerumNodeRpcURI: this.systemSettings.aerumNodeRpcURI,
         ethereumNodeURI: this.systemSettings.ethereumNodeURI
       };
