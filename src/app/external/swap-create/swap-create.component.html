@@ -10,9 +10,11 @@
             <aer-icon>aerumleaf</aer-icon>
             <app-token-description [token]="token"></app-token-description>
           </aer-select-option>
+          <aer-select-option><span>{{'EXTERNAL-SWAP.WALLET.BTN_ADD_TOKEN'|translate}}</span></aer-select-option>
         </aer-select>
       </div>
     </div>
+    <app-add-aerum-token *ngIf="importTokenInProgress" (tokenAdded)="onTokenAdded($event)"></app-add-aerum-token>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
         <label>{{'EXTERNAL-SWAP.CREATE.FIELD_AMOUNT_OF_TOKEN_TO_RECEIVE'|translate}}</label>
@@ -66,7 +68,7 @@
     </div>
     <div *ngIf="approveTokenTransactionExplorerUrl || openSwapTransactionExplorerUrl" class="swap-create__processing">
       <div class="swap-create__explorer-buttons">
-        <aer-button *ngIf="approveTokenTransactionExplorerUrl" (buttonFn)="explorerLink(approveTokenTransactionExplorerUrl)" class="blue small explorer-button">{{'EXTERNAL-SWAP.CREATE.OPEN_APPROVAL_TX_IN_EXPLORER'|translate}}</aer-button> 
+        <aer-button *ngIf="approveTokenTransactionExplorerUrl" (buttonFn)="explorerLink(approveTokenTransactionExplorerUrl)" class="blue small explorer-button">{{'EXTERNAL-SWAP.CREATE.OPEN_APPROVAL_TX_IN_EXPLORER'|translate}}</aer-button>
         <aer-button *ngIf="openSwapTransactionExplorerUrl" (buttonFn)="explorerLink(openSwapTransactionExplorerUrl)" class="blue small explorer-button">{{'EXTERNAL-SWAP.CREATE.OPEN_TRANSFER_TX_IN_EXPLORER'|translate}}</aer-button>
       </div>
       <aer-loader *ngIf="processing"></aer-loader>

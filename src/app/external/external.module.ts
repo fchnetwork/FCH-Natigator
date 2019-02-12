@@ -13,6 +13,7 @@ import { SwapConfirmComponent } from './swap-confirm/swap-confirm.component';
 import { OppositeSwapCreateComponent } from './opposite-swap-create/opposite-swap-create.component';
 import { OppositeSwapConfirmComponent } from './opposite-swap-confirm/opposite-swap-confirm.component';
 import { PaperWalletImportComponent } from "@app/external/components/paper-wallet-import/paper-wallet-import.component";
+import { AddAerumTokenComponent } from './add-aerum-token/add-aerum-token.component';
 
 @NgModule({
   entryComponents: [
@@ -39,7 +40,8 @@ import { PaperWalletImportComponent } from "@app/external/components/paper-walle
     SwapConfirmComponent,
     OppositeSwapCreateComponent,
     OppositeSwapConfirmComponent,
-    PaperWalletImportComponent
+    PaperWalletImportComponent,
+    AddAerumTokenComponent
   ]
 })
 export class ExternalModule {
