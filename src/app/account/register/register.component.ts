@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
 import { StorageService } from '@app/core/general/storage-service/storage.service';
+import { TokenService } from '@app/core/transactions/token-service/token.service';
+import { environment } from '@env/environment.mobile';
 
 @Component({
   selector: 'app-register',
@@ -32,7 +34,8 @@ export class RegisterComponent implements OnInit {
     public route: ActivatedRoute,
     private routeDataService: RouteDataService<RegistrationRouteData>,
     public passCheckService: PasswordCheckerService,
-    public storageService: StorageService
+    public storageService: StorageService,
+    private tokenService: TokenService
   ) { }
 
   // TODO: export somewhere to lib to avoid double code
@@ -76,6 +79,8 @@ export class RegisterComponent implements OnInit {
       this.storageService.setSessionData('cross_chain_swaps', []);
       this.storageService.setSessionData('stakings', []);
 
+      this.addPredefinedTokens();
+
       data.avatar = this.registerForm.value.avatar.avatar;
       data.password = this.registerForm.value.password;
       data.mnemonic = this.registerForm.value.avatar.seed;
@@ -103,5 +108,18 @@ export class RegisterComponent implements OnInit {
         return passwordConfirmationInput.setErrors({ notEquivalent: true });
       }
     };
+  }
+
+  private addPredefinedTokens() {
+    const addresses = environment.predefinedTokens;
+    if(!addresses) {
+      return;
+    }
+    addresses.forEach(async address => {
+      const token = await this.tokenService.getTokensInfo(address);
+      if(token && token.address) {
+        this.tokenService.addToken(token);
+      }
+    });
   }
 }
