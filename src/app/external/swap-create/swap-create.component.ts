@@ -69,6 +69,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   canCreateSwap = false;
   swapCreated = false;
 
+  importTokenInProgress = false;
+
   constructor(
     private location: Location,
     private router: Router,
@@ -136,7 +138,20 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   onTokenChange() {
-    return this.loadSwapTemplates();
+    if (this.selectedToken) {
+      this.importTokenInProgress = false;
+      this.loadSwapTemplates();
+    } else {
+      this.importTokenInProgress = true;
+      this.selectedToken = null;
+    }
+  }
+
+  onTokenAdded(token: Token) {
+    this.importTokenInProgress = false;
+    this.selectedToken = token;
+    this.tokens = this.tokenService.getTokens() || [];
+    this.loadSwapTemplates();
   }
 
   onTemplateChange() {

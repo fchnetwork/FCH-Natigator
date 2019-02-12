@@ -63,6 +63,8 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   canCreateSwap = false;
   swapCreated = false;
 
+  importTokenInProgress = false;
+
   constructor(private location: Location,
     private router: Router,
     private route: ActivatedRoute,
@@ -127,7 +129,20 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   }
 
   onTokenChange() {
-    return this.loadSwapTemplates();
+    if (this.selectedToken) {
+      this.importTokenInProgress = false;
+      this.loadSwapTemplates();
+    } else {
+      this.importTokenInProgress = true;
+      this.selectedToken = null;
+    }
+  }
+
+  async onTokenAdded(token: Token) {
+    this.importTokenInProgress = false;
+    this.selectedToken = token;
+    this.tokens = this.tokenService.getTokens() || [];
+    this.loadSwapTemplates();
   }
 
   onTemplateChange() {
@@ -339,7 +354,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     this.swapCreated = true;
     this.logger.logMessage(`Withdrawal swap ${hash} created`);
   }
-  
+
   explorerLink(link) {
     window.open(
       link,

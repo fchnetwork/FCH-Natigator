@@ -1,0 +1,53 @@
+<div class="wallet-add-token">
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell cell--left">
+      {{'EXTERNAL-SWAP.WALLET.ADD_TOKEN.FIELD_TOKEN_ADDRESS'|translate}}
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-12" class="cell">
+      <aer-input [(ngModel)]="tokenFormAddress"
+        (ngModelChange)="onAddressChange()"
+        type="text"
+        class="with-button blue"
+        buttonLabel="Add"
+        (buttonFn)="onSubmit()"
+        placeholder="{{'EXTERNAL-SWAP.WALLET.ADD_TOKEN.FIELD_TYPE_TOKEN_ADDRESS'|translate}}">
+      </aer-input>
+    </div>
+  </div>
+  <div aerRow>
+    <div aerColumn size="sm-6" class="cell">
+      <div aerRow>
+        <div aerColumn size="sm-12" class="cell cell--left">
+          {{'EXTERNAL-SWAP.WALLET.ADD_TOKEN.FIELD_TOKEN_SYMBOL'|translate}}
+        </div>
+      </div>
+      <div aerRow>
+        <div aerColumn size="sm-12" class="cell">
+          <aer-input
+            [(ngModel)]="tokenSymbol"
+            type="text"
+            placeholder="{{'EXTERNAL-SWAP.WALLET.ADD_TOKEN.FIELD_TYPE_TOKEN_SYMBOL'|translate}}">
+          </aer-input>
+        </div>
+      </div>
+    </div>
+    <div aerColumn size="sm-6" class="cell">
+      <div aerRow>
+        <div aerColumn size="sm-12" class="cell cell--left">
+          {{'EXTERNAL-SWAP.WALLET.ADD_TOKEN.FIELD_DECIMALS'|translate}}
+        </div>
+      </div>
+      <div aerRow>
+        <div aerColumn size="sm-12" class="cell">
+          <aer-input
+            [(ngModel)]="decimals"
+            type="number" min="0" step="1"
+            placeholder="{{'EXTERNAL-SWAP.WALLET.ADD_TOKEN.FIELD_TYPE_DECIMALS'|translate}}">
+          </aer-input>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
