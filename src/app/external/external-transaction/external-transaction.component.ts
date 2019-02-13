@@ -108,7 +108,7 @@ export class ExternalTransactionComponent implements OnDestroy {
 
   private async init() {
     this.tokens = this.tokenService.getTokens();
-    this.query = decodeURIComponent(this.params.query);
+    this.query = this.params.query;
     this.decodeHasError = false;
     const parsed = JSON.parse(this.query);
     this.receiverAddress = parsed.to ? parsed.to : this.receiverAddress;
@@ -140,7 +140,7 @@ export class ExternalTransactionComponent implements OnDestroy {
     if (this.isToken) {
       this.getTokenInfo();
     } else {
-      this.currency = 'Aero';
+      this.currency = 'AERO';
       await this.getMaxTransactionFee();
     }
     this.getBalance();
@@ -278,7 +278,9 @@ export class ExternalTransactionComponent implements OnDestroy {
     console.log(targetToken);
     for (const cookieToken of this.tokens) {
       console.log(cookieToken);
-      if (cookieToken.address === targetToken) {
+      if (!!targetToken 
+          && !!cookieToken.address 
+          && targetToken.localeCompare(cookieToken.address, undefined, { sensitivity: 'accent' }) === 0) {
         return cookieToken;
       }
     }
