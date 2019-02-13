@@ -1,3 +1,5 @@
+declare const window: any;
+
 export interface Options {
 	filename: string;
 	fieldSeparator: string;
@@ -38,8 +40,11 @@ export const ConfigDefaults: Options = {
 	useBom: TxtConfigConsts.DEFAULT_USE_BOM,
 	headers: TxtConfigConsts.DEFAULT_HEADER
 };
-export class AerumBackupFile {
 
+import { environment } from '@env/environment';
+
+export class AerumBackupFile {
+  private isMobileBuild = environment.isMobileBuild;
 	fileName: string;
 	labels: String[];
 	data: any[];
@@ -63,7 +68,7 @@ export class AerumBackupFile {
 	/**
 	 * Generate and Download Txt
 	 */
-	private generateTxt(): void {
+	private async generateTxt() {
 		if (this._options.useBom) {
 			this.txt += TxtConfigConsts.BOM;
 		}
@@ -75,21 +80,28 @@ export class AerumBackupFile {
 		this.getHeaders();
 		this.getBody();
 
-		if (this.txt == '') {
+		if (this.txt === '') {
 			console.log("Invalid data");
 			return;
 		}
 
 		const blob = new Blob([this.txt], { "type": "text/plain;charset=utf8;" });
 
-		if (navigator.msSaveBlob) {
+    if (this.isMobileBuild) {
+      return await this.generateFileMobile(blob);
+    }
+    return this.generateFileWeb(blob);
+  }
+
+  async generateFileWeb(data) {
+    if (navigator.msSaveBlob) {
 			const filename = this._options.filename.replace(/ /g, "_") + ".txt";
-			navigator.msSaveBlob(blob, filename);
+			navigator.msSaveBlob(data, filename);
 		} else {
 			const uri = 'data:attachment/txt;charset=utf-8,' + encodeURI(this.txt);
 			const link = document.createElement("a");
 
-			link.href = URL.createObjectURL(blob);
+			link.href = URL.createObjectURL(data);
 
 			link.setAttribute('visibility', 'hidden');
 			link.download = this._options.filename.replace(/ /g, "_") + ".txt";
@@ -98,7 +110,42 @@ export class AerumBackupFile {
 			link.click();
 			document.body.removeChild(link);
 		}
-	}
+  }
+
+  generateFileMobile(blob) {
+    const filename = this._options.filename.replace(/ /g, "_") + ".txt";
+    const promise = new Promise<string>(
+      (resolve, reject): void => {
+        window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, fs => {
+          let dirPath = 'Aerum';
+          let filePath = dirPath + '/' + filename;
+          if(window.device.platform === 'iOS') {
+            dirPath = '/';
+            filePath = filename;
+          }
+          fs.root.getDirectory(dirPath, { create: true, exclusive: false }, () => {
+            fs.root.getFile(filePath, { create: true, exclusive: false }, async fileEntry => {
+              await this.writeFile(fileEntry, blob);
+              resolve();
+            }, err => reject(err));
+          }, err => reject(err));
+        }, err => reject(err));
+    });
+    return promise;
+  }
+
+  writeFile(fileEntry, dataObj) {
+    const promise = new Promise<string>(
+      (resolve, reject): void => {
+        fileEntry.createWriter(fileWriter => {
+          fileWriter.onwriteend = () => resolve();
+          fileWriter.onerror = err => reject(err);
+          fileWriter.write(dataObj);
+      });
+    });
+    return promise;
+  }
+
 	/**
 	 * Create Headers
 	 */

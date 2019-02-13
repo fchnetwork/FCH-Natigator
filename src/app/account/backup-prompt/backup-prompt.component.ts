@@ -5,6 +5,7 @@ import { BackupDisclamerComponent } from "../backup-disclamer/backup-disclamer.c
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { RouteDataService } from "@app/core/general/route-data-service/route-data.service";
 import { ModalService } from "@app/core/general/modal-service/modal.service";
+import { UniversalLinkService } from "@mobile/universal-link/universal-link.service";
 
 @Component({
   selector: "app-backup-prompt",
@@ -19,7 +20,8 @@ export class BackupPromptComponent implements OnInit {
     private routeDataService: RouteDataService<RegistrationRouteData>,
     private modalService: ModalService,
     private router: Router,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private universalLinkService: UniversalLinkService
   ) {
     if (!routeDataService.hasData()) {
       router.navigate(["account/register"]);
@@ -43,6 +45,10 @@ export class BackupPromptComponent implements OnInit {
       data.mnemonic
     );
 
+    this.routeDataService.clear();
+
+    const universalUrl = this.universalLinkService.getLink(true);
+    this.returnUrl = !!universalUrl ? universalUrl : this.returnUrl;
     if (this.returnUrl) {
       this.router.navigateByUrl(this.returnUrl);
     } else {

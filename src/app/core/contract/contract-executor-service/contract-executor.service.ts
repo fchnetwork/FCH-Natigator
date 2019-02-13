@@ -15,18 +15,22 @@ import { StorageService } from "@core/general/storage-service/storage.service";
 export class ContractExecutorService {
 
   private readonly contractGasThreshold = 100 * 1000;
-  private readonly address: string;
-  private readonly privateKey: string;
   private readonly web3: Web3;
   private readonly chainId: number;
+
+  private get address() {
+    return this.authService.getAddress();
+  }
+
+  private get privateKey() {
+    return this.storageService.getSessionData('private_key');
+  }
 
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
     private storageService: StorageService
   ) {
-    this.address = this.authService.getAddress();
-    this.privateKey = this.storageService.getSessionData('private_key');
     this.web3 = this.authService.getWeb3();
     this.chainId = environment.chainId;
   }
