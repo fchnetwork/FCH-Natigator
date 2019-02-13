@@ -3,6 +3,7 @@ import { RegistrationRouteData } from '../models/RegistrationRouteData';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
+import { UniversalLinkService } from "@mobile/universal-link/universal-link.service";
 
 @Component({
   selector: 'app-backup-confirm',
@@ -17,7 +18,8 @@ export class BackupConfirmComponent implements OnInit {
 
   constructor(private routeDataService: RouteDataService<RegistrationRouteData>,
               private router: Router,
-              private authService: AuthenticationService) {
+              private authService: AuthenticationService,
+              private universalLinkService: UniversalLinkService) {
 
     if (!routeDataService.hasData()) {
       router.navigate(['account/register']);
@@ -32,14 +34,15 @@ export class BackupConfirmComponent implements OnInit {
   async confirm() {
     const data = this.routeDataService.routeData;
     await this.authService.saveKeyStore(data.privateKey, data.password, this.seed);
+    this.routeDataService.clear();
 
-    if (data.returnUrl) {
-      this.router.navigateByUrl(data.returnUrl);
+    const universalUrl = this.universalLinkService.getLink(true);
+    const returnUrl = !!universalUrl ? universalUrl : data.returnUrl;
+    if (returnUrl) {
+      this.router.navigateByUrl(returnUrl);
     } else {
       this.router.navigate(["/"]);
     }
-
-    this.routeDataService.clear();
   }
 
   clear() {
