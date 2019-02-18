@@ -82,12 +82,20 @@
               {{ approveBalance }} {{ approveAddressSymbol }}
             </div>
           </div>
-          <div [ngClass]="{'has-error': depositMore}">
+          <div *ngIf="!isToken" [ngClass]="{'has-error': depositMore}">
             <div>
               <span title="{{(depositMore ? 'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_AERO' : '') | translate}}"><aer-icon *ngIf="depositMore">exclamation-triangle</aer-icon> {{ 'FEE' | translate }}</span>
             </div>
             <div>
               {{ maxTransactionFee | convertWeiToGwei}} {{'AERO'|translate}}
+            </div>
+          </div>
+          <div *ngIf="isToken" [ngClass]="{'has-error': depositMore}">
+            <div>
+              <span title="{{(depositMore ? 'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' : '') | translate}}"><aer-icon *ngIf="depositMore">exclamation-triangle</aer-icon> {{ 'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' | translate }}</span>
+            </div>
+            <div>
+              {{ amount }} {{currency|translate}}
             </div>
           </div>
           <div *ngIf="amount > 0">
