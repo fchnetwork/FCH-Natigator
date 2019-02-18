@@ -59,19 +59,19 @@ export class RegisterNameComponent implements OnInit {
           return;
         }
       } catch(error) {
-        this.notificationService.notify(this.translate('ENS.NAME_BUY_ERROR_TITLE'), `${error}: ${fullName}`, 'aerum');
+        this.notificationService.notify(this.translate('ENS.NAME_BUY_ERROR_TITLE'), `${error}: ${fullName}`, 'aerum', 5000);
         return;
       }
-      this.notificationService.notify(this.translate('ACCOUNT.REGISTER_NAME.AERUMBIT_TITLE'), this.translate('ACCOUNT.REGISTER_NAME.REQUESTING_TOKEN'), 'aerum');
+      this.notificationService.notify(this.translate('ACCOUNT.REGISTER_NAME.AERUMBIT_TITLE'), this.translate('ACCOUNT.REGISTER_NAME.REQUESTING_TOKEN'), 'aerum', 5000);
       const tokenData = await this.aerumbitService.requestFaucetToken(this.account);
       if(tokenData.status === Status.Failed) {
-        this.notificationService.notify(this.translate('ENS.NAME_BUY_ERROR_TITLE'), this.translate('ACCOUNT.REGISTER_NAME.REQUESTING_AERO'), 'aerum');
+        this.notificationService.notify(this.translate('ENS.NAME_BUY_ERROR_TITLE'), this.translate('ACCOUNT.REGISTER_NAME.REQUESTING_AERO'), 'aerum', 5000);
         return;
       }
-      this.notificationService.notify(this.translate('ACCOUNT.REGISTER_NAME.AERUMBIT_TITLE'), this.translate('ACCOUNT.REGISTER_NAME.REQUESTING_AERO'), 'aerum');
+      this.notificationService.notify(this.translate('ACCOUNT.REGISTER_NAME.AERUMBIT_TITLE'), this.translate('ACCOUNT.REGISTER_NAME.REQUESTING_AERO'), 'aerum', 5000);
       const faucetData = await this.aerumbitService.requestFaucet(tokenData.token);
       if(faucetData.status === Status.Failed) {
-        this.notificationService.notify(this.translate('ENS.NAME_BUY_ERROR_TITLE'), this.translate('ACCOUNT.REGISTER_NAME.ERROR_REQUESTING_AERO'), 'aerum');
+        this.notificationService.notify(this.translate('ENS.NAME_BUY_ERROR_TITLE'), this.translate('ACCOUNT.REGISTER_NAME.ERROR_REQUESTING_AERO'), 'aerum', 5000);
         return;
       }
       this.price = fromWei(await this.aensService.getPrice(), 'ether');
@@ -81,8 +81,8 @@ export class RegisterNameComponent implements OnInit {
       await this.aensService.setFixedPriceResolver(fullName);
       this.notificationService.notify(this.multiContractsExecutionNotificationTitle(3, 3), `${this.translate('ENS.NOTIFICATION_BODY_SET_ADDRESS')}: ${this.account}`, 'aerum', 5000);
       await this.aensService.setAddress(fullName, this.account);
-      this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${fullName}`, 'aerum');
-  
+      this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${fullName}`, 'aerum', 5000);
+
       this.storageService.setSessionData('acc_name', label);
       this.settingsService.saveSettings("accountSettings", { accName: label });
 
