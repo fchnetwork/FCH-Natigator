@@ -9,6 +9,7 @@ export const environment = {
   production: false,
   isMobileBuild: false,
   configInUse: "environment.dev",
+  externalConfig: "http://localhost:3000/",
   WebsocketProvider: "wss://marge.aerum.net/wss",
   rpcApiProvider: "https://marge.aerum.net/eth",
   aerumBit: "https://api.merchant.aerum.net/",
