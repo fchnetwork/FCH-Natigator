@@ -1,5 +1,5 @@
 <aer-layout>
-  <aer-sidebar #sidebar [perfectScrollbarDisabled]="perfectScrollbarDisabled">
+  <aer-sidebar #sidebar [perfectScrollbarDisabled]="isMobileBuild">
     <aer-sidebar-header [isToggled]="sidebar.isToggled" (headerFn)="home()"></aer-sidebar-header>
 
     <aer-sidebar-group title="{{'SEND_RECEIVE.MAIN_MENU_ITEM_NAME'|translate}}" iconName="transaction" [single]="true" [routerLink]="['/wallet/transaction']"
