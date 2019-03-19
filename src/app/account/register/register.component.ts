@@ -8,7 +8,7 @@ import { RouteDataService } from '@app/core/general/route-data-service/route-dat
 import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
 import { StorageService } from '@app/core/general/storage-service/storage.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
-import { environment } from '@env/environment.mobile';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-register',
@@ -92,7 +92,8 @@ export class RegisterComponent implements OnInit {
       data.returnUrl = this.returnUrl || '/';
 
       this.routeDataService.routeData = data;
-      this.router.navigate(['/account/register-name']);
+      //this.router.navigate(['/account/register-name']);
+      this.router.navigate(['/account/backup']);
     }
   }
 
