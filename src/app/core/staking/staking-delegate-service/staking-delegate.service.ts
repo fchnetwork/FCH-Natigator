@@ -12,7 +12,7 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contract-executor-service/ethereum-contract-executor.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { EthWalletType } from '@app/external/models/eth-wallet-type.enum';
-import { environment } from '@env/environment.dev';
+import { environment } from '@env/environment';
 
 @Injectable()
 export class StakingDelegateService extends BaseContractService {
