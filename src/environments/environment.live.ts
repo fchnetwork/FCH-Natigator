@@ -8,7 +8,7 @@ export const environment = {
   production: false,
   isMobileBuild: false,
   configInUse: "environment.live",
-  externalConfig: "http://localhost:3000/",
+  externalConfig: "",
   WebsocketProvider: "wss://main-gw-500.aerum.net/wss",
   rpcApiProvider: "https://main-gw-500.aerum.net",
   aerumBit: "https://api-aerumbit.aerum.com/",
@@ -57,7 +57,7 @@ export const environment = {
     },
     factory: {
       address: {
-        TokenFactory: "0x87be7be62ad6295338910304072c65d65b60c67a"
+        TokenFactory: "0x158f3b5369e9a4f58fcd8452bc76b859405a2214"
       }
     },
     contractRegistry: {
