@@ -8,7 +8,7 @@ export const environment = {
   production: false,
   isMobileBuild: false,
   configInUse: "environment.live",
-  externalConfig: "http://localhost:3000/",
+  externalConfig: "",
   WebsocketProvider: "wss://main-gw-500.aerum.net/wss",
   rpcApiProvider: "https://main-gw-500.aerum.net",
   aerumBit: "https://api-aerumbit.aerum.com/",
