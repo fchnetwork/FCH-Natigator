@@ -10,6 +10,11 @@ export class AerumbitService {
 
   constructor(private http: HttpClient) { }
 
+  isAvailable(): boolean {
+    const available = !!environment.aerumBit && environment.aerumBit !== '';
+    return available;
+  }
+
   requestFaucetToken(address: string): Promise<RequestFaucetTokenData> {
     const url = `${environment.aerumBit}account/request-faucet-token/${address}`;
     return new Promise((resolve, reject) => {
