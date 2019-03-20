@@ -41,6 +41,9 @@ export class RegisterNameComponent implements OnInit {
     this.registerForm = this.formBuilder.group({
       name: [null, [Validators.required]],
     });
+    if(!this.aerumbitService.isAvailable()) {
+      this.router.navigate(['/account/backup']);
+    }
   }
 
   async onSubmit() {
