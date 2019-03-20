@@ -74,10 +74,14 @@ export class OnChainSwapListComponent implements OnInit {
 
   async createSwap() {
     await this.createSwapService.createSwap();
+    // TODO: Quick fix. reload all swaps (we should load only new one)
+    await this.loadSwaps();
   } 
 
   async openSwap(swapId: string) {
     await this.loadSwapService.loadSwap(swapId);
+    // TODO: Quick fix. reload all swaps (we should reload single)
+    await this.loadSwaps();
   }
 
   private translate(key: string): string {
