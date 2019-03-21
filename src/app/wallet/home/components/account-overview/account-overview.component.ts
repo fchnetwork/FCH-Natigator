@@ -26,7 +26,7 @@ export class AccountOverviewComponent implements OnInit {
       (keystore) => {
         const getBalance = this.txnServ.checkBalance(keystore.address);
         const getQR = this.authServ.createQRcode( "0x" + keystore.address );
-        this.address = keystore.address;
+        this.address = "0x" + keystore.address;
         this.name = this.authServ.getName();
         return Promise.all([ keystore, getBalance, getQR ]);
     }

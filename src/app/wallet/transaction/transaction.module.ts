@@ -38,6 +38,9 @@ import { ExplorerModule } from "@app/wallet/explorer/explorer.module";
     LastTransactionsComponent,
     TransactionSignModalComponent,
     TransactionMoreOptionsComponent
+  ],
+  exports: [
+    LastTransactionsComponent,
   ]
 })
 export class TransactionModule {}
