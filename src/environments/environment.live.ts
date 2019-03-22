@@ -5,13 +5,13 @@ import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
-  production: false,
+  production: true,
   isMobileBuild: false,
   configInUse: "environment.live",
   externalConfig: "https://conf.aerum.net/",
   WebsocketProvider: "wss://main-gw-500.aerum.net/wss",
   rpcApiProvider: "https://main-gw-500.aerum.net",
-  aerumBit: "",
+  aerumBit: "https://api-aerumbit.aerum.com/",
   cookiesDomain: "wallet.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "https://explore.aerum.net/#/",
