@@ -8,6 +8,7 @@
     "build:dev": "webpack --config config/webpack.config.dev.js",
     "build:prod": "webpack --config config/webpack.config.prod.js",
     "build:mobile": "webpack --config config/webpack.config.mobile.js",
+    "build:mobileprod": "webpack --config config/webpack.config.mobile.prod.js",
     "build:beta": "webpack --config config/webpack.config.beta.js",
     "build:live": "webpack --config config/webpack.config.live.js",
     "start": "webpack-dev-server --port=4200 --config config/webpack.config.local.js",
@@ -15,6 +16,7 @@
     "start:prod": "webpack-dev-server --port=4200 --config config/webpack.config.prod.js",
     "start:live": "webpack-dev-server --port=4200 --config config/webpack.config.live.js",
     "start:mobile": "webpack-dev-server --port=4200 --config config/webpack.config.mobile.js",
+    "start:mobileprod": "webpack-dev-server --port=4200 --config config/webpack.config.mobile.prod.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "update:ui": "npm update @aerum/ui --save"
