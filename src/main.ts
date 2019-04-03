@@ -30,18 +30,16 @@ if (typeof window['cordova'] !== 'undefined') {
     window.open = window.cordova.InAppBrowser.open;
 
     //Prevent back button to go to unlock screen
-    document.addEventListener('backbutton', e =>
-    {
-      if (window.location.href.indexOf('wallet/home') !== -1) {
-        e.preventDefault();
-      }
-      else {
-        navigator.app.backHistory();
+    document.addEventListener('backbutton', e => {
+      if(navigator && navigator.Backbutton) {
+        navigator.Backbutton.goHome();
       }
     }, false);
 
     window.addEventListener('keyboardDidHide', ()=> {
-      window.style.height = '100vh';
+      if(window.style) {
+        window.style.height = '100vh';
+      }
     });
 
     bootstrap();
