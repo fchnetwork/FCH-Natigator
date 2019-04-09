@@ -14,7 +14,8 @@ export class SidebarHeaderComponent implements OnInit {
 
   avatar: string;
   address: string;
-  
+  name: string;
+
   constructor(
     public authServ: AuthenticationService,
     public storageService: StorageService) {}
@@ -22,6 +23,7 @@ export class SidebarHeaderComponent implements OnInit {
   ngOnInit() {
     this.address = this.storageService.getSessionData('acc_address');
     this.avatar = this.storageService.getSessionData('acc_avatar');
+    this.name = this.authServ.getName();
     // if(!this.address) {
     //   this.sessionStorageService.observe('acc_address').subscribe((value)=>{
     //     this.address = this.sessionStorageService.retrieve('acc_address');
@@ -30,7 +32,7 @@ export class SidebarHeaderComponent implements OnInit {
   }
 
   public callFunction() {
-    this.headerFn.emit(); 
+    this.headerFn.emit();
   }
 
 }

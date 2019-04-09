@@ -38,6 +38,7 @@
 
     .welcome {
       font-size: 13px;
+      font-weight: bold;
     }
   }
 
@@ -88,7 +89,7 @@
       .avatar {
         padding-left: 22px;
         margin-right: 10px;
-    
+
         // WARNING: double code!
         // TODO: refactor to global this class
         .c-avatar__img {
@@ -104,7 +105,7 @@
           box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.75);
         }
       }
-    
+
       .user_data {
         display: block;
         .address {
@@ -116,7 +117,7 @@
           text-overflow: ellipsis;
           color: #42526E;
         }
-    
+
         .welcome {
           font-size: 13px;
         }
