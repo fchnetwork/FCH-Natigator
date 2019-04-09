@@ -4,8 +4,8 @@
   </div>
   <div class="user_data">
     <!-- <a routerLink="/dashboard" routerLinkActive="active">Welcome</a> -->
-    <span class="welcome">Welcome,</span>
-    <span class="address">{{ address | slice : 0 : 7 }}...{{ address | slice : -5 }}</span>      
+    <span class="welcome">Welcome <span *ngIf="name">{{name}}.aer</span></span>
+    <span class="address" *ngIf="!name">{{ address | slice : 0 : 7 }}...{{ address | slice : -5 }}</span>
   </div>
   <div class="clearfix"></div>
 </div>
