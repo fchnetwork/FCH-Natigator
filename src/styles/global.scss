@@ -13,8 +13,11 @@
 @import "./dashboard/dashboard.scss";
 
 /* GLOBAL STYLES */
-.ps-content {
-  overflow-x: auto !important;
+div .ps {
+  overflow-y: scroll !important;
+  &-content{
+    overflow-x: auto !important;
+  }
 }
 
 .table-simple {
