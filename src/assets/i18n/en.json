@@ -377,6 +377,9 @@
   "SEND_RECEIVE": {
     "MAIN_MENU_ITEM_NAME": "Send & Receive",
     "MAIN_TITLE": "Send & Receive Crypto",
+    "READ_MORE": "read more",
+    "WARNING_SHORT": "Please don't use this address for Ethereum transactions - ",
+    "WARNING": "Please don't use this address to send your XRM and other tokens from Ethereum blockchain - it may be lost forever. This address is on Aerum blockchain and should be used only for AER-20 tokens",
     "NOTIFICATION_TITLE_TRANSACTION_STATUS": "Transaction Status",
     "NOTIFICATION_BODY_SUCCES_TRANSACTION": "You have successfully sent",
     "NOTIFICATION_TITLE_ATTENTION": "Attention!",

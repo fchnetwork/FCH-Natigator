@@ -88,6 +88,7 @@
       <div aerRow>
         <div aerColumn size="sm-12">
           <aer-card title="{{'RECEIVE_TO'|translate }}">
+            <span class="error">{{'SEND_RECEIVE.WARNING_SHORT'|translate}}<span (click)="showReadMore()" class="read-more">{{'SEND_RECEIVE.READ_MORE'|translate}}</span></span>
             <div class="qr__adress">
               <img *ngIf="addressQR" [src]="addressQR" alt="">
               <app-address-clipboard address="{{ senderAddress }}" short="true"></app-address-clipboard>

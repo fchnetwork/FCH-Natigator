@@ -15,7 +15,7 @@ export const environment = {
   cookiesDomain: "wallet.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "https://explore.aerum.net/#/",
-  predefinedTokens: ['0x2274630e6bf220fc09cfb5253c6ff9759abb8578'],
+  predefinedTokens: [],
   contracts: {
     swap: {
       address: {

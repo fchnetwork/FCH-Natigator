@@ -16,9 +16,11 @@ import { CoreModule } from "@app/core/core.module";
 import { TransactionSignModalComponent } from "@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component";
 import { TransactionModalComponent } from "@app/wallet/explorer/components/transaction-modal/transaction-modal.component";
 import { ExplorerModule } from "@app/wallet/explorer/explorer.module";
+import { ReceiveReadMoreComponent } from '@app/wallet/transaction/receive-read-more/receive-read-more.component';
 
 @NgModule({
   entryComponents: [
+    ReceiveReadMoreComponent,
     TransactionSignModalComponent,
     CreateTransactionComponent,
     LastTransactionsComponent
@@ -37,10 +39,12 @@ import { ExplorerModule } from "@app/wallet/explorer/explorer.module";
     CreateTransactionComponent,
     LastTransactionsComponent,
     TransactionSignModalComponent,
-    TransactionMoreOptionsComponent
+    TransactionMoreOptionsComponent,
+    ReceiveReadMoreComponent
   ],
   exports: [
     LastTransactionsComponent,
+    ReceiveReadMoreComponent
   ]
 })
 export class TransactionModule {}
