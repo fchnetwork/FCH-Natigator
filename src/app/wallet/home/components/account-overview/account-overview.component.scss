@@ -5,7 +5,6 @@
   }
 
   .details {
-    padding-top: 15px;
     line-height: 1.5;
     .balance {
       display: block;
@@ -48,7 +47,7 @@
 
 @media only screen and (max-width:480px) {
   .account-overview {
-  
+
     .balance {
       font-size: 21px;
       white-space: nowrap;
