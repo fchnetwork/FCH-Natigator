@@ -70,11 +70,10 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     private clipboardService: ClipboardService,
     private notificationService: InternalNotificationService,
     private transactionService: TransactionService,
-    private storageService: StorageService,
     private tokenService: TokenService,
     private nameService: AerumNameService,
     private validateService: ValidateService,
-    private sessionStorageService: SessionStorageService
+    private sessionStorageService: SessionStorageService,
   ) {
     this.loadUserData().catch((e) => this.logger.logError(e));
     this.updateInterval = setInterval(async () => {
@@ -179,6 +178,10 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         selectedToken: this.selectedToken.symbol,
       };
     }
+  }
+
+  showReadMore() {
+    this.modalSrv.openSendReceiveReadMode();
   }
 
   showTransactions() { }

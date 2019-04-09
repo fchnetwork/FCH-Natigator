@@ -36,6 +36,7 @@ import { LoadedSwap } from "@app/wallet/swap/models/models";
 import { QrScannerRequest, QrScannerResponse } from "@app/shared/components/qr-scanner/qr-scanner.component";
 import { CreateTokenRequest } from "@app/wallet/factory/models/create-token-request.model";
 import { CreateTokenConfirmModalComponent } from "@app/wallet/factory/components/create-token-confirm-modal/create-token-confirm-modal.component";
+import { ReceiveReadMoreComponent } from '@app/wallet/transaction/receive-read-more/receive-read-more.component';
 
 @Injectable()
 export class ModalService {
@@ -181,6 +182,14 @@ export class ModalService {
     return this.open<any, CreateSwapModalContext, CreateSwapComponent>(
       "SWAP.CREATE.TITLE",
       CreateSwapComponent,
+      null
+    );
+  }
+
+  async openSendReceiveReadMode(): Promise<DialogResponse<CreateSwapModalContext>> {
+    return this.open<any, any, any>(
+      "SEND_RECEIVE.MAIN_TITLE",
+      ReceiveReadMoreComponent,
       null
     );
   }
