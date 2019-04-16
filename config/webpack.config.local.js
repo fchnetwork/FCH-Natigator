@@ -3,7 +3,7 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin'); 
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const rxPaths = require('rxjs/_esm5/path-mapping');
 const autoprefixer = require('autoprefixer');
 const postcssUrl = require('postcss-url');
@@ -397,7 +397,7 @@ module.exports = {
       "mainPath": "main.ts",
       "platform": 0,
       "hostReplacementPaths": {
-        "environments/environment.ts": "environments/environment.local.ts"
+        "environments/environment.ts": "environments/environment.ts"
       },
       "sourceMap": true,
       "tsConfigPath": "src/tsconfig.app.json",
