@@ -14,7 +14,7 @@ pipelines:
           - node
         script:
           - npm install
-          - npm run-script build:dev
+          - npm run-script build:test
         artifacts:
           - build/**
   branches:
