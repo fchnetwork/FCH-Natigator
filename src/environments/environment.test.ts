@@ -7,36 +7,36 @@ import { LogLevel } from "@app/core/general/logger-service/log-level.enum";
 export const environment = {
   production: false,
   isMobileBuild: false,
-  configInUse: "environment.local",
+  configInUse: "environment.test",
   externalConfig: "http://localhost:3000/",
-  WebsocketProvider: "wss://marge.aerum.net/wss",
-  rpcApiProvider: "https://marge.aerum.net/eth",
-  aerumBit: "https://api.merchant.aerum.net/",
+  WebsocketProvider: "wss://ortus.testnet.aerum.net/wss",
+  rpcApiProvider: "https://ortus.testnet.aerum.net/",
+  aerumBit: "https://api-aerumbit.testnet.aerum.net/",
   cookiesDomain: "localhost",
   webSocketStatServer: "ws://localhost:3000/primus",
-  externalBlockExplorer: "https://explore.aerum.net/#/",
-  predefinedTokens: ['0x61da7B8A3a485143EB27C4697Ac51eF535c1DA3E', '0x548A9DCEBA28Bee626B24F7B0d0e803F8752d1A8'],
+  externalBlockExplorer: "https://ortus.stats.testnet.aerum.net/#/",
+  predefinedTokens: [],
   contracts: {
     swap: {
       address: {
-        AeroToErc20: "0x537c9e85fb2bf55e83b0631e85b3227f05411d3e",
-        Erc20ToAero: "0x1af3aadfe5e2f8d9799e2ccb011906023ea01922",
+        AeroToErc20: "0x8f3d1cf1739cda904ac8fa3b7f52e96af82f5acd",
+        Erc20ToAero: "0xcf348523e8c6dbfb64e55b0622b4c1e74b9d7866",
         Erc20ToErc20: "0x20bf6e06b57e6384a5ac41c324edf894f7d59323"
       },
       crossChain: {
         address: {
           aerum: {
-            OpenAeroSwap: "0xc26a824f59e315a3ebc7f45d4a53b5c87b743bf7",
-            OpenErc20Swap: "0x223a8f2b11602f10931fc4bc852c057f3d1bc5e3",
-            CounterAeroSwap: "0x39d6969f9f0b528efef7e13b932d2b912bfd9486",
-            CounterErc20Swap: "0xc0b995d7e0300e5f5e459911ad5d63c0f9a1b3b1",
-            TemplatesRegistry: "0x1b1ff05ebe506d8c07e4354b316b1fb5b3b08d2a"
+            OpenAeroSwap: "0x05f77b04179f6b9c9c8d67ebb027079d168a3b85",
+            OpenErc20Swap: "0x355d4b0beb5c8a265ca4f09827ec1ebcb25aee37",
+            CounterAeroSwap: "0xd2348accf6a36705982fce15362c14afad143a63",
+            CounterErc20Swap: "0xc13c8016fb21762dcb41f84b6246c34b24999e12",
+            TemplatesRegistry: "0x27ccab73acfb1b0545f605c894e5521ec71eb505"
           },
           ethereum: {
-            OpenEtherSwap: "0x44fcb81f812a69b6c4a4a52569937284bba0df6a",
-            OpenErc20Swap: "0xa687217b52139ea26f52114e8188ed2f7b94a679",
-            CounterEtherSwap: "0x014604c83715377c7ee381400932ba7c2a691bbe",
-            CounterErc20Swap: "0xc6ef31905ab863242dc6ed5d6fd6930f4f97f0ac"
+            OpenEtherSwap: "0x407062bd0171cb6a8d19a061774f1b1374b40f43",
+            OpenErc20Swap: "0x4cd16d5bcd54619c34b17970296b44e73719ada8",
+            CounterEtherSwap: "0xba57c7716427cd12d821ae0cb268de1eb139ae14",
+            CounterErc20Swap: "0xa5ff7624fb3e19a6c10bb2d465da69081f3692c4"
           }
         },
         swapExpireTimeoutInSeconds: 10 * 60
@@ -44,9 +44,9 @@ export const environment = {
     },
     aens: {
       address: {
-        ENSRegistry: "0x49dc6ee5540eb3e0d8015ec2381ed4146315b6b6",
-        FixedPriceRegistrar: "0xa942a9d2793cc12b35b7801cc0b60b72095f8553",
-        PublicResolver: "0x125a0dd27bb49b38b1f023263ccfbf1757e603b7"
+        ENSRegistry: "0x1cbe52b6ddaf594076fe484bcd1131cf7aaa5427",
+        FixedPriceRegistrar: "0x84037fa2e7f68b23a6af5eafb2f9a61800f18159",
+        PublicResolver: "0x966a2c2e9c1c0167ed342dfdf639e0a07a7d65c9"
       }
     },
     staking: {
@@ -57,11 +57,11 @@ export const environment = {
     },
     factory: {
       address: {
-        TokenFactory: "0x7281e96d6feb03162e93f6b9077e7d407d0c6880"
+        TokenFactory: "0xfcbcd12416e972e05c2e76f484d39a383808ff71"
       }
     },
     contractRegistry: {
-      address: "0x8a550f44836101b45f02dfbd13d99ffa425a29b0"
+      address: "0x6c43165e4c2c56dbe5fbb99f687e7742ff4375f3"
     }
   },
   ethereum: {
