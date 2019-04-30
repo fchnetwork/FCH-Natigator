@@ -102,9 +102,9 @@ export class StakingUpdateComponent implements OnInit {
         wallet: this.stakingReference.walletType,
         hashCallback: (txHash) => this.increaseTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
-      this.notificationService.showMessage(`Increasing staking ${this.increaseAmount} XMR for ${this.delegateAddress} delegate`, 'In progress');
+      this.notificationService.showMessage(`Increasing staking ${this.increaseAmount} XRM for ${this.delegateAddress} delegate`, 'In progress');
       await this.stakingDelegateService.stake(this.delegateAddress, tokenAmount, options);
-      this.notificationService.showMessage(`Successfully increased staking ${this.increaseAmount} XMR for ${this.delegateAddress} delegate`, 'Done');
+      this.notificationService.showMessage(`Successfully increased staking ${this.increaseAmount} XRM for ${this.delegateAddress} delegate`, 'Done');
       this.updateAccountInfo();
       this.increaseTransactionExplorerUrl = null;
       this.increaseStakingInProgress = false;
@@ -130,14 +130,14 @@ export class StakingUpdateComponent implements OnInit {
     try {
       this.decreaseStakingInProgress = true;
       const tokenAmount = this.decreaseAmount * Math.pow(10, this.aerumTokenInfo.decimals);
-      const options = { 
+      const options = {
         account: this.accountAddress,
         wallet: this.stakingReference.walletType,
         hashCallback: (txHash) => this.decreaseTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
-      this.notificationService.showMessage(`Unstaking ${this.decreaseAmount} XMR from ${this.delegateAddress} delegate`, 'In progress');
+      this.notificationService.showMessage(`Unstaking ${this.decreaseAmount} XRM from ${this.delegateAddress} delegate`, 'In progress');
       await this.stakingDelegateService.unstake(this.delegateAddress, tokenAmount, options);
-      this.notificationService.showMessage(`Successfully unstaked ${this.decreaseAmount} XMR from ${this.delegateAddress} delegate`, 'Done');
+      this.notificationService.showMessage(`Successfully unstaked ${this.decreaseAmount} XRM from ${this.delegateAddress} delegate`, 'Done');
       this.updateAccountInfo();
       this.decreaseTransactionExplorerUrl = null;
       this.decreaseStakingInProgress = false;

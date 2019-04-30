@@ -53,16 +53,16 @@ export class StakingCreateComponent implements OnInit {
       }
       this.stakingInProgress = true;
       const tokenAmount = await this.getAerumAmount();
-      const options = { 
+      const options = {
         account: this.ethereumAccount.address,
         wallet: this.ethereumAccount.walletType,
         hashCallback: (txHash) => this.transactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
-      this.notificationService.showMessage(`Stakeding ${this.amount} XMR for ${this.address} delegate`, 'In progress');
+      this.notificationService.showMessage(`Stakeding ${this.amount} XRM for ${this.address} delegate`, 'In progress');
       await this.stakingDelegateService.stake(this.address, tokenAmount, options);
       const stakingReference = { address: this.ethereumAccount.address, delegate: this.address, walletType: this.ethereumAccount.walletType };
       this.stakingLocalStorageService.store(stakingReference);
-      this.notificationService.showMessage(`Successfully staked ${this.amount} XMR for ${this.address} delegate`, 'Done');
+      this.notificationService.showMessage(`Successfully staked ${this.amount} XRM for ${this.address} delegate`, 'Done');
       this.stakeCreated.emit(stakingReference);
       this.stakingInProgress = false;
       this.transactionExplorerUrl = null;
@@ -75,7 +75,7 @@ export class StakingCreateComponent implements OnInit {
 
   canStake(): boolean {
     return !this.stakingInProgress
-      && !!this.ethereumAccount 
+      && !!this.ethereumAccount
       && !!this.ethereumAccount.address
       && !!this.address
       && this.ethereumAccount.aerumBalance > 0
