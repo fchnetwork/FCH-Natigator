@@ -27,6 +27,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
   @Input() name: string;
   @Input() price: number;
   @Input() account: string;
+  @Input() assignName: boolean;
 
   currentAccountBalanceInEther: number;
 
