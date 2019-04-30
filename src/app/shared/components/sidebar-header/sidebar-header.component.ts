@@ -24,11 +24,10 @@ export class SidebarHeaderComponent implements OnInit {
     this.address = this.storageService.getSessionData('acc_address');
     this.avatar = this.storageService.getSessionData('acc_avatar');
     this.name = this.authServ.getName();
-    // if(!this.address) {
-    //   this.sessionStorageService.observe('acc_address').subscribe((value)=>{
-    //     this.address = this.sessionStorageService.retrieve('acc_address');
-    //     this.avatar = avatars.create(this.address);
-    //   });
+
+    this.storageService.Observe('acc_name').subscribe(_ => {
+      this.name = this.authServ.getName();
+    });
   }
 
   public callFunction() {

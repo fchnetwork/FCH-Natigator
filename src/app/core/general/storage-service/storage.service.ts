@@ -1,3 +1,4 @@
+import { EventEmitter } from '@angular/core';
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { SessionStorageService } from 'ngx-webstorage';
@@ -9,9 +10,13 @@ export class StorageService {
 
   constructor(private sessionStorageService: SessionStorageService) { }
 
+  Observe(raw: string): EventEmitter<any> {
+    return this.sessionStorageService.observe(raw);
+  }
+
   /**
    * Sets the cookie with the specified attributes.
-   * @param {string} name The name of the cookie. 
+   * @param {string} name The name of the cookie.
    * @param {*} data Data to store inside the cookie.
    * @param {boolean} [encrypt=false] Specifies whether the cookie should be encrypted (false by default)
    * @param {number} [expirationTime=undefined] Specifies the expiration time (infinite by default)
@@ -44,7 +49,7 @@ export class StorageService {
 
   /**
    * Retreives data from the current session storage.
-   * @param {string} key Key of the entry in the session storage. 
+   * @param {string} key Key of the entry in the session storage.
    * @returns {*}
    * @memberof StorageService
    */
@@ -55,7 +60,7 @@ export class StorageService {
   /**
    * Sets the data into the session storage with the key specified.
    * @param {string} key Key of the entry in the session storage.
-   * @param {*} data Data to store. 
+   * @param {*} data Data to store.
    * @memberof StorageService
    */
   setSessionData(key: string, data) {

@@ -13,6 +13,8 @@ import { LoggerService } from "@core/general/logger-service/logger.service";
 import { AerumNameService } from '@core/aens/aerum-name-service/aerum-name.service';
 import { TransactionService } from '@core/transactions/transaction-service/transaction.service';
 import { AensBaseComponent } from "@aens/components/aens-base.component";
+import { StorageService } from "@core/general/storage-service/storage.service";
+import { SettingsService } from '@app/core/settings/settings.service';
 
 @Component({
   selector: 'app-name-buy',
@@ -29,6 +31,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
   currentAccountBalanceInEther: number;
 
   address: string;
+  disableAddress = false;
   buyForm: FormGroup;
 
   constructor(
@@ -38,7 +41,9 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
-    private aensService: AerumNameService
+    private aensService: AerumNameService,
+    private storageService: StorageService,
+    private settingsService: SettingsService
   ) { super(translateService); }
 
   async ngOnInit() {
@@ -46,7 +51,8 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
 
     this.buyForm = this.formBuilder.group({
       name: [null, [Validators.pattern("^[a-zA-Z0-9-]{5,50}$")]],
-      address: [null, [AddressValidator.isAddress]]
+      address: [null, [AddressValidator.isAddress]],
+      assignName: [false]
     });
 
     this.currentAccountBalanceInEther = await this.transactionService.checkBalance(this.account);
@@ -109,10 +115,20 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
     this.notificationService.notify(this.multiContractsExecutionNotificationTitle(3, 3), `${this.translate('ENS.NOTIFICATION_BODY_SET_ADDRESS')}: ${nameAddress}`, 'aerum', 5000);
     await this.aensService.setAddress(fullName, nameAddress);
     this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${fullName}`, 'aerum');
+
+    this.storageService.setSessionData('acc_name', label);
+    this.settingsService.saveSettings("accountSettings", { accName: label });
   }
 
   canBuyName() {
     return !this.locked && this.buyForm.valid;
+  }
+
+  setAssignName(event) {
+    if(!!event) {
+      this.address = this.account;
+    }
+    this.disableAddress = !!event;
   }
 
   private hasEnoughFundsForName() {

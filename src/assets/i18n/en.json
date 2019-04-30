@@ -690,7 +690,8 @@
     "NOT_ENOUGH_FUNDS_TITLE": "Not enough Aero",
     "NOT_ENOUGH_FUNDS": "Get more Aero to buy name",
     "CONFIRM_RELEASE_NAME_TITLE": "Release Name",
-    "CONFIRM_TRANSFER_NAME_TITLE": "Transfer Name Ownership"
+    "CONFIRM_TRANSFER_NAME_TITLE": "Transfer Name Ownership",
+    "ASSIGN_THE_NAME_TO_ACCOUNT": "Assign the name to account"
   },
   "EXTERNAL_TRANSACTION": {
     "NOTIFICATION_BODY_TOKEN_NOT_IN_WALLET":
