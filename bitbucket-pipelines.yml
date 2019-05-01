@@ -25,7 +25,7 @@ pipelines:
             - node
           script:
             - npm install
-            - npm run-script build:dev
+            - npm run-script build:test
             - tar -czvf ./dist.tar.gz ./build/dist
             - apt-get update && apt-get install -y rsync
             - rsync -rvz -e 'ssh -p 22 -o StrictHostKeyChecking=no' --progress ./dist.tar.gz root@dev.aerum.net:~/
