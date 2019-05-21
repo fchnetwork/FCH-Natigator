@@ -11,7 +11,7 @@ export const environment = {
   externalConfig: "http://localhost:3000/",
   WebsocketProvider: "wss://ortus.testnet.aerum.net/wss",
   rpcApiProvider: "https://ortus.testnet.aerum.net/",
-  aerumBit: "https://api-aerumbit.testnet.aerum.net/",
+  aerumBit: "https://api-aerumbit-dev.aerum.com/",
   cookiesDomain: "localhost",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "https://ortus.stats.testnet.aerum.net/#/",
