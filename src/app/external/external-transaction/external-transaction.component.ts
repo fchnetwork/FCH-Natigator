@@ -24,6 +24,7 @@ const abiDecoder = require('abi-decoder');
 export class ExternalTransactionComponent implements OnDestroy {
   sub: any;
   isToken: boolean;
+  depositTokens: boolean;
   redirectUrl: string;
   returnUrlFailed: string;
   assetAddress: string;
@@ -126,7 +127,7 @@ export class ExternalTransactionComponent implements OnDestroy {
     this.redirectUrl = parsed.returnUrl ? parsed.returnUrl : this.redirectUrl;
 
     this.isToken = (!parsed.tokenAddress || parsed.tokenAddress === "0x0") ? false : true;
-
+    this.depositTokens = parsed.depositTokens === 'true';
     if(parsed.privateKey && this.addressKeyvalidation.isPrivateKey(parsed.privateKey)) {
       this.privateKeyToImport = parsed.privateKey;
     }
@@ -278,8 +279,8 @@ export class ExternalTransactionComponent implements OnDestroy {
     console.log(targetToken);
     for (const cookieToken of this.tokens) {
       console.log(cookieToken);
-      if (!!targetToken 
-          && !!cookieToken.address 
+      if (!!targetToken
+          && !!cookieToken.address
           && targetToken.localeCompare(cookieToken.address, undefined, { sensitivity: 'accent' }) === 0) {
         return cookieToken;
       }
