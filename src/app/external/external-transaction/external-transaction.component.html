@@ -115,7 +115,7 @@
         <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">{{'EXTERNAL-SWAP.TRANSACTION.FIELD_I_ACKNOWLEDGE_RISKS'|translate}}</aer-checkbox>
       </div>
     </div>
-    <div aerRow *ngIf="isToken">
+    <div aerRow *ngIf="isToken || depositTokens">
       <div aerColumn size="sm-12">
         <aer-button class="blue large full-width" (buttonFn)="deposit()">{{'EXTERNAL-SWAP.TRANSACTION.BTN_DEPOSIT_MORE'|translate}}</aer-button>
       </div>

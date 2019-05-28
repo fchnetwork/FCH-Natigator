@@ -11,11 +11,11 @@ export const environment = {
   externalConfig: "http://localhost:3000/",
   WebsocketProvider: "wss://ortus.testnet.aerum.net/wss",
   rpcApiProvider: "https://ortus.testnet.aerum.net/",
-  aerumBit: "https://api-aerumbit.testnet.aerum.net/",
-  cookiesDomain: "localhost",
+  aerumBit: "https://api-aerumbit-dev.aerum.com/",
+  cookiesDomain: "dev.aerum.net",
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "https://ortus.stats.testnet.aerum.net/#/",
-  predefinedTokens: [],
+  predefinedTokens: ['0xf197379e7942afa153ad13f3e337d4c362b7bd99'],
   contracts: {
     swap: {
       address: {
