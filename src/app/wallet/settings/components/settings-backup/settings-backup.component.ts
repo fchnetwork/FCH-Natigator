@@ -39,4 +39,7 @@ export class SettingsBackupComponent implements OnInit {
     this.settingsBackupService.fullBackup();
   }
 
+  privateKeyBackup() {
+    this.settingsBackupService.privateKeyBackup();
+  }
 }
