@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
+import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { iFullBackup } from '@shared/app.interfaces';
 import { environment } from '@env/environment';
 
@@ -11,7 +12,8 @@ export class SettingsBackupService {
   private isMobileBuild = environment.isMobileBuild;
 
   constructor(private storageService: StorageService,
-              private notificationMessagesService: NotificationMessagesService
+              private notificationMessagesService: NotificationMessagesService,
+              private clipboardService: ClipboardService
   ) { }
 
   async generateFile(data, fileName, type) {
@@ -19,7 +21,7 @@ export class SettingsBackupService {
     const blob = new Blob([stringifiedData], {type: "text/plain"});
 
     if (this.isMobileBuild) {
-      return await this.generateFileMobile(blob, `${fileName}.txt`);  
+      return await this.generateFileMobile(blob, `${fileName}.txt`);
     }
     return this.generateFileWeb(blob, `${fileName}.txt`);
   }
@@ -104,5 +106,11 @@ export class SettingsBackupService {
     };
     await this.generateFile(preparedData, 'full_backup' + this.formatDate(), 'full');
     this.notificationMessagesService.fullBackup();
+  }
+
+  async privateKeyBackup() {
+    const privateKey = this.storageService.getSessionData('private_key');
+    this.clipboardService.copy(privateKey);
+    this.notificationMessagesService.privateKeyBackup();
   }
 }

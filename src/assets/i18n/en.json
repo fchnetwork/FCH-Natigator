@@ -132,6 +132,7 @@
       "TAB_TITLE": "Backup",
       "SAVE_SEED_BUTTON": "Save seed",
       "FULL_BACKUP_BUTTON": "Full backup",
+      "PRIVATE_KEY_BUTTON": "Private Key",
       "QR_RESTORE_TITLE": "QR Restore",
       "QR_RESTORE_DESCRIPTION":
         "You can scan following QR code during account restore process on another device (like mobile).",
@@ -143,6 +144,10 @@
         "SAVE_SIMPLE_BACKUP": {
           "TITLE": "Notification",
           "BODY": "Seed file has been succesfully downloaded"
+        },
+        "PRIVATE_KEY_BACKUP": {
+          "TITLE": "Notification",
+          "BODY": "Private key copied to clipboard"
         }
       }
     },

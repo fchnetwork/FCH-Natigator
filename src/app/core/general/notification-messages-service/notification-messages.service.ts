@@ -256,6 +256,24 @@ export class NotificationMessagesService {
   }
 
   /**
+   *Shows notification when full backup file has been downloaded
+   *
+   * @memberof NotificationMessagesService
+   */
+  public privateKeyBackup() {
+    this.notificationService.notify(
+      `${this.translate(
+        "SETTINGS.BACKUP.NOTIFICATIONS.PRIVATE_KEY_BACKUP.TITLE"
+      )}`,
+      `${this.translate(
+        "SETTINGS.BACKUP.NOTIFICATIONS.PRIVATE_KEY_BACKUP.BODY"
+      )}`,
+      "check-square-o",
+      10000
+    );
+  }
+
+  /**
    *Shows notification when seed phrase has been downloaded
    *
    * @memberof NotificationMessagesService
