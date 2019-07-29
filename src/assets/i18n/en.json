@@ -159,7 +159,7 @@
     },
     "GENERAL": {
       "TAB_TITLE": "General",
-      "DERIVATION_PATH_LABEL": "Switch your Derivation Path",
+      "DERIVATION_PATH_LABEL": "Aerum Derivation Path",
       "LANGUAGE_LABEL": "Language",
       "NOTIFICATIONS": {
         "CHANGE_LANGUAGE": {
