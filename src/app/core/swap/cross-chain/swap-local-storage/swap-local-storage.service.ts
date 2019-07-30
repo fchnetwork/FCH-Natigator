@@ -20,7 +20,7 @@ export class SwapLocalStorageService {
     swaps.push(swap);
     this.storageService.setSessionData('cross_chain_swaps', swaps);
     const stringSwaps = JSON.stringify(swaps);
-    this.storageService.setCookie('cross_chain_swaps', stringSwaps, true, 7);
+    this.storageService.setStorage('cross_chain_swaps', stringSwaps, true, 7);
   }
 
   loadSwapReference(hash: string): SwapReference {

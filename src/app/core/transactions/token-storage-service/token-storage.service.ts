@@ -26,7 +26,7 @@ export class TokenStorageService {
 
   saveTokens(tokens: Token[]) {
     const stringToken = JSON.stringify(tokens);
-    this.storageService.setCookie(this.key, stringToken, true, 7);
+    this.storageService.setStorage(this.key, stringToken, true, 7);
     this.storageService.setSessionData(this.key, tokens);
   }
 

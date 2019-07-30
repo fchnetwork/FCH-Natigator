@@ -83,14 +83,14 @@ export class AuthenticationService {
       await this.fingerPrintService.savePassword(password);
       const formatSeed = this.seedCleaner(seed.toString());
       const encryptAccount = this.web3.eth.accounts.encrypt(privateKey, password);
-      this.storageService.setCookie('aerum_keyStore', JSON.stringify(encryptAccount), false, 7);
-      this.storageService.setCookie('aerum_base', formatSeed, true, 7);
+      this.storageService.setStorage('aerum_keyStore', JSON.stringify(encryptAccount), false, 7);
+      this.storageService.setStorage('aerum_base', formatSeed, true, 7);
       return encryptAccount;
     }
 
     showKeystore() : Promise<any> {
       return new Promise((resolve, reject) => {
-        const auth = this.storageService.getCookie('aerum_keyStore');
+        const auth = this.storageService.getStorage('aerum_keyStore');
         if(auth) {
           resolve(JSON.parse(auth));
         }
@@ -109,7 +109,7 @@ export class AuthenticationService {
     }
 
     getKeystore() {
-      const keystore = this.storageService.getCookie('aerum_keyStore');
+      const keystore = this.storageService.getStorage('aerum_keyStore');
       if(!keystore) {
         throw new Error("No keystore found");
       }
@@ -121,7 +121,7 @@ export class AuthenticationService {
     unencryptKeystore(password: string) : Promise<any> {
       return new Promise( (resolve, reject) => {
         if(password) {
-          const decryptSeed = CryptoJS.AES.decrypt(this.storageService.getCookie('aerum_base'), password );
+          const decryptSeed = CryptoJS.AES.decrypt(this.storageService.getStorage('aerum_base'), password );
           const transactions = this.decryptCookieToArray('transactions', password);
           const tokens = this.decryptCookieToArray('tokens', password);
           const ethereumTokens = this.decryptCookieToArray('ethereum_tokens', password);
@@ -129,7 +129,7 @@ export class AuthenticationService {
           const crossChainSwaps = this.decryptCookieToArray('cross_chain_swaps', password);
           const stakings = this.decryptCookieToArray('stakings', password);
 
-          const encryptAccount = this.web3.eth.accounts.decrypt(JSON.parse(this.storageService.getCookie('aerum_keyStore')), password);
+          const encryptAccount = this.web3.eth.accounts.decrypt(JSON.parse(this.storageService.getStorage('aerum_keyStore')), password);
           if( encryptAccount ) {
             const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
             const seed = this.seedCleaner(plaintext);
@@ -145,7 +145,7 @@ export class AuthenticationService {
     }
 
     private decryptCookieToArray(cookieName: string, password: string) {
-      const cookie = this.storageService.getCookie(cookieName);
+      const cookie = this.storageService.getStorage(cookieName);
       if(!cookie) {
         return [];
       }
@@ -213,7 +213,7 @@ export class AuthenticationService {
 
     // now being used in sidebar select component
     generateAdditionalAccounts( password: string, amount: number ){
-        const authCookie = this.storageService.getCookie('aerum_base');
+        const authCookie = this.storageService.getStorage('aerum_base');
         if( authCookie ){
             const accounts        = [];
             const cookieStringify = authCookie.toString();

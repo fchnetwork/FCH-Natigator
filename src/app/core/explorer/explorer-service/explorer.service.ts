@@ -31,7 +31,7 @@ export class ExplorerService {
 
   constructor(private _http: Http, _auth: AuthenticationService, private storageService: StorageService) {
     this.web3 = _auth.getWeb3();
-    this.account = JSON.parse(this.storageService.getCookie('account'));
+    this.account = JSON.parse(this.storageService.getStorage('account'));
   }
 
   fromWei(amountInWei, currency) {

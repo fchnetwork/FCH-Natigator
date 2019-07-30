@@ -33,7 +33,7 @@ export class EthereumAuthenticationService {
 
   private loadInjectedWeb3(): Promise<Web3> {
     return new Promise(async (resolve, reject) => {
-      if(environment.isMobileBuild) { 
+      if(environment.isMobileBuild) {
         this.logger.logMessage("Mobile build: Web3 is not provided!");
         resolve(null);
         return; // NO need for window 'load' since 'deviceready' have already fired.
@@ -85,7 +85,7 @@ export class EthereumAuthenticationService {
 
   saveEthereumAccounts(accounts: EthereumAccount[]): void {
     const stringAccounts = JSON.stringify(accounts);
-    this.storageService.setCookie('ethereum_accounts', stringAccounts, true, 7);
+    this.storageService.setStorage('ethereum_accounts', stringAccounts, true, 7);
     this.storageService.setSessionData('ethereum_accounts', accounts);
   }
 
