@@ -29,7 +29,7 @@ export class AuthenticationGuard implements CanActivate {
       try {
         this.logger.logMessage('[AuthGuard] - processing url ' + state.url);
 
-        const keyStore = this.storageService.getCookie("aerum_keyStore");
+        const keyStore = this.storageService.getStorage("aerum_keyStore");
         const loggedIn = this.storageService.getSessionData("acc_address");
 
         if (!keyStore) {

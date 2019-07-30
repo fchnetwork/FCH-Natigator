@@ -84,15 +84,15 @@ export class SettingsBackupService {
   }
 
   async fullBackup() {
-    const aerumBase = this.storageService.getCookie('aerum_base');
-    const aerumKeyStore = this.storageService.getCookie('aerum_keyStore');
-    const tokens = this.storageService.getCookie('tokens');
-    const ethereumTokens = this.storageService.getCookie('ethereum_tokens');
-    const transactions = this.storageService.getCookie('transactions');
-    const settings = this.storageService.getCookie('settings');
-    const ethereumAccounts = this.storageService.getCookie('ethereum_accounts');
-    const crossChainSwaps = this.storageService.getCookie('cross_chain_swaps');
-    const stakings = this.storageService.getCookie('stakings');
+    const aerumBase = this.storageService.getStorage('aerum_base');
+    const aerumKeyStore = this.storageService.getStorage('aerum_keyStore');
+    const tokens = this.storageService.getStorage('tokens');
+    const ethereumTokens = this.storageService.getStorage('ethereum_tokens');
+    const transactions = this.storageService.getStorage('transactions');
+    const settings = this.storageService.getStorage('settings');
+    const ethereumAccounts = this.storageService.getStorage('ethereum_accounts');
+    const crossChainSwaps = this.storageService.getStorage('cross_chain_swaps');
+    const stakings = this.storageService.getStorage('stakings');
     const preparedData: iFullBackup = {
       aerum_base: aerumBase,
       aerum_keyStore: aerumKeyStore,

@@ -20,7 +20,7 @@ export class StakingLocalStorageService {
     stakings.push(staking);
     this.storageService.setSessionData('stakings', stakings);
     const stringStaking = JSON.stringify(stakings);
-    this.storageService.setCookie('stakings', stringStaking, true, 7);
+    this.storageService.setStorage('stakings', stringStaking, true, 7);
   }
 
   remove(staking: StakingReference) {
@@ -30,11 +30,11 @@ export class StakingLocalStorageService {
     const stakings = this.get();
     const index = stakings.findIndex(s => s.address === staking.address);
     if(index === -1) {
-      return;  
+      return;
     }
     stakings.splice(index, 1);
     this.storageService.setSessionData('stakings', stakings);
     const stringStaking = JSON.stringify(stakings);
-    this.storageService.setCookie('stakings', stringStaking, true, 7);
+    this.storageService.setStorage('stakings', stringStaking, true, 7);
   }
 }

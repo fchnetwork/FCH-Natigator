@@ -27,11 +27,11 @@ export class SettingsService {
      * @memberof SettingsService
      */
     getSettings(): iSettings {
-        const cookieSettings = this.storageService.getCookie("settings", false); 
+        const cookieSettings = this.storageService.getStorage("settings", false);
         if ( cookieSettings ) {
             return JSON.parse(cookieSettings);
         } else {
-            return this.setDefaultSettings(); 
+            return this.setDefaultSettings();
         }
     }
 
@@ -69,10 +69,10 @@ export class SettingsService {
             }
         };
         const stringSettings = JSON.stringify(settings);
-        this.storageService.setCookie("settings", stringSettings, false, this.expiration);
+        this.storageService.setStorage("settings", stringSettings, false, this.expiration);
         return settings;
     }
-    
+
     /**
      * Save settings set to cookie
      *
@@ -107,7 +107,7 @@ export class SettingsService {
      */
     settingsToCookie(settings) {
         const stringSettings = JSON.stringify(settings);
-        this.storageService.setCookie("settings", stringSettings, false, this.expiration);
+        this.storageService.setStorage("settings", stringSettings, false, this.expiration);
         this.notificationMessagesService.saveSettings();
     }
 }

@@ -40,14 +40,14 @@ export class RegisterComponent implements OnInit {
 
   // TODO: export somewhere to lib to avoid double code
   cleanCookies() {
-    this.storageService.setCookie('aerum_base', null, false, 7);
-    this.storageService.setCookie('aerum_keyStore', null, false, 7);
-    this.storageService.setCookie('tokens', null, false, 7);
-    this.storageService.setCookie('ethereum_tokens', null, false, 7);
-    this.storageService.setCookie('transactions', null, false, 7);
-    this.storageService.setCookie('ethereum_accounts', null, false, 7);
-    this.storageService.setCookie('cross_chain_swaps', null, false, 7);
-    this.storageService.setCookie('stakings', null, false, 7);
+    this.storageService.setStorage('aerum_base', null, false, 7);
+    this.storageService.setStorage('aerum_keyStore', null, false, 7);
+    this.storageService.setStorage('tokens', null, false, 7);
+    this.storageService.setStorage('ethereum_tokens', null, false, 7);
+    this.storageService.setStorage('transactions', null, false, 7);
+    this.storageService.setStorage('ethereum_accounts', null, false, 7);
+    this.storageService.setStorage('cross_chain_swaps', null, false, 7);
+    this.storageService.setStorage('stakings', null, false, 7);
   }
 
   ngOnInit() {
