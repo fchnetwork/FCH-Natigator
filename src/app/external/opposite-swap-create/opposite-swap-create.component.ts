@@ -3,7 +3,7 @@ import { Location } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { TranslateService } from '@ngx-translate/core';
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
@@ -80,7 +80,8 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     private swapLocalStorageService: SwapLocalStorageService,
     private authService: AuthenticationService,
     private transactionService: TransactionService,
-    private translateService: TranslateService) { }
+    private translateService: TranslateService,
+    private environment: EnvironmentService) { }
 
   async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
@@ -261,7 +262,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
 
     const hash = sha3(this.secret);
     const amount = toBigNumberString(this.amount * Math.pow(10, Number(this.selectedToken.decimals)));
-    const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
+    const timestamp = this.calculateTimestamp(this.environment.get().contracts.swap.crossChain.swapExpireTimeoutInSeconds);
     const counterpartyTrader = await this.nameService.safeResolveNameOrAddress(this.selectedTemplate.offchainAccount);
 
     this.logger.logMessage(`Secret: ${this.secret}, hash: ${hash}, timestamp: ${timestamp}, trader: ${counterpartyTrader}. amount: ${amount}`);

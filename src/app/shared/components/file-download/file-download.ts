@@ -41,10 +41,12 @@ export const ConfigDefaults: Options = {
 	headers: TxtConfigConsts.DEFAULT_HEADER
 };
 
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
+import { StorageService } from "@core/general/storage-service/storage.service";
+import { SessionStorageService } from 'ngx-webstorage';
 
 export class AerumBackupFile {
-  private isMobileBuild = environment.isMobileBuild;
+  private isMobileBuild = (new EnvironmentService(new StorageService(new SessionStorageService()))).get().isMobileBuild;
 	fileName: string;
 	labels: String[];
 	data: any[];

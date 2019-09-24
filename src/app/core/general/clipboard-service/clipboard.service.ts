@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
 import { DOCUMENT } from "@angular/platform-browser";
 import { Inject } from "@angular/core";
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 declare const window: any;
 
 @Injectable()
 export class ClipboardService {
   private dom: Document;
-  private isMobileBuild = environment.isMobileBuild;
+  private isMobileBuild: boolean;
 
-  constructor(@Inject(DOCUMENT) dom: Document) {
+  constructor(
+    @Inject(DOCUMENT) dom: Document,
+    private environment: EnvironmentService) {
     this.dom = dom;
+    this.isMobileBuild = this.environment.get().isMobileBuild;
   }
 
   copy(value: string): Promise<string> {
     if (this.isMobileBuild) {
-      return this.copyMobile(value);  
+      return this.copyMobile(value);
     }
     return this.copyWeb(value);
   }

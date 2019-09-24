@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 import { toBigNumberString } from "@shared/helpers/number-utils";
@@ -35,7 +35,8 @@ export class StakingCreateComponent implements OnInit {
     private stakingDelegateService: StakingDelegateService,
     private stakingLocalStorageService: StakingLocalStorageService,
     private ethereumTokenService: EthereumTokenService,
-    private addressKeyValidationService: AddressKeyValidationService)
+    private addressKeyValidationService: AddressKeyValidationService,
+    private environment: EnvironmentService)
   { }
 
   async ngOnInit() { }
@@ -88,7 +89,7 @@ export class StakingCreateComponent implements OnInit {
   }
 
   private async getAerumAmount() {
-    const aerumAddress = environment.contracts.staking.address.Aerum;
+    const aerumAddress = this.environment.get().contracts.staking.address.Aerum;
     const aerumInfo = await this.ethereumTokenService.getNetworkTokenInfo(this.ethereumAccount.walletType, aerumAddress);
     return toBigNumberString(this.amount * Math.pow(10, Number(aerumInfo.decimals)));
   }

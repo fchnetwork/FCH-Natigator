@@ -3,7 +3,7 @@ import { Location } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs/Subscription";
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { sha3, fromWei } from 'web3-utils';
 import Web3 from "web3";
@@ -87,7 +87,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private ethereumTokenService: EthereumTokenService,
     private swapLocalStorageService: SwapLocalStorageService,
     private authService: AuthenticationService,
-    private transactionService: TransactionService) { }
+    private transactionService: TransactionService,
+    private environment: EnvironmentService) { }
 
   async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
@@ -287,7 +288,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     this.approveTokenTransactionExplorerUrl = null;
 
     const hash = sha3(this.secret);
-    const timestamp = this.calculateTimestamp(environment.contracts.swap.crossChain.swapExpireTimeoutInSeconds);
+    const timestamp = this.calculateTimestamp(this.environment.get().contracts.swap.crossChain.swapExpireTimeoutInSeconds);
     const counterpartyTrader =  await this.nameService.safeResolveNameOrAddress(this.selectedTemplate.offchainAccount);
 
     const options = {

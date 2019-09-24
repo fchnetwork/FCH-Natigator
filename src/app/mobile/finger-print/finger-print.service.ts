@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 declare const window: any;
 
@@ -8,22 +8,22 @@ export class FingerPrintService {
   private key = 'aerum-wallet-finger-print';
   private touchId: any;
 
-  constructor() {
-    if(!environment.isMobileBuild) {
+  constructor(private environment: EnvironmentService) {
+    if(!this.environment.get().isMobileBuild) {
       return;
     }
     this.touchId = window.plugins.touchid;
   }
 
   async isAvailable(): Promise<boolean> {
-    if(!environment.isMobileBuild) {
+    if(!this.environment.get().isMobileBuild) {
       return false;
     }
     return await this.isTouchIdAvailable() && await this.isTouchIdKeyAvailable();
   }
 
   async savePassword(password: string): Promise<boolean> {
-    if(!environment.isMobileBuild || !(await this.isTouchIdAvailable())) {
+    if(!this.environment.get().isMobileBuild || !(await this.isTouchIdAvailable())) {
       return;
     }
     await this.deletePassword();
@@ -32,7 +32,7 @@ export class FingerPrintService {
         resolve(true);
       });
     });
-    
+
   }
 
   async deletePassword(): Promise<boolean> {
@@ -44,11 +44,11 @@ export class FingerPrintService {
         resolve(true);
       });
     });
-    
+
   }
 
   verify(): Promise<string> {
-    if(!environment.isMobileBuild) {
+    if(!this.environment.get().isMobileBuild) {
       return null;
     }
     return new Promise<string>(resolve => {

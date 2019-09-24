@@ -1,7 +1,7 @@
 const artifacts = require('@core/abi/AtomicSwapERC20ToERC20.json');
 
 import { Injectable } from '@angular/core';
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { fromSolidityDecimalString } from "@shared/helpers/number-utils";
 import { secondsToDate } from "@shared/helpers/date-util";
@@ -18,9 +18,10 @@ export class Erc20ToErc20SwapService extends BaseContractService {
   constructor(
     authenticationService: AuthenticationService,
     contractExecutorService: ContractExecutorService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    environment: EnvironmentService
   ) {
-    super(artifacts.abi, environment.contracts.swap.address.Erc20ToErc20, authenticationService, contractExecutorService);
+    super(artifacts.abi, environment.get().contracts.swap.address.Erc20ToErc20, authenticationService, contractExecutorService);
   }
 
   async openSwap(swapId: string, openValue: string, openContractAddress: string, closeValue: string, closeTrader: string, closeContractAddress: string) {

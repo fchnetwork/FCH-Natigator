@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Guid } from "@shared/helpers/guid";
 import { NotificationService, ModalViewComponent, DialogRef } from "@aerum/ui";
-
-import { environment } from '@env/environment';
-
-import { toBigNumberString } from "@shared/helpers/number-utils";
 import { SwapToken, SwapMode } from '@swap/models/models';
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { ModalService } from '@core/general/modal-service/modal.service';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { AerumNameService } from '@core/aens/aerum-name-service/aerum-name.service';
 import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20-token.service';

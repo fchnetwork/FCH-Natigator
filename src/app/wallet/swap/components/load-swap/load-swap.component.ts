@@ -3,8 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { NotificationService } from "@aerum/ui";
 import { Subscription } from "rxjs/Subscription";
 
-import { environment } from '@env/environment';
-
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { fromWei } from 'web3-utils';
 import { TransactionReceipt } from 'web3/types';
 import { fromSolidityDecimalString, toBigNumberString } from "@shared/helpers/number-utils";
@@ -51,6 +50,7 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
     private erc20TokenService: ERC20TokenService,
     private notificationService: NotificationService,
     private tokenService: TokenService,
+    private environment: EnvironmentService
   ) { }
 
   async ngOnInit() {
@@ -143,7 +143,7 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
   private async confirmAeroToErc20Swap(swap: LoadedSwap) {
     await this.ensureAllowance(
       swap.counterpartyTokenAddress,
-      environment.contracts.swap.address.AeroToErc20,
+      this.environment.get().contracts.swap.address.AeroToErc20,
       Number(swap.counterpartyAmount)
     );
     await this.aeroToErc20SwapService.closeSwap(this.swapId);
@@ -152,7 +152,7 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
   private async confirmErc20ToErc20Swap(swap: LoadedSwap) {
     await this.ensureAllowance(
       swap.counterpartyTokenAddress,
-      environment.contracts.swap.address.Erc20ToErc20,
+      this.environment.get().contracts.swap.address.Erc20ToErc20,
       Number(swap.counterpartyAmount)
     );
     await this.erc20ToErc20SwapService.closeSwap(this.swapId);

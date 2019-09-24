@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '@app/../environments/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { iSettings } from '@shared/app.interfaces';
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
@@ -7,17 +7,18 @@ import { TranslateService } from "@ngx-translate/core";
 
 @Injectable()
 export class SettingsService {
+    private expiration;
 
     get settings(): iSettings {
         return this.getSettings();
     };
 
-    private expiration = environment.settings.settingsExpiration;
-
     constructor(private storageService: StorageService,
                 private notificationMessagesService: NotificationMessagesService,
-                public translate: TranslateService) {
+                public translate: TranslateService,
+                private environment: EnvironmentService) {
         this.getSettings();
+        this.expiration = this.environment.get().settings.settingsExpiration;
     }
 
     /**
@@ -42,27 +43,27 @@ export class SettingsService {
      * @memberof SettingsService
      */
     setDefaultSettings(): iSettings {
-        this.translate.setDefaultLang(environment.settings.laguage);
-        const defaultLanguage = this.translate.getBrowserLang() ? this.translate.getBrowserLang() : environment.settings.laguage;
+        this.translate.setDefaultLang(this.environment.get().settings.laguage);
+        const defaultLanguage = this.translate.getBrowserLang() ? this.translate.getBrowserLang() : this.environment.get().settings.laguage;
         this.translate.use(defaultLanguage);
 
         const settings = {
             generalSettings: {
-                language: environment.settings.laguage,
-                derivationPath: environment.settings.derivationPath,
-                numberOfBlocks: environment.settings.numberOfBlocks
+                language: this.environment.get().settings.laguage,
+                derivationPath: this.environment.get().settings.derivationPath,
+                numberOfBlocks: this.environment.get().settings.numberOfBlocks
             },
             //set default transaction settings
             transactionSettings: {
-                gasPrice: environment.settings.gasPrice,
-                maxTransactionGas: environment.settings.maxTransactionGas,
-                lastTransactionsNumber: environment.settings.lastTransactionsNumber
+                gasPrice: this.environment.get().settings.gasPrice,
+                maxTransactionGas: this.environment.get().settings.maxTransactionGas,
+                lastTransactionsNumber: this.environment.get().settings.lastTransactionsNumber
             },
             //set default system settings
             systemSettings: {
-                aerumNodeWsURI: environment.WebsocketProvider,
-                aerumNodeRpcURI: environment.rpcApiProvider,
-                ethereumNodeURI: environment.ethereum.endpoint
+                aerumNodeWsURI: this.environment.get().WebsocketProvider,
+                aerumNodeRpcURI: this.environment.get().rpcApiProvider,
+                ethereumNodeURI: this.environment.get().ethereum.endpoint
             },
             accountSettings: {
                 accName: ''

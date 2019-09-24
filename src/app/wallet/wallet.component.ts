@@ -3,11 +3,12 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from '@app/core/authentication/authentication-service/authentication.service';
 import { AccountIdleService } from '@app/core/authentication/account-idle-service/account-idle.service';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Component({
   selector: 'app-wallet',
-  templateUrl: './wallet.component.html'
+  templateUrl: './wallet.component.html',
+  styleUrls: ['./wallet.component.scss']
 })
 export class WalletComponent implements AfterViewChecked, OnDestroy {
   @ViewChild('sidebar') sidebar: any;
@@ -15,20 +16,18 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
   sidebarLoaded$: EventEmitter<any>;
   routeData$: Subscription;
 
-  isMobileBuild = environment.isMobileBuild;
+  isMobileBuild: boolean;
 
   constructor(
     private authService: AuthenticationService,
     public router: Router,
     private idle: AccountIdleService,
     public activeRoute: ActivatedRoute,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private environment: EnvironmentService
   ) {
-
     this.idle.startWatching();
-
     this.idle.onTimerStart().subscribe(count => {});
-
     this.idle.onTimeout().subscribe( () => {
       this.idle.stopWatching();
       this.logout();
@@ -47,13 +46,15 @@ export class WalletComponent implements AfterViewChecked, OnDestroy {
         if(this.sidebar.isToggled) {
           this.sidebar.toggleSidebar();
         }
-        if (currentData && currentData.sidebarGroup) { 
+        if (currentData && currentData.sidebarGroup) {
           this.viewLoaded$.subscribe(w => {
             this.sidebar.toggleGroup(currentData.sidebarGroup);
             this.viewLoaded$.complete();
           });
         }
       });
+
+    this.isMobileBuild = this.environment.get().isMobileBuild;
   }
 
   logout() {

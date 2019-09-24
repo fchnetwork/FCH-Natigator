@@ -4,6 +4,7 @@ import { hash } from 'eth-ens-namehash';
 import { sha3 } from 'web3-utils';
 import Web3 from 'web3';
 
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { LoggerService } from '@core/general/logger-service/logger.service';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { AensRegistryContractService } from '@core/aens/aens-registry-contract-service/aens-registry-contract.service';
@@ -30,7 +31,8 @@ export class AerumNameService {
     private authService: AuthenticationService,
     private registryContractService: AensRegistryContractService,
     private registrarContractService: AensFixedPriceRegistrarContractService,
-    private resolverContractService: AensPublicResolverContractService
+    private resolverContractService: AensPublicResolverContractService,
+    private environment: EnvironmentService
   ) {
     this.web3 = this.authService.getWeb3();
   }
@@ -132,7 +134,7 @@ export class AerumNameService {
     if(!await this.isNodeOwner(node, owner)) {
       await this.registrarContractService.buy(hashedLabel, priceInEther);
     }
-    await this.registryContractService.setResolver(node, AensPublicResolverContractService.getContractAddress());
+    await this.registryContractService.setResolver(node, this.environment.get().contracts.aens.address.PublicResolver);
     await this.resolverContractService.setAddress(node, address);
   }
 
@@ -165,7 +167,7 @@ export class AerumNameService {
   }
 
   async setFixedPriceResolver(name: string) {
-    await this.setResolver(name, AensPublicResolverContractService.getContractAddress());
+    await this.setResolver(name, this.environment.get().contracts.aens.address.PublicResolver);
   }
 
   async setResolver(name: string, resolver: string) {

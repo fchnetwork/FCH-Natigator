@@ -1,0 +1,7 @@
+<aer-select
+  [(ngModel)]="selectedMode"
+  dataKey="text"
+  (ngModelChange)="onModeChange($event)">
+  <aer-select-option [value]="liveMode">{{ liveMode.text }}</aer-select-option>
+  <aer-select-option [value]="testMode">{{ testMode.text }}</aer-select-option>
+</aer-select>

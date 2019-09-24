@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import Web3 from "web3";
-import { environment } from "@env/environment";
 
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
@@ -53,13 +53,14 @@ export class StakingUpdateComponent implements OnInit {
     private stakingLocalStorageService: StakingLocalStorageService,
     private ethereumTokenService: EthereumTokenService,
     private ethereumAuthenticationService: EthereumAuthenticationService,
-    private storageService: StorageService) {
+    private storageService: StorageService,
+    private environment: EnvironmentService) {
       this.web3 = this.ethereumAuthenticationService.getWeb3();
       this.injectedWeb3 = this.ethereumAuthenticationService.getInjectedWeb3();
     }
 
   async ngOnInit() {
-    this.aerumTokenInfo = await this.ethereumTokenService.getNetworkTokenInfo(EthWalletType.Imported, environment.contracts.staking.address.Aerum);
+    this.aerumTokenInfo = await this.ethereumTokenService.getNetworkTokenInfo(EthWalletType.Imported, this.environment.get().contracts.staking.address.Aerum);
     this.initStaking();
   }
 
@@ -165,7 +166,7 @@ export class StakingUpdateComponent implements OnInit {
     this.increaseAmount = 0;
     this.decreaseAmount = 0;
 
-    const getAccountBalance = this.ethereumTokenService.getBalance(EthWalletType.Imported, environment.contracts.staking.address.Aerum, this.accountAddress);
+    const getAccountBalance = this.ethereumTokenService.getBalance(EthWalletType.Imported, this.environment.get().contracts.staking.address.Aerum, this.accountAddress);
     const getAccountEthBalance = this.getEthereumBalance();
     const getStakeInfo = this.stakingDelegateService.getStakeInfo(this.delegateAddress, this.accountAddress);
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import Web3 from 'web3';
 import { TransactionObject, TransactionReceipt, Tx } from "web3/types";
 
@@ -19,10 +19,11 @@ export class EthereumContractExecutorService {
 
   constructor(
     private logger: LoggerService,
-    private etherAuthService: EthereumAuthenticationService
+    private etherAuthService: EthereumAuthenticationService,
+    private environment: EnvironmentService,
   ) {
     this.web3 = this.etherAuthService.getWeb3();
-    this.chainId = environment.ethereum.chainId;
+    this.chainId = this.environment.get().ethereum.chainId;
   }
 
   async send(transaction: TransactionObject<any>, options: EthereumTransactionOptions) {

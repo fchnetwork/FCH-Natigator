@@ -1,7 +1,7 @@
 const artifacts = require('@core/abi/CounterAtomicSwapERC20.json');
 
 import { Injectable } from '@angular/core';
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { CounterErc20Swap } from "@core/swap/models/counter-erc20-swap.model";
@@ -14,8 +14,9 @@ export class CounterAerumErc20SwapService extends BaseContractService {
 
   constructor(
     authenticationService: AuthenticationService,
-    contractExecutorService: ContractExecutorService) {
-    super(artifacts.abi, environment.contracts.swap.crossChain.address.aerum.CounterErc20Swap, authenticationService, contractExecutorService);
+    contractExecutorService: ContractExecutorService,
+    environment: EnvironmentService) {
+    super(artifacts.abi, environment.get().contracts.swap.crossChain.address.aerum.CounterErc20Swap, authenticationService, contractExecutorService);
   }
 
   /**

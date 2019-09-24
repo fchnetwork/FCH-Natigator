@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 
 @Injectable()
 export class AppConfigService {
   private appConfig;
 
-  constructor(private http: HttpClient, private logger: LoggerService) { }
+  constructor(
+    private http: HttpClient,
+    private logger: LoggerService,
+    private environment: EnvironmentService) { }
 
   loadAppConfig() {
-    if (!environment.externalConfig) {
+    if (!this.environment.get().externalConfig) {
       this.logger.logMessage('No external config to load');
       return;
     }
 
-    return this.http.get(environment.externalConfig)
+    return this.http.get(this.environment.get().externalConfig)
       .toPromise()
       .then(data => {
         this.appConfig = data;
@@ -24,7 +27,7 @@ export class AppConfigService {
           return;
         }
         this.logger.logMessage('using external config');
-        Object.assign(environment, this.appConfig);
+        Object.assign(this.environment.get(), this.appConfig);
       })
       .catch(error => this.logger.logError('external config error', error));
   }

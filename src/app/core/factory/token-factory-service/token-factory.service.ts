@@ -1,7 +1,7 @@
 const artifacts = require('@core/abi/TokenFactory.json');
 
 import { Injectable } from '@angular/core';
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { CreateTokenModel } from "@core/factory/models/create-token.model";
 import { LoggerService } from "@core/general/logger-service/logger.service";
@@ -20,9 +20,10 @@ export class TokenFactoryService extends BaseContractService {
   constructor(
     authenticationService: AuthenticationService,
     contractExecutorService: ContractExecutorService,
+    environment: EnvironmentService,
     private loggerService: LoggerService
   ) {
-    super(artifacts.abi, environment.contracts.factory.address.TokenFactory, authenticationService, contractExecutorService);
+    super(artifacts.abi, environment.get().contracts.factory.address.TokenFactory, authenticationService, contractExecutorService);
   }
 
   async create(data: CreateTokenModel): Promise<string> {

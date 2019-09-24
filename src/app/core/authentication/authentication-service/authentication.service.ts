@@ -16,7 +16,7 @@ const hdkey   = require("ethereumjs-wallet/hdkey");
 const bip39   = require("bip39");
 
 import Web3 from 'web3';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 declare const window: any;
 
@@ -30,7 +30,8 @@ export class AuthenticationService {
     constructor(public router: Router,
                 public settingsService: SettingsService,
                 private storageService: StorageService,
-                private fingerPrintService: FingerPrintService
+                private fingerPrintService: FingerPrintService,
+                private environment: EnvironmentService
     ) {
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.settingsService.settings.systemSettings.aerumNodeRpcURI));
         this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.settingsService.settings.systemSettings.aerumNodeWsURI));
@@ -196,7 +197,7 @@ export class AuthenticationService {
       this.storageService.clearSessionData('derivation');
       this.storageService.clearSessionData('ethereum_tokens');
       //Doing page full reload to make sure all components and services will be correctly initialized for next user.
-      const url = environment.isMobileBuild ? 'index.html' : 'account/unlock';
+      const url = this.environment.get().isMobileBuild ? 'index.html' : 'account/unlock';
       window.location.href = url;
     }
 

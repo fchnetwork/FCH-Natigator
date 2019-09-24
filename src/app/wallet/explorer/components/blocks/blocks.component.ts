@@ -6,7 +6,7 @@ import { LoaderService } from '@app/core/general/loader-service/loader.service';
 import { SettingsService } from '@app/core/settings/settings.service';
 import { Router } from '@angular/router';
 import { BlockModalData } from '@app/wallet/explorer/components/block-modal/block-modal.component';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Component({
   selector: 'app-blocks',
@@ -16,8 +16,7 @@ export class BlocksComponent implements AfterViewInit {
   blocks: any[] = [];
   maxBlocks: number;
   highBlock: number;
-
-  perfectScrollbarDisabled = environment.isMobileBuild;
+  perfectScrollbarDisabled: boolean;
 
   constructor(
     public exploreSrv: ExplorerService,
@@ -25,9 +24,11 @@ export class BlocksComponent implements AfterViewInit {
     private modal: ModalService,
     public loaderService: LoaderService,
     private settingsService: SettingsService,
-    public modalService: ModalService)
+    public modalService: ModalService,
+    private environment: EnvironmentService)
   {
     this.maxBlocks = this.settingsService.settings.generalSettings.numberOfBlocks;
+    this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
   }
 
   ngAfterViewInit() {

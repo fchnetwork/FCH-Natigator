@@ -81,7 +81,7 @@
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <aer-button (buttonFn)="next()" class="large full-width" 
+        <aer-button (buttonFn)="next()" class="large full-width"
           [ngClass]="{ 'blue': canMoveNext, 'grey': !canMoveNext }" [disabled]="!canMoveNext || !isValidNetwork">{{'EXTERNAL-SWAP.WALLET.BTN_NEXT'|translate}}
         </aer-button>
       </div>

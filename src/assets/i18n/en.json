@@ -774,5 +774,11 @@
         "TITLE": "Confirm Token Creation"
       }
     }
+  },
+  "HEADER": {
+    "NETWORK-SELECT": {
+      "LIVE": "Live",
+      "TEST": "Test"
+    }
   }
 }

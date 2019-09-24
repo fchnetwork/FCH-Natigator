@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { iBlocks } from '@app/shared/app.interfaces';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import {DialogRef, ModalViewComponent} from '@aerum/ui';
 
 export class BlockModalData {
@@ -19,7 +19,8 @@ export class BlockModalComponent implements OnInit, ModalViewComponent<BlockModa
 
   constructor(public dialogRef: DialogRef<BlockModalData, any>,
               public clipboardService: ClipboardService,
-              public notificationService: InternalNotificationService) {
+              public notificationService: InternalNotificationService,
+              private environment: EnvironmentService) {
 
   }
 
@@ -32,6 +33,6 @@ export class BlockModalComponent implements OnInit, ModalViewComponent<BlockModa
   }
 
   openBlock(blockNumber) {
-    window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
+    window.open( this.environment.get().externalBlockExplorer + 'block/' + blockNumber, "_blank");
   }
 }

@@ -1,4 +1,4 @@
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import {
   QrScannerRequest,
   QrScannerResponse
@@ -25,7 +25,8 @@ export class QrScannerService {
 
   constructor(private modalService: ModalService,
     private translate: TranslateService,
-    private notificationService: InternalNotificationService) 
+    private notificationService: InternalNotificationService,
+    private environment: EnvironmentService)
   { }
 
   /**
@@ -37,7 +38,7 @@ export class QrScannerService {
    * @memberof QrScannerService
    */
   async scanQrCode(textResourceName: string, validator: (qrCode: string) => { valid: boolean; errorMessageResourceName: string }): Promise<QrScannerResponse> {
-    if(environment.isMobileBuild) {
+    if(this.environment.get().isMobileBuild) {
       return await this.scanQrCodeForMobile(validator);
     } else {
       return await this.scanQrCodeForWeb(textResourceName, validator);

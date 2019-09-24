@@ -3,7 +3,7 @@ import { Location } from "@angular/common";
 
 import Web3 from "web3";
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { InjectedWeb3Error } from "@external/models/injected-web3.error";
 import { EthWalletType } from "@external/models/eth-wallet-type.enum";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
@@ -66,7 +66,8 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
     private ethereumAuthenticationService: EthereumAuthenticationService,
     private ethereumTokenService: EthereumTokenService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private environment: EnvironmentService
   ) {
   }
 
@@ -98,7 +99,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
       netId = await this.injectedWeb3.eth.net.getId();
       provider = 'injected';
     }
-    this.isValidNetwork = environment.ethereum.chainId === netId;
+    this.isValidNetwork = this.environment.get().ethereum.chainId === netId;
     if(!this.isValidNetwork) {
       this.notificationService.showMessage(`Please select Rinkeby network in your ${provider} wallet.`, 'Error');
     }

@@ -33,15 +33,8 @@
   <aer-toolbar>
     <aer-toolbar-item icon="bars" (buttonFn)="sidebar.toggleSidebar()"></aer-toolbar-item>
     <aer-toolbar-container>
-      <!-- <aer-input placeholder="Search by Address / Txhash / Block / Token / Ens"></aer-input>
-        <div class="right-flex-container">
-            <aer-icon>notification</aer-icon>
-        </div> -->
+      <app-header class="wallet-header"></app-header>
     </aer-toolbar-container>
-    <!-- <div style="padding: 10px 7px; font-size: 24px;">
-      <aer-icon style="padding: 7px; font-size: 21px;" (click)="sidebar.toggleSidebar()">bars</aer-icon>
-  </div> -->
-    <!-- <app-sidebar-account-select style="display: none!important;"></app-sidebar-account-select> -->
   </aer-toolbar>
   <aer-content [perfectScrollbarDisabled]="isMobileBuild">
     <router-outlet></router-outlet>

@@ -20,7 +20,7 @@ import { Erc20ToAeroSwapService } from "@app/core/swap/on-chain/erc20-to-aero-sw
 import { AeroToErc20SwapService } from "@app/core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service";
 import { ModalService } from "@app/core/general/modal-service/modal.service";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { TransactionReceipt } from "web3/types";
 
 interface SwapCommonOperationsService {
@@ -39,7 +39,8 @@ export class LoadSwapService {
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
     private erc20TokenService: ERC20TokenService,
     private notificationService: NotificationService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private environment: EnvironmentService
   ) {}
 
   async loadSwap(swapId) {
@@ -165,7 +166,7 @@ export class LoadSwapService {
   private async confirmAeroToErc20Swap(swap: LoadedSwap, swapId) {
     await this.ensureAllowance(
       swap.counterpartyTokenAddress,
-      environment.contracts.swap.address.AeroToErc20,
+      this.environment.get().contracts.swap.address.AeroToErc20,
       Number(swap.counterpartyAmount)
     );
     await this.aeroToErc20SwapService.closeSwap(swapId);
@@ -174,7 +175,7 @@ export class LoadSwapService {
   private async confirmErc20ToErc20Swap(swap: LoadedSwap, swapId) {
     await this.ensureAllowance(
       swap.counterpartyTokenAddress,
-      environment.contracts.swap.address.Erc20ToErc20,
+      this.environment.get().contracts.swap.address.Erc20ToErc20,
       Number(swap.counterpartyAmount)
     );
     await this.erc20ToErc20SwapService.closeSwap(swapId);

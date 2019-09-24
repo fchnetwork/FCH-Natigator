@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import Web3 from "web3";
 import { toChecksumAddress, addHexPrefix } from "ethereumjs-util";
 
@@ -25,15 +25,16 @@ export class EthereumAuthenticationService {
   constructor(
     private logger: LoggerService,
     private storageService: StorageService,
-    private globalEventService: GlobalEventService
+    private globalEventService: GlobalEventService,
+    private environment: EnvironmentService
   ) {
-    this.web3 = new Web3(environment.ethereum.endpoint);
+    this.web3 = new Web3(this.environment.get().ethereum.endpoint);
     this.injectedWeb3 = this.loadInjectedWeb3();
   }
 
   private loadInjectedWeb3(): Promise<Web3> {
     return new Promise(async (resolve, reject) => {
-      if(environment.isMobileBuild) {
+      if(this.environment.get().isMobileBuild) {
         this.logger.logMessage("Mobile build: Web3 is not provided!");
         resolve(null);
         return; // NO need for window 'load' since 'deviceready' have already fired.
