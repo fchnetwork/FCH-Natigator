@@ -1,7 +1,7 @@
-@import "~@aerum/ui/core/styles/_theming.scss";
-@import "./styles/global.scss";
+@import '~@aerum/ui/core/styles/_theming.scss';
+@import './styles/global.scss';
 
-*{
+* {
   -webkit-overflow-scrolling: touch !important;
 }
 
@@ -12,19 +12,28 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: none; 
-  background: #f5f5f5;
+  overflow-x: none;
+  background: linear-gradient(241deg, #6d316a, #b03670);
 }
 
 /* DEFAULT FONT USED IN APP */
 @font-face {
   font-family: OpenSans;
-  src: url("fonts/open-sans/OpenSans-Regular.ttf");
+  src: url('fonts/open-sans/OpenSans-Regular.ttf');
 }
 
 a {
   text-decoration: unset;
   color: #2a669a;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: white;
 }
 
 h1 {
