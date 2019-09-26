@@ -1,17 +1,24 @@
 <div class="settings__form">
-    <div class="settings__vertical-container">
-        <h3>{{'SETTINGS.GENERAL.TAB_TITLE'|translate}}</h3>
-        <app-divider [fullWidth]="true"></app-divider>
-        <form [formGroup]="settingsForm">
-            <app-derivation-path></app-derivation-path>
-            <app-i18n></app-i18n>
-            <p>
-                Number of Blocks to show in Blockchain Explorer
-            </p>
-            <aer-input [ngClass]="{'has-error':!settingsForm.controls['Number of Blocks'].valid && settingsForm.controls['Number of Blocks'].touched}" placeholder="Number of Blocks" formControlName="Number of Blocks" ngDefaultControl [(ngModel)]="generalSettings.numberOfBlocks" icon="bars"></aer-input>
-        </form>
-    </div>
-    <div class="settings__save-button">
-        <aer-button class="blue" (buttonFn)="saveSettings()">{{'COMMON.BUTTONS.SAVE'|translate}}</aer-button>
-    </div>
+  <div class="settings__vertical-container">
+    <h3>{{ 'SETTINGS.GENERAL.TAB_TITLE' | translate }}</h3>
+    <app-divider [fullWidth]="true"></app-divider>
+    <form [formGroup]="settingsForm">
+      <app-derivation-path></app-derivation-path>
+      <app-i18n></app-i18n>
+      <p>
+        Number of Blocks to show in Blockchain Explorer
+      </p>
+      <aer-input
+        [ngClass]="{ 'has-error': !settingsForm.controls['Number of Blocks'].valid && settingsForm.controls['Number of Blocks'].touched }"
+        placeholder="Number of Blocks"
+        formControlName="Number of Blocks"
+        ngDefaultControl
+        [(ngModel)]="generalSettings.numberOfBlocks"
+        icon="bars"
+      ></aer-input>
+    </form>
+  </div>
+  <div class="settings__save-button">
+    <aer-button class="blue large" (buttonFn)="saveSettings()">{{ 'COMMON.BUTTONS.SAVE' | translate }}</aer-button>
+  </div>
 </div>

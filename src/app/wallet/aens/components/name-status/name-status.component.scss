@@ -6,9 +6,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-shadow: 0 0 6px;
 
-    &--available, &--owner {
-      color: #8CCC67;
+    &--available,
+    &--owner {
+      color: #8ccc67;
     }
 
     &--not-available {

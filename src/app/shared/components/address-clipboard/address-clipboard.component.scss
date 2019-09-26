@@ -1,18 +1,18 @@
 .c-copy__address {
-    margin-top: 10px;
-    display: flex;
-    cursor: pointer;
-    color: #8CCC67;
+  margin-top: 10px;
+  display: flex;
+  cursor: pointer;
+  color: #8ccc67;
+  text-shadow: 0 0 6px;
 
-    &.centered {
-      justify-content: center;
-    }
-
-    span {
-      font-size: 12px;
-      font-weight: 700;
-      display: inline-block;
-      position: relative;
-    }
-
+  &.centered {
+    justify-content: center;
   }
+
+  span {
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-block;
+    position: relative;
+  }
+}

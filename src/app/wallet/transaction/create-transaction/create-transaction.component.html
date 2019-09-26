@@ -1,43 +1,61 @@
 <div class="create-transaction">
-  <h3>{{'SEND_RECEIVE.MAIN_TITLE'|translate}}</h3>
+  <h3>{{ 'SEND_RECEIVE.MAIN_TITLE' | translate }}</h3>
   <div aerRow>
     <div aerColumn size="sm-6">
-      <aer-card title="{{'SEND_TO'|translate}}">
+      <aer-card title="{{ 'SEND_TO' | translate }}">
         <form [formGroup]="txnForm">
           <div aerRow>
             <div aerColumn size="sm-6">
-              <div class="input-name">{{'FROM'|translate}}</div>
-              <aer-input disabled="true" icon="aerum" [ngClass]="{'has-error':!txnForm.controls['senderAddress'].valid && txnForm.controls['senderAddress'].touched}"
-                formControlName="senderAddress" [(ngModel)]="senderAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
+              <div class="input-name">{{ 'FROM' | translate }}</div>
+              <aer-input
+                disabled="true"
+                icon="aerum"
+                [ngClass]="{ 'has-error': !txnForm.controls['senderAddress'].valid && txnForm.controls['senderAddress'].touched }"
+                formControlName="senderAddress"
+                [(ngModel)]="senderAddress"
+                ngDefaultControl
+                (ngModelChange)="handleInputsChange()"
+              ></aer-input>
             </div>
             <div aerColumn size="sm-6">
-              <div class="input-name">{{'TO'|translate}}</div>
-              <aer-input [ngClass]="{'has-error':!txnForm.controls['receiverAddress'].valid && txnForm.controls['receiverAddress'].touched}"
-                formControlName="receiverAddress" [(ngModel)]="receiverAddress" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
+              <div class="input-name">{{ 'TO' | translate }}</div>
+              <aer-input
+                [ngClass]="{ 'has-error': !txnForm.controls['receiverAddress'].valid && txnForm.controls['receiverAddress'].touched }"
+                formControlName="receiverAddress"
+                [(ngModel)]="receiverAddress"
+                ngDefaultControl
+                (ngModelChange)="handleInputsChange()"
+              ></aer-input>
             </div>
           </div>
           <div aerRow>
             <div aerColumn size="sm-2">
-              <div class="input-name fullrow-label">{{'AMOUNT'|translate}}</div>
+              <div class="input-name fullrow-label">{{ 'AMOUNT' | translate }}</div>
             </div>
           </div>
           <div aerRow>
             <div aerColumn size="sm-6">
-              <aer-input [ngClass]="{'has-error':!txnForm.controls['amount'].valid && txnForm.controls['amount'].touched}" formControlName="amount"
-                [(ngModel)]="amount" ngDefaultControl (ngModelChange)="handleInputsChange()"></aer-input>
-              <aer-checkbox ([ngModel])="sendEverything" (ngModelChange)="setSendEverything($event); handleInputsChange()">{{'SEND_EVERYTHING'|translate}} ({{walletBalance | bignumber:'0.0-4'}} {{selectedToken.symbol}})</aer-checkbox>
+              <aer-input
+                [ngClass]="{ 'has-error': !txnForm.controls['amount'].valid && txnForm.controls['amount'].touched }"
+                formControlName="amount"
+                [(ngModel)]="amount"
+                ngDefaultControl
+                (ngModelChange)="handleInputsChange()"
+              ></aer-input>
+              <aer-checkbox ([ngModel])="(sendEverything)" (ngModelChange)="setSendEverything($event); handleInputsChange()"
+                >{{ 'SEND_EVERYTHING' | translate }} ({{ walletBalance | bignumber: '0.0-4' }} {{ selectedToken.symbol }})</aer-checkbox
+              >
             </div>
             <div aerColumn size="sm-6" class="tokensSelect">
-              <aer-select formControlName="selectedToken" [(ngModel)]="selectedToken" (ngModelChange)="handleSelectChange()" dataKey="symbol"
-                icon="aerum" placeholder="Select your token">
-                <aer-select-option [value]="{symbol: 'Aero'}">{{ 'AERO' | translate}}</aer-select-option>
-                <aer-select-option *ngFor="let item of tokens;" [value]="item">
+              <aer-select formControlName="selectedToken" [(ngModel)]="selectedToken" (ngModelChange)="handleSelectChange()" dataKey="symbol" icon="aerum" placeholder="Select your token">
+                <aer-select-option [value]="{ symbol: 'Aero' }">{{ 'AERO' | translate }}</aer-select-option>
+                <aer-select-option *ngFor="let item of tokens" [value]="item">
                   <app-token-description [token]="item"></app-token-description>
                 </aer-select-option>
               </aer-select>
               <div class="account-status-line">
                 <aer-icon>aerum</aer-icon>
-                <div class="float-left">{{walletBalance | bignumber:'0.0-4'}} {{selectedToken.symbol}}</div>
+                <div class="float-left">{{ walletBalance | bignumber: '0.0-4' }} {{ selectedToken.symbol }}</div>
               </div>
             </div>
           </div>
@@ -45,7 +63,7 @@
         <div class="show-more-button" *ngIf="selectedToken.symbol === 'Aero'">
           <div aerRow>
             <div aerColumn size="sm-12">
-              <aer-button *ngIf="!showedMore" class="medium blue" (buttonFn)="showMore()">{{'SHOW_MORE_OPTIONS'|translate}}</aer-button>
+              <aer-button *ngIf="!showedMore" class="medium blue" (buttonFn)="showMore()">{{ 'SHOW_MORE_OPTIONS' | translate }}</aer-button>
               <aer-button *ngIf="showedMore" class="medium blue" (buttonFn)="showMore()">Show less options</aer-button>
             </div>
           </div>
@@ -53,32 +71,26 @@
         <app-transaction-more-options *ngIf="showedMore" [data]="moreOptionsData" (ngModelChange)="moreOptionsChange($event)"></app-transaction-more-options>
         <div aerRow>
           <div aerColumn size="sm-6" class="flex-fee">
-            <div class="note">{{'APP_TRANSACTION_FEE'|translate}}</div>
-            <div class="note">{{maxTransactionFee | convertWeiToGwei}} {{'AERO'|translate}}</div>
+            <div class="note">{{ 'APP_TRANSACTION_FEE' | translate }}</div>
+            <div class="note">{{ maxTransactionFee | convertWeiToGwei }} {{ 'AERO' | translate }}</div>
           </div>
           <div aerColumn size="sm-6">
-            <div class="note">{{'MAX_TRANS_FEE_WARNING'|translate}}</div>
+            <div class="note">{{ 'MAX_TRANS_FEE_WARNING' | translate }}</div>
           </div>
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <div class="input-name">{{'TOTAL'|translate}}</div>
-            <div *ngIf="selectedToken.symbol !== 'Aero'" class="amount-total">
-              {{amount}} {{selectedToken.symbol}}
-            </div>
-            <div *ngIf="selectedToken.symbol == 'Aero'" class="amount-total">
-              {{totalAmount}} {{ 'AERO' | translate}}
-            </div>
-            <div *ngIf="selectedToken.symbol == 'Aero'" class="note">
-              {{'DATA_INCLUDED'|translate}}: {{includedDataLength}} {{'BYTES'|translate}}
-            </div>
+            <div class="input-name">{{ 'TOTAL' | translate }}</div>
+            <div *ngIf="selectedToken.symbol !== 'Aero'" class="amount-total">{{ amount }} {{ selectedToken.symbol }}</div>
+            <div *ngIf="selectedToken.symbol == 'Aero'" class="amount-total">{{ totalAmount }} {{ 'AERO' | translate }}</div>
+            <div *ngIf="selectedToken.symbol == 'Aero'" class="note">{{ 'DATA_INCLUDED' | translate }}: {{ includedDataLength }} {{ 'BYTES' | translate }}</div>
           </div>
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
             <app-divider [showLine]="true" [fullWidth]="true"></app-divider>
             <div class="footer-buttons">
-              <aer-button [ngClass]="!isFormValid() ? 'disabled' : 'blue'" [disabled]="!isFormValid()" class="normal" (buttonFn)="send()">{{'SEND'|translate}}</aer-button>
+              <aer-button [ngClass]="!isFormValid() ? 'disabled' : 'blue'" [disabled]="!isFormValid()" class="large" (buttonFn)="send()">{{ 'SEND' | translate }}</aer-button>
             </div>
           </div>
         </div>
@@ -87,10 +99,12 @@
     <div aerColumn size="sm-6">
       <div aerRow>
         <div aerColumn size="sm-12">
-          <aer-card title="{{'RECEIVE_TO'|translate }}">
-            <span class="error">{{'SEND_RECEIVE.WARNING_SHORT'|translate}}<span (click)="showReadMore()" class="read-more">{{'SEND_RECEIVE.READ_MORE'|translate}}</span></span>
+          <aer-card title="{{ 'RECEIVE_TO' | translate }}">
+            <span class="error"
+              >{{ 'SEND_RECEIVE.WARNING_SHORT' | translate }}<span (click)="showReadMore()" class="read-more">{{ 'SEND_RECEIVE.READ_MORE' | translate }}</span></span
+            >
             <div class="qr__adress">
-              <img *ngIf="addressQR" [src]="addressQR" alt="">
+              <img *ngIf="addressQR" [src]="addressQR" alt="" />
               <app-address-clipboard address="{{ senderAddress }}" short="true"></app-address-clipboard>
             </div>
           </aer-card>
