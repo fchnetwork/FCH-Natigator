@@ -38,7 +38,7 @@ export class AerumNameService {
   }
 
   isAensName(nameOrAddress: string): boolean {
-    return nameOrAddress && nameOrAddress.endsWith('.aer');
+    return nameOrAddress && nameOrAddress.endsWith('.f');
   }
 
   async safeResolveNameOrAddress(nameOrAddress: string) {
@@ -79,7 +79,7 @@ export class AerumNameService {
 
   async ensureNameCanBeResolved(name: string): Promise<boolean> {
     try {
-      if(!name || !name.endsWith(".aer")) {
+      if(!name || !name.endsWith(".f")) {
         return false;
       }
 
@@ -92,7 +92,7 @@ export class AerumNameService {
   }
 
   async isNameAvailable(name: string) : Promise<boolean> {
-    if(!name || !name.endsWith(".aer")) {
+    if(!name || !name.endsWith(".f")) {
       return false;
     }
 
@@ -127,7 +127,7 @@ export class AerumNameService {
     }
 
     label = label.toLowerCase();
-    const name = label + ".aer";
+    const name = label + ".f";
     const node = hash(name);
     const hashedLabel = sha3(label);
 
@@ -153,7 +153,7 @@ export class AerumNameService {
     }
 
     label = label.toLowerCase();
-    const name = label + ".aer";
+    const name = label + ".f";
     const node = hash(name);
     const hashedLabel = sha3(label);
 
@@ -253,8 +253,8 @@ export class AerumNameService {
   }
 
   private ensureName(name: string) {
-    if(!name || !name.endsWith(".aer")) {
-      throw new Error('Can only handle names ending with .aer');
+    if(!name || !name.endsWith(".f")) {
+      throw new Error('Can only handle names ending with .f');
     }
   }
 

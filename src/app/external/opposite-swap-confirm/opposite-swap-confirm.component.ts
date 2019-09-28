@@ -24,6 +24,7 @@ import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
 import { OpenAerumErc20SwapService } from "@core/swap/cross-chain/open-aerum-erc20-swap-service/open-aerum-erc20-swap.service";
 import { CounterEtherSwapService } from "@core/swap/cross-chain/counter-ether-swap-service/counter-ether-swap.service";
 import { CounterErc20SwapService } from "@core/swap/cross-chain/counter-erc20-swap-service/counter-erc20-swap.service";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-opposite-swap-confirm',
@@ -83,7 +84,8 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     private swapLocalStorageService: SwapLocalStorageService,
     private openAerumErc20SwapService: OpenAerumErc20SwapService,
     private tokenService: TokenService,
-    private ethereumTokenService: EthereumTokenService
+    private ethereumTokenService: EthereumTokenService,
+    private translateService: TranslateService
   ) { }
 
   async ngOnInit() {
@@ -96,10 +98,10 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
     } catch (e) {
       if(e instanceof TokenError) {
         this.logger.logError('Cannot load token information', e);
-        this.notificationService.showMessage('Please configure the token first', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.PLEASE_CONFIGURE_THE_TOKEN_FIRST'), this.translateService.instant('ERROR'));
       } else {
-        this.logger.logError('Withdrawal swap load error', e);
-        this.notificationService.showMessage('Cannot load swap', 'Error');
+        this.logger.logError(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.CANNOT_LOAD_SWAP'), e);
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.CANNOT_LOAD_SWAP'), this.translateService.instant('ERROR'));
       }
     }
   }
@@ -327,12 +329,12 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   async complete() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Completing withdrawal swap', 'In Progress...');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.COMPLETING_WITHDRAWAL_SWAP'), this.translateService.instant('IN_PROGRESS'));
       await this.closeSwap();
-      this.notificationService.showMessage('Withdrawal swap closed', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.WITHDRAWAL_SWAP_CLOSED'), this.translateService.instant('DONE'));
     } catch (e) {
-      this.logger.logError('Withdrawal swap close error', e);
-      this.notificationService.showMessage('Withdrawal swap close error', 'Unhandled error');
+      this.logger.logError(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.WITHDRAWAL_SWAP_CLOSE_ERROR'), e);
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.WITHDRAWAL_SWAP_CLOSE_ERROR'), this.translateService.instant('ERROR'));
     } finally {
       this.processing = false;
     }
@@ -361,12 +363,12 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
   async cancel() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Cancelling withdrawal swap', 'In Progress...');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.CANCELLING_WITHDRAWAL_SWAP'), this.translateService.instant('IN_PROGRESS'));
       await this.cancelSwap();
-      this.notificationService.showMessage('Withdrawal swap canceled', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.WITHDRAWAL_SWAP_CANCELED'), this.translateService.instant('DONE'));
     } catch (e) {
       this.logger.logError('Withdrawal swap cancel error', e);
-      this.notificationService.showMessage('Withdrawal swap cancel error', 'Unhandled error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.WITHDRAWAL_SWAP_CANCEL_ERROR'), this.translateService.instant('ERROR'));
     } finally {
       this.processing = false;
     }
@@ -374,7 +376,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
 
   private async cancelSwap(): Promise<void> {
     this.swapTransactionExplorerUrl = null;
-    await this.openAerumErc20SwapService.expireSwap(this.hash, (hash) => this.onSwapHashReceived(hash, Chain.Aerum));
+    await this.openAerumErc20SwapService.expireSwap(this.hash, (hash) => this.onSwapHashReceived(hash, Chain.Fuchsia));
     this.swapCancelled = true;
     this.cleanErrors();
   }

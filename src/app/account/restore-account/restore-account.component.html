@@ -11,7 +11,7 @@
       <div aerColumn size="md-12" class="account__button-list">
         <aer-file-upload class="medium blue" (filesChange)="openBackupFile($event, 'seed')">{{'ACCOUNT.RESTORE.SELECT_SEED'|translate}}</aer-file-upload>
         <aer-file-upload class="medium blue" (filesChange)="openBackupFile($event, 'full')">{{'ACCOUNT.RESTORE.SELECT_BACKUP_FILE'|translate}}</aer-file-upload>
-        <aer-button class="medium blue" (buttonFn)="scanQr()">Scan QR code</aer-button>
+        <aer-button class="medium blue" (buttonFn)="scanQr()">{{'ACCOUNT.RESTORE.QR_SCANNER_BUTTON'|translate}}</aer-button>
       </div>
     </div>
     <app-divider label="OR"></app-divider>

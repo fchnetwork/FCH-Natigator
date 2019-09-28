@@ -26,6 +26,6 @@
       </div>
     </div>
   </div>
-  <aer-modal-button [isAcceptButton]="true" (buttonFn)="accept()">Send transaction</aer-modal-button>
+  <aer-modal-button [isAcceptButton]="true" (buttonFn)="accept()">{{'TRANSACTION.SIGN_MODAL.SEND_TEXT'|translate}}</aer-modal-button>
   <aer-modal-button (buttonFn)="dialogRef.dismiss()">{{'COMMON.BUTTONS.CANCEL' | translate}}</aer-modal-button>
 </div>

@@ -17,6 +17,7 @@ import { bigNumbersPow, bigNumbersMultiply, bigNumberToString } from "@shared/he
 import { DialogResult } from '@aerum/ui';
 import { TransactionSignData } from '@app/wallet/transaction/components/transaction-sign-modal/transaction-sign-modal.component';
 import { StorageService } from "@core/general/storage-service/storage.service";
+import { TranslateService } from '@ngx-translate/core';
 
 declare var window: any;
 
@@ -45,7 +46,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   totalAmount = 0;
   tokens: any;
   selectedToken = {
-    symbol: 'Aero',
+    symbol: 'Gas',
     address: null,
     balance: 0,
     decimals: null,
@@ -57,7 +58,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     data: '',
     limit: '',
     price: '',
-    selectedToken: 'Aero',
+    selectedToken: 'Gas',
   };
   showedMore = false;
   updateInterval: any;
@@ -74,6 +75,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     private nameService: AerumNameService,
     private validateService: ValidateService,
     private sessionStorageService: SessionStorageService,
+    private translateService: TranslateService
   ) {
     this.loadUserData().catch((e) => this.logger.logError(e));
     this.updateInterval = setInterval(async () => {
@@ -114,7 +116,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   }
 
   setSendEverything(event) {
-    if (event && this.selectedToken.symbol === 'Aero') {
+    if (event && this.selectedToken.symbol === 'Gas') {
       this.amount = Number(this.walletBalance) - Number(this.maxTransactionFeeEth);
     } else {
       this.amount = this.walletBalance;
@@ -124,7 +126,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
 
   async copyToClipboard() {
     await this.clipboardService.copy(this.senderAddress);
-    this.notificationService.showMessage('Copied to clipboard!', 'Done');
+    this.notificationService.showMessage(this.translateService.instant('COPIED_TO_CLIPBOARD'), this.translateService.instant('DONE'));
   }
 
   async loadUserData(): Promise<void> {
@@ -133,7 +135,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     const getQR = this.authService.createQRcode("0x" + keystore.address);
     const [accBalance, qrCode] = await Promise.all([getBalance, getQR]);
     this.senderAddress = "0x" + keystore.address;
-    if (this.selectedToken.symbol === 'Aero') {
+    if (this.selectedToken.symbol === 'Gas') {
       this.walletBalance = accBalance;
     }
     this.aeroBalance = accBalance;
@@ -143,7 +145,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   async getMaxTransactionFee(): Promise<void> {
     const resolvedAddress = await this.nameService.safeResolveNameOrAddress(this.receiverAddress);
     if (resolvedAddress) {
-      const data = this.selectedToken.symbol === 'Aero'
+      const data = this.selectedToken.symbol === 'Gas'
         ? (this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : '')
         : { type: 'token', contractAddress: this.selectedToken.address, amount: Number(this.amount * Math.pow(10, this.selectedToken.decimals)) };
       try {
@@ -152,10 +154,10 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         this.maxTransactionFeeEth = res[1];
         this.moreOptionsData.price = res[2];
         this.moreOptionsData.limit = res[3];
-        if(this.sendEverything && this.selectedToken.symbol === 'Aero') {
+        if(this.sendEverything && this.selectedToken.symbol === 'Gas') {
           this.setSendEverything(true);
         }
-        this.totalAmount = this.selectedToken.symbol === 'Aero'
+        this.totalAmount = this.selectedToken.symbol === 'Gas'
           ? Number(this.amount) + Number(this.maxTransactionFeeEth)
           : Number(this.maxTransactionFeeEth);
       } catch (e) {
@@ -196,7 +198,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
   }
 
   async handleSelectChange() {
-    if (this.selectedToken.symbol === 'Aero') {
+    if (this.selectedToken.symbol === 'Gas') {
       this.isToken = false;
       this.walletBalance = this.aeroBalance;
     } else {
@@ -215,11 +217,11 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
     if (result.dialogResult === DialogResult.OK) {
       const privateKey = this.sessionStorageService.retrieve('private_key');
       const address = this.sessionStorageService.retrieve('acc_address');
-      if (this.selectedToken.symbol === 'Aero' && !this.isToken) {
+      if (this.selectedToken.symbol === 'Gas' && !this.isToken) {
         this.transactionService.transaction(privateKey, address, resolvedAddress, this.amount, this.showedMore && this.moreOptionsData.data ? this.moreOptionsData.data : null, false, {}, null, this.moreOptionsData).then(res => {
           this.transactionMessage = res;
         }).catch((error) => {
-          this.notificationService.showMessage(`An error occurred during transaction. Please review all the fields and try again. ${error}`, 'Error');
+          this.notificationService.showMessage(`${this.translateService.instant('SEND_RECEIVE.AN_ERROR_OCCURRED_DURING_TRANSACTION')} ${error}`, this.translateService.instant('ERROR'));
           console.log(error);
         });
       } else if (this.selectedToken.address) {
@@ -230,7 +232,7 @@ export class CreateTransactionComponent implements OnInit, OnDestroy {
         this.transactionService.sendTokens(address, resolvedAddress, convertedAmount, this.selectedToken.address, false, {}, null, this.selectedToken.symbol, this.selectedToken.decimals).then((res) => {
           this.transactionMessage = res;
         }).catch((error) => {
-          this.notificationService.showMessage(`An error occurred during sending the tokens. Please review all the fields and try again. ${error}`, 'Error');
+          this.notificationService.showMessage(`${this.translateService.instant('SEND_RECEIVE.AN_ERROR_OCCURRED_DURING_SENDING_THE_TOKENS')} ${error}`, this.translateService.instant('ERROR'));
           console.log(error);
         });
       }

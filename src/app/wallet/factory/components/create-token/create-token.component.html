@@ -11,7 +11,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="e.g. Aerum" formControlName="name" [ngClass]="{'has-error': hasError(createForm.controls.name)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_NAME_PLACEHOLDER'|translate}}" formControlName="name" [ngClass]="{'has-error': hasError(createForm.controls.name)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -21,7 +21,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="e.g. AER" formControlName="symbol" [ngClass]="{'has-error': hasError(createForm.controls.symbol)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_SYMBOL_PLACEHOLDER'|translate}}" formControlName="symbol" [ngClass]="{'has-error': hasError(createForm.controls.symbol)}" ngDefaultControl></aer-input>
             <span *ngIf="hasError(createForm.controls.symbol)" class="error">{{'TOKEN_FACTORY.CREATE.FIELD_SYMBOL_ERROR'|translate}}</span>
           </div>
         </div>
@@ -32,7 +32,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="e.g. 1000000" formControlName="supply" [ngClass]="{'has-error': hasError(createForm.controls.supply)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_SUPPLY_PLACEHOLDER'|translate}}" formControlName="supply" [ngClass]="{'has-error': hasError(createForm.controls.supply)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -42,7 +42,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="e.g. 18" formControlName="decimals" [ngClass]="{'has-error': hasError(createForm.controls.decimals)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_SUPPLY_PLACEHOLDER'|translate}}" formControlName="decimals" [ngClass]="{'has-error': hasError(createForm.controls.decimals)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
@@ -52,7 +52,7 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="e.g. aerum" class="with-button blue" [ngClass]="{'has-error': hasError(createForm.controls.ansName)}" buttonLabel=".aer" formControlName="ansName" ngDefaultControl></aer-input>
+            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_ANS_PLACEHOLDER'|translate}}" class="blue" [ngClass]="{'has-error': hasError(createForm.controls.ansName)}" formControlName="ansName" ngDefaultControl></aer-input>
             <span *ngIf="hasError(createForm.controls.ansName)" class="error">{{'TOKEN_FACTORY.CREATE.FIELD_ANS_NAME_ERROR'|translate}}</span>
           </div>
         </div>

@@ -43,7 +43,7 @@ export class SettingsBackupService {
     const promise = new Promise<string>(
       (resolve, reject): void => {
         window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, fs => {
-          let dirPath = 'Aerum';
+          let dirPath = 'Fuchsia';
           let filePath = dirPath + '/' + fileName;
           if(window.device.platform === 'iOS') {
             dirPath = '/';

@@ -97,10 +97,10 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     } catch (e) {
       if(e instanceof TokenError) {
         this.logger.logError('Cannot load token information', e);
-        this.notificationService.showMessage('Please configure the token first', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.PLEASE_CONFIGURE_THE_TOKEN_FIRST'), this.translateService.instant('ERROR'));
       } else {
         this.logger.logError('Withdrawal swap data load error', e);
-        this.notificationService.showMessage('Cannot load withdrawal swap screen', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.CANNOT_LOAD_WITHDRAWAL_SWAP_SCREEN'), this.translateService.instant('ERROR'));
       }
     }
   }
@@ -229,7 +229,7 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   async copyToClipboard() {
     if (this.secret) {
       await this.clipboardService.copy(this.secret);
-      this.notificationService.showMessage('Copied to clipboard!', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('COPIED_TO_CLIPBOARD'), this.translateService.instant('DONE'));
     }
   }
 
@@ -240,15 +240,15 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   async next() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Creating withdrawal swap... (please wait 10-15 seconds)', 'In progress');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.CREATING_WITHDRAWAL_SWAP'), this.translateService.instant('IN_PROGRESS'));
       await this.openERC20Swap();
-      this.notificationService.showMessage('Withdrawal swap created. Waiting for confirmation...', 'Success');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.WITHDRAWAL_SWAP_CREATED'), this.translateService.instant('SUCCESS'));
     }
     catch (e) {
       // NOTE: We show more detailed errors for injected web3 in called functions
       if(!(e instanceof InjectedWeb3Error)) {
         this.logger.logError('Error while creating withdrawal swap', e);
-        this.notificationService.showMessage('Error while creating withdrawal swap', 'Unhandled error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.ERROR_WHILE_CREATING_WITHDRAWAL_SWAP'), this.translateService.instant('ERROR'));
       }
     } finally {
       this.processing = false;
@@ -291,32 +291,32 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
     try {
       await this.ethereumAuthService.ensureEthereumEnabled();
     } catch (error) {
-      this.notificationService.showMessage(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'), this.translateService.instant('BASE_CONTRACT.ERROR'));
+      this.notificationService.showMessage(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'), this.translateService.instant('ERROR'));
       throw new InjectedWeb3Error(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'));
     }
     const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
     if (!injectedWeb3) {
-      this.notificationService.showMessage('Injected web3 not provided', 'Error');
-      throw new InjectedWeb3Error('Injected web3 not provided');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.INJECTED_WEB3_NOT_PROVIDED'), this.translateService.instant('ERROR'));
+      throw new InjectedWeb3Error(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.INJECTED_WEB3_NOT_PROVIDED'));
     }
 
     const account = this.params.account;
     const accounts = await injectedWeb3.eth.getAccounts() || [];
     if (!accounts.length) {
-      this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
-      throw new InjectedWeb3Error('Cannot get accounts from selected provider');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.PLEASE_LOGIN_IN_MIST__METAMASK'), this.translateService.instant('ERROR'));
+      throw new InjectedWeb3Error(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.CANNOT_GET_ACCOUNTS_FROM_SELECTED_PROVIDER'));
     }
 
     if (accounts.every(acc => acc !== account)) {
-      this.notificationService.showMessage(`Please select ${account} and retry`, 'Error');
-      throw new InjectedWeb3Error(`Incorrect Mist / Metamask account selected. Expected ${account}`);
+      this.notificationService.showMessage(`${this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.PLEASE_SELECT')} ${account} ${this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.AND_RETRY')}`, this.translateService.instant('ERROR'));
+      throw new InjectedWeb3Error(`${this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.INCORRECT_MIST__METAMASK_ACCOUNT_SELECTED__EXPECTED')} ${account}`);
     }
   }
 
   private loadImportedEthAccount() {
     const importedAccount = this.ethereumAuthService.getEthereumAccount(this.params.account);
     if (!importedAccount) {
-      this.notificationService.showMessage(`Cannot load imported account ${this.params.account}`, 'Error');
+      this.notificationService.showMessage(`${this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.CANNOT_LOAD_IMPORTED_ACCOUNT')} ${this.params.account}`, this.translateService.instant('ERROR'));
       throw Error(`Cannot load imported account ${this.params.account}`);
     }
   }
@@ -326,13 +326,13 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
   }
 
   private onApproveTokenHashReceived(txhash: string): void {
-    this.notificationService.showMessage(`Approving ${this.selectedToken.symbol} token allowance...`, 'In progress');
-    this.approveTokenTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Aerum);
+    this.notificationService.showMessage(`${this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.APPROVING')} ${this.selectedToken.symbol} ${this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.TOKEN_ALLOWANCE')}`, this.translateService.instant('IN_PROGRESS'));
+    this.approveTokenTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Fuchsia);
   }
 
   private onOpenSwapHashReceived(txHash: string, hash: string): void {
-    this.notificationService.showMessage('Opening withdrawal swap...', 'In progress');
-    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Aerum);
+    this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.OPENING_WITHDRAWAL_SWAP'), this.translateService.instant('IN_PROGRESS'));
+    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Fuchsia);
 
     const localSwap: SwapReference = {
       hash,

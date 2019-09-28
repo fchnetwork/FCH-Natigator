@@ -101,7 +101,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     }
     this.isValidNetwork = this.environment.get().ethereum.chainId === netId;
     if(!this.isValidNetwork) {
-      this.notificationService.showMessage(`Please select Rinkeby network in your ${provider} wallet.`, 'Error');
+      this.notificationService.showMessage(`${this.translateService.instant('EXTERNAL-SWAP.WALLET.PLEASE_SELECT_RINKEBY_NETWORK_IN_YOUR')} ${provider} ${this.translateService.instant('EXTERNAL-SWAP.WALLET.WALLET_')}`, this.translateService.instant('ERROR'));
     }
   }
 
@@ -109,7 +109,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     try {
       await this.ethereumAuthenticationService.ensureEthereumEnabled();
     } catch (error) {
-      this.notificationService.showMessage(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'), this.translateService.instant('BASE_CONTRACT.ERROR'));
+      this.notificationService.showMessage(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'), this.translateService.instant('ERROR'));
       throw new InjectedWeb3Error(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'));
     }
     this.web3 = this.ethereumAuthenticationService.getWeb3();
@@ -155,7 +155,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
       await this.validateNetwork();
     } catch (e) {
       this.logger.logError('Error while selecting ethereum account provider', e);
-      this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.UNHANDLED_ERROR_OCCURRED'), this.translateService.instant('ERROR'));
     }
   }
 
@@ -164,7 +164,7 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
     if (!accounts || !accounts.length) {
       this.addresses = [];
       this.setAddress(null);
-      this.notificationService.showMessage('Please login in Mist / Metamask', 'Cannot get accounts from wallet');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.PLEASE_LOGIN_IN_MIST__METAMASK'), this.translateService.instant('EXTERNAL-SWAP.WALLET.CANNOT_GET_ACCOUNTS_FROM_WALLET'));
     } else {
       this.addresses = accounts;
       this.setAddress(accounts[0]);
@@ -217,12 +217,12 @@ export class EthereumWalletComponent implements OnInit, OnDestroy {
 
       const importedAddress = this.authenticationService.generateAddressFromPrivateKey(this.importedPrivateKey);
       if (this.isAlreadyImported(importedAddress)) {
-        this.notificationService.showMessage('Account already imported', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.ACCOUNT_ALREADY_IMPORTED'), this.translateService.instant('ERROR'));
         return;
       }
       const importedAccount: EthereumAccount = {address: importedAddress, privateKey: this.importedPrivateKey};
       this.storeAndSelectNewImportedAccount(importedAccount);
-      this.notificationService.showMessage(`Account ${importedAccount.address} imported`, 'Done');
+      this.notificationService.showMessage(`${this.translateService.instant('EXTERNAL-SWAP.WALLET.ACCOUNT')} ${importedAccount.address} ${this.translateService.instant('EXTERNAL-SWAP.WALLET.IMPORTED')}`, this.translateService.instant('DONE'));
     }
   }
 

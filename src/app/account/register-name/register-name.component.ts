@@ -54,7 +54,7 @@ export class RegisterNameComponent implements OnInit {
       }
       const name = this.registerForm.value.name;
       const label = name.trim();
-      const fullName = label + ".aer";
+      const fullName = label + ".f";
       try {
         const status = await this.tryCheckName(name);
         this.nameUsed = status !== CheckStatus.Available;
@@ -62,7 +62,7 @@ export class RegisterNameComponent implements OnInit {
           return;
         }
       } catch(error) {
-        this.notificationService.notify(this.translate('ENS.NAME_BUY_ERROR_TITLE'), `${error}: ${fullName}`, 'aerum', 5000);
+        this.notificationService.notify(this.translate('ENS.NAME_BUY_ERROR_TITLE'), `${error}: ${label}`, 'aerum', 5000);
         return;
       }
       this.notificationService.notify(this.translate('ACCOUNT.REGISTER_NAME.AERUMBIT_TITLE'), this.translate('ACCOUNT.REGISTER_NAME.REQUESTING_TOKEN'), 'aerum', 5000);
@@ -78,13 +78,13 @@ export class RegisterNameComponent implements OnInit {
         return;
       }
       this.price = fromWei(await this.aensService.getPrice(), 'ether');
-      this.notificationService.notify(this.multiContractsExecutionNotificationTitle(1, 3), `${this.translate('ENS.NOTIFICATION_BODY_BUY_NAME')}: ${fullName}`, 'aerum', 5000);
+      this.notificationService.notify(this.multiContractsExecutionNotificationTitle(1, 3), `${this.translate('ENS.NOTIFICATION_BODY_BUY_NAME')}: ${label}`, 'aerum', 5000);
       await this.aensService.buyName(label, this.account, toBigNumberString(this.price));
       this.notificationService.notify(this.multiContractsExecutionNotificationTitle(2, 3), this.translate('ENS.NOTIFICATION_BODY_SET_RESOLVER'), 'aerum', 5000);
-      await this.aensService.setFixedPriceResolver(fullName);
+      await this.aensService.setFixedPriceResolver(label);
       this.notificationService.notify(this.multiContractsExecutionNotificationTitle(3, 3), `${this.translate('ENS.NOTIFICATION_BODY_SET_ADDRESS')}: ${this.account}`, 'aerum', 5000);
-      await this.aensService.setAddress(fullName, this.account);
-      this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${fullName}`, 'aerum', 5000);
+      await this.aensService.setAddress(label, this.account);
+      this.notificationService.notify(this.translate('ENS.NAME_BUY_SUCCESS_TITLE'), `${this.translate('ENS.NAME_BUY_SUCCESS')}: ${label}`, 'aerum', 5000);
 
       this.storageService.setSessionData('acc_name', label);
       this.settingsService.saveSettings("accountSettings", { accName: label });
@@ -97,7 +97,7 @@ export class RegisterNameComponent implements OnInit {
 
   async tryCheckName(name: string): Promise<CheckStatus> {
     const trimmedName = name.trim();
-    const fullName = trimmedName + ".aer";
+    const fullName = trimmedName + ".f";
     return await this.aensService.checkStatus(this.account, fullName);
   }
 

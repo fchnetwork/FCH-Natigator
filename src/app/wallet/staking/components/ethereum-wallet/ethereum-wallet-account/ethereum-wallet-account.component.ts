@@ -10,6 +10,7 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { EthWalletType } from "@app/external/models/eth-wallet-type.enum";
 import { StakingReference } from "@app/wallet/staking/models/staking-reference.model";
 import { StakingLocalStorageService } from '@app/wallet/staking/staking-local-storage/staking-local-storage.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ethereum-wallet-account',
@@ -45,7 +46,8 @@ export class EthereumWalletAccountComponent implements OnInit {
     private notificationService: InternalNotificationService,
     private storageService: StorageService,
     private stakingLocalStorageService: StakingLocalStorageService,
-    private ethereumAuthenticationService: EthereumAuthenticationService) { }
+    private ethereumAuthenticationService: EthereumAuthenticationService,
+    private translateService: TranslateService) { }
 
   ngOnInit() {
     this.init();
@@ -113,13 +115,13 @@ export class EthereumWalletAccountComponent implements OnInit {
       this.walletTypeChanged.emit(this.selectedWalletType);
     } catch (e) {
       this.logger.logError('Error while selecting ethereum account provider', e);
-      this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.UNHANDLED_ERROR_OCCURRED'), this.translateService.instant('ERROR'));
     }
   }
 
   storeImportedAccount(importedAccount: EthereumAccount) {
     this.storeAndSelectNewImportedAccount(importedAccount);
-    this.notificationService.showMessage(`Account ${importedAccount.address} imported`, 'Done');
+    this.notificationService.showMessage(`${this.translateService.instant('EXTERNAL-SWAP.WALLET.ACCOUNT')} ${importedAccount.address} ${this.translateService.instant('EXTERNAL-SWAP.WALLET.IMPORTED')}`, this.translateService.instant('DONE'));
   }
 
   private onImportedWalledSelected() {
@@ -136,7 +138,7 @@ export class EthereumWalletAccountComponent implements OnInit {
     if (!accounts || !accounts.length) {
       this.setAddresses([]);
       this.setAddress(null);
-      this.notificationService.showMessage('Please login in Mist / Metamask', 'Cannot get accounts from wallet');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.PLEASE_LOGIN_IN_MIST__METAMASK'), this.translateService.instant('EXTERNAL-SWAP.WALLET.CANNOT_GET_ACCOUNTS_FROM_WALLET'));
     } else {
       this.setAddresses(accounts);
       this.setAddress(this.addresses[0]);

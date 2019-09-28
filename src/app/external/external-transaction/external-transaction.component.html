@@ -12,7 +12,7 @@
       <div aerColumn size="md-12">
         <p *ngIf="text">{{ text }}</p>
         <p *ngIf="decodeMessage" [ngClass]="{'has-error': decodeHasError}">{{ decodeMessage | translate }}
-          <a *ngIf="decodeData" class="info" (click)="showDecodeData = !showDecodeData">more info</a>
+          <a *ngIf="decodeData" class="info" (click)="showDecodeData = !showDecodeData">{{ 'EXTERNAL-SWAP.TRANSACTION.MORE_INFO' | translate }}</a>
         </p>
         <div *ngIf="decodeData && showDecodeData" class="table-responsive text-left">
           <table class="table">

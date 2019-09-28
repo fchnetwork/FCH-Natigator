@@ -22,6 +22,7 @@ import { ModalService } from "@app/core/general/modal-service/modal.service";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
 import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { TransactionReceipt } from "web3/types";
+import { TranslateService } from '@ngx-translate/core';
 
 interface SwapCommonOperationsService {
   expireSwap(swapId: string): Promise<TransactionReceipt>;
@@ -40,7 +41,8 @@ export class LoadSwapService {
     private erc20TokenService: ERC20TokenService,
     private notificationService: NotificationService,
     private tokenService: TokenService,
-    private environment: EnvironmentService
+    private environment: EnvironmentService,
+    private translateService: TranslateService
   ) {}
 
   async loadSwap(swapId) {
@@ -54,17 +56,17 @@ export class LoadSwapService {
           e
         );
         this.notificationService.notify(
-          "Error",
-          "Please configure swap token first",
-          "aerum",
+          this.translateService.instant('ERROR'),
+          this.translateService.instant('SWAP.LOAD.PLEASE_CONFIGURE_SWAP_TOKEN_FIRST'),
+          'aerum',
           3000
         );
       } else {
         this.logger.logError("Swap action error:", e);
         this.notificationService.notify(
-          "Error",
-          "Swap not found or invalid",
-          "aerum",
+          this.translateService.instant('ERROR'),
+          this.translateService.instant('SWAP.LOAD.SWAP_NOT_FOUND_OR_INVALID'),
+          'aerum',
           3000
         );
       }
@@ -111,29 +113,29 @@ export class LoadSwapService {
     if (modalResponse.dialogResult === DialogResult.OK) {
       if (modalResponse.result.confirmed) {
         this.notificationService.notify(
-          "Swap completion in progress...",
-          `Swap ID: ${swapId}`,
-          "aerum",
+          this.translateService.instant('SWAP.LOAD.SWAP_COMPLETION_IN_PROGRESS'),
+          `${this.translateService.instant('SWAP.LOAD.SWAP_ID_')} ${swapId}`,
+          'aerum',
           3000
         );
         await this.confirm(loadedSwap, swapId, mode);
         this.notificationService.notify(
-          "Swap done",
-          `Swap ID: ${swapId}`,
-          "aerum"
+          this.translateService.instant('SWAP.LOAD.SWAP_DONE'),
+          `${this.translateService.instant('SWAP.LOAD.SWAP_ID_')} ${swapId}`,
+          'aerum'
         );
       } else if (modalResponse.result.rejected) {
         this.notificationService.notify(
-          "Swap rejection in progress...",
-          `Swap ID: ${swapId}`,
-          "aerum",
+          this.translateService.instant('SWAP.LOAD.SWAP_REJECTION_IN_PROGRESS'),
+          `${this.translateService.instant('SWAP.LOAD.SWAP_ID_')}: ${swapId}`,
+          'aerum',
           3000
         );
         await this.reject(swapId, mode);
         this.notificationService.notify(
-          "Swap rejected",
-          `Swap ID: ${swapId}`,
-          "aerum"
+          this.translateService.instant('SWAP.LOAD.SWAP_REJECTED'),
+          `${this.translateService.instant('SWAP.LOAD.SWAP_ID_')} ${swapId}`,
+          'aerum'
         );
       }
     }

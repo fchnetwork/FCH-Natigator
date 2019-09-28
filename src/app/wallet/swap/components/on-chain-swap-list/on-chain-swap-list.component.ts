@@ -34,7 +34,7 @@ export class OnChainSwapListComponent implements OnInit {
     private swapListService: SwapListService,
     private createSwapService: CreateSwapService,
     private loadSwapService: LoadSwapService,
-    private environment: EnvironmentService
+    private environment: EnvironmentService,
   ) {
     this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
   }

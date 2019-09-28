@@ -44,11 +44,11 @@ export abstract class BaseContractService {
 
   private async ensureTransactionOptions(options: TransactionOptions) {
     if (!options) {
-      throw new Error('Transaction options cannot be empty');
+      throw new Error(this.translateService.instant('TRANSACTION_OPTIONS_CANNOT_BE_EMPTY'));
     }
 
     if (!options.account) {
-      throw new Error('Transaction account cannot be empty');
+      throw new Error(this.translateService.instant('TRANSACTION_OPTIONS_CANNOT_BE_EMPTY'));
     }
 
     if (options.wallet === EthWalletType.Injected) {
@@ -62,32 +62,32 @@ export abstract class BaseContractService {
     try {
       await this.ethereumAuthService.ensureEthereumEnabled();
     } catch (error) {
-      this.notificationService.showMessage(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'), this.translateService.instant('BASE_CONTRACT.ERROR'));
+      this.notificationService.showMessage(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'), this.translateService.instant('ERROR'));
       throw new InjectedWeb3Error(this.translateService.instant('BASE_CONTRACT.CANNOT_LOAD_ACCOUNT'));
     }
     const injectedWeb3 = await this.ethereumAuthService.getInjectedWeb3();
     if (!injectedWeb3) {
-      this.notificationService.showMessage('Injected web3 not provided', 'Error');
-      throw new InjectedWeb3Error('Injected web3 not provided');
+      this.notificationService.showMessage(this.translateService.instant('INJECTED_WEB3_NOT_PROVIDED'), this.translateService.instant('ERROR'));
+      throw new InjectedWeb3Error(this.translateService.instant('INJECTED_WEB3_NOT_PROVIDED'));
     }
 
     const accounts = await injectedWeb3.eth.getAccounts() || [];
     if (!accounts.length) {
-      this.notificationService.showMessage('Please login in Mist / Metamask', 'Error');
-      throw new InjectedWeb3Error('Cannot get accounts from selected provider');
+      this.notificationService.showMessage(this.translateService.instant('PLEASE_LOGIN_IN_MIST__METAMASK'), this.translateService.instant('ERROR'));
+      throw new InjectedWeb3Error(this.translateService.instant('CANNOT_GET_ACCOUNTS_FROM_SELECTED_PROVIDER'));
     }
 
     if (accounts.every(acc => acc !== account)) {
-      this.notificationService.showMessage(`Please select ${account} and retry`, 'Error');
-      throw new InjectedWeb3Error(`Incorrect Mist / Metamask account selected. Expected ${account}`);
+      this.notificationService.showMessage(`${this.translateService.instant('PLEASE_SELECT')} ${account} ${this.translateService.instant('AND_RETRY')}`, this.translateService.instant('ERROR'));
+      throw new InjectedWeb3Error(`${this.translateService.instant('INCORRECT_MIST__METAMASK_ACCOUNT_SELECTED__EXPECTED')} ${account}`);
     }
   }
 
   private ensureImportedAccount(account: string) {
     const importedAccount = this.ethereumAuthService.getEthereumAccount(account);
     if (!importedAccount) {
-      this.notificationService.showMessage(`Cannot load imported account ${account}`, 'Error');
-      throw Error(`Cannot load imported account ${account}`);
+      this.notificationService.showMessage(`${this.translateService.instant('CANNOT_LOAD_IMPORTED_ACCOUNT')} ${account}`, this.translateService.instant('ERROR'));
+      throw Error(`${this.translateService.instant('CANNOT_LOAD_IMPORTED_ACCOUNT')} ${account}`);
     }
   }
 

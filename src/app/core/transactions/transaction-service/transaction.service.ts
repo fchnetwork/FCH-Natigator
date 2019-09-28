@@ -282,7 +282,7 @@ export class TransactionService {
                 amount,
                 "Pending transaction",
                 hash,
-                "Aero",
+                "Gas",
                 null,
                 null
               );

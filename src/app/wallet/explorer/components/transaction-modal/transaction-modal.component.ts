@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { iTransaction } from '@shared/app.interfaces';
 import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -33,7 +34,8 @@ export class TransactionModalComponent implements OnInit, ModalViewComponent<Tra
     public dialogRef: DialogRef<TransactionModalData, any>,
     public clipboardService: ClipboardService,
     public notificationService: InternalNotificationService,
-    private environment: EnvironmentService) {
+    private environment: EnvironmentService,
+    private translateService: TranslateService) {
       this.setBtnTxt$.subscribe((value) => {
         this.btnText = value;
       });
@@ -77,7 +79,7 @@ export class TransactionModalComponent implements OnInit, ModalViewComponent<Tra
   copyToClipboard(hash) {
     if (hash) {
       this.clipboardService.copy(hash);
-      this.notificationService.showMessage('Copied to clipboard!', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('COPIED_TO_CLIPBOARD'), this.translateService.instant('DONE'));
     }
   }
 

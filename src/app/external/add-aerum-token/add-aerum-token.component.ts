@@ -6,6 +6,7 @@ import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethe
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { Token } from "@core/transactions/token-service/token.model";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-aerum-token',
@@ -27,7 +28,8 @@ export class AddAerumTokenComponent {
     public notificationService: InternalNotificationService,
     private aerumNameService: AerumNameService,
     private storageService: StorageService,
-    private ethereumTokenService: EthereumTokenService) { }
+    private ethereumTokenService: EthereumTokenService,
+    private translateService: TranslateService) { }
 
   async onAddressChange() {
     const resolvedAddress = await this.aerumNameService.resolveNameOrAddress(this.tokenFormAddress);
@@ -39,10 +41,10 @@ export class AddAerumTokenComponent {
     if(tokens.length) {
       for(let i = 0; i < tokens.length; i++) {
         if(this.totalSupply <= 0 || !Number.isInteger(this.totalSupply)) {
-          this.notificationService.showMessage('Tokens supply has to be bigger than 0', 'Form error');
+          this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.ADD_TOKEN.TOKENS_SUPPLY_HAS_TO_BE_BIGGER_THAN_0'), this.translateService.instant('ERROR'));
           return false;
         } else if (this.tokenAddress === tokens[i].address) {
-          this.notificationService.showMessage('You cannot add token with the same token address', 'Form error');
+          this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.ADD_TOKEN.YOU_CANNOT_ADD_TOKEN_WITH_THE_SAME_TOKEN_ADDRESS'), this.translateService.instant('ERROR'));
           return false;
         }
       }
@@ -53,14 +55,14 @@ export class AddAerumTokenComponent {
   async validateForm(): Promise<boolean> {
     let result = true;
     if(!(await this.ethereumTokenService.isAddress(EthWalletType.Imported, this.tokenAddress))) {
-      this.notificationService.showMessage('Tokens address is not valid', 'Form error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.ADD_TOKEN.TOKENS_ADDRESS_IS_NOT_VALID'), this.translateService.instant('ERROR'));
       result = false;
     } if(!this.tokenSymbol || this.tokenSymbol.length < 3) {
-      this.notificationService.showMessage('Tokens symbol length has to be greater than two', 'Form error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.ADD_TOKEN.TOKENS_SYMBOL_LENGTH_HAS_TO_BE_GREATER_THAN_TWO'), this.translateService.instant('ERROR'));
       result = false;
     }
     if(!Number.isInteger(this.decimals) || this.decimals < 0) {
-      this.notificationService.showMessage('Tokens decimals has to be bigger or equal 0', 'Form error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.ADD_TOKEN.TOKENS_DECIMALS_HAS_TO_BE_BIGGER_OR_EQUAL_0'), this.translateService.instant('ERROR'));
       result = false;
     }
     return result;

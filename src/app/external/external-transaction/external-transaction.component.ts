@@ -142,7 +142,7 @@ export class ExternalTransactionComponent implements OnDestroy {
     if (this.isToken) {
       this.getTokenInfo();
     } else {
-      this.currency = 'AERO';
+      this.currency = 'GAS';
       await this.getMaxTransactionFee();
     }
     this.getBalance();

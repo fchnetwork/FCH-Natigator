@@ -76,7 +76,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
       this.startProcessing();
       await this.tryBuyName();
     } catch (e) {
-      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.BUY_NAME_ERROR')}: ${this.name}.aer`, 'aerum', 5000);
+      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.BUY_NAME_ERROR')}: ${this.name}.f`, 'aerum', 5000);
       this.logger.logError(`Buying ${this.name} name error: `, e);
     }
     finally{
@@ -88,7 +88,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
 
   async tryBuyName() {
     const label = this.name.trim();
-    const fullName = label + ".aer";
+    const fullName = label + ".f";
     const nameAddress = this.address;
 
     const cost = await this.aensService.estimateBuyNameAndSetAddressCost(label, this.account, this.address, toBigNumberString(this.price));

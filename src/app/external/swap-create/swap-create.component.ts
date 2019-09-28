@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Location } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from "rxjs/Subscription";
 
 import { EnvironmentService } from "@core/general/environment-service/environment.service";
@@ -88,7 +89,8 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     private swapLocalStorageService: SwapLocalStorageService,
     private authService: AuthenticationService,
     private transactionService: TransactionService,
-    private environment: EnvironmentService) { }
+    private environment: EnvironmentService,
+    private translateService: TranslateService) { }
 
   async ngOnInit() {
     this.routeSubscription = this.route.queryParams.subscribe(param => this.init(param));
@@ -105,10 +107,10 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
     } catch (e) {
       if(e instanceof TokenError) {
         this.logger.logError('Cannot load token information', e);
-        this.notificationService.showMessage('Please configure the token first', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE.PLEASE_CONFIGURE_THE_TOKEN_FIRST'), this.translateService.instant('ERROR'));
       } else {
         this.logger.logError('Deposit swap data load error', e);
-        this.notificationService.showMessage('Cannot load deposit swap screen', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE.CANNOT_LOAD_DEPOSIT_SWAP_SCREEN'), this.translateService.instant('ERROR'));
       }
     }
   }
@@ -207,7 +209,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.logger.logMessage("Token not selected");
       return;
     }
-    const templates = await this.swapTemplateService.getTemplatesByAsset(this.selectedToken.address, this.params.token, Chain.Aerum);
+    const templates = await this.swapTemplateService.getTemplatesByAsset(this.selectedToken.address, this.params.token, Chain.Fuchsia);
     if (templates) {
       this.templates = templates.sort((one, two) => Number(one.rate <= two.rate));
       this.selectedTemplate = this.templates[0];
@@ -257,7 +259,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   async copyToClipboard() {
     if (this.secret) {
       await this.clipboardService.copy(this.secret);
-      this.notificationService.showMessage('Copied to clipboard!', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('COPIED_TO_CLIPBOARD'), this.translateService.instant('DONE'));
     }
   }
 
@@ -268,15 +270,15 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   async next() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Creating deposit swap... (please wait 10-15 seconds)', 'In progress');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE.CREATING_DEPOSIT_SWAP'), this.translateService.instant('IN_PROGRESS'));
       await this.openSwap();
-      this.notificationService.showMessage('Deposit swap created. Waiting for confirmation...', 'Success');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE.DEPOSIT_SWAP_CREATED'), this.translateService.instant('SUCCESS'));
     }
     catch (e) {
       // NOTE: We show more detailed errors for injected web3 in called functions
       if(!(e instanceof InjectedWeb3Error)) {
         this.logger.logError('Error while creating deposit swap', e);
-        this.notificationService.showMessage('Error while creating deposit swap', 'Unhandled error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE.ERROR_WHILE_CREATING_DEPOSIT_SWAP'), this.translateService.instant('ERROR'));
       }
     } finally {
       this.processing = false;
@@ -317,12 +319,12 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
   }
 
   private onApproveTokenHashReceived(txhash: string): void {
-    this.notificationService.showMessage(`Approving ${this.params.symbol} token allowance...`, 'In progress');
+    this.notificationService.showMessage(`${this.translateService.instant('EXTERNAL-SWAP.CREATE.APPROVING')} ${this.params.symbol} ${this.translateService.instant('EXTERNAL-SWAP.CREATE.TOKEN_ALLOWANCE')}`, this.translateService.instant('IN_PROGRESS'));
     this.approveTokenTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Ethereum);
   }
 
   private onOpenSwapHashReceived(txhash: string, hash: string): void {
-    this.notificationService.showMessage('Opening deposit swap...', 'In progress');
+    this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE.OPENING_DEPOSIT_SWAP'), this.translateService.instant('IN_PROGRESS'));
     this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Ethereum);
 
     const localSwap: SwapReference = {

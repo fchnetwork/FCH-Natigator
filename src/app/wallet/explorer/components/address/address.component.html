@@ -2,12 +2,10 @@
   <div class="o-site-wrap o-site-wrap--padding">
     <div class="o-grid o-grid--gutter-sm">
       <div class="o-grid__item u-1/1">
-
-          <h1>Address Information</h1>
-          <p>{{ address }}</p>
-          <p>Balance (Wei) {{ balance }}</p>
-          <p>Balance (Ether) {{ balanceAerum }}</p>
-
+        <h1>{{'EXPLORER.ADDRESS.ADDRESS_INFORMATION' | translate}}</h1>
+        <p>{{ address }}</p>
+        <p>{{'EXPLORER.ADDRESS.BALANCE_WEI' | translate}} {{ balance }}</p>
+        <p>{{'EXPLORER.ADDRESS.BALANCE_ETH' | translate}} {{ balanceAerum }}</p>
       </div>
     </div>
   </div>

@@ -9,7 +9,7 @@ export function genTransactionExplorerUrl(hash: string, chain: Chain): string {
   }
   const environment = new EnvironmentService(new StorageService(new SessionStorageService()));
   let transactionExplorerUrl = null;
-  if(chain === Chain.Aerum){
+  if(chain === Chain.Fuchsia){
     transactionExplorerUrl = `${environment.get().externalBlockExplorer}transaction/${hash}`;
   }
   if(chain === Chain.Ethereum){

@@ -45,7 +45,7 @@ export class RestoreAccountComponent implements OnInit, OnDestroy {
 
   openBackupFile(event, type) {
     const input = event.target;
-    const fileTypes = ["txt", "aer"];
+    const fileTypes = ["txt", "f"];
     if (input.files && input.files[0]) {
       const extension = input.files[0].name
           .split(".")

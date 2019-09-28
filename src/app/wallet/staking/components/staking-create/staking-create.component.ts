@@ -14,6 +14,7 @@ import { StakingReference } from "@app/wallet/staking/models/staking-reference.m
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { Chain } from '@app/core/swap/cross-chain/swap-template-service/chain.enum';
 import { AddressKeyValidationService } from "@app/core/validation/address-key-validation.service";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-staking-create',
@@ -36,7 +37,8 @@ export class StakingCreateComponent implements OnInit {
     private stakingLocalStorageService: StakingLocalStorageService,
     private ethereumTokenService: EthereumTokenService,
     private addressKeyValidationService: AddressKeyValidationService,
-    private environment: EnvironmentService)
+    private environment: EnvironmentService,
+    private translateService: TranslateService)
   { }
 
   async ngOnInit() { }
@@ -44,12 +46,12 @@ export class StakingCreateComponent implements OnInit {
   async stake() {
     try {
       if(!this.addressKeyValidationService.isAddress(this.address)) {
-        this.notificationService.showMessage('Please enter a valid address', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('STAKING.CREATE.PLEASE_ENTER_A_VALID_ADDRESS'), this.translateService.instant('ERROR'));
         return;
       }
       const isKnownDelegate = await this.stakingGovernanceService.isKnown(this.address);
       if(!isKnownDelegate) {
-        this.notificationService.showMessage('Specified delegate is unknown. Please enter a valid delegate', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('STAKING.CREATE.SPECIFIED_DELEGATE_IS_UNKNOWN'), this.translateService.instant('ERROR'));
         return;
       }
       this.stakingInProgress = true;
@@ -59,17 +61,17 @@ export class StakingCreateComponent implements OnInit {
         wallet: this.ethereumAccount.walletType,
         hashCallback: (txHash) => this.transactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
-      this.notificationService.showMessage(`Stakeding ${this.amount} XRM for ${this.address} delegate`, 'In progress');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.CREATE.STAKING')} ${this.amount} ${this.translateService.instant('STAKING.CREATE.XRM_FOR')} ${this.address} ${this.translateService.instant('STAKING.CREATE.DELEGATE')}`, this.translateService.instant('IN_PROGRESS'));
       await this.stakingDelegateService.stake(this.address, tokenAmount, options);
       const stakingReference = { address: this.ethereumAccount.address, delegate: this.address, walletType: this.ethereumAccount.walletType };
       this.stakingLocalStorageService.store(stakingReference);
-      this.notificationService.showMessage(`Successfully staked ${this.amount} XRM for ${this.address} delegate`, 'Done');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.CREATE.SUCCESSFULLY_STAKED')} ${this.amount} ${this.translateService.instant('STAKING.CREATE.XRM_FOR')} ${this.address} ${this.translateService.instant('STAKING.CREATE.DELEGATE')}`, this.translateService.instant('DONE'));
       this.stakeCreated.emit(stakingReference);
       this.stakingInProgress = false;
       this.transactionExplorerUrl = null;
     } catch (err) {
       this.logger.logError('Staking failed', err);
-      this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.UNHANDLED_ERROR_OCCURRED'), this.translateService.instant('ERROR'));
       this.stakingInProgress = false;
     }
   }

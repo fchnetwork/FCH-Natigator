@@ -7,9 +7,8 @@
         [placeholder]="'ACCOUNT.REGISTER_NAME.NAME_PLACEHOLDER' | translate"
         type="text"
         formControlName="name"
-        class="element-wrapper with-button blue"
-        buttonLabel=".aer"></aer-input>
-      <p class="label-error" *ngIf="nameUsed">Name is already reserved. Please use a new one.</p>
+        class="element-wrapper blue"></aer-input>
+      <p class="label-error" *ngIf="nameUsed">{{'ACCOUNT.REGISTER_NAME.NAME_ERROR' | translate}}</p>
       <aer-button data-cy="continue"
         class="large full-width"
         [ngClass]="{'disabled': !registerForm.valid || inProgress}"

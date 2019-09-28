@@ -10,7 +10,6 @@ import { LoggerService } from "@core/general/logger-service/logger.service";
 import { SwapType } from '@app/core/swap/models/swap-type.enum';
 import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { SwapLocalStorageService } from '@app/core/swap/cross-chain/swap-local-storage/swap-local-storage.service';
-import { tickStep } from 'd3-array';
 
 @Component({
   selector: 'app-cross-chain-swap-list',
@@ -37,7 +36,7 @@ export class CrossChainSwapListComponent implements OnInit {
     private notificationService: InternalNotificationService,
     private swapListService: SwapListService,
     private swapLocalStorageService: SwapLocalStorageService,
-    private environment: EnvironmentService
+    private environment: EnvironmentService,
   ) {
     this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
   }

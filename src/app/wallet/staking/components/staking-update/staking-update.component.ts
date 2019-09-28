@@ -16,6 +16,7 @@ import { EthWalletType } from '@app/external/models/eth-wallet-type.enum';
 import { Token } from "@core/transactions/token-service/token.model";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { Chain } from '@app/core/swap/cross-chain/swap-template-service/chain.enum';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-staking-update',
@@ -54,7 +55,8 @@ export class StakingUpdateComponent implements OnInit {
     private ethereumTokenService: EthereumTokenService,
     private ethereumAuthenticationService: EthereumAuthenticationService,
     private storageService: StorageService,
-    private environment: EnvironmentService) {
+    private environment: EnvironmentService,
+    private translateService: TranslateService) {
       this.web3 = this.ethereumAuthenticationService.getWeb3();
       this.injectedWeb3 = this.ethereumAuthenticationService.getInjectedWeb3();
     }
@@ -103,15 +105,15 @@ export class StakingUpdateComponent implements OnInit {
         wallet: this.stakingReference.walletType,
         hashCallback: (txHash) => this.increaseTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
-      this.notificationService.showMessage(`Increasing staking ${this.increaseAmount} XRM for ${this.delegateAddress} delegate`, 'In progress');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.UPDATE.INCREASING_STAKING')} ${this.increaseAmount} ${this.translateService.instant('STAKING.UPDATE.XRM_FOR')} ${this.delegateAddress} ${this.translateService.instant('STAKING.UPDATE.DELEGATE')}`, this.translateService.instant('IN_PROGRESS'));
       await this.stakingDelegateService.stake(this.delegateAddress, tokenAmount, options);
-      this.notificationService.showMessage(`Successfully increased staking ${this.increaseAmount} XRM for ${this.delegateAddress} delegate`, 'Done');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.UPDATE.SUCCESSFULLY_INCREASED_STAKING')} ${this.increaseAmount} ${this.translateService.instant('STAKING.UPDATE.XRM_FOR')} ${this.delegateAddress} ${this.translateService.instant('STAKING.UPDATE.DELEGATE')}`, this.translateService.instant('DONE'));
       this.updateAccountInfo();
       this.increaseTransactionExplorerUrl = null;
       this.increaseStakingInProgress = false;
     } catch (err) {
       this.logger.logError('Staking increase failed', err);
-      this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.UNHANDLED_ERROR_OCCURRED'), this.translateService.instant('ERROR'));
       this.increaseStakingInProgress = false;
     }
   }
@@ -136,15 +138,15 @@ export class StakingUpdateComponent implements OnInit {
         wallet: this.stakingReference.walletType,
         hashCallback: (txHash) => this.decreaseTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
-      this.notificationService.showMessage(`Unstaking ${this.decreaseAmount} XRM from ${this.delegateAddress} delegate`, 'In progress');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.UPDATE.UNSTAKING')} ${this.decreaseAmount} ${this.translateService.instant('STAKING.UPDATE.XRM_FOR')} ${this.delegateAddress} ${this.translateService.instant('STAKING.UPDATE.DELEGATE')}`, this.translateService.instant('IN_PROGRESS'));
       await this.stakingDelegateService.unstake(this.delegateAddress, tokenAmount, options);
-      this.notificationService.showMessage(`Successfully unstaked ${this.decreaseAmount} XRM from ${this.delegateAddress} delegate`, 'Done');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.UPDATE.SUCCESSFULLY_UNSTAKED')} ${this.decreaseAmount} ${this.translateService.instant('STAKING.UPDATE.XRM_FOR')} ${this.delegateAddress} ${this.translateService.instant('STAKING.UPDATE.DELEGATE')}`, this.translateService.instant('SUCCESS'));
       this.updateAccountInfo();
       this.decreaseTransactionExplorerUrl = null;
       this.decreaseStakingInProgress = false;
     } catch (err) {
       this.logger.logError('Unstaking failed', err);
-      this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.UNHANDLED_ERROR_OCCURRED'), this.translateService.instant('ERROR'));
       this.decreaseStakingInProgress = false;
     }
   }

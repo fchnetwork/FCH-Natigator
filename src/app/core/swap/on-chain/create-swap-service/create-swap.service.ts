@@ -43,9 +43,9 @@ export class CreateSwapService {
                 return;
             }
 
-            this.notificationService.notify('Swap creation in progress...', `Swap ID: ${swapCreateResponse.result.swapId}`, "aerum", 3000);
+            this.notificationService.notify(this.translateService.instant('SWAP.CREATE.SWAP_CREATION_IN_PROGRESS'), `${this.translateService.instant('SWAP.CREATE.SWAP_ID_')} ${swapCreateResponse.result.swapId}`, 'aerum', 3000);
             await this.createSwapBasedOnMode(swapCreateResponse.result);
-            this.notificationService.notify('Swap created', `Swap ID: ${swapCreateResponse.result.swapId}`, "aerum");
+            this.notificationService.notify(this.translateService.instant('SWAP.CREATE.SWAP_CREATED'), `${this.translateService.instant('SWAP.CREATE.SWAP_ID_')} ${swapCreateResponse.result.swapId}`, 'aerum');
         }
     }
 

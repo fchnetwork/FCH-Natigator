@@ -18,6 +18,7 @@ import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap
 import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { ModalService } from '@core/general/modal-service/modal.service';
 import { TokenService } from '@core/transactions/token-service/token.service';
+import { TranslateService } from "@ngx-translate/core";
 
 interface SwapCommonOperationsService {
   expireSwap(swapId: string) : Promise<TransactionReceipt>;
@@ -50,7 +51,8 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
     private erc20TokenService: ERC20TokenService,
     private notificationService: NotificationService,
     private tokenService: TokenService,
-    private environment: EnvironmentService
+    private environment: EnvironmentService,
+    private translateService: TranslateService,
   ) { }
 
   async ngOnInit() {
@@ -93,10 +95,10 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
     } catch(e) {
       if(e instanceof TokenError) {
         this.logger.logError('Swap action error. Cannot load token information', e);
-        this.notificationService.notify('Error', 'Please configure swap token first', "aerum", 3000);
+        this.notificationService.notify(this.translate('ERROR'), this.translate('SWAP.LOAD.PLEASE_CONFIGURE_SWAP_TOKEN_FIRST'), "aerum", 3000);
       } else {
         this.logger.logError('Swap action error:', e);
-        this.notificationService.notify('Error', 'Swap not found or invalid', "aerum", 3000);
+        this.notificationService.notify(this.translate('ERROR'), this.translate('SWAP.LOAD.SWAP_NOT_FOUND_OR_INVALID'), "aerum", 3000);
       }
     }
     finally {
@@ -119,13 +121,13 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
 
     const modalResponse = await this.modalService.openSwapLoadConfirm(loadedSwap);
     if(modalResponse.result.confirmed) {
-      this.notificationService.notify('Swap completion in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
+      this.notificationService.notify(this.translate('SWAP.LOAD.SWAP_COMPLETION_IN_PROGRESS'), `${this.translate('SWAP.LOAD.SWAP_ID_')} ${this.swapId}`, "aerum", 3000);
       await this.confirm(loadedSwap);
-      this.notificationService.notify('Swap done', `Swap ID: ${this.swapId}`, "aerum");
+      this.notificationService.notify(this.translate('SWAP.LOAD.SWAP_DONE'), `${this.translate('SWAP.LOAD.SWAP_ID_')} ${this.swapId}`, "aerum");
     } else if(modalResponse.result.rejected) {
-      this.notificationService.notify('Swap rejection in progress...', `Swap ID: ${this.swapId}`, "aerum", 3000);
+      this.notificationService.notify(this.translate('SWAP.LOAD.SWAP_REJECTION_IN_PROGRESS'), `${this.translate('SWAP.LOAD.SWAP_ID_')} ${this.swapId}`, "aerum", 3000);
       await this.reject();
-      this.notificationService.notify('Swap rejected', `Swap ID: ${this.swapId}`, "aerum");
+      this.notificationService.notify(this.translate('SWAP.LOAD.SWAP_REJECTED'), `${this.translate('SWAP.LOAD.SWAP_ID_')} ${this.swapId}`, "aerum");
     }
   }
 
@@ -320,5 +322,9 @@ export class LoadSwapComponent implements OnInit, OnDestroy {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
+  }
+
+  private translate(key: string): string {
+    return this.translateService.instant(key);
   }
 }
