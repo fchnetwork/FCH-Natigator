@@ -1,48 +1,51 @@
 <aer-modal-container>
   <div class="ethereum-wallet">
-    <h1>{{'EXTERNAL-SWAP.WALLET.TITLE'|translate}}</h1>
+    <h1>{{ 'EXTERNAL-SWAP.WALLET.TITLE' | translate }}</h1>
     <div aerRow *ngIf="injectedWeb3">
       <div aerColumn size="sm-4" class="cell cell--left">
-        {{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_WALLET'|translate}}
+        {{ 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_WALLET' | translate }}
       </div>
       <div aerColumn size="sm-8" class="cell cell--left">
         <aer-radio-group class="address-option">
-          <aer-radio-button [value]="walletTypes.Injected" (change)="onWalletSelect($event)">{{injectedWeb3Name}}</aer-radio-button>
-          <aer-radio-button [value]="walletTypes.Imported" (change)="onWalletSelect($event)" [checked]="true">{{'EXTERNAL-SWAP.WALLET.FIELD_STORED_KEYS'|translate}}</aer-radio-button>
+          <aer-radio-button [value]="walletTypes.Injected" (change)="onWalletSelect($event)">{{ injectedWeb3Name }}</aer-radio-button>
+          <aer-radio-button [value]="walletTypes.Imported" (change)="onWalletSelect($event)" [checked]="true">{{ 'EXTERNAL-SWAP.WALLET.FIELD_STORED_KEYS' | translate }}</aer-radio-button>
         </aer-radio-group>
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell cell--left">
-        {{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_ADDRESS'|translate}}
+        {{ 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_ADDRESS' | translate }}
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <aer-select [(ngModel)]="address" icon="key" [disabled]="!isValidNetwork"
-                    (ngModelChange)="onAddressChange()" placeholder="{{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_YOUR_ACCOUNT'|translate}}">
-          <aer-select-option *ngFor="let item of addresses;" [value]="item">
-            <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
+        <aer-select [(ngModel)]="address" icon="key" [disabled]="!isValidNetwork" (ngModelChange)="onAddressChange()" placeholder="{{ 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_YOUR_ACCOUNT' | translate }}">
+          <aer-select-option *ngFor="let item of addresses" [value]="item">
+            <img class="avatar" [src]="item | generateavatar" /><span>{{ item }}</span>
           </aer-select-option>
-          <aer-select-option *ngIf="walletTypes.Imported === selectedWalletType"><span>{{'EXTERNAL-SWAP.WALLET.BTN_ADD_ACCOUNT'|translate}}</span></aer-select-option>
+          <aer-select-option *ngIf="walletTypes.Imported === selectedWalletType"
+            ><span>{{ 'EXTERNAL-SWAP.WALLET.BTN_ADD_ACCOUNT' | translate }}</span></aer-select-option
+          >
         </aer-select>
       </div>
     </div>
     <div aerRow *ngIf="importInProgress">
       <div aerColumn size="sm-12" class="cell">
-        <aer-input (buttonFn)="import()"
-                    [(ngModel)]="importedPrivateKey"
-                    [attr.disabled]="!importedPrivateKey"
-                    class="with-button"
-                    [ngClass]="{ 'blue': importedPrivateKey, 'grey': !importedPrivateKey }"
-                    placeholder="{{'EXTERNAL-SWAP.WALLET.PLACEHOLDER_IMPORT'|translate}}"
-                    buttonLabel="{{'LABELS.IMPORT'|translate}}">
+        <aer-input
+          (buttonFn)="import()"
+          [(ngModel)]="importedPrivateKey"
+          [attr.disabled]="!importedPrivateKey"
+          class="with-button"
+          [ngClass]="{ blue: importedPrivateKey, grey: !importedPrivateKey }"
+          placeholder="{{'EXTERNAL-SWAP.WALLET.PLACEHOLDER_IMPORT'|translate}}"
+          buttonLabel="{{'LABELS.IMPORT'|translate}}"
+        >
         </aer-input>
       </div>
     </div>
     <div aerRow *ngIf="address">
       <div aerColumn size="sm-12" class="cell">
-        <img *ngIf="addressQR" [src]="addressQR" alt="QR Code">
+        <img *ngIf="addressQR" [src]="addressQR" alt="QR Code" />
       </div>
     </div>
     <div aerRow *ngIf="address">
@@ -50,45 +53,45 @@
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell cell--left">
-        {{(params.direction === 'opposite' ? 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_ASSET_TO_RECEIVE' : 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_ASSET_TO_SEND')|translate}}
+        {{ (params.direction === 'opposite' ? 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_ASSET_TO_RECEIVE' : 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_ASSET_TO_SEND') | translate }}
       </div>
     </div>
     <div aerRow *ngIf="address">
       <div aerColumn size="sm-12" class="cell">
-        <aer-select [(ngModel)]="token"
-                    dataKey="symbol"
-                    (ngModelChange)="onTokenChange()" [disabled]="!isValidNetwork" placeholder="{{'EXTERNAL-SWAP.WALLET.FIELD_SELECT_YOUR_TOKEN'|translate}}">
-          <aer-select-option class="token-select-option" *ngFor="let token of tokens;" [value]="token">
+        <aer-select [(ngModel)]="token" dataKey="symbol" (ngModelChange)="onTokenChange()" [disabled]="!isValidNetwork" placeholder="{{ 'EXTERNAL-SWAP.WALLET.FIELD_SELECT_YOUR_TOKEN' | translate }}">
+          <aer-select-option class="token-select-option" *ngFor="let token of tokens" [value]="token">
             <span>
-              <aer-icon>{{token.symbol.toLowerCase()}}</aer-icon>
+              <aer-icon>{{ token.symbol.toLowerCase() }}</aer-icon>
               <app-token-description [token]="token"></app-token-description>
             </span>
           </aer-select-option>
-          <aer-select-option><span>{{'EXTERNAL-SWAP.WALLET.BTN_ADD_TOKEN'|translate}}</span></aer-select-option>
+          <aer-select-option
+            ><span>{{ 'EXTERNAL-SWAP.WALLET.BTN_ADD_TOKEN' | translate }}</span></aer-select-option
+          >
         </aer-select>
       </div>
     </div>
     <app-add-token *ngIf="address && importTokenInProgress" [wallet]="selectedWalletType" [account]="address" (tokenAdded)="onTokenAdded($event)"></app-add-token>
     <div class="table-simple">
       <div>
-        <div>{{'EXTERNAL-SWAP.WALLET.FIELD_BALANCE'|translate}}</div>
-        <div *ngIf="tokenSymbol === 'ETH'">{{balance | convertToEther | number:'1.2-5'}} ETH</div>
-        <div *ngIf="tokenSymbol !== 'ETH'">{{balance | number:'1.2-5'}} {{ tokenSymbol }}</div>
+        <div>{{ 'EXTERNAL-SWAP.WALLET.FIELD_BALANCE' | translate }}</div>
+        <div *ngIf="tokenSymbol === 'ETH'">{{ balance | convertToEther | number: '1.2-5' }} ETH</div>
+        <div *ngIf="tokenSymbol !== 'ETH'">{{ balance | number: '1.2-5' }} {{ tokenSymbol }}</div>
       </div>
     </div>
     <div class="message">
-      {{'EXTERNAL-SWAP.WALLET.FIELD_MESSAGE'|translate}}
+      {{ 'EXTERNAL-SWAP.WALLET.FIELD_MESSAGE' | translate }}
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <aer-button (buttonFn)="next()" class="large full-width"
-          [ngClass]="{ 'blue': canMoveNext, 'grey': !canMoveNext }" [disabled]="!canMoveNext || !isValidNetwork">{{'EXTERNAL-SWAP.WALLET.BTN_NEXT'|translate}}
+        <aer-button (buttonFn)="next()" class="large full-width" [ngClass]="{ blue: canMoveNext, grey: !canMoveNext }" [disabled]="!canMoveNext || !isValidNetwork"
+          >{{ 'EXTERNAL-SWAP.WALLET.BTN_NEXT' | translate }}
         </aer-button>
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <aer-button (buttonFn)="cancel()" class="large full-width">{{'EXTERNAL-SWAP.WALLET.BTN_CANCEL'|translate}}</aer-button>
+        <aer-button (buttonFn)="cancel()" class="white large full-width">{{ 'EXTERNAL-SWAP.WALLET.BTN_CANCEL' | translate }}</aer-button>
       </div>
     </div>
   </div>

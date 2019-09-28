@@ -252,7 +252,7 @@ export class AuthenticationService {
         return new Promise( (resolve) => {
             if( formatAddress ){
                 resolve( QRCode.toDataURL( formatAddress, {margin: 0, color: {
-                    dark: '#636363',  // Blue dots
+                    dark: '#ffffff',  // Blue dots
                     light: '#0000' // Transparent background
                   }} ) );
             }

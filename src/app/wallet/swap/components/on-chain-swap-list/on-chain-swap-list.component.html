@@ -1,11 +1,10 @@
 <div aerRow>
   <div aerColumn size="col-md-12">
-
     <div aerRow>
       <div aerColumn size="md-12">
         <div class="swap__header-buttons">
-          <h3>{{'SWAP.LIST.ONCHAIN_TITLE'|translate}}</h3>
-          <aer-button (buttonFn)="createSwap()" class="blue">{{'SWAP.LIST.BTN_CREATE'|translate}}</aer-button>
+          <h3>{{ 'SWAP.LIST.ONCHAIN_TITLE' | translate }}</h3>
+          <aer-button (buttonFn)="createSwap()" class="white">{{ 'SWAP.LIST.BTN_CREATE' | translate }}</aer-button>
         </div>
       </div>
     </div>
@@ -14,32 +13,28 @@
         <aer-card>
           <aer-table [data]="swaps" [loading]="loading" [perfectScrollbarDisabled]="perfectScrollbarDisabled">
             <ng-template aerTemplate="header">
-              <th id="id">{{'SWAP.LIST.TITLE_SWAP_ID'|translate}}</th>
-              <th id="counterparty">{{'SWAP.LIST.TITLE_COUNTERPARTY'|translate}}</th>
-              <th id="currency">{{'SWAP.LIST.TITLE_AMOUNTS'|translate}}</th>
-              <th id="createdOn">{{'SWAP.LIST.TITLE_DATE'|translate}}</th>
-              <th id="status">{{'SWAP.LIST.TITLE_STATUS'|translate}}</th>
+              <th id="id">{{ 'SWAP.LIST.TITLE_SWAP_ID' | translate }}</th>
+              <th id="counterparty">{{ 'SWAP.LIST.TITLE_COUNTERPARTY' | translate }}</th>
+              <th id="currency">{{ 'SWAP.LIST.TITLE_AMOUNTS' | translate }}</th>
+              <th id="createdOn">{{ 'SWAP.LIST.TITLE_DATE' | translate }}</th>
+              <th id="status">{{ 'SWAP.LIST.TITLE_STATUS' | translate }}</th>
             </ng-template>
             <ng-template aerTemplate="body" let-swap>
               <tr>
-                <td class="link" (click)="openSwap(swap.id)">{{swap.id}}</td>
-                <td>{{swap.counterparty | truncate: 16}}</td>
-                <td>{{swap.openValue | number:'1.2-18'}} {{swap.openAsset}}
-                  <aer-icon class="icon">angle-right</aer-icon> {{swap.closeValue | number:'1.2-18'}} {{swap.closeAsset}}</td>
-                <td>{{swap.createdOn | date: 'dd MMM, yyyy, h:mm a'}}</td>
+                <td class="link" (click)="openSwap(swap.id)">{{ swap.id }}</td>
+                <td>{{ swap.counterparty | truncate: 16 }}</td>
+                <td>{{ swap.openValue | number: '1.2-18' }} {{ swap.openAsset }} <aer-icon class="icon">angle-right</aer-icon> {{ swap.closeValue | number: '1.2-18' }} {{ swap.closeAsset }}</td>
+                <td>{{ swap.createdOn | date: 'dd MMM, yyyy, h:mm a' }}</td>
                 <td>
-                  <span *ngIf="swap.state === 1" class="pending">
-                    <aer-icon class="icon">pending</aer-icon> {{'SWAP.LIST.STATUS_PENDING'|translate}}</span>
-                  <span *ngIf="swap.state === 2" class="closed">
-                    <aer-icon class="icon">check-square-o</aer-icon> {{'SWAP.LIST.STATUS_COMPLETED'|translate}}</span>
-                  <span *ngIf="swap.state === 3" class="cancelled">
-                    <aer-icon class="icon">exclamation-triangle</aer-icon> {{'SWAP.LIST.STATUS_CANCELLED'|translate}}</span>
+                  <span *ngIf="swap.state === 1" class="pending"> <aer-icon class="icon">pending</aer-icon> {{ 'SWAP.LIST.STATUS_PENDING' | translate }}</span>
+                  <span *ngIf="swap.state === 2" class="closed"> <aer-icon class="icon">check-square-o</aer-icon> {{ 'SWAP.LIST.STATUS_COMPLETED' | translate }}</span>
+                  <span *ngIf="swap.state === 3" class="cancelled"> <aer-icon class="icon">exclamation-triangle</aer-icon> {{ 'SWAP.LIST.STATUS_CANCELLED' | translate }}</span>
                 </td>
               </tr>
             </ng-template>
           </aer-table>
           <app-divider [showLine]="false"></app-divider>
-          <aer-button class="full-width blue" (buttonFn)="showMore()" [disabled]="!canShowMore">{{'SHOW_MORE'|translate}}</aer-button>
+          <aer-button class="full-width blue" (buttonFn)="showMore()" [disabled]="!canShowMore">{{ 'SHOW_MORE' | translate }}</aer-button>
         </aer-card>
       </div>
     </div>

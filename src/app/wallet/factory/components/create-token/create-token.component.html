@@ -1,22 +1,22 @@
-<h3>{{'TOKEN_FACTORY.TITLE'|translate}}</h3>
+<h3>{{ 'TOKEN_FACTORY.TITLE' | translate }}</h3>
 
 <div aerRow>
   <div aerColumn size="sm-6">
-    <aer-card title="{{'TOKEN_FACTORY.CREATE.TITLE'|translate}}">
+    <aer-card title="{{ 'TOKEN_FACTORY.CREATE.TITLE' | translate }}">
       <form [formGroup]="createForm">
         <div aerRow>
           <div aerColumn size="sm-12">
-            {{'TOKEN_FACTORY.CREATE.FIELD_NAME'|translate}}
+            {{ 'TOKEN_FACTORY.CREATE.FIELD_NAME' | translate }}
           </div>
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_NAME_PLACEHOLDER'|translate}}" formControlName="name" [ngClass]="{'has-error': hasError(createForm.controls.name)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_NAME_PLACEHOLDER'|translate}}" formControlName="name" [ngClass]="{ 'has-error': hasError(createForm.controls.name) }" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            {{'TOKEN_FACTORY.CREATE.FIELD_SYMBOL'|translate}}
+            {{ 'TOKEN_FACTORY.CREATE.FIELD_SYMBOL' | translate }}
           </div>
         </div>
         <div aerRow>
@@ -27,49 +27,66 @@
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            {{'TOKEN_FACTORY.CREATE.FIELD_SUPPLY'|translate}}
+            {{ 'TOKEN_FACTORY.CREATE.FIELD_SUPPLY' | translate }}
           </div>
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_SUPPLY_PLACEHOLDER'|translate}}" formControlName="supply" [ngClass]="{'has-error': hasError(createForm.controls.supply)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_SUPPLY_PLACEHOLDER'|translate}}" formControlName="supply" [ngClass]="{ 'has-error': hasError(createForm.controls.supply)}" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            {{'TOKEN_FACTORY.CREATE.FIELD_DECIMALS'|translate}}
+            {{ 'TOKEN_FACTORY.CREATE.FIELD_DECIMALS' | translate }}
           </div>
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_SUPPLY_PLACEHOLDER'|translate}}" formControlName="decimals" [ngClass]="{'has-error': hasError(createForm.controls.decimals)}" ngDefaultControl></aer-input>
+            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_SUPPLY_PLACEHOLDER'|translate}}" formControlName="decimals" [ngClass]="{ 'has-error': hasError(createForm.controls.decimals) }" ngDefaultControl></aer-input>
           </div>
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            {{'TOKEN_FACTORY.CREATE.FIELD_ANS_NAME'|translate}}
+            {{ 'TOKEN_FACTORY.CREATE.FIELD_ANS_NAME' | translate }}
           </div>
         </div>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-input placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_ANS_PLACEHOLDER'|translate}}" class="blue" [ngClass]="{'has-error': hasError(createForm.controls.ansName)}" formControlName="ansName" ngDefaultControl></aer-input>
-            <span *ngIf="hasError(createForm.controls.ansName)" class="error">{{'TOKEN_FACTORY.CREATE.FIELD_ANS_NAME_ERROR'|translate}}</span>
+            <aer-input
+              placeholder="{{'TOKEN_FACTORY.CREATE.FIELD_ANS_PLACEHOLDER'|translate}}"
+              class="with-button blue"
+              [ngClass]="{ 'has-error': hasError(createForm.controls.ansName) }"
+              buttonLabel=".f"
+              formControlName="ansName"
+              ngDefaultControl
+            ></aer-input>
+            <span *ngIf="hasError(createForm.controls.ansName)" class="error">{{ 'TOKEN_FACTORY.CREATE.FIELD_ANS_NAME_ERROR' | translate }}</span>
           </div>
         </div>
         <div *ngIf="address" aerRow>
           <div aerColumn size="sm-12">
-            {{'TOKEN_FACTORY.CREATE.FIELD_ADDRESS'|translate}}
+            {{ 'TOKEN_FACTORY.CREATE.FIELD_ADDRESS' | translate }}
           </div>
         </div>
         <div *ngIf="address" aerRow>
           <div aerColumn size="sm-12">
-            <aer-input [(ngModel)]="address" class="blue with-button" [ngModelOptions]="{standalone: true}" buttonLabel="{{'TOKEN_FACTORY.CREATE.BTN_COPY'|translate}}" [attr.readonly]="true" (buttonFn)="copyAddress()" ngDefaultControl></aer-input>
+            <aer-input
+              [(ngModel)]="address"
+              class="blue with-button"
+              [ngModelOptions]="{ standalone: true }"
+              buttonLabel="{{ 'TOKEN_FACTORY.CREATE.BTN_COPY' | translate }}"
+              [attr.readonly]="true"
+              (buttonFn)="copyAddress()"
+              ngDefaultControl
+            ></aer-input>
           </div>
         </div>
         <app-divider [showLine]="true" [fullWidth]="true"></app-divider>
         <div aerRow>
           <div aerColumn size="sm-12">
-            <aer-button class="normal" type="submit" (buttonFn)="createToken()" [ngClass]="{'blue': canCreateToken()}" [disabled]="!canCreateToken()">{{'TOKEN_FACTORY.CREATE.BTN_CREATE'|translate}}</aer-button>
+            <aer-button class="large" type="submit" (buttonFn)="createToken()" [ngClass]="{ blue: canCreateToken() }" [disabled]="!canCreateToken()">{{
+              'TOKEN_FACTORY.CREATE.BTN_CREATE' | translate
+            }}</aer-button>
           </div>
         </div>
       </form>

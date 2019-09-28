@@ -427,7 +427,8 @@
       "MINED": "Mined"
     },
     "AN_ERROR_OCCURRED_DURING_TRANSACTION": "An error occurred during transaction. Please review all the fields and try again.",
-    "AN_ERROR_OCCURRED_DURING_SENDING_THE_TOKENS": "An error occurred during sending the tokens. Please review all the fields and try again."
+    "AN_ERROR_OCCURRED_DURING_SENDING_THE_TOKENS": "An error occurred during sending the tokens. Please review all the fields and try again.",
+    "SELECT_YOUR_TOKEN": "Select your token"
   },
   "CONNECTION": {
     "CONNECTION_STATUS": "Connection status",

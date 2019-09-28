@@ -1,11 +1,11 @@
 <aer-card class="account-overview">
-    <div aerRow>
-      <div aerColumn size="sm-12">
-          <span class="title">{{'DASHBOARD_ACCOUNT_OVERVIEW.OVERVIEW'|translate}}</span>
-          <div class="details">
-            <span class="balance">{{walletBalance | bignumber:'1.0-4'}} Gas</span>
-          </div>
-          <app-address-clipboard address="{{ address }}" short="true"></app-address-clipboard>
+  <div aerRow>
+    <div aerColumn size="sm-12">
+      <span class="title">{{'DASHBOARD_ACCOUNT_OVERVIEW.OVERVIEW'|translate}}</span>
+      <div class="details">
+        <span class="balance">{{ walletBalance | bignumber: '1.0-4' }} Gas</span>
       </div>
+      <app-address-clipboard address="{{ address }}"></app-address-clipboard>
     </div>
+  </div>
 </aer-card>
