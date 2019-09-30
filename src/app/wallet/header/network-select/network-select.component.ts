@@ -14,6 +14,7 @@ export class NetworkSelectComponent implements OnInit {
   liveMode = {mode: EnvMode.Live, text: ''};
   testMode = {mode: EnvMode.Test, text: ''};
   selectedMode;
+  isMobileBuild = false;
 
   constructor(private environment: EnvironmentService,
     private translate: TranslateService,
@@ -21,6 +22,7 @@ export class NetworkSelectComponent implements OnInit {
   {
     this.liveMode.text = this.translate.instant('HEADER.NETWORK-SELECT.LIVE');
     this.testMode.text = this.translate.instant('HEADER.NETWORK-SELECT.TEST');
+    this.isMobileBuild = this.environment.get().isMobileBuild;
   }
 
   ngOnInit() {
