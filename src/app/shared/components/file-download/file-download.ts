@@ -119,7 +119,7 @@ export class AerumBackupFile {
     const promise = new Promise<string>(
       (resolve, reject): void => {
         window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, fs => {
-          let dirPath = 'Fuchsia';
+          let dirPath = 'FCH';
           let filePath = dirPath + '/' + filename;
           if(window.device.platform === 'iOS') {
             dirPath = '/';

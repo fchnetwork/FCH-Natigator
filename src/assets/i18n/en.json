@@ -66,8 +66,8 @@
       "NAME_ERROR": "Name is already reserved. Please use a new one.",
       "SKIP_STEP": "Skip this step",
       "ERROR_REQUESTING_AERO": "An error occurred while requesting Gas. Please contact administrator.",
-      "AERUMBIT_TITLE": "Fuchsiabit",
-      "REQUESTING_TOKEN": "Requesting fuchsiabit access token.",
+      "AERUMBIT_TITLE": "FCHabit",
+      "REQUESTING_TOKEN": "Requesting FCHabit access token.",
       "REQUESTING_AERO": "Requesting Gas for fns name registration."
     },
     "BACKUP_PROMPT": {
@@ -78,7 +78,7 @@
     },
     "BACKUP_DISCLAIMER": {
       "TITLE": "Warning!",
-      "WARNING_1": "You should ONLY use the official Fuchsia client. ",
+      "WARNING_1": "You should ONLY use the official FCH client. ",
       "WARNING_2": "Seed Words is the only one way to recover access to your account, treat it with care. ",
       "WARNING_3": "Please be careful and never input your SEED into fake 'clients'. Otherwise your account will be compromised and you will lose all of your funds. ",
       "SAVE_FILE_BTN": "Save file",
@@ -86,7 +86,7 @@
     },
     "BACKUP_CREATE" : {
       "TITLE": "Save mnemonic seed",
-      "SUBTITLE": "Your FUCHSIA account depends only on you and your mnemonic phrase. It's important to back it up.",
+      "SUBTITLE": "Your FCH account depends only on you and your mnemonic phrase. It's important to back it up.",
       "WRITE_DOWN": "Please carefully write down these 12 words or ",
       "COPY_LINK": "copy them.",
       "SAVE_FILE_BTN": "Save file",
@@ -179,12 +179,12 @@
       "TAB_TITLE": "General",
       "DESCRIPTION": "Number of Blocks to show in Blockchain Explorer",
       "BLOCKS_NUMB_PLACEHOLDER": "Number of Blocks",
-      "DERIVATION_PATH_LABEL": "Fuchsia Derivation Path",
+      "DERIVATION_PATH_LABEL": "FCH Derivation Path",
       "LANGUAGE_LABEL": "Language",
       "NOTIFICATIONS": {
         "CHANGE_LANGUAGE": {
           "TITLE": "Language has been changed",
-          "BODY": "Language of Fuchsia has been changed to "
+          "BODY": "Language of FCH Wallet has been changed to "
         },
         "CHANGE_DERIVATION": {
           "TITLE": "Your derivation path has been modified",
@@ -194,8 +194,8 @@
     },
     "SYSTEM": {
       "TAB_TITLE": "System",
-      "AERUM_WEBSOCKET_URL": "Fuchsia Node Websocket URL",
-      "AERUM_RPC_URL": "Fuchsia Node RPC URL",
+      "AERUM_WEBSOCKET_URL": "FCH Node Websocket URL",
+      "AERUM_RPC_URL": "FCH Node RPC URL",
       "ETHEREUM_NODE_URL": "Ethereum Node URL"
     },
     "ETHWALLET": {
@@ -267,7 +267,7 @@
       "TITLE": "QR Scanner",
       "NO_CAMERAS": "No cameras have been detected.",
       "NO_PERMISSIONS":
-        "You need to grant FUCHSIA a permission to access your camera.",
+        "You need to grant FCH Wallet a permission to access your camera.",
       "QR_CODE_SCANNING_CANCELLED": "QR code scanning cancelled.",
       "QR_CODE_SCANNING_FAILED": "QR code scanning failed:"
     }
@@ -295,7 +295,7 @@
   "TO": "To",
   "AMOUNT": "Amount",
   "SEND_EVERYTHING": "Send everything",
-  "AERUM": "Fuchsia",
+  "AERUM": "FCH Network",
   "AERO": "Gas",
   "SHOW_MORE_OPTIONS": "Show more options",
   "SHOW_LESS_OPTIONS": "Show less options",
@@ -313,7 +313,7 @@
   "TRANSACTION_MODAL": "Transaction",
   "I_UNDERSTAND": "I understand",
   "WARNING": "Warning!",
-  "REGISTRATION_WARNING_TXT1": "You should ONLY use the official Fuchsia client.",
+  "REGISTRATION_WARNING_TXT1": "You should ONLY use the official FCH client.",
   "REGISTRATION_WARNING_TXT2":
     "Seed Words is the only one way to recover access to your account, treat it with care.",
   "REGISTRATION_WARNING_TXT3":
@@ -410,7 +410,7 @@
     "MAIN_TITLE": "Send & Receive Crypto",
     "READ_MORE": "read more",
     "WARNING_SHORT": "Please don't use this address for Ethereum transactions - ",
-    "WARNING": "Please don't use this address to send your XF and other tokens from Ethereum blockchain - it may be lost forever. This address is on Fuchsia blockchain and should be used only for XF-20 tokens",
+    "WARNING": "Please don't use this address to send your XF and other tokens from Ethereum blockchain - it may be lost forever. This address is on FCH Network blockchain and should be used only for XF-20 tokens",
     "NOTIFICATION_TITLE_TRANSACTION_STATUS": "Transaction Status",
     "NOTIFICATION_BODY_SUCCES_TRANSACTION": "You have successfully sent",
     "NOTIFICATION_TITLE_ATTENTION": "Attention!",
@@ -432,13 +432,13 @@
   },
   "CONNECTION": {
     "CONNECTION_STATUS": "Connection status",
-    "CONNECTING_TO_AERUM": "Connecting to FUCHSIA network...",
+    "CONNECTING_TO_AERUM": "Connecting to FCH network...",
     "STATUS_TITLE": {
       "DISCONNECTED": "Disconnected",
       "CONNECTED": "Connected"
     },
     "STATUS_BODY": {
-      "DISCONNECTED": "Connection to FUCHSIA network has been lost",
+      "DISCONNECTED": "Connection to FCH network has been lost",
       "CONNECTED": "Connected to AERUM Network"
     }
   },
@@ -610,7 +610,7 @@
     },
     "CREATE": {
       "TITLE": "Create Exchange Swap",
-      "FIELD_RECEIVING_AERUM_TOKEN": "Receiving Fuchsia token:",
+      "FIELD_RECEIVING_AERUM_TOKEN": "Receiving FCH Network token:",
       "FIELD_SELECT_YOUR_TOKEN": "Select your token",
       "FIELD_AMOUNT_OF_TOKEN_TO_RECEIVE": "Amount of token to receive:",
       "FIELD_TYPE_AMOUNT": "Type amount",
@@ -618,7 +618,7 @@
       "FIELD_SELECT_YOUR_COUNTERPARTY": "Select your counterparty",
       "FIELD_SEND_ETHEREUM_ASSET": "Send Ethereum asset",
       "FIELD_AMOUNT": "Amount",
-      "FIELD_EXCHANGE_RATE": "Exchange rate (Fuchsia token/Eth asset)",
+      "FIELD_EXCHANGE_RATE": "Exchange rate (FCH Network token/Eth asset)",
       "FIELD_SECRET_KEY": "Secret key",
       "FIELD_MESSAGE":
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
@@ -640,16 +640,16 @@
     },
     "CREATE-OPPOSITE": {
       "TITLE": "Create Exchange Swap",
-      "FIELD_SENDING_AERUM_ASSET_": "Sending Fuchsia asset:",
+      "FIELD_SENDING_AERUM_ASSET_": "Sending FCH asset:",
       "FIELD_SELECT_YOUR_TOKEN": "Select your token",
       "FIELD_AMOUNT_TO_SEND": "Amount to send:",
       "FIELD_TYPE_AMOUNT": "Type amount",
       "FIELD_EXCHANGE_COUNTERPARTY": "Exchange counterparty:",
       "FIELD_SELECT_YOUR_COUNTERPARTY": "Select your counterparty",
-      "FIELD_SENDING_AERUM_ASSET": "Sending Fuchsia asset",
+      "FIELD_SENDING_AERUM_ASSET": "Sending FCH asset",
       "FIELD_AMOUNT": "Amount to receive",
       "FIELD_BALANCE": "Balance",
-      "FIELD_EXCHANGE_RATE": "Exchange rate (Fuchsia asset/Ethereum asset)",
+      "FIELD_EXCHANGE_RATE": "Exchange rate (FCH asset/Ethereum asset)",
       "FIELD_SECRET_KEY": "Secret key",
       "FIELD_MESSAGE":
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
@@ -765,7 +765,7 @@
     "OWNER": "already own",
     "NAME_IS": "Name is",
     "LONG_DESCRIPTION":
-      "The Fuchsia Name Service is a distributed, open, and extensible naming system based on the Fuchsia blockchain. Once you have a name, you can tell your friends to send GAS or tokens to yourname.fer instead of 0x7cB57B5A97eAbe942.....",
+      "The FCH Name Service is a distributed, open, and extensible naming system based on the FCH blockchain. Once you have a name, you can tell your friends to send GAS or tokens to yourname.fer instead of 0x7cB57B5A97eAbe942.....",
     "UNHANDLED_ERROR": "Unknown error occurred",
     "CHECK_NAME_ERROR": "Error while checking name",
     "BUY_NAME_ERROR": "Error while buying name",
@@ -884,7 +884,7 @@
     "CREATE": {
       "TITLE": "Create Token",
       "FIELD_NAME": "Name",
-      "FIELD_NAME_PLACEHOLDER": "e.g. Fuchsia",
+      "FIELD_NAME_PLACEHOLDER": "e.g. FCH",
       "FIELD_SYMBOL": "Symbol",
       "FIELD_SYMBOL_PLACEHOLDER": "e.g. GAS",
       "FIELD_SYMBOL_ERROR": "Please enter valid symbol. Only capital letters allowed.",
@@ -894,7 +894,7 @@
       "FIELD_DECIMALS_PLACEHOLDER": "e.g. 18",
       "FIELD_ADDRESS": "Address",
       "FIELD_ANS_NAME": "NS Name",
-      "FIELD_ANS_PLACEHOLDER": "e.g. fuchsia",
+      "FIELD_ANS_PLACEHOLDER": "e.g. FCH",
       "FIELD_ANS_NAME_ERROR": "Please enter valid fns name. Min 5 characters.",
       "FIELD_ESTIMATED_FEE": "Estimated Fee",
       "BTN_COPY": "Copy",

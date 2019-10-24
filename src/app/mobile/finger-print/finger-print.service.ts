@@ -52,7 +52,7 @@ export class FingerPrintService {
       return null;
     }
     return new Promise<string>(resolve => {
-      this.touchId.verify(this.key, 'Fuchsia Wallet', password => {
+      this.touchId.verify(this.key, 'FCH Wallet', password => {
         resolve(password);
       });
     });

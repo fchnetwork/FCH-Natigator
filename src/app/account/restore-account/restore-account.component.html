@@ -16,7 +16,7 @@
     </div>
     <app-divider label="OR"></app-divider>
     <form [formGroup]="recoverForm">
-      <aer-textarea icon="aerumleaf" formControlName="seed" [placeholder]="'ACCOUNT.RESTORE.SEED_WORD_PLACEHOLDER' | translate"
+      <aer-textarea icon="fuchsia" formControlName="seed" [placeholder]="'ACCOUNT.RESTORE.SEED_WORD_PLACEHOLDER' | translate"
         [addition]="address" [(ngModel)]="seedFileText" ngDefaultControl>{{ seedFileText }}</aer-textarea>
 
       <aer-input  icon="key"

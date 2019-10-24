@@ -15,7 +15,7 @@
     <div aerColumn size="sm-6">
       <form [formGroup]="transferForm">
         <div class="input-name">{{'ENS.FIELD_TRANSFER_TO'|translate}}</div>
-        <aer-input [(ngModel)]="transferTo" class="with-button" [ngClass]="{'has-error': hasError(transferForm.controls.transferTo), 'blue': canTransfer(), 'grey': !canTransfer()}" buttonLabel="{{'ENS.BTN_TRANSFER'|translate}}" (buttonFn)="setOwner()" icon="aerum" formControlName="transferTo" ngDefaultControl></aer-input>
+        <aer-input [(ngModel)]="transferTo" class="with-button" [ngClass]="{'has-error': hasError(transferForm.controls.transferTo), 'blue': canTransfer(), 'grey': !canTransfer()}" buttonLabel="{{'ENS.BTN_TRANSFER'|translate}}" (buttonFn)="setOwner()" icon="fuchsia" formControlName="transferTo" ngDefaultControl></aer-input>
       </form>
     </div>
   </div>
@@ -23,7 +23,7 @@
     <div aerColumn size="sm-6">
       <form [formGroup]="withdrawForm">
         <div class="input-name">{{'ENS.FIELD_WITHDRAW_TO'|translate}}</div>
-        <aer-input [(ngModel)]="withdrawTo" class="with-button" [ngClass]="{'has-error': hasError(withdrawForm.controls.withdrawTo), 'blue': canWithdraw(), 'grey': !canWithdraw()}" buttonLabel="{{'ENS.BTN_WITHDRAW_TO'|translate}}" (buttonFn)="withdraw()" icon="aerum" formControlName="withdrawTo" ngDefaultControl></aer-input>
+        <aer-input [(ngModel)]="withdrawTo" class="with-button" [ngClass]="{'has-error': hasError(withdrawForm.controls.withdrawTo), 'blue': canWithdraw(), 'grey': !canWithdraw()}" buttonLabel="{{'ENS.BTN_WITHDRAW_TO'|translate}}" (buttonFn)="withdraw()" icon="fuchsia" formControlName="withdrawTo" ngDefaultControl></aer-input>
       </form>
     </div>
   </div>

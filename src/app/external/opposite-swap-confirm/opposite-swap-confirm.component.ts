@@ -376,7 +376,7 @@ export class OppositeSwapConfirmComponent implements OnInit, OnDestroy {
 
   private async cancelSwap(): Promise<void> {
     this.swapTransactionExplorerUrl = null;
-    await this.openAerumErc20SwapService.expireSwap(this.hash, (hash) => this.onSwapHashReceived(hash, Chain.Fuchsia));
+    await this.openAerumErc20SwapService.expireSwap(this.hash, (hash) => this.onSwapHashReceived(hash, Chain.FCH));
     this.swapCancelled = true;
     this.cleanErrors();
   }

@@ -1,4 +1,4 @@
 export enum Chain {
   Ethereum = 0,
-  Fuchsia = 1
+  FCH = 1
 }

@@ -327,12 +327,12 @@ export class OppositeSwapCreateComponent implements OnInit, OnDestroy {
 
   private onApproveTokenHashReceived(txhash: string): void {
     this.notificationService.showMessage(`${this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.APPROVING')} ${this.selectedToken.symbol} ${this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.TOKEN_ALLOWANCE')}`, this.translateService.instant('IN_PROGRESS'));
-    this.approveTokenTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.Fuchsia);
+    this.approveTokenTransactionExplorerUrl = genTransactionExplorerUrl(txhash, Chain.FCH);
   }
 
   private onOpenSwapHashReceived(txHash: string, hash: string): void {
     this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CREATE-OPPOSITE.OPENING_WITHDRAWAL_SWAP'), this.translateService.instant('IN_PROGRESS'));
-    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Fuchsia);
+    this.openSwapTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.FCH);
 
     const localSwap: SwapReference = {
       hash,

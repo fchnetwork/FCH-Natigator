@@ -8,7 +8,7 @@
 
     <div aerRow>
       <div aerColumn size="sm-6">
-        <aer-input icon="aerum" [(ngModel)]="address" [ngClass]="{'has-error': hasError(buyForm.controls.address)}" [disabled]="disableAddress || locked" formControlName="address" ngDefaultControl></aer-input>
+        <aer-input icon="fuchsia" [(ngModel)]="address" [ngClass]="{'has-error': hasError(buyForm.controls.address)}" [disabled]="disableAddress || locked" formControlName="address" ngDefaultControl></aer-input>
       </div>
       <div aerColumn size="sm-6">
         {{'ENS.ADDRESS_SET_DESCRIPTION'|translate}}

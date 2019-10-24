@@ -368,7 +368,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private async closeSwap(): Promise<void> {
     this.swapTransactionExplorerUrl = null;
-    await this.aerumErc20SwapService.closeSwap(this.hash, this.secret, (hash) => this.onSwapHashReceived(hash, Chain.Fuchsia));
+    await this.aerumErc20SwapService.closeSwap(this.hash, this.secret, (hash) => this.onSwapHashReceived(hash, Chain.FCH));
     this.canCloseSwap = false;
     this.swapClosed = true;
     this.cleanErrors();

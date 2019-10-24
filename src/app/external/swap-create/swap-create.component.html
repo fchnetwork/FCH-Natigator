@@ -8,13 +8,13 @@
         <aer-select
           [(ngModel)]="selectedToken"
           dataKey="symbol"
-          icon="aerumleaf"
+          icon="fuchsia"
           placeholder="{{ 'EXTERNAL-SWAP.CREATE.FIELD_SELECT_YOUR_TOKEN' | translate }}"
           (ngModelChange)="onTokenChange()"
           [disabled]="processing"
         >
           <aer-select-option *ngFor="let token of tokens" [value]="token">
-            <aer-icon>aerumleaf</aer-icon>
+            <aer-icon>fuchsia</aer-icon>
             <app-token-description [token]="token"></app-token-description>
           </aer-select-option>
           <aer-select-option

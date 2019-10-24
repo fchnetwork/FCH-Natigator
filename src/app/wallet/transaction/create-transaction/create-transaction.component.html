@@ -9,7 +9,7 @@
               <div class="input-name">{{ 'FROM' | translate }}</div>
               <aer-input
                 disabled="true"
-                icon="aerum"
+                icon="fuchsia"
                 [ngClass]="{ 'has-error': !txnForm.controls['senderAddress'].valid && txnForm.controls['senderAddress'].touched }"
                 formControlName="senderAddress"
                 [(ngModel)]="senderAddress"
@@ -48,14 +48,14 @@
             </div>
             <div aerColumn size="sm-6" class="tokensSelect">
               <aer-select formControlName="selectedToken" [(ngModel)]="selectedToken" (ngModelChange)="handleSelectChange()" dataKey="symbol"
-                icon="aerum" placeholder="{{ 'SEND_RECEIVE.SELECT_YOUR_TOKEN' | translate }}">
+                icon="fuchsia" placeholder="{{ 'SEND_RECEIVE.SELECT_YOUR_TOKEN' | translate }}">
                 <aer-select-option [value]="{symbol: 'Gas'}">{{ 'AERO' | translate}}</aer-select-option>
                 <aer-select-option *ngFor="let item of tokens;" [value]="item">
                   <app-token-description [token]="item"></app-token-description>
                 </aer-select-option>
               </aer-select>
               <div class="account-status-line">
-                <aer-icon>aerum</aer-icon>
+                <aer-icon>fuchsia</aer-icon>
                 <div class="float-left">{{ walletBalance | bignumber: '0.0-4' }} {{ selectedToken.symbol }}</div>
               </div>
             </div>

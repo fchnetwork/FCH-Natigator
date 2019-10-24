@@ -209,7 +209,7 @@ export class SwapCreateComponent implements OnInit, OnDestroy {
       this.logger.logMessage("Token not selected");
       return;
     }
-    const templates = await this.swapTemplateService.getTemplatesByAsset(this.selectedToken.address, this.params.token, Chain.Fuchsia);
+    const templates = await this.swapTemplateService.getTemplatesByAsset(this.selectedToken.address, this.params.token, Chain.FCH);
     if (templates) {
       this.templates = templates.sort((one, two) => Number(one.rate <= two.rate));
       this.selectedTemplate = this.templates[0];

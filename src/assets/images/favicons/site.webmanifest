@@ -1,6 +1,6 @@
 {
-    "name": "Fuchsia navigator",
-    "short_name": "Fuchsia navigator",
+    "name": "FCH navigator",
+    "short_name": "FCH navigator",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

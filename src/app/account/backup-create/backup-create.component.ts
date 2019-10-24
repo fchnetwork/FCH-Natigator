@@ -40,7 +40,7 @@ export class BackupCreateComponent implements OnInit {
   public savePhrase() {
     const data = [{ seed: this.seed, }];
     console.log(data);
-    new AerumBackupFile(data, 'FuchsiaBackupSeed');
+    new AerumBackupFile(data, 'FCHBackupSeed');
   }
 
   public confirmBackup() {
