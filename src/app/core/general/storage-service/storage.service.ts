@@ -8,7 +8,9 @@ import { environment } from '@env/environment';
 @Injectable()
 export class StorageService {
 
-  constructor(private sessionStorageService: SessionStorageService) { }
+  constructor(
+    private sessionStorageService: SessionStorageService)
+  { }
 
   Observe(raw: string): EventEmitter<any> {
     return this.sessionStorageService.observe(raw);

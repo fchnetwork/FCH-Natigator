@@ -8,7 +8,7 @@ import { AuthenticationService } from "@core/authentication/authentication-servi
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { SwapType } from '@app/core/swap/models/swap-type.enum';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { SwapLocalStorageService } from '@app/core/swap/cross-chain/swap-local-storage/swap-local-storage.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class CrossChainSwapListComponent implements OnInit {
   canShowMore = true;
   swaps: SwapListItem[] = [];
   allSwaps: SwapListItem[] = [];
-  perfectScrollbarDisabled = environment.isMobileBuild;
+  perfectScrollbarDisabled: boolean;
 
   constructor(
     private logger: LoggerService,
@@ -35,8 +35,11 @@ export class CrossChainSwapListComponent implements OnInit {
     private authService: AuthenticationService,
     private notificationService: InternalNotificationService,
     private swapListService: SwapListService,
-    private swapLocalStorageService: SwapLocalStorageService
-  ) { }
+    private swapLocalStorageService: SwapLocalStorageService,
+    private environment: EnvironmentService,
+  ) {
+    this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
+  }
 
   async ngOnInit() {
     this.account = this.authService.getAddress();
@@ -50,8 +53,8 @@ export class CrossChainSwapListComponent implements OnInit {
       this.allSwaps = (await this.swapListService.getSwapsByAccount(this.account))
         .filter(sw => localSwaps.findIndex(lsw => lsw.hash === sw.id) !== -1)
         .sort((s1, s2) => s1.createdOn > s2.createdOn ? -1 : s1.createdOn < s2.createdOn ? 1 : 0);
-      
-      const skip = this.itemsPerPage * this.page; 
+
+      const skip = this.itemsPerPage * this.page;
       this.swaps = this.allSwaps.slice(skip, this.itemsPerPage);
       this.canShowMore = this.swaps.length === this.itemsPerPage;
     }
@@ -88,7 +91,7 @@ export class CrossChainSwapListComponent implements OnInit {
 
   openSwap(swap: SwapListItem) {
     const url = swap.type === SwapType.Deposit ? 'external/confirm-swap' : 'external/confirm-opposite-swap';
-    return this.router.navigate([url], {queryParams: {hash: swap.id}}); 
+    return this.router.navigate([url], {queryParams: {hash: swap.id}});
   }
 
   private translate(key: string): string {

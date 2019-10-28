@@ -7,7 +7,7 @@ import { LoaderService } from '@core/general/loader-service/loader.service';
 import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
 import { BlockModalData } from '@app/wallet/explorer/components/block-modal/block-modal.component';
 import { iTransaction } from '@app/shared/app.interfaces';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Component({
   selector: 'app-transactions',
@@ -25,13 +25,16 @@ export class TransactionsComponent implements AfterViewInit {
   highBlock: number;
   lowBlock: number;
   maxBlocks: number = 100;
-  perfectScrollbarDisabled = environment.isMobileBuild;
+  perfectScrollbarDisabled: boolean;
 
   constructor(public exploreSrv: ExplorerService,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalService,
-    private loaderService: LoaderService) { }
+    private loaderService: LoaderService,
+    private environment: EnvironmentService,) {
+    this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
+  }
 
   ngAfterViewInit() {
     // First get the latest block number

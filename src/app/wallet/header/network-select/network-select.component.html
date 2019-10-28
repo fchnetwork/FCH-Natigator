@@ -1,0 +1,9 @@
+<div *ngIf="!isMobileBuild">
+  <aer-select
+    [(ngModel)]="selectedMode"
+    dataKey="text"
+    (ngModelChange)="onModeChange()">
+    <aer-select-option [value]="liveMode">{{ liveMode.text }}</aer-select-option>
+    <aer-select-option [value]="testMode">{{ testMode.text }}</aer-select-option>
+  </aer-select>
+</div>

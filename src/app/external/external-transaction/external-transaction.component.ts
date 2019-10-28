@@ -12,7 +12,7 @@ import { NotificationMessagesService } from '@core/general/notification-messages
 import { AddressKeyValidationService } from '@app/core/validation/address-key-validation.service';
 import { ERC20TokenService } from '@app/core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { ContractRegistryService } from '@app/core/registry/contract-registry/contract-registry.service';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 const abiDecoder = require('abi-decoder');
 
@@ -87,7 +87,8 @@ export class ExternalTransactionComponent implements OnDestroy {
     private notificationMessagesService: NotificationMessagesService,
     private addressKeyvalidation: AddressKeyValidationService,
     private erc20TokenService: ERC20TokenService,
-    private contractRegistryService: ContractRegistryService
+    private contractRegistryService: ContractRegistryService,
+    private environment: EnvironmentService
   ) {
     this.sub = this.route
       .queryParams
@@ -141,7 +142,7 @@ export class ExternalTransactionComponent implements OnDestroy {
     if (this.isToken) {
       this.getTokenInfo();
     } else {
-      this.currency = 'AERO';
+      this.currency = 'GAS';
       await this.getMaxTransactionFee();
     }
     this.getBalance();
@@ -240,7 +241,7 @@ export class ExternalTransactionComponent implements OnDestroy {
   }
 
   dismiss() {
-    if(environment.isMobileBuild) {
+    if(this.environment.get().isMobileBuild) {
       this.router.navigateByUrl('/');
     }
     window.location.href = this.returnUrlFailed;

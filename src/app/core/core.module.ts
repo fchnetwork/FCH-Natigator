@@ -29,6 +29,7 @@ import { AerumStatsService } from '@app/core/stats/aerum-stats-service/aerum-sta
 import { AerumStatsWebsocketsService } from '@app/core/stats/aerum-stats-websockets-service/aerum-stats-websockets.service';
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
+import { EnvironmentService } from '@app/core/general/environment-service/environment.service';
 import { ValidateService } from '@app/core/validation/validate.service';
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { ConnectionCheckerService } from '@core/general/connection-checker-service/connection-checker.service';
@@ -112,7 +113,8 @@ import { AerumbitService } from "@core/aerumbit/aerumbit.service";
     GlobalEventService,
     TokenFactoryService,
     ContractRegistryService,
-    AerumbitService
+    AerumbitService,
+    EnvironmentService
   ]
 })
 export class CoreModule {
@@ -129,6 +131,7 @@ export class CoreModule {
         EthereumTokenService,
         TranslateService,
         StorageService,
+        EnvironmentService,
         PendingTransactionsService
       ]
     };

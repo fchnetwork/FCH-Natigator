@@ -3,18 +3,21 @@ import { StorageService } from "@core/general/storage-service/storage.service";
 import { NotificationMessagesService } from '@core/general/notification-messages-service/notification-messages.service';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { iFullBackup } from '@shared/app.interfaces';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 declare const window: any;
 
 @Injectable()
 export class SettingsBackupService {
-  private isMobileBuild = environment.isMobileBuild;
+  private isMobileBuild: boolean;
 
   constructor(private storageService: StorageService,
               private notificationMessagesService: NotificationMessagesService,
-              private clipboardService: ClipboardService
-  ) { }
+              private clipboardService: ClipboardService,
+              private environment: EnvironmentService
+  ) {
+    this.isMobileBuild = this.environment.get().isMobileBuild;
+  }
 
   async generateFile(data, fileName, type) {
     const stringifiedData = type === 'seed' ? data.seed : JSON.stringify(data);
@@ -40,7 +43,7 @@ export class SettingsBackupService {
     const promise = new Promise<string>(
       (resolve, reject): void => {
         window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, fs => {
-          let dirPath = 'Aerum';
+          let dirPath = 'FCH';
           let filePath = dirPath + '/' + fileName;
           if(window.device.platform === 'iOS') {
             dirPath = '/';

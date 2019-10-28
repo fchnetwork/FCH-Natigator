@@ -74,7 +74,7 @@ export class CreateTokenComponent implements OnInit {
       return;
     }
 
-    const ansName = `${this.createForm.value.ansName}.aer`;
+    const ansName = `${this.createForm.value.ansName}.f`;
     if(!(await this.aensService.isNameAvailable(ansName))) {
       this.logger.logMessage(`ANS name is not available: ${ansName}`);
       this.notify(this.translate('ERROR'), `${this.translate('TOKEN_FACTORY.CREATE.NOTIFICATIONS.ANS_NOT_AVAILABLE')}: ${ansName}`);
@@ -102,7 +102,7 @@ export class CreateTokenComponent implements OnInit {
       symbol: data.symbol,
       decimals: data.decimals,
       supply: data.supply,
-      ansName: data.ansName + ".aer",
+      ansName: data.ansName + ".f",
       estimatedFeeInWei: gasPrice * estimatedFeeInGas + Number(this.ansPriceInWei)
     };
 
@@ -147,7 +147,7 @@ export class CreateTokenComponent implements OnInit {
   }
 
   private async registerAnsName(address: string, label: string) {
-    const fullName = label + ".aer";
+    const fullName = label + ".f";
     this.notify(this.multiContractsExecutionNotificationTitle(2, 4), `${this.translate('ENS.NOTIFICATION_BODY_BUY_NAME')}: ${fullName}`);
     await this.aensService.buyName(label, this.account, this.ansPriceInEther);
     this.notify(this.multiContractsExecutionNotificationTitle(3, 4), this.translate('ENS.NOTIFICATION_BODY_SET_RESOLVER'));

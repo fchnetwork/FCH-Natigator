@@ -4,6 +4,7 @@ import { hash } from 'eth-ens-namehash';
 import { sha3 } from 'web3-utils';
 import Web3 from 'web3';
 
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { LoggerService } from '@core/general/logger-service/logger.service';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { AensRegistryContractService } from '@core/aens/aens-registry-contract-service/aens-registry-contract.service';
@@ -30,13 +31,14 @@ export class AerumNameService {
     private authService: AuthenticationService,
     private registryContractService: AensRegistryContractService,
     private registrarContractService: AensFixedPriceRegistrarContractService,
-    private resolverContractService: AensPublicResolverContractService
+    private resolverContractService: AensPublicResolverContractService,
+    private environment: EnvironmentService
   ) {
     this.web3 = this.authService.getWeb3();
   }
 
   isAensName(nameOrAddress: string): boolean {
-    return nameOrAddress && nameOrAddress.endsWith('.aer');
+    return nameOrAddress && nameOrAddress.endsWith('.f');
   }
 
   async safeResolveNameOrAddress(nameOrAddress: string) {
@@ -77,7 +79,7 @@ export class AerumNameService {
 
   async ensureNameCanBeResolved(name: string): Promise<boolean> {
     try {
-      if(!name || !name.endsWith(".aer")) {
+      if(!name || !name.endsWith(".f")) {
         return false;
       }
 
@@ -90,7 +92,7 @@ export class AerumNameService {
   }
 
   async isNameAvailable(name: string) : Promise<boolean> {
-    if(!name || !name.endsWith(".aer")) {
+    if(!name || !name.endsWith(".f")) {
       return false;
     }
 
@@ -125,14 +127,14 @@ export class AerumNameService {
     }
 
     label = label.toLowerCase();
-    const name = label + ".aer";
+    const name = label + ".f";
     const node = hash(name);
     const hashedLabel = sha3(label);
 
     if(!await this.isNodeOwner(node, owner)) {
       await this.registrarContractService.buy(hashedLabel, priceInEther);
     }
-    await this.registryContractService.setResolver(node, AensPublicResolverContractService.getContractAddress());
+    await this.registryContractService.setResolver(node, this.environment.get().contracts.aens.address.PublicResolver);
     await this.resolverContractService.setAddress(node, address);
   }
 
@@ -151,7 +153,7 @@ export class AerumNameService {
     }
 
     label = label.toLowerCase();
-    const name = label + ".aer";
+    const name = label + ".f";
     const node = hash(name);
     const hashedLabel = sha3(label);
 
@@ -165,7 +167,7 @@ export class AerumNameService {
   }
 
   async setFixedPriceResolver(name: string) {
-    await this.setResolver(name, AensPublicResolverContractService.getContractAddress());
+    await this.setResolver(name, this.environment.get().contracts.aens.address.PublicResolver);
   }
 
   async setResolver(name: string, resolver: string) {
@@ -251,8 +253,8 @@ export class AerumNameService {
   }
 
   private ensureName(name: string) {
-    if(!name || !name.endsWith(".aer")) {
-      throw new Error('Can only handle names ending with .aer');
+    if(!name || !name.endsWith(".f")) {
+      throw new Error('Can only handle names ending with .f');
     }
   }
 

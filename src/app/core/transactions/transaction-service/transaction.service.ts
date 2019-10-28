@@ -10,7 +10,7 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { SettingsService } from "@app/core/settings/settings.service";
 import { StorageService } from "@core/general/storage-service/storage.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 const Tx = require("ethereumjs-tx");
 const ethJsUtil = require("ethereumjs-util");
@@ -29,7 +29,8 @@ export class TransactionService {
     private notificationMessagesService: NotificationMessagesService,
     private settingsService: SettingsService,
     private storageService: StorageService,
-    private router: Router
+    private router: Router,
+    private environment: EnvironmentService
   ) {
     this.web3 = _auth.getWeb3();
   }
@@ -281,7 +282,7 @@ export class TransactionService {
                 amount,
                 "Pending transaction",
                 hash,
-                "Aero",
+                "Gas",
                 null,
                 null
               );
@@ -294,7 +295,7 @@ export class TransactionService {
               this.web3.eth.getTransaction(receipt.transactionHash).then(res => {
                 res.timestamp = Moment(new Date()).unix();
                 if (external) {
-                  if(environment.isMobileBuild) {
+                  if(this.environment.get().isMobileBuild) {
                     this.router.navigateByUrl('/');
                   }
                   window.location.href = urls.success;
@@ -306,7 +307,7 @@ export class TransactionService {
             .catch(error => {
               this.logger.logError(error);
               if (external) {
-                if(environment.isMobileBuild) {
+                if(this.environment.get().isMobileBuild) {
                   this.router.navigateByUrl('/');
                 }
                 window.location.href = urls.failed;
@@ -319,7 +320,7 @@ export class TransactionService {
       ).catch(error => {
         this.logger.logError(error);
         if (external) {
-          if(environment.isMobileBuild) {
+          if(this.environment.get().isMobileBuild) {
             this.router.navigateByUrl('/');
           }
           window.location.href = urls.failed;
@@ -395,7 +396,7 @@ export class TransactionService {
           this.web3.eth.getTransaction(hash).then(res => {
             res.timestamp = Moment(new Date()).unix();
             if (external) {
-              if(environment.isMobileBuild) {
+              if(this.environment.get().isMobileBuild) {
                 this.router.navigateByUrl('/');
               }
               window.location.href = urls.success;
@@ -410,7 +411,7 @@ export class TransactionService {
       .catch(error => {
         this.logger.logError(error);
         if (external) {
-          if(environment.isMobileBuild) {
+          if(this.environment.get().isMobileBuild) {
             this.router.navigateByUrl('/');
           }
           window.location.href = urls.failed;

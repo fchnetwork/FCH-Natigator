@@ -2,7 +2,7 @@ const artifacts = require('@core/abi/Governance.json');
 
 import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { toAscii, fromAscii } from "web3-utils";
 
@@ -22,11 +22,12 @@ export class StakingGovernanceService extends BaseContractService {
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
     injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
-    translateService: TranslateService
+    translateService: TranslateService,
+    environment: EnvironmentService
   ){
     super(
       artifacts.abi,
-      environment.contracts.staking.address.Governance,
+      environment.get().contracts.staking.address.Governance,
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,

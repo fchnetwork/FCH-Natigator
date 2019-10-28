@@ -2,19 +2,19 @@ const artifacts = require('@core/abi/PublicResolver.json');
 
 import { Injectable } from '@angular/core';
 
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { BaseContractService } from '@core/contract/base-contract-service/base-contract.service';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { ContractExecutorService } from '@core/contract/contract-executor-service/contract-executor.service';
 
 @Injectable()
 export class AensPublicResolverContractService extends BaseContractService {
-
   constructor(
     authenticationService: AuthenticationService,
-    contractExecutorService: ContractExecutorService
+    contractExecutorService: ContractExecutorService,
+    environment: EnvironmentService,
   ) {
-    super(artifacts.abi, environment.contracts.aens.address.PublicResolver, authenticationService, contractExecutorService);
+    super(artifacts.abi, environment.get().contracts.aens.address.PublicResolver, authenticationService, contractExecutorService);
   }
 
   async setAddress(node: string, name: string) {
@@ -45,9 +45,5 @@ export class AensPublicResolverContractService extends BaseContractService {
     const getName = this.contract.methods.name(node);
     const name = await this.contractExecutorService.call(getName);
     return name;
-  }
-
-  static getContractAddress() {
-    return environment.contracts.aens.address.PublicResolver;
   }
 }

@@ -24,6 +24,7 @@ import { TokenService } from "@core/transactions/token-service/token.service";
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
 import { OpenErc20SwapService } from "@core/swap/cross-chain/open-erc20-swap-service/open-erc20-swap.service";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-swap-confirm',
@@ -85,7 +86,8 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private ethereumTokenService: EthereumTokenService,
     private swapLocalStorageService: SwapLocalStorageService,
     private etherSwapService: OpenEtherSwapService,
-    private erc20SwapService: OpenErc20SwapService
+    private erc20SwapService: OpenErc20SwapService,
+    private translateService: TranslateService
   ) { }
 
   async ngOnInit() {
@@ -98,10 +100,10 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     } catch (e) {
       if(e instanceof TokenError) {
         this.logger.logError('Cannot load token information', e);
-        this.notificationService.showMessage('Please configure the token first', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.PLEASE_CONFIGURE_THE_TOKEN_FIRST'), this.translateService.instant('ERROR'));
       } else {
         this.logger.logError('Deposit swap load error', e);
-        this.notificationService.showMessage('Cannot load deposit swap', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.CANNOT_LOAD_SWAP'), this.translateService.instant('ERROR'));
       }
     }
   }
@@ -353,12 +355,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   async complete() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Completing deposit swap', 'In Progress...');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.COMPLETING_DEPOSIT_SWAP'), 'In Progress...');
       await this.closeSwap();
-      this.notificationService.showMessage('Deposit swap closed', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.DEPOSIT_SWAP_CLOSED'), this.translateService.instant('DONE'));
     } catch (e) {
       this.logger.logError('Deposit swap close error', e);
-      this.notificationService.showMessage('Deposit swap close error', 'Unhandled error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.DEPOSIT_SWAP_CLOSE_ERROR'), this.translateService.instant('ERROR'));
     } finally {
       this.processing = false;
     }
@@ -366,7 +368,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private async closeSwap(): Promise<void> {
     this.swapTransactionExplorerUrl = null;
-    await this.aerumErc20SwapService.closeSwap(this.hash, this.secret, (hash) => this.onSwapHashReceived(hash, Chain.Aerum));
+    await this.aerumErc20SwapService.closeSwap(this.hash, this.secret, (hash) => this.onSwapHashReceived(hash, Chain.FCH));
     this.canCloseSwap = false;
     this.swapClosed = true;
     this.cleanErrors();
@@ -375,12 +377,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   async cancel() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Cancelling deposit swap', 'In Progress...');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.CANCELLING_DEPOSIT_SWAP'), this.translateService.instant('IN_PROGRESS'));
       await this.cancelSwap();
-      this.notificationService.showMessage('Deposit swap canceled', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.DEPOSIT_SWAP_CANCELED'), this.translateService.instant('DONE'));
     } catch (e) {
       this.logger.logError('Deposit swap cancel error', e);
-      this.notificationService.showMessage('Deposit swap cancel error', 'Unhandled error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.DEPOSIT_SWAP_CANCEL_ERROR'), this.translateService.instant('ERROR'));
     } finally {
       this.processing = false;
     }

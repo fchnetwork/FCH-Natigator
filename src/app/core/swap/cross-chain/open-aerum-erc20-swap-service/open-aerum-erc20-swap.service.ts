@@ -3,7 +3,7 @@ const erc20ABI = require('@core/abi/tokens.ts');
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { Injectable } from '@angular/core';
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { secondsToDate } from "@shared/helpers/date-util";
 import { fromSolidityDecimalString } from "@shared/helpers/number-utils";
 
@@ -15,17 +15,20 @@ import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
 
 @Injectable()
 export class OpenAerumErc20SwapService extends BaseContractService {
+  private environment: EnvironmentService;
 
   constructor(
     authenticationService: AuthenticationService,
     contractExecutorService: ContractExecutorService,
-    private tokenService: TokenService) {
+    private tokenService: TokenService,
+    environment: EnvironmentService) {
     super(
       artifacts.abi,
-      environment.contracts.swap.crossChain.address.aerum.OpenErc20Swap,
+      environment.get().contracts.swap.crossChain.address.aerum.OpenErc20Swap,
       authenticationService,
       contractExecutorService
     );
+    this.environment = environment;
   }
 
   /**
@@ -50,7 +53,7 @@ export class OpenAerumErc20SwapService extends BaseContractService {
    * @param {string} value - amount of ERC20 tokens
    */
   private async tokenApprove(erc20Address: string, value: string, approveCallback: (hash: string) => void) {
-    const openErc20Swap = environment.contracts.swap.crossChain.address.aerum.OpenErc20Swap as string;
+    const openErc20Swap = this.environment.get().contracts.swap.crossChain.address.aerum.OpenErc20Swap as string;
     const tokenContract = new this.web3.eth.Contract(erc20ABI.tokensABI, erc20Address);
     const approve = tokenContract.methods.approve(openErc20Swap, value);
     await this.contractExecutorService.send(approve, { value: '0', hashReceivedCallback: approveCallback });
@@ -72,7 +75,7 @@ export class OpenAerumErc20SwapService extends BaseContractService {
   }
 
   private async estimateTokenApprove(erc20Address: string, value: string) {
-    const openErc20Swap = environment.contracts.swap.crossChain.address.aerum.OpenErc20Swap as string;
+    const openErc20Swap = this.environment.get().contracts.swap.crossChain.address.aerum.OpenErc20Swap as string;
     const tokenContract = new this.web3.eth.Contract(erc20ABI.tokensABI, erc20Address);
     const approve = tokenContract.methods.approve(openErc20Swap, value);
     const cost = await this.contractExecutorService.estimateCost(approve);

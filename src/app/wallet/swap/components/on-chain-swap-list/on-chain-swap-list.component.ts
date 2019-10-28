@@ -7,7 +7,7 @@ import { InternalNotificationService } from "@core/general/internal-notification
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { CreateSwapService } from '@app/core/swap/on-chain/create-swap-service/create-swap.service';
 import { LoadSwapService } from '@app/core/swap/on-chain/load-swap-service/load-swap.service';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Component({
   selector: 'app-on-chain-swap-list',
@@ -24,17 +24,20 @@ export class OnChainSwapListComponent implements OnInit {
   canShowMore = true;
   swaps: SwapListItem[] = [];
   allSwaps: SwapListItem[] = [];
-  perfectScrollbarDisabled = environment.isMobileBuild;
+  perfectScrollbarDisabled: boolean;
 
   constructor(
     private logger: LoggerService,
     private translateService: TranslateService,
     private authService: AuthenticationService,
     private internalNotificationService: InternalNotificationService,
-    private swapListService: SwapListService, 
+    private swapListService: SwapListService,
     private createSwapService: CreateSwapService,
-    private loadSwapService: LoadSwapService
-  ) { }
+    private loadSwapService: LoadSwapService,
+    private environment: EnvironmentService,
+  ) {
+    this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
+  }
 
   async ngOnInit() {
     this.account = this.authService.getAddress();
@@ -46,7 +49,7 @@ export class OnChainSwapListComponent implements OnInit {
       this.loading = true;
       this.allSwaps = (await this.swapListService.getSwapsByAccount(this.account))
         .sort((s1, s2) => s1.createdOn > s2.createdOn ? -1 : s1.createdOn < s2.createdOn ? 1 : 0);
-      const skip = this.itemsPerPage * this.page; 
+      const skip = this.itemsPerPage * this.page;
       this.swaps = this.allSwaps.slice(skip, this.itemsPerPage);
       this.canShowMore = this.swaps.length === this.itemsPerPage;
     }
@@ -76,7 +79,7 @@ export class OnChainSwapListComponent implements OnInit {
     await this.createSwapService.createSwap();
     // TODO: Quick fix. reload all swaps (we should load only new one)
     await this.loadSwaps();
-  } 
+  }
 
   async openSwap(swapId: string) {
     await this.loadSwapService.loadSwap(swapId);

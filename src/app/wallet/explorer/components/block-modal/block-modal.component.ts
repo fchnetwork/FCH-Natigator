@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { iBlocks } from '@app/shared/app.interfaces';
+import { TranslateService } from '@ngx-translate/core';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import {DialogRef, ModalViewComponent} from '@aerum/ui';
 
 export class BlockModalData {
@@ -19,7 +20,9 @@ export class BlockModalComponent implements OnInit, ModalViewComponent<BlockModa
 
   constructor(public dialogRef: DialogRef<BlockModalData, any>,
               public clipboardService: ClipboardService,
-              public notificationService: InternalNotificationService) {
+              public notificationService: InternalNotificationService,
+              private environment: EnvironmentService,
+              private translateService: TranslateService) {
 
   }
 
@@ -28,10 +31,10 @@ export class BlockModalComponent implements OnInit, ModalViewComponent<BlockModa
 
   copyToClipboard(hash) {
     this.clipboardService.copy(hash);
-    this.notificationService.showMessage('Copied to clipboard!', 'Done');
+    this.notificationService.showMessage(this.translateService.instant('COPIED_TO_CLIPBOARD'), this.translateService.instant('DONE'));
   }
 
   openBlock(blockNumber) {
-    window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
+    window.open( this.environment.get().externalBlockExplorer + 'block/' + blockNumber, "_blank");
   }
 }

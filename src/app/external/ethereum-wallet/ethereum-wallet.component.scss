@@ -1,14 +1,18 @@
 .ethereum-wallet {
-  color: #83868A;
+  color: #83868a;
   font-size: 13px;
   line-height: 1;
   text-align: center;
   max-width: 420px;
 
+  img {
+    filter: invert(1);
+  }
+
   h1 {
     font-size: 36px;
     font-weight: normal;
-    color: #27282A;
+    color: #27282a;
     margin: 0 0 38px;
   }
 
@@ -52,17 +56,17 @@
         position: absolute;
         top: -18px;
         right: -31px;
-        content: "Click to copy";
+        content: 'Click to copy';
         font-size: 10px;
       }
     }
   }
-  .token-select-option{
+  .token-select-option {
     text-align: left;
   }
-  aer-input{
+  aer-input {
     .with-button {
-      padding-top: 12px!important;
+      padding-top: 12px !important;
     }
   }
 }

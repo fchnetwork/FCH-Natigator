@@ -6,6 +6,7 @@ import { AddressValidator } from "@shared/validators/address.validator";
 import { AerumNameService } from "@core/aens/aerum-name-service/aerum-name.service";
 import { ModalViewComponent, DialogRef } from '@aerum/ui';
 import { StorageService } from "@core/general/storage-service/storage.service";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-token',
@@ -26,7 +27,8 @@ export class AddTokenComponent implements ModalViewComponent<any, any>, OnInit {
     private tokenService: TokenService,
     public notificationService: InternalNotificationService,
     private aerumNameService: AerumNameService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
@@ -48,10 +50,10 @@ export class AddTokenComponent implements ModalViewComponent<any, any>, OnInit {
       // TODO: handle errors in any styled component
       for(let i = 0; i < tokens.length; i++) {
         if(this.totalSupply <= 0 || !Number.isInteger(this.totalSupply)) {
-          this.notificationService.showMessage('Tokens supply has to be bigger than 0', 'Form error');
+          this.notificationService.showMessage(this.translateService.instant('DASHBOARD_ADD_TOKEN.TOKENS_SUPPLY_HAS_O_BE_BIGGER_THAN_0'), this.translateService.instant('ERROR'));
           return false;
         } else if (this.addTokenForm.value.tokenAddress === tokens[i].address) {
-          this.notificationService.showMessage('You cannot add token with the same token address', 'Form error');
+          this.notificationService.showMessage(this.translateService.instant('DASHBOARD_ADD_TOKEN.YOU_CANNOT_ADD_TOKEN_WITH_THE_SAME_TOKEN_ADDRESS'), this.translateService.instant('ERROR'));
           return false;
         }
       }
@@ -74,7 +76,6 @@ export class AddTokenComponent implements ModalViewComponent<any, any>, OnInit {
   }
 
   async getTokenInfo(address) {
-    // const address = "0x8414d0b6205d82100f694be759e40a16e31e8d40"; or fab-token.aer
     if(!address) {
       this.clearTokenData();
       return;

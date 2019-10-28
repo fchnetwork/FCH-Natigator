@@ -8,7 +8,7 @@ import { RouteDataService } from '@app/core/general/route-data-service/route-dat
 import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
 import { StorageService } from '@app/core/general/storage-service/storage.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Component({
   selector: 'app-register',
@@ -35,7 +35,8 @@ export class RegisterComponent implements OnInit {
     private routeDataService: RouteDataService<RegistrationRouteData>,
     public passCheckService: PasswordCheckerService,
     public storageService: StorageService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private environment: EnvironmentService,
   ) { }
 
   // TODO: export somewhere to lib to avoid double code
@@ -111,7 +112,7 @@ export class RegisterComponent implements OnInit {
   }
 
   private addPredefinedTokens() {
-    const addresses = environment.predefinedTokens;
+    const addresses = this.environment.get().predefinedTokens;
     if(!addresses) {
       return;
     }

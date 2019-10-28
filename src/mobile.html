@@ -1,39 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <title>AerumWeb</title>
-  <base href="./">
-  <meta name="msapplication-tap-highlight" content="no">
-  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-  <link rel="icon" type="image/x-icon" href="assets/aerum-logo.svg">
-  <style>
-    .loading-logo {
-      animation: fadeIn 2s;
-      position: fixed;
-      left: 50%;
-      top:50%;
-      margin-left: -180px;
-      margin-top:  -44px;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0
+  <head>
+    <meta charset="utf-8" />
+    <title>FCH Navigator</title>
+    <base href="./" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <link rel="icon" type="image/x-icon" href="assets/fuchsia_icon.svg" />
+    <style>
+      .loading-logo {
+        animation: fadeIn 2s;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        margin-left: -180px;
+        margin-top: -44px;
       }
-      to {
-        opacity: 1
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
-    }
-  </style>
-</head>
-<body>
-  <app-root>
-    <div class="loading-logo">
-        <img src="assets/images/aerum_logo_large.png" />
-    </div>
-  </app-root>
-  <script type="text/javascript" src="cordova.js"></script>
-</body>
+    </style>
+  </head>
+  <body>
+    <app-root>
+      <div class="loading-logo">
+        <img src="assets/images/fch_white_logo.svg" />
+      </div>
+    </app-root>
+    <script type="text/javascript" src="cordova.js"></script>
+  </body>
 </html>

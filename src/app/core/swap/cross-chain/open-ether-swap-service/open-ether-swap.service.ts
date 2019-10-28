@@ -3,7 +3,7 @@ const artifacts = require('@core/abi/OpenAtomicSwapEther.json');
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { fromWei, fromAscii } from "web3-utils";
 
 import { secondsToDate } from "@shared/helpers/date-util";
@@ -24,11 +24,12 @@ export class OpenEtherSwapService extends BaseContractService {
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
     injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
-    translateService: TranslateService
+    translateService: TranslateService,
+    environment: EnvironmentService
   ) {
     super(
       artifacts.abi,
-      environment.contracts.swap.crossChain.address.ethereum.OpenEtherSwap,
+      environment.get().contracts.swap.crossChain.address.ethereum.OpenEtherSwap,
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,

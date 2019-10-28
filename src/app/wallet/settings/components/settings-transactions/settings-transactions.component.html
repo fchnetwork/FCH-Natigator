@@ -1,23 +1,46 @@
 <div class="settings__form">
   <div class="settings__vertical-container">
-      <h3>{{'SETTINGS.TRANSACTIONS.TAB_TITLE'|translate}}</h3>
-      <app-divider [fullWidth]="true"></app-divider>
-      <form [formGroup]="settingsForm">
-        <p>
-          {{'SETTINGS.TRANSACTIONS.DEFAULT_GAS_PRICE_LABEL'|translate}}
-        </p>
-        <aer-input [ngClass]="{'has-error':!settingsForm.controls['Default Gas Price'].valid && settingsForm.controls['Default Gas Price'].touched}" placeholder="{{'SETTINGS.TRANSACTIONS.DEFAULT_GAS_PRICE_LABEL'|translate}}" formControlName="Default Gas Price" ngDefaultControl [(ngModel)]="transactionSettings.gasPrice" icon="gas" class="with-button blue" buttonLabel="{{'AERO'|translate}}"></aer-input>
-        <p>
-          {{'SETTINGS.TRANSACTIONS.MAX_GAS_LABEL'|translate}}
-        </p>
-        <aer-input [ngClass]="{'has-error':!settingsForm.controls['Max Gas'].valid && settingsForm.controls['Max Gas'].touched}" placeholder="{{'SETTINGS.TRANSACTIONS.MAX_GAS_LABEL'|translate}}" formControlName="Max Gas" ngDefaultControl [(ngModel)]="transactionSettings.maxTransactionGas" icon="gas"></aer-input>
-        <p>
-          {{'SETTINGS.TRANSACTIONS.LAST_TRANSACTIONS_LABEL'|translate}}
-        </p>
-        <aer-input [ngClass]="{'has-error':!settingsForm.controls['Last Transactions'].valid && settingsForm.controls['Last Transactions'].touched}" placeholder="{{'SETTINGS.TRANSACTIONS.LAST_TRANSACTIONS_LABEL'|translate}}" formControlName="Last Transactions" ngDefaultControl [(ngModel)]="transactionSettings.lastTransactionsNumber" icon="sort-desc"></aer-input>
-      </form>
+    <h3>{{ 'SETTINGS.TRANSACTIONS.TAB_TITLE' | translate }}</h3>
+    <app-divider [fullWidth]="true"></app-divider>
+    <form [formGroup]="settingsForm">
+      <p>
+        {{ 'SETTINGS.TRANSACTIONS.DEFAULT_GAS_PRICE_LABEL' | translate }}
+      </p>
+      <aer-input
+        [ngClass]="{ 'has-error': !settingsForm.controls['Default Gas Price'].valid && settingsForm.controls['Default Gas Price'].touched }"
+        placeholder="{{ 'SETTINGS.TRANSACTIONS.DEFAULT_GAS_PRICE_LABEL' | translate }}"
+        formControlName="Default Gas Price"
+        ngDefaultControl
+        [(ngModel)]="transactionSettings.gasPrice"
+        icon="gas"
+        class="with-button blue"
+        buttonLabel="{{ 'AERO' | translate }}"
+      ></aer-input>
+      <p>
+        {{ 'SETTINGS.TRANSACTIONS.MAX_GAS_LABEL' | translate }}
+      </p>
+      <aer-input
+        [ngClass]="{ 'has-error': !settingsForm.controls['Max Gas'].valid && settingsForm.controls['Max Gas'].touched }"
+        placeholder="{{ 'SETTINGS.TRANSACTIONS.MAX_GAS_LABEL' | translate }}"
+        formControlName="Max Gas"
+        ngDefaultControl
+        [(ngModel)]="transactionSettings.maxTransactionGas"
+        icon="gas"
+      ></aer-input>
+      <p>
+        {{ 'SETTINGS.TRANSACTIONS.LAST_TRANSACTIONS_LABEL' | translate }}
+      </p>
+      <aer-input
+        [ngClass]="{ 'has-error': !settingsForm.controls['Last Transactions'].valid && settingsForm.controls['Last Transactions'].touched }"
+        placeholder="{{ 'SETTINGS.TRANSACTIONS.LAST_TRANSACTIONS_LABEL' | translate }}"
+        formControlName="Last Transactions"
+        ngDefaultControl
+        [(ngModel)]="transactionSettings.lastTransactionsNumber"
+        icon="sort-desc"
+      ></aer-input>
+    </form>
   </div>
   <div class="settings__save-button">
-      <aer-button class="blue" (buttonFn)="saveSettings()">{{'COMMON.BUTTONS.SAVE'|translate}}</aer-button>
+    <aer-button class="blue large" (buttonFn)="saveSettings()">{{ 'COMMON.BUTTONS.SAVE' | translate }}</aer-button>
   </div>
 </div>

@@ -48,7 +48,7 @@ export class NameCheckComponent extends AensBaseComponent implements OnInit {
       this.startProcessing();
       await this.tryCheckName(nameToCheck);
     } catch (e) {
-      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.CHECK_NAME_ERROR')}: ${nameToCheck}.aer`, 'aerum', 5000);
+      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.CHECK_NAME_ERROR')}: ${nameToCheck}.f`, 'aerum', 5000);
       this.logger.logError(`${nameToCheck} search error: `, e);
     }
     finally{
@@ -58,7 +58,7 @@ export class NameCheckComponent extends AensBaseComponent implements OnInit {
 
   async tryCheckName(name: string) {
     const trimmedName = name.trim();
-    const fullName = trimmedName + ".aer";
+    const fullName = trimmedName + ".f";
 
     const status = await this.aensService.checkStatus(this.account, fullName);
 

@@ -13,7 +13,7 @@ import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { AerumNameService } from '@app/core/aens/aerum-name-service/aerum-name.service';
 import { CreateSwapModalContext } from '@app/wallet/swap/components/create-swap/create-swap.component';
 import { toBigNumberString } from '@app/shared/helpers/number-utils';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Injectable()
 export class CreateSwapService {
@@ -29,7 +29,8 @@ export class CreateSwapService {
         private erc20ToAeroSwapService: Erc20ToAeroSwapService,
         private erc20ToErc20SwapService: Erc20ToErc20SwapService,
         private modalService: ModalService,
-        private aensService: AerumNameService) { }
+        private aensService: AerumNameService,
+        private environment: EnvironmentService) { }
 
     async createSwap() {
         const swapCreateResponse = await this.modalService.openSwapCreate();
@@ -42,9 +43,9 @@ export class CreateSwapService {
                 return;
             }
 
-            this.notificationService.notify('Swap creation in progress...', `Swap ID: ${swapCreateResponse.result.swapId}`, "aerum", 3000);
+            this.notificationService.notify(this.translateService.instant('SWAP.CREATE.SWAP_CREATION_IN_PROGRESS'), `${this.translateService.instant('SWAP.CREATE.SWAP_ID_')} ${swapCreateResponse.result.swapId}`, 'aerum', 3000);
             await this.createSwapBasedOnMode(swapCreateResponse.result);
-            this.notificationService.notify('Swap created', `Swap ID: ${swapCreateResponse.result.swapId}`, "aerum");
+            this.notificationService.notify(this.translateService.instant('SWAP.CREATE.SWAP_CREATED'), `${this.translateService.instant('SWAP.CREATE.SWAP_ID_')} ${swapCreateResponse.result.swapId}`, 'aerum');
         }
     }
 
@@ -73,7 +74,7 @@ export class CreateSwapService {
 
     private async createErc20ToAeroSwap(data: CreateSwapModalContext) {
         const tokenAmount = this.getTokenAmountIncludingDecimals(data);
-        await this.ensureAllowance(data.token.address, environment.contracts.swap.address.Erc20ToAero, tokenAmount, data);
+        await this.ensureAllowance(data.token.address, this.environment.get().contracts.swap.address.Erc20ToAero, tokenAmount, data);
         await this.erc20ToAeroSwapService.openSwap(
             data.swapId,
             toBigNumberString(tokenAmount),
@@ -86,7 +87,7 @@ export class CreateSwapService {
     private async createErc20ToErc20Swap(data: CreateSwapModalContext) {
         const tokenAmount = this.getTokenAmountIncludingDecimals(data);
         const counterpartyTokenAmount = this.getCounterpartyTokenAmountIncludingDecimals(data);
-        await this.ensureAllowance(data.token.address, environment.contracts.swap.address.Erc20ToErc20, tokenAmount, data);
+        await this.ensureAllowance(data.token.address, this.environment.get().contracts.swap.address.Erc20ToErc20, tokenAmount, data);
         await this.erc20ToErc20SwapService.openSwap(
             data.swapId,
             toBigNumberString(tokenAmount),

@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';  
-import { SwapToken } from '@swap/models/models';  
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { SwapToken } from '@swap/models/models';
 import { TokenService } from '@core/transactions/token-service/token.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class SwapTokensListComponent implements OnInit {
   tokens: SwapToken[];
   aero: SwapToken = {
     address: '',
-    symbol: 'Aero',
+    symbol: 'Gas',
     decimals: 18
   };
 

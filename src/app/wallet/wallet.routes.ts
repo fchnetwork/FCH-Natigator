@@ -39,10 +39,12 @@ export const WALLET_ROUTES = [
         path: "settings",
         loadChildren: "app/wallet/settings/settings.module#SettingsModule"
       },
+      /*
       {
         path: "staking",
         loadChildren: "app/wallet/staking/staking.module#StakingModule"
       },
+      */
       {
         path: "factory",
         loadChildren: "app/wallet/factory/factory.module#FactoryModule"

@@ -50,7 +50,7 @@ export class NotificationMessagesService {
         "SHARED.IMPORT_WALLET.IMPORTING_NOTIFICATION_ADDRESS"
       )}: ${walletAddress} \n\r ${this.translate(
         "SHARED.IMPORT_WALLET.IMPORTING_NOTIFICATION_AMOUNT"
-      )}: ${ammount} AERO`,
+      )}: ${ammount} GAS`,
       "transaction",
       5000
     );
@@ -317,9 +317,9 @@ export class NotificationMessagesService {
    */
   public valueCopiedToClipboard() {
     this.notificationService.notify(
-      `Notification`,
-      `Value has been copied to clipboard`,
-      "clipboard",
+      `${this.translate("NOTIFICATION")}`,
+      `${this.translate("COPIED_TO_CLIPBOARD")}`,
+      `${this.translate("CLIPBOARD")}`,
       5000
     );
   }

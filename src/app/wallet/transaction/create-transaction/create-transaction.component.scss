@@ -12,16 +12,16 @@
 
 .note {
   font-size: 13px;
-  color: #83868a;
 }
 
 .error {
   font-size: 13px;
-  color: #c94545;
+  color: white;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-shadow: 0 0 4px;
   .read-more {
     cursor: pointer;
     text-decoration: underline;
@@ -30,10 +30,9 @@
 
 .account-status-line {
   font-size: 13px;
-  color: #83868a;
   padding-top: 15px;
 
-  @media(max-width: 768px) {
+  @media (max-width: 768px) {
     padding: 15px 0;
   }
 

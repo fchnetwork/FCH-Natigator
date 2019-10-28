@@ -3,7 +3,7 @@ import { NotificationService, DialogResult } from '@aerum/ui';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { AddressValidator } from "@shared/validators/address.validator";
@@ -44,7 +44,8 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
     private formBuilder: FormBuilder,
     private aensService: AerumNameService,
     private storageService: StorageService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private environment: EnvironmentService
   ) { super(translateService); }
 
   async ngOnInit() {
@@ -75,7 +76,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
       this.startProcessing();
       await this.tryBuyName();
     } catch (e) {
-      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.BUY_NAME_ERROR')}: ${this.name}.aer`, 'aerum', 5000);
+      this.notificationService.notify(this.translate('ENS.UNHANDLED_ERROR'), `${this.translate('ENS.BUY_NAME_ERROR')}: ${this.name}.f`, 'aerum', 5000);
       this.logger.logError(`Buying ${this.name} name error: `, e);
     }
     finally{
@@ -87,7 +88,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
 
   async tryBuyName() {
     const label = this.name.trim();
-    const fullName = label + ".aer";
+    const fullName = label + ".f";
     const nameAddress = this.address;
 
     const cost = await this.aensService.estimateBuyNameAndSetAddressCost(label, this.account, this.address, toBigNumberString(this.price));
@@ -98,7 +99,7 @@ export class NameBuyComponent extends AensBaseComponent implements OnInit {
       amount: this.price,
       buyer: this.account,
       address: nameAddress,
-      ansOwner: environment.contracts.aens.address.FixedPriceRegistrar,
+      ansOwner: this.environment.get().contracts.aens.address.FixedPriceRegistrar,
       gasPrice: cost[0],
       estimatedFeeInGas: cost[1],
       maximumFeeInGas: cost[2]

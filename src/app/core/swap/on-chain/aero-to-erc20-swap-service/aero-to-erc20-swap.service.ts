@@ -2,7 +2,7 @@ const artifacts = require('@core/abi/AtomicSwapEtherToERC20.json');
 
 import { Injectable } from '@angular/core';
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { fromWei } from "web3-utils";
 import { fromSolidityDecimalString } from "@shared/helpers/number-utils";
@@ -21,8 +21,9 @@ export class AeroToErc20SwapService extends BaseContractService {
     authenticationService: AuthenticationService,
     contractExecutorService: ContractExecutorService,
     private tokenService: TokenService,
+    environment: EnvironmentService
   ) {
-    super(artifacts.abi, environment.contracts.swap.address.AeroToErc20, authenticationService, contractExecutorService);
+    super(artifacts.abi, environment.get().contracts.swap.address.AeroToErc20, authenticationService, contractExecutorService);
   }
 
   async openSwap(swapId: string, aeroValue: string, erc20Value: string, erc20Trader: string, erc20ContractAddress: string) {

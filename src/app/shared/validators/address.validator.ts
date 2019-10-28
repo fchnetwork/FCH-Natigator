@@ -36,7 +36,7 @@ export class AddressValidator {
            return resolve(null);
          }
 
-         if (!value.endsWith('.aer')) {
+         if (!value.endsWith('.f')) {
            return resolve({ invalid: true });
          }
 

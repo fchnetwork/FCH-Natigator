@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { iTransaction } from '@shared/app.interfaces';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ClipboardService } from '@app/core/general/clipboard-service/clipboard.service';
 import { InternalNotificationService } from '@app/core/general/internal-notification-service/internal-notification.service';
@@ -14,14 +15,12 @@ export class TransactionModalData {
   orderId: string;
 }
 
-
 @Component({
   selector: 'app-transaction-modal',
   templateUrl: './transaction-modal.component.html',
   styleUrls: ['./transaction-modal.component.scss']
 })
 export class TransactionModalComponent implements OnInit, ModalViewComponent<TransactionModalData, any> {
-
   hash: string;
   orderId: string;
   transaction: iTransaction;
@@ -31,9 +30,12 @@ export class TransactionModalComponent implements OnInit, ModalViewComponent<Tra
   setBtnTxt$ = new BehaviorSubject("Convert to UTF-8");
   btnText: string;
 
-    constructor(public dialogRef: DialogRef<TransactionModalData, any>,
-                public clipboardService: ClipboardService,
-                public notificationService: InternalNotificationService) {
+  constructor(
+    public dialogRef: DialogRef<TransactionModalData, any>,
+    public clipboardService: ClipboardService,
+    public notificationService: InternalNotificationService,
+    private environment: EnvironmentService,
+    private translateService: TranslateService) {
       this.setBtnTxt$.subscribe((value) => {
         this.btnText = value;
       });
@@ -44,11 +46,11 @@ export class TransactionModalComponent implements OnInit, ModalViewComponent<Tra
    }
 
   openBlock(blockNumber) {
-    window.open( environment.externalBlockExplorer + 'block/' + blockNumber, "_blank");
+    window.open(this.environment.get().externalBlockExplorer + 'block/' + blockNumber, "_blank");
   }
 
   openTxn(txnHash){
-    window.open( environment.externalBlockExplorer + 'transaction/' + txnHash, "_blank");
+    window.open(this.environment.get().externalBlockExplorer + 'transaction/' + txnHash, "_blank");
   }
 
   redirectExternal(){
@@ -77,7 +79,7 @@ export class TransactionModalComponent implements OnInit, ModalViewComponent<Tra
   copyToClipboard(hash) {
     if (hash) {
       this.clipboardService.copy(hash);
-      this.notificationService.showMessage('Copied to clipboard!', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('COPIED_TO_CLIPBOARD'), this.translateService.instant('DONE'));
     }
   }
 

@@ -1,7 +1,7 @@
 const artifacts = require('@core/abi/SwapTemplateRegistry.json');
 
 import { Injectable } from '@angular/core';
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { toSolidityDecimalString } from "@shared/helpers/number-utils";
 import { filterAsync } from "@shared/helpers/array-utils";
@@ -19,8 +19,9 @@ export class SwapTemplateService extends BaseContractService {
   constructor(
     authenticationService: AuthenticationService,
     contractExecutorService: ContractExecutorService,
-    private nameService: AerumNameService) {
-    super(artifacts.abi, environment.contracts.swap.crossChain.address.aerum.TemplatesRegistry, authenticationService, contractExecutorService);
+    private nameService: AerumNameService,
+    environment: EnvironmentService) {
+    super(artifacts.abi, environment.get().contracts.swap.crossChain.address.aerum.TemplatesRegistry, authenticationService, contractExecutorService);
   }
 
   async registerTemplate(id: string, onchainAsset: string, onchainAccount: string, offchainAsset: string, offchainAccount: string, rate: number, chain: Chain) {
@@ -88,7 +89,7 @@ export class SwapTemplateService extends BaseContractService {
     const swapTemplates =  (
       await filterAsync(templates, async t => {
         const result = await this.nameService.safeResolveNameOrAddress(t.onchainAsset);
-        return result === asset.toLowerCase() 
+        return result === asset.toLowerCase()
           && (t.offchainAsset === offchainAsset.toLowerCase() || (offchainAsset.toLowerCase() === '0x0' && t.offchainAsset === '')); //Check to look for ETH templates
       })
     ).map(r => r as SwapTemplate);

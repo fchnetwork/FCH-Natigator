@@ -1,4 +1,4 @@
-<aer-select [(ngModel)]="selected" required dataKey="symbol" (ngModelChange)="onChange()" icon="aerum" placeholder="{{'SWAP.CREATE.PLACEHOLDER_SELECT_TOKEN_OR_AERO'|translate}}">
+<aer-select [(ngModel)]="selected" required dataKey="symbol" (ngModelChange)="onChange()" icon="fuchsia" placeholder="{{'SWAP.CREATE.PLACEHOLDER_SELECT_TOKEN_OR_AERO'|translate}}">
   <aer-select-option *ngFor="let token of tokens;" [value]="token">
     <app-token-description [token]="token"></app-token-description>
   </aer-select-option>

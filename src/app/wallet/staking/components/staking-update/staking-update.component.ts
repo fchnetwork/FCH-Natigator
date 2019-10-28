@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import Web3 from "web3";
-import { environment } from "@env/environment";
 
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
@@ -16,6 +16,7 @@ import { EthWalletType } from '@app/external/models/eth-wallet-type.enum';
 import { Token } from "@core/transactions/token-service/token.model";
 import { EthereumAccount } from "@core/ethereum/ethereum-authentication-service/ethereum-account.model";
 import { Chain } from '@app/core/swap/cross-chain/swap-template-service/chain.enum';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-staking-update',
@@ -53,13 +54,15 @@ export class StakingUpdateComponent implements OnInit {
     private stakingLocalStorageService: StakingLocalStorageService,
     private ethereumTokenService: EthereumTokenService,
     private ethereumAuthenticationService: EthereumAuthenticationService,
-    private storageService: StorageService) {
+    private storageService: StorageService,
+    private environment: EnvironmentService,
+    private translateService: TranslateService) {
       this.web3 = this.ethereumAuthenticationService.getWeb3();
       this.injectedWeb3 = this.ethereumAuthenticationService.getInjectedWeb3();
     }
 
   async ngOnInit() {
-    this.aerumTokenInfo = await this.ethereumTokenService.getNetworkTokenInfo(EthWalletType.Imported, environment.contracts.staking.address.Aerum);
+    this.aerumTokenInfo = await this.ethereumTokenService.getNetworkTokenInfo(EthWalletType.Imported, this.environment.get().contracts.staking.address.Aerum);
     this.initStaking();
   }
 
@@ -102,15 +105,15 @@ export class StakingUpdateComponent implements OnInit {
         wallet: this.stakingReference.walletType,
         hashCallback: (txHash) => this.increaseTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
-      this.notificationService.showMessage(`Increasing staking ${this.increaseAmount} XRM for ${this.delegateAddress} delegate`, 'In progress');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.UPDATE.INCREASING_STAKING')} ${this.increaseAmount} ${this.translateService.instant('STAKING.UPDATE.XRM_FOR')} ${this.delegateAddress} ${this.translateService.instant('STAKING.UPDATE.DELEGATE')}`, this.translateService.instant('IN_PROGRESS'));
       await this.stakingDelegateService.stake(this.delegateAddress, tokenAmount, options);
-      this.notificationService.showMessage(`Successfully increased staking ${this.increaseAmount} XRM for ${this.delegateAddress} delegate`, 'Done');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.UPDATE.SUCCESSFULLY_INCREASED_STAKING')} ${this.increaseAmount} ${this.translateService.instant('STAKING.UPDATE.XRM_FOR')} ${this.delegateAddress} ${this.translateService.instant('STAKING.UPDATE.DELEGATE')}`, this.translateService.instant('DONE'));
       this.updateAccountInfo();
       this.increaseTransactionExplorerUrl = null;
       this.increaseStakingInProgress = false;
     } catch (err) {
       this.logger.logError('Staking increase failed', err);
-      this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.UNHANDLED_ERROR_OCCURRED'), this.translateService.instant('ERROR'));
       this.increaseStakingInProgress = false;
     }
   }
@@ -135,15 +138,15 @@ export class StakingUpdateComponent implements OnInit {
         wallet: this.stakingReference.walletType,
         hashCallback: (txHash) => this.decreaseTransactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
-      this.notificationService.showMessage(`Unstaking ${this.decreaseAmount} XRM from ${this.delegateAddress} delegate`, 'In progress');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.UPDATE.UNSTAKING')} ${this.decreaseAmount} ${this.translateService.instant('STAKING.UPDATE.XRM_FOR')} ${this.delegateAddress} ${this.translateService.instant('STAKING.UPDATE.DELEGATE')}`, this.translateService.instant('IN_PROGRESS'));
       await this.stakingDelegateService.unstake(this.delegateAddress, tokenAmount, options);
-      this.notificationService.showMessage(`Successfully unstaked ${this.decreaseAmount} XRM from ${this.delegateAddress} delegate`, 'Done');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.UPDATE.SUCCESSFULLY_UNSTAKED')} ${this.decreaseAmount} ${this.translateService.instant('STAKING.UPDATE.XRM_FOR')} ${this.delegateAddress} ${this.translateService.instant('STAKING.UPDATE.DELEGATE')}`, this.translateService.instant('SUCCESS'));
       this.updateAccountInfo();
       this.decreaseTransactionExplorerUrl = null;
       this.decreaseStakingInProgress = false;
     } catch (err) {
       this.logger.logError('Unstaking failed', err);
-      this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.UNHANDLED_ERROR_OCCURRED'), this.translateService.instant('ERROR'));
       this.decreaseStakingInProgress = false;
     }
   }
@@ -165,7 +168,7 @@ export class StakingUpdateComponent implements OnInit {
     this.increaseAmount = 0;
     this.decreaseAmount = 0;
 
-    const getAccountBalance = this.ethereumTokenService.getBalance(EthWalletType.Imported, environment.contracts.staking.address.Aerum, this.accountAddress);
+    const getAccountBalance = this.ethereumTokenService.getBalance(EthWalletType.Imported, this.environment.get().contracts.staking.address.Aerum, this.accountAddress);
     const getAccountEthBalance = this.getEthereumBalance();
     const getStakeInfo = this.stakingDelegateService.getStakeInfo(this.delegateAddress, this.accountAddress);
 

@@ -12,7 +12,7 @@ import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentic
 import { EthereumContractExecutorService } from "@core/ethereum/ethereum-contract-executor-service/ethereum-contract-executor.service";
 import { InjectedWeb3ContractExecutorService } from "@core/ethereum/injected-web3-contract-executor-service/injected-web3-contract-executor.service";
 import { EthWalletType } from '@app/external/models/eth-wallet-type.enum';
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Injectable()
 export class StakingDelegateService extends BaseContractService {
@@ -21,7 +21,8 @@ export class StakingDelegateService extends BaseContractService {
     ethereumAuthService: EthereumAuthenticationService,
     ethereumContractExecutorService: EthereumContractExecutorService,
     injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
-    translateService: TranslateService
+    translateService: TranslateService,
+    private environment: EnvironmentService
   ){
     super(
       artifacts.abi,
@@ -41,7 +42,7 @@ export class StakingDelegateService extends BaseContractService {
    * @param {TransactionOptions} options - options for web3 contract method call
    */
   private async tokenApprove(spender: string, value: string|number, options: TransactionOptions) {
-    const erc20Address = environment.contracts.staking.address.Aerum;
+    const erc20Address = this.environment.get().contracts.staking.address.Aerum;
     const web3 = await this.createWeb3(options.wallet);
     const tokenContract = new web3.eth.Contract(erc20ABI.tokensABI, erc20Address);
     const approve = tokenContract.methods.approve(spender, value);

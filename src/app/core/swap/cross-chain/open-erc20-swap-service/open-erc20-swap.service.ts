@@ -3,7 +3,7 @@ const erc20ABI = require('@core/abi/tokens.ts');
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { secondsToDate } from "@shared/helpers/date-util";
 import { fromSolidityDecimalString } from "@shared/helpers/number-utils";
 
@@ -20,6 +20,7 @@ import { EthWalletType } from '@app/external/models/eth-wallet-type.enum';
 
 @Injectable()
 export class OpenErc20SwapService extends BaseContractService {
+  private environment: EnvironmentService;
 
   constructor(
     notificationService: InternalNotificationService,
@@ -27,17 +28,19 @@ export class OpenErc20SwapService extends BaseContractService {
     ethereumContractExecutorService: EthereumContractExecutorService,
     injectedWeb3ContractExecutorService: InjectedWeb3ContractExecutorService,
     private ethereumTokenService: EthereumTokenService,
-    translateService: TranslateService
+    translateService: TranslateService,
+    environment: EnvironmentService
   ) {
     super(
       artifacts.abi,
-      environment.contracts.swap.crossChain.address.ethereum.OpenErc20Swap,
+      environment.get().contracts.swap.crossChain.address.ethereum.OpenErc20Swap,
       notificationService,
       ethereumAuthService,
       ethereumContractExecutorService,
       injectedWeb3ContractExecutorService,
       translateService
     );
+    this.environment = environment;
   }
 
   /**
@@ -64,7 +67,7 @@ export class OpenErc20SwapService extends BaseContractService {
    * @param {TransactionOptions} options - options for web3 contract method call
    */
   private async tokenApprove(erc20Address: string, value: string, options: TransactionOptions) {
-    const openErc20Swap = environment.contracts.swap.crossChain.address.ethereum.OpenErc20Swap as string;
+    const openErc20Swap = this.environment.get().contracts.swap.crossChain.address.ethereum.OpenErc20Swap as string;
     const web3 = await this.createWeb3(options.wallet);
     const tokenContract = new web3.eth.Contract(erc20ABI.tokensABI, erc20Address);
     const approve = tokenContract.methods.approve(openErc20Swap, value);
