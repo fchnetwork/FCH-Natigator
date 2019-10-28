@@ -7,6 +7,16 @@
 
 image: node:11
 pipelines:
+  default:
+    - step:
+        name: Install Deps and Build
+        caches:
+          - node
+        script:
+          - npm install
+          - npm run-script build:test
+        artifacts:
+          - build/**
   branches:
     master:
       - step:
