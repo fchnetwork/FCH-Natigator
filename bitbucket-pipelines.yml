@@ -5,28 +5,21 @@
 # You can specify a custom docker image from Docker Hub as your build environment.
 # image: atlassian/default-image:latest
 
-image: node:8
+image: node:11
 pipelines:
-  default:
-    - step:
-        name: Install Deps and Build
-        caches:
-          - node
-        script:
-          - npm install
-          - npm run-script build:test
-        artifacts:
-          - build/**
   branches:
-    development:
+    master:
       - step:
           name: Install Deps and Build
           caches:
             - node
           script:
+            # install Amazon CLI
+            - apt-get update && apt-get install -y python-dev
+            - curl -O https://bootstrap.pypa.io/get-pip.py
+            - python get-pip.py
+            - pip install awscli
             - npm install
-            - npm run-script build:test
-            - tar -czvf ./dist.tar.gz ./build/dist
-            - apt-get update && apt-get install -y rsync
-            - rsync -rvz -e 'ssh -p 22 -o StrictHostKeyChecking=no' --progress ./dist.tar.gz root@dev.aerum.net:~/
-            - ssh -p 22 -o StrictHostKeyChecking=no root@dev.aerum.net "bash /home/vsftpd/docker/builder-dev.sh"
+            - npm run build:live
+            - cd build
+            - aws s3 sync dist s3://wallet.fch.network --acl public-read --delete
