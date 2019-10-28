@@ -8,7 +8,7 @@
 
     <div aerRow>
       <div aerColumn size="sm-6">
-        <aer-input icon="aerum" [(ngModel)]="address" [ngClass]="{'has-error': hasError(buyForm.controls.address)}" [attr.disabled]="locked" formControlName="address" ngDefaultControl></aer-input>
+        <aer-input icon="fuchsia" [(ngModel)]="address" [ngClass]="{'has-error': hasError(buyForm.controls.address)}" [disabled]="disableAddress || locked" formControlName="address" ngDefaultControl></aer-input>
       </div>
       <div aerColumn size="sm-6">
         {{'ENS.ADDRESS_SET_DESCRIPTION'|translate}}
@@ -23,11 +23,12 @@
 
     <div aerRow>
       <div aerColumn size="sm-6">
-        <aer-input [(ngModel)]="name" class="with-button blue" [ngClass]="{'has-error': hasError(buyForm.controls.name)}" readonly="readonly" buttonLabel=".aer" formControlName="name" ngDefaultControl></aer-input>
+        <aer-input [(ngModel)]="name" class="blue" [ngClass]="{'has-error': hasError(buyForm.controls.name)}" readonly="readonly" formControlName="name" ngDefaultControl></aer-input>
+        <aer-checkbox [(ngModel)]="assignName" formControlName="assignName" (ngModelChange)="setAssignName($event);">{{'ENS.ASSIGN_THE_NAME_TO_ACCOUNT'|translate}}</aer-checkbox>
       </div>
       <div aerColumn size="sm-6" class="aens__price-info">
         <div>{{'ENS.FIELD_PRICE'|translate}}</div>
-        <div class="aens__price-info__aero">{{price | number:'1.2-5'}} Aero</div>
+        <div class="aens__price-info__aero">{{price | number:'1.2-5'}} Gas</div>
       </div>
     </div>
     <app-divider [showLine]="true" [fullWidth]="true"></app-divider>

@@ -1,6 +1,9 @@
 <p>
-    {{'SETTINGS.GENERAL.DERIVATION_PATH_LABEL'|translate}}
+  {{'SETTINGS.GENERAL.DERIVATION_PATH_LABEL'|translate}}
 </p>
-  <aer-select [(ngModel)]="selectResult" (ngModelChange)="derivationChanged($event)" dataKey="derivation" placeholder="Select a derivation path">
-    <aer-select-option *ngFor="let item of derivationPaths;" [value]="item" selected><span>{{item.derivation}}</span></aer-select-option>
-</aer-select>
+<aer-input
+  type="text"
+  class="element-wrapper blue"
+  [disabled]="true"
+  [(ngModel)]="activeDerivation">
+</aer-input>

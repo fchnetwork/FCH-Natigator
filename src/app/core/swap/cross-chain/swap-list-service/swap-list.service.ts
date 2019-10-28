@@ -14,7 +14,6 @@ import { LoggerService } from "@core/general/logger-service/logger.service";
 import { OpenErc20Swap } from "@core/swap/models/open-erc20-swap.model";
 import { TokenService } from "@core/transactions/token-service/token.service";
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
-import { Token } from '@app/core/transactions/token-service/token.model';
 
 
 @Injectable()
@@ -25,10 +24,31 @@ export class SwapListService {
     private localSwapStorage: SwapLocalStorageService,
     private etherDepositSwapService: OpenEtherSwapService,
     private erc20DepositSwapService: OpenErc20SwapService,
-    private withdrawalSwapService: OpenAerumErc20SwapService,
-    private tokenService: TokenService,
-    private ethereumTokenService: EthereumTokenService
+    private withdrawalSwapService: OpenAerumErc20SwapService
   ) { }
+
+  /**
+   * Returns list of swap items for specified account
+   * @param {string} account - account address
+   * @return {SwapListItem[]} List of swap items
+   */
+  async getSwapsByAccount(account: string): Promise<SwapListItem[]> {
+    account = account.toLowerCase();
+
+    const [etherDepositSwapsIds, erc20DepositSwapsIds, erc20WithdrawalSwapIds] = await Promise.all([
+      this.getEtherDepositSwapsIdsByAccount(account),
+      this.getErc20DepositSwapsIdsByAccount(account),
+      this.getWithdrawalSwapsIdsByAccount(account)
+    ]);
+
+    const [etherDepositSwaps, erc20DepositSwaps, erc20WithdrawalSwap] = await Promise.all([
+      this.getEtherDepositSwapsByIds(etherDepositSwapsIds.map(s => s.swapId), account),
+      this.getErc20DepositSwapsByIds(erc20DepositSwapsIds.map(s => s.swapId), account),
+      this.getWithdrawalSwapsByIds(erc20WithdrawalSwapIds.map(s => s.swapId), account)
+    ]);
+
+    return [...etherDepositSwaps, ...erc20DepositSwaps, ...erc20WithdrawalSwap];
+  }
 
   /**
    * Returns list of swap items for specified account

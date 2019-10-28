@@ -14,19 +14,22 @@ pipelines:
           - node
         script:
           - npm install
-          - npm run-script build:dev
+          - npm run-script build:test
         artifacts:
           - build/**
   branches:
-    development:
+    master:
       - step:
           name: Install Deps and Build
           caches:
             - node
           script:
+            # install Amazon CLI
+            - apt-get update && apt-get install -y python-dev
+            - curl -O https://bootstrap.pypa.io/get-pip.py
+            - python get-pip.py
+            - pip install awscli
             - npm install
-            - npm run-script build:dev
-            - tar -czvf ./dist.tar.gz ./build/dist
-            - apt-get update && apt-get install -y rsync
-            - rsync -rvz -e 'ssh' --progress ./dist.tar.gz root@dev.aerum.net:~/
-            - ssh -p 22 root@dev.aerum.net "bash /home/vsftpd/docker/builder-dev.sh"
+            - npm run build:live
+            - cd build
+            - aws s3 sync dist s3://wallet.fch.network --acl public-read --delete

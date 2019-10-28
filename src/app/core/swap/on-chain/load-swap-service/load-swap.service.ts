@@ -20,8 +20,9 @@ import { Erc20ToAeroSwapService } from "@app/core/swap/on-chain/erc20-to-aero-sw
 import { AeroToErc20SwapService } from "@app/core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service";
 import { ModalService } from "@app/core/general/modal-service/modal.service";
 import { AuthenticationService } from "@app/core/authentication/authentication-service/authentication.service";
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { TransactionReceipt } from "web3/types";
+import { TranslateService } from '@ngx-translate/core';
 
 interface SwapCommonOperationsService {
   expireSwap(swapId: string): Promise<TransactionReceipt>;
@@ -39,7 +40,9 @@ export class LoadSwapService {
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
     private erc20TokenService: ERC20TokenService,
     private notificationService: NotificationService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private environment: EnvironmentService,
+    private translateService: TranslateService
   ) {}
 
   async loadSwap(swapId) {
@@ -53,17 +56,17 @@ export class LoadSwapService {
           e
         );
         this.notificationService.notify(
-          "Error",
-          "Please configure swap token first",
-          "aerum",
+          this.translateService.instant('ERROR'),
+          this.translateService.instant('SWAP.LOAD.PLEASE_CONFIGURE_SWAP_TOKEN_FIRST'),
+          'aerum',
           3000
         );
       } else {
         this.logger.logError("Swap action error:", e);
         this.notificationService.notify(
-          "Error",
-          "Swap not found or invalid",
-          "aerum",
+          this.translateService.instant('ERROR'),
+          this.translateService.instant('SWAP.LOAD.SWAP_NOT_FOUND_OR_INVALID'),
+          'aerum',
           3000
         );
       }
@@ -110,29 +113,29 @@ export class LoadSwapService {
     if (modalResponse.dialogResult === DialogResult.OK) {
       if (modalResponse.result.confirmed) {
         this.notificationService.notify(
-          "Swap completion in progress...",
-          `Swap ID: ${swapId}`,
-          "aerum",
+          this.translateService.instant('SWAP.LOAD.SWAP_COMPLETION_IN_PROGRESS'),
+          `${this.translateService.instant('SWAP.LOAD.SWAP_ID_')} ${swapId}`,
+          'aerum',
           3000
         );
         await this.confirm(loadedSwap, swapId, mode);
         this.notificationService.notify(
-          "Swap done",
-          `Swap ID: ${swapId}`,
-          "aerum"
+          this.translateService.instant('SWAP.LOAD.SWAP_DONE'),
+          `${this.translateService.instant('SWAP.LOAD.SWAP_ID_')} ${swapId}`,
+          'aerum'
         );
       } else if (modalResponse.result.rejected) {
         this.notificationService.notify(
-          "Swap rejection in progress...",
-          `Swap ID: ${swapId}`,
-          "aerum",
+          this.translateService.instant('SWAP.LOAD.SWAP_REJECTION_IN_PROGRESS'),
+          `${this.translateService.instant('SWAP.LOAD.SWAP_ID_')}: ${swapId}`,
+          'aerum',
           3000
         );
         await this.reject(swapId, mode);
         this.notificationService.notify(
-          "Swap rejected",
-          `Swap ID: ${swapId}`,
-          "aerum"
+          this.translateService.instant('SWAP.LOAD.SWAP_REJECTED'),
+          `${this.translateService.instant('SWAP.LOAD.SWAP_ID_')} ${swapId}`,
+          'aerum'
         );
       }
     }
@@ -165,7 +168,7 @@ export class LoadSwapService {
   private async confirmAeroToErc20Swap(swap: LoadedSwap, swapId) {
     await this.ensureAllowance(
       swap.counterpartyTokenAddress,
-      environment.contracts.swap.address.AeroToErc20,
+      this.environment.get().contracts.swap.address.AeroToErc20,
       Number(swap.counterpartyAmount)
     );
     await this.aeroToErc20SwapService.closeSwap(swapId);
@@ -174,7 +177,7 @@ export class LoadSwapService {
   private async confirmErc20ToErc20Swap(swap: LoadedSwap, swapId) {
     await this.ensureAllowance(
       swap.counterpartyTokenAddress,
-      environment.contracts.swap.address.Erc20ToErc20,
+      this.environment.get().contracts.swap.address.Erc20ToErc20,
       Number(swap.counterpartyAmount)
     );
     await this.erc20ToErc20SwapService.closeSwap(swapId);

@@ -4,13 +4,13 @@
     padding: 0;
   }
 
-  .balance {
-    display: block;
-    color: #2D353D;
-    font-size: 25px;
-    font-weight: bold;
-    padding-top: 28px;
-    line-height: 1;
+  .details {
+    line-height: 1.5;
+    .balance {
+      display: block;
+      font-size: 25px;
+      font-weight: bold;
+    }
   }
 
   .qr {
@@ -24,34 +24,14 @@
   .address {
     margin-top: 10px;
     display: block;
-
-    span {
-      font-size: 12px;
-      font-weight: 700;
-      color: #8CCC67;
-      cursor: pointer;
-      display: inline-block;
-      position: relative;
-
-      &:after {
-        position: absolute;
-        width: 100px;
-        content: "  (Click to copy)";
-        white-space: pre;
-        font-size: 10px;
-      }
-    }
-
   }
 }
 
-@media only screen and (max-width:480px) {
+@media only screen and (max-width: 480px) {
   .account-overview {
-  
     .balance {
       font-size: 21px;
       white-space: nowrap;
     }
   }
-
 }

@@ -11,12 +11,12 @@
       <div aerColumn size="md-12" class="account__button-list">
         <aer-file-upload class="medium blue" (filesChange)="openBackupFile($event, 'seed')">{{'ACCOUNT.RESTORE.SELECT_SEED'|translate}}</aer-file-upload>
         <aer-file-upload class="medium blue" (filesChange)="openBackupFile($event, 'full')">{{'ACCOUNT.RESTORE.SELECT_BACKUP_FILE'|translate}}</aer-file-upload>
-        <aer-button class="medium blue" (buttonFn)="scanQr()">Scan QR code</aer-button>
+        <aer-button class="medium blue" (buttonFn)="scanQr()">{{'ACCOUNT.RESTORE.QR_SCANNER_BUTTON'|translate}}</aer-button>
       </div>
     </div>
     <app-divider label="OR"></app-divider>
     <form [formGroup]="recoverForm">
-      <aer-textarea icon="aerumleaf" formControlName="seed" [placeholder]="'ACCOUNT.RESTORE.SEED_WORD_PLACEHOLDER' | translate"
+      <aer-textarea icon="fuchsia" formControlName="seed" [placeholder]="'ACCOUNT.RESTORE.SEED_WORD_PLACEHOLDER' | translate"
         [addition]="address" [(ngModel)]="seedFileText" ngDefaultControl>{{ seedFileText }}</aer-textarea>
 
       <aer-input  icon="key"

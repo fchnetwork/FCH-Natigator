@@ -1,31 +1,53 @@
 <aer-modal-container>
   <div class="swap-create">
-    <h1>{{'EXTERNAL-SWAP.CREATE.TITLE'|translate}}</h1>
+    <h1>{{ 'EXTERNAL-SWAP.CREATE.TITLE' | translate }}</h1>
     <app-divider></app-divider>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <label>{{'EXTERNAL-SWAP.CREATE.FIELD_RECEIVING_AERUM_TOKEN'|translate}}</label>
-        <aer-select [(ngModel)]="selectedToken"dataKey="symbol" icon="aerumleaf" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_SELECT_YOUR_TOKEN'|translate}}" (ngModelChange)="onTokenChange()" [disabled]="processing">
-          <aer-select-option *ngFor="let token of tokens;" [value]="token">
-            <aer-icon>aerumleaf</aer-icon>
+        <label>{{ 'EXTERNAL-SWAP.CREATE.FIELD_RECEIVING_AERUM_TOKEN' | translate }}</label>
+        <aer-select
+          [(ngModel)]="selectedToken"
+          dataKey="symbol"
+          icon="fuchsia"
+          placeholder="{{ 'EXTERNAL-SWAP.CREATE.FIELD_SELECT_YOUR_TOKEN' | translate }}"
+          (ngModelChange)="onTokenChange()"
+          [disabled]="processing"
+        >
+          <aer-select-option *ngFor="let token of tokens" [value]="token">
+            <aer-icon>fuchsia</aer-icon>
             <app-token-description [token]="token"></app-token-description>
           </aer-select-option>
+          <aer-select-option
+            ><span>{{ 'EXTERNAL-SWAP.WALLET.BTN_ADD_TOKEN' | translate }}</span></aer-select-option
+          >
         </aer-select>
       </div>
     </div>
+    <app-add-aerum-token *ngIf="importTokenInProgress" (tokenAdded)="onTokenAdded($event)"></app-add-aerum-token>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <label>{{'EXTERNAL-SWAP.CREATE.FIELD_AMOUNT_OF_TOKEN_TO_RECEIVE'|translate}}</label>
-        <aer-input [ngModel]="amount | number" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_TYPE_AMOUNT'|translate}}" (ngModelChange)="onAmountChange($event)" [attr.readonly]="processing"></aer-input>
+        <label>{{ 'EXTERNAL-SWAP.CREATE.FIELD_AMOUNT_OF_TOKEN_TO_RECEIVE' | translate }}</label>
+        <aer-input
+          [ngModel]="amount | number"
+          placeholder="{{ 'EXTERNAL-SWAP.CREATE.FIELD_TYPE_AMOUNT' | translate }}"
+          (ngModelChange)="onAmountChange($event)"
+          [attr.readonly]="processing"
+        ></aer-input>
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <label>{{'EXTERNAL-SWAP.CREATE.FIELD_EXCHANGE_COUNTERPARTY'|translate}}</label>
-        <aer-select [(ngModel)]="selectedTemplate" dataKey="onchainAccount" placeholder="{{'EXTERNAL-SWAP.CREATE.FIELD_SELECT_YOUR_COUNTERPARTY'|translate}}" (ngModelChange)="onTemplateChange()" [disabled]="processing">
-          <aer-select-option *ngFor="let template of templates;" [value]="template">
-            <img class="avatar" [src]="template.onchainAccount | generateavatar">
-            <span>{{template.onchainAccount}}</span>
+        <label>{{ 'EXTERNAL-SWAP.CREATE.FIELD_EXCHANGE_COUNTERPARTY' | translate }}</label>
+        <aer-select
+          [(ngModel)]="selectedTemplate"
+          dataKey="onchainAccount"
+          placeholder="{{ 'EXTERNAL-SWAP.CREATE.FIELD_SELECT_YOUR_COUNTERPARTY' | translate }}"
+          (ngModelChange)="onTemplateChange()"
+          [disabled]="processing"
+        >
+          <aer-select-option *ngFor="let template of templates" [value]="template">
+            <img class="avatar" [src]="template.onchainAccount | generateavatar" />
+            <span>{{ template.onchainAccount }}</span>
           </aer-select-option>
         </aer-select>
       </div>
@@ -33,7 +55,7 @@
     <div class="table-simple">
       <div>
         <div>
-          {{'EXTERNAL-SWAP.CREATE.FIELD_SEND_ETHEREUM_ASSET'|translate}}
+          {{ 'EXTERNAL-SWAP.CREATE.FIELD_SEND_ETHEREUM_ASSET' | translate }}
         </div>
         <div>
           {{ walletTokenSymbol }}
@@ -41,50 +63,58 @@
       </div>
       <div>
         <div>
-          {{'EXTERNAL-SWAP.CREATE.FIELD_AMOUNT'|translate}}
+          {{ 'EXTERNAL-SWAP.CREATE.FIELD_AMOUNT' | translate }}
         </div>
         <div>
-          {{tokenAmount| number:'1.2-18'}}
-        </div>
-      </div>
-      <div>
-        <div>
-          {{'EXTERNAL-SWAP.CREATE.FIELD_EXCHANGE_RATE'|translate}}
-        </div>
-        <div>
-          {{rate | number:'1.2-18'}}
+          {{ tokenAmount | number: '1.2-18' }}
         </div>
       </div>
       <div>
         <div>
-          {{'EXTERNAL-SWAP.CREATE.FIELD_SECRET_KEY'|translate}}
+          {{ 'EXTERNAL-SWAP.CREATE.FIELD_EXCHANGE_RATE' | translate }}
+        </div>
+        <div>
+          {{ rate | number: '1.2-18' }}
+        </div>
+      </div>
+      <div>
+        <div>
+          {{ 'EXTERNAL-SWAP.CREATE.FIELD_SECRET_KEY' | translate }}
         </div>
         <div class="secret-key">
-          <span (click)="copyToClipboard()">{{secret}}</span>
+          <span (click)="copyToClipboard()">{{ secret }}</span>
         </div>
       </div>
     </div>
     <div *ngIf="approveTokenTransactionExplorerUrl || openSwapTransactionExplorerUrl" class="swap-create__processing">
       <div class="swap-create__explorer-buttons">
-        <aer-button *ngIf="approveTokenTransactionExplorerUrl" (buttonFn)="explorerLink(approveTokenTransactionExplorerUrl)" class="blue small explorer-button">{{'EXTERNAL-SWAP.CREATE.OPEN_APPROVAL_TX_IN_EXPLORER'|translate}}</aer-button> 
-        <aer-button *ngIf="openSwapTransactionExplorerUrl" (buttonFn)="explorerLink(openSwapTransactionExplorerUrl)" class="blue small explorer-button">{{'EXTERNAL-SWAP.CREATE.OPEN_TRANSFER_TX_IN_EXPLORER'|translate}}</aer-button>
+        <aer-button *ngIf="approveTokenTransactionExplorerUrl" (buttonFn)="explorerLink(approveTokenTransactionExplorerUrl)" class="blue small explorer-button">{{
+          'EXTERNAL-SWAP.CREATE.OPEN_APPROVAL_TX_IN_EXPLORER' | translate
+        }}</aer-button>
+        <aer-button *ngIf="openSwapTransactionExplorerUrl" (buttonFn)="explorerLink(openSwapTransactionExplorerUrl)" class="blue small explorer-button">{{
+          'EXTERNAL-SWAP.CREATE.OPEN_TRANSFER_TX_IN_EXPLORER' | translate
+        }}</aer-button>
       </div>
       <aer-loader *ngIf="processing"></aer-loader>
     </div>
     <div class="message">
-      {{'EXTERNAL-SWAP.CREATE.FIELD_MESSAGE'|translate}}
+      {{ 'EXTERNAL-SWAP.CREATE.FIELD_MESSAGE' | translate }}
     </div>
     <div class="message">
-      {{'EXTERNAL-SWAP.CREATE.FIELD_AER_AMOUNT_MESSAGE'|translate}}
+      {{ 'EXTERNAL-SWAP.CREATE.FIELD_AER_AMOUNT_MESSAGE' | translate }}
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <aer-button (buttonFn)="next()" class="blue large full-width" [disabled]="!canMoveNext()" [ngClass]="{ 'blue': canMoveNext(), 'grey': !canMoveNext() }">{{'EXTERNAL-SWAP.CREATE.BTN_NEXT'|translate}}</aer-button>
+        <aer-button (buttonFn)="next()" class="blue large full-width" [disabled]="!canMoveNext()" [ngClass]="{ blue: canMoveNext(), grey: !canMoveNext() }">{{
+          'EXTERNAL-SWAP.CREATE.BTN_NEXT' | translate
+        }}</aer-button>
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="sm-12" class="cell">
-        <aer-button (buttonFn)="cancel()" class="blue large full-width" [disabled]="processing" [ngClass]="{ 'blue': !processing, 'grey': processing }">{{(swapCreated ? 'EXTERNAL-SWAP.CREATE.BTN_CLOSE' : 'EXTERNAL-SWAP.CREATE.BTN_BACK') |translate}}</aer-button>
+        <aer-button (buttonFn)="cancel()" class="white large full-width" [disabled]="processing" [ngClass]="{ blue: !processing, grey: processing }">{{
+          (swapCreated ? 'EXTERNAL-SWAP.CREATE.BTN_CLOSE' : 'EXTERNAL-SWAP.CREATE.BTN_BACK') | translate
+        }}</aer-button>
       </div>
     </div>
   </div>

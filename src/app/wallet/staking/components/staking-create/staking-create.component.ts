@@ -1,18 +1,20 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { environment } from "@env/environment";
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 import { genTransactionExplorerUrl } from "@shared/helpers/url-utils";
 import { toBigNumberString } from "@shared/helpers/number-utils";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { StakingGovernanceService } from "@core/staking/staking-governance-service/staking-governance.service";
-import { StakingAerumService } from "@core/staking/staking-aerum-service/staking-aerum.service";
+import { StakingDelegateService } from "@core/staking/staking-delegate-service/staking-delegate.service";
 import { EthereumWalletAccount } from '@app/wallet/staking/models/ethereum-wallet-account.model';
 import { StakingLocalStorageService } from '@app/wallet/staking/staking-local-storage/staking-local-storage.service';
 import { StakingReference } from "@app/wallet/staking/models/staking-reference.model";
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { Chain } from '@app/core/swap/cross-chain/swap-template-service/chain.enum';
+import { AddressKeyValidationService } from "@app/core/validation/address-key-validation.service";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-staking-create',
@@ -22,7 +24,6 @@ import { Chain } from '@app/core/swap/cross-chain/swap-template-service/chain.en
 export class StakingCreateComponent implements OnInit {
   amount = 0;
   address: string;
-  addresses: string[] = [];
   stakingInProgress = false;
   transactionExplorerUrl: string;
 
@@ -32,45 +33,52 @@ export class StakingCreateComponent implements OnInit {
   constructor(private logger: LoggerService,
     private notificationService: InternalNotificationService,
     private stakingGovernanceService: StakingGovernanceService,
-    private stakingAerumService: StakingAerumService,
+    private stakingDelegateService: StakingDelegateService,
     private stakingLocalStorageService: StakingLocalStorageService,
-    private ethereumTokenService: EthereumTokenService)
+    private ethereumTokenService: EthereumTokenService,
+    private addressKeyValidationService: AddressKeyValidationService,
+    private environment: EnvironmentService,
+    private translateService: TranslateService)
   { }
 
-  async ngOnInit() {
-    this.addresses = await this.stakingGovernanceService.getValidDelegates();
-    if(this.addresses.length > 0) {
-      this.address = this.addresses[0];
-    }
-  }
+  async ngOnInit() { }
 
   async stake() {
     try {
+      if(!this.addressKeyValidationService.isAddress(this.address)) {
+        this.notificationService.showMessage(this.translateService.instant('STAKING.CREATE.PLEASE_ENTER_A_VALID_ADDRESS'), this.translateService.instant('ERROR'));
+        return;
+      }
+      const isKnownDelegate = await this.stakingGovernanceService.isKnown(this.address);
+      if(!isKnownDelegate) {
+        this.notificationService.showMessage(this.translateService.instant('STAKING.CREATE.SPECIFIED_DELEGATE_IS_UNKNOWN'), this.translateService.instant('ERROR'));
+        return;
+      }
       this.stakingInProgress = true;
       const tokenAmount = await this.getAerumAmount();
-      const options = { 
+      const options = {
         account: this.ethereumAccount.address,
         wallet: this.ethereumAccount.walletType,
         hashCallback: (txHash) => this.transactionExplorerUrl = genTransactionExplorerUrl(txHash, Chain.Ethereum)
       };
-      this.notificationService.showMessage(`Stakeding ${this.amount} XMR for ${this.address} delegate`, 'In progress');
-      await this.stakingAerumService.stake(this.address, tokenAmount, options);
-      const stakingReference = { address: this.ethereumAccount.address, walletType: this.ethereumAccount.walletType };
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.CREATE.STAKING')} ${this.amount} ${this.translateService.instant('STAKING.CREATE.XRM_FOR')} ${this.address} ${this.translateService.instant('STAKING.CREATE.DELEGATE')}`, this.translateService.instant('IN_PROGRESS'));
+      await this.stakingDelegateService.stake(this.address, tokenAmount, options);
+      const stakingReference = { address: this.ethereumAccount.address, delegate: this.address, walletType: this.ethereumAccount.walletType };
       this.stakingLocalStorageService.store(stakingReference);
-      this.notificationService.showMessage(`Successfully staked ${this.amount} XMR for ${this.address} delegate`, 'Done');
+      this.notificationService.showMessage(`${this.translateService.instant('STAKING.CREATE.SUCCESSFULLY_STAKED')} ${this.amount} ${this.translateService.instant('STAKING.CREATE.XRM_FOR')} ${this.address} ${this.translateService.instant('STAKING.CREATE.DELEGATE')}`, this.translateService.instant('DONE'));
       this.stakeCreated.emit(stakingReference);
       this.stakingInProgress = false;
       this.transactionExplorerUrl = null;
     } catch (err) {
       this.logger.logError('Staking failed', err);
-      this.notificationService.showMessage('Unhandled error occurred', 'Error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.WALLET.UNHANDLED_ERROR_OCCURRED'), this.translateService.instant('ERROR'));
       this.stakingInProgress = false;
     }
   }
 
   canStake(): boolean {
     return !this.stakingInProgress
-      && !!this.ethereumAccount 
+      && !!this.ethereumAccount
       && !!this.ethereumAccount.address
       && !!this.address
       && this.ethereumAccount.aerumBalance > 0
@@ -83,7 +91,7 @@ export class StakingCreateComponent implements OnInit {
   }
 
   private async getAerumAmount() {
-    const aerumAddress = environment.contracts.staking.address.Aerum;
+    const aerumAddress = this.environment.get().contracts.staking.address.Aerum;
     const aerumInfo = await this.ethereumTokenService.getNetworkTokenInfo(this.ethereumAccount.walletType, aerumAddress);
     return toBigNumberString(this.amount * Math.pow(10, Number(aerumInfo.decimals)));
   }

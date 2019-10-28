@@ -43,7 +43,7 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
   ) { super(translateService); }
 
   async ngOnInit() {
-    this.fullName = this.name.trim() + ".aer";
+    this.fullName = this.name.trim() + ".f";
 
     this.setAddressForm = this.formBuilder.group({
       address: [null, [AddressValidator.isAddress]]
@@ -118,7 +118,7 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
   }
 
   async tryTransfer() {
-    const newOwnerAddress = await this.aensService.resolveAddressFromName(this.newOwner);
+    const newOwnerAddress = await this.aensService.resolveNameOrAddress(this.newOwner);
     const cost = await this.aensService.estimateTransferNameCost(this.fullName);
     this.logger.logMessage(`Transfer name cost: ${cost}`);
 
@@ -139,7 +139,7 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
     await this.aensService.setAddress(this.fullName, newOwnerAddress);
     this.notificationService.notify(this.multiContractsExecutionNotificationTitle(2, 2), `${this.translate('ENS.NOTIFICATION_SET_OWNER')}: ${newOwnerAddress}`, 'aerum', 5000);
     await this.aensService.setOwner(this.fullName, newOwnerAddress);
-    this.notificationService.notify(this.translate('ENS.NAME_TRANSFER_SUCCESS_TITLE'), `${this.translate('ENS.NAME_TRANSFER_SUCCESS')}: ${this.name}.aer`, 'aerum');
+    this.notificationService.notify(this.translate('ENS.NAME_TRANSFER_SUCCESS_TITLE'), `${this.translate('ENS.NAME_TRANSFER_SUCCESS')}: ${this.name}.f`, 'aerum');
   }
 
   async releaseName() {
@@ -185,7 +185,7 @@ export class NameUpdateComponent extends AensBaseComponent implements OnInit {
     await this.aensService.clearResolver(this.fullName);
     this.notificationService.notify(this.multiContractsExecutionNotificationTitle(3, 3), this.translate('ENS.NOTIFICATION_BODY_RELEASE_NAME'), 'aerum', 5000);
     await this.aensService.cleanOwner(this.fullName);
-    this.notificationService.notify(this.translate('ENS.NAME_RELEASE_SUCCESS_TITLE'), `${this.translate('ENS.NAME_RELEASE_SUCCESS')}: ${this.name}.aer`, 'aerum');
+    this.notificationService.notify(this.translate('ENS.NAME_RELEASE_SUCCESS_TITLE'), `${this.translate('ENS.NAME_RELEASE_SUCCESS')}: ${this.name}.f`, 'aerum');
   }
 
   canSetAddress() {

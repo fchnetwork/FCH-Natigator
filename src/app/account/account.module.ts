@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../shared/shared.module";
 import { MobileModule } from "@app/mobile/mobile.module";
 import { RegisterComponent } from './register/register.component';
+import { RegisterNameComponent } from './register-name/register-name.component';
 import { BackupCreateComponent } from './backup-create/backup-create.component';
 import { BackupConfirmComponent } from './backup-confirm/backup-confirm.component';
 import { BackupDisclamerComponent } from "./backup-disclamer/backup-disclamer.component";
@@ -21,6 +22,7 @@ import { UnlockComponent } from "@app/account/unlock/unlock.component";
         UnlockComponent,
         AvatarSelectComponent,
         RegisterComponent,
+        RegisterNameComponent,
         BackupCreateComponent,
         BackupConfirmComponent,
         BackupPromptComponent,
@@ -41,6 +43,7 @@ import { UnlockComponent } from "@app/account/unlock/unlock.component";
         UnlockComponent,
         AvatarSelectComponent,
         RegisterComponent,
+        RegisterNameComponent,
         BackupCreateComponent,
         BackupConfirmComponent,
         BackupPromptComponent,

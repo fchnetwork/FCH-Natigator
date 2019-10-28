@@ -6,12 +6,13 @@
       <div class="import-wallet__content">
         <div>
           <p class="aer-small">
-            {{"EXTERNAL.TRANSACTION.PAPER_WALLET_1" | translate}} <span class="import-wallet__balance">{{balance | bignumber:'1.0-4'}}</span> {{"EXTERNAL.TRANSACTION.PAPER_WALLET_2" | translate}}
+            {{ 'EXTERNAL.TRANSACTION.PAPER_WALLET_1' | translate }} <span class="import-wallet__balance">{{ balance | bignumber: '1.0-4' }}</span>
+            {{ 'EXTERNAL.TRANSACTION.PAPER_WALLET_2' | translate }}
           </p>
         </div>
         <div>
-          <aer-button class="blue" (buttonFn)="import()">{{'COMMON.BUTTONS.IMPORT' | translate}}</aer-button>
-          <aer-button (buttonFn)="cancel()">{{'COMMON.BUTTONS.CANCEL' | translate}}</aer-button>
+          <aer-button class="blue large" (buttonFn)="import()">{{ 'COMMON.BUTTONS.IMPORT' | translate }}</aer-button>
+          <aer-button (buttonFn)="cancel()" class="white large">{{ 'COMMON.BUTTONS.CANCEL' | translate }}</aer-button>
         </div>
       </div>
       <div class="import-wallet__bottom"></div>

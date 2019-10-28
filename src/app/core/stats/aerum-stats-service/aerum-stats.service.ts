@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs/Rx'; 
-import { environment } from '@env/environment';  
+import { Observable, Subject } from 'rxjs/Rx';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { AerumStatsWebsocketsService } from '@app/core/stats/aerum-stats-websockets-service/aerum-stats-websockets.service';
-
-const CHAT_URL = environment.webSocketStatServer;
 
 @Injectable()
 export class AerumStatsService {
-
 	public aerumStats: Subject<any>;
 
-	constructor(wsService: AerumStatsWebsocketsService) {
+	constructor(wsService: AerumStatsWebsocketsService, private environment: EnvironmentService) {
 		this.aerumStats = <Subject<any>>wsService
-			.connect(CHAT_URL)
+			.connect(this.environment.get().webSocketStatServer)
 			.map((response: MessageEvent): any => {
                 return JSON.parse(response.data);
 			});

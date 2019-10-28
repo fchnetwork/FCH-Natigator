@@ -1,9 +1,8 @@
 .transaction-main-flex-container {
-  color: #83868A;
   font-size: 14px;
   padding: 5px 10px;
-  background-color: #e6e6e6;
-  border-left: 2px solid black;
+  background-color: rgba(255, 255, 255, 0.12);
+  border-left: 2px solid white;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,8 +10,8 @@
   cursor: pointer;
 
   &:nth-child(even) {
-    background-color: #fff;
-    border-color: #E6E6E6;
+    background-color: rgba(255, 255, 255, 0.22);
+    border-color: #e6e6e6;
   }
 
   .transaction-main-flex-item {
@@ -28,21 +27,16 @@
       margin-right: 34px;
 
       .day {
-        color: #2D353D;
         font-size: 22px;
       }
 
       .month {
-        color: #83868A;
         font-size: 14px;
       }
     }
 
     .transaction-info {
-      color: #2A669A;
-
       .eventType {
-        color: #83868A;
         font-size: 14px;
       }
       .addresses {
@@ -65,7 +59,6 @@
 
         aer-icon {
           margin-right: 5px;
-          color: #83868A;
         }
       }
     }
@@ -77,19 +70,18 @@
     .operation-icon {
       line-height: 1.1;
       .red {
-        color: #C94545;
+        color: #c94545;
       }
       .green {
-        color: #8CCC67;
+        color: #8ccc67;
       }
     }
   }
-
 }
 
 .show-more-label-div {
   text-align: center;
-  color: #2A669A;
+  color: #2a669a;
   margin-top: 16px;
   cursor: pointer;
 }

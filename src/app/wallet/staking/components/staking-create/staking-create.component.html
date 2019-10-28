@@ -5,21 +5,17 @@
   </div>
   <div aerRow>
     <div aerColumn size="sm-6">
-      <aer-select [(ngModel)]="address" icon="key" placeholder="{{'STAKING.CREATE.PLACEHOLDER_SELECT_ADDRESS'|translate}}">
-        <aer-select-option *ngFor="let item of addresses;" [value]="item">
-          <img class="avatar" [src]="item | generateavatar"><span>{{item}}</span>
-        </aer-select-option>
-      </aer-select>
+      <aer-input [(ngModel)]="address" placeholder="{{'STAKING.CREATE.PLACEHOLDER_ENTER_ADDRESS'|translate}}"></aer-input>
     </div>
     <div aerColumn size="sm-6">
       <div aerRow class="delegate-amount">
         <div aerColumn size="sm-12">
-          <aer-input class="with-button blue" [(ngModel)]="amount" placeholder="{{'STAKING.CREATE.PLACEHOLDER_AMOUNT'|translate}}" buttonLabel="XMR"></aer-input>
+          <aer-input class="with-button blue" [(ngModel)]="amount" placeholder="{{'STAKING.CREATE.PLACEHOLDER_AMOUNT'|translate}}" buttonLabel="XRM"></aer-input>
         </div>
       </div>
       <div aerRow *ngIf="stakingInProgress">
         <div aerColumn size="xs-6">
-          <aer-button *ngIf="transactionExplorerUrl" (buttonFn)="explorerLink(transactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.CREATE.OPEN_CREATE_TX_IN_EXPLORER'|translate}}</aer-button> 
+          <aer-button *ngIf="transactionExplorerUrl" (buttonFn)="explorerLink(transactionExplorerUrl)" class="blue small explorer-button">{{'STAKING.CREATE.OPEN_CREATE_TX_IN_EXPLORER'|translate}}</aer-button>
           <span>&nbsp;</span>
         </div>
         <div aerColumn size="xs-6" class="loader">

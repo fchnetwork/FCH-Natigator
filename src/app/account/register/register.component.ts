@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { RouteDataService } from '@app/core/general/route-data-service/route-data.service';
 import { PasswordCheckerService } from '@app/core/authentication/password-checker-service/password-checker.service';
 import { StorageService } from '@app/core/general/storage-service/storage.service';
+import { TokenService } from '@app/core/transactions/token-service/token.service';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Component({
   selector: 'app-register',
@@ -32,19 +34,21 @@ export class RegisterComponent implements OnInit {
     public route: ActivatedRoute,
     private routeDataService: RouteDataService<RegistrationRouteData>,
     public passCheckService: PasswordCheckerService,
-    public storageService: StorageService
+    public storageService: StorageService,
+    private tokenService: TokenService,
+    private environment: EnvironmentService,
   ) { }
 
   // TODO: export somewhere to lib to avoid double code
   cleanCookies() {
-    this.storageService.setCookie('aerum_base', null, false, 7);
-    this.storageService.setCookie('aerum_keyStore', null, false, 7);
-    this.storageService.setCookie('tokens', null, false, 7);
-    this.storageService.setCookie('ethereum_tokens', null, false, 7);
-    this.storageService.setCookie('transactions', null, false, 7);
-    this.storageService.setCookie('ethereum_accounts', null, false, 7);
-    this.storageService.setCookie('cross_chain_swaps', null, false, 7);
-    this.storageService.setCookie('stakings', null, false, 7);
+    this.storageService.setStorage('aerum_base', null, false, 7);
+    this.storageService.setStorage('aerum_keyStore', null, false, 7);
+    this.storageService.setStorage('tokens', null, false, 7);
+    this.storageService.setStorage('ethereum_tokens', null, false, 7);
+    this.storageService.setStorage('transactions', null, false, 7);
+    this.storageService.setStorage('ethereum_accounts', null, false, 7);
+    this.storageService.setStorage('cross_chain_swaps', null, false, 7);
+    this.storageService.setStorage('stakings', null, false, 7);
   }
 
   ngOnInit() {
@@ -76,6 +80,8 @@ export class RegisterComponent implements OnInit {
       this.storageService.setSessionData('cross_chain_swaps', []);
       this.storageService.setSessionData('stakings', []);
 
+      this.addPredefinedTokens();
+
       data.avatar = this.registerForm.value.avatar.avatar;
       data.password = this.registerForm.value.password;
       data.mnemonic = this.registerForm.value.avatar.seed;
@@ -87,7 +93,7 @@ export class RegisterComponent implements OnInit {
       data.returnUrl = this.returnUrl || '/';
 
       this.routeDataService.routeData = data;
-      this.router.navigate(['/account/backup']);
+      this.router.navigate(['/account/register-name']);
     }
   }
 
@@ -103,5 +109,18 @@ export class RegisterComponent implements OnInit {
         return passwordConfirmationInput.setErrors({ notEquivalent: true });
       }
     };
+  }
+
+  private addPredefinedTokens() {
+    const addresses = this.environment.get().predefinedTokens;
+    if(!addresses) {
+      return;
+    }
+    addresses.forEach(async address => {
+      const token = await this.tokenService.getTokensInfo(address);
+      if(token && token.address) {
+        this.tokenService.addToken(token);
+      }
+    });
   }
 }

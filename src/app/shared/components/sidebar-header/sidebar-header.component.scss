@@ -21,23 +21,23 @@
       background-repeat: no-repeat;
       -webkit-filter: brightness(2.2) saturate(2);
       filter: brightness(2.2) saturate(2);
-      box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.75);
+      box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
     }
   }
 
   .user_data {
     .address {
-      font-size: 15px;
+      font-size: 16px;
       white-space: nowrap;
       display: block;
       width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: #42526E;
     }
 
     .welcome {
       font-size: 13px;
+      font-weight: bold;
     }
   }
 
@@ -50,7 +50,7 @@
     height: 50px;
 
     .user_data {
-      display:none;
+      display: none;
     }
 
     .avatar {
@@ -68,7 +68,7 @@
     height: 50px;
 
     .user_data {
-      display:none;
+      display: none;
     }
 
     .avatar {
@@ -88,7 +88,7 @@
       .avatar {
         padding-left: 22px;
         margin-right: 10px;
-    
+
         // WARNING: double code!
         // TODO: refactor to global this class
         .c-avatar__img {
@@ -101,10 +101,10 @@
           background-repeat: no-repeat;
           -webkit-filter: brightness(2.2) saturate(2);
           filter: brightness(2.2) saturate(2);
-          box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.75);
+          box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
         }
       }
-    
+
       .user_data {
         display: block;
         .address {
@@ -114,9 +114,9 @@
           width: 100%;
           overflow: hidden;
           text-overflow: ellipsis;
-          color: #42526E;
+          color: #42526e;
         }
-    
+
         .welcome {
           font-size: 13px;
         }
@@ -128,5 +128,3 @@
     display: none;
   }
 }
-
-

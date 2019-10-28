@@ -67,7 +67,7 @@ export class AensContractManageComponent extends AensBaseComponent implements On
       this.startProcessing();
       this.showProcessingNotification();
       await this.trySetPrice();
-      this.notificationService.notify(this.translate('ENS.SUCCESS_TITLE'), `${this.translate('ENS.SET_PRICE_SUCCESS')}: ${this.price} AERO`, 'aerum');
+      this.notificationService.notify(this.translate('ENS.SUCCESS_TITLE'), `${this.translate('ENS.SET_PRICE_SUCCESS')}: ${this.price} GAS`, 'aerum');
     } catch (e) {
       this.showErrorNotification();
       this.logger.logError('Error while setting name price: ', e);

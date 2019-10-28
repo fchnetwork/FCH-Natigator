@@ -50,7 +50,7 @@ export class NotificationMessagesService {
         "SHARED.IMPORT_WALLET.IMPORTING_NOTIFICATION_ADDRESS"
       )}: ${walletAddress} \n\r ${this.translate(
         "SHARED.IMPORT_WALLET.IMPORTING_NOTIFICATION_AMOUNT"
-      )}: ${ammount} AERO`,
+      )}: ${ammount} GAS`,
       "transaction",
       5000
     );
@@ -256,6 +256,24 @@ export class NotificationMessagesService {
   }
 
   /**
+   *Shows notification when full backup file has been downloaded
+   *
+   * @memberof NotificationMessagesService
+   */
+  public privateKeyBackup() {
+    this.notificationService.notify(
+      `${this.translate(
+        "SETTINGS.BACKUP.NOTIFICATIONS.PRIVATE_KEY_BACKUP.TITLE"
+      )}`,
+      `${this.translate(
+        "SETTINGS.BACKUP.NOTIFICATIONS.PRIVATE_KEY_BACKUP.BODY"
+      )}`,
+      "check-square-o",
+      10000
+    );
+  }
+
+  /**
    *Shows notification when seed phrase has been downloaded
    *
    * @memberof NotificationMessagesService
@@ -299,9 +317,9 @@ export class NotificationMessagesService {
    */
   public valueCopiedToClipboard() {
     this.notificationService.notify(
-      `Notification`,
-      `Value has been copied to clipboard`,
-      "clipboard",
+      `${this.translate("NOTIFICATION")}`,
+      `${this.translate("COPIED_TO_CLIPBOARD")}`,
+      `${this.translate("CLIPBOARD")}`,
       5000
     );
   }
@@ -355,6 +373,22 @@ export class NotificationMessagesService {
       )}`,
       "exclamation-triangle",
       5000
+    );
+  }
+
+  /**
+   *Shows notification
+   *
+   * @param title message title
+   * @param body message body
+   * @memberof NotificationMessagesService
+   */
+  public show(title: string, body: string) {
+    this.notificationService.notify(
+      this.translate(title),
+      this.translate(body),
+      "transaction",
+      10000
     );
   }
 }

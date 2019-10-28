@@ -1,4 +1,16 @@
 {
+  "BASE_CONTRACT": {
+    "ERROR": "Error",
+    "CANNOT_LOAD_ACCOUNT": "Cannot load injected account.",
+    "TRANSACTION_OPTIONS_CANNOT_BE_EMPTY": "Transaction options cannot be empty",
+    "INJECTED_WEB3_NOT_PROVIDED": "Injected web3 not provided",
+    "PLEASE_LOGIN_IN_MIST__METAMASK": "Please login in Mist / Metamask",
+    "CANNOT_GET_ACCOUNTS_FROM_SELECTED_PROVIDER": "Cannot get accounts from selected provider",
+    "PLEASE_SELECT": "Please select",
+    "AND_RETRY": "and retry",
+    "INCORRECT_MIST__METAMASK_ACCOUNT_SELECTED__EXPECTED": "Incorrect Mist / Metamask account selected. Expected",
+    "CANNOT_LOAD_IMPORTED_ACCOUNT": "Cannot load imported account"
+  },
   "ACCOUNT": {
     "UNLOCK": {
       "TITLE": "Unlock",
@@ -19,6 +31,7 @@
         "Your seed is 12 words you saved when creating your account",
       "CREATE_PWD_PLACEHOLDER": "Create new password",
       "CONFIRM_PWD_PLACEHOLDER": "Confirm new password",
+      "QR_SCANNER_BUTTON": "Scan QR code",
       "QR_SCANNER_TEXT": "Please scan the QR code of your seed. The QR code can be found in the Settings > Backup page of wallet.",
       "QR_SCANNER_ERROR": "QR code doesn't contain a valid seed phrase.",
       "NOTIFICATIONS": {
@@ -46,6 +59,17 @@
       "CREATE_PWD_PLACEHOLDER": "Choose your password",
       "CONFIRM_PWD_PLACEHOLDER": "Confirm password"
     },
+    "REGISTER_NAME": {
+      "TITLE": "Create account name",
+      "LABEL": "Choose unique name for your address:",
+      "NAME_PLACEHOLDER": "Enter name",
+      "NAME_ERROR": "Name is already reserved. Please use a new one.",
+      "SKIP_STEP": "Skip this step",
+      "ERROR_REQUESTING_AERO": "An error occurred while requesting Gas. Please contact administrator.",
+      "AERUMBIT_TITLE": "FCHabit",
+      "REQUESTING_TOKEN": "Requesting FCHabit access token.",
+      "REQUESTING_AERO": "Requesting Gas for fns name registration."
+    },
     "BACKUP_PROMPT": {
       "TITLE": "Backup",
       "SUBTITLE": "You must save the mnemonic seed. It is the only one way to recover access",
@@ -54,7 +78,7 @@
     },
     "BACKUP_DISCLAIMER": {
       "TITLE": "Warning!",
-      "WARNING_1": "You should ONLY use the official Aerum client. ",
+      "WARNING_1": "You should ONLY use the official FCH client. ",
       "WARNING_2": "Seed Words is the only one way to recover access to your account, treat it with care. ",
       "WARNING_3": "Please be careful and never input your SEED into fake 'clients'. Otherwise your account will be compromised and you will lose all of your funds. ",
       "SAVE_FILE_BTN": "Save file",
@@ -62,7 +86,7 @@
     },
     "BACKUP_CREATE" : {
       "TITLE": "Save mnemonic seed",
-      "SUBTITLE": "Your AERUM account depends only on you and your mnemonic phrase. It's important to back it up.",
+      "SUBTITLE": "Your FCH account depends only on you and your mnemonic phrase. It's important to back it up.",
       "WRITE_DOWN": "Please carefully write down these 12 words or ",
       "COPY_LINK": "copy them.",
       "SAVE_FILE_BTN": "Save file",
@@ -109,6 +133,14 @@
   "TRANSACTION" : {
     "CONFIRM_TRANSACTION": {
       "TITLE": "Confirm transaction"
+    },
+    "MORE_OPTIONS": {
+      "DATA": "Data",
+      "NOTIFICATION_1": "You can add extra data to send along with your transaction. If you don't know what this is then",
+      "NOTIFICATION_2": "don't touch it or bad things may happen."
+    },
+    "SIGN_MODAL": {
+      "SEND_TEXT": "Send transaction"
     }
   },
 
@@ -118,6 +150,7 @@
       "TAB_TITLE": "Backup",
       "SAVE_SEED_BUTTON": "Save seed",
       "FULL_BACKUP_BUTTON": "Full backup",
+      "PRIVATE_KEY_BUTTON": "Private Key",
       "QR_RESTORE_TITLE": "QR Restore",
       "QR_RESTORE_DESCRIPTION":
         "You can scan following QR code during account restore process on another device (like mobile).",
@@ -129,6 +162,10 @@
         "SAVE_SIMPLE_BACKUP": {
           "TITLE": "Notification",
           "BODY": "Seed file has been succesfully downloaded"
+        },
+        "PRIVATE_KEY_BACKUP": {
+          "TITLE": "Notification",
+          "BODY": "Private key copied to clipboard"
         }
       }
     },
@@ -140,12 +177,14 @@
     },
     "GENERAL": {
       "TAB_TITLE": "General",
-      "DERIVATION_PATH_LABEL": "Switch your Derivation Path",
+      "DESCRIPTION": "Number of Blocks to show in Blockchain Explorer",
+      "BLOCKS_NUMB_PLACEHOLDER": "Number of Blocks",
+      "DERIVATION_PATH_LABEL": "FCH Derivation Path",
       "LANGUAGE_LABEL": "Language",
       "NOTIFICATIONS": {
         "CHANGE_LANGUAGE": {
           "TITLE": "Language has been changed",
-          "BODY": "Language of Aerum has been changed to "
+          "BODY": "Language of FCH Wallet has been changed to "
         },
         "CHANGE_DERIVATION": {
           "TITLE": "Your derivation path has been modified",
@@ -155,12 +194,14 @@
     },
     "SYSTEM": {
       "TAB_TITLE": "System",
-      "AERUM_WEBSOCKET_URL": "Aerum Node Websocket URL",
-      "AERUM_RPC_URL": "Aerum Node RPC URL",
+      "AERUM_WEBSOCKET_URL": "FCH Node Websocket URL",
+      "AERUM_RPC_URL": "FCH Node RPC URL",
       "ETHEREUM_NODE_URL": "Ethereum Node URL"
     },
     "ETHWALLET": {
-      "TAB_TITLE": "Ethereum Wallet"
+      "TAB_TITLE": "Ethereum Wallet",
+      "IMPORT_PLACEHOLDER": "Private key",
+      "IMPORT_LABEL": "Import"
     },
     "IMPORT_WALLET": {
       "TAB_TITLE": "Import wallet"
@@ -178,7 +219,14 @@
   "EXTERNAL": {
     "TRANSACTION": {
       "PAPER_WALLET_1": "You have been given a paper wallet with a balance of",
-      "PAPER_WALLET_2": "Aero. Would you like to import it?"
+      "PAPER_WALLET_2": "Gas. Would you like to import it?",
+      "TITLE_IN_PROGRESS": "In Progress",
+      "BODY_APPROVING": "Approving tokens.",
+      "TITLE_DONE": "Done",
+      "BODY_APPROVED": "Tokens successfully approved.",
+      "NO_CONTRACT_REGISTRATION": "Contract registration was not found. Please execute transaction on your own risk.",
+      "ERROR_PAYLOAD_DECODING": "An error ocured while decoding transaction payload. Please execute transaction on your own risk.",
+      "PAYLOAD_DECODED": "Transaction payload was successfully decoded."
     }
   },
 
@@ -219,7 +267,7 @@
       "TITLE": "QR Scanner",
       "NO_CAMERAS": "No cameras have been detected.",
       "NO_PERMISSIONS":
-        "You need to grant AERUM a permission to access your camera.",
+        "You need to grant FCH Wallet a permission to access your camera.",
       "QR_CODE_SCANNING_CANCELLED": "QR code scanning cancelled.",
       "QR_CODE_SCANNING_FAILED": "QR code scanning failed:"
     }
@@ -233,7 +281,7 @@
   "SKIP_STEP": "Skip this step",
   "SAVE_PHRASE": "Save Mneumonic Seed",
   "SAVE_PHRASE_TEXT":
-    "Your aero depend only on you, so you'll need to save this phrase.",
+    "Your gas depend only on you, so you'll need to save this phrase.",
   "SAVE_FILE": "Save file",
   "WRITE_SEED": "Please carefully write down these 12 words or",
   "WRITE_SEED_COPY": "copy them.",
@@ -247,13 +295,14 @@
   "TO": "To",
   "AMOUNT": "Amount",
   "SEND_EVERYTHING": "Send everything",
-  "AERUM": "Aerum",
-  "AERO": "Aero",
+  "AERUM": "FCH Network",
+  "AERO": "Gas",
   "SHOW_MORE_OPTIONS": "Show more options",
+  "SHOW_LESS_OPTIONS": "Show less options",
   "MAX_TRANSACTION_FEE": "Max gas",
   "APP_TRANSACTION_FEE": "Approx. transaction fee",
   "MAX_TRANS_FEE_WARNING":
-    "This is the most amount of aero that might be used to process this transaction.",
+    "This is the most amount of gas that might be used to process this transaction.",
   "TOTAL": "Total",
   "DATA_INCLUDED": "Data included",
   "BYTES": "bytes",
@@ -264,7 +313,7 @@
   "TRANSACTION_MODAL": "Transaction",
   "I_UNDERSTAND": "I understand",
   "WARNING": "Warning!",
-  "REGISTRATION_WARNING_TXT1": "You should ONLY use the official Aerum client.",
+  "REGISTRATION_WARNING_TXT1": "You should ONLY use the official FCH client.",
   "REGISTRATION_WARNING_TXT2":
     "Seed Words is the only one way to recover access to your account, treat it with care.",
   "REGISTRATION_WARNING_TXT3":
@@ -304,7 +353,7 @@
   "BLOCKCHAIN_EXPLORER": "Blockchain Explorer",
   "INFORMATION": "Blockchain",
   "PENDING_TXNS": "Pending Tx",
-  "AETH": "Aero",
+  "AETH": "Gas",
   "FEE": "Fee",
   "GAS_USED": "Gas used",
   "GAS_PRICE": "Gas price",
@@ -351,11 +400,17 @@
   "BASIC_TRANSACTION": "Basic Transaction",
   "ERROR": "Error",
   "DONE": "Done",
-  "COPIED_TO_CLIPBOARD": "Copied to clipboard",
-
+  "IN_PROGRESS": "In progress",
+  "SUCCESS": "Success",
+  "CLIPBOARD": "clipboard",
+  "COPIED_TO_CLIPBOARD": "Copied to clipboard!",
+  "NOTIFICATION": "Notification",
   "SEND_RECEIVE": {
     "MAIN_MENU_ITEM_NAME": "Send & Receive",
     "MAIN_TITLE": "Send & Receive Crypto",
+    "READ_MORE": "read more",
+    "WARNING_SHORT": "Please don't use this address for Ethereum transactions - ",
+    "WARNING": "Please don't use this address to send your XF and other tokens from Ethereum blockchain - it may be lost forever. This address is on FCH Network blockchain and should be used only for XF-20 tokens",
     "NOTIFICATION_TITLE_TRANSACTION_STATUS": "Transaction Status",
     "NOTIFICATION_BODY_SUCCES_TRANSACTION": "You have successfully sent",
     "NOTIFICATION_TITLE_ATTENTION": "Attention!",
@@ -370,17 +425,20 @@
       "SUCCESFULLY_SENT": "Succesfully sent",
       "FAILED": "Failed",
       "MINED": "Mined"
-    }
+    },
+    "AN_ERROR_OCCURRED_DURING_TRANSACTION": "An error occurred during transaction. Please review all the fields and try again.",
+    "AN_ERROR_OCCURRED_DURING_SENDING_THE_TOKENS": "An error occurred during sending the tokens. Please review all the fields and try again.",
+    "SELECT_YOUR_TOKEN": "Select your token"
   },
   "CONNECTION": {
     "CONNECTION_STATUS": "Connection status",
-    "CONNECTING_TO_AERUM": "Connecting to Aerum network...",
+    "CONNECTING_TO_AERUM": "Connecting to FCH network...",
     "STATUS_TITLE": {
       "DISCONNECTED": "Disconnected",
       "CONNECTED": "Connected"
     },
     "STATUS_BODY": {
-      "DISCONNECTED": "Connection to AERUM network has been lost",
+      "DISCONNECTED": "Connection to FCH network has been lost",
       "CONNECTED": "Connected to AERUM Network"
     }
   },
@@ -388,6 +446,10 @@
     "ADD": "Add",
     "CLOSE": "Close",
     "CANCEL": "Cancel"
+  },
+  "LABELS" : {
+    "ADD": "Add",
+    "IMPORT": "Import"
   },
   "DIAGNOSTICS": "Diagnostics",
   "OVERVIEW": "Overview",
@@ -417,20 +479,39 @@
     "ADD_BUTTON": "Add",
     "CLOSE_BUTTON": "Cancel"
   },
+  "DASHBOARD_ACCOUNT_OVERVIEW": {
+    "OVERVIEW": "Overview"
+  },
+  "DASHBOARD_ADD_TOKEN": {
+    "TOKEN_ADDRESS_PLACEHOLDER": "Token contract address",
+    "TOKEN_SYMBOL_PLACEHOLDER": "Token symbol",
+    "TOKEN_DECIMALS_PLACEHOLDER": "Decimals of precision",
+    "TOKENS_SUPPLY_HAS_O_BE_BIGGER_THAN_0": "Tokens supply has to be bigger than 0",
+    "YOU_CANNOT_ADD_TOKEN_WITH_THE_SAME_TOKEN_ADDRESS": "You cannot add token with the same token address"
+  },
   "DASHBOARD_TOKENS": {
     "NAME": "Name",
     "DECIMALS": "Decimals",
     "AMOUNT": "Amount"
   },
+  "DASHBOARD_TOKEN_LIST": {
+    "TOKENS": "Tokens",
+    "ADD_TOKEN": "Add token"
+  },
   "EXPLORER": {
     "SHOWING_TRANSACTIONS": "Showing transaction in blocks",
-    "SCAN_MORE": "Scan more blocks"
+    "SCAN_MORE": "Scan more blocks",
+    "ADDRESS": {
+      "ADDRESS_INFORMATION": "Address Information",
+      "BALANCE_WEI": "Balance (Wei)",
+      "BALANCE_ETH": "Balance (Ether)"
+    }
   },
   "SWAP": {
     "MAIN_MENU_ITEM_NAME": "My Swaps",
-    "AERO_TO_TOKEN": "Aero > Token",
-    "AERO_TO_AERO": "Aero > Aero",
-    "TOKEN_TO_AERO": "Token > Aero",
+    "AERO_TO_TOKEN": "Gas > Token",
+    "AERO_TO_AERO": "Gas > Gas",
+    "TOKEN_TO_AERO": "Token > Gas",
     "TOKEN_TO_TOKEN": "Token > Token",
     "LIST": {
       "ONCHAIN_TITLE":"Subatomic Swaps",
@@ -451,15 +532,22 @@
     "CREATE": {
       "TITLE": "Create Subatomic Swap",
       "FIELD_SWAP_ID": "Swap ID",
-      "FIELD_YOUR_TOKEN_OR_AERO": "Your Token / Aero",
+      "FIELD_YOUR_TOKEN_OR_AERO": "Your Token / Gas",
       "FIELD_COUNTERPARTY": "Counterparty",
-      "FIELD_COUNTERPARTY_TOKEN_OR_AERO": "Counterparty Token / Aero",
+      "FIELD_COUNTERPARTY_TOKEN_OR_AERO": "Counterparty Token / Gas",
       "FIELD_AMOUNT": "Amount",
       "FIELD_RATE": "Rate",
-      "PLACEHOLDER_SELECT_TOKEN_OR_AERO": "Select Aero / Token",
+      "PLACEHOLDER_SELECT_TOKEN_OR_AERO": "Select Gas / Token",
       "BTN_GENERATE_SWAP_ID": "Generate",
       "BTN_CREATE": "Create",
-      "BTN_CANCEL": "Close"
+      "BTN_CANCEL": "Close",
+      "SWAP_CREATION_IN_PROGRESS": "Swap creation in progress...",
+      "SWAP_ID_": "Swap ID:",
+      "SWAP_CREATED": "Swap created",
+      "SWAP_AMOUNT_OR_RATE_NOT_VALID": "Swap amount or rate not valid",
+      "GAS_GAS_SWAPS_ARE_NOT_SUPPORTED": "Gas > Gas swaps are not supported",
+      "PLEASE_SELECT_COUNTERPARTY_TOKEN": "Please select counterparty token",
+      "UNKNOWN_ERROR_OCCURED": "Unknown error occured"
     },
     "LOAD": {
       "TITLE": "Load Atomic Swap",
@@ -470,7 +558,14 @@
       "BTN_CANCEL": "Close",
       "FIELD_COUNTERPARTY": "Counterparty",
       "FIELD_STATUS": "Status",
-      "CONFIRM_TITLE": "Confirm / Reject Atomic Swap"
+      "CONFIRM_TITLE": "Confirm / Reject Atomic Swap",
+      "PLEASE_CONFIGURE_SWAP_TOKEN_FIRST": "Please configure swap token first",
+      "SWAP_NOT_FOUND_OR_INVALID": "Swap not found or invalid",
+      "SWAP_COMPLETION_IN_PROGRESS": "Swap completion in progress...",
+      "SWAP_ID_": "Swap ID:",
+      "SWAP_DONE": "Swap done",
+      "SWAP_REJECTION_IN_PROGRESS": "Swap rejection in progress...",
+      "SWAP_REJECTED": "Swap rejected"
     }
   },
   "EXTERNAL-SWAP": {
@@ -488,20 +583,34 @@
       "FIELD_BALANCE": "Balance:",
       "FIELD_MESSAGE":
         "*Attention: please, make sure you have sufficient amount of ether in your wallet to cover transaction fee (up to 0.002 Eth)",
+      "PLACEHOLDER_IMPORT": "Private key",
       "BTN_NEXT": "Next",
       "BTN_CANCEL": "Cancel",
+      "PLEASE_SELECT_RINKEBY_NETWORK_IN_YOUR": "Please select Rinkeby network in your",
+      "WALLET_": "wallet.",
+      "UNHANDLED_ERROR_OCCURRED": "Unhandled error occurred",
+      "PLEASE_LOGIN_IN_MIST__METAMASK": "Please login in Mist / Metamask",
+      "CANNOT_GET_ACCOUNTS_FROM_WALLET": "Cannot get accounts from wallet",
+      "ACCOUNT_ALREADY_IMPORTED": "Account already imported",
+      "ACCOUNT": "Account",
+      "IMPORTED": "imported",
       "ADD_TOKEN": {
         "FIELD_TOKEN_ADDRESS": "Token Address",
         "FIELD_TYPE_TOKEN_ADDRESS": "Type token address",
         "FIELD_TOKEN_SYMBOL": "Token Symbol",
         "FIELD_TYPE_TOKEN_SYMBOL": "Type token symbol",
         "FIELD_DECIMALS": "Decimals",
-        "FIELD_TYPE_DECIMALS": "Type decimals"
+        "FIELD_TYPE_DECIMALS": "Type decimals",
+        "TOKENS_SUPPLY_HAS_TO_BE_BIGGER_THAN_0": "Tokens supply has to be bigger than 0",
+        "YOU_CANNOT_ADD_TOKEN_WITH_THE_SAME_TOKEN_ADDRESS": "You cannot add token with the same token address",
+        "TOKENS_ADDRESS_IS_NOT_VALID": "Tokens address is not valid",
+        "TOKENS_SYMBOL_LENGTH_HAS_TO_BE_GREATER_THAN_TWO": "Tokens symbol length has to be greater than two",
+        "TOKENS_DECIMALS_HAS_TO_BE_BIGGER_OR_EQUAL_0": "Tokens decimals has to be bigger or equal 0"
       }
     },
     "CREATE": {
       "TITLE": "Create Exchange Swap",
-      "FIELD_RECEIVING_AERUM_TOKEN": "Receiving Aerum token:",
+      "FIELD_RECEIVING_AERUM_TOKEN": "Receiving FCH Network token:",
       "FIELD_SELECT_YOUR_TOKEN": "Select your token",
       "FIELD_AMOUNT_OF_TOKEN_TO_RECEIVE": "Amount of token to receive:",
       "FIELD_TYPE_AMOUNT": "Type amount",
@@ -509,40 +618,63 @@
       "FIELD_SELECT_YOUR_COUNTERPARTY": "Select your counterparty",
       "FIELD_SEND_ETHEREUM_ASSET": "Send Ethereum asset",
       "FIELD_AMOUNT": "Amount",
-      "FIELD_EXCHANGE_RATE": "Exchange rate (Aerum token/Eth asset)",
+      "FIELD_EXCHANGE_RATE": "Exchange rate (FCH Network token/Eth asset)",
       "FIELD_SECRET_KEY": "Secret key",
       "FIELD_MESSAGE":
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
       "FIELD_AER_AMOUNT_MESSAGE":
-        "Attention! Please, make sure you have sufficient amount of AERO in your wallet to cover transaction fee (up to 0.000021 Aer)",
+        "Attention! Please, make sure you have sufficient amount of GAS in your wallet to cover transaction fee (up to 0.000021)",
       "OPEN_APPROVAL_TX_IN_EXPLORER": "Open approval tx",
       "OPEN_TRANSFER_TX_IN_EXPLORER": "Open transfer tx",
       "BTN_NEXT": "Next",
       "BTN_CLOSE": "Close",
-      "BTN_BACK": "Back"
+      "BTN_BACK": "Back",
+      "PLEASE_CONFIGURE_THE_TOKEN_FIRST": "Please configure the token first",
+      "CANNOT_LOAD_DEPOSIT_SWAP_SCREEN": "Cannot load deposit swap screen",
+      "CREATING_DEPOSIT_SWAP": "Creating deposit swap... (please wait 10-15 seconds)",
+      "DEPOSIT_SWAP_CREATED": "Deposit swap created. Waiting for confirmation...",
+      "ERROR_WHILE_CREATING_DEPOSIT_SWAP": "Error while creating deposit swap",
+      "APPROVING": "Approving",
+      "TOKEN_ALLOWANCE": "token allowance...",
+      "OPENING_DEPOSIT_SWAP": "Opening deposit swap..."
     },
     "CREATE-OPPOSITE": {
       "TITLE": "Create Exchange Swap",
-      "FIELD_SENDING_AERUM_ASSET_": "Sending Aerum asset:",
+      "FIELD_SENDING_AERUM_ASSET_": "Sending FCH asset:",
       "FIELD_SELECT_YOUR_TOKEN": "Select your token",
       "FIELD_AMOUNT_TO_SEND": "Amount to send:",
       "FIELD_TYPE_AMOUNT": "Type amount",
       "FIELD_EXCHANGE_COUNTERPARTY": "Exchange counterparty:",
       "FIELD_SELECT_YOUR_COUNTERPARTY": "Select your counterparty",
-      "FIELD_SENDING_AERUM_ASSET": "Sending Aerum asset",
+      "FIELD_SENDING_AERUM_ASSET": "Sending FCH asset",
       "FIELD_AMOUNT": "Amount to receive",
       "FIELD_BALANCE": "Balance",
-      "FIELD_EXCHANGE_RATE": "Exchange rate (Aerum asset/Ethereum asset)",
+      "FIELD_EXCHANGE_RATE": "Exchange rate (FCH asset/Ethereum asset)",
       "FIELD_SECRET_KEY": "Secret key",
       "FIELD_MESSAGE":
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",
       "FIELD_AER_AMOUNT_MESSAGE":
-        "Attention! Please, make sure you have sufficient amount of AERO in your wallet to cover transaction fee (up to 0.000021 Aer)",
+        "Attention! Please, make sure you have sufficient amount of GAS in your wallet to cover transaction fee (up to 0.000021)",
       "OPEN_APPROVAL_TX_IN_EXPLORER": "Open approval tx",
       "OPEN_TRANSFER_TX_IN_EXPLORER": "Open transfer tx",
       "BTN_NEXT": "Next",
       "BTN_CLOSE": "Close",
-      "BTN_BACK": "Back"
+      "BTN_BACK": "Back",
+      "PLEASE_CONFIGURE_THE_TOKEN_FIRST": "Please configure the token first",
+      "CANNOT_LOAD_WITHDRAWAL_SWAP_SCREEN": "Cannot load withdrawal swap screen",
+      "CREATING_WITHDRAWAL_SWAP": "Creating withdrawal swap... (please wait 10-15 seconds)",
+      "WITHDRAWAL_SWAP_CREATED": "Withdrawal swap created. Waiting for confirmation...",
+      "ERROR_WHILE_CREATING_WITHDRAWAL_SWAP": "Error while creating withdrawal swap",
+      "INJECTED_WEB3_NOT_PROVIDED": "Injected web3 not provided",
+      "PLEASE_LOGIN_IN_MIST__METAMASK": "Please login in Mist / Metamask",
+      "CANNOT_GET_ACCOUNTS_FROM_SELECTED_PROVIDER": "Cannot get accounts from selected provider",
+      "PLEASE_SELECT": "Please select",
+      "AND_RETRY": "and retry",
+      "INCORRECT_MIST__METAMASK_ACCOUNT_SELECTED__EXPECTED": "Incorrect Mist / Metamask account selected. Expected",
+      "CANNOT_LOAD_IMPORTED_ACCOUNT": "Cannot load imported account",
+      "APPROVING": "Approving",
+      "TOKEN_ALLOWANCE": "token allowance...",
+      "OPENING_WITHDRAWAL_SWAP": "Opening withdrawal swap..."
     },
     "CONFIRM": {
       "TITLE_CANCEL_SWAP": "Cancel Swap",
@@ -567,24 +699,45 @@
       "BTN_COMPLETE_SWAP": "Complete swap",
       "BTN_CANCEL_SWAP": "Cancel swap",
       "BTN_CLOSE": "Close",
-      "BTN_CANCEL": "Back"
+      "BTN_CANCEL": "Back",
+      "PLEASE_CONFIGURE_THE_TOKEN_FIRST": "Please configure the token first",
+      "CANNOT_LOAD_SWAP": "Cannot load swap",
+      "COMPLETING_WITHDRAWAL_SWAP": "Completing withdrawal swap",
+      "WITHDRAWAL_SWAP_CLOSED": "Withdrawal swap closed",
+      "WITHDRAWAL_SWAP_CLOSE_ERROR": "Withdrawal swap close error",
+      "CANCELLING_WITHDRAWAL_SWAP": "Cancelling withdrawal swap",
+      "WITHDRAWAL_SWAP_CANCELED": "Withdrawal swap canceled",
+      "WITHDRAWAL_SWAP_CANCEL_ERROR": "Withdrawal swap cancel error",
+      "COMPLETING_DEPOSIT_SWAP": "Completing deposit swap",
+      "DEPOSIT_SWAP_CLOSED": "Deposit swap closed",
+      "DEPOSIT_SWAP_CLOSE_ERROR": "Deposit swap close error",
+      "CANCELLING_DEPOSIT_SWAP": "Cancelling deposit swap",
+      "DEPOSIT_SWAP_CANCELED": "Deposit swap canceled",
+      "DEPOSIT_SWAP_CANCEL_ERROR": "Deposit swap cancel error"
     },
     "TRANSACTION": {
-      "TITLE": "Confirm payment",
+      "TITLE_1": "Confirm payment",
+      "TITLE_2": "Confirm transaction",
       "FIELD_PAYMENT_TO": "Payment to",
-      "FIELD_PAYMENT_IN": "Payment in",
+      "FIELD_APPROVED_FOR": "Approved for",
       "FIELD_AMOUNT_AVAILABLE": "Amount available",
       "BTN_DEPOSIT_MORE": "Deposit more",
       "FIELD_I_ACKNOWLEDGE_RISKS": "I acknowledge risks.",
-      "NOT_ENOUGH_ASSET": "There is not enough of selected asset to proceed. Please deposit more asset",
+      "NOT_ENOUGH_ASSET": "Not sufficient amount of assets",
+      "NOT_ENOUGH_AERO": "Not sufficient amount of Gas",
       "BTN_PROCEED": "Proceed",
       "BTN_CLOSE": "Close",
-      "BTN_CANCEL": "Cancel"
+      "BTN_CANCEL": "Cancel",
+      "NAME": "Name",
+      "PARAMS": "Params",
+      "VALUE": "Value",
+      "TYPE": "Type",
+      "MORE_INFO": "more info"
     }
   },
   "ENS": {
-    "MAIN_MENU_ITEM_NAME": "Aerum Name Service",
-    "MAIN_TITLE": "Aerum Name Service",
+    "MAIN_MENU_ITEM_NAME": "Name Service",
+    "MAIN_TITLE": "Name Service",
     "CHECK_NAME_TITLE": "Check Name",
     "BUY_NAME_TITLE": "Buy Name",
     "MANAGE_NAME_TITLE": "Manage Name",
@@ -599,7 +752,7 @@
     "FIELD_ACCOUNT": "Account",
     "FIELD_ADDRESS": "Address",
     "FIELD_NEW_OWNER": "New owner",
-    "BTN_CHECK_NAME": "Check ANS Name",
+    "BTN_CHECK_NAME": "Check NS Name",
     "BTN_BUY_NAME": "Buy Name",
     "BTN_SET_ADDRESS": "Update",
     "BTN_RELEASE_NAME": "Release",
@@ -612,12 +765,12 @@
     "OWNER": "already own",
     "NAME_IS": "Name is",
     "LONG_DESCRIPTION":
-      "The Aerum Name Service is a distributed, open, and extensible naming system based on the Aerum blockchain. Once you have a name, you can tell your friends to send AERO or tokens to yourname.aer instead of 0x7cB57B5A97eAbe942.....",
+      "The FCH Name Service is a distributed, open, and extensible naming system based on the FCH blockchain. Once you have a name, you can tell your friends to send GAS or tokens to yourname.fer instead of 0x7cB57B5A97eAbe942.....",
     "UNHANDLED_ERROR": "Unknown error occurred",
     "CHECK_NAME_ERROR": "Error while checking name",
     "BUY_NAME_ERROR": "Error while buying name",
     "SET_PRICE_ERROR": "Error setting new name price",
-    "SET_OWNER_ERROR": "Error setting new ANS owner",
+    "SET_OWNER_ERROR": "Error setting new NS owner",
     "TRANSFER_NAME_ERROR": "Error transferring name",
     "RELEASE_NAME_ERROR": "Error releasing name",
     "CHANGE_ADDRESS_ERROR": "Error changing name address",
@@ -626,12 +779,13 @@
     "ADDRESS_TRANSFER_NAME_DESCRIPTION":
       "This is address of new owner of the name",
     "NAME_BUY_SUCCESS_TITLE": "Success",
+    "NAME_BUY_ERROR_TITLE": "Error",
     "NAME_BUY_SUCCESS": "You bought name",
     "CHANGE_ADDRESS_SUCCESS_TITLE": "Success",
     "CHANGE_ADDRESS_SUCCESS": "You changed address of",
     "CONFIRM_BUY_TITLE": "Buy Name",
     "CONFIRM_SET_ADDRESS_TITLE": "Change Address",
-    "MANAGE_TITLE": "Manage ANS Contract",
+    "MANAGE_TITLE": "Manage NS Contract",
     "ESTIMATED_FEE": "Estimated fee",
     "MAX_FEE": "Provide maximum fee",
     "GAS_PRICE": "Gas Price",
@@ -640,7 +794,7 @@
     "BTN_MODAL_UPDATE": "Update",
     "SUCCESS_TITLE": "Success",
     "SET_PRICE_SUCCESS": "New name price",
-    "SET_OWNER_SUCCESS": "ANS transferred to",
+    "SET_OWNER_SUCCESS": "NS transferred to",
     "WITHDRAW_SUCCESS": "Funds sent to",
     "OPERATION_STARTED_TITLE": "Started",
     "OPERATION_IN_PROGRESS": "Operation in progress...",
@@ -656,10 +810,11 @@
     "NOTIFICATION_SET_OWNER": "Setting owner",
     "NAME_TRANSFER_SUCCESS_TITLE": "Success",
     "NAME_TRANSFER_SUCCESS": "You transferred name",
-    "NOT_ENOUGH_FUNDS_TITLE": "Not enough Aero",
-    "NOT_ENOUGH_FUNDS": "Get more Aero to buy name",
+    "NOT_ENOUGH_FUNDS_TITLE": "Not enough Gas",
+    "NOT_ENOUGH_FUNDS": "Get more Gas to buy name",
     "CONFIRM_RELEASE_NAME_TITLE": "Release Name",
-    "CONFIRM_TRANSFER_NAME_TITLE": "Transfer Name Ownership"
+    "CONFIRM_TRANSFER_NAME_TITLE": "Transfer Name Ownership",
+    "ASSIGN_THE_NAME_TO_ACCOUNT": "Assign the name to account"
   },
   "EXTERNAL_TRANSACTION": {
     "NOTIFICATION_BODY_TOKEN_NOT_IN_WALLET":
@@ -690,9 +845,16 @@
       "FIELD_DELEGATE": "Delegate",
       "FIELD_STAKE": "Stake",
       "PLACEHOLDER_SELECT_ADDRESS": "Select delegate",
+      "PLACEHOLDER_ENTER_ADDRESS": "Enter delegate address",
       "BTN_STAKE": "Stake",
       "PLACEHOLDER_AMOUNT": "Amount",
-      "OPEN_CREATE_TX_IN_EXPLORER": "Open staking tx"
+      "OPEN_CREATE_TX_IN_EXPLORER": "Open staking tx",
+      "PLEASE_ENTER_A_VALID_ADDRESS": "Please enter a valid address",
+      "SPECIFIED_DELEGATE_IS_UNKNOWN": "Specified delegate is unknown. Please enter a valid delegate",
+      "STAKING": "Staking",
+      "XRM_FOR": "XRM for",
+      "DELEGATE": "delegate",
+      "SUCCESSFULLY_STAKED": "Successfully staked"
     },
     "UPDATE": {
       "FIELD_DELEGATE_INFO": "Delegate info",
@@ -707,7 +869,13 @@
       "CHECK_REMOVE_EVERYTHING": "Remove everything",
       "FIELD_REMOVE_FROM_STAKE": "Remove from stake",
       "OPEN_INCREASE_TX_IN_EXPLORER": "Open staking increase tx",
-      "OPEN_DECREASE_TX_IN_EXPLORER": "Open unstaking tx"
+      "OPEN_DECREASE_TX_IN_EXPLORER": "Open unstaking tx",
+      "INCREASING_STAKING": "Increasing staking",
+      "XRM_FOR": "XRM for",
+      "DELEGATE": "delegate",
+      "SUCCESSFULLY_INCREASED_STAKING": "Successfully increased staking",
+      "UNSTAKING": "Unstaking",
+      "SUCCESSFULLY_UNSTAKED": "Successfully unstaked"
     }
   },
   "TOKEN_FACTORY": {
@@ -716,11 +884,18 @@
     "CREATE": {
       "TITLE": "Create Token",
       "FIELD_NAME": "Name",
+      "FIELD_NAME_PLACEHOLDER": "e.g. FCH",
       "FIELD_SYMBOL": "Symbol",
+      "FIELD_SYMBOL_PLACEHOLDER": "e.g. GAS",
+      "FIELD_SYMBOL_ERROR": "Please enter valid symbol. Only capital letters allowed.",
       "FIELD_SUPPLY": "Total Supply",
+      "FIELD_SUPPLY_PLACEHOLDER": "e.g. 1000000",
       "FIELD_DECIMALS": "Decimals",
+      "FIELD_DECIMALS_PLACEHOLDER": "e.g. 18",
       "FIELD_ADDRESS": "Address",
-      "FIELD_ANS_NAME": "ANS Name",
+      "FIELD_ANS_NAME": "NS Name",
+      "FIELD_ANS_PLACEHOLDER": "e.g. FCH",
+      "FIELD_ANS_NAME_ERROR": "Please enter valid fns name. Min 5 characters.",
       "FIELD_ESTIMATED_FEE": "Estimated Fee",
       "BTN_COPY": "Copy",
       "BTN_CREATE": "Create",
@@ -728,11 +903,24 @@
         "ERROR": "Error while creating token",
         "SUCCESS_SUFFIX": "token was created successfully",
         "CREATING_TOKEN": "Creating contract for token",
-        "ANS_NOT_AVAILABLE": "ANS name not available"
+        "ANS_NOT_AVAILABLE": "NS name not available"
       },
       "CONFIRM": {
         "TITLE": "Confirm Token Creation"
       }
     }
+  },
+  "HEADER": {
+    "NETWORK-SELECT": {
+      "LIVE": "Live",
+      "TEST": "Test"
+    }
+  },
+  "SIDEBAR_ACCOUNT": {
+    "SELECT_PLACEHOLDER": "Select your account",
+    "BUTTON_ADD_ADDRESS": "Add Address"
+  },
+  "SIDEBAR_HEADER": {
+    "WELCOME": "Welcome"
   }
 }

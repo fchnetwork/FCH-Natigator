@@ -3,12 +3,10 @@ import { Component, AfterViewInit } from '@angular/core';
 import { iBlocks } from '@shared/app.interfaces';
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
 import { SettingsService } from '@app/core/settings/settings.service';
 import { Router } from '@angular/router';
 import { BlockModalData } from '@app/wallet/explorer/components/block-modal/block-modal.component';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Component({
   selector: 'app-blocks',
@@ -18,8 +16,7 @@ export class BlocksComponent implements AfterViewInit {
   blocks: any[] = [];
   maxBlocks: number;
   highBlock: number;
-
-  perfectScrollbarDisabled = isAndroidDevice();
+  perfectScrollbarDisabled: boolean;
 
   constructor(
     public exploreSrv: ExplorerService,
@@ -27,9 +24,11 @@ export class BlocksComponent implements AfterViewInit {
     private modal: ModalService,
     public loaderService: LoaderService,
     private settingsService: SettingsService,
-    public modalService: ModalService)
+    public modalService: ModalService,
+    private environment: EnvironmentService)
   {
     this.maxBlocks = this.settingsService.settings.generalSettings.numberOfBlocks;
+    this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
   }
 
   ngAfterViewInit() {

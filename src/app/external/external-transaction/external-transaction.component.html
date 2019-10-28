@@ -1,7 +1,8 @@
 <aer-modal-container>
   <div class="external-transaction">
     <app-paper-wallet-import *ngIf="privateKeyToImport" (walletImported)="onPaperWalletImported($event)" [privateKey]="privateKeyToImport"></app-paper-wallet-import>
-    <h1>{{(title || 'EXTERNAL-SWAP.TRANSACTION.TITLE')|translate}}</h1>
+    <h1 *ngIf="isToken">{{ title || 'EXTERNAL-SWAP.TRANSACTION.TITLE_1' | translate }}</h1>
+    <h1 *ngIf="!isToken">{{ title || 'EXTERNAL-SWAP.TRANSACTION.TITLE_2' | translate }}</h1>
     <div aerRow>
       <div aerColumn size="md-12">
         <app-from-to-avatar [senderAddress]="senderAddress" [recieverAddress]="receiverAddress"></app-from-to-avatar>
@@ -10,52 +11,97 @@
     <div aerRow>
       <div aerColumn size="md-12">
         <p *ngIf="text">{{ text }}</p>
+        <p *ngIf="decodeMessage" [ngClass]="{ 'has-error': decodeHasError }">
+          {{ decodeMessage | translate }}
+          <a *ngIf="decodeData" class="info" (click)="showDecodeData = !showDecodeData">{{ 'EXTERNAL-SWAP.TRANSACTION.MORE_INFO' | translate }}</a>
+        </p>
+        <div *ngIf="decodeData && showDecodeData" class="table-responsive text-left">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>{{ 'EXTERNAL-SWAP.TRANSACTION.NAME' | translate }}</th>
+                <th>{{ decodeData.name }}</th>
+              </tr>
+              <tr>
+                <td>
+                  <strong>{{ 'EXTERNAL-SWAP.TRANSACTION.PARAMS' | translate }}</strong>
+                </td>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody *ngFor="let param of decodeData.params">
+              <tr class="table-param">
+                <td>{{ 'EXTERNAL-SWAP.TRANSACTION.NAME' | translate }}</td>
+                <td>{{ param.name }}</td>
+              </tr>
+              <tr>
+                <td>{{ 'EXTERNAL-SWAP.TRANSACTION.VALUE' | translate }}</td>
+                <td>{{ param.value }}</td>
+              </tr>
+              <tr>
+                <td>{{ 'EXTERNAL-SWAP.TRANSACTION.TYPE' | translate }}</td>
+                <td>{{ param.type }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="md-12">
         <div class="table-simple">
-          <div>
+          <div *ngIf="amount > 0">
             <div>
               <!-- {{ 'AMOUNT' | translate }} -->
-              {{'EXTERNAL-SWAP.TRANSACTION.FIELD_PAYMENT_TO'|translate}}
+              {{ 'EXTERNAL-SWAP.TRANSACTION.FIELD_PAYMENT_TO' | translate }}
             </div>
             <div>
               {{ receiverAddress }}
             </div>
           </div>
-          <div>
-            <div>
-              <!-- {{ 'AMOUNT' | translate }} -->
-              {{'EXTERNAL-SWAP.TRANSACTION.FIELD_PAYMENT_IN'|translate}}
-            </div>
-            <div>
-              {{ currency }}
-            </div>
-          </div>
-          <div>
+          <div *ngIf="amount > 0">
             <div>
               {{ 'AMOUNT' | translate }}
             </div>
-            <div>
-              {{ amount }} {{ token }}
-            </div>
+            <div>{{ amount }} {{ currency }} {{ token }}</div>
           </div>
-          <div>
+          <div *ngIf="approveAddress" [ngClass]="{ 'has-error': depositMoreAssets }">
             <div>
-              {{ 'FEE' | translate }}
+              <span title="{{ (depositMoreAssets ? 'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' : '') | translate }}"
+                ><aer-icon *ngIf="depositMoreAssets">exclamation-triangle</aer-icon> {{ 'EXTERNAL-SWAP.TRANSACTION.FIELD_APPROVED_FOR' | translate }}</span
+              >
             </div>
-            <div>
-              {{ maxTransactionFee | convertWeiToGwei}} {{'AERO'|translate}}
-            </div>
+            <div>{{ approveAmountDec }} {{ approveAddressSymbol }}</div>
           </div>
-          <div>
+          <div *ngIf="approveAddress">
+            <div>
+              {{ 'EXTERNAL-SWAP.TRANSACTION.FIELD_AMOUNT_AVAILABLE' | translate }}
+            </div>
+            <div>{{ approveBalance }} {{ approveAddressSymbol }}</div>
+          </div>
+          <div *ngIf="!isToken" [ngClass]="{ 'has-error': depositMore }">
+            <div>
+              <span title="{{ (depositMore ? 'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_AERO' : '') | translate }}"
+                ><aer-icon *ngIf="depositMore">exclamation-triangle</aer-icon> {{ 'FEE' | translate }}</span
+              >
+            </div>
+            <div>{{ maxTransactionFee | convertWeiToGwei }} {{ 'AERO' | translate }}</div>
+          </div>
+          <div *ngIf="isToken" [ngClass]="{ 'has-error': depositMore }">
+            <div>
+              <span title="{{ (depositMore ? 'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' : '') | translate }}"
+                ><aer-icon *ngIf="depositMore">exclamation-triangle</aer-icon> {{ 'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' | translate }}</span
+              >
+            </div>
+            <div>{{ amount }} {{ currency | translate }}</div>
+          </div>
+          <div *ngIf="amount > 0">
             <div>
               <!-- {{ 'AMOUNT' | translate }} -->
-              {{'EXTERNAL-SWAP.TRANSACTION.FIELD_AMOUNT_AVAILABLE'|translate}}
+              {{ 'EXTERNAL-SWAP.TRANSACTION.FIELD_AMOUNT_AVAILABLE' | translate }}
             </div>
             <div>
-              <span>{{ balance | bignumber:'1.0-3' }}</span>
+              <span>{{ balance | bignumber: '1.0-3' }} {{ currency | translate }}</span>
             </div>
           </div>
         </div>
@@ -63,24 +109,26 @@
     </div>
     <div aerRow>
       <div aerColumn size="md-12">
-        <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">{{'EXTERNAL-SWAP.TRANSACTION.FIELD_I_ACKNOWLEDGE_RISKS'|translate}}</aer-checkbox>
-        <p *ngIf="depositMore">{{'EXTERNAL-SWAP.TRANSACTION.NOT_ENOUGH_ASSET' | translate}}</p>
+        <aer-checkbox *ngIf="checkbox" [(ngModel)]="checked">{{ 'EXTERNAL-SWAP.TRANSACTION.FIELD_I_ACKNOWLEDGE_RISKS' | translate }}</aer-checkbox>
+      </div>
+    </div>
+    <div aerRow *ngIf="isToken || depositTokens">
+      <div aerColumn size="sm-12">
+        <aer-button class="blue large full-width" (buttonFn)="deposit()">{{ 'EXTERNAL-SWAP.TRANSACTION.BTN_DEPOSIT_MORE' | translate }}</aer-button>
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="sm-12">
-        <aer-button class="blue large full-width" (buttonFn)="deposit()">{{'EXTERNAL-SWAP.TRANSACTION.BTN_DEPOSIT_MORE'|translate}}</aer-button>
+        <aer-button [disabled]="(checkbox && !checked) || !proceedAvailable" [ngClass]="{ disabled: checkbox && !checked }" (buttonFn)="accept()" class="blue large full-width">{{
+          'EXTERNAL-SWAP.TRANSACTION.BTN_PROCEED' | translate
+        }}</aer-button>
       </div>
     </div>
     <div aerRow>
       <div aerColumn size="sm-12">
-        <aer-button [disabled]="checkbox && !checked || !proceedAvailable" [ngClass]="{'disabled': checkbox && !checked}" (buttonFn)="accept()"
-          class="blue large full-width">{{'EXTERNAL-SWAP.TRANSACTION.BTN_PROCEED'|translate}}</aer-button>
-      </div>
-    </div>
-    <div aerRow>
-      <div aerColumn size="sm-12">
-        <aer-button (buttonFn)="dismiss()" class="large full-width">{{(proceedAvailable ? 'EXTERNAL-SWAP.TRANSACTION.BTN_CLOSE':'EXTERNAL-SWAP.TRANSACTION.BTN_CANCEL') | translate}}</aer-button>
+        <aer-button (buttonFn)="dismiss()" class="white large full-width">{{
+          (proceedAvailable ? 'EXTERNAL-SWAP.TRANSACTION.BTN_CLOSE' : 'EXTERNAL-SWAP.TRANSACTION.BTN_CANCEL') | translate
+        }}</aer-button>
       </div>
     </div>
   </div>

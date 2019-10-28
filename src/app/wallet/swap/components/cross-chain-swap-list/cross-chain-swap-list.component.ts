@@ -8,7 +8,8 @@ import { AuthenticationService } from "@core/authentication/authentication-servi
 import { InternalNotificationService } from "@core/general/internal-notification-service/internal-notification.service";
 import { LoggerService } from "@core/general/logger-service/logger.service";
 import { SwapType } from '@app/core/swap/models/swap-type.enum';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
+import { SwapLocalStorageService } from '@app/core/swap/cross-chain/swap-local-storage/swap-local-storage.service';
 
 @Component({
   selector: 'app-cross-chain-swap-list',
@@ -24,7 +25,8 @@ export class CrossChainSwapListComponent implements OnInit {
   loading = false;
   canShowMore = true;
   swaps: SwapListItem[] = [];
-  perfectScrollbarDisabled = isAndroidDevice();
+  allSwaps: SwapListItem[] = [];
+  perfectScrollbarDisabled: boolean;
 
   constructor(
     private logger: LoggerService,
@@ -32,8 +34,12 @@ export class CrossChainSwapListComponent implements OnInit {
     private translateService: TranslateService,
     private authService: AuthenticationService,
     private notificationService: InternalNotificationService,
-    private swapListService: SwapListService
-  ) { }
+    private swapListService: SwapListService,
+    private swapLocalStorageService: SwapLocalStorageService,
+    private environment: EnvironmentService,
+  ) {
+    this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
+  }
 
   async ngOnInit() {
     this.account = this.authService.getAddress();
@@ -43,7 +49,13 @@ export class CrossChainSwapListComponent implements OnInit {
   private async loadSwaps() {
     try {
       this.loading = true;
-      this.swaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
+      const localSwaps = this.swapLocalStorageService.loadAllSwaps();
+      this.allSwaps = (await this.swapListService.getSwapsByAccount(this.account))
+        .filter(sw => localSwaps.findIndex(lsw => lsw.hash === sw.id) !== -1)
+        .sort((s1, s2) => s1.createdOn > s2.createdOn ? -1 : s1.createdOn < s2.createdOn ? 1 : 0);
+
+      const skip = this.itemsPerPage * this.page;
+      this.swaps = this.allSwaps.slice(skip, this.itemsPerPage);
       this.canShowMore = this.swaps.length === this.itemsPerPage;
     }
     catch (e) {
@@ -56,10 +68,12 @@ export class CrossChainSwapListComponent implements OnInit {
 
   async showMore() {
     try {
+
       this.page++;
-      const pageSwaps = await this.swapListService.getSwapsByAccountPaged(this.account, this.itemsPerPage, this.page);
-      this.canShowMore = pageSwaps.length === this.itemsPerPage;
+      const skip = this.itemsPerPage * this.page;
+      const pageSwaps = this.allSwaps.slice(skip, skip + this.itemsPerPage);
       this.swaps = this.swaps.concat(pageSwaps);
+      this.canShowMore = pageSwaps.length === this.itemsPerPage;
     }
     catch (e) {
       this.logger.logError('Error loading swaps', e);
@@ -77,7 +91,7 @@ export class CrossChainSwapListComponent implements OnInit {
 
   openSwap(swap: SwapListItem) {
     const url = swap.type === SwapType.Deposit ? 'external/confirm-swap' : 'external/confirm-opposite-swap';
-    return this.router.navigate([url], {queryParams: {hash: swap.id}}); 
+    return this.router.navigate([url], {queryParams: {hash: swap.id}});
   }
 
   private translate(key: string): string {

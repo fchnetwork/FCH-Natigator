@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import Web3 from "web3";
-import { environment } from '@env/environment';
 
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { EthWalletType } from "@app/external/models/eth-wallet-type.enum";
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { EthereumAuthenticationService } from "@core/ethereum/ethereum-authentication-service/ethereum-authentication.service";
@@ -20,7 +20,7 @@ export class EthereumWalletBalanceComponent {
 
   ethereumBalance = 0;
   aerumBalance = 0;
-  
+
   @Output() ethereumBalanceChanged: EventEmitter<number> = new EventEmitter<number>();
   @Output() aerumBalanceChanged: EventEmitter<number> = new EventEmitter<number>();
 
@@ -38,7 +38,8 @@ export class EthereumWalletBalanceComponent {
   }
 
   constructor(private ethereumTokenService: EthereumTokenService,
-    private ethereumAuthenticationService: EthereumAuthenticationService) {
+    private ethereumAuthenticationService: EthereumAuthenticationService,
+    private environment: EnvironmentService) {
       this.web3 = this.ethereumAuthenticationService.getWeb3();
       this.injectedWeb3 = this.ethereumAuthenticationService.getInjectedWeb3();
   }
@@ -51,7 +52,7 @@ export class EthereumWalletBalanceComponent {
       this.aerumBalanceChanged.emit(this.aerumBalance);
       return;
     }
-    const aerumAddress = environment.contracts.staking.address.Aerum;
+    const aerumAddress = this.environment.get().contracts.staking.address.Aerum;
     const getAerumBalance = this.ethereumTokenService.getBalance(EthWalletType.Imported, aerumAddress, this._address);
     const getEthereumBalance = this.getEthereumBalance();
 

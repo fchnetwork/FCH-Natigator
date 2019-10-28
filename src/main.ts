@@ -5,6 +5,7 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 declare const window;
+declare const navigator;
 
 if (environment.production) {
   enableProdMode();
@@ -27,6 +28,19 @@ if (typeof window['cordova'] !== 'undefined') {
 
     //Changed definition for window open to use in app browser
     window.open = window.cordova.InAppBrowser.open;
+
+    //Prevent back button to go to unlock screen
+    document.addEventListener('backbutton', e => {
+      if(navigator && navigator.Backbutton) {
+        navigator.Backbutton.goHome();
+      }
+    }, false);
+
+    window.addEventListener('keyboardDidHide', ()=> {
+      if(window.style) {
+        window.style.height = '100vh';
+      }
+    });
 
     bootstrap();
   }, false);

@@ -24,6 +24,7 @@ import { TokenService } from "@core/transactions/token-service/token.service";
 import { EthereumTokenService } from "@core/ethereum/ethereum-token-service/ethereum-token.service";
 import { OpenEtherSwapService } from "@core/swap/cross-chain/open-ether-swap-service/open-ether-swap.service";
 import { OpenErc20SwapService } from "@core/swap/cross-chain/open-erc20-swap-service/open-erc20-swap.service";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-swap-confirm',
@@ -56,6 +57,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   canCloseSwap = false;
 
+  swapLoaded = false;
   swapClosed = false;
   swapExpired = false;
   swapCancelled = false;
@@ -69,6 +71,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   timerInterval: Timer;
   timer: Duration;
+  counterSwapLoadTimerInterval: Timer;
 
   errors: string[] =[];
 
@@ -83,7 +86,8 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     private ethereumTokenService: EthereumTokenService,
     private swapLocalStorageService: SwapLocalStorageService,
     private etherSwapService: OpenEtherSwapService,
-    private erc20SwapService: OpenErc20SwapService
+    private erc20SwapService: OpenErc20SwapService,
+    private translateService: TranslateService
   ) { }
 
   async ngOnInit() {
@@ -96,10 +100,10 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     } catch (e) {
       if(e instanceof TokenError) {
         this.logger.logError('Cannot load token information', e);
-        this.notificationService.showMessage('Please configure the token first', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.PLEASE_CONFIGURE_THE_TOKEN_FIRST'), this.translateService.instant('ERROR'));
       } else {
         this.logger.logError('Deposit swap load error', e);
-        this.notificationService.showMessage('Cannot load deposit swap', 'Error');
+        this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.CANNOT_LOAD_SWAP'), this.translateService.instant('ERROR'));
       }
     }
   }
@@ -121,15 +125,11 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     }
 
     await this.loadAerumSwap();
-
     if (this.swapFinishedOrExpired()) {
       return;
     }
-
     this.setupTimer();
-
-    this.aerumErc20SwapService.onOpen(this.hash, (err, event) => this.onOpenSwapHandler(this.hash, err, event));
-    this.aerumErc20SwapService.onExpire(this.hash, (err, event) => this.onExpiredSwapHandler(this.hash, err, event));
+    this.setupCounterSwapLoadTimer();
   }
 
   private async loadEthereumSwap() {
@@ -238,7 +238,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   private setupTimer(): void {
     this.timerInterval = setInterval(() => {
       if (this.swapClosed || this.swapCancelled) {
-        this.stopTimer();
+        this.stopTimers();
         return;
       }
 
@@ -256,13 +256,14 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.swapExpired = true;
     this.canCloseSwap = false;
     this.timer = moment.duration(0);
-    this.stopTimer();
+    this.stopTimers();
     this.cleanErrors();
     this.showError('Your swap has been timed out and is expired. Please cancel it');
   }
 
-  private stopTimer(): void {
+  private stopTimers(): void {
     clearInterval(this.timerInterval);
+    clearInterval(this.counterSwapLoadTimerInterval);
   }
 
   private async loadAerumSwap() {
@@ -292,13 +293,14 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.cleanErrors();
 
     const swap: CounterErc20Swap = await this.aerumErc20SwapService.checkSwap(this.hash);
-    this.logger.logMessage('Swap loaded: ', swap);
-
+    this.logger.logMessage('Swap check loaded: ', swap);
     if(!swap || (swap.state === SwapState.Invalid)) {
       this.logger.logMessage('Cannot load erc20 swap: ' + this.hash);
       this.canCloseSwap = false;
       return;
     }
+
+    this.swapLoaded = true;
 
     const token = await this.tokenService.getTokensInfo(swap.erc20ContractAddress);
     if(!token) {
@@ -338,15 +340,27 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
     this.canCloseSwap = true;
   }
 
+  private setupCounterSwapLoadTimer(): void {
+    this.counterSwapLoadTimerInterval = setInterval(async () => {
+      if (this.swapCancelled || this.swapExpired) {
+        this.stopTimers();
+        return;
+      }
+      if(!this.swapLoaded) {
+        await this.loadAerumSwap();
+      }
+    }, 5000);
+  }
+
   async complete() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Completing deposit swap', 'In Progress...');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.COMPLETING_DEPOSIT_SWAP'), 'In Progress...');
       await this.closeSwap();
-      this.notificationService.showMessage('Deposit swap closed', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.DEPOSIT_SWAP_CLOSED'), this.translateService.instant('DONE'));
     } catch (e) {
       this.logger.logError('Deposit swap close error', e);
-      this.notificationService.showMessage('Deposit swap close error', 'Unhandled error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.DEPOSIT_SWAP_CLOSE_ERROR'), this.translateService.instant('ERROR'));
     } finally {
       this.processing = false;
     }
@@ -354,7 +368,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
   private async closeSwap(): Promise<void> {
     this.swapTransactionExplorerUrl = null;
-    await this.aerumErc20SwapService.closeSwap(this.hash, this.secret, (hash) => this.onSwapHashReceived(hash, Chain.Aerum));
+    await this.aerumErc20SwapService.closeSwap(this.hash, this.secret, (hash) => this.onSwapHashReceived(hash, Chain.FCH));
     this.canCloseSwap = false;
     this.swapClosed = true;
     this.cleanErrors();
@@ -363,12 +377,12 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
   async cancel() {
     try {
       this.processing = true;
-      this.notificationService.showMessage('Cancelling deposit swap', 'In Progress...');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.CANCELLING_DEPOSIT_SWAP'), this.translateService.instant('IN_PROGRESS'));
       await this.cancelSwap();
-      this.notificationService.showMessage('Deposit swap canceled', 'Done');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.DEPOSIT_SWAP_CANCELED'), this.translateService.instant('DONE'));
     } catch (e) {
       this.logger.logError('Deposit swap cancel error', e);
-      this.notificationService.showMessage('Deposit swap cancel error', 'Unhandled error');
+      this.notificationService.showMessage(this.translateService.instant('EXTERNAL-SWAP.CONFIRM.DEPOSIT_SWAP_CANCEL_ERROR'), this.translateService.instant('ERROR'));
     } finally {
       this.processing = false;
     }
@@ -393,26 +407,6 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
 
     this.swapCancelled = true;
     this.cleanErrors();
-  }
-
-  private async onOpenSwapHandler(hash: string, err, event) {
-    if (err) {
-      this.logger.logError(`Create counter swap error: ${hash}`, err);
-      this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
-    } else {
-      this.logger.logMessage(`Create counter swap success: ${hash}`, event);
-    }
-    await this.loadAerumSwap();
-  }
-
-  private async onExpiredSwapHandler(hash: string, err, event) {
-    if (err) {
-      this.logger.logError(`Create counter swap error: ${hash}`, err);
-      this.notificationService.showMessage('Error while listening for swap', 'Unhandled error');
-    } else {
-      this.logger.logMessage(`Create counter swap success: ${hash}`, event);
-    }
-    await this.loadAerumSwap();
   }
 
   private now(): number {
@@ -450,7 +444,7 @@ export class SwapConfirmComponent implements OnInit, OnDestroy {
       this.routeSubscription.unsubscribe();
     }
     if (this.timerInterval) {
-      clearInterval(this.timerInterval);
+      this.stopTimers();
     }
   }
 }

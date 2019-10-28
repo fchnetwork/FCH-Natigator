@@ -1,19 +1,19 @@
 <form [formGroup]="addTokenForm" (ngSubmit)="onSubmit()">
   <div aerRow>
     <div aerColumn size="md-12">
-      <aer-input placeholder="Token contract address" type="tokenAddress" formControlName="tokenAddress" [(ngModel)]="tokenAddress"
+      <aer-input placeholder="{{'DASHBOARD_ADD_TOKEN.TOKEN_ADDRESS_PLACEHOLDER'|translate}}" type="tokenAddress" formControlName="tokenAddress" [(ngModel)]="tokenAddress"
         ngDefaultControl equalValidator="confirmPassword" reverse="true"></aer-input>
     </div>
   </div>
   <div aerRow>
     <div aerColumn size="md-12">
-      <aer-input placeholder="Token symbol" type="tokenSymbol" formControlName="tokenSymbol" [(ngModel)]="tokenSymbol" ngDefaultControl
+      <aer-input placeholder="{{'DASHBOARD_ADD_TOKEN.TOKEN_SYMBOL_PLACEHOLDER'|translate}}" type="tokenSymbol" formControlName="tokenSymbol" [(ngModel)]="tokenSymbol" ngDefaultControl
         equalValidator="confirmPassword" reverse="true"></aer-input>
     </div>
   </div>
   <div aerRow>
     <div aerColumn size="md-12">
-      <aer-input placeholder="Decimals of precision" type="decimals" formControlName="decimals" [(ngModel)]="decimals" ngDefaultControl
+      <aer-input placeholder="{{'DASHBOARD_ADD_TOKEN.TOKEN_DECIMALS_PLACEHOLDER'|translate}}" type="decimals" formControlName="decimals" [(ngModel)]="decimals" ngDefaultControl
         equalValidator="confirmPassword" reverse="true"></aer-input>
     </div>
   </div>

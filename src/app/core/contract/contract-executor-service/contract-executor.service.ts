@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { environment } from "@env/environment";
-
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { retry } from "@shared/helpers/retry";
 import Web3 from 'web3';
 import { TransactionObject, TransactionReceipt, Tx } from "web3/types";
@@ -15,20 +14,25 @@ import { StorageService } from "@core/general/storage-service/storage.service";
 export class ContractExecutorService {
 
   private readonly contractGasThreshold = 100 * 1000;
-  private readonly address: string;
-  private readonly privateKey: string;
   private readonly web3: Web3;
   private readonly chainId: number;
+
+  private get address() {
+    return this.authService.getAddress();
+  }
+
+  private get privateKey() {
+    return this.storageService.getSessionData('private_key');
+  }
 
   constructor(
     private logger: LoggerService,
     private authService: AuthenticationService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private environment: EnvironmentService
   ) {
-    this.address = this.authService.getAddress();
-    this.privateKey = this.storageService.getSessionData('private_key');
     this.web3 = this.authService.getWeb3();
-    this.chainId = environment.chainId;
+    this.chainId = this.environment.get().chainId;
   }
 
   async send(transaction: TransactionObject<any>, options?: TransactionOptions) {

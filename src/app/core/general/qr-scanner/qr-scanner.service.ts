@@ -1,4 +1,4 @@
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import {
   QrScannerRequest,
   QrScannerResponse
@@ -25,7 +25,8 @@ export class QrScannerService {
 
   constructor(private modalService: ModalService,
     private translate: TranslateService,
-    private notificationService: InternalNotificationService) 
+    private notificationService: InternalNotificationService,
+    private environment: EnvironmentService)
   { }
 
   /**
@@ -37,7 +38,7 @@ export class QrScannerService {
    * @memberof QrScannerService
    */
   async scanQrCode(textResourceName: string, validator: (qrCode: string) => { valid: boolean; errorMessageResourceName: string }): Promise<QrScannerResponse> {
-    if(environment.isMobileBuild) {
+    if(this.environment.get().isMobileBuild) {
       return await this.scanQrCodeForMobile(validator);
     } else {
       return await this.scanQrCodeForWeb(textResourceName, validator);
@@ -74,7 +75,7 @@ export class QrScannerService {
         result => {
           if(result.cancelled) {
             const msg = this.translate.instant('SHARED.QR_SCAN.QR_CODE_SCANNING_CANCELLED');
-            this.notificationService.showMessage(msg, 'Done');
+            this.notificationService.showMessage(msg, this.translate.instant('DONE'));
             resolve({
               scanSuccessful: false,
               result: null
@@ -90,7 +91,7 @@ export class QrScannerService {
             });
           } else {
             const msg = this.translate.instant(validatorResult.errorMessageResourceName);
-            this.notificationService.showMessage(msg, 'Error');
+            this.notificationService.showMessage(msg, this.translate.instant('ERROR'));
             resolve({
               scanSuccessful: false,
               result: null
@@ -99,7 +100,7 @@ export class QrScannerService {
         },
         error => {
           const msg = this.translate.instant('SHARED.QR_SCAN.QR_CODE_SCANNING_FAILED');
-          this.notificationService.showMessage(`${msg} ${error}`, 'Error');
+          this.notificationService.showMessage(`${msg} ${error}`, this.translate.instant('ERROR'));
           reject(error);
         },
        this.mobileOptions);

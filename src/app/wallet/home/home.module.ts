@@ -1,20 +1,23 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { CurrentUserDisplayComponent } from './current-user-display/current-user-display.component';
-import { RouterModule } from '@angular/router'; 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
-import { AppUIModule } from '@app/app.ui.module'; 
-import { CoreModule } from '@app/core/core.module'; 
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppUIModule } from '@app/app.ui.module';
+import { CoreModule } from '@app/core/core.module';
 import { AddTokenComponent } from '@app/wallet/home/components/add-token/add-token.component';
 import { HomeRoutingModule } from '@app/wallet/home/home.routes';
 import { SharedModule } from '@app/shared/shared.module';
 import { HomeComponent } from '@app/wallet/home/home.component';
 import { AccountOverviewComponent } from '@app/wallet/home/components/account-overview/account-overview.component';
 import { TokenListComponent } from '@app/wallet/home/components/token-list/token-list.component';
+import { TransactionModule } from '@app/wallet/transaction/transaction.module';
+import { LastTransactionsComponent } from "@app/wallet/transaction/components/last-transactions/last-transactions.component";
 
 @NgModule({
   entryComponents: [
     AddTokenComponent,
+    LastTransactionsComponent
   ],
   imports: [
     HomeRoutingModule,
@@ -23,19 +26,20 @@ import { TokenListComponent } from '@app/wallet/home/components/token-list/token
     SharedModule,
     CoreModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TransactionModule,
   ],
   declarations: [
     CurrentUserDisplayComponent,
     HomeComponent,
     AccountOverviewComponent,
     TokenListComponent,
-    AddTokenComponent,
+    AddTokenComponent
   ],
   exports: [
     AccountOverviewComponent,
     TokenListComponent,
-    AddTokenComponent,
+    AddTokenComponent
   ]
 })
 export class HomeModule { }

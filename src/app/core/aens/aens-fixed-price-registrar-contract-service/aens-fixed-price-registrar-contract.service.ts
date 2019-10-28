@@ -1,20 +1,22 @@
 const artifacts = require('@core/abi/FixedPriceRegistrar.json');
 
 import { Injectable } from '@angular/core';
-
-import { environment } from '@env/environment';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 import { BaseContractService } from '@core/contract/base-contract-service/base-contract.service';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { ContractExecutorService } from '@core/contract/contract-executor-service/contract-executor.service';
 
 @Injectable()
 export class AensFixedPriceRegistrarContractService extends BaseContractService {
+  private environment: EnvironmentService;
 
   constructor(
     authenticationService: AuthenticationService,
-    contractExecutorService: ContractExecutorService
+    contractExecutorService: ContractExecutorService,
+    environment: EnvironmentService
   ) {
-    super(artifacts.abi, environment.contracts.aens.address.FixedPriceRegistrar, authenticationService, contractExecutorService);
+    super(artifacts.abi, environment.get().contracts.aens.address.FixedPriceRegistrar, authenticationService, contractExecutorService);
+    this.environment = environment;
   }
 
   async getPrice(): Promise<string> {
@@ -54,7 +56,7 @@ export class AensFixedPriceRegistrarContractService extends BaseContractService 
   }
 
   async balance() {
-    const balance = await this.web3.eth.getBalance(environment.contracts.aens.address.FixedPriceRegistrar);
+    const balance = await this.web3.eth.getBalance(this.environment.get().contracts.aens.address.FixedPriceRegistrar);
     return balance;
   }
 

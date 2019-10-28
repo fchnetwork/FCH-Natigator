@@ -16,6 +16,7 @@ const hdkey   = require("ethereumjs-wallet/hdkey");
 const bip39   = require("bip39");
 
 import Web3 from 'web3';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 declare const window: any;
 
@@ -29,7 +30,8 @@ export class AuthenticationService {
     constructor(public router: Router,
                 public settingsService: SettingsService,
                 private storageService: StorageService,
-                private fingerPrintService: FingerPrintService
+                private fingerPrintService: FingerPrintService,
+                private environment: EnvironmentService
     ) {
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.settingsService.settings.systemSettings.aerumNodeRpcURI));
         this.wsWeb3 = new Web3(new Web3.providers.WebsocketProvider(this.settingsService.settings.systemSettings.aerumNodeWsURI));
@@ -82,14 +84,14 @@ export class AuthenticationService {
       await this.fingerPrintService.savePassword(password);
       const formatSeed = this.seedCleaner(seed.toString());
       const encryptAccount = this.web3.eth.accounts.encrypt(privateKey, password);
-      this.storageService.setCookie('aerum_keyStore', JSON.stringify(encryptAccount), false, 7);
-      this.storageService.setCookie('aerum_base', formatSeed, true, 7);
+      this.storageService.setStorage('aerum_keyStore', JSON.stringify(encryptAccount), false, 7);
+      this.storageService.setStorage('aerum_base', formatSeed, true, 7);
       return encryptAccount;
     }
 
     showKeystore() : Promise<any> {
       return new Promise((resolve, reject) => {
-        const auth = this.storageService.getCookie('aerum_keyStore');
+        const auth = this.storageService.getStorage('aerum_keyStore');
         if(auth) {
           resolve(JSON.parse(auth));
         }
@@ -103,8 +105,12 @@ export class AuthenticationService {
       return this.storageService.getSessionData('acc_address');
     }
 
+    getName(): string {
+      return this.storageService.getSessionData('acc_name');
+    }
+
     getKeystore() {
-      const keystore = this.storageService.getCookie('aerum_keyStore');
+      const keystore = this.storageService.getStorage('aerum_keyStore');
       if(!keystore) {
         throw new Error("No keystore found");
       }
@@ -116,7 +122,7 @@ export class AuthenticationService {
     unencryptKeystore(password: string) : Promise<any> {
       return new Promise( (resolve, reject) => {
         if(password) {
-          const decryptSeed = CryptoJS.AES.decrypt(this.storageService.getCookie('aerum_base'), password );
+          const decryptSeed = CryptoJS.AES.decrypt(this.storageService.getStorage('aerum_base'), password );
           const transactions = this.decryptCookieToArray('transactions', password);
           const tokens = this.decryptCookieToArray('tokens', password);
           const ethereumTokens = this.decryptCookieToArray('ethereum_tokens', password);
@@ -124,7 +130,7 @@ export class AuthenticationService {
           const crossChainSwaps = this.decryptCookieToArray('cross_chain_swaps', password);
           const stakings = this.decryptCookieToArray('stakings', password);
 
-          const encryptAccount = this.web3.eth.accounts.decrypt(JSON.parse(this.storageService.getCookie('aerum_keyStore')), password);
+          const encryptAccount = this.web3.eth.accounts.decrypt(JSON.parse(this.storageService.getStorage('aerum_keyStore')), password);
           if( encryptAccount ) {
             const plaintext = decryptSeed.toString(CryptoJS.enc.Utf8);
             const seed = this.seedCleaner(plaintext);
@@ -140,7 +146,7 @@ export class AuthenticationService {
     }
 
     private decryptCookieToArray(cookieName: string, password: string) {
-      const cookie = this.storageService.getCookie(cookieName);
+      const cookie = this.storageService.getStorage(cookieName);
       if(!cookie) {
         return [];
       }
@@ -163,6 +169,12 @@ export class AuthenticationService {
           this.storageService.setSessionData('ethereum_accounts', result.ethereumAccounts.length ? JSON.parse(result.ethereumAccounts) : []);
           this.storageService.setSessionData('cross_chain_swaps', result.crossChainSwaps.length ? JSON.parse(result.crossChainSwaps) : []);
           this.storageService.setSessionData('stakings', result.stakings.length ? JSON.parse(result.stakings) : []);
+
+          const settings = this.settingsService.getSettings();
+          if(settings.accountSettings) {
+            this.storageService.setSessionData('acc_name', settings.accountSettings.accName);
+          }
+
           resolve('success');
         }).catch((err)=>{
             reject(err);
@@ -172,6 +184,7 @@ export class AuthenticationService {
 
     logout() {
       this.storageService.clearSessionData('acc_address');
+      this.storageService.clearSessionData('acc_name');
       this.storageService.clearSessionData('acc_avatar');
       this.storageService.clearSessionData('seed');
       this.storageService.clearSessionData('private_key');
@@ -184,7 +197,8 @@ export class AuthenticationService {
       this.storageService.clearSessionData('derivation');
       this.storageService.clearSessionData('ethereum_tokens');
       //Doing page full reload to make sure all components and services will be correctly initialized for next user.
-      window.location.href = 'account/unlock';
+      const url = this.environment.get().isMobileBuild ? 'index.html' : 'account/unlock';
+      window.location.href = url;
     }
 
     /**
@@ -200,7 +214,7 @@ export class AuthenticationService {
 
     // now being used in sidebar select component
     generateAdditionalAccounts( password: string, amount: number ){
-        const authCookie = this.storageService.getCookie('aerum_base');
+        const authCookie = this.storageService.getStorage('aerum_base');
         if( authCookie ){
             const accounts        = [];
             const cookieStringify = authCookie.toString();
@@ -238,7 +252,7 @@ export class AuthenticationService {
         return new Promise( (resolve) => {
             if( formatAddress ){
                 resolve( QRCode.toDataURL( formatAddress, {margin: 0, color: {
-                    dark: '#636363',  // Blue dots
+                    dark: '#ffffff',  // Blue dots
                     light: '#0000' // Transparent background
                   }} ) );
             }

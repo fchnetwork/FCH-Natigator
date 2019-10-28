@@ -1,15 +1,13 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
-import { iBlocks, iTransaction } from '@shared/app.interfaces';
 import { ModalService } from '@core/general/modal-service/modal.service';
 import { ExplorerService } from '@core/explorer/explorer-service/explorer.service';
 import { LoaderService } from '@core/general/loader-service/loader.service';
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
 import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
 import { BlockModalData } from '@app/wallet/explorer/components/block-modal/block-modal.component';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
+import { iTransaction } from '@app/shared/app.interfaces';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
 
 @Component({
   selector: 'app-transactions',
@@ -27,13 +25,16 @@ export class TransactionsComponent implements AfterViewInit {
   highBlock: number;
   lowBlock: number;
   maxBlocks: number = 100;
-  perfectScrollbarDisabled = isAndroidDevice();
+  perfectScrollbarDisabled: boolean;
 
   constructor(public exploreSrv: ExplorerService,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalService,
-    private loaderService: LoaderService) { }
+    private loaderService: LoaderService,
+    private environment: EnvironmentService,) {
+    this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
+  }
 
   ngAfterViewInit() {
     // First get the latest block number

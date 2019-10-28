@@ -1,4 +1,4 @@
-import { NgModule, ErrorHandler } from "@angular/core";
+import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { HttpModule } from "@angular/http";
@@ -12,6 +12,13 @@ import { environment } from '@env/environment';
 import { CoreModule } from "@app/core/core.module";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
+import { AppConfigService } from "./core/app-config/app-config.service";
+
+const appConfigInitializer = (appConfig: AppConfigService) => {
+  return () => {
+    return appConfig.loadAppConfig();
+  };
+};
 
 export function createTranslateLoader(http: HttpClient) {
   const prefix = environment.isMobileBuild ? './assets/i18n/' : '../../assets/i18n/';
@@ -40,7 +47,15 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent
   ],
-  providers: [],
+  providers: [
+    AppConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appConfigInitializer,
+      multi: true,
+      deps: [AppConfigService]
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -32,7 +32,7 @@ export class ImportWalletService {
 
         const res = await this.transactionService.maxTransactionFee(
           paperWalletAddress,
-          "Aero"
+          "Gas"
         );
         const maxTransactionFeeEth = res[1];
         const amount =
@@ -54,7 +54,7 @@ export class ImportWalletService {
               data: "",
               limit: "",
               price: "",
-              selectedToken: "Aero"
+              selectedToken: "Gas"
             }
           )
           .then(async result => {

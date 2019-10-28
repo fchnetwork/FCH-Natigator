@@ -1,0 +1,23 @@
+<aer-modal-container>
+  <div class="account register-name">
+    <div class="header">{{ 'ACCOUNT.REGISTER_NAME.TITLE' | translate }}</div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <p class="label">{{ 'ACCOUNT.REGISTER_NAME.LABEL' | translate }}</p>
+      <aer-input
+        [placeholder]="'ACCOUNT.REGISTER_NAME.NAME_PLACEHOLDER' | translate"
+        type="text"
+        formControlName="name"
+        class="element-wrapper blue"></aer-input>
+      <p class="label-error" *ngIf="nameUsed">{{'ACCOUNT.REGISTER_NAME.NAME_ERROR' | translate}}</p>
+      <aer-button data-cy="continue"
+        class="large full-width"
+        [ngClass]="{'disabled': !registerForm.valid || inProgress}"
+        [disabled]="!registerForm.valid || inProgress">
+        {{'COMMON.BUTTONS.CONTINUE' | translate}}</aer-button>
+    </form>
+    <app-divider label="{{'OR'|translate}}"></app-divider>
+    <div class="link-text">
+      <a (click)="skipStep()">{{'ACCOUNT.REGISTER_NAME.SKIP_STEP'|translate}}</a>
+    </div>
+  </div>
+</aer-modal-container>

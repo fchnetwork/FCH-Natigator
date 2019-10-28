@@ -1,12 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { iBlocks, iPendingTxn } from '@shared/app.interfaces';
 import { ModalService } from '@app/core/general/modal-service/modal.service';
 import { ExplorerService } from '@core/explorer/explorer-service/explorer.service';
-import { Subscription } from 'rxjs';
 import { TransactionModalData } from '@app/wallet/explorer/components/transaction-modal/transaction-modal.component';
-import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
+import { EnvironmentService } from "@core/general/environment-service/environment.service";
+import { iPendingTxn } from '@app/shared/app.interfaces';
 
 @Component({
   selector: 'app-pending-txns',
@@ -15,12 +13,15 @@ import { isAndroidDevice } from '@app/shared/helpers/platform-utils';
 export class PendingTxnsComponent implements OnInit {
 
   transactions: iPendingTxn[] = [];
-  perfectScrollbarDisabled = isAndroidDevice();
+  perfectScrollbarDisabled: boolean;
 
-  constructor( public exploreSrv: ExplorerService,
-               private router: Router,
-               private modal: ModalService) { }
-
+  constructor(
+    public exploreSrv: ExplorerService,
+    private router: Router,
+    private modal: ModalService,
+    private environment: EnvironmentService) {
+    this.perfectScrollbarDisabled = this.environment.get().isMobileBuild;
+  }
 
   ngOnInit() {
     this.getPendingTxPool();

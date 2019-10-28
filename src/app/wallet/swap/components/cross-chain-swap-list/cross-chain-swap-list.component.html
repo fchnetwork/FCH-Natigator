@@ -4,10 +4,10 @@
       <div aerColumn size="md-12">
         <div class="swap__header-buttons">
           <h3>
-            {{'SWAP.LIST.CROSS_CHAIN_TITLE'|translate}}
+            {{ 'SWAP.LIST.CROSS_CHAIN_TITLE' | translate }}
           </h3>
-          <aer-button (buttonFn)="deposit()" class="blue">{{'SWAP.LIST.BTN_DEPOSIT'|translate}}</aer-button>
-          <aer-button (buttonFn)="withdraw()" class="blue">{{'SWAP.LIST.BTN_WITHDRAWAL'|translate}}</aer-button>
+          <aer-button (buttonFn)="deposit()" class="white">{{ 'SWAP.LIST.BTN_DEPOSIT' | translate }}</aer-button>
+          <aer-button (buttonFn)="withdraw()" class="white">{{ 'SWAP.LIST.BTN_WITHDRAWAL' | translate }}</aer-button>
         </div>
       </div>
     </div>
@@ -16,37 +16,34 @@
         <aer-card>
           <aer-table [data]="swaps" [loading]="loading" [perfectScrollbarDisabled]="perfectScrollbarDisabled">
             <ng-template aerTemplate="header">
-              <th id="id">{{'SWAP.LIST.TITLE_SWAP_ID'|translate}}</th>
-              <th id="counterparty">{{'SWAP.LIST.TITLE_COUNTERPARTY'|translate}}</th>
-              <th id="currency">{{'SWAP.LIST.TITLE_AMOUNTS'|translate}}</th>
-              <th id="createdOn">{{'SWAP.LIST.TITLE_DATE'|translate}}</th>
-              <th id="status">{{'SWAP.LIST.TITLE_STATUS'|translate}}</th>
+              <th id="id">{{ 'SWAP.LIST.TITLE_SWAP_ID' | translate }}</th>
+              <th id="counterparty">{{ 'SWAP.LIST.TITLE_COUNTERPARTY' | translate }}</th>
+              <th id="currency">{{ 'SWAP.LIST.TITLE_AMOUNTS' | translate }}</th>
+              <th id="createdOn">{{ 'SWAP.LIST.TITLE_DATE' | translate }}</th>
+              <th id="status">{{ 'SWAP.LIST.TITLE_STATUS' | translate }}</th>
             </ng-template>
             <ng-template aerTemplate="body" let-swap>
               <tr>
                 <td class="link" (click)="openSwap(swap)">
                   <span>
-                    <aer-icon class="icon deposit" *ngIf="swap.type === 0">deposit</aer-icon> 
+                    <aer-icon class="icon deposit" *ngIf="swap.type === 0">deposit</aer-icon>
                     <aer-icon class="icon withdrawal" *ngIf="swap.type === 1">withdrawal</aer-icon>
-                    {{swap.id| truncate: 32}}
+                    {{ swap.id | truncate: 32 }}
                   </span>
                 </td>
-                <td>{{swap.counterparty | truncate: 16}}</td>
-                <td>{{swap.openValue | number:'1.2-18'}} {{swap.openAsset}}</td>
-                <td>{{swap.createdOn | date: 'dd MMM, yyyy, h:mm a'}}</td>
+                <td>{{ swap.counterparty | truncate: 16 }}</td>
+                <td>{{ swap.openValue | number: '1.2-18' }} {{ swap.openAsset }}</td>
+                <td>{{ swap.createdOn | date: 'dd MMM, yyyy, h:mm a' }}</td>
                 <td>
-                  <span *ngIf="swap.state === 1" class="pending">
-                    <aer-icon class="icon">pending</aer-icon> {{'SWAP.LIST.STATUS_PENDING'|translate}}</span>
-                  <span *ngIf="swap.state === 2" class="closed">
-                    <aer-icon class="icon">check-square-o</aer-icon> {{'SWAP.LIST.STATUS_COMPLETED'|translate}}</span>
-                  <span *ngIf="swap.state === 3" class="cancelled">
-                    <aer-icon class="icon">exclamation-triangle</aer-icon> {{'SWAP.LIST.STATUS_CANCELLED'|translate}}</span>
+                  <span *ngIf="swap.state === 1" class="pending"> <aer-icon class="icon">pending</aer-icon> {{ 'SWAP.LIST.STATUS_PENDING' | translate }}</span>
+                  <span *ngIf="swap.state === 2" class="closed"> <aer-icon class="icon">check-square-o</aer-icon> {{ 'SWAP.LIST.STATUS_COMPLETED' | translate }}</span>
+                  <span *ngIf="swap.state === 3" class="cancelled"> <aer-icon class="icon">exclamation-triangle</aer-icon> {{ 'SWAP.LIST.STATUS_CANCELLED' | translate }}</span>
                 </td>
               </tr>
             </ng-template>
           </aer-table>
           <app-divider [showLine]="false"></app-divider>
-          <aer-button class="full-width blue" (buttonFn)="showMore()" [disabled]="!canShowMore">{{'SHOW_MORE'|translate}}</aer-button>
+          <aer-button class="full-width blue" (buttonFn)="showMore()" [disabled]="!canShowMore">{{ 'SHOW_MORE' | translate }}</aer-button>
         </aer-card>
       </div>
     </div>

@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Guid } from "@shared/helpers/guid";
 import { NotificationService, ModalViewComponent, DialogRef } from "@aerum/ui";
-
-import { environment } from '@env/environment';
-
-import { toBigNumberString } from "@shared/helpers/number-utils";
 import { SwapToken, SwapMode } from '@swap/models/models';
 import { LoggerService } from "@core/general/logger-service/logger.service";
-import { ModalService } from '@core/general/modal-service/modal.service';
 import { AuthenticationService } from '@core/authentication/authentication-service/authentication.service';
 import { AerumNameService } from '@core/aens/aerum-name-service/aerum-name.service';
 import { ERC20TokenService } from '@core/swap/on-chain/erc20-token-service/erc20-token.service';
 import { AeroToErc20SwapService } from '@core/swap/on-chain/aero-to-erc20-swap-service/aero-to-erc20-swap.service';
 import { Erc20ToAeroSwapService } from '@core/swap/on-chain/erc20-to-aero-swap-service/erc20-to-aero-swap.service';
 import { Erc20ToErc20SwapService } from '@core/swap/on-chain/erc20-to-erc20-swap-service/erc20-to-erc20-swap.service';
+import { TranslateService } from "@ngx-translate/core";
 
 export class CreateSwapModalContext {
   swapId: string;
@@ -57,7 +53,8 @@ export class CreateSwapComponent implements ModalViewComponent<any, any>, OnInit
     private aeroToErc20SwapService: AeroToErc20SwapService,
     private erc20ToAeroSwapService: Erc20ToAeroSwapService,
     private erc20ToErc20SwapService: Erc20ToErc20SwapService,
-    private aensService: AerumNameService
+    private aensService: AerumNameService,
+    private translateService: TranslateService,
   ) { }
 
   async ngOnInit() {
@@ -67,7 +64,7 @@ export class CreateSwapComponent implements ModalViewComponent<any, any>, OnInit
     this.generateSwapId();
     this.tokenAmount = 0.01;
 
-    this.token = { symbol: 'AERO', address: '' };
+    this.token = { symbol: 'GAS', address: '' };
 
     this.updateSwapMode();
     this.updateTitle();
@@ -128,18 +125,18 @@ export class CreateSwapComponent implements ModalViewComponent<any, any>, OnInit
     if ((!tokenAmountParsed || tokenAmountParsed <= 0) ||
       (!counterpartyTokenAmountParsed || counterpartyTokenAmountParsed <= 0) ||
       (!rateParsed || rateParsed <= 0)) {
-      this.notificationService.notify('Error', 'Swap amount or rate not valid', "aerum", 3000);
+      this.notificationService.notify(this.translate('ERROR'), this.translate('SWAP.CREATE.SWAP_AMOUNT_OR_RATE_NOT_VALID'), "aerum", 3000);
       return;
     }
 
     if (this.mode === 'aero_to_aero') {
-      this.notificationService.notify('Error', 'Aero > Aero swaps are not supported', "aerum", 3000);
+      this.notificationService.notify(this.translate('ERROR'), this.translate('SWAP.CREATE.GAS_GAS_SWAPS_ARE_NOT_SUPPORTED'), "aerum", 3000);
       return;
     }
 
     // TODO: Replace with better validation
     if (!this.counterpartyToken) {
-      this.notificationService.notify('Error', 'Please select counterparty token', "aerum", 3000);
+      this.notificationService.notify(this.translate('ERROR'), this.translate('SWAP.CREATE.PLEASE_SELECT_COUNTERPARTY_TOKEN'), "aerum", 3000);
       return;
     }
 
@@ -147,7 +144,7 @@ export class CreateSwapComponent implements ModalViewComponent<any, any>, OnInit
       this.startLoading();
       await this.confirmAndCreateSwap();
     } catch (e) {
-      this.notificationService.notify('Error', 'Unknown error occured', "aerum", 3000);
+      this.notificationService.notify(this.translate('ERROR'), this.translate('SWAP.CREATE.UNKNOWN_ERROR_OCCURED'), "aerum", 3000);
       this.logger.logError('Swap creation error:', e);
     } finally {
       this.stopLoading();
@@ -250,5 +247,9 @@ export class CreateSwapComponent implements ModalViewComponent<any, any>, OnInit
 
   private stopLoading() {
     this.processing = false;
+  }
+
+  private translate(key: string): string {
+    return this.translateService.instant(key);
   }
 }
