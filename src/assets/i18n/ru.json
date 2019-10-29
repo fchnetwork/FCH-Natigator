@@ -1,7 +1,7 @@
 {
 "BACK_BUTTON_TEXT": "Назад",
 "NAME": "Имя",
-"WELCOME": "Начните работу с Аерум на русском",
+"WELCOME": "Начните работу с FCH.Network на русском",
 "CREATE_NEW_ACCOUNT": "Создание нового счета",
 "SIGNED_UP_PREFIX": "Создайте новый счет далее или",
 "SIGNED_UP_LINK": "восстановить счет",
@@ -41,22 +41,22 @@
 },
 "CONNECTION": {
   "CONNECTION_STATUS":"Статус соединения",
-  "CONNECTING_TO_AERUM": "Соединение с сетью Aerum...",
+  "CONNECTING_TO_AERUM": "Соединение с сетью FCH...",
   "STATUS_TITLE": {
     "DISCONNECTED": "Отключено",
     "CONNECTED": "Подключено"
   },
   "STATUS_BODY": {
-    "DISCONNECTED": "Соединение с сетью AERUM потеряно",
-    "CONNECTED": "Вы подключены к сети AERUM"
+    "DISCONNECTED": "Соединение с сетью FCH потеряно",
+    "CONNECTED": "Вы подключены к сети FCH"
   }
 },
 "FROM":"От",
 "TO":"Кому",
 "AMOUNT":"Сумма",
 "SEND_EVERYTHING":"Послать все",
-"AERUM":"Aerum",
-"AERO":"AERO",
+"AERUM":"FCH.Network",
+"AERO":"Gas",
 "SHOW_MORE_OPTIONS":"Дополнительные опции",
 "MAX_TRANSACTION_FEE":"Максимальная комиссия",
 "MAX_TRANS_FEE_WARNING":"Это максимальное количество средст для отправки транзакции.",
@@ -70,7 +70,7 @@
 "TRANSACTION":"Транзакция",
 "I_UNDERSTAND":"Я согласен",
 "WARNING":"Ахтунг!",
-"REGISTRATION_WARNING_TXT1":"Пожалуйста, используйте только оригинальный кошелек Aerum.",
+"REGISTRATION_WARNING_TXT1":"Пожалуйста, используйте только оригинальный кошелек FCH.Network.",
 "REGISTRATION_WARNING_TXT2":"Мнемоническая фраза - единственный способ восстановить доступ к счету, хранить бережно.",
 "REGISTRATION_WARNING_TXT3":"Никогда не вводите мнемоническую фразу в неофициальные программы - вы можете потерять все ваши средства.",
 "UNLOCK_ACCOUNT":"Unlock Account"

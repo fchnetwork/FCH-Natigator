@@ -10,7 +10,6 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { D3Service } from 'd3-ng2-service'; // <-- import the D3 Service, the type alias for the d3 variable and the Selection interface
 import { AppUIModule } from "@app/app.ui.module";
 import { OverviewComponent } from "@app/wallet/diagnostics/overview/overview.component";
-import { TestPageComponent } from "@app/wallet/diagnostics/test-page/test-page.component"; 
 import { CoreModule } from "@app/core/core.module";
 
 
@@ -29,8 +28,7 @@ export function createTranslateLoader(http: HttpClient) {
         CoreModule
     ],
     declarations: [
-        OverviewComponent,
-        TestPageComponent
+        OverviewComponent
     ]
 })
 
