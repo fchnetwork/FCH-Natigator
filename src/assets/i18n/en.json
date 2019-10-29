@@ -295,7 +295,7 @@
   "TO": "To",
   "AMOUNT": "Amount",
   "SEND_EVERYTHING": "Send everything",
-  "AERUM": "FCH Network",
+  "AERUM": "FCH.Network",
   "AERO": "Gas",
   "SHOW_MORE_OPTIONS": "Show more options",
   "SHOW_LESS_OPTIONS": "Show less options",
@@ -432,14 +432,14 @@
   },
   "CONNECTION": {
     "CONNECTION_STATUS": "Connection status",
-    "CONNECTING_TO_AERUM": "Connecting to FCH network...",
+    "CONNECTING_TO_AERUM": "Connecting to FCH.Network...",
     "STATUS_TITLE": {
       "DISCONNECTED": "Disconnected",
       "CONNECTED": "Connected"
     },
     "STATUS_BODY": {
-      "DISCONNECTED": "Connection to FCH network has been lost",
-      "CONNECTED": "Connected to AERUM Network"
+      "DISCONNECTED": "Connection to FCH.Network has been lost",
+      "CONNECTED": "Connected to FCH.Network"
     }
   },
   "BUTTONS" : {
@@ -610,7 +610,7 @@
     },
     "CREATE": {
       "TITLE": "Create Exchange Swap",
-      "FIELD_RECEIVING_AERUM_TOKEN": "Receiving FCH Network token:",
+      "FIELD_RECEIVING_AERUM_TOKEN": "Receiving FCH.Network token:",
       "FIELD_SELECT_YOUR_TOKEN": "Select your token",
       "FIELD_AMOUNT_OF_TOKEN_TO_RECEIVE": "Amount of token to receive:",
       "FIELD_TYPE_AMOUNT": "Type amount",
@@ -618,7 +618,7 @@
       "FIELD_SELECT_YOUR_COUNTERPARTY": "Select your counterparty",
       "FIELD_SEND_ETHEREUM_ASSET": "Send Ethereum asset",
       "FIELD_AMOUNT": "Amount",
-      "FIELD_EXCHANGE_RATE": "Exchange rate (FCH Network token/Eth asset)",
+      "FIELD_EXCHANGE_RATE": "Exchange rate (FCH.Network token/Eth asset)",
       "FIELD_SECRET_KEY": "Secret key",
       "FIELD_MESSAGE":
         "Attention! You will need this secret key to complete the swap. You need to complete the swap before it expires.",

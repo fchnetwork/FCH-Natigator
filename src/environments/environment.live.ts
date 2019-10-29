@@ -8,35 +8,38 @@ export const environment = {
   production: true,
   isMobileBuild: false,
   configInUse: "environment.live",
-  externalConfig: "https://conf.aerum.net/",
-  WebsocketProvider: "wss://main-gw-500.aerum.net/wss",
-  rpcApiProvider: "https://main-gw-500.aerum.net",
-  aerumBit: "https://api-aerumbit.aerum.com/",
-  cookiesDomain: "wallet.aerum.net",
-  webSocketStatServer: "ws://localhost:3000/primus",
-  externalBlockExplorer: "https://explore.aerum.net/#/",
-  predefinedTokens: [],
+  // TODO: To be provided... https://conf.fch.network/
+  // externalConfig: "https://conf.aerum.net/",
+  externalConfig: "",
+  WebsocketProvider: "wss://gateway.fch.network/wss",
+  rpcApiProvider: "https://gateway.fch.network/",
+  // TODO: To be provided...
+  aerumBit: "",
+  cookiesDomain: "wallet.fch.network",
+  externalBlockExplorer: "https://stats.fch.network/#/",
+  predefinedTokens: ['0xFFD267230c3FB89889FA6a0de55b7C6751bDD461'],
   contracts: {
     swap: {
       address: {
-        AeroToErc20: "0xb5c1c46b9b61f8adbd1b4a407db8d0c93948d5e1",
-        Erc20ToAero: "0x02145c31e3bc16dae4cba31a2c812ce9de9bfffd",
-        Erc20ToErc20: "0x5b01d4546af542820ac253876e52dc8853fac75b"
+        AeroToErc20: "0xa4E12D96faEB7b34A301a817d5A7BeEf824471ea",
+        Erc20ToAero: "0xC376141bCE40020B672c0ee94233CC347ad321cb",
+        Erc20ToErc20: "0x5Ee81732Ef5567342FbBC40306250Df5884944c4"
       },
+      // TODO: To be provided...
       crossChain: {
         address: {
           aerum: {
-            OpenAeroSwap: "0x3d8878932485c83df67758b6739321534fee61f0",
-            OpenErc20Swap: "0x3a95e495081271cc45772054c481f1d2f3f14797",
-            CounterAeroSwap: "0xa7555fe3350ad5236027ea1cbc97dbae33967759",
-            CounterErc20Swap: "0x3a64689e2c4be2e65a031cbf2505a91075079df2",
-            TemplatesRegistry: "0x5e3f8c9554ca04b82c83f36bc2c34758c8712eeb"
+            OpenAeroSwap: "",
+            OpenErc20Swap: "",
+            CounterAeroSwap: "",
+            CounterErc20Swap: "",
+            TemplatesRegistry: ""
           },
           ethereum: {
-            OpenEtherSwap: "0x2abe1b7547d80e549cbe7a44226470966aeef253",
-            OpenErc20Swap: "0x3094b0d1f000aae7e1d83b3d12527271586924eb",
-            CounterEtherSwap: "0xdbf8dfded1cb047f1d8b43a9a3662cb42859e7bd",
-            CounterErc20Swap: "0x234237642c428994e500569581febc7c60fe6709"
+            OpenEtherSwap: "",
+            OpenErc20Swap: "",
+            CounterEtherSwap: "",
+            CounterErc20Swap: ""
           }
         },
         swapExpireTimeoutInSeconds: 4 * 60 * 60
@@ -44,24 +47,24 @@ export const environment = {
     },
     aens: {
       address: {
-        ENSRegistry: "0x51523ba907e3868b1dfa97c9185869c3144807ac",
-        FixedPriceRegistrar: "0x248d27095a659fc125a16b6191fb6b904936f475",
-        PublicResolver: "0x09964cc3105f51b4f94ec5bf7d398521f36202b1"
+        ENSRegistry: "0xaBd5F87F546ed672ae5281cF1c41619d45A35d10",
+        FixedPriceRegistrar: "0x8bC563c808F503c44C04697f02A7A396632A80Aa",
+        PublicResolver: "0x1cE51A574ee533a956FC45ab734f79EdF0F90072"
       }
     },
     staking: {
       address: {
-        Aerum: "0xa249f0e9a464b9685f66992f41e1012388e39e81",
-        Governance: "0x7f07f6627e9bf1fc821360e0c20f32af532df106"
+        Aerum: "0x74BE783894Dd616183b7045a79761661Ec97D26b",
+        Governance: "0x073b2D2Cf8D31be73BDb0109dA05dA8C85BEa279"
       }
     },
     factory: {
       address: {
-        TokenFactory: "0x158f3b5369e9a4f58fcd8452bc76b859405a2214"
+        TokenFactory: "0x4a61D1E631e663EaCafeb32a67B6A67C29F1FC3D"
       }
     },
     contractRegistry: {
-      address: "0xdca75acf346b00e0faa3148246714df8ebe4e639"
+      address: "0x75Bd4922F1811325fcACF8604a812B93C61F1953"
     }
   },
   ethereum: {
@@ -76,9 +79,9 @@ export const environment = {
     lastTransactionsNumber: "10",
     maxBlockGas: "1",
     derivationPath: "m/44'/538'/0'/0/0",
-    laguage: "en",
+    language: "en",
     numberOfBlocks: 20
   },
-  chainId: 538,
+  chainId: 4040,
   loglevel: LogLevel.All,
 };

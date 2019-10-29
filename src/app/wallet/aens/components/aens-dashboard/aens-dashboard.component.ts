@@ -48,7 +48,7 @@ export class AensDashboardComponent implements OnInit {
   async ngOnInit() {
     const keystore = this.authService.getKeystore();
     this.currentAccount  = "0x" + keystore.address;
-    this.name = 'asrcrypto';
+    this.name = 'yourname';
 
     this.isRegistrarOwner = await this.aensService.isRegistrarOwner(this.currentAccount);
     this.price = fromWei(await this.aensService.getPrice(), 'ether');

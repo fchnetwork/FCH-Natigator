@@ -25,7 +25,6 @@ import { PasswordCheckerService } from '@app/core/authentication/password-checke
 import { ExplorerService } from '@app/core/explorer/explorer-service/explorer.service';
 import { TokenService } from '@app/core/transactions/token-service/token.service';
 import { TransactionService } from '@app/core/transactions/transaction-service/transaction.service';
-import { AerumStatsService } from '@app/core/stats/aerum-stats-service/aerum-stats.service';
 import { AerumStatsWebsocketsService } from '@app/core/stats/aerum-stats-websockets-service/aerum-stats-websockets.service';
 import { LoggerService } from '@app/core/general/logger-service/logger.service';
 import { LoaderService } from '@app/core/general/loader-service/loader.service';
@@ -76,7 +75,6 @@ import { AerumbitService } from "@core/aerumbit/aerumbit.service";
     RouteDataService,
     TokenService,
     TransactionService,
-    AerumStatsService,
     AerumStatsWebsocketsService,
     AerumNameService,
     AensFixedPriceRegistrarContractService,

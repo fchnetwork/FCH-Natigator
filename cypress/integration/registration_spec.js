@@ -1,9 +1,9 @@
 describe('Render register', () => {
-    it('Page title has Aerum', () => {
+    it('Page title has FCH.Network', () => {
       cy
       .visit('/')
       .title()
-      .should('contain', 'Aerum');
+      .should('contain', 'FCH.Network');
     });
 
     it('Button Continue disabled', () => {
