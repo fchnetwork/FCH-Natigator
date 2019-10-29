@@ -43,13 +43,13 @@ export class SettingsService {
      * @memberof SettingsService
      */
     setDefaultSettings(): iSettings {
-        this.translate.setDefaultLang(this.environment.get().settings.laguage);
-        const defaultLanguage = this.translate.getBrowserLang() ? this.translate.getBrowserLang() : this.environment.get().settings.laguage;
+        this.translate.setDefaultLang(this.environment.get().settings.language);
+        const defaultLanguage = this.translate.getBrowserLang() ? this.translate.getBrowserLang() : this.environment.get().settings.language;
         this.translate.use(defaultLanguage);
 
         const settings = {
             generalSettings: {
-                language: this.environment.get().settings.laguage,
+                language: this.environment.get().settings.language,
                 derivationPath: this.environment.get().settings.derivationPath,
                 numberOfBlocks: this.environment.get().settings.numberOfBlocks
             },

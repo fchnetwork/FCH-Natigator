@@ -14,9 +14,7 @@ export const environment = {
   // TODO: To be provided...
   aerumBit: "",
   cookiesDomain: "localhost",
-  webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "https://stats.fch.network/#/",
-  // TODO: To be provided...
   predefinedTokens: ['0xFFD267230c3FB89889FA6a0de55b7C6751bDD461'],
   contracts: {
     swap: {
@@ -79,7 +77,7 @@ export const environment = {
     lastTransactionsNumber: "10",
     maxBlockGas: "1",
     derivationPath: "m/44'/60'/0'/0/0",
-    laguage: "en",
+    language: "en",
     numberOfBlocks: 20
   },
   chainId: 4040,
