@@ -17,7 +17,7 @@ export const environment = {
   webSocketStatServer: "ws://localhost:3000/primus",
   externalBlockExplorer: "https://stats.fch.network/#/",
   // TODO: To be provided...
-  predefinedTokens: [],
+  predefinedTokens: ['0xFFD267230c3FB89889FA6a0de55b7C6751bDD461'],
   contracts: {
     swap: {
       address: {
@@ -47,9 +47,9 @@ export const environment = {
     },
     aens: {
       address: {
-        ENSRegistry: "0x9DB8E0a507296edCCd3ba1eE9Fc1437caA052074",
-        FixedPriceRegistrar: "0x8db5d1184ab75f08555f0aec7B73104a34F27E32",
-        PublicResolver: "0xa131c557C05A3B31DA79090fd0f99da6361BE084"
+        ENSRegistry: "0xaBd5F87F546ed672ae5281cF1c41619d45A35d10",
+        FixedPriceRegistrar: "0x8bC563c808F503c44C04697f02A7A396632A80Aa",
+        PublicResolver: "0x1cE51A574ee533a956FC45ab734f79EdF0F90072"
       }
     },
     staking: {
