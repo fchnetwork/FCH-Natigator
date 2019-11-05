@@ -78,7 +78,7 @@ export const environment = {
     maxTransactionGas: "4000000",
     lastTransactionsNumber: "10",
     maxBlockGas: "1",
-    derivationPath: "m/44'/538'/0'/0/0",
+    derivationPath: "m/44'/4040'/0'/0/0",
     language: "en",
     numberOfBlocks: 20
   },
