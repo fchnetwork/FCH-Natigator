@@ -17,7 +17,7 @@ export const environment = {
   aerumBit: "",
   cookiesDomain: "wallet.fch.network",
   externalBlockExplorer: "https://stats.fch.network/#/",
-  predefinedTokens: ['0xFFD267230c3FB89889FA6a0de55b7C6751bDD461'],
+  predefinedTokens: ['0x13EE9f558bBaa42a1e3984451733bdd1640C6F3E'],
   contracts: {
     swap: {
       address: {
