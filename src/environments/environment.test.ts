@@ -62,7 +62,7 @@ export const environment = {
       }
     },
     contractRegistry: {
-      address: "0x75Bd4922F1811325fcACF8604a812B93C61F1953"
+      address: "0xa4E12D96faEB7b34A301a817d5A7BeEf824471ea"
     }
   },
   ethereum: {
