@@ -48,9 +48,9 @@ export const environment = {
     },
     aens: {
       address: {
-        ENSRegistry: "0xaBd5F87F546ed672ae5281cF1c41619d45A35d10",
-        FixedPriceRegistrar: "0x8bC563c808F503c44C04697f02A7A396632A80Aa",
-        PublicResolver: "0x1cE51A574ee533a956FC45ab734f79EdF0F90072"
+        ENSRegistry: "0x4a61D1E631e663EaCafeb32a67B6A67C29F1FC3D",
+        FixedPriceRegistrar: "0xc156a39301132Ba03CA56197741E459c5D67d4cd",
+        PublicResolver: "0x75Bd4922F1811325fcACF8604a812B93C61F1953"
       }
     },
     staking: {
