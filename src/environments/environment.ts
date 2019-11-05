@@ -66,9 +66,9 @@ export const environment = {
     }
   },
   ethereum: {
-    endpoint: "https://rinkeby.infura.io/",
-    chainId: 4,
-    explorerUrl: "https://rinkeby.etherscan.io/tx/"
+    endpoint: "https://mainnet.infura.io/",
+    chainId: 1,
+    explorerUrl: "https://etherscan.io/tx/"
   },
   settings: {
     settingsExpiration: 3650,
