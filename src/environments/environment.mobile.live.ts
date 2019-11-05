@@ -61,7 +61,7 @@ export const environment = {
     },
     factory: {
       address: {
-        TokenFactory: "0x4a61D1E631e663EaCafeb32a67B6A67C29F1FC3D"
+        TokenFactory: "0x6bA3F4791Ee49197ffFdf83f8004467B8b6B9194"
       }
     },
     contractRegistry: {
