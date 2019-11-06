@@ -15,13 +15,13 @@ export const environment = {
   aerumBit: "",
   cookiesDomain: "localhost",
   externalBlockExplorer: "https://stats.fch.network/#/",
-  predefinedTokens: ['0xFFD267230c3FB89889FA6a0de55b7C6751bDD461'],
+  predefinedTokens: ['0x13EE9f558bBaa42a1e3984451733bdd1640C6F3E'],
   contracts: {
     swap: {
       address: {
-        AeroToErc20: "0xa4E12D96faEB7b34A301a817d5A7BeEf824471ea",
-        Erc20ToAero: "0xC376141bCE40020B672c0ee94233CC347ad321cb",
-        Erc20ToErc20: "0x5Ee81732Ef5567342FbBC40306250Df5884944c4"
+        AeroToErc20: "0x1D80d7984f842eC3271Ee8201c350122b964b192",
+        Erc20ToAero: "0xb6bd94D15eD0496C0836cfA2A99CD0e86eC171bb",
+        Erc20ToErc20: "0x4Acd9b68A3ff7c7e5B7810CbD5dDCfAeCEC4CCA2"
       },
       // TODO: To be provided...
       crossChain: {
@@ -45,30 +45,30 @@ export const environment = {
     },
     aens: {
       address: {
-        ENSRegistry: "0xaBd5F87F546ed672ae5281cF1c41619d45A35d10",
-        FixedPriceRegistrar: "0x8bC563c808F503c44C04697f02A7A396632A80Aa",
-        PublicResolver: "0x1cE51A574ee533a956FC45ab734f79EdF0F90072"
+        ENSRegistry: "0x4a61D1E631e663EaCafeb32a67B6A67C29F1FC3D",
+        FixedPriceRegistrar: "0xc156a39301132Ba03CA56197741E459c5D67d4cd",
+        PublicResolver: "0x75Bd4922F1811325fcACF8604a812B93C61F1953"
       }
     },
     staking: {
       address: {
-        Aerum: "0x74BE783894Dd616183b7045a79761661Ec97D26b",
-        Governance: "0x073b2D2Cf8D31be73BDb0109dA05dA8C85BEa279"
+        Aerum: "0x8f7e51d7487ebdcb9d729079074d8778e06c280a",
+        Governance: "0xe2b151d2eF8d7D3058E44b6481B06F71d38253c9"
       }
     },
     factory: {
       address: {
-        TokenFactory: "0x4a61D1E631e663EaCafeb32a67B6A67C29F1FC3D"
+        TokenFactory: "0x6bA3F4791Ee49197ffFdf83f8004467B8b6B9194"
       }
     },
     contractRegistry: {
-      address: "0x75Bd4922F1811325fcACF8604a812B93C61F1953"
+      address: "0xa4E12D96faEB7b34A301a817d5A7BeEf824471ea"
     }
   },
   ethereum: {
-    endpoint: "https://rinkeby.infura.io/",
-    chainId: 4,
-    explorerUrl: "https://rinkeby.etherscan.io/tx/"
+    endpoint: "https://mainnet.infura.io/",
+    chainId: 1,
+    explorerUrl: "https://etherscan.io/tx/"
   },
   settings: {
     settingsExpiration: 3650,
@@ -76,7 +76,7 @@ export const environment = {
     maxTransactionGas: "4000000",
     lastTransactionsNumber: "10",
     maxBlockGas: "1",
-    derivationPath: "m/44'/60'/0'/0/0",
+    derivationPath: "m/44'/4040'/0'/0/0",
     language: "en",
     numberOfBlocks: 20
   },
